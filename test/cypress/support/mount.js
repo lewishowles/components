@@ -1,4 +1,5 @@
 import components from "@/components";
+import { deepMerge } from "@lewishowles/helpers/object";
 import { mount } from "cypress/vue";
 
 Cypress.Commands.add("mount", (component, options = {}) => {
@@ -8,11 +9,7 @@ Cypress.Commands.add("mount", (component, options = {}) => {
 	options.global.components = options.global.components || {};
 	options.global.plugins = options.global.plugins || [];
 
-	options.global.plugins.push({
-		install(app) {
-			app.use(components);
-		},
-	});
+	options.global.components = components;
 
 	return mount(component, options);
 });
@@ -40,23 +37,10 @@ export function createMount(component, defaultOptions = {}) {
 	 *     The options to pass to Cypress for this individual mount.
 	 */
 	return function (options = {}) {
-		const mergedOptions = {
-			...defaultOptions,
-			...options,
-			props: {
-				...defaultOptions.props,
-				...options.props,
-			},
-			slots: {
-				...defaultOptions.slots,
-				...options.slots,
-			},
-		};
+		const isDirectProps = !Object.hasOwn(options, "props") && !Object.hasOwn(options, "slots");
 
-		if (!Object.hasOwn(mergedOptions, "props") && !Object.hasOwn(mergedOptions, "slots")) {
-			cy.mount(component, { props: mergedOptions });
-		} else {
-			cy.mount(component, mergedOptions);
-		}
+		let providedOptions = isDirectProps ? { props: options } : options;
+
+		cy.mount(component, deepMerge(defaultOptions, providedOptions));
 	};
 }

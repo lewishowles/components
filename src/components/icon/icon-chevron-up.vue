@@ -2,7 +2,6 @@
 	<base-icon>
 		<path
 			fill="none"
-			stroke="#6C7180"
 			stroke-linecap="round"
 			stroke-linejoin="round"
 			stroke-width="1.5"

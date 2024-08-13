@@ -1,10 +1,10 @@
 <template>
-	<button type="button" class="flex items-center gap-2">
-		<component :is="iconStart" v-if="haveIconStart" class="w-[0.857em]" />
+	<button type="button" class="flex items-center gap-2" data-test="ui-button">
+		<component :is="iconStart" v-if="haveIconStart" class="size-[0.857em] stroke-current" />
 
 		<slot />
 
-		<component :is="iconEnd" v-if="haveIconEnd" class="w-[0.857em]" />
+		<component :is="iconEnd" v-if="haveIconEnd" class="size-[0.857em] stroke-current" />
 	</button>
 </template>
 

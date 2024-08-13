@@ -6,6 +6,7 @@ export default {
 	content: [
 		"./index.html",
 		"./src/**/*.vue",
+		"./src/**/*.cy.js",
 	],
 	theme: {
 		colors: {
