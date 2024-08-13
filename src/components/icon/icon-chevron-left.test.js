@@ -1,11 +1,13 @@
-import { describe, expect, it } from "vitest";
-import { mount } from "@vue/test-utils";
+import { createMount } from "@unit/support/mount";
+import { describe, expect, test } from "vitest";
 import IconChevronLeft from "./icon-chevron-left.vue";
+
+const mount = createMount(IconChevronLeft);
 
 describe("icon-chevron-left", () => {
 	describe("Initialisation", () => {
-		it("should exist as a Vue component", () => {
-			const wrapper = mount(IconChevronLeft);
+		test("should exist as a Vue component", () => {
+			const wrapper = mount();
 
 			expect(wrapper.vm).toBeTypeOf("object");
 		});

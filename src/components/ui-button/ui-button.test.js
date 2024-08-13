@@ -12,4 +12,19 @@ describe("ui-button", () => {
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
 	});
+
+	describe("Methods", () => {
+		describe("reset", () => {
+			test("should reset reactive state", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.isReacting = true;
+
+				vm.reset();
+
+				expect(vm.isReacting).toBe(false);
+			});
+		});
+	});
 });

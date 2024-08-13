@@ -23,4 +23,16 @@ describe("ui-button", () => {
 
 		cy.getByData("ui-button").find("svg").shouldBeVisible();
 	});
+
+	it("Reactive buttons show a loading indicator when activated", () => {
+		mount({ reactive: "true" });
+
+		cy.getByData("ui-button-label").shouldBeVisible();
+		cy.getByData("ui-button-loading").shouldNotBeVisible();
+
+		cy.getByData("ui-button").click();
+
+		cy.getByData("ui-button-label").shouldNotBeVisible();
+		cy.getByData("ui-button-loading").shouldBeVisible();
+	});
 });

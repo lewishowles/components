@@ -1,11 +1,9 @@
 <template>
-	<preview-wrapper>
-		<ui-button-preview />
-	</preview-wrapper>
+	<!-- TODO: Implement routing, and navigation to each component's preview page for testing -->
+	<ui-button-preview />
 </template>
 
 <script setup>
-import PreviewWrapper from "./preview/preview-wrapper.vue";
 import UiButtonPreview from "./preview/ui-button-preview.vue";
 </script>
 
