@@ -1,3 +1,20 @@
+@import url("buttons.css");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	body {
+		@apply text-sm text-grey-600;
+	}
+
+	svg {
+		height: 1em;
+		width: 1em;
+	}
+
+	a, button, [contenteditable] {
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2;
+	}
+}

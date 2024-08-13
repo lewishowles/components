@@ -1,0 +1,19 @@
+@layer components {
+	.button {
+		@apply px-4 py-2 rounded-md;
+	}
+
+	.button--primary {
+		@apply button;
+		@apply bg-purple-600 text-white;
+		@apply hocus:bg-purple-700 text-white;
+		@apply active:bg-purple-800 text-white;
+	}
+
+	.button--muted {
+		@apply button;
+		@apply bg-white border border-grey-200;
+		@apply hocus:bg-grey-50 hocus:border-grey-300;
+		@apply active:bg-grey-100 active:border-grey-400;
+	}
+}

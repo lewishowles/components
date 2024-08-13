@@ -7,6 +7,7 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@": fileURLToPath(new URL("./src", import.meta.url)),
+			"@cypress": fileURLToPath(new URL("./test/cypress", import.meta.url)),
 		},
 	},
 	build: {
