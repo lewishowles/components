@@ -28,6 +28,15 @@
 </template>
 
 <script setup>
+/**
+ * Create a multi-purpose button.
+ *
+ * Optional icons can be added at either end of the button (`iconStart`,
+ * `iconEnd`), using any defined icon in the component library.
+ *
+ * A special `reactive` mode allows for the button to show a loading indicator
+ * when activated, which can be reset via an exposed `reset` method.
+ */
 import { computed, ref } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 

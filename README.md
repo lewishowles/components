@@ -16,3 +16,10 @@ const app = createApp(App);
 app.use(components);
 app.mount("#app");
 ```
+
+## Components
+
+For now, further descriptions, and the properties for each component can be found in their main files.
+
+- [ui-button](src/components/ui-button/ui-button.vue)
+- [link-tag](src/components/link-tag/link-tag.vue)

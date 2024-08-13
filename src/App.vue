@@ -1,10 +1,12 @@
 <template>
 	<!-- TODO: Implement routing, and navigation to each component's preview page for testing -->
-	<ui-button-preview />
+	<!-- <ui-button-preview /> -->
+	<link-tag-preview />
 </template>
 
 <script setup>
-import UiButtonPreview from "./preview/ui-button-preview.vue";
+// import UiButtonPreview from "./preview/ui-button-preview.vue";
+import LinkTagPreview from "./preview/link-tag-preview.vue";
 </script>
 
 <style>
