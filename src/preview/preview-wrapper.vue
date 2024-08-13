@@ -1,13 +1,18 @@
 <template>
-	<preview-wrapper>
-		<ui-button-preview />
-	</preview-wrapper>
+	<div class="min-h-screen p-20">
+		<div class="guides-horizontal mx-auto max-w-screen-xl">
+			<div class="guides-vertical">
+				<div class="p-10">
+					<div class="guides-horizontal guides-horizontal--faded">
+						<div class="guides-vertical guides-vertical--faded">
+							<slot />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
-
-<script setup>
-import PreviewWrapper from "./preview/preview-wrapper.vue";
-import UiButtonPreview from "./preview/ui-button-preview.vue";
-</script>
 
 <style>
 .guides-horizontal, .guides-vertical {
