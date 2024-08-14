@@ -11,6 +11,10 @@
 </template>
 
 <script setup>
+/**
+ * A label for a form element. This component will show a warning if no label is
+ * provided.
+ */
 import { computed, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 

@@ -6,6 +6,7 @@
 
 - `link-tag` - Create internal or external links with optional icons.
 - `form-input`- A helpful wrapper for the `input` element.
+- `form-layout`- A convenience component to help with basic arrangement of form fields.
 
 ### New icons
 
