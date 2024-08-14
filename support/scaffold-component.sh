@@ -47,9 +47,9 @@ import { createMount } from \"@cypress/support/mount\";
 const mount = createMount($PASCAL_CASE_NAME);
 
 describe(\"$COMPONENT_NAME\", () => {
-    it(\"renders\", () => {
-        mount();
-    });
+	it(\"renders\", () => {
+		mount();
+	});
 });" > "$COMPONENT_NAME.cy.js"
 
 # Unit test suite
@@ -60,14 +60,37 @@ import $PASCAL_CASE_NAME from \"./$COMPONENT_NAME.vue\";
 const mount = createMount($PASCAL_CASE_NAME);
 
 describe(\"$COMPONENT_NAME\", () => {
-    describe(\"Initialisation\", () => {
-        test(\"should exist as a Vue component\", () => {
-            const wrapper = mount();
+	describe(\"Initialisation\", () => {
+		test(\"should exist as a Vue component\", () => {
+			const wrapper = mount();
 
-            expect(wrapper.vm).toBeTypeOf(\"object\");
-        });
-    });
+			expect(wrapper.vm).toBeTypeOf(\"object\");
+		});
+	});
 });" > "$COMPONENT_NAME.test.js"
+
+# Preview
+echo "<template>
+	<preview-wrapper>
+		<template #title>
+			ui-button
+		</template>
+
+		<preview-section>
+			<template #title>
+				Base buttons
+			</template>
+
+			<$COMPONENT_NAME />
+		</preview-section>
+	</preview-wrapper>
+</template>
+
+<script setup>
+import PreviewSection from "@/preview/preview-section.vue";
+import PreviewWrapper from "@/preview/preview-wrapper.vue";
+</script>
+" > "preview.vue"
 
 PURPLE='\033[1;35m'
 BLUE='\033[1;34m'
@@ -78,6 +101,7 @@ echo -e "\nComponent ${PURPLE}$COMPONENT_NAME${RESET_COLOUR} scaffolded successf
 echo -e "${PURPLE}$COMPONENT_NAME${RESET_COLOUR}"
 echo "  ↳ index.js"
 echo "  ↳ $COMPONENT_NAME.vue"
+echo "  ↳ preview.vue"
 echo "  ↳ $COMPONENT_NAME.cy.js"
 echo "  ↳ $COMPONENT_NAME.test.js"
 
