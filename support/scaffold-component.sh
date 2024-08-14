@@ -90,7 +90,7 @@ echo "<template>
 import PreviewSection from "@/preview/preview-section.vue";
 import PreviewWrapper from "@/preview/preview-wrapper.vue";
 </script>
-" > "preview.vue"
+" > "$COMPONENT_NAME-preview.vue"
 
 PURPLE='\033[1;35m'
 BLUE='\033[1;34m'
@@ -101,7 +101,7 @@ echo -e "\nComponent ${PURPLE}$COMPONENT_NAME${RESET_COLOUR} scaffolded successf
 echo -e "${PURPLE}$COMPONENT_NAME${RESET_COLOUR}"
 echo "  ↳ index.js"
 echo "  ↳ $COMPONENT_NAME.vue"
-echo "  ↳ preview.vue"
+echo "  ↳ $COMPONENT_NAME-preview.vue"
 echo "  ↳ $COMPONENT_NAME.cy.js"
 echo "  ↳ $COMPONENT_NAME.test.js"
 

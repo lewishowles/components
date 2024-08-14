@@ -6,9 +6,9 @@
 </template>
 
 <script setup>
-// import UiButtonPreview from "@/components/ui-button/preview.vue";
-// import LinkTagPreview from "@/components/link-tag/preview.vue";
-import FormInputPreview from "@/components/form/form-input/preview.vue";
+// import UiButtonPreview from "@/components/ui-button/ui-button-preview.vue";
+// import LinkTagPreview from "@/components/link-tag/link-tag-preview.vue";
+import FormInputPreview from "@/components/form/form-input/form-input-preview.vue";
 </script>
 
 <style>
