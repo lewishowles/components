@@ -15,13 +15,15 @@ describe("ui-button", () => {
 	it("A start icon can be added", () => {
 		mount({ iconStart: "icon-chevron-left" });
 
-		cy.getByData("ui-button").find("svg").shouldBeVisible();
+		cy.getByData("ui-button-icon-start").shouldBeVisible();
+		cy.getByData("link-tag-icon-end").should("not.exist");
 	});
 
 	it("An end icon can be added", () => {
 		mount({ iconEnd: "icon-chevron-right" });
 
-		cy.getByData("ui-button").find("svg").shouldBeVisible();
+		cy.getByData("link-tag-icon-start").should("not.exist");
+		cy.getByData("ui-button-icon-end").shouldBeVisible();
 	});
 
 	it("Reactive buttons show a loading indicator when activated", () => {

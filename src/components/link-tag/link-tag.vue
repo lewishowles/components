@@ -1,11 +1,11 @@
 <template>
 	<a class="flex items-center gap-2" v-bind="{ href, ...attributes }" data-test="link-tag">
-		<component :is="iconStart" v-if="haveIconStart" class="size-[0.857em] stroke-current" />
+		<component :is="iconStart" v-if="haveIconStart" class="size-[0.857em] stroke-current" data-test="link-tag-icon-start" />
 
 		<slot />
 
-		<component :is="iconEnd" v-if="shouldShowIconEnd" class="size-[0.857em] stroke-current" />
-		<icon-external v-else-if="haveExternalIcon" class="size-[0.857em] stroke-current" />
+		<component :is="iconEnd" v-if="shouldShowIconEnd" class="size-[0.857em] stroke-current" data-test="link-tag-icon-end" />
+		<icon-external v-else-if="haveExternalIcon" class="size-[0.857em] stroke-current" data-test="link-tag-icon-external" />
 	</a>
 </template>
 

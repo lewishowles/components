@@ -7,7 +7,7 @@
 		v-bind="attributes"
 		@click="react"
 	>
-		<component :is="iconStart" v-if="haveIconStart" class="size-[0.857em] stroke-current" />
+		<component :is="iconStart" v-if="haveIconStart" class="size-[0.857em] stroke-current" data-test="ui-button-icon-start" />
 
 		<span :class="{ 'invisible': isReacting }" data-test="ui-button-label">
 			<slot />
@@ -23,7 +23,7 @@
 			</span>
 		</span>
 
-		<component :is="iconEnd" v-if="haveIconEnd" class="size-[0.857em] stroke-current" />
+		<component :is="iconEnd" v-if="haveIconEnd" class="size-[0.857em] stroke-current" data-test="ui-button-icon-end" />
 	</button>
 </template>
 
