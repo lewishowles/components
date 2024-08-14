@@ -2,11 +2,13 @@
 	<!-- TODO: Implement routing, and navigation to each component's preview page for testing -->
 	<!-- <ui-button-preview /> -->
 	<!-- <link-tag-preview /> -->
+	<form-input-preview />
 </template>
 
 <script setup>
 // import UiButtonPreview from "@/components/ui-button/preview.vue";
 // import LinkTagPreview from "@/components/link-tag/preview.vue";
+import FormInputPreview from "@/components/form/form-input/preview.vue";
 </script>
 
 <style>

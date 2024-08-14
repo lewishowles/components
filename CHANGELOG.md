@@ -4,11 +4,13 @@
 
 ### New components
 
-- `link-tag` - easily create internal or external links with optional icons.
+- `link-tag` - Create internal or external links with optional icons.
+- `form-input`- A helpful wrapper for the `input` element.
 
 ### New icons
 
 - `icon-external`
+- `icon-danger`
 
 ## 0.1.0
 
