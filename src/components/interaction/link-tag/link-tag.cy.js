@@ -12,14 +12,14 @@ describe("link-tag", () => {
 		cy.getByData("link-tag").shouldHaveText("howles.dev");
 	});
 
-	it("A start icon can be added", () => {
+	it("An icon can be added to the start", () => {
 		mount({ iconStart: "icon-chevron-left" });
 
 		cy.getByData("link-tag-icon-start").shouldBeVisible();
 		cy.getByData("link-tag-icon-end").should("not.exist");
 	});
 
-	it("An end icon can be added", () => {
+	it("An icon can be added to the end", () => {
 		mount({ iconEnd: "icon-chevron-right" });
 
 		cy.getByData("link-tag-icon-start").should("not.exist");

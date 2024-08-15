@@ -1,0 +1,17 @@
+@layer utilities {
+	.trax {
+		left: 50%;
+		transform: translate(-50%, 0);
+	}
+
+	.tray {
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+
+	.traxy {
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+}

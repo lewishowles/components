@@ -6,7 +6,7 @@
 
 		<preview-section>
 			<template #title>
-				Basic inputs
+				Basic input options
 			</template>
 
 			<form-layout>
@@ -43,6 +43,22 @@
 				</form-input>
 
 				<form-input />
+			</form-layout>
+		</preview-section>
+
+		<preview-section>
+			<template #title>
+				With decoration
+			</template>
+
+			<form-layout>
+				<form-input v-bind="{ iconStart: 'icon-chevron-left' }">
+					Icon start
+				</form-input>
+
+				<form-input v-bind="{ iconEnd: 'icon-chevron-right' }">
+					Icon end
+				</form-input>
 			</form-layout>
 		</preview-section>
 	</preview-wrapper>

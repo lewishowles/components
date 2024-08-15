@@ -4,15 +4,26 @@
 			<slot />
 		</form-label>
 
-		<input
-			class="text-gray-900 block w-full rounded-md border-0 px-3 py-2 shadow-sm outline-none ring-1 ring-inset ring-grey-300 placeholder:text-grey-400 focus:ring-2 focus:ring-inset focus:ring-purple-600"
-			v-bind="{
-				id: inputId,
-				placeholder,
-				'aria-describedby': describedBy,
-				...inputAttributes,
-			}"
-		/>
+		<conditional-wrapper v-bind="{ wrap: haveIcon }" class="relative flex">
+			<div v-if="haveIconStart" class="absolute inset-y-0 left-0 flex items-center px-3">
+				<component :is="iconStart" class="size-4 stroke-current text-grey-500" data-test="form-input-icon-start" />
+			</div>
+
+			<input
+				class="text-gray-900 block w-full rounded-md px-3 py-2 shadow-sm outline-none ring-1 ring-inset ring-grey-300 placeholder:text-grey-400 focus:ring-2 focus:ring-purple-600"
+				:class="{ 'pl-10': haveIconStart, 'pr-10': haveIconEnd }"
+				v-bind="{
+					id: inputId,
+					placeholder,
+					'aria-describedby': describedBy,
+					...inputAttributes,
+				}"
+			/>
+
+			<div v-if="haveIconEnd" class="absolute inset-y-0 right-0 flex items-center px-3">
+				<component :is="iconEnd" class="size-4 stroke-current text-grey-500" data-test="form-input-icon-end" />
+			</div>
+		</conditional-wrapper>
 
 		<div v-if="haveHelp || haveError" class="inline-flex flex-wrap gap-2">
 			<form-error v-if="haveError" v-bind="{ id: errorId }">
@@ -72,6 +83,22 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
+
+	/**
+	 * An icon to display at the start of the input.
+	 */
+	iconStart: {
+		type: String,
+		default: null,
+	},
+
+	/**
+	 * An icon to display at the end of the input.
+	 */
+	iconEnd: {
+		type: String,
+		default: null,
+	},
 });
 
 const slots = useSlots();
@@ -119,4 +146,11 @@ const describedBy = computed(() => {
 
 	return [helpId.value, errorId.value].filter(id => id).join(" ");
 });
+
+// Whether a start icon is defined.
+const haveIconStart = computed(() => isNonEmptyString(props.iconStart));
+// Whether an end icon is defined.
+const haveIconEnd = computed(() => isNonEmptyString(props.iconEnd));
+// Whether any icon is defined.
+const haveIcon = computed(() => haveIconStart.value || haveIconEnd.value);
 </script>
