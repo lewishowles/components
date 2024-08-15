@@ -16,7 +16,8 @@ describe("form-input", () => {
 
 		cy.getByData("form-input")
 			.getByData("form-label")
-			.shouldHaveText("Your name");
+			.shouldHaveText("Your name")
+			.shouldHaveAttribute("for", "id-abc");
 	});
 
 	it("Help can be supplied", () => {
@@ -25,10 +26,7 @@ describe("form-input", () => {
 		cy.getByData("form-help")
 			.shouldBeVisible()
 			.shouldHaveText("Help text")
-			.shouldHaveAttribute("id");
-
-		cy.getFormField("form-input")
-			.shouldHaveAttribute("aria-describedby");
+			.shouldHaveAttribute("id", "id-abc-help");
 	});
 
 	it("An error can be supplied", () => {
@@ -38,8 +36,20 @@ describe("form-input", () => {
 			.shouldBeVisible()
 			.shouldHaveText("Error text")
 			.shouldHaveAttribute("id");
+			.shouldHaveAttribute("id", "id-abc-error");
+	});
 
-		cy.getFormField("form-input")
-			.shouldHaveAttribute("aria-describedby");
+	it("Both help and an error can be supplied", () => {
+		mount({ slots: { help: "Help text", error: "Error text" } });
+
+		cy.getByData("form-help")
+			.shouldBeVisible()
+			.shouldHaveText("Help text")
+			.shouldHaveAttribute("id", "id-abc-help");
+
+		cy.getByData("form-error")
+			.shouldBeVisible()
+			.shouldHaveText("Error text")
+			.shouldHaveAttribute("id", "id-abc-error");
 	});
 });

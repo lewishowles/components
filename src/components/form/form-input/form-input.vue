@@ -1,11 +1,11 @@
 <template>
-	<div class="flex flex-col" data-test="form-input">
+	<div class="flex flex-col gap-2" data-test="form-input">
 		<form-label v-bind="{ id: inputId }">
 			<slot />
 		</form-label>
 
 		<input
-			class="text-gray-900 mt-2 block w-full rounded-md border-0 px-3 py-2 shadow-sm outline-none ring-1 ring-inset ring-grey-300 placeholder:text-grey-400 focus:ring-2 focus:ring-inset focus:ring-purple-600"
+			class="text-gray-900 block w-full rounded-md border-0 px-3 py-2 shadow-sm outline-none ring-1 ring-inset ring-grey-300 placeholder:text-grey-400 focus:ring-2 focus:ring-inset focus:ring-purple-600"
 			v-bind="{
 				id: inputId,
 				placeholder,
@@ -16,10 +16,15 @@
 		<form-error v-if="haveError" v-bind="{ id: errorId }">
 			<slot name="error" />
 		</form-error>
+		<div v-if="haveHelp || haveError" class="inline-flex flex-wrap gap-2">
+			<form-error v-if="haveError" v-bind="{ id: errorId }">
+				<slot name="error" />
+			</form-error>
 
-		<form-help v-if="haveHelp" v-bind="{ id: helpId }">
-			<slot name="help" />
-		</form-help>
+			<form-help v-if="haveHelp" v-bind="{ id: helpId }">
+				<slot name="help" />
+			</form-help>
+		</div>
 	</div>
 </template>
 
