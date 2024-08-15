@@ -9,8 +9,10 @@ import IconChevronLeft from "./icon/icon-chevron-left.vue";
 import IconChevronRight from "./icon/icon-chevron-right.vue";
 import IconChevronUp from "./icon/icon-chevron-up.vue";
 import IconDanger from "./icon/icon-danger.vue";
+import IconEmail from "./icon/icon-email.vue";
 import IconExternal from "./icon/icon-external.vue";
 import IconLoading from "./icon/icon-loading.vue";
+import IconUser from "./icon/icon-user.vue";
 
 export default {
 	BaseIcon,
@@ -21,8 +23,10 @@ export default {
 	IconChevronRight,
 	IconChevronUp,
 	IconDanger,
+	IconEmail,
 	IconExternal,
 	IconLoading,
+	IconUser,
 	LinkTag,
 	UiButton,
 };

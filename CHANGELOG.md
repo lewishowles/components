@@ -13,6 +13,8 @@
 
 - `icon-external`
 - `icon-danger`
+- `icon-user`
+- `icon-email`
 
 ## 0.1.0
 

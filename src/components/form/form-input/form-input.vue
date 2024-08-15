@@ -4,14 +4,17 @@
 			<slot />
 		</form-label>
 
-		<conditional-wrapper v-bind="{ wrap: haveIcon }" class="relative flex">
+		<conditional-wrapper v-bind="{ wrap: haveIcon || haveText }" class="relative flex">
 			<div v-if="haveIconStart" class="absolute inset-y-0 left-0 flex items-center px-3">
 				<component :is="iconStart" class="size-4 stroke-current text-grey-500" data-test="form-input-icon-start" />
+			</div>
+			<div v-else-if="haveTextStart" class="flex items-center rounded-s-md border border-r-0 border-grey-300 bg-gradient-to-b from-white to-grey-50 px-3 py-2" data-test="form-input-text-start">
+				<slot name="text-start" />
 			</div>
 
 			<input
 				class="text-gray-900 block w-full rounded-md px-3 py-2 shadow-sm outline-none ring-1 ring-inset ring-grey-300 placeholder:text-grey-400 focus:ring-2 focus:ring-purple-600"
-				:class="{ 'pl-10': haveIconStart, 'pr-10': haveIconEnd }"
+				:class="{ 'pl-10': haveIconStart, 'pr-10': haveIconEnd, 'rounded-l-none': haveTextStart, 'rounded-r-none': haveTextEnd }"
 				v-bind="{
 					id: inputId,
 					placeholder,
@@ -22,6 +25,9 @@
 
 			<div v-if="haveIconEnd" class="absolute inset-y-0 right-0 flex items-center px-3">
 				<component :is="iconEnd" class="size-4 stroke-current text-grey-500" data-test="form-input-icon-end" />
+			</div>
+			<div v-else-if="haveTextEnd" class="flex items-center rounded-e-md border border-l-0 border-grey-300 bg-gradient-to-b from-white to-grey-50 px-3 py-2" data-test="form-input-text-end">
+				<slot name="text-end" />
 			</div>
 		</conditional-wrapper>
 
@@ -153,4 +159,10 @@ const haveIconStart = computed(() => isNonEmptyString(props.iconStart));
 const haveIconEnd = computed(() => isNonEmptyString(props.iconEnd));
 // Whether any icon is defined.
 const haveIcon = computed(() => haveIconStart.value || haveIconEnd.value);
+// Whether start text has been provided.
+const haveTextStart = computed(() => isNonEmptySlot(slots["text-start"]));
+// Whether end text has been provided.
+const haveTextEnd = computed(() => isNonEmptySlot(slots["text-end"]));
+// Whether any text (start or end) has been provided
+const haveText = computed(() => haveTextStart.value || haveTextEnd.value);
 </script>

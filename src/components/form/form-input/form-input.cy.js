@@ -72,5 +72,17 @@ describe("form-input", () => {
 
 			cy.getByData("form-input-icon-end").shouldBeVisible();
 		});
+
+		it("Text can be added to the start", () => {
+			mount({ slots: { "text-start": "https://" } });
+
+			cy.getByData("form-input-text-start").shouldBeVisible();
+		});
+
+		it("Text can be added to the end", () => {
+			mount({ slots: { "text-end": "mph" } });
+
+			cy.getByData("form-input-text-end").shouldBeVisible();
+		});
 	});
 });

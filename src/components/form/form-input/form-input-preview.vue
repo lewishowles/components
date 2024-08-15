@@ -52,12 +52,44 @@
 			</template>
 
 			<form-layout>
-				<form-input v-bind="{ iconStart: 'icon-chevron-left' }">
+				<form-input v-bind="{ iconStart: 'icon-user' }">
 					Icon start
+
+					<template #help>
+						With help text
+					</template>
 				</form-input>
 
-				<form-input v-bind="{ iconEnd: 'icon-chevron-right' }">
+				<form-input v-bind="{ iconStart: 'icon-email' }">
 					Icon end
+
+					<template #help>
+						With help text
+					</template>
+				</form-input>
+
+				<form-input>
+					Text start
+
+					<template #text-start>
+						https://
+					</template>
+
+					<template #help>
+						With help text
+					</template>
+				</form-input>
+
+				<form-input>
+					Text end
+
+					<template #text-end>
+						mph
+					</template>
+
+					<template #help>
+						With help text
+					</template>
 				</form-input>
 			</form-layout>
 		</preview-section>
