@@ -31,15 +31,14 @@
 			</div>
 		</conditional-wrapper>
 
-		<div v-if="haveHelp || haveError" class="inline-flex flex-wrap gap-2">
-			<form-error v-if="haveError" v-bind="{ id: errorId }">
+		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy">
+			<template #error>
 				<slot name="error" />
-			</form-error>
-
-			<form-help v-if="haveHelp" v-bind="{ id: helpId }">
+			</template>
+			<template #help>
 				<slot name="help" />
-			</form-help>
-		</div>
+			</template>
+		</form-supplementary>
 	</div>
 </template>
 
@@ -56,10 +55,10 @@ import { computed, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
+import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
 
 import FormLabel from "../form-label/form-label.vue";
-import FormError from "../form-error/form-error.vue";
-import FormHelp from "../form-help/form-help.vue";
+import FormSupplementary from "../form-supplementary/form-supplementary.vue";
 
 const props = defineProps({
 	/**
@@ -119,40 +118,8 @@ const inputId = computed(() => {
 	return nanoid();
 });
 
-// Whether help text has been provided.
-const haveHelp = computed(() => isNonEmptySlot(slots.help));
-// Whether error text has been provided.
-const haveError = computed(() => isNonEmptySlot(slots.error));
-
-// The ID of the help element. This is used in aria-describedby to link the
-// input and its help.
-const helpId = computed(() => {
-	if (!haveHelp.value || !isNonEmptyString(inputId.value)) {
-		return null;
-	}
-
-	return `${inputId.value}-help`;
-});
-
-// The ID of the error element. This is used in aria-describedby to link the
-// input and its error message.
-const errorId = computed(() => {
-	if (!haveError.value || !isNonEmptyString(inputId.value)) {
-		return null;
-	}
-
-	return `${inputId.value}-error`;
-});
-
-// The IDs of any additional text for this input.
-const describedBy = computed(() => {
-	if (!haveHelp.value && !haveError.value) {
-		return null;
-	}
-
-	return [helpId.value, errorId.value].filter(id => id).join(" ");
-});
-
+// Utilise form supplementary to retrieve the appropriate describedby attribute.
+const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
 // Whether a start icon is defined.
 const haveIconStart = computed(() => isNonEmptyString(props.iconStart));
 // Whether an end icon is defined.
