@@ -9,13 +9,11 @@
 			v-bind="{
 				id: inputId,
 				placeholder,
-				'aria-describedby': describedBy
+				'aria-describedby': describedBy,
+				...inputAttributes,
 			}"
 		/>
 
-		<form-error v-if="haveError" v-bind="{ id: errorId }">
-			<slot name="error" />
-		</form-error>
 		<div v-if="haveHelp || haveError" class="inline-flex flex-wrap gap-2">
 			<form-error v-if="haveError" v-bind="{ id: errorId }">
 				<slot name="error" />
@@ -62,6 +60,15 @@ const props = defineProps({
 	 * critical information. Always use the label and help text as priorities.
 	 */
 	placeholder: {
+		type: String,
+		default: null,
+	},
+
+	/**
+	 * Any additional attributes to pass to the input itself, such as `required`
+	 * or `autocomplete`.
+	 */
+	inputAttributes: {
 		type: String,
 		default: null,
 	},

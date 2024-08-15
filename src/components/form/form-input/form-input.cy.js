@@ -35,7 +35,6 @@ describe("form-input", () => {
 		cy.getByData("form-error")
 			.shouldBeVisible()
 			.shouldHaveText("Error text")
-			.shouldHaveAttribute("id");
 			.shouldHaveAttribute("id", "id-abc-error");
 	});
 
@@ -51,5 +50,11 @@ describe("form-input", () => {
 			.shouldBeVisible()
 			.shouldHaveText("Error text")
 			.shouldHaveAttribute("id", "id-abc-error");
+	});
+
+	it("Additional attributes can be provided to the input", () => {
+		mount({ inputAttributes: { autocomplete: "given-name" } });
+
+		cy.getFormField("form-input").shouldHaveAttribute("autocomplete", "given-name");
 	});
 });
