@@ -73,12 +73,12 @@ describe(\"$COMPONENT_NAME\", () => {
 echo "<template>
 	<preview-wrapper>
 		<template #title>
-			ui-button
+			$COMPONENT_NAME
 		</template>
 
 		<preview-section>
 			<template #title>
-				Base buttons
+				Section
 			</template>
 
 			<$COMPONENT_NAME />
@@ -87,8 +87,8 @@ echo "<template>
 </template>
 
 <script setup>
-import PreviewSection from "@/preview/preview-section.vue";
-import PreviewWrapper from "@/preview/preview-wrapper.vue";
+import PreviewSection from \"@/preview/preview-section.vue\";
+import PreviewWrapper from \"@/preview/preview-wrapper.vue\";
 </script>
 " > "$COMPONENT_NAME-preview.vue"
 
