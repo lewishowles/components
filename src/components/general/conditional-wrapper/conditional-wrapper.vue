@@ -1,5 +1,5 @@
 <template>
-	<component :is="tag" v-if="wrap">
+	<component :is="tag" v-if="wrap" v-bind="$attrs">
 		<slot />
 	</component>
 	<template v-else>
@@ -25,4 +25,10 @@ defineProps({
 		default: "div",
 	},
 });
+</script>
+
+<script>
+export default {
+	inheritAttrs: false,
+};
 </script>
