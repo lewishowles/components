@@ -60,7 +60,7 @@
 					</template>
 				</form-input>
 
-				<form-input v-bind="{ iconStart: 'icon-email' }">
+				<form-input v-bind="{ iconEnd: 'icon-email' }">
 					Icon end
 
 					<template #help>
