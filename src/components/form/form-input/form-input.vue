@@ -13,6 +13,7 @@
 			</div>
 
 			<input
+				v-model="model"
 				class="text-gray-900 block w-full rounded-md px-3 py-2 shadow-sm outline-none ring-1 ring-inset ring-grey-300 placeholder:text-grey-400 focus:ring-2 focus:ring-purple-600"
 				:class="{ 'pl-10': haveIconStart, 'pr-10': haveIconEnd, 'rounded-l-none': haveTextStart, 'rounded-r-none': haveTextEnd }"
 				v-bind="{
@@ -107,6 +108,10 @@ const props = defineProps({
 });
 
 const slots = useSlots();
+
+const model = defineModel({
+	type: String,
+});
 
 // The ID used by the input and label. If an ID is provided in props, that is
 // used as-is.
