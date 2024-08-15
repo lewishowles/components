@@ -22,11 +22,6 @@ cd "$BASE_PATH/$COMPONENT_NAME"
 # Generate a PascalCase version of our name
 PASCAL_CASE_NAME=$(echo "$COMPONENT_NAME" | awk -F- '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1' OFS='')
 
-# Index
-echo "import $PASCAL_CASE_NAME from \"./$COMPONENT_NAME.vue\";
-
-export default { $PASCAL_CASE_NAME };" > index.js
-
 # Vue component
 echo '<template>
 
@@ -99,7 +94,6 @@ RESET_COLOUR='\033[0m'
 # Print the success message
 echo -e "\nComponent ${PURPLE}$COMPONENT_NAME${RESET_COLOUR} scaffolded successfully in ${BLUE}$BASE_PATH/$COMPONENT_NAME${RESET_COLOUR}.\n"
 echo -e "${PURPLE}$COMPONENT_NAME${RESET_COLOUR}"
-echo "  ↳ index.js"
 echo "  ↳ $COMPONENT_NAME.vue"
 echo "  ↳ $COMPONENT_NAME-preview.vue"
 echo "  ↳ $COMPONENT_NAME.cy.js"
