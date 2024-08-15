@@ -7,6 +7,7 @@
 - `link-tag` - Create internal or external links with optional icons.
 - `form-input`- A helpful wrapper for the `input` element.
 - `form-layout`- A convenience component to help with basic arrangement of form fields.
+- `ConditionalWrapper`- A convenience component to conditionally wrap (or not) content with an element.
 
 ### New icons
 

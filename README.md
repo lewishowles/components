@@ -21,7 +21,16 @@ app.mount("#app");
 
 For now, further descriptions, and the properties for each component can be found in their main files.
 
+### Forms
+
 - [form-input](src/components/form/form-input/form-input.vue)
 - [form-layout](src/components/form/form-layout/form-layout.vue)
-- [ui-button](src/components/ui-button/ui-button.vue)
-- [link-tag](src/components/link-tag/link-tag.vue)
+
+### Interaction
+
+- [ui-button](src/components/interaction/ui-button/ui-button.vue)
+- [link-tag](src/components/interaction/link-tag/link-tag.vue)
+
+### General
+
+- [conditional-wrapper](src/components/general/conditional-wrapper.vue)

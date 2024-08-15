@@ -1,3 +1,4 @@
+import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
 import FormInput from "./form/form-input/form-input.vue";
 import LinkTag from "./link-tag/link-tag.vue";
 import UiButton from "./ui-button/ui-button.vue";
@@ -13,6 +14,7 @@ import IconLoading from "./icon/icon-loading.vue";
 
 export default {
 	BaseIcon,
+	ConditionalWrapper,
 	FormInput,
 	IconChevronDown,
 	IconChevronLeft,
