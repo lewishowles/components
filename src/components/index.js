@@ -1,7 +1,7 @@
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
 import FormInput from "./form/form-input/form-input.vue";
-import LinkTag from "./link-tag/link-tag.vue";
-import UiButton from "./ui-button/ui-button.vue";
+import LinkTag from "./interaction/link-tag/link-tag.vue";
+import UiButton from "./interaction/ui-button/ui-button.vue";
 
 import BaseIcon from "./icon/base-icon.vue";
 import IconChevronDown from "./icon/icon-chevron-down.vue";
