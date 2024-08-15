@@ -85,4 +85,28 @@ describe("form-input", () => {
 			cy.getByData("form-input-text-end").shouldBeVisible();
 		});
 	});
+
+	it("Help can be supplied", () => {
+		mount({ slots: { help: "Help text" } });
+
+		cy.getByData("form-help")
+			.shouldBeVisible()
+			.shouldHaveText("Help text")
+			.shouldHaveAttribute("id");
+
+		cy.getFormField("form-input")
+			.shouldHaveAttribute("aria-describedby");
+	});
+
+	it("An error can be supplied", () => {
+		mount({ slots: { error: "Error text" } });
+
+		cy.getByData("form-error")
+			.shouldBeVisible()
+			.shouldHaveText("Error text")
+			.shouldHaveAttribute("id");
+
+		cy.getFormField("form-input")
+			.shouldHaveAttribute("aria-describedby");
+	});
 });
