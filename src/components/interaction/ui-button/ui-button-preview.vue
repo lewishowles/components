@@ -44,10 +44,10 @@
 					Reactive button
 				</ui-button>
 
-				<div v-if="reacted" class="w-full rounded bg-blue-100 p-4 text-blue-800">
+				<div v-if="reacted" class="flex w-full items-center gap-4">
 					Reacted!
 
-					<button type="button" class="button ms-4 rounded-md bg-blue-800 text-white" @click="reset">
+					<button type="button" class="button--muted" @click="reset">
 						Reset
 					</button>
 				</div>
