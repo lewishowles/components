@@ -23,8 +23,9 @@ For now, further descriptions, and the properties for each component can be foun
 
 ### Forms
 
-- [form-input](src/components/form/form-input/form-input.vue)
 - [form-layout](src/components/form/form-layout/form-layout.vue)
+- [form-input](src/components/form/form-input/form-input.vue)
+- [radio-group](src/components/form/radio-group/radio-group.vue)
 
 ### Interaction
 

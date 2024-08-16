@@ -55,8 +55,8 @@
 import { computed, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { nanoid } from "nanoid";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
+import useInputId from "@/components/form/composables/use-input-id";
 
 import FormLabel from "../form-label/form-label.vue";
 import FormSupplementary from "../form-supplementary/form-supplementary.vue";
@@ -113,16 +113,8 @@ const model = defineModel({
 	type: String,
 });
 
-// The ID used by the input and label. If an ID is provided in props, that is
-// used as-is.
-const inputId = computed(() => {
-	if (isNonEmptyString(props.id)) {
-		return props.id;
-	}
-
-	return nanoid();
-});
-
+// Generate an appropriate input ID.
+const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
 const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
 // Whether a start icon is defined.

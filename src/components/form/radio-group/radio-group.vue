@@ -1,0 +1,142 @@
+<template>
+	<fieldset class="flex flex-col gap-2" v-bind="{ 'aria-describedby': describedBy }" data-test="radio-group">
+		<form-label v-bind="{ tag: 'legend' }">
+			<slot />
+		</form-label>
+
+		<div class="flex" :class="{ 'gap-10': inline, 'flex-col gap-2': !inline }">
+			<template v-for="option in internalOptions" :key="option.id">
+				<div class="flex items-center gap-2">
+					<input v-model="model" type="radio" class="size-4 appearance-none rounded-full border border-grey-300 outline-none checked:border-current checked:bg-current checked:text-purple-600 checked:ring-offset-2 focus:ring-2 focus:ring-purple-600" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
+
+					<form-label v-bind="{ id: option.id }" class="leading-6">
+						{{ option.label }}
+					</form-label>
+				</div>
+			</template>
+		</div>
+
+		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy">
+			<template #error>
+				<slot name="error" />
+			</template>
+			<template #help>
+				<slot name="help" />
+			</template>
+		</form-supplementary>
+	</fieldset>
+</template>
+
+<script setup>
+import { computed } from "vue";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isNonEmptyObject } from "@lewishowles/helpers/object";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { nanoid } from "nanoid";
+import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
+import useInputId from "@/components/form/composables/use-input-id";
+
+import FormLabel from "../form-label/form-label.vue";
+import FormSupplementary from "../form-supplementary/form-supplementary.vue";
+
+const props = defineProps({
+	/**
+	 * Any ID to apply to this field. If an ID is not provided, one will be
+	 * generated at random. Note that when providing an ID, please make sure
+	 * that it is unique.
+	 */
+	id: {
+		type: String,
+		default: null,
+	},
+
+	/**
+	 * The radio options. Options can be:
+	 *
+	 * string[] - ["option1", "option2", "option3"]
+	 * object   - { key: "value" }
+	 * object[] - [{ key: "key", value: "value" }]
+	 */
+	options: {
+		type: [Array, Object],
+		required: true,
+	},
+
+	/**
+	 * A name for this radio group. If not set, the input ID is used.
+	 */
+	name: {
+		type: String,
+		default: null,
+	},
+
+	/**
+	 * Whether to display options inline (horizontally).
+	 */
+	inline: {
+		type: Boolean,
+		default: false,
+	},
+});
+
+const model = defineModel({
+	type: String,
+});
+
+// Generate an appropriate input ID.
+const { inputId } = useInputId(props.id);
+// Utilise form supplementary to retrieve the appropriate describedby attribute.
+const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
+
+// Our standardised options, converting the range of allowed options formats
+// into an array of objects containing a label and a value.
+const internalOptions = computed(() => {
+	if (!isNonEmptyObject(props.options) && !isNonEmptyArray(props.options)) {
+		return [];
+	}
+
+	const options = [];
+
+	if (isNonEmptyObject(props.options)) {
+		for (const value in props.options) {
+			if (Object.hasOwn(props.options, value)) {
+				const label = props.options[value];
+
+				options.push({ label, value });
+			}
+		}
+	}
+
+	if (isNonEmptyArray(props.options)) {
+		props.options.forEach(option => {
+			if (!isNonEmptyString(option) && !isNonEmptyObject(option)) {
+				return;
+			}
+
+			if (isNonEmptyString(option)) {
+				options.push({ label: option, value: option });
+
+				return;
+			}
+
+			if (Object.hasOwn(option, "label") && Object.hasOwn(option, "value")) {
+				options.push(option);
+			}
+		});
+	}
+
+	// Before returning, we generate a random ID for each option, to allow us to
+	// properly link labels and inputs.
+	return options.map(option => {
+		option.id = nanoid();
+
+		return option;
+	});
+});
+</script>
+
+<style>
+[type="radio"]:checked {
+	background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e")
+}
+</style>

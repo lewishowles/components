@@ -4,9 +4,10 @@
 
 ### New components
 
-- `link-tag` - Create internal or external links with optional icons.
-- `form-input`- A helpful wrapper for the `input` element.
+- `link-tag` - A link tag for internal or external links.
 - `form-layout`- A convenience component to help with basic arrangement of form fields.
+- `form-input`- A text input with extra options.
+- `radio-group`- A group of radio buttons generated from a list of options.
 - `conditional-wrapper`- A convenience component to conditionally wrap (or not) content with an element.
 
 ### New icons
