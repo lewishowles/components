@@ -36,6 +36,7 @@ You can find more information about each component on its relevant docs page.
 - [form-input](/src/components/form/form-input/form-input.md)
 - [radio-group](/src/components/form/radio-group/radio-group.md)
 - [form-layout](/src/components/form/form-layout/form-layout.md)
+- [form-actions](/src/components/form/form-actions/form-actions.md)
 
 ### Interaction
 
