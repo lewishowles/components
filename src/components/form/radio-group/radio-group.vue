@@ -29,8 +29,8 @@
 
 <script setup>
 import { computed } from "vue";
+import { deepCopy, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
-import { isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
@@ -95,20 +95,21 @@ const internalOptions = computed(() => {
 		return [];
 	}
 
+	const providedOptions = deepCopy(props.options);
 	const options = [];
 
-	if (isNonEmptyObject(props.options)) {
-		for (const value in props.options) {
-			if (Object.hasOwn(props.options, value)) {
-				const label = props.options[value];
+	if (isNonEmptyObject(providedOptions)) {
+		for (const value in providedOptions) {
+			if (Object.hasOwn(providedOptions, value)) {
+				const label = providedOptions[value];
 
 				options.push({ label, value });
 			}
 		}
 	}
 
-	if (isNonEmptyArray(props.options)) {
-		props.options.forEach(option => {
+	if (isNonEmptyArray(providedOptions)) {
+		providedOptions.forEach(option => {
 			if (!isNonEmptyString(option) && !isNonEmptyObject(option)) {
 				return;
 			}
