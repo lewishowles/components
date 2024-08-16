@@ -2,6 +2,10 @@
 
 Each icon in the library is created using strokes, and can be coloured using the `stroke` CSS property. The following icons are included in the library.
 
+- icon-arrow-down.vue
+- icon-arrow-left.vue
+- icon-arrow-right.vue
+- icon-arrow-up.vue
 - icon-chevron-down.vue
 - icon-chevron-left.vue
 - icon-chevron-right.vue
@@ -10,6 +14,7 @@ Each icon in the library is created using strokes, and can be coloured using the
 - icon-email.vue
 - icon-external.vue
 - icon-loading.vue
+- icon-plus.vue
 - icon-user.vue
 
 ## Example
