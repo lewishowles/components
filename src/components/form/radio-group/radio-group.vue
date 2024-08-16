@@ -41,21 +41,11 @@ import FormSupplementary from "../form-supplementary/form-supplementary.vue";
 
 const props = defineProps({
 	/**
-	 * Any ID to apply to this field. If an ID is not provided, one will be
-	 * generated at random. Note that when providing an ID, please make sure
-	 * that it is unique.
-	 */
-	id: {
-		type: String,
-		default: null,
-	},
-
-	/**
 	 * The radio options. Options can be:
 	 *
 	 * string[] - ["option1", "option2", "option3"]
-	 * object   - { key: "value" }
-	 * object[] - [{ key: "key", value: "value" }]
+	 * object   - { value: "label" }
+	 * object[] - [{ label: "Label", value: "value" }]
 	 */
 	options: {
 		type: [Array, Object],
@@ -71,7 +61,19 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether to display options inline (horizontally).
+	 * Any ID to apply to this field. If an ID is not provided, one will be
+	 * generated at random. Note that when providing an ID, please make sure
+	 * that it is unique.
+	 */
+	id: {
+		type: String,
+		default: null,
+	},
+
+	/**
+	 * Whether to display options inline (horizontally). This is only
+	 * recommended when there are two to three options. Any more than that, and
+	 * vertical display is more clear for the user.
 	 */
 	inline: {
 		type: Boolean,
