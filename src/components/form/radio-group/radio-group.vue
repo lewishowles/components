@@ -4,12 +4,16 @@
 			<slot />
 		</form-label>
 
-		<div class="flex" :class="{ 'gap-10': inline, 'flex-col gap-2': !inline }">
+		<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }">
+			<slot name="introduction" />
+		</conditional-wrapper>
+
+		<div class="mt-2 flex" :class="{ 'gap-10': inline, 'flex-col gap-2': !inline }">
 			<template v-for="option in internalOptions" :key="option.id">
 				<div class="flex items-center gap-2">
 					<input v-model="model" type="radio" class="size-4 appearance-none rounded-full border border-grey-300 outline-none checked:border-current checked:bg-current checked:text-purple-600 checked:ring-offset-2 focus:ring-2 focus:ring-purple-600" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
 
-					<form-label v-bind="{ id: option.id }" class="leading-6">
+					<form-label v-bind="{ id: option.id }" class="font-normal leading-6">
 						{{ option.label }}
 					</form-label>
 				</div>
@@ -28,9 +32,10 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, useSlots } from "vue";
 import { deepCopy, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
@@ -85,10 +90,13 @@ const model = defineModel({
 	type: String,
 });
 
+const slots = useSlots();
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
 const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
+// Whether an introduction has been provided.
+const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 
 // Our standardised options, converting the range of allowed options formats
 // into an array of objects containing a label and a value.

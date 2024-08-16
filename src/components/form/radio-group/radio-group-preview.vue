@@ -14,7 +14,7 @@
 					Favourite ice-cream
 				</radio-group>
 
-				<pre>{{ { selectedValue } }}</pre>
+				<pre class="rounded-md border border-grey-200 bg-grey-50 p-3">{{ { selectedValue } }}</pre>
 
 				<radio-group v-bind="{ options, inline: true }">
 					Favourite ice-cream (inline)
@@ -48,6 +48,20 @@
 					</template>
 				</radio-group>
 			</form-layout>
+		</preview-section>
+
+		<preview-section>
+			<template #title>
+				With introduction
+			</template>
+
+			<radio-group v-bind="{ options: flatArrayOptions }">
+				Favourite ice-cream
+
+				<template #introduction>
+					You will be judged based on your answer.
+				</template>
+			</radio-group>
 		</preview-section>
 
 		<preview-section>
