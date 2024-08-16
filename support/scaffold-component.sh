@@ -35,6 +35,46 @@ const props = defineProps({
 });
 </script>' > "$COMPONENT_NAME.vue"
 
+# Documentation
+echo '# `$COMPONENT_NAME`
+
+...
+
+## Slots
+
+### `default`
+
+...
+
+## Props
+
+### `prop`
+
+- type: `string`
+- default: `null`
+
+...
+
+## Events
+
+### `@click`
+
+...
+
+## Methods
+
+### `method`
+
+...
+
+## Examples
+
+### Basic button
+
+```html
+...
+```' > "$COMPONENT_NAME.md"
+
 # Cypress test suite
 echo "import $PASCAL_CASE_NAME from \"./$COMPONENT_NAME.vue\";
 import { createMount } from \"@cypress/support/mount\";
@@ -95,6 +135,7 @@ RESET_COLOUR='\033[0m'
 echo -e "\nComponent ${PURPLE}$COMPONENT_NAME${RESET_COLOUR} scaffolded successfully in ${BLUE}$BASE_PATH/$COMPONENT_NAME${RESET_COLOUR}.\n"
 echo -e "${PURPLE}$COMPONENT_NAME${RESET_COLOUR}"
 echo "  ↳ $COMPONENT_NAME.vue"
+echo "  ↳ $COMPONENT_NAME.md"
 echo "  ↳ $COMPONENT_NAME-preview.vue"
 echo "  ↳ $COMPONENT_NAME.cy.js"
 echo "  ↳ $COMPONENT_NAME.test.js"
