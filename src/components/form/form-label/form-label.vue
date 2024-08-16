@@ -1,11 +1,11 @@
 <template>
-	<div v-if="!haveLabel" class="flex items-center gap-2 text-red-800">
+	<div v-if="!haveLabel" class="flex flex-wrap items-center gap-2 text-red-800">
 		<icon-danger class="stroke-current" />
 		<strong>&lt;form-label&gt;</strong>
 		A label is required for accessibility purposes.
 	</div>
 
-	<div v-if="missingId" class="flex items-center gap-2 text-red-800">
+	<div v-if="missingId" class="flex flex-wrap items-center gap-2 text-red-800">
 		<icon-danger class="stroke-current" />
 		<strong>&lt;form-label&gt;</strong>
 		An ID for the corresponding input is required when using the tag `label`.

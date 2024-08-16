@@ -9,12 +9,10 @@
 				Basic input options
 			</template>
 
-			<form-layout>
+			<form-layout class="max-w-sm">
 				<form-input v-model="inputValue">
 					Your name
 				</form-input>
-
-				{{ { inputValue } }}
 
 				<form-input>
 					Your name
@@ -53,7 +51,7 @@
 				With decoration
 			</template>
 
-			<form-layout>
+			<form-layout class="max-w-sm">
 				<form-input v-bind="{ iconStart: 'icon-user' }">
 					Icon start
 
@@ -99,11 +97,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-
 import PreviewSection from "@/preview/preview-section.vue";
 import PreviewWrapper from "@/preview/preview-wrapper.vue";
 import FormLayout from "@/components/form/form-layout/form-layout.vue";
-
-const inputValue = ref(null);
 </script>

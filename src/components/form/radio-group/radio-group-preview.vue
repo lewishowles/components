@@ -14,8 +14,6 @@
 					Favourite ice-cream
 				</radio-group>
 
-				<pre class="rounded-md border border-grey-200 bg-grey-50 p-3">{{ { selectedValue } }}</pre>
-
 				<radio-group v-bind="{ options, inline: true }">
 					Favourite ice-cream (inline)
 				</radio-group>
@@ -87,8 +85,6 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-
 import PreviewSection from "@/preview/preview-section.vue";
 import PreviewWrapper from "@/preview/preview-wrapper.vue";
 import FormLayout from "@/components/form/form-layout/form-layout.vue";
@@ -96,5 +92,4 @@ import FormLayout from "@/components/form/form-layout/form-layout.vue";
 const options = [{ label: "Chocolate", value: "chocolate" }, { label: "Vanilla", value: "vanilla" }, { label: "Strawberry", value: "strawberry" }];
 const objectOptions = { chocolate: "Chocolate", vanilla: "Vanilla", strawberry: "Strawberry" };
 const flatArrayOptions = ["Chocolate", "Vanilla", "Strawberry"];
-const selectedValue = ref(null);
 </script>

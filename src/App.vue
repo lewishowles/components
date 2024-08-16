@@ -1,18 +1,27 @@
 <template>
-	<!-- TODO: Implement routing, and navigation to each component's preview page for testing -->
-	<form-preview />
-	<!-- <form-input-preview /> -->
-	<!-- <link-tag-preview /> -->
-	<!-- <radio-group-preview /> -->
-	<!-- <ui-button-preview /> -->
+	<div class="flex justify-center pt-6">
+		<select v-model="selectedPreview" class="text-gray-900 block w-full max-w-sm appearance-none rounded-md bg-white px-3 py-2 shadow-sm outline-none ring-1 ring-inset ring-grey-300 placeholder:text-grey-400 focus:ring-2 focus:ring-purple-600">
+			<option v-for="option in previewOptions" :key="option" :value="option.value">
+				{{ option.label }}
+			</option>
+		</select>
+	</div>
+
+	<component :is="selectedPreview" />
 </template>
 
 <script setup>
-import FormPreview from "@/components/form/form-preview.vue";
-// import FormInputPreview from "@/components/form/form-input/form-input-preview.vue";
-// import LinkTagPreview from "@/components/interaction/link-tag/link-tag-preview.vue";
-// import RadioGroupPreview from "@/components/form/radio-group/radio-group-preview.vue";
-// import UiButtonPreview from "@/components/interaction/ui-button/ui-button-preview.vue";
+import { ref } from "vue";
+
+const selectedPreview = ref("form-preview");
+
+const previewOptions = [
+	{ label: "form", value: "form-preview" },
+	{ label: "form-input", value: "form-input-preview" },
+	{ label: "link-tag", value: "link-tag-preview" },
+	{ label: "radio-group", value: "radio-group-preview" },
+	{ label: "ui-button", value: "ui-button-preview" },
+];
 </script>
 
 <style>
@@ -62,5 +71,13 @@ import FormPreview from "@/components/form/form-preview.vue";
 	&::after {
 		right: 0;
 	}
+}
+
+select {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+	background-position: right 0.5rem center;
+	background-repeat: no-repeat;
+	background-size: 1.5em 1.5em;
+	padding-right: 2.5rem;
 }
 </style>
