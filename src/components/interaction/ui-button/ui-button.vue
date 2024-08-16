@@ -90,7 +90,9 @@ const attributes = computed(() => {
  * Provide feedback to the user on the state of the button.
  */
 function react() {
-	isReacting.value = true;
+	if (props.reactive) {
+		isReacting.value = true;
+	}
 
 	emit("click");
 }
