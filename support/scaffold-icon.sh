@@ -1,5 +1,16 @@
 #!/bin/bash
 
+#
+# Scaffold icon
+#
+# Scaffold a new icon for the component library, creating basic versions of
+# the files required to get up and running quickly. Since icons are a little
+# different to regular components, this setup differs too.
+#
+# Usage:
+# ./support/scaffold-component.sh icon-name
+#
+
 if [ -z "$1" ]; then
     echo "Please provide a name for the icon."
     exit 1

@@ -1,5 +1,15 @@
 #!/bin/bash
 
+#
+# Scaffold component
+#
+# Scaffold a new component for the component library, creating basic versions of
+# the files required to get up and running quickly.
+#
+# Usage:
+# ./support/scaffold-component.sh component-name folder-name
+#
+
 if [ -z "$1" ]; then
     echo "Please provide a name for the component."
     exit 1
@@ -150,4 +160,5 @@ echo "  ↳ $COMPONENT_NAME.md"
 echo "  ↳ $COMPONENT_NAME-preview.vue"
 echo "  ↳ $COMPONENT_NAME.cy.js"
 echo "  ↳ $COMPONENT_NAME.test.js"
+echo "  ↳ [updated] /src/components/index.js"
 
