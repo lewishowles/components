@@ -127,6 +127,17 @@ import PreviewWrapper from \"@/preview/preview-wrapper.vue\";
 </script>
 " > "$COMPONENT_NAME-preview.vue"
 
+# Add the new icon to src/components/index.js
+INDEX_FILE="../../index.js"
+
+sed -i '' "/import ConditionalWrapper/a\\
+import $PASCAL_CASE_NAME from \"./$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME.vue\";\\
+" "$INDEX_FILE"
+
+sed -i '' "/BaseIcon,/a\\
+	$PASCAL_CASE_NAME,\\
+" "$INDEX_FILE"
+
 PURPLE='\033[1;35m'
 BLUE='\033[1;34m'
 RESET_COLOUR='\033[0m'
