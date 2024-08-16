@@ -11,7 +11,7 @@
 		<div class="mt-2 flex" :class="{ 'gap-10': inline, 'flex-col gap-2': !inline }">
 			<template v-for="option in internalOptions" :key="option.id">
 				<div class="flex items-center gap-2">
-					<input v-model="model" type="radio" class="size-4 appearance-none rounded-full border border-grey-300 outline-none checked:border-current checked:bg-current checked:text-purple-600 checked:ring-offset-2 focus:ring-2 focus:ring-purple-600" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
+					<input v-model="model" type="radio" class="size-4 appearance-none rounded-full border border-grey-300 outline-none checked:border-current checked:bg-current checked:text-purple-800 checked:ring-offset-2 focus:ring-2 focus:ring-purple-800" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
 
 					<form-label v-bind="{ id: option.id }" class="font-normal leading-6">
 						{{ option.label }}
