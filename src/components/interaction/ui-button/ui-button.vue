@@ -1,7 +1,7 @@
 <template>
 	<button
 		type="button"
-		class="flex items-center gap-2"
+		class="flex items-center justify-center gap-2"
 		:class="{ 'relative': reactive }"
 		data-test="ui-button"
 		v-bind="attributes"
