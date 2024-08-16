@@ -10,9 +10,11 @@
 			</template>
 
 			<form-layout>
-				<form-input>
+				<form-input v-model="inputValue">
 					Your name
 				</form-input>
+
+				{{ { inputValue } }}
 
 				<form-input>
 					Your name
@@ -97,7 +99,11 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+
 import PreviewSection from "@/preview/preview-section.vue";
 import PreviewWrapper from "@/preview/preview-wrapper.vue";
 import FormLayout from "@/components/form/form-layout/form-layout.vue";
+
+const inputValue = ref(null);
 </script>

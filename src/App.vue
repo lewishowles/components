@@ -2,15 +2,15 @@
 	<!-- TODO: Implement routing, and navigation to each component's preview page for testing -->
 	<!-- <ui-button-preview /> -->
 	<!-- <link-tag-preview /> -->
-	<!-- <form-input-preview /> -->
-	<radio-group-preview />
+	<form-input-preview />
+	<!-- <radio-group-preview /> -->
 </template>
 
 <script setup>
 // import UiButtonPreview from "@/components/ui-button/ui-button-preview.vue";
 // import LinkTagPreview from "@/components/link-tag/link-tag-preview.vue";
-// import FormInputPreview from "@/components/form/form-input/form-input-preview.vue";
-import RadioGroupPreview from "@/components/form/radio-group/radio-group-preview.vue";
+import FormInputPreview from "@/components/form/form-input/form-input-preview.vue";
+// import RadioGroupPreview from "@/components/form/radio-group/radio-group-preview.vue";
 </script>
 
 <style>
