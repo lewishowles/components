@@ -12,8 +12,8 @@
 
 	.button--muted {
 		@apply button;
-		@apply bg-white border border-grey-200;
-		@apply hocus:bg-grey-50 hocus:border-grey-300;
-		@apply active:bg-grey-100 active:border-grey-400;
+		@apply bg-white border ring-1 ring-inset ring-grey-200;
+		@apply hocus:bg-grey-50 hocus:ring-grey-300;
+		@apply active:bg-grey-100 active:ring-grey-400;
 	}
 }

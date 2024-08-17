@@ -1,5 +1,5 @@
 <template>
-	<a class="flex items-center gap-2" v-bind="{ href, ...attributes }" data-test="link-tag">
+	<a class="inline-flex items-center gap-2" v-bind="{ href, ...attributes }" data-test="link-tag">
 		<component :is="iconStart" v-if="haveIconStart" class="size-[0.857em] stroke-current" data-test="link-tag-icon-start" />
 
 		<slot />
