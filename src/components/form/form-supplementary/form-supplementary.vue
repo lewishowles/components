@@ -15,8 +15,8 @@ import { computed, useSlots, watch } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
 
-import FormError from "../form-error/form-error.vue";
-import FormHelp from "../form-help/form-help.vue";
+import FormError from "@/components/form/form-error/form-error.vue";
+import FormHelp from "@/components/form/form-help/form-help.vue";
 
 const props = defineProps({
 	/**

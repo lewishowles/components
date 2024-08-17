@@ -1,6 +1,6 @@
 <template>
-	<fieldset class="flex flex-col gap-4" v-bind="{ 'aria-describedby': describedBy }" data-test="radio-group">
-		<form-label v-bind="{ tag: 'legend' }" class="mb-4">
+	<fieldset class="flex flex-col gap-2" v-bind="{ 'aria-describedby': describedBy }" data-test="radio-group">
+		<form-label v-bind="{ tag: 'legend' }" class="mb-2">
 			<slot />
 		</form-label>
 
@@ -14,7 +14,7 @@
 					<div class="flex items-center gap-2">
 						<input v-model="model" type="radio" class="size-4 appearance-none rounded-full outline-none ring-1 ring-grey-300 transition-all checked:bg-current checked:text-purple-800 checked:ring-current focus:ring-2 focus:ring-purple-800 checked:focus:ring-offset-2" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
 
-						<form-label v-bind="{ id: option.id }" class="font-normal leading-6">
+						<form-label v-bind="{ id: option.id, styled: false }" class="leading-6">
 							{{ option.label }}
 						</form-label>
 					</div>

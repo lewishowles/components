@@ -9,7 +9,7 @@ export default mergeConfig(
 			setupFiles: "./test/unit/setup.js",
 			environment: "jsdom",
 			root: fileURLToPath(new URL("./", import.meta.url)),
-			include: ["**/*.test.js"],
+			include: ["src/components/**/*.test.js"],
 		},
 	}),
 );

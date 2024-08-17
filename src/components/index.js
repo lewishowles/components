@@ -1,8 +1,9 @@
+import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
-import PillBadge from "./messaging/pill-badge/pill-badge.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
 import FormInput from "./form/form-input/form-input.vue";
 import LinkTag from "./interaction/link-tag/link-tag.vue";
+import PillBadge from "./messaging/pill-badge/pill-badge.vue";
 import RadioGroup from "./form/radio-group/radio-group.vue";
 import UiButton from "./interaction/ui-button/ui-button.vue";
 
@@ -24,7 +25,7 @@ import IconUser from "./icon/icon-user/icon-user.vue";
 
 export default {
 	BaseIcon,
-	PillBadge,
+	ButtonGroup,
 	ConditionalWrapper,
 	FormActions,
 	FormInput,
@@ -43,6 +44,7 @@ export default {
 	IconPlus,
 	IconUser,
 	LinkTag,
+	PillBadge,
 	RadioGroup,
 	UiButton,
 };

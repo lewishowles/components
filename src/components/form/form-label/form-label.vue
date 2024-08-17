@@ -11,7 +11,7 @@
 		An ID for the corresponding input is required when using the tag `label`.
 	</div>
 
-	<component :is="tag" v-bind="{ for: id, ...$attrs }" class="font-medium text-grey-900" :class="{ 'sr-only': hidden, 'mb-2': isLegend }" data-test="form-label">
+	<component :is="tag" v-bind="{ for: id, ...$attrs }" :class="{ 'sr-only': hidden, 'font-semibold text-grey-900': styled }" data-test="form-label">
 		<slot />
 	</component>
 </template>
@@ -51,6 +51,15 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+
+	/**
+	 * Whether to apply styling to the label. This is most useful when using the
+	 * label for things like radio labels, where the styling is different.
+	 */
+	styled: {
+		type: Boolean,
+		default: true,
+	},
 });
 
 const slots = useSlots();
@@ -60,9 +69,6 @@ const haveLabel = computed(() => isNonEmptySlot(slots.default));
 // Determine if we have an ID and if one is necessary. If not, show a warning to
 // the user about accessibility.
 const missingId = computed(() => props.tag === "label" && !isNonEmptyString(props.id));
-// Whether this label is a legend. We want to know this because legends aren't
-// affected by flex gap, so we need an alternative for spacing.
-const isLegend = computed(() => props.tag === "legend");
 </script>
 
 <script>

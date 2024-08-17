@@ -13,9 +13,10 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("form-preview");
+const selectedPreview = ref("button-group-preview");
 
 const previewOptions = [
+	{ label: "button-group", value: "button-group-preview" },
 	{ label: "form", value: "form-preview" },
 	{ label: "form-input", value: "form-input-preview" },
 	{ label: "link-tag", value: "link-tag-preview" },

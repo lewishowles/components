@@ -58,8 +58,8 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
 import useInputId from "@/components/form/composables/use-input-id";
 
-import FormLabel from "../form-label/form-label.vue";
-import FormSupplementary from "../form-supplementary/form-supplementary.vue";
+import FormLabel from "@/components/form/form-label/form-label.vue";
+import FormSupplementary from "@/components/form/form-supplementary/form-supplementary.vue";
 
 const props = defineProps({
 	/**
