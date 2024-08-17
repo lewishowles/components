@@ -1,4 +1,5 @@
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
+import PillBadge from "./messaging/pill-badge/pill-badge.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
 import FormInput from "./form/form-input/form-input.vue";
 import LinkTag from "./interaction/link-tag/link-tag.vue";
@@ -23,6 +24,7 @@ import IconUser from "./icon/icon-user/icon-user.vue";
 
 export default {
 	BaseIcon,
+	PillBadge,
 	ConditionalWrapper,
 	FormActions,
 	FormInput,

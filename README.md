@@ -43,6 +43,10 @@ You can find more information about each component on its relevant docs page.
 - [ui-button](/src/components/interaction/ui-button/ui-button.md)
 - [link-tag](/src/components/interaction/link-tag/link-tag.md)
 
+### Messaging
+
+- [pill-badge](/src/components/messaging/pill-badge/pill-badge.md)
+
 ### General
 
 - [conditional-wrapper](/src/components/general/conditional-wrapper/conditional-wrapper.md)
@@ -51,7 +55,6 @@ You can find more information about each component on its relevant docs page.
 
 Some components that I would like to build soon include, likely in this order.
 
-- Pills - Show quick information in a variety of styles.
 - Button groups - A button-styled extension of `form-radio`.
 - Textarea - Replace a standard textarea and offer the conveniences found in other form components.
 - Checkbox - Replace checkboxes and offer the simple implementation found in `form-radio`.
