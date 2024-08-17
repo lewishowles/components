@@ -46,7 +46,7 @@ const props = defineProps({
 </script>' > "$COMPONENT_NAME.vue"
 
 # Documentation
-echo '# `$COMPONENT_NAME`
+echo "# `$COMPONENT_NAME`
 
 ...
 
@@ -83,7 +83,7 @@ echo '# `$COMPONENT_NAME`
 
 ```html
 ...
-```' > "$COMPONENT_NAME.md"
+```" > "$COMPONENT_NAME.md"
 
 # Cypress test suite
 echo "import $PASCAL_CASE_NAME from \"./$COMPONENT_NAME.vue\";
