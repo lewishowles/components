@@ -46,34 +46,34 @@ const props = defineProps({
 </script>' > "$COMPONENT_NAME.vue"
 
 # Documentation
-echo "# `$COMPONENT_NAME`
+echo "# \`$COMPONENT_NAME\`
 
 ...
 
 ## Slots
 
-### `default`
+### \`default\`
 
 ...
 
 ## Props
 
-### `prop`
+### \`prop\`
 
-- type: `string`
-- default: `null`
+- type: \`string\`
+- default: \`null\`
 
 ...
 
 ## Events
 
-### `@click`
+### \`@click\`
 
 ...
 
 ## Methods
 
-### `method`
+### \`method\`
 
 ...
 
@@ -81,9 +81,9 @@ echo "# `$COMPONENT_NAME`
 
 ### Basic button
 
-```html
+\`\`\`html
 ...
-```" > "$COMPONENT_NAME.md"
+\`\`\`" > "$COMPONENT_NAME.md"
 
 # Cypress test suite
 echo "import $PASCAL_CASE_NAME from \"./$COMPONENT_NAME.vue\";
