@@ -85,10 +85,6 @@
 </template>
 
 <script setup>
-import PreviewSection from "@/preview/preview-section.vue";
-import PreviewWrapper from "@/preview/preview-wrapper.vue";
-import FormLayout from "@/components/form/form-layout/form-layout.vue";
-
 const options = [{ label: "Chocolate", value: "chocolate" }, { label: "Vanilla", value: "vanilla" }, { label: "Strawberry", value: "strawberry" }];
 const objectOptions = { chocolate: "Chocolate", vanilla: "Vanilla", strawberry: "Strawberry" };
 const flatArrayOptions = ["Chocolate", "Vanilla", "Strawberry"];

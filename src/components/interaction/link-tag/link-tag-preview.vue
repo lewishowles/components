@@ -62,8 +62,3 @@
 		</preview-section>
 	</preview-wrapper>
 </template>
-
-<script setup>
-import PreviewSection from "@/preview/preview-section.vue";
-import PreviewWrapper from "@/preview/preview-wrapper.vue";
-</script>

@@ -130,11 +130,6 @@ echo "<template>
 		</preview-section>
 	</preview-wrapper>
 </template>
-
-<script setup>
-import PreviewSection from \"@/preview/preview-section.vue\";
-import PreviewWrapper from \"@/preview/preview-wrapper.vue\";
-</script>
 " > "$COMPONENT_NAME-preview.vue"
 
 # Add the new icon to src/components/index.js

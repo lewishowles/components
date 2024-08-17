@@ -59,9 +59,6 @@
 <script setup>
 import { ref } from "vue";
 
-import PreviewSection from "@/preview/preview-section.vue";
-import PreviewWrapper from "@/preview/preview-wrapper.vue";
-
 const reacted = ref(false);
 const reactiveButtonRef = ref(null);
 
