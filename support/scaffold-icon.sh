@@ -27,45 +27,27 @@ cd "$BASE_PATH/$ICON_NAME"
 # Generate a PascalCase version of our name
 PASCAL_CASE_NAME=$(echo "$ICON_NAME" | awk -F- '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1' OFS='')
 
-# Vue component
-echo '<template>
-	<base-icon>
 
-	</base-icon>
-</template>' > "$ICON_NAME.vue"
+# Determine the script's directory
+SCRIPT_DIR=$(dirname "$0")
+
+# Vue component
+TEMPLATE_FILE="$SCRIPT_DIR/templates/icon.vue"
+OUTPUT_FILE="$ICON_NAME.vue"
+
+sed "s/{{ICON_NAME}}/$ICON_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
 # Cypress test suite
-echo "import $PASCAL_CASE_NAME from \"./$ICON_NAME.vue\";
-import { createMount } from \"@cypress/support/mount\";
+TEMPLATE_FILE="$SCRIPT_DIR/templates/icon.cy.js"
+OUTPUT_FILE="$ICON_NAME.cy.js"
 
-const defaultProps = { class: \"stroke-blue-800\" };
-const mount = createMount($PASCAL_CASE_NAME, { props: defaultProps });
-
-describe(\"$ICON_NAME\", () => {
-	it(\"Renders an icon\", () => {
-		mount();
-
-		cy.get(\"svg\").shouldBeVisible();
-	});
-});
-" > "$ICON_NAME.cy.js"
+sed "s/{{ICON_NAME}}/$ICON_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
 # Unit test suite
-echo "import { createMount } from \"@unit/support/mount\";
-import { describe, expect, test } from \"vitest\";
-import $PASCAL_CASE_NAME from \"./$ICON_NAME.vue\";
+TEMPLATE_FILE="$SCRIPT_DIR/templates/icon.test.js"
+OUTPUT_FILE="$ICON_NAME.test.js"
 
-const mount = createMount($PASCAL_CASE_NAME);
-
-describe(\"$ICON_NAME\", () => {
-	describe(\"Initialisation\", () => {
-		test(\"should exist as a Vue component\", () => {
-			const wrapper = mount();
-
-			expect(wrapper.vm).toBeTypeOf(\"object\");
-		});
-	});
-});" > "$ICON_NAME.test.js"
+sed "s/{{ICON_NAME}}/$ICON_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
 # Add the new icon to src/components/index.js
 INDEX_FILE="../../index.js"

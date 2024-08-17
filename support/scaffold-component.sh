@@ -32,105 +32,38 @@ cd "$BASE_PATH/$COMPONENT_NAME"
 # Generate a PascalCase version of our name
 PASCAL_CASE_NAME=$(echo "$COMPONENT_NAME" | awk -F- '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1' OFS='')
 
+# Determine the script's directory
+SCRIPT_DIR=$(dirname "$0")
+
 # Vue component
-echo '<template>
+TEMPLATE_FILE="$SCRIPT_DIR/templates/component.vue"
+OUTPUT_FILE="$COMPONENT_NAME.vue"
 
-</template>
-
-<script setup>
-import { ref } from "vue";
-
-const props = defineProps({
-
-});
-</script>' > "$COMPONENT_NAME.vue"
+sed "s/{{COMPONENT_NAME}}/$COMPONENT_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
 # Documentation
-echo "# \`$COMPONENT_NAME\`
+TEMPLATE_FILE="$SCRIPT_DIR/templates/component.md"
+OUTPUT_FILE="$COMPONENT_NAME.md"
 
-...
-
-## Slots
-
-### \`default\`
-
-...
-
-## Props
-
-### \`prop\`
-
-- type: \`string\`
-- default: \`null\`
-
-...
-
-## Events
-
-### \`@click\`
-
-...
-
-## Methods
-
-### \`method\`
-
-...
-
-## Examples
-
-### Basic button
-
-\`\`\`html
-...
-\`\`\`" > "$COMPONENT_NAME.md"
+sed "s/{{COMPONENT_NAME}}/$COMPONENT_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
 # Cypress test suite
-echo "import $PASCAL_CASE_NAME from \"./$COMPONENT_NAME.vue\";
-import { createMount } from \"@cypress/support/mount\";
+TEMPLATE_FILE="$SCRIPT_DIR/templates/component.cy.js"
+OUTPUT_FILE="$COMPONENT_NAME.cy.js"
 
-const mount = createMount($PASCAL_CASE_NAME);
-
-describe(\"$COMPONENT_NAME\", () => {
-	it(\"renders\", () => {
-		mount();
-	});
-});" > "$COMPONENT_NAME.cy.js"
+sed "s/{{COMPONENT_NAME}}/$COMPONENT_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
 # Unit test suite
-echo "import { createMount } from \"@unit/support/mount\";
-import { describe, expect, test } from \"vitest\";
-import $PASCAL_CASE_NAME from \"./$COMPONENT_NAME.vue\";
+TEMPLATE_FILE="$SCRIPT_DIR/templates/component.test.js"
+OUTPUT_FILE="$COMPONENT_NAME.test.js"
 
-const mount = createMount($PASCAL_CASE_NAME);
-
-describe(\"$COMPONENT_NAME\", () => {
-	describe(\"Initialisation\", () => {
-		test(\"should exist as a Vue component\", () => {
-			const wrapper = mount();
-
-			expect(wrapper.vm).toBeTypeOf(\"object\");
-		});
-	});
-});" > "$COMPONENT_NAME.test.js"
+sed "s/{{COMPONENT_NAME}}/$COMPONENT_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
 # Preview
-echo "<template>
-	<preview-wrapper>
-		<template #title>
-			$COMPONENT_NAME
-		</template>
+TEMPLATE_FILE="$SCRIPT_DIR/templates/component-preview.vue"
+OUTPUT_FILE="$COMPONENT_NAME-preview.vue"
 
-		<preview-section>
-			<template #title>
-				Section
-			</template>
-
-			<$COMPONENT_NAME />
-		</preview-section>
-	</preview-wrapper>
-</template>
-" > "$COMPONENT_NAME-preview.vue"
+sed "s/{{ COMPONENT_NAME }}/$COMPONENT_NAME/g; s/{{ PASCAL_CASE_NAME }}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
 # Add the new icon to src/components/index.js
 INDEX_FILE="../../index.js"
