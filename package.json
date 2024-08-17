@@ -28,14 +28,14 @@
 		"lint": "eslint . --fix"
 	},
 	"dependencies": {
-		"@lewishowles/helpers": "^0.3.0",
+		"@lewishowles/helpers": "^0.3.1",
 		"nanoid": "^5.0.7",
 		"vue": "^3.4.38"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.9.0",
 		"@lewishowles/testing": "^0.4.0",
-		"@stylistic/eslint-plugin": "^2.6.3",
+		"@stylistic/eslint-plugin": "^2.6.4",
 		"@tailwindcss/container-queries": "^0.1.1",
 		"@tailwindcss/forms": "^0.5.7",
 		"@vitejs/plugin-vue": "^5.1.2",

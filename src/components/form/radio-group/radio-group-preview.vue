@@ -10,7 +10,7 @@
 			</template>
 
 			<form-layout>
-				<radio-group v-model="selectedValue" v-bind="{ options }">
+				<radio-group v-bind="{ options: objectArrayOptions }">
 					Favourite ice-cream
 				</radio-group>
 
@@ -18,7 +18,7 @@
 					Favourite ice-cream (inline)
 				</radio-group>
 
-				<radio-group v-bind="{ options }">
+				<radio-group v-bind="{ options: objectArrayOptions }">
 					Favourite ice-cream
 
 					<template #help>
@@ -26,7 +26,7 @@
 					</template>
 				</radio-group>
 
-				<radio-group v-bind="{ options }">
+				<radio-group v-bind="{ options: objectArrayOptions }">
 					Favourite ice-cream
 
 					<template #error>
@@ -34,7 +34,7 @@
 					</template>
 				</radio-group>
 
-				<radio-group v-bind="{ options }">
+				<radio-group v-bind="{ options: objectArrayOptions }">
 					Favourite ice-cream
 
 					<template #help>
@@ -53,7 +53,7 @@
 				With introduction
 			</template>
 
-			<radio-group v-bind="{ options: flatArrayOptions }">
+			<radio-group v-bind="{ options: stringArrayOptions }">
 				Favourite ice-cream
 
 				<template #introduction>
@@ -77,7 +77,7 @@
 				With flat array options
 			</template>
 
-			<radio-group v-bind="{ options: flatArrayOptions }">
+			<radio-group v-bind="{ options: stringArrayOptions }">
 				Favourite ice-cream
 			</radio-group>
 		</preview-section>
@@ -85,7 +85,7 @@
 </template>
 
 <script setup>
-const options = [{ label: "Chocolate", value: "chocolate" }, { label: "Vanilla", value: "vanilla" }, { label: "Strawberry", value: "strawberry" }];
+const objectArrayOptions = [{ label: "Chocolate", value: "chocolate" }, { label: "Vanilla", value: "vanilla" }, { label: "Strawberry", value: "strawberry" }];
 const objectOptions = { chocolate: "Chocolate", vanilla: "Vanilla", strawberry: "Strawberry" };
-const flatArrayOptions = ["Chocolate", "Vanilla", "Strawberry"];
+const stringArrayOptions = ["Chocolate", "Vanilla", "Strawberry"];
 </script>

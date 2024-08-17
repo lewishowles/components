@@ -1,6 +1,6 @@
 <template>
-	<fieldset class="flex flex-col gap-2" v-bind="{ 'aria-describedby': describedBy }" data-test="radio-group">
-		<form-label v-bind="{ tag: 'legend' }">
+	<fieldset class="flex flex-col gap-4" v-bind="{ 'aria-describedby': describedBy }" data-test="radio-group">
+		<form-label v-bind="{ tag: 'legend' }" class="mb-4">
 			<slot />
 		</form-label>
 
@@ -8,17 +8,19 @@
 			<slot name="introduction" />
 		</conditional-wrapper>
 
-		<div class="mt-2 flex" :class="{ 'gap-10': inline, 'flex-col gap-2': !inline }">
-			<template v-for="option in internalOptions" :key="option.id">
-				<div class="flex items-center gap-2">
-					<input v-model="model" type="radio" class="size-4 appearance-none rounded-full outline-none ring-1 ring-grey-300 transition-all checked:bg-current checked:text-purple-800 checked:ring-current focus:ring-2 focus:ring-purple-800 checked:focus:ring-offset-2" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
+		<slot name="options" v-bind="{ options: internalOptions, name: name || inputId }">
+			<div class="flex" :class="{ 'gap-10': inline, 'flex-col gap-2': !inline }">
+				<template v-for="option in internalOptions" :key="option.id">
+					<div class="flex items-center gap-2">
+						<input v-model="model" type="radio" class="size-4 appearance-none rounded-full outline-none ring-1 ring-grey-300 transition-all checked:bg-current checked:text-purple-800 checked:ring-current focus:ring-2 focus:ring-purple-800 checked:focus:ring-offset-2" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
 
-					<form-label v-bind="{ id: option.id }" class="font-normal leading-6">
-						{{ option.label }}
-					</form-label>
-				</div>
-			</template>
-		</div>
+						<form-label v-bind="{ id: option.id }" class="font-normal leading-6">
+							{{ option.label }}
+						</form-label>
+					</div>
+				</template>
+			</div>
+		</slot>
 
 		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy">
 			<template #error>
@@ -41,8 +43,8 @@ import { nanoid } from "nanoid";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
 import useInputId from "@/components/form/composables/use-input-id";
 
-import FormLabel from "../form-label/form-label.vue";
-import FormSupplementary from "../form-supplementary/form-supplementary.vue";
+import FormLabel from "@/components/form/form-label/form-label.vue";
+import FormSupplementary from "@/components/form/form-supplementary/form-supplementary.vue";
 
 const props = defineProps({
 	/**
@@ -136,9 +138,18 @@ const internalOptions = computed(() => {
 		});
 	}
 
+	if (!isNonEmptyArray(options)) {
+		return [];
+	}
+
 	// Before returning, we generate a random ID for each option, to allow us to
-	// properly link labels and inputs.
-	return options.map(option => {
+	// properly link labels and inputs, as well as indicators as to the position
+	// of each option in the list.
+	const lastOptionIndex = options.length - 1;
+
+	return options.map((option, optionIndex) => {
+		option.first = optionIndex === 0;
+		option.last = optionIndex === lastOptionIndex;
 		option.id = nanoid();
 
 		return option;

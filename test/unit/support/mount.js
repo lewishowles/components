@@ -25,8 +25,7 @@ export function createMount(component, defaultOptions = {}) {
 	 */
 	return function (options = {}) {
 		const isDirectProps = !Object.hasOwn(options, "props") && !Object.hasOwn(options, "slots");
-
-		let providedOptions = isDirectProps ? { props: options } : options;
+		const providedOptions = isDirectProps ? { props: options } : options;
 
 		return mount(component, deepMerge(defaultOptions, providedOptions));
 	};
