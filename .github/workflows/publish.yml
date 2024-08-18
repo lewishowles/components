@@ -24,6 +24,9 @@ jobs:
             echo "//npm.pkg.github.com/:_authToken=${{ secrets.ACTIONS_TOKEN }}" > ~/.npmrc
             echo "@lewishowles:registry=https://npm.pkg.github.com" >> ~/.npmrc
 
+      - name: Print .npmrc
+        run: cat ~/.npmrc
+
       - name: Install dependencies
         run: npm install
 
