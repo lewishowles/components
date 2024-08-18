@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0 - 2024-08-18
+
+### New icons
+
+- `icon-check-circled`
+- `icon-download`
+- `icon-external`
+- `icon-film`
+- `icon-laptop`
+- `icon-moon`
+- `icon-reload`
+- `icon-sun`
+
 ## 0.2.1 - 2024-08-18
 
 Fix an issue with mismatching export names.

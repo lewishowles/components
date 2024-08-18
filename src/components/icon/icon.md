@@ -7,6 +7,14 @@ Each icon in the library is created using strokes, and can be coloured using the
 - icon-arrow-right.vue
 - icon-arrow-up.vue
 - icon-chevron-down.vue
+- icon-sun.vue
+- icon-reload.vue
+- icon-moon.vue
+- icon-laptop.vue
+- icon-film.vue
+- icon-external.vue
+- icon-download.vue
+- icon-check-circled.vue
 - icon-chevron-left.vue
 - icon-chevron-right.vue
 - icon-chevron-up.vue

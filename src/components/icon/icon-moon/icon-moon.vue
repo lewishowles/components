@@ -1,13 +1,14 @@
 <template>
 	<base-icon>
-		<path
+		<g
 			fill="none"
 			fill-rule="evenodd"
 			stroke="currentColor"
 			stroke-linecap="round"
 			stroke-linejoin="round"
 			stroke-width="1.5"
-			d="M8.3 9.7 16 2M10.4 2H16v5.6M6.9 3.4H3.4A1.4 1.4 0 0 0 2 4.8v9.8A1.4 1.4 0 0 0 3.4 16h9.8a1.4 1.4 0 0 0 1.4-1.4v-3.5"
-		/>
+		>
+			<path d="M14.64 8.438V5.063M16.313 6.765h-3.375M11.265 2.25V4.5M12.375 3.39h-2.25M14.814 11.122a6.756 6.756 0 0 1-7.936-7.936 6.187 6.187 0 1 0 7.936 7.936" />
+		</g>
 	</base-icon>
 </template>
