@@ -48,6 +48,10 @@ You can find more information about each component on its relevant docs page.
 
 - [pill-badge](/src/components/messaging/pill-badge/pill-badge.md)
 
+### Chart
+
+- [donut-chart](/src/components/chart/donut-chart/donut-chart.md)
+
 ### General
 
 - [conditional-wrapper](/src/components/general/conditional-wrapper/conditional-wrapper.md)

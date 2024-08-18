@@ -11,6 +11,7 @@
 - `conditional-wrapper`- A convenience component to conditionally wrap (or not) content with an element.
 - `form-layout`- A convenience component to help with basic arrangement of form fields.
 - `form-actions`- A convenience component to help with basic arrangement of form actions.
+- `donut-chart`- Generate a donut chart from a list of values.
 
 ### New icons
 

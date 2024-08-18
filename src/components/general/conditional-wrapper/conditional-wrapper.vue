@@ -8,6 +8,12 @@
 </template>
 
 <script setup>
+/**
+ * `conditional-wrapper` is a helper component that makes it easy to optionally
+ * wrap one or more elements in a tag. This might be useful, for example, to
+ * group items together when there are more than one, but keep a template simple
+ * otherwise.
+ */
 defineProps({
 	/**
 	 * Whether to wrap the contents.

@@ -1,5 +1,6 @@
 import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
+import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
 import FormInput from "./form/form-input/form-input.vue";
 import LinkTag from "./interaction/link-tag/link-tag.vue";
@@ -27,6 +28,7 @@ export default {
 	BaseIcon,
 	ButtonGroup,
 	ConditionalWrapper,
+	DonutChart,
 	FormActions,
 	FormInput,
 	IconArrowDown,

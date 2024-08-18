@@ -3,6 +3,7 @@ import PreviewWrapper from "@/preview/preview-wrapper.vue";
 import FormLayout from "@/components/form/form-layout/form-layout.vue";
 
 import ButtonGroupPreview from "@/components/form/button-group/button-group-preview.vue";
+import DonutChartPreview from "@/components/chart/donut-chart/donut-chart-preview.vue";
 import FormInputPreview from "@/components/form/form-input/form-input-preview.vue";
 import FormPreview from "@/components/form/form-preview.vue";
 import LinkTagPreview from "@/components/interaction/link-tag/link-tag-preview.vue";
@@ -14,6 +15,7 @@ import UiButtonPreview from "@/components/interaction/ui-button/ui-button-previe
 const previewLibrary = {
 	install(app) {
 		app.component("ButtonGroupPreview", ButtonGroupPreview);
+		app.component("DonutChartPreview", DonutChartPreview);
 		app.component("FormInputPreview", FormInputPreview);
 		app.component("FormLayout", FormLayout);
 		app.component("FormPreview", FormPreview);

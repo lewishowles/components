@@ -35,6 +35,12 @@
 </template>
 
 <script setup>
+/**
+ * Create a group of radio buttons styled as buttons, based on provided options.
+ *
+ * `button-group` allows options to be provided in a few different formats for
+ * simplicity.
+ */
 import FormLabel from "@/components/form/form-label/form-label.vue";
 
 const model = defineModel({

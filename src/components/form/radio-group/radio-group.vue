@@ -34,6 +34,12 @@
 </template>
 
 <script setup>
+/**
+ * Create a group of radio buttons based on provided options.
+ *
+ * `radio-group` allows options to be provided in a few different formats for
+ * simplicity.
+ */
 import { computed, useSlots } from "vue";
 import { deepCopy, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
