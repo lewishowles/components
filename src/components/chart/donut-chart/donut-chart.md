@@ -15,7 +15,7 @@ Note that when creating a chart, it is imperative to provide a textual alternati
 - type: `array`
 - **required**
 
-The values to display in the chart. If any values are not a number, no chart will be generated.
+The values to display in the chart. If any values are not a number, or is negative, no chart will be generated.
 
 ## Examples
 

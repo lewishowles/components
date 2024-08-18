@@ -139,6 +139,10 @@ function getDrawCommandsForValue(value) {
  *     The radius of the circle for which we're getting our co-ordinate.
  */
 function getCircleCoordinateForAngle(angle, radius) {
+	if (!isNumber(angle) || !isNumber(radius)) {
+		return "0 0";
+	}
+
 	const coordinateX = radius * Math.sin(angle * Math.PI / 180) + 50;
 	const coordinateY = -radius * Math.cos(angle * Math.PI / 180) + 50;
 
