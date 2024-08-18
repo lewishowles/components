@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0
+## 0.2.0 - 2024-08-18
 
 ### New components
 
@@ -25,7 +25,7 @@
 - `icon-plus`
 - `icon-user`
 
-## 0.1.0
+## 0.1.0 - 2024-08-13
 
 ### New components
 
