@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 - 2024-08-18
+
+Fix an issue with mismatching export names.
+
 ## 0.2.0 - 2024-08-18
 
 ### New components

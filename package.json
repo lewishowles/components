@@ -1,6 +1,6 @@
 {
 	"name": "@lewishowles/components",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "A library of beautiful components, promoting rapid development, while ensuring that usability and accessibility are at the fore.",
 	"type": "module",
 	"files": ["dist"],
@@ -8,8 +8,8 @@
 	"module": "dist/components.es.js",
 	"exports": {
 		".": {
-			"import": "./dist/components.es.js",
-			"require": "./dist/components.es.js"
+			"import": "./dist/components.js",
+			"require": "./dist/components.js"
 		}
 	},
 	"repository": {
