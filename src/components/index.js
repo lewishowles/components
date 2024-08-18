@@ -9,6 +9,9 @@ import RadioGroup from "./form/radio-group/radio-group.vue";
 import UiButton from "./interaction/ui-button/ui-button.vue";
 
 import BaseIcon from "./icon/base-icon/base-icon.vue";
+import IconCheck from "./icon/icon-check/icon-check.vue";
+import IconCross from "./icon/icon-cross/icon-cross.vue";
+import IconDanger from "./icon/icon-danger/icon-danger.vue";
 import IconArrowDown from "./icon/icon-arrow-down/icon-arrow-down.vue";
 import IconArrowLeft from "./icon/icon-arrow-left/icon-arrow-left.vue";
 import IconArrowRight from "./icon/icon-arrow-right/icon-arrow-right.vue";
@@ -25,6 +28,7 @@ import IconEmail from "./icon/icon-email/icon-email.vue";
 import IconExternal from "./icon/icon-external/icon-external.vue";
 import IconFilm from "./icon/icon-film/icon-film.vue";
 import IconLaptop from "./icon/icon-laptop/icon-laptop.vue";
+import IconLightbulb from "./icon/icon-lightbulb/icon-lightbulb.vue";
 import IconLoading from "./icon/icon-loading/icon-loading.vue";
 import IconMoon from "./icon/icon-moon/icon-moon.vue";
 import IconPlus from "./icon/icon-plus/icon-plus.vue";
@@ -34,6 +38,9 @@ import IconUser from "./icon/icon-user/icon-user.vue";
 
 export default {
 	BaseIcon,
+	IconCheck,
+	IconCross,
+	IconDanger,
 	ButtonGroup,
 	ConditionalWrapper,
 	DonutChart,
@@ -55,6 +62,7 @@ export default {
 	IconExternal,
 	IconFilm,
 	IconLaptop,
+	IconLightbulb,
 	IconLoading,
 	IconMoon,
 	IconPlus,

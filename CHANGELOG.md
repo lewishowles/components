@@ -4,7 +4,11 @@
 
 ### New icons
 
+- `icon-check`
 - `icon-clock`
+- `icon-cross`
+- `icon-danger`
+- `icon-lightbulb`
 
 ## 0.3.0 - 2024-08-18
 
