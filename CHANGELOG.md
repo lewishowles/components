@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 - 2024-08-18
+
+### New icons
+
+- `icon-clock`
+
 ## 0.3.0 - 2024-08-18
 
 ### New icons

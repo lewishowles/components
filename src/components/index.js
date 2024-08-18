@@ -18,6 +18,7 @@ import IconChevronDown from "./icon/icon-chevron-down/icon-chevron-down.vue";
 import IconChevronLeft from "./icon/icon-chevron-left/icon-chevron-left.vue";
 import IconChevronRight from "./icon/icon-chevron-right/icon-chevron-right.vue";
 import IconChevronUp from "./icon/icon-chevron-up/icon-chevron-up.vue";
+import IconClock from "./icon/icon-clock/icon-clock.vue";
 import IconDanger from "./icon/icon-danger/icon-danger.vue";
 import IconDownload from "./icon/icon-download/icon-download.vue";
 import IconEmail from "./icon/icon-email/icon-email.vue";
@@ -47,6 +48,7 @@ export default {
 	IconChevronLeft,
 	IconChevronRight,
 	IconChevronUp,
+	IconClock,
 	IconDanger,
 	IconDownload,
 	IconEmail,
