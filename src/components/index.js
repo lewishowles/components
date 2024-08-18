@@ -9,19 +9,18 @@ import RadioGroup from "./form/radio-group/radio-group.vue";
 import UiButton from "./interaction/ui-button/ui-button.vue";
 
 import BaseIcon from "./icon/base-icon/base-icon.vue";
-import IconCheck from "./icon/icon-check/icon-check.vue";
-import IconCross from "./icon/icon-cross/icon-cross.vue";
-import IconDanger from "./icon/icon-danger/icon-danger.vue";
 import IconArrowDown from "./icon/icon-arrow-down/icon-arrow-down.vue";
 import IconArrowLeft from "./icon/icon-arrow-left/icon-arrow-left.vue";
 import IconArrowRight from "./icon/icon-arrow-right/icon-arrow-right.vue";
 import IconArrowUp from "./icon/icon-arrow-up/icon-arrow-up.vue";
+import IconCheck from "./icon/icon-check/icon-check.vue";
 import IconCheckCircled from "./icon/icon-check-circled/icon-check-circled.vue";
 import IconChevronDown from "./icon/icon-chevron-down/icon-chevron-down.vue";
 import IconChevronLeft from "./icon/icon-chevron-left/icon-chevron-left.vue";
 import IconChevronRight from "./icon/icon-chevron-right/icon-chevron-right.vue";
 import IconChevronUp from "./icon/icon-chevron-up/icon-chevron-up.vue";
 import IconClock from "./icon/icon-clock/icon-clock.vue";
+import IconCross from "./icon/icon-cross/icon-cross.vue";
 import IconDanger from "./icon/icon-danger/icon-danger.vue";
 import IconDownload from "./icon/icon-download/icon-download.vue";
 import IconEmail from "./icon/icon-email/icon-email.vue";
@@ -38,9 +37,6 @@ import IconUser from "./icon/icon-user/icon-user.vue";
 
 export default {
 	BaseIcon,
-	IconCheck,
-	IconCross,
-	IconDanger,
 	ButtonGroup,
 	ConditionalWrapper,
 	DonutChart,
@@ -50,12 +46,14 @@ export default {
 	IconArrowLeft,
 	IconArrowRight,
 	IconArrowUp,
+	IconCheck,
 	IconCheckCircled,
 	IconChevronDown,
 	IconChevronLeft,
 	IconChevronRight,
 	IconChevronUp,
 	IconClock,
+	IconCross,
 	IconDanger,
 	IconDownload,
 	IconEmail,
