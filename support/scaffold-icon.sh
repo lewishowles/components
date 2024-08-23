@@ -7,13 +7,28 @@
 # the files required to get up and running quickly. Since icons are a little
 # different to regular components, this setup differs too.
 #
-# Usage:
-# ./support/scaffold-component.sh icon-name
+# Parameters:
+#   <icon-name>  (required)
+#     The name of the icon in kebab-case. To meet Vue component naming
+#     conventions and ensure all components consist of at least two words to
+#     avoid confusion with native elements, it is recommended that icons start
+#     with "icon-".
+#
+# Example:
+#   ./support/scaffold-icon.sh icon- data
+#
+# Recommended alias:
+#   scaffold:icon
 #
 
+PURPLE='\033[1;35m'
+BLUE='\033[1;34m'
+RESET_COLOUR='\033[0m'
+
 if [ -z "$1" ]; then
-    echo "Please provide a name for the icon."
-    exit 1
+	echo -e "\nPlease provide an ${BLUE}icon-name${RESET_COLOUR} for the icon"
+	echo -e "Usage: ${PURPLE}./support/scaffold-icon.sh${RESET_COLOUR} ${BLUE}<icon-name>${RESET_COLOUR}"
+	exit 1
 fi
 
 ICON_NAME="$1"
@@ -65,10 +80,6 @@ INDEX_FILE="../../icon/icon.md"
 sed -i '' "/- icon-chevron-down.vue/a\\
 - $ICON_NAME.vue\\
 " "$INDEX_FILE"
-
-PURPLE='\033[1;35m'
-BLUE='\033[1;34m'
-RESET_COLOUR='\033[0m'
 
 # Print the success message
 echo -e "\nIcon ${PURPLE}$ICON_NAME${RESET_COLOUR} scaffolded successfully in ${BLUE}$BASE_PATH/$ICON_NAME${RESET_COLOUR}.\n"

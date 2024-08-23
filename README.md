@@ -73,3 +73,7 @@ Some components that I would like to build soon include, likely in this order.
 - Progress bar - Given a current value and a maximum value, show an accessible, simple progress meter.
 - Form wrapper - Handling communication between individual form fields and a parent form, collating all responses into one object, providing an accessible error summary based on validation configuration, and more.
 - Data table - Providing built-in options for searching, sorting, pagination, filtering, and custom display of any data in a table.
+
+## Scaffolding
+
+Special scaffold scripts have been created to generate files for a new component (or icon). These can be found at `support/scaffold-component.sh` and `support/scaffold-icon.sh`.

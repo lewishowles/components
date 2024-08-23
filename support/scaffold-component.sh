@@ -6,13 +6,31 @@
 # Scaffold a new component for the component library, creating basic versions of
 # the files required to get up and running quickly.
 #
-# Usage:
-# ./support/scaffold-component.sh component-name folder-name
+# Usage: ./support/scaffold-component.sh <component-name> [folder-name]
+#
+# Parameters:
+#   <component-name>  (required)
+#     The name of the component in kebab-case. Remember that to follow Vue
+#     component naming conventions and avoid confusion with native elements, all
+#     component names should contain at least two words.
+#   [folder-name]  (optional)
+#     The name of the folder where the component will be created.
+#
+# Example:
+#   ./support/scaffold-component.sh data-table data
+#
+# Recommended alias:
+#   scaffold:component
 #
 
+PURPLE='\033[1;35m'
+BLUE='\033[1;34m'
+RESET_COLOUR='\033[0m'
+
 if [ -z "$1" ]; then
-    echo "Please provide a name for the component."
-    exit 1
+	echo -e "\nPlease provide a ${BLUE}component-name${RESET_COLOUR} for the component."
+	echo -e "Usage: ${PURPLE}./support/scaffold-component.sh${RESET_COLOUR} ${BLUE}<component-name>${RESET_COLOUR} [folder-name]"
+	exit 1
 fi
 
 COMPONENT_NAME="$1"
@@ -75,10 +93,6 @@ import $PASCAL_CASE_NAME from \"./$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME.v
 sed -i '' "/BaseIcon,/a\\
 	$PASCAL_CASE_NAME,\\
 " "$INDEX_FILE"
-
-PURPLE='\033[1;35m'
-BLUE='\033[1;34m'
-RESET_COLOUR='\033[0m'
 
 # Print the success message
 echo -e "\nComponent ${PURPLE}$COMPONENT_NAME${RESET_COLOUR} scaffolded successfully in ${BLUE}$BASE_PATH/$COMPONENT_NAME${RESET_COLOUR}.\n"
