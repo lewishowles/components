@@ -5,9 +5,9 @@
 
 	.button--primary {
 		@apply button;
-		@apply bg-purple-800 text-white;
-		@apply hocus:bg-purple-900 text-white;
-		@apply active:bg-purple-950 text-white;
+		@apply font-semibold bg-purple-800 text-white;
+		@apply hocus:bg-purple-900;
+		@apply active:bg-purple-950;
 	}
 
 	.button--muted {
