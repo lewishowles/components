@@ -21,9 +21,8 @@
 #   scaffold:icon
 #
 
-PURPLE='\033[1;35m'
-BLUE='\033[1;34m'
-RESET_COLOUR='\033[0m'
+SCRIPT_DIR="$(dirname "$0")"
+source "$SCRIPT_DIR/colours.sh"
 
 if [ -z "$1" ]; then
 	echo -e "\nPlease provide an ${BLUE}icon-name${RESET_COLOUR} for the icon"
@@ -42,26 +41,25 @@ cd "$BASE_PATH/$ICON_NAME"
 # Generate a PascalCase version of our name
 PASCAL_CASE_NAME=$(echo "$ICON_NAME" | awk -F- '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1' OFS='')
 
-# Determine the script's directory
-SCRIPT_DIR=$(dirname "$0")
+# Generate our scaffold files from templates.
+templates=(
+	"icon.vue"
+	"icon.cy.js"
+	"icon.test.js"
+)
 
-# Vue component
-TEMPLATE_FILE="$SCRIPT_DIR/templates/icon.vue"
-OUTPUT_FILE="$ICON_NAME.vue"
+output_files=(
+	"${ICON_NAME}.vue"
+	"${ICON_NAME}.cy.js"
+	"${ICON_NAME}.test.js"
+)
 
-sed "s/{{ICON_NAME}}/$ICON_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
+for i in "${!templates[@]}"; do
+	TEMPLATE_FILE="$SCRIPT_DIR/templates/${templates[$i]}"
+	OUTPUT_FILE="${output_files[$i]}"
 
-# Cypress test suite
-TEMPLATE_FILE="$SCRIPT_DIR/templates/icon.cy.js"
-OUTPUT_FILE="$ICON_NAME.cy.js"
-
-sed "s/{{ICON_NAME}}/$ICON_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
-
-# Unit test suite
-TEMPLATE_FILE="$SCRIPT_DIR/templates/icon.test.js"
-OUTPUT_FILE="$ICON_NAME.test.js"
-
-sed "s/{{ICON_NAME}}/$ICON_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
+	sed "s/{{ICON_NAME}}/$ICON_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
+done
 
 # Add the new icon to src/components/index.js
 INDEX_FILE="../../index.js"
