@@ -5,7 +5,7 @@
 		</form-label>
 
 		<conditional-wrapper v-bind="{ wrap: haveIcon || haveText }" class="relative flex">
-			<div v-if="haveIconStart" class="absolute inset-y-0 left-0 flex items-center px-3">
+			<div v-if="haveIconStart" class="absolute inset-y-0 start-0 flex items-center px-3">
 				<component :is="iconStart" class="size-4 stroke-current text-grey-500" data-test="form-input-icon-start" />
 			</div>
 			<div v-else-if="haveTextStart" class="flex items-center rounded-s-md border border-r-0 border-grey-300 bg-gradient-to-b from-white to-grey-50 px-3 py-2" data-test="form-input-text-start">
@@ -24,7 +24,7 @@
 				}"
 			/>
 
-			<div v-if="haveIconEnd" class="absolute inset-y-0 right-0 flex items-center px-3">
+			<div v-if="haveIconEnd" class="absolute inset-y-0 end-0 flex items-center px-3">
 				<component :is="iconEnd" class="size-4 stroke-current text-grey-500" data-test="form-input-icon-end" />
 			</div>
 			<div v-else-if="haveTextEnd" class="flex items-center rounded-e-md border border-l-0 border-grey-300 bg-gradient-to-b from-white to-grey-50 px-3 py-2" data-test="form-input-text-end">
