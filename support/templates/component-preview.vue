@@ -1,7 +1,7 @@
 <template>
 	<preview-wrapper>
 		<template #title>
-			{{ COMPONENT_NAME }}
+			{{COMPONENT_NAME}}
 		</template>
 
 		<preview-section>
@@ -9,7 +9,7 @@
 				Section
 			</template>
 
-			<{{ COMPONENT_NAME }} />
+			<{{COMPONENT_NAME}} />
 		</preview-section>
 	</preview-wrapper>
 </template>

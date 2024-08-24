@@ -6,6 +6,7 @@ import FormInput from "./form/form-input/form-input.vue";
 import LinkTag from "./interaction/link-tag/link-tag.vue";
 import PillBadge from "./messaging/pill-badge/pill-badge.vue";
 import RadioGroup from "./form/radio-group/radio-group.vue";
+import SummaryDetails from "./interaction/summary-details/summary-details.vue";
 import UiButton from "./interaction/ui-button/ui-button.vue";
 
 import BaseIcon from "./icon/base-icon/base-icon.vue";
@@ -70,5 +71,6 @@ export default {
 	LinkTag,
 	PillBadge,
 	RadioGroup,
+	SummaryDetails,
 	UiButton,
 };

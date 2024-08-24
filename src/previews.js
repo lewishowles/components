@@ -9,6 +9,7 @@ import FormPreview from "@/components/form/form-preview.vue";
 import LinkTagPreview from "@/components/interaction/link-tag/link-tag-preview.vue";
 import PillBadgePreview from "@/components/messaging/pill-badge/pill-badge-preview.vue";
 import RadioGroupPreview from "@/components/form/radio-group/radio-group-preview.vue";
+import SummaryDetailsPreview from "@/components/interaction/summary-details/summary-details-preview.vue";
 import UiButtonPreview from "@/components/interaction/ui-button/ui-button-preview.vue";
 
 // Prepare previews for use with <component :is> to simplify preview management.
@@ -24,6 +25,7 @@ const previewLibrary = {
 		app.component("PreviewSection", PreviewSection);
 		app.component("PreviewWrapper", PreviewWrapper);
 		app.component("RadioGroupPreview", RadioGroupPreview);
+		app.component("SummaryDetailsPreview", SummaryDetailsPreview);
 		app.component("UiButtonPreview", UiButtonPreview);
 	},
 };
