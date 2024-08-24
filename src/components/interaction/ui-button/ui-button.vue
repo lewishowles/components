@@ -9,9 +9,9 @@
 	>
 		<component :is="iconStart" v-if="haveIconStart" class="size-[0.857em] stroke-current" data-test="ui-button-icon-start" />
 
-		<span :class="{ 'invisible': isReacting }" data-test="ui-button-label">
+		<conditional-wrapper v-bind="{ wrap: reactive, tag: 'span' }" :class="{ 'invisible': isReacting }" data-test="ui-button-label">
 			<slot />
-		</span>
+		</conditional-wrapper>
 
 		<span v-if="reactive" v-show="isReacting" class="absolute inset-0 flex items-center justify-center" data-test="ui-button-loading">
 			<icon-loading class="stroke-current" />
