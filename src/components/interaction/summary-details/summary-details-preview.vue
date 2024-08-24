@@ -46,6 +46,34 @@
 
 		<preview-section>
 			<template #title>
+				Floating
+			</template>
+
+			<div class="flex flex-col gap-10">
+				<summary-details v-bind="{ floating: true }" class="w-max" summary-classes="button--muted">
+					<template #summary>
+						Summary
+					</template>
+
+					<div class="mt-1 min-w-xs rounded-md border border-grey-200 bg-white p-4 shadow">
+						Details content
+					</div>
+				</summary-details>
+
+				<summary-details v-bind="{ floating: true, align: 'end' }" class="w-max" summary-classes="button--muted">
+					<template #summary>
+						Align end
+					</template>
+
+					<div class="mt-1 min-w-xs rounded-md border border-grey-200 bg-white p-4 shadow">
+						Details content
+					</div>
+				</summary-details>
+			</div>
+		</preview-section>
+
+		<preview-section>
+			<template #title>
 				Slot props
 			</template>
 

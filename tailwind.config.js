@@ -1,4 +1,5 @@
 import colors from "tailwindcss/colors";
+import defaultTheme from "tailwindcss/defaultTheme";
 import hocusPlugin from "tailwindcss-hocus";
 
 export default {
@@ -9,6 +10,15 @@ export default {
 		"./src/**/*.cy.js",
 	],
 	theme: {
+		extend: {
+			fontFamily: {
+				sans: ["\"Inter Variable\"", ...defaultTheme.fontFamily.sans],
+				mono: ["\"IBM Plex Mono\"", ...defaultTheme.fontFamily.mono],
+			},
+			minWidth: theme => ({
+				...theme("maxWidth"),
+			}),
+		},
 		colors: {
 			// Set our preferred colours from those provided by Tailwind
 			transparent: "transparent",

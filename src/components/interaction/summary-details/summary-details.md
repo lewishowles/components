@@ -80,6 +80,20 @@ Whether to display the icon at the start of the summary, as opposed to the end.
 
 Whether to include a summary icon at all. This allows more flexibility with the styling of the summary, but it is important to make it clear to the user what is happening.
 
+### `floating`
+
+- type: `boolean`
+- default: `false`
+
+Whether the details should float when opened, perfect for drop down menus.
+
+### `align`
+
+- type: `string`
+- default: `start`
+
+When floating, whether to align to the dropdown to the start or end of the summary. This is useful for menus that open to the end of the screen, for example. Anything but "start" will be treated as "end".
+
 ## Examples
 
 ### Basic summary details

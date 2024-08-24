@@ -1,6 +1,6 @@
 <template>
-	<details ref="detailsElement" data-test="summary-details" @toggle="updateState">
-		<summary class="inline-flex cursor-pointer list-none items-center gap-1" data-test="summary-details-summary">
+	<details ref="detailsElement" data-test="summary-details" :class="{ 'relative': floating, 'z-50': isOpen && floating }" @toggle="updateState">
+		<summary class="inline-flex cursor-pointer list-none items-center gap-1" :class="summaryClasses" data-test="summary-details-summary">
 			<component :is="currentIcon" v-if="iconStart && includeIcon" data-test="summary-details-icon-start" />
 
 			<slot name="summary" v-bind="{ isOpen, icon: currentIcon }" />
@@ -8,7 +8,7 @@
 			<component :is="currentIcon" v-if="includeIcon && !iconStart" data-test="summary-details-icon-end" />
 		</summary>
 
-		<div data-test="summary-details-content">
+		<div :class="{ 'absolute top-full': floating, 'start-0': align === 'start', 'end-0': align !== 'start' }" data-test="summary-details-content">
 			<slot v-bind="{ isOpen, icon: currentIcon }" />
 		</div>
 	</details>
@@ -68,6 +68,34 @@ const props = defineProps({
 	includeIcon: {
 		type: Boolean,
 		default: true,
+	},
+
+	/**
+	 * Whether the details should float when opened, perfect for drop down
+	 * menus.
+	 */
+	floating: {
+		type: Boolean,
+		default: false,
+	},
+
+	/**
+	 * When floating, whether to align to the dropdown to the start or end of
+	 * the summary. This is useful for menus that open to the end of the screen,
+	 * for example. Anything but "start" will be treated as "end".
+	 */
+	align: {
+		type: String,
+		default: "start",
+	},
+
+	/**
+	 * Any classes to add to the summary element, allowing styling to wrap both
+	 * the summary and icons.
+	 */
+	summaryClasses: {
+		type: String,
+		default: null,
 	},
 });
 
