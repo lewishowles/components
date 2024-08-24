@@ -1,6 +1,6 @@
 # `summary-details`
 
-Provides an implementation of the `details` element with optional extras, such as custom icons.
+Provides an implementation of the `details` element with optional extras, such as custom icons, and allows a simple way of having content that can be toggled. Suitable for items such as FAQs or even dropdown menus.
 
 ## Slots
 

@@ -15,6 +15,11 @@
 </template>
 
 <script setup>
+/**
+ * Provides an implementation of the `details` element with optional extras,
+ * such as custom icons, and allows a simple way of having content that can be
+ * toggled. Suitable for items such as FAQs or even dropdown menus.
+ */
 import { computed, onMounted, ref } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
