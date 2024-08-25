@@ -1,7 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import {
-	describe, expect, test, vi,
-} from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import DonutChart from "./donut-chart.vue";
 
 const defaultProps = { values: [50, 25, 25] };
