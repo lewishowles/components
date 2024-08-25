@@ -28,6 +28,13 @@ _Note that `start` and `end` depend on the current document direction._
 
 When a button is `reactive`, it will show a loading indicator when activated. This can be deactivated via the exposed `reset` method.
 
+### `iconClasses`
+
+- type: `string`
+- default: `null`
+
+Any classes to add to the icon itself. If a size class is added (`size-`), the default size class will not be included.
+
 ## Events
 
 ### `@click`

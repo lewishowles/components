@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1 - 2024-08-25
+
+- `ui-button`: No longer automatically justifies content, which makes it easier to use buttons in a wider variety of scenarios. Buttons that are designed to be full width can still be centred by adding the `justify-center` class.
+- `ui-button`: A new `iconClasses` prop has been added to supply classes directly to the icon(s). If a `size-` class is provided, the conflicting default size class is not added.
+- `summary-details`: When applying `absolute` as a class to a floating `summary-details`, it no longer adds a conflicting `relative` class.
+
 ## 0.5.0 - 2024-08-24
 
 ### New components

@@ -1,13 +1,13 @@
 <template>
 	<button
 		type="button"
-		class="flex items-center justify-center gap-2"
+		class="flex items-center gap-2"
 		:class="{ 'relative': reactive }"
-		data-test="ui-button"
 		v-bind="attributes"
+		data-test="ui-button"
 		@click="react"
 	>
-		<component :is="iconStart" v-if="haveIconStart" class="size-[0.857em] stroke-current" data-test="ui-button-icon-start" />
+		<component :is="iconStart" v-if="haveIconStart" :class="computedIconClasses" data-test="ui-button-icon-start" />
 
 		<conditional-wrapper v-bind="{ wrap: reactive, tag: 'span' }" :class="{ 'invisible': isReacting }" data-test="ui-button-label">
 			<slot />
@@ -23,7 +23,7 @@
 			</span>
 		</span>
 
-		<component :is="iconEnd" v-if="haveIconEnd" class="size-[0.857em] stroke-current" data-test="ui-button-icon-end" />
+		<component :is="iconEnd" v-if="haveIconEnd" :class="computedIconClasses" data-test="ui-button-icon-end" />
 	</button>
 </template>
 
@@ -65,6 +65,15 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+
+	/**
+	 * Any classes to add to the icon itself. If a size class is added
+	 * (`size-`), the default size class will not be included.
+	 */
+	iconClasses: {
+		type: String,
+		default: null,
+	},
 });
 
 const emit = defineEmits(["click"]);
@@ -74,6 +83,7 @@ const isReacting = ref(false);
 const haveIconStart = computed(() => isNonEmptyString(props.iconStart));
 // Whether an end icon is defined.
 const haveIconEnd = computed(() => isNonEmptyString(props.iconEnd));
+
 // Any additional attributes to apply to the button. For example, aria-live if
 // the button is reactive.
 const attributes = computed(() => {
@@ -84,6 +94,34 @@ const attributes = computed(() => {
 	}
 
 	return attributes;
+});
+
+// Classes to apply to the icons. For this, we check whether the user has
+// provided their own `size-` or `stroke-` classes, and merge those with the
+// defaults.
+const computedIconClasses = computed(() => {
+	if ((!haveIconStart.value && !haveIconEnd.value)) {
+		return;
+	}
+
+	const baseStrokeClass = "stroke-current";
+	const baseSizeClass = "size-[0.857em]";
+
+	if (!isNonEmptyString(props.iconClasses)) {
+		return [baseStrokeClass, baseSizeClass];
+	}
+
+	const classes = props.iconClasses.split(" ");
+
+	if (!classes.some(className => className.includes("stroke-"))) {
+		classes.push(baseStrokeClass);
+	}
+
+	if (!classes.some(className => className.includes("size-"))) {
+		classes.push(baseSizeClass);
+	}
+
+	return classes;
 });
 
 /**
