@@ -1,5 +1,5 @@
 <template>
-	<details ref="detailsElement" data-test="summary-details" :class="{ 'relative': floating, 'z-50': isOpen && floating }" @toggle="updateState">
+	<details ref="detailsElement" data-test="summary-details" :class="floatingClasses" @toggle="updateState">
 		<summary class="inline-flex cursor-pointer list-none items-center gap-1" :class="summaryClasses" data-test="summary-details-summary">
 			<component :is="currentIcon" v-if="iconStart && includeIcon" data-test="summary-details-icon-start" />
 
@@ -8,7 +8,7 @@
 			<component :is="currentIcon" v-if="includeIcon && !iconStart" data-test="summary-details-icon-end" />
 		</summary>
 
-		<div :class="{ 'absolute top-full': floating, 'start-0': align === 'start', 'end-0': align !== 'start' }" data-test="summary-details-content">
+		<div :class="{ 'absolute top-full': floating, 'start-0': alignStart, 'end-0': !alignStart }" data-test="summary-details-content">
 			<slot v-bind="{ isOpen, icon: currentIcon }" />
 		</div>
 	</details>
@@ -122,6 +122,31 @@ const currentIcon = computed(() => {
 	}
 
 	return props.iconClosed;
+});
+
+// Whether to align a floating dropdown to the start of the summary.
+const alignStart = computed(() => props.align === "start");
+
+// Classes to apply to the details element when floating is enabled. For this,
+// we check whether the user has provided their own "absolute" class - such as
+// if they want to position the menu. If so, we don't need to apply the
+// "relative" class that would otherwise be necessary.
+const floatingClasses = computed(() => {
+	if (!props.floating) {
+		return;
+	}
+
+	const classes = attrs.class ? attrs.class.split(" ") : [];
+
+	if (!classes.includes("absolute") && !classes.includes("relative")) {
+		classes.push("relative");
+	}
+
+	if (isOpen.value) {
+		classes.push("z-50");
+	}
+
+	return classes;
 });
 
 /**
