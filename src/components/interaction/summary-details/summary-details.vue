@@ -1,11 +1,11 @@
 <template>
 	<details ref="detailsElement" data-test="summary-details" :class="floatingClasses" @toggle="updateState">
 		<summary class="inline-flex cursor-pointer list-none items-center gap-1" :class="summaryClasses" data-test="summary-details-summary">
-			<component :is="currentIcon" v-if="iconStart && includeIcon" data-test="summary-details-icon-start" />
+			<component :is="currentIcon" v-if="iconStart && includeIcon" :class="iconClasses" data-test="summary-details-icon-start" />
 
 			<slot name="summary" v-bind="{ isOpen, icon: currentIcon }" />
 
-			<component :is="currentIcon" v-if="includeIcon && !iconStart" data-test="summary-details-icon-end" />
+			<component :is="currentIcon" v-if="includeIcon && !iconStart" :class="iconClasses" data-test="summary-details-icon-end" />
 		</summary>
 
 		<div :class="{ 'absolute top-full': floating, 'start-0': alignStart, 'end-0': !alignStart }" data-test="summary-details-content">
@@ -20,7 +20,7 @@
  * such as custom icons, and allows a simple way of having content that can be
  * toggled. Suitable for items such as FAQs or even dropdown menus.
  */
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, useAttrs } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 const props = defineProps({
@@ -102,8 +102,18 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
+
+	/**
+	 * Any classes to add to the icon itself. Particularly useful if the icon is
+	 * the only visible summary element.
+	 */
+	iconClasses: {
+		type: String,
+		default: null,
+	},
 });
 
+const attrs = useAttrs();
 // Whether the details are currently open.
 const isOpen = ref(props.open);
 // A reference to the details element, from which we can determine the current

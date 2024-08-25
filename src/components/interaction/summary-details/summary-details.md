@@ -94,6 +94,20 @@ Whether the details should float when opened, perfect for drop down menus.
 
 When floating, whether to align to the dropdown to the start or end of the summary. This is useful for menus that open to the end of the screen, for example. Anything but "start" will be treated as "end".
 
+### `summaryClasses`
+
+- type: `string`
+- default: `null`
+
+Any classes to add to the summary element, allowing styling to wrap both the summary and icons.
+
+### `iconClasses`
+
+- type: `string`
+- default: `null`
+
+Any classes to add to the icon itself. Particularly useful if the icon is the only visible summary element.
+
 ## Examples
 
 ### Basic summary details
