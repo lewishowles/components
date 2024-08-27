@@ -41,6 +41,14 @@
 
 					Details content
 				</summary-details>
+
+				<summary-details>
+					<template #summary>
+						With focusable content
+					</template>
+
+					<a href="#">Focusable details content</a>
+				</summary-details>
 			</div>
 		</preview-section>
 

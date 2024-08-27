@@ -1,5 +1,6 @@
 import SummaryDetails from "./summary-details.vue";
 import { createMount } from "@cypress/support/mount";
+import { h } from "vue";
 
 const defaultSlots = { summary: "Summary label", default: "Details content" };
 const mount = createMount(SummaryDetails, { slots: defaultSlots });
@@ -61,6 +62,38 @@ describe("summary-details", () => {
 
 			cy.getByData("summary-details-icon-end").should("not.exist");
 			cy.getByData("summary-details-icon-start").should("not.exist");
+		});
+	});
+
+	describe("Interaction", () => {
+		it("Escape closes details and moves focus by default", () => {
+			mount({ slots: { default: h("a", { "href": "#", "data-test": "focusable-content" }, "Focusable content") } });
+
+			cy.getByData("summary-details-summary").click();
+
+			cy.getByData("focusable-content").shouldBeVisible();
+			cy.getByData("focusable-content").focus();
+
+			cy.focused().shouldHaveAttribute("data-test", "focusable-content");
+
+			cy.realPress("Escape");
+
+			cy.focused().shouldHaveAttribute("data-test", "summary-details-summary");
+		});
+
+		it("Closing with escape can be disabled", () => {
+			mount({ props: { closeWithEscape: false }, slots: { default: h("a", { "href": "#", "data-test": "focusable-content" }, "Focusable content") } });
+
+			cy.getByData("summary-details-summary").click();
+
+			cy.getByData("focusable-content").shouldBeVisible();
+			cy.getByData("focusable-content").focus();
+
+			cy.focused().shouldHaveAttribute("data-test", "focusable-content");
+
+			cy.realPress("Escape");
+
+			cy.focused().shouldHaveAttribute("data-test", "focusable-content");
 		});
 	});
 });

@@ -1,6 +1,6 @@
 <template>
 	<details ref="detailsElement" data-test="summary-details" :class="floatingClasses" @toggle="updateState">
-		<summary class="inline-flex cursor-pointer list-none items-center gap-1" :class="summaryClasses" data-test="summary-details-summary">
+		<summary ref="summaryElement" class="inline-flex cursor-pointer list-none items-center gap-1" :class="summaryClasses" data-test="summary-details-summary">
 			<component :is="currentIcon" v-if="iconStart && includeIcon" :class="iconClasses" data-test="summary-details-icon-start" />
 
 			<slot name="summary" v-bind="{ isOpen, icon: currentIcon }" />
@@ -22,6 +22,7 @@
  */
 import { computed, onMounted, ref, useAttrs } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { onKeyStroke, useFocusWithin } from "@vueuse/core";
 
 const props = defineProps({
 	/**
@@ -30,6 +31,15 @@ const props = defineProps({
 	open: {
 		type: Boolean,
 		default: false,
+	},
+
+	/**
+	 * When pressing escape, the details element is closed. If focus is within
+	 * this component, focus is moved to the summary element.
+	 */
+	closeWithEscape: {
+		type: Boolean,
+		default: true,
 	},
 
 	/**
@@ -119,6 +129,10 @@ const isOpen = ref(props.open);
 // A reference to the details element, from which we can determine the current
 // "open" state.
 const detailsElement = ref(null);
+// A reference to the summary element, with which we can manage focus.
+const summaryElement = ref(null);
+// Whether focus is currently within our details component. If it isn't, we will close our
+const { focused: hasFocus } = useFocusWithin(detailsElement);
 
 // The current icon to display. If an override icon is chosen, we always return
 // that, otherwise we return the appropriate icon for the current state.
@@ -169,10 +183,39 @@ onMounted(() => {
 	}
 });
 
+
+/**
+ * When pressing escape, if requested, close the details element. If focus is
+ * within the component, move focus to the summary.
+ */
+onKeyStroke("Escape", e => {
+	e.preventDefault();
+
+	if (!isOpen.value || !props.closeWithEscape) {
+		return;
+	}
+
+	closeDetails();
+
+	if (!hasFocus.value) {
+		return;
+	}
+
+	summaryElement.value.focus();
+});
+
 /**
  * Update the current open state based on the details element.
  */
 function updateState() {
 	isOpen.value = detailsElement.value.open;
+}
+
+/**
+ * Close the details element and update our internal representation.
+ */
+function closeDetails() {
+	detailsElement.value.open = false;
+	isOpen.value = false;
 }
 </script>

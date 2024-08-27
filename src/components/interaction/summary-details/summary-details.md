@@ -45,6 +45,13 @@ The computed icon to display for the current state.
 
 Whether the details element should initially be open.
 
+### `closeWithEscape`
+
+- type: `boolean`
+- default: `true`
+
+When pressing escape, the details element is closed. If focus is within this component, focus is moved to the summary element.
+
 ### `iconOpen`
 
 - type: `string`
