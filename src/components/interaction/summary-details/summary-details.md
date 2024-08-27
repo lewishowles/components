@@ -50,7 +50,14 @@ Whether the details element should initially be open.
 - type: `boolean`
 - default: `true`
 
-When pressing escape, the details element is closed. If focus is within this component, focus is moved to the summary element.
+Whether to close the details element when pressing escape. If focus is within this component, focus is moved to the summary element.
+
+### `closeWithClickOutside`
+
+- type: `boolean`
+- default: `false`
+
+Whether to close the details element when clicking outside of the component. This is best combined with `floating` for menus.
 
 ### `iconOpen`
 

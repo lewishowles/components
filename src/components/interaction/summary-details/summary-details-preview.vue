@@ -41,14 +41,6 @@
 
 					Details content
 				</summary-details>
-
-				<summary-details>
-					<template #summary>
-						With focusable content
-					</template>
-
-					<a href="#">Focusable details content</a>
-				</summary-details>
 			</div>
 		</preview-section>
 
@@ -92,6 +84,30 @@
 
 				Details content
 			</summary-details>
+		</preview-section>
+
+		<preview-section>
+			<template #title>
+				Interaction
+			</template>
+
+			<div class="flex flex-col gap-10">
+				<summary-details>
+					<template #summary>
+						With focusable content
+					</template>
+
+					<a href="#">Focusable details content</a>
+				</summary-details>
+
+				<summary-details v-bind="{ closeWithClickOutside: true }">
+					<template #summary>
+						With click outside
+					</template>
+
+					Details content
+				</summary-details>
+			</div>
 		</preview-section>
 	</preview-wrapper>
 </template>

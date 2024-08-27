@@ -1,10 +1,11 @@
 # Changelog
 
-## 0.6.0 - 2024-08-25
+## 0.6.0 - 2024-08-27
 
 ### New features
 
 - `summary-details`: Pressing escape while details are open now closes those details and, if focus is within the component, moves focus to the summary. This can be controlled by the new prop `closeWithEscape` (default: true).
+- `summary-details`: Clicking outside of the component can now close the details. This can be controlled by the new prop `closeWithClickOutside` (default: false).
 
 ### Changes
 

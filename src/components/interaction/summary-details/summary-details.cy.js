@@ -66,34 +66,94 @@ describe("summary-details", () => {
 	});
 
 	describe("Interaction", () => {
-		it("Escape closes details and moves focus by default", () => {
-			mount({ slots: { default: h("a", { "href": "#", "data-test": "focusable-content" }, "Focusable content") } });
+		describe("closeWithEscape", () => {
+			it("true", () => {
+				mount({ slots: { default: h("a", { "href": "#", "data-test": "focusable-content" }, "Focusable content") } });
 
-			cy.getByData("summary-details-summary").click();
+				cy.getByData("summary-details-summary").click();
 
-			cy.getByData("focusable-content").shouldBeVisible();
-			cy.getByData("focusable-content").focus();
+				cy.getByData("focusable-content").shouldBeVisible();
+				cy.getByData("focusable-content").focus();
 
-			cy.focused().shouldHaveAttribute("data-test", "focusable-content");
+				cy.focused().shouldHaveAttribute("data-test", "focusable-content");
 
-			cy.realPress("Escape");
+				cy.realPress("Escape");
 
-			cy.focused().shouldHaveAttribute("data-test", "summary-details-summary");
+				cy.focused().shouldHaveAttribute("data-test", "summary-details-summary");
+			});
+
+			it("false", () => {
+				mount({ props: { closeWithEscape: false }, slots: { default: h("a", { "href": "#", "data-test": "focusable-content" }, "Focusable content") } });
+
+				cy.getByData("summary-details-summary").click();
+
+				cy.getByData("focusable-content").shouldBeVisible();
+				cy.getByData("focusable-content").focus();
+
+				cy.focused().shouldHaveAttribute("data-test", "focusable-content");
+
+				cy.realPress("Escape");
+
+				cy.focused().shouldHaveAttribute("data-test", "focusable-content");
+			});
 		});
 
-		it("Closing with escape can be disabled", () => {
-			mount({ props: { closeWithEscape: false }, slots: { default: h("a", { "href": "#", "data-test": "focusable-content" }, "Focusable content") } });
+		describe("closeWithClickOutside", () => {
+			it("true", () => {
+				mount({ closeWithClickOutside: true });
 
-			cy.getByData("summary-details-summary").click();
+				createSiblingElement("Click target", "click-target");
 
-			cy.getByData("focusable-content").shouldBeVisible();
-			cy.getByData("focusable-content").focus();
+				cy.getByData("summary-details-summary").click();
 
-			cy.focused().shouldHaveAttribute("data-test", "focusable-content");
+				cy.getByData("summary-details").shouldHaveAttribute("open");
 
-			cy.realPress("Escape");
+				cy.getByData("click-target").click();
 
-			cy.focused().shouldHaveAttribute("data-test", "focusable-content");
+				cy.getByData("summary-details").shouldNotHaveAttribute("open");
+
+				cy.getByData("click-target").then(element => {
+					element.remove();
+				});
+			});
+
+			it("false", () => {
+				mount({ closeWithClickOutside: false });
+
+				createSiblingElement("Click target", "click-target");
+
+				cy.getByData("summary-details-summary").click();
+
+				cy.getByData("summary-details").shouldHaveAttribute("open");
+
+				cy.getByData("click-target").click();
+
+				cy.getByData("summary-details").shouldHaveAttribute("open");
+
+				cy.getByData("click-target").then(element => {
+					element.remove();
+				});
+			});
 		});
 	});
 });
+
+/**
+ * Create an element beside the currently mounted component by adding it to the
+ * body.
+ *
+ * @param  {string}  content
+ *     The content of the element
+ * @param  {string}  selector
+ *     The `data-test` selector for the element
+ */
+function createSiblingElement(content, selector) {
+	cy.get("body").then((body) => {
+		const siblingElement = document.createElement("div");
+
+		siblingElement.setAttribute("data-test", selector);
+		siblingElement.innerText = content;
+
+		body.append(siblingElement);
+	});
+}

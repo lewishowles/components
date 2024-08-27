@@ -22,7 +22,7 @@
  */
 import { computed, onMounted, ref, useAttrs } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { onKeyStroke, useFocusWithin } from "@vueuse/core";
+import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
 
 const props = defineProps({
 	/**
@@ -34,12 +34,21 @@ const props = defineProps({
 	},
 
 	/**
-	 * When pressing escape, the details element is closed. If focus is within
-	 * this component, focus is moved to the summary element.
+	 * Whether to close the details element when pressing escape. If focus is
+	 * within this component, focus is moved to the summary element.
 	 */
 	closeWithEscape: {
 		type: Boolean,
 		default: true,
+	},
+
+	/**
+	 * Whether to close the details element when clicking outside of the
+	 * component. This is best combined with `floating` for menus.
+	 */
+	closeWithClickOutside: {
+		type: Boolean,
+		default: false,
 	},
 
 	/**
@@ -202,6 +211,16 @@ onKeyStroke("Escape", e => {
 	}
 
 	summaryElement.value.focus();
+});
+
+onClickOutside(detailsElement, e => {
+	e.preventDefault();
+
+	if (!isOpen.value || !props.closeWithClickOutside) {
+		return;
+	}
+
+	closeDetails();
 });
 
 /**
