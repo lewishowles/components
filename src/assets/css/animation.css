@@ -1,0 +1,83 @@
+@layer utilities {
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
+	@keyframes fadeInUp {
+		0% {
+			opacity: 0;
+			transform: translateY(0.5rem);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes fadeInRight {
+		0% {
+			opacity: 0;
+			transform: translateX(-0.5rem);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes fadeInDown {
+		0% {
+			opacity: 0;
+			transform: translateY(-0.5rem);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes fadeInLeft {
+		0% {
+			opacity: 0;
+			transform: translateX(0.5rem);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.animate-fade-in, .animate-fade-in-up, .animate-fade-in-right, .animate-fade-in-down, .animate-fade-in-left {
+			opacity: 0;
+			animation-duration: 250ms;
+			animation-timing-function: ease-in-out;
+			animation-fill-mode: forwards;
+		}
+
+		.animate-fade-in {
+			animation-name: fadeIn;
+		}
+
+		.animate-fade-in-up {
+			animation-name: fadeInUp;
+		}
+
+		.animate-fade-in-right {
+			animation-name: fadeInRight;
+		}
+
+		.animate-fade-in-down {
+			animation-name: fadeInDown;
+		}
+
+		.animate-fade-in-left {
+			animation: fadeInLeft;
+		}
+	}
+}

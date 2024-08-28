@@ -1,15 +1,12 @@
+@import url("font.css");
 @import url("buttons.css");
-@import url("positioning.css");
+@import url("animation.css");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-	body {
-		@apply text-sm text-grey-600;
-	}
-
 	svg {
 		height: 1em;
 		width: 1em;
@@ -19,8 +16,12 @@
 		@apply transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-800 focus-visible:ring-offset-2;
 	}
 
-	a[href] {
+	a {
 		@apply text-purple-800 underline underline-offset-4;
 		@apply hocus:text-purple-900 hocus:no-underline;
+	}
+
+	img {
+		max-width: 100%;
 	}
 }
