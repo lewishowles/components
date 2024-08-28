@@ -115,6 +115,13 @@ When floating, whether to align to the dropdown to the start or end of the summa
 
 Any classes to add to the summary element, allowing styling to wrap both the summary and icons.
 
+### `detailsClasses`
+
+- type: `string`
+- default: `null`
+
+Any classes to add to the details content wrapper.
+
 ### `iconClasses`
 
 - type: `string`

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.0 - 2024-08-28
+
+### New features
+
+- `summary-details`: A new `detailsClasses` prop has been added to allow greater control of the appearance of the details content.
+
 ## 0.6.0 - 2024-08-27
 
 ### New features

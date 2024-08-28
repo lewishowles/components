@@ -8,7 +8,7 @@
 			<component :is="currentIcon" v-if="includeIcon && !iconStart" :class="iconClasses" data-test="summary-details-icon-end" />
 		</summary>
 
-		<div :class="{ 'absolute top-full': floating, 'start-0': alignStart, 'end-0': !alignStart }" data-test="summary-details-content">
+		<div v-show="isOpen" :class="[{ 'absolute top-full': floating, 'start-0': alignStart, 'end-0': !alignStart }, detailsClasses]" data-test="summary-details-content">
 			<slot v-bind="{ isOpen, icon: currentIcon }" />
 		</div>
 	</details>
@@ -118,6 +118,14 @@ const props = defineProps({
 	 * the summary and icons.
 	 */
 	summaryClasses: {
+		type: String,
+		default: null,
+	},
+
+	/**
+	 * Any classes to add to the details content.
+	 */
+	detailsClasses: {
 		type: String,
 		default: null,
 	},
