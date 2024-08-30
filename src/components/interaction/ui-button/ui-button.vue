@@ -106,9 +106,10 @@ const computedIconClasses = computed(() => {
 
 	const baseStrokeClass = "stroke-current";
 	const baseSizeClass = "size-[0.857em]";
+	const defaultClasses = [baseStrokeClass, baseSizeClass];
 
 	if (!isNonEmptyString(props.iconClasses)) {
-		return [baseStrokeClass, baseSizeClass];
+		return isReacting.value ? [...defaultClasses, "invisible"] : defaultClasses;
 	}
 
 	const classes = props.iconClasses.split(" ");
@@ -119,6 +120,10 @@ const computedIconClasses = computed(() => {
 
 	if (!classes.some(className => className.includes("size-"))) {
 		classes.push(baseSizeClass);
+	}
+
+	if (isReacting.value) {
+		classes.push("invisible");
 	}
 
 	return classes;

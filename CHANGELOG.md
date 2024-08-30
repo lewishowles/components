@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.1 - #
+
+### Fixes
+
+- `ui-button`: Icons are now correctly made invisible when a button is "reacting".
+
 ## 0.8.0 - 2024-08-30
 
 ### New components

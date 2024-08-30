@@ -40,7 +40,7 @@
 			</template>
 
 			<div class="flex flex-wrap gap-6">
-				<ui-button ref="reactiveButtonRef" class="button--muted" v-bind="{ reactive: true }" @click="reacted = true">
+				<ui-button ref="reactiveButtonRef" class="button--muted" v-bind="{ iconStart: 'icon-user', reactive: true }" @click="reacted = true">
 					Reactive button
 				</ui-button>
 

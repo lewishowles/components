@@ -27,14 +27,16 @@ describe("ui-button", () => {
 	});
 
 	it("Reactive buttons show a loading indicator when activated", () => {
-		mount({ reactive: "true" });
+		mount({ reactive: "true", iconEnd: "icon-chevron-right" });
 
 		cy.getByData("ui-button-label").shouldBeVisible();
+		cy.getByData("ui-button-icon-end").shouldBeVisible();
 		cy.getByData("ui-button-loading").shouldNotBeVisible();
 
 		cy.getByData("ui-button").click();
 
 		cy.getByData("ui-button-label").shouldNotBeVisible();
+		cy.getByData("ui-button-icon-end").shouldNotBeVisible();
 		cy.getByData("ui-button-loading").shouldBeVisible();
 	});
 });
