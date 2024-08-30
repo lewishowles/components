@@ -44,6 +44,7 @@ You can find more information about each component on its relevant docs page.
 - [ui-button](/src/components/interaction/ui-button/ui-button.md)
 - [link-tag](/src/components/interaction/link-tag/link-tag.md)
 - [summary-details](/src/components/interaction/summary-details/summary-details.md)
+- [loading-indicator](/src/components/interaction/loading-indicator/loading-indicator.md)
 
 ### Messaging
 

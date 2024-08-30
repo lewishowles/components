@@ -13,7 +13,7 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("summary-details-preview");
+const selectedPreview = ref("loading-indicator-preview");
 
 const previewOptions = [
 	{ label: "button-group", value: "button-group-preview" },
@@ -21,6 +21,7 @@ const previewOptions = [
 	{ label: "form", value: "form-preview" },
 	{ label: "form-input", value: "form-input-preview" },
 	{ label: "link-tag", value: "link-tag-preview" },
+	{ label: "loading-indicator", value: "loading-indicator-preview" },
 	{ label: "pill-badge", value: "pill-badge-preview" },
 	{ label: "radio-group", value: "radio-group-preview" },
 	{ label: "summary-details", value: "summary-details-preview" },

@@ -4,6 +4,7 @@ import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
 import FormInput from "./form/form-input/form-input.vue";
 import LinkTag from "./interaction/link-tag/link-tag.vue";
+import LoadingIndicator from "./interaction/loading-indicator/loading-indicator.vue";
 import PillBadge from "./messaging/pill-badge/pill-badge.vue";
 import RadioGroup from "./form/radio-group/radio-group.vue";
 import SummaryDetails from "./interaction/summary-details/summary-details.vue";
@@ -69,6 +70,7 @@ export default {
 	IconSun,
 	IconUser,
 	LinkTag,
+	LoadingIndicator,
 	PillBadge,
 	RadioGroup,
 	SummaryDetails,

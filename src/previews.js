@@ -7,6 +7,7 @@ import DonutChartPreview from "@/components/chart/donut-chart/donut-chart-previe
 import FormInputPreview from "@/components/form/form-input/form-input-preview.vue";
 import FormPreview from "@/components/form/form-preview.vue";
 import LinkTagPreview from "@/components/interaction/link-tag/link-tag-preview.vue";
+import LoadingIndicatorPreview from "@/components/interaction/loading-indicator/loading-indicator-preview.vue";
 import PillBadgePreview from "@/components/messaging/pill-badge/pill-badge-preview.vue";
 import RadioGroupPreview from "@/components/form/radio-group/radio-group-preview.vue";
 import SummaryDetailsPreview from "@/components/interaction/summary-details/summary-details-preview.vue";
@@ -21,6 +22,7 @@ const previewLibrary = {
 		app.component("FormLayout", FormLayout);
 		app.component("FormPreview", FormPreview);
 		app.component("LinkTagPreview", LinkTagPreview);
+		app.component("LoadingIndicatorPreview", LoadingIndicatorPreview);
 		app.component("PillBadgePreview", PillBadgePreview);
 		app.component("PreviewSection", PreviewSection);
 		app.component("PreviewWrapper", PreviewWrapper);
