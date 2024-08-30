@@ -1,10 +1,12 @@
 # Changelog
 
-## 0.7.0 - 2024-08-28
+## 0.8.0 - 2024-08-30
 
 ### New components
 
 - [`loading-indicator`](/src/components/interaction/loading-indicator/loading-indicator.md) - A simple indicator to represent loading data.
+
+## 0.7.0 - 2024-08-28
 
 ### New features
 
