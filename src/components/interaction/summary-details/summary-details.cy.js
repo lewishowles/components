@@ -148,7 +148,7 @@ describe("summary-details", () => {
  *     The `data-test` selector for the element
  */
 function createSiblingElement(content, selector) {
-	cy.get("body").then((body) => {
+	cy.get("body").then(body => {
 		const siblingElement = document.createElement("div");
 
 		siblingElement.setAttribute("data-test", selector);
