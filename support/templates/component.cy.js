@@ -4,7 +4,9 @@ import { createMount } from "@cypress/support/mount";
 const mount = createMount({{PASCAL_CASE_NAME}});
 
 describe("{{COMPONENT_NAME}}", () => {
-	it("renders", () => {
+	it("A component is rendered", () => {
 		mount();
+
+		cy.getByData("{{COMPONENT_NAME}}").shouldBeVisible();
 	});
 });
