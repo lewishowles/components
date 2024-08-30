@@ -6,18 +6,23 @@
 # Scaffold a new component for the component library, creating basic versions of
 # the files required to get up and running quickly.
 #
-# Usage: ./support/scaffold-component.sh <component-name> [folder-name]
+# Usage: ./support/scaffold-component.sh <component-name> --folder [folder-name] --fragment [parent-component]
 #
 # Parameters:
 #   <component-name>  (required)
 #     The name of the component in kebab-case. Remember that to follow Vue
 #     component naming conventions and avoid confusion with native elements, all
 #     component names should contain at least two words.
-#   [folder-name]  (optional)
-#     The name of the folder where the component will be created.
+#   --folder [folder-name]  (optional)
+#     The name of the folder where the component will be created in the root
+#     components folder.
+#   --fragment [parent-component]
+#     The name of the parent component to which this component will be a
+#     fragment. A fragment component is one that doesn't really stand alone, but
+#     is part of a larger whole, and is mostly used for organisation.
 #
 # Example:
-#   ./support/scaffold-component.sh data-table data
+#   ./support/scaffold-component.sh data-table --folder data
 #
 # Recommended alias:
 #   scaffold:component
@@ -28,12 +33,35 @@ source "$SCRIPT_DIR/colours.sh"
 
 if [ -z "$1" ]; then
 	echo -e "\nPlease provide a ${BLUE}component-name${RESET_COLOUR} for the component."
-	echo -e "Usage: ${PURPLE}./support/scaffold-component.sh${RESET_COLOUR} ${BLUE}<component-name>${RESET_COLOUR} [folder-name]"
+	echo -e "Usage: ${PURPLE}./support/scaffold-component.sh${RESET_COLOUR} ${BLUE}<component-name>${RESET_COLOUR} [--folder <folder-name>] [--fragment <parent-component>]"
 	exit 1
 fi
 
+# Determine the passed parameters
 COMPONENT_NAME="$1"
-FOLDER_PATH="${2:-}"
+shift
+
+FOLDER_PATH=""
+PARENT_COMPONENT=""
+
+while [[ "$#" -gt 0 ]]; do
+	case $1 in
+		--folder)
+			FOLDER_PATH="$2"
+			shift
+			;;
+		--fragment)
+			PARENT_COMPONENT="$2"
+			shift
+			;;
+		*)
+			echo -e "\nUnknown parameter passed: $1"
+			echo -e "Usage: ${PURPLE}./support/scaffold-component.sh${RESET_COLOUR} ${BLUE}<component-name>${RESET_COLOUR} [--folder <folder-name>] [--fragment <parent-component>]"
+			exit 1
+			;;
+	esac
+    shift
+done
 
 # The base path is where the component will be created.
 BASE_PATH="src/components"
@@ -41,6 +69,11 @@ BASE_PATH="src/components"
 # If a folder path is provided, append it to the base path
 if [ -n "$FOLDER_PATH" ]; then
     BASE_PATH="$BASE_PATH/$FOLDER_PATH"
+fi
+
+# If a parent component is provided, append it to the base path and add "fragments"
+if [ -n "$PARENT_COMPONENT" ]; then
+	BASE_PATH="$BASE_PATH/$PARENT_COMPONENT/fragments"
 fi
 
 mkdir -p "$BASE_PATH/$COMPONENT_NAME"

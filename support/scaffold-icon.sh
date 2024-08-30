@@ -15,7 +15,7 @@
 #     with "icon-".
 #
 # Example:
-#   ./support/scaffold-icon.sh icon- data
+#   ./support/scaffold-icon.sh icon-chart
 #
 # Recommended alias:
 #   scaffold:icon
