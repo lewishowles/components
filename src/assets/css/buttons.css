@@ -15,5 +15,8 @@
 		@apply bg-white ring-1 ring-inset ring-grey-200;
 		@apply hocus:bg-grey-50 hocus:ring-grey-300;
 		@apply active:bg-grey-100 active:ring-grey-400;
+		@apply dark:bg-white/20 dark:ring-0;
+		@apply dark:hocus:bg-white/30;
+		@apply dark:active:bg-white/40
 	}
 }

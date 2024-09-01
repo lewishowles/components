@@ -1,6 +1,12 @@
 # Changelog
 
-## 0.8.1 - #
+## 0.9.0 - #
+
+### Dark mode
+
+The following components now support dark mode.
+
+- `pill-badge`
 
 ### Fixes
 

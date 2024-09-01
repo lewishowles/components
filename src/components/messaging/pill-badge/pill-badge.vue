@@ -51,25 +51,25 @@ const haveIconEnd = computed(() => isNonEmptyString(props.iconEnd));
 const themeClasses = computed(() => {
 	switch (props.colour) {
 		case "red":
-			return "bg-red-50 text-red-700 ring-red-200";
+			return "bg-red-50 text-red-700 ring-red-200 dark:bg-red-500/50 dark:text-red-200 dark:ring-0";
 		case "orange":
-			return "bg-orange-50 text-orange-700 ring-orange-200";
+			return "bg-orange-50 text-orange-700 ring-orange-200 dark:bg-orange-500/50 dark:text-orange-200 dark:ring-0";
 		case "yellow":
-			return "bg-yellow-50 text-yellow-700 ring-yellow-200";
+			return "bg-yellow-50 text-yellow-700 ring-yellow-200 dark:bg-yellow-500/50 dark:text-yellow-200 dark:ring-0";
 		case "green":
-			return "bg-green-50 text-green-700 ring-green-200";
+			return "bg-green-50 text-green-700 ring-green-200 dark:bg-green-500/50 dark:text-green-200 dark:ring-0";
 		case "teal":
-			return "bg-teal-50 text-teal-700 ring-teal-200";
+			return "bg-teal-50 text-teal-700 ring-teal-200 dark:bg-teal-500/50 dark:text-teal-200 dark:ring-0";
 		case "blue":
-			return "bg-blue-50 text-blue-700 ring-blue-200";
+			return "bg-blue-50 text-blue-700 ring-blue-200 dark:bg-blue-500/50 dark:text-blue-200 dark:ring-0";
 		case "indigo":
-			return "bg-indigo-50 text-indigo-700 ring-indigo-200";
+			return "bg-indigo-50 text-indigo-700 ring-indigo-200 dark:bg-indigo-500/50 dark:text-indigo-200 dark:ring-0";
 		case "purple":
-			return "bg-purple-50 text-purple-700 ring-purple-200";
+			return "bg-purple-50 text-purple-700 ring-purple-200 dark:bg-purple-500/50 dark:text-purple-200 dark:ring-0";
 		case "pink":
-			return "bg-pink-50 text-pink-700 ring-pink-200";
+			return "bg-pink-50 text-pink-700 ring-pink-200 dark:bg-pink-500/50 dark:text-pink-200 dark:ring-0";
 		default:
-			return "bg-grey-50 text-grey-700 ring-grey-200";
+			return "bg-grey-50 text-grey-700 ring-grey-200 dark:bg-grey-500/50 dark:text-grey-200 dark:ring-0";
 	}
 });
 </script>
