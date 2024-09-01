@@ -5,6 +5,7 @@
 ### Fixes
 
 - `ui-button`: Icons are now correctly made invisible when a button is "reacting".
+- `icon-clock`: Removed inadvertent built-in colour.
 
 ## 0.8.0 - 2024-08-30
 
