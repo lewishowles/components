@@ -1,5 +1,5 @@
 <template>
-	<fieldset class="flex flex-col gap-2" v-bind="{ 'aria-describedby': describedBy }" data-test="radio-group">
+	<fieldset class="flex flex-col gap-1" v-bind="{ 'aria-describedby': describedBy }" data-test="radio-group">
 		<form-label v-bind="{ tag: 'legend' }" class="mb-2">
 			<slot />
 		</form-label>

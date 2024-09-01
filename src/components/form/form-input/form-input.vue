@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col gap-2" data-test="form-input">
+	<div class="flex flex-col gap-1" data-test="form-input">
 		<form-label v-bind="{ id: inputId }">
 			<slot />
 		</form-label>
