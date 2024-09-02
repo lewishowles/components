@@ -15,8 +15,14 @@
 			<input
 				ref="inputElement"
 				v-model="model"
-				class="text-gray-900 block w-full rounded-md px-3 py-2 shadow-sm outline-none ring-1 ring-inset ring-grey-300 transition-shadow placeholder:text-grey-400 focus:ring-2 focus:ring-purple-600"
-				:class="{ 'pl-10': haveIconStart, 'pr-10': haveIconEnd, 'rounded-l-none': haveTextStart, 'rounded-r-none': haveTextEnd }"
+				class="form-input"
+				:class="{
+					'pl-10': haveIconStart,
+					'pr-10': haveIconEnd,
+					'rounded-l-none': haveTextStart,
+					'rounded-r-none': haveTextEnd,
+					'form-input--error': haveError,
+				}"
 				v-bind="{
 					id: inputId,
 					placeholder,
@@ -53,8 +59,6 @@
  *
  * `error` and `help` slots exist for additional descriptive text.
  */
-import { computed, useSlots } from "vue";
-import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { computed, ref, useSlots } from "vue";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
@@ -134,6 +138,8 @@ const haveTextStart = computed(() => isNonEmptySlot(slots["text-start"]));
 const haveTextEnd = computed(() => isNonEmptySlot(slots["text-end"]));
 // Whether any text (start or end) has been provided
 const haveText = computed(() => haveTextStart.value || haveTextEnd.value);
+// Whether error text has been provided.
+const haveError = computed(() => isNonEmptySlot(slots.error));
 
 /**
  * Focus on our input.
