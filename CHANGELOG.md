@@ -8,6 +8,10 @@ The following components now support dark mode.
 
 - `pill-badge`
 
+### New features
+
+- `form-input`: A new `triggerFocus` method is exposed to allow focusing the underlying input.
+
 ### Fixes
 
 - `ui-button`: Icons are now correctly made invisible when a button is "reacting".

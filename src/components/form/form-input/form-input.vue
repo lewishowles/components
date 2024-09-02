@@ -13,6 +13,7 @@
 			</div>
 
 			<input
+				ref="inputElement"
 				v-model="model"
 				class="text-gray-900 block w-full rounded-md px-3 py-2 shadow-sm outline-none ring-1 ring-inset ring-grey-300 transition-shadow placeholder:text-grey-400 focus:ring-2 focus:ring-purple-600"
 				:class="{ 'pl-10': haveIconStart, 'pr-10': haveIconEnd, 'rounded-l-none': haveTextStart, 'rounded-r-none': haveTextEnd }"
@@ -54,6 +55,8 @@
  */
 import { computed, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
+import { computed, ref, useSlots } from "vue";
+import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
 import useInputId from "@/components/form/composables/use-input-id";
@@ -113,6 +116,8 @@ const model = defineModel({
 	type: String,
 });
 
+// A reference to the input, which allows us to trigger focus on it.
+const inputElement = ref(null);
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
@@ -129,4 +134,15 @@ const haveTextStart = computed(() => isNonEmptySlot(slots["text-start"]));
 const haveTextEnd = computed(() => isNonEmptySlot(slots["text-end"]));
 // Whether any text (start or end) has been provided
 const haveText = computed(() => haveTextStart.value || haveTextEnd.value);
+
+/**
+ * Focus on our input.
+ */
+function triggerFocus() {
+	runComponentMethod(inputElement.value, "focus");
+}
+
+defineExpose({
+	triggerFocus,
+});
 </script>
