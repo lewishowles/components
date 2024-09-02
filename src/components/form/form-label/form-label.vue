@@ -11,7 +11,7 @@
 		An ID for the corresponding input is required when using the tag `label`.
 	</div>
 
-	<component :is="tag" v-bind="{ for: id, ...$attrs }" :class="{ 'sr-only': hidden, 'font-semibold text-grey-900': styled }" data-test="form-label">
+	<component :is="tag" v-bind="{ for: id, ...$attrs }" :class="{ 'sr-only': hidden, 'font-semibold text-grey-950 dark:text-grey-50': styled }" data-test="form-label">
 		<slot />
 	</component>
 </template>

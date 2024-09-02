@@ -12,6 +12,11 @@ The following components now support dark mode.
 
 - `form-input`: A new `triggerFocus` method is exposed to allow focusing the underlying input.
 
+### Changes
+
+- `form-input`: Styling is now controlled by `form-input` and `form-input--error` classes.
+- `radio-group`: Styling of radio buttons is now controlled by a `form-radio` class.
+
 ### Fixes
 
 - `ui-button`: Icons are now correctly made invisible when a button is "reacting".

@@ -12,7 +12,7 @@
 			<div class="flex" :class="{ 'gap-10': inline, 'flex-col gap-2': !inline }">
 				<template v-for="option in internalOptions" :key="option.id">
 					<div class="flex items-center gap-2">
-						<input v-model="model" type="radio" class="size-4 appearance-none rounded-full outline-none ring-1 ring-grey-300 transition-all checked:bg-current checked:text-purple-800 checked:ring-current focus:ring-2 focus:ring-purple-800 checked:focus:ring-offset-2" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
+						<input v-model="model" type="radio" class="form-radio" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
 
 						<form-label v-bind="{ id: option.id, styled: false }" class="leading-6">
 							{{ option.label }}
