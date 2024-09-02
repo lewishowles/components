@@ -3,6 +3,7 @@ import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrappe
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
 import FormInput from "./form/form-input/form-input.vue";
+import FormLayout from "./form/form-layout/form-layout.vue";
 import LinkTag from "./interaction/link-tag/link-tag.vue";
 import LoadingIndicator from "./interaction/loading-indicator/loading-indicator.vue";
 import PillBadge from "./messaging/pill-badge/pill-badge.vue";
@@ -44,6 +45,7 @@ export default {
 	DonutChart,
 	FormActions,
 	FormInput,
+	FormLayout,
 	IconArrowDown,
 	IconArrowLeft,
 	IconArrowRight,
