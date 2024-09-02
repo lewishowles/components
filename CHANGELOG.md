@@ -7,6 +7,7 @@
 The following components now support dark mode.
 
 - `pill-badge`
+- `loading-indicator`
 
 ### New features
 
