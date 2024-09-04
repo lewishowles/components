@@ -72,19 +72,19 @@ Reset the reactive state of a reactive button.
 ### Reactive
 
 ```html
-<ui-button ref="saveButtonRef" v-bind="{ reactive: true }" @click="save">
+<ui-button ref="saveButton" v-bind="{ reactive: true }" @click="save">
 	Save user details
 </ui-button>
 ```
 
 ```javascript
-const saveButtonRef = ref(null);
+const saveButton = ref("saveButton");
 
 // ...
 
 function save() {
 	// ...
 
-	saveButtonRef.value.reset();
+	saveButton.value.reset();
 }
 ```

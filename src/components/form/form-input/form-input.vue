@@ -59,7 +59,7 @@
  *
  * `error` and `help` slots exist for additional descriptive text.
  */
-import { computed, ref, useSlots } from "vue";
+import { computed, useSlots, useTemplateRef } from "vue";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
@@ -121,7 +121,7 @@ const model = defineModel({
 });
 
 // A reference to the input, which allows us to trigger focus on it.
-const inputElement = ref(null);
+const inputElement = useTemplateRef("inputElement");
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.

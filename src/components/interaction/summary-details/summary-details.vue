@@ -20,7 +20,7 @@
  * such as custom icons, and allows a simple way of having content that can be
  * toggled. Suitable for items such as FAQs or even dropdown menus.
  */
-import { computed, onMounted, ref, useAttrs } from "vue";
+import { computed, onMounted, ref, useAttrs, useTemplateRef } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
 
@@ -145,9 +145,9 @@ const attrs = useAttrs();
 const isOpen = ref(props.open);
 // A reference to the details element, from which we can determine the current
 // "open" state.
-const detailsElement = ref(null);
+const detailsElement = useTemplateRef("detailsElement");
 // A reference to the summary element, with which we can manage focus.
-const summaryElement = ref(null);
+const summaryElement = useTemplateRef("summaryElement");
 // Whether focus is currently within our details component. If it isn't, we will close our
 const { focused: hasFocus } = useFocusWithin(detailsElement);
 

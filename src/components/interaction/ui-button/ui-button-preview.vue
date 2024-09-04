@@ -40,7 +40,7 @@
 			</template>
 
 			<div class="flex flex-wrap gap-6">
-				<ui-button ref="reactiveButtonRef" class="button--muted" v-bind="{ iconStart: 'icon-user', reactive: true }" @click="reacted = true">
+				<ui-button ref="reactiveButton" class="button--muted" v-bind="{ iconStart: 'icon-user', reactive: true }" @click="reacted = true">
 					Reactive button
 				</ui-button>
 
@@ -57,14 +57,14 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 
 const reacted = ref(false);
-const reactiveButtonRef = ref(null);
+const reactiveButton = useTemplateRef("reactiveButton");
 
 function reset() {
 	reacted.value = false;
 
-	reactiveButtonRef.value.reset();
+	reactiveButton.value.reset();
 }
 </script>
