@@ -3,11 +3,11 @@
 		<path
 			v-for="(slice, index) in slices"
 			:key="slice.id"
-			class="origin-center"
+			class="origin-center fill-current"
+			:class="getNextColour(index, computedChartColours)"
 			v-bind="{
 				d: slice.commands,
 				transform: `rotate(${slice.rotation})`,
-				fill: getNextColour(index)
 			}"
 			data-test="donut-chart-segment"
 		/>
@@ -15,9 +15,8 @@
 </template>
 
 <script setup>
-import { chartColours } from "@lewishowles/helpers/chart";
 import { computed } from "vue";
-import { getNextIndex } from "@lewishowles/helpers/array";
+import { brightColours, chartColours, getNextColour } from "@lewishowles/helpers/chart";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNumber } from "@lewishowles/helpers/number";
 import { nanoid } from "nanoid";
@@ -33,6 +32,16 @@ const props = defineProps({
 	values: {
 		type: Array,
 		required: true,
+	},
+
+	/**
+	 * Whether to use the brighter set of chart colours. Use with caution, as
+	 * depending on the number of slices, adjacent slices may not be
+	 * sufficiently distinct.
+	 */
+	colourful: {
+		type: Boolean,
+		default: false,
 	},
 });
 
@@ -91,6 +100,15 @@ const slices = computed(() => {
 	});
 });
 
+// The chosen chart colours.
+const computedChartColours = computed(() => {
+	if (props.colourful) {
+		return brightColours;
+	}
+
+	return chartColours;
+});
+
 /**
  * For a given value, retrieve the commands to draw a slice of the donut chart.
  *
@@ -147,15 +165,5 @@ function getCircleCoordinateForAngle(angle, radius) {
 	const coordinateY = -radius * Math.cos(angle * Math.PI / 180) + 50;
 
 	return `${coordinateX} ${coordinateY}`;
-}
-
-/**
- * For a given slice index, retrieve the appropriate chart colour.
- *
- * @param  {numbers}  index
- *     The index of the chart slice.
- */
-function getNextColour(index) {
-	return chartColours[getNextIndex(index - 1, chartColours, { wrap: true })];
 }
 </script>
