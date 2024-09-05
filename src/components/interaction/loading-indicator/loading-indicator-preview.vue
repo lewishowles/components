@@ -6,10 +6,14 @@
 
 		<preview-section>
 			<template #title>
-				Basic indicator
+				Basic indicators
 			</template>
 
 			<loading-indicator>
+				Loading data…
+			</loading-indicator>
+
+			<loading-indicator v-bind="{ large: true }">
 				Loading data…
 			</loading-indicator>
 		</preview-section>

@@ -13,6 +13,7 @@ The following components now support dark mode.
 
 - `form-input`: A new `triggerFocus` method is exposed to allow focusing the underlying input.
 - `donut-chart`: A new `colourful` mode uses the brighter set of chart colours. Use with caution.
+- `loading-indicator`: A new `large` prop allows for showing a larger indicator.
 
 ### Changes
 
