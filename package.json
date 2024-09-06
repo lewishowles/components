@@ -28,7 +28,7 @@
 		"lint": "eslint . --fix"
 	},
 	"dependencies": {
-		"@lewishowles/helpers": "^0.7.0",
+		"@lewishowles/helpers": "^0.7.1",
 		"@lewishowles/testing": "^0.6.0",
 		"@vueuse/core": "^11.0.3",
 		"nanoid": "^5.0.7",
