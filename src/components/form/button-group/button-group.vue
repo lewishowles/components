@@ -3,19 +3,21 @@
 		<slot name="default" />
 
 		<template #options="{ options, name }">
-			<div class="mt-2 flex">
+			<div class="mt-1 flex">
 				<div v-for="option in options" :key="option.id">
 					<input v-model="model" type="radio" class="peer sr-only" v-bind="{ id: option.id, value: option.value, name }" />
 
 					<form-label
 						v-bind="{ id: option.id, styled: false }"
-						class="cursor-pointer border border-grey-300 px-3 py-2 transition-all hover:bg-grey-50 hover:ring-grey-400 peer-checked:border-purple-800 peer-checked:bg-purple-800 peer-checked:text-white peer-focus:ring-2 peer-focus:ring-purple-800 peer-focus:ring-offset-2"
+						class="button-group flex items-center gap-2"
 						:class="{
-							'border-s-0': !option.first,
-							'rounded-s-lg': option.first,
-							'rounded-e-lg': option.last,
+							'button-group--middle': !option.first,
+							'button-group--first': option.first,
+							'button-group--last': option.last,
 						}"
 					>
+						<component :is="option.icon" v-if="option.icon" />
+
 						{{ option.label }}
 					</form-label>
 				</div>
