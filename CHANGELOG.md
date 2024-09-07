@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.0 - 2024-09-06
+## 0.9.0 - 2024-09-07
 
 ### Dark mode
 
@@ -8,6 +8,7 @@ The following components now support dark mode.
 
 - `pill-badge`
 - `loading-indicator`
+- `donut-chart`
 
 ### New features
 
@@ -24,6 +25,7 @@ The following components now support dark mode.
 
 - `ui-button`: Icons are now correctly made invisible when a button is "reacting".
 - `icon-clock`: Removed inadvertent built-in colour.
+- `radio-group`: `inline` now only takes effect within containers that are at least 320px wide.
 
 ## 0.8.0 - 2024-08-30
 

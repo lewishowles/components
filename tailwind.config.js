@@ -1,4 +1,5 @@
 import colors from "tailwindcss/colors";
+import containerQueriesPlugin from "@tailwindcss/container-queries";
 import defaultTheme from "tailwindcss/defaultTheme";
 import hocusPlugin from "tailwindcss-hocus";
 
@@ -37,6 +38,9 @@ export default {
 			pink: colors.pink,
 		},
 	},
-	plugins: [hocusPlugin],
+	plugins: [
+		hocusPlugin,
+		containerQueriesPlugin,
+	],
 };
 

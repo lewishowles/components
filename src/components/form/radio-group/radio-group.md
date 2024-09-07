@@ -60,6 +60,8 @@ Any ID to apply to this field. If an ID is not provided, one will be generated a
 
 Whether to display options inline (horizontally). This is only recommended when there are two to three options. Any more than that, and vertical display is more clear for the user.
 
+Note that this only takes effect when the radio buttons are in a _container_ that is at least 320px wide.
+
 ## Examples
 
 ### Basic usage
