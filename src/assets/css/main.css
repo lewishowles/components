@@ -25,4 +25,12 @@
 	img {
 		max-width: 100%;
 	}
+
+	summary::marker {
+		content: "";
+	}
+
+	summary::-webkit-details-marker {
+		display: none;
+	}
 }
