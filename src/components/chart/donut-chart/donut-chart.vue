@@ -3,7 +3,7 @@
 		<path
 			v-for="(slice, index) in slices"
 			:key="slice.id"
-			class="origin-center fill-current"
+			class="animate-fade-in delay origin-center fill-current"
 			:class="getNextColour(index, computedChartColours)"
 			v-bind="{
 				d: slice.commands,
