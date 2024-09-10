@@ -38,7 +38,7 @@ BASE_PATH="src/components/icon"
 mkdir -p "$BASE_PATH/$ICON_NAME"
 cd "$BASE_PATH/$ICON_NAME"
 
-# Generate a PascalCase version of our name
+# Generate a PascalCase version of our name, used within component templates.
 PASCAL_CASE_NAME=$(echo "$ICON_NAME" | awk -F- '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1' OFS='')
 
 # Generate our scaffold files from templates.
