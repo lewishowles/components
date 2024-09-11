@@ -1,5 +1,5 @@
 <template>
-	<svg xmlns="http://www.w3.org/2000/svg" role="img" v-bind="{ viewBox }">
+	<svg xmlns="http://www.w3.org/2000/svg" v-bind="{ viewBox }" role="presentation">
 		<slot />
 	</svg>
 </template>
