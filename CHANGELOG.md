@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.9.1 - #
+## 0.9.2 - 2024-10-06
+
+- `link-tag`: Fix an issue where icon spacing would become disproportionate based on font size
+- `form-error`: Fix styling issues present in dark mode
+
+## 0.9.1 - 2024-09-11
 
 ### Fixes
 
