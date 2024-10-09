@@ -59,6 +59,18 @@ Any additional attributes to pass to the input itself, such as `required` or `au
 </form-input>
 ```
 
+### With icon
+
+```html
+<form-input v-model="username">
+	Username
+
+	<template #prefix>
+		<icon-user />
+	</template>
+</form-input>
+```
+
 ### With help
 
 ```html
