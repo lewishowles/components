@@ -10,9 +10,11 @@
 			</template>
 
 			<form-layout class="max-w-sm">
-				<form-input v-model="inputValue">
-					Your name
+				<form-input v-model="name">
+					Your name (modelled)
 				</form-input>
+
+				<pre>Value: {{ name }}</pre>
 
 				<form-input>
 					Your name
@@ -52,16 +54,12 @@
 			</template>
 
 			<form-layout class="max-w-sm">
-				<form-input v-bind="{ iconStart: 'icon-user' }">
-					Icon start
+				<form-input>
+					Prefix icon
 
-					<template #help>
-						With help text
+					<template #prefix>
+						<icon-user />
 					</template>
-				</form-input>
-
-				<form-input v-bind="{ iconEnd: 'icon-email' }">
-					Icon end
 
 					<template #help>
 						With help text
@@ -69,9 +67,21 @@
 				</form-input>
 
 				<form-input>
-					Text start
+					Suffix icon
 
-					<template #text-start>
+					<template #suffix>
+						<icon-email />
+					</template>
+
+					<template #help>
+						With help text
+					</template>
+				</form-input>
+
+				<form-input>
+					Prefix text
+
+					<template #prefix>
 						https://
 					</template>
 
@@ -81,9 +91,9 @@
 				</form-input>
 
 				<form-input>
-					Text end
+					Suffix text
 
-					<template #text-end>
+					<template #suffix>
 						mph
 					</template>
 
@@ -95,3 +105,9 @@
 		</preview-section>
 	</preview-wrapper>
 </template>
+
+<script setup>
+import { ref } from "vue";
+
+const name = ref("");
+</script>

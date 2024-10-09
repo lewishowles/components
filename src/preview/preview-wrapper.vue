@@ -3,7 +3,7 @@
 		<div class="guides-horizontal mx-auto max-w-screen-xl">
 			<div class="guides-vertical">
 				<div class="p-10">
-					<h1 class="mb-6 inline-block rounded-md bg-blue-50 px-2 py-1 text-xl font-bold text-blue-800">
+					<h1 class="mb-6 inline-block rounded-md bg-blue-50 px-2 py-1 text-xl font-bold text-blue-800 dark:bg-blue-500/50 dark:text-blue-200">
 						<slot name="title" />
 					</h1>
 

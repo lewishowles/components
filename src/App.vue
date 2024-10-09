@@ -13,7 +13,7 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("loading-indicator-preview");
+const selectedPreview = ref("form-input-preview");
 
 const previewOptions = [
 	{ label: "button-group", value: "button-group-preview" },

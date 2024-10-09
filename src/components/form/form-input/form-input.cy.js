@@ -1,5 +1,8 @@
-import FormInput from "./form-input.vue";
 import { createMount } from "@cypress/support/mount";
+import { h } from "vue";
+import FormInput from "./form-input.vue";
+import IconChevronLeft from "@/components/icon/icon-chevron-left/icon-chevron-left.vue";
+import IconChevronRight from "@/components/icon/icon-chevron-right/icon-chevron-right.vue";
 
 const defaultProps = { id: "id-abc" };
 const defaultSlots = { default: "Your name" };
@@ -71,27 +74,27 @@ describe("form-input", () => {
 
 	describe("Decoration", () => {
 		it("An icon can be added to the start", () => {
-			mount({ iconStart: "icon-chevron-left" });
+			mount({ slots: { prefix: h(IconChevronLeft) } });
 
-			cy.getByData("form-input-icon-start").shouldBeVisible();
+			cy.getByData("form-prefix").find("svg").shouldBeVisible();
 		});
 
 		it("An icon can be added to the end", () => {
-			mount({ iconEnd: "icon-chevron-right" });
+			mount({ slots: { suffix: h(IconChevronRight) } });
 
-			cy.getByData("form-input-icon-end").shouldBeVisible();
+			cy.getByData("form-suffix").find("svg").shouldBeVisible();
 		});
 
 		it("Text can be added to the start", () => {
-			mount({ slots: { "text-start": "https://" } });
+			mount({ slots: { prefix: "https://" } });
 
-			cy.getByData("form-input-text-start").shouldBeVisible();
+			cy.getByData("form-prefix").shouldBeVisible().shouldHaveText("https://");
 		});
 
 		it("Text can be added to the end", () => {
-			mount({ slots: { "text-end": "mph" } });
+			mount({ slots: { suffix: "mph" } });
 
-			cy.getByData("form-input-text-end").shouldBeVisible();
+			cy.getByData("form-suffix").shouldBeVisible().shouldHaveText("mph");
 		});
 	});
 });

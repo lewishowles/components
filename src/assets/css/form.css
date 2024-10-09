@@ -1,11 +1,33 @@
 @layer components {
-	.form-input {
-		@apply block w-full rounded-md px-3 py-2 shadow-sm outline-none ring-1 ring-inset ring-grey-300 transition-shadow placeholder:text-grey-400 focus:ring-2;
-		@apply hover:ring-grey-400;
-		@apply focus:ring-purple-600;
+	[data-test="form-input-wrapper"] {
+		@apply ring-1 ring-grey-300 rounded-md;
 		@apply dark:bg-white/20 dark:ring-white/30;
-		@apply dark:hover:ring-white/50;
-		@apply dark:focus:ring-purple-400;
+
+		&:has(:hover) {
+			@apply ring-grey-400;
+			@apply dark:ring-white/50;
+		}
+
+		&:has(:focus) {
+			@apply ring-2 ring-purple-600;
+			@apply dark:ring-purple-400;
+		}
+	}
+
+	.form-input {
+		@apply block w-full rounded-md px-3 py-2 shadow-sm outline-none;
+		@apply placeholder:text-grey-400;
+		@apply dark:bg-transparent;
+	}
+
+	[data-test="form-prefix"],
+	[data-test="form-suffix"] {
+		@apply text-grey-500;
+		@apply dark:text-grey-300;
+
+		& > svg {
+			@apply size-4 stroke-current;
+		}
 	}
 
 	.form-input--error {
@@ -16,10 +38,10 @@
 		@apply size-4 appearance-none rounded-full outline-none ring-1 ring-grey-300 transition-all;
 		@apply dark:bg-white/20 dark:ring-white/30;
 		@apply focus:ring-2 focus:ring-purple-800;
-		@apply dark:focus:ring-purple-500;
 		@apply checked:bg-current checked:text-purple-800 checked:ring-current;
-		@apply dark:checked:text-purple-500;
 		@apply checked:focus:ring-offset-2;
+		@apply dark:focus:ring-purple-500;
+		@apply dark:checked:text-purple-500;
 	}
 
 	.button-group {

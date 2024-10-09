@@ -12,6 +12,12 @@ The default slot contains the label of the input.
 
 _Note that a label is always required, even if a label is not shown to the user, as it will be critical for screen readers. This component will show an error if no label is provided._
 
+### `prefix` and `suffix`
+
+Any element—text or icon—to place at the start or end of the input.
+
+You can find [the list of available icons in this project](/src/components/icon/icon.md)
+
 ### `error`
 
 Any error text to display below the input.
@@ -42,17 +48,6 @@ Any placeholder to show in the input. Do not use a placeholder for critical info
 - default: `null`
 
 Any additional attributes to pass to the input itself, such as `required` or `autocomplete`.
-
-### `iconStart` and `iconEnd`
-
-- type: `string`
-- default: `null`
-
-An icon to display at the start or end of a link.
-
-The icon is implemented using `<component :is="...">`, allowing the link to use icons it doesn't explicitly import. To be used in this way, the icon must be globally registered. You can find [the list of available icons in this project](/src/components/icon/icon.md), or you can use one that is globally registered in your project.
-
-_Note that `start` and `end` depend on the current document direction._
 
 ## Examples
 

@@ -1,5 +1,7 @@
 import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
+import FormPrefix from "./form/form-prefix/form-prefix.vue";
+import FormSuffix from "./form/form-suffix/form-suffix.vue";
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
 import FormInput from "./form/form-input/form-input.vue";
@@ -40,6 +42,8 @@ import IconUser from "./icon/icon-user/icon-user.vue";
 
 export default {
 	BaseIcon,
+	FormPrefix,
+	FormSuffix,
 	ButtonGroup,
 	ConditionalWrapper,
 	DonutChart,
