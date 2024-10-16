@@ -34,6 +34,7 @@ You can find more information about each component on its relevant docs page.
 ### Forms
 
 - [form-input](/src/components/form/form-input/form-input.md)
+- [form-textarea](/src/components/form/form-textarea/form-textarea.md)
 - [radio-group](/src/components/form/radio-group/radio-group.md)
 - [button-group](/src/components/form/button-group/button-group.md)
 - [form-layout](/src/components/form/form-layout/form-layout.md)
@@ -70,7 +71,6 @@ Special scaffold scripts have been created to generate files for a new component
 
 Some components that I would like to build soon include, likely in this order.
 
-- Textarea - Replace a standard textarea and offer the conveniences found in other form components.
 - Checkbox - Replace checkboxes and offer the simple implementation found in `form-radio`.
 - Tabs - Allowing easy, accessible tabbed content.
 - Alerts - Consistently display alert messages to user.

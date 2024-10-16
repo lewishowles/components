@@ -34,6 +34,12 @@
 		@apply ring-red-300;
 	}
 
+	textarea {
+		@apply min-h-40;
+
+		field-sizing: content;
+	}
+
 	.form-radio {
 		@apply size-4 appearance-none rounded-full outline-none ring-1 ring-grey-300 transition-all;
 		@apply dark:bg-white/20 dark:ring-white/30;

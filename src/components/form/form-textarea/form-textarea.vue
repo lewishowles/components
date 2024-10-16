@@ -1,18 +1,14 @@
 <template>
-	<div class="flex flex-col gap-1" data-test="form-input">
+	<div class="flex flex-col gap-1" data-test="form-textarea">
 		<form-label v-bind="{ id: inputId }">
 			<slot />
 		</form-label>
 
 		<div class="flex transition-shadow" :class="{ 'form-input--error': haveError }" data-test="form-input-wrapper">
-			<input
+			<textarea
 				ref="inputElement"
 				v-model="model"
 				class="form-input"
-				:class="{
-					'rounded-s-none': havePrefix,
-					'rounded-e-none': haveSuffix,
-				}"
 				v-bind="{
 					id: inputId,
 					placeholder,
@@ -20,14 +16,6 @@
 					...inputAttributes,
 				}"
 			/>
-
-			<form-prefix v-if="havePrefix" class="order-first">
-				<slot name="prefix" />
-			</form-prefix>
-
-			<form-suffix v-if="haveSuffix">
-				<slot name="suffix" />
-			</form-suffix>
 		</div>
 
 		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy">
@@ -43,12 +31,18 @@
 
 <script setup>
 /**
- * A useful wrapper to the `input` tag, providing consistent styling and helpful
- * guard rails, such as automatically linking the field and its label.
+ * A useful wrapper to the `textarea` tag, providing consistent styling and
+ * helpful guard rails, such as automatically linking the field and its label.
  *
- * The `default` slot contains the label for the input.
- * `prefix` and `suffix` slots exist for placing elements beside the input.
- * `error` and `help` slots exist for additional descriptive text.
+ * The `default` slot contains the label for the input. `error` and `help` slots
+ * exist for additional descriptive text.
+ *
+ * We don't attempt to re-use the `form-input` component with a different tag in
+ * order to keep things compartmentalised, and because the `form-input` has more
+ * features than the textarea (such as prefix and suffix). While the
+ * `form-input` itself could use this component as a base, it doesn't feel like
+ * a natural extension, and attempting to shoe-horn the prefix/suffix in would
+ * remove some of the benefits of inheritance.
  */
 import { computed, useSlots, useTemplateRef } from "vue";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
@@ -56,8 +50,6 @@ import useFormSupplementary from "@/components/form/composables/use-form-supplem
 import useInputId from "@/components/form/composables/use-input-id";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
-import FormPrefix from "@/components/form/form-prefix/form-prefix.vue";
-import FormSuffix from "@/components/form/form-suffix/form-suffix.vue";
 import FormSupplementary from "@/components/form/form-supplementary/form-supplementary.vue";
 
 const props = defineProps({
@@ -102,10 +94,6 @@ const inputElement = useTemplateRef("inputElement");
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
 const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
-// Whether a prefix is defined.
-const havePrefix = computed(() => isNonEmptySlot(slots.prefix));
-// Whether a suffix is defined.
-const haveSuffix = computed(() => isNonEmptySlot(slots.suffix));
 // Whether error text has been provided.
 const haveError = computed(() => isNonEmptySlot(slots.error));
 

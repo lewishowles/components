@@ -13,13 +13,14 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("form-input-preview");
+const selectedPreview = ref("form-textarea-preview");
 
 const previewOptions = [
 	{ label: "button-group", value: "button-group-preview" },
 	{ label: "donut-chart", value: "donut-chart-preview" },
 	{ label: "form", value: "form-preview" },
 	{ label: "form-input", value: "form-input-preview" },
+	{ label: "form-textarea", value: "form-textarea-preview" },
 	{ label: "link-tag", value: "link-tag-preview" },
 	{ label: "loading-indicator", value: "loading-indicator-preview" },
 	{ label: "pill-badge", value: "pill-badge-preview" },
