@@ -13,7 +13,7 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("form-textarea-preview");
+const selectedPreview = ref("progress-bar-preview");
 
 const previewOptions = [
 	{ label: "button-group", value: "button-group-preview" },
@@ -24,6 +24,7 @@ const previewOptions = [
 	{ label: "link-tag", value: "link-tag-preview" },
 	{ label: "loading-indicator", value: "loading-indicator-preview" },
 	{ label: "pill-badge", value: "pill-badge-preview" },
+	{ label: "progress-bar", value: "progress-bar-preview" },
 	{ label: "radio-group", value: "radio-group-preview" },
 	{ label: "summary-details", value: "summary-details-preview" },
 	{ label: "ui-button", value: "ui-button-preview" },

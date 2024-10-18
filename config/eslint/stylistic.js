@@ -39,6 +39,8 @@ export default {
 			{ blankLine: "always", prev: "*", next: "return" },
 			{ blankLine: "any", prev: "const", next: "const" },
 			{ blankLine: "any", prev: "let", next: "let" },
+			{ blankLine: "always", prev: "multiline-const", next: "*" },
+			{ blankLine: "always", prev: "*", next: "multiline-const" },
 		],
 		"@stylistic/semi": ["error", "always"],
 		"@stylistic/quote-props": ["error", "consistent-as-needed"],

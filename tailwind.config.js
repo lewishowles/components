@@ -26,7 +26,7 @@ export default {
 			current: "currentColor",
 			black: colors.black,
 			white: colors.white,
-			grey: colors.slate,
+			grey: colors.neutral,
 			red: colors.red,
 			orange: colors.orange,
 			yellow: colors.amber,

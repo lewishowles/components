@@ -10,6 +10,7 @@ import FormTextarea from "./form/form-textarea/form-textarea.vue";
 import LinkTag from "./interaction/link-tag/link-tag.vue";
 import LoadingIndicator from "./interaction/loading-indicator/loading-indicator.vue";
 import PillBadge from "./messaging/pill-badge/pill-badge.vue";
+import ProgressBar from "./chart/progress-bar/progress-bar.vue";
 import RadioGroup from "./form/radio-group/radio-group.vue";
 import SummaryDetails from "./interaction/summary-details/summary-details.vue";
 import UiButton from "./interaction/ui-button/ui-button.vue";
@@ -80,6 +81,7 @@ export default {
 	LinkTag,
 	LoadingIndicator,
 	PillBadge,
+	ProgressBar,
 	RadioGroup,
 	SummaryDetails,
 	UiButton,

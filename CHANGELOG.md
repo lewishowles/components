@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.0 - 2024-10-18
+
+### New components
+
+- `progress-bar`: Display an accessible progress bar based on a given `min`, `max`, and `value`.
+
 ## 0.9.2 - 2024-10-06
 
 - `link-tag`: Fix an issue where icon spacing would become disproportionate based on font size

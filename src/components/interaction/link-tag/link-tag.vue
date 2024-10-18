@@ -75,6 +75,7 @@ const haveExternalIcon = computed(() => props.external && props.showExternalIcon
 // Whether to show any defined icon-end. If an external icon is being shown,
 // this would override any icon-end.
 const shouldShowIconEnd = computed(() => haveIconEnd.value && !haveExternalIcon.value);
+
 // Any additional attributes to apply to the button. For example, aria-live if
 // the button is reactive.
 const attributes = computed(() => {

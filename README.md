@@ -54,6 +54,7 @@ You can find more information about each component on its relevant docs page.
 ### Chart
 
 - [donut-chart](/src/components/chart/donut-chart/donut-chart.md)
+- [progress-bar](/src/components/chart/progress-bar/progress-bar.md)
 
 ### General
 
@@ -75,6 +76,5 @@ Some components that I would like to build soon include, likely in this order.
 - Tabs - Allowing easy, accessible tabbed content.
 - Alerts - Consistently display alert messages to user.
 - Image tag - Providing automatic broken image handling and optional `object-fit` options.
-- Progress bar - Given a current value and a maximum value, show an accessible, simple progress meter.
 - Form wrapper - Handling communication between individual form fields and a parent form, collating all responses into one object, providing an accessible error summary based on validation configuration, and more.
 - Data table - Providing built-in options for searching, sorting, pagination, filtering, and custom display of any data in a table.
