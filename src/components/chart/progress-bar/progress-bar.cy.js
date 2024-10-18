@@ -9,6 +9,7 @@ describe("progress-bar", () => {
 		mount();
 
 		cy.getByData("progress-bar").shouldBeVisible();
+		cy.getByData("progress-bar-label").should("not.exist");
 	});
 
 	it("The appropriate accessibility attributes are included", () => {
@@ -21,5 +22,11 @@ describe("progress-bar", () => {
 			.shouldHaveAttribute("aria-valuemin", "10")
 			.shouldHaveAttribute("aria-valuemax", "90")
 			.shouldHaveAttribute("aria-valuetext", "20%");
+	});
+
+	it("A label can be shown", () => {
+		mount({ showLabel: true });
+
+		cy.getByData("progress-bar-label").shouldBeVisible();
 	});
 });

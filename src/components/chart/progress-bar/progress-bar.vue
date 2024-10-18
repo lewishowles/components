@@ -1,27 +1,36 @@
 <template>
 	<div
 		v-bind="{
-			'class': trackClasses,
-			'aria-label': label,
+			'aria-label': showLabel ? null : label,
 			'aria-valuenow': internalValue,
 			'aria-valuemin': min,
 			'aria-valuemax': max,
 			'aria-valuetext': `${percentageBarWidth}%`,
+			'aria-labelledby': showLabel ? internalId : null,
 		}"
 		role="progressbar"
 		data-test="progress-bar"
 	>
-		<div
-			class="transition-all ease-out"
-			:class="barClasses"
-			:style="{ width: `${percentageBarWidth}%` }"
-		/>
+		<div v-if="showLabel" v-bind="{ id: internalId }" class="mb-1" data-test="progress-bar-label">
+			<slot>
+				{{ label }}
+			</slot>
+		</div>
+
+		<div :class="trackClasses">
+			<div
+				class="transition-all ease-out"
+				:class="barClasses"
+				:style="{ width: `${percentageBarWidth}%` }"
+			/>
+		</div>
 	</div>
 </template>
 
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
 import { computed } from "vue";
+import { nanoid } from "nanoid";
 
 const props = defineProps({
 	/**
@@ -51,6 +60,23 @@ const props = defineProps({
 	},
 
 	/**
+	 * The label for the progress bar. This label is hidden by default, but is
+	 * included for accessibility purposes.
+	 */
+	label: {
+		type: String,
+		default: "Loading…",
+	},
+
+	/**
+	 * Whether to show the label to the user.
+	 */
+	showLabel: {
+		type: Boolean,
+		default: false,
+	},
+
+	/**
 	 * Classes to apply to the track, which is the background behind the bar.
 	 */
 	trackClasses: {
@@ -65,22 +91,13 @@ const props = defineProps({
 		type: String,
 		default: "h-full rounded-full bg-purple-500",
 	},
-
-	// i18n
-
-	/**
-	 * The label for the progress bar. This label is hidden by default, but is
-	 * included for accessibility purposes.
-	 */
-	label: {
-		type: String,
-		default: "Loading…",
-	},
 });
 
 // The internal current value, allowing us to bind the current value to the
 // provided minimum and maximum.
 const internalValue = computed(() => clamp(props.value, props.min, props.max));
+// The internal ID of this progress bar, used to link the bar to its label.
+const internalId = computed(() => `progress-bar-${nanoid()}`);
 
 // The relative width of the bar, representing the current value.
 const barWidth = computed(() => {

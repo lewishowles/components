@@ -25,6 +25,20 @@ The minimum value of the progress bar, used to determine how much of the bar is 
 
 The maximum value of the progress bar, used to determine how much of the bar is filled based on the current value.
 
+### `label`
+
+- type: `string`
+- default: `Loading…`
+
+The label for the progress bar. This label is hidden by default, but is included for accessibility purposes.
+
+### `showLabel`
+
+- type: `boolean`
+- default: `false`
+
+Whether to show the label to the user.
+
 ### `trackClasses`
 
 - type: `string | array | object`
@@ -39,12 +53,11 @@ Classes to apply to the track, which is the background behind the bar.
 
 Classes to apply to the bar, which indicates the current value.
 
-### `label`
+## Slots
 
-- type: `string`
-- default: `Loading…`
+### `default`
 
-The label for the progress bar. This label is hidden by default, but is included for accessibility purposes.
+When the label is shown, the default slot can be used to provide a custom label that cannot be provided via the `label` prop.
 
 ## Examples
 
