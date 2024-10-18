@@ -4,7 +4,7 @@
 
 ### New components
 
-- `progress-bar`: Display an accessible progress bar based on a given `min`, `max`, and `value`.
+- `progress-bar`: Display an accessible progress bar based on a given `min`, `max`, and `value`, with options to show a label or the current value.
 
 ## 0.9.2 - 2024-10-06
 

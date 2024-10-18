@@ -29,4 +29,10 @@ describe("progress-bar", () => {
 
 		cy.getByData("progress-bar-label").shouldBeVisible();
 	});
+
+	it("The value can be shown", () => {
+		mount({ showValue: true });
+
+		cy.getByData("progress-bar-value").shouldBeVisible();
+	});
 });

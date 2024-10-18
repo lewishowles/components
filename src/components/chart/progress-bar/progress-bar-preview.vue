@@ -38,10 +38,26 @@
 
 		<preview-section>
 			<template #title>
-				With label
+				Showing the label
 			</template>
 
 			<progress-bar v-bind="{ value: 40, showLabel: true, label: 'Showing a custom label' }" />
+		</preview-section>
+
+		<preview-section>
+			<template #title>
+				Showing the value
+			</template>
+
+			<progress-bar v-bind="{ value: 40, showValue: true }" />
+		</preview-section>
+
+		<preview-section>
+			<template #title>
+				Showing both the label and the value
+			</template>
+
+			<progress-bar v-bind="{ value: 40, showLabel: true, showValue: true, label: 'Showing a custom label' }" />
 		</preview-section>
 	</preview-wrapper>
 </template>

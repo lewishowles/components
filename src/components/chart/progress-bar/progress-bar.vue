@@ -5,23 +5,31 @@
 			'aria-valuenow': internalValue,
 			'aria-valuemin': min,
 			'aria-valuemax': max,
-			'aria-valuetext': `${percentageBarWidth}%`,
+			'aria-valuetext': `${percentageValue}%`,
 			'aria-labelledby': showLabel ? internalId : null,
 		}"
 		role="progressbar"
 		data-test="progress-bar"
 	>
-		<div v-if="showLabel" v-bind="{ id: internalId }" class="mb-1" data-test="progress-bar-label">
-			<slot>
-				{{ label }}
-			</slot>
-		</div>
+		<conditional-wrapper v-bind="{ wrap: showLabel || showValue, tag: 'div' }" class="mb-1 flex gap-2">
+			<div v-if="showLabel" v-bind="{ id: internalId }" data-test="progress-bar-label">
+				<slot>
+					{{ label }}
+				</slot>
+			</div>
+
+			<div v-if="showValue" class="ms-auto" data-test="progress-bar-value">
+				<slot name="value" v-bind="{ value: internalValue }">
+					{{ percentageValue }}%
+				</slot>
+			</div>
+		</conditional-wrapper>
 
 		<div :class="trackClasses">
 			<div
 				class="transition-all ease-out"
 				:class="barClasses"
-				:style="{ width: `${percentageBarWidth}%` }"
+				:style="{ width: `${percentageValue}%` }"
 			/>
 		</div>
 	</div>
@@ -77,6 +85,14 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether to show the value to the user, formatted as a percentage.
+	 */
+	showValue: {
+		type: Boolean,
+		default: false,
+	},
+
+	/**
 	 * Classes to apply to the track, which is the background behind the bar.
 	 */
 	trackClasses: {
@@ -100,7 +116,7 @@ const internalValue = computed(() => clamp(props.value, props.min, props.max));
 const internalId = computed(() => `progress-bar-${nanoid()}`);
 
 // The relative width of the bar, representing the current value.
-const barWidth = computed(() => {
+const proportionalValue = computed(() => {
 	if (props.max <= 0) {
 		return 0;
 	}
@@ -109,5 +125,5 @@ const barWidth = computed(() => {
 });
 
 // The percentage bar width - as a number between 0 and 100.
-const percentageBarWidth = computed(() => barWidth.value * 100);
+const percentageValue = computed(() => proportionalValue.value * 100);
 </script>

@@ -59,6 +59,16 @@ Classes to apply to the bar, which indicates the current value.
 
 When the label is shown, the default slot can be used to provide a custom label that cannot be provided via the `label` prop.
 
+### `value`
+
+When the value is shown, override the default value display. Contains the following slot props:
+
+#### `value`
+
+- type: `number`
+
+The current value of the progress bar.
+
 ## Examples
 
 ### Using the default range

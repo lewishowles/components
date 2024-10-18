@@ -28,27 +28,27 @@ describe("progress-bar", () => {
 			});
 		});
 
-		describe("barWidth", () => {
+		describe("proportionalValue", () => {
 			test("should reflect the current value", async() => {
 				const wrapper = mount({ value: 40 });
 
-				expect(wrapper.vm.barWidth).toBe(0.4);
+				expect(wrapper.vm.proportionalValue).toBe(0.4);
 
 				await wrapper.setProps({ min: 40, max: 80, value: 50 });
 
-				expect(wrapper.vm.barWidth).toBe(0.125);
+				expect(wrapper.vm.proportionalValue).toBe(0.125);
 			});
 		});
 
-		describe("percentageBarWidth", () => {
+		describe("percentageValue", () => {
 			test("should reflect the current value", async() => {
 				const wrapper = mount({ value: 40 });
 
-				expect(wrapper.vm.percentageBarWidth).toBe(40);
+				expect(wrapper.vm.percentageValue).toBe(40);
 
 				await wrapper.setProps({ min: 40, max: 80, value: 50 });
 
-				expect(wrapper.vm.percentageBarWidth).toBe(12.5);
+				expect(wrapper.vm.percentageValue).toBe(12.5);
 			});
 		});
 	});
