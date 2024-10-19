@@ -36,6 +36,7 @@ import IconEmail from "./icon/icon-email/icon-email.vue";
 import IconExternal from "./icon/icon-external/icon-external.vue";
 import IconFilm from "./icon/icon-film/icon-film.vue";
 import IconImage from "./icon/icon-image/icon-image.vue";
+import IconInfo from "./icon/icon-info/icon-info.vue";
 import IconLaptop from "./icon/icon-laptop/icon-laptop.vue";
 import IconLightbulb from "./icon/icon-lightbulb/icon-lightbulb.vue";
 import IconLoading from "./icon/icon-loading/icon-loading.vue";
@@ -44,10 +45,11 @@ import IconPlus from "./icon/icon-plus/icon-plus.vue";
 import IconReload from "./icon/icon-reload/icon-reload.vue";
 import IconSun from "./icon/icon-sun/icon-sun.vue";
 import IconUser from "./icon/icon-user/icon-user.vue";
+import IconWarning from "./icon/icon-warning/icon-warning.vue";
 
 export default {
-	BaseIcon,
 	AlertMessage,
+	BaseIcon,
 	ButtonGroup,
 	ConditionalWrapper,
 	DonutChart,
@@ -75,6 +77,7 @@ export default {
 	IconExternal,
 	IconFilm,
 	IconImage,
+	IconInfo,
 	IconLaptop,
 	IconLightbulb,
 	IconLoading,
@@ -83,6 +86,7 @@ export default {
 	IconReload,
 	IconSun,
 	IconUser,
+	IconWarning,
 	ImageTag,
 	LinkTag,
 	LoadingIndicator,

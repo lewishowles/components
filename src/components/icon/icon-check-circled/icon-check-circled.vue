@@ -1,5 +1,8 @@
 <template>
 	<base-icon>
-		<path fill="currentColor" fill-rule="evenodd" d="M9 1a8 8 0 1 1 0 16A8 8 0 0 1 9 1m3.623 4.719a1 1 0 0 0-1.406.156l-3.302 4.127-1.21-1.21a.999.999 0 1 0-1.414 1.414l2 2a1 1 0 0 0 .707.293l.056-.001c.284-.016.548-.152.726-.374l4-5a1 1 0 0 0-.157-1.405" />
+		<g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="1.5">
+			<circle cx="9" cy="9" r="7.5" />
+			<path stroke-linecap="round" stroke-linejoin="round" d="M6 9.5 8.25 12l4.25-5.5" />
+		</g>
 	</base-icon>
 </template>

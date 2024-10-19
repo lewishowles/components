@@ -22,6 +22,7 @@ Each icon in the library is created using strokes, and can be coloured using the
 - icon-external.vue
 - icon-film.vue
 - icon-image.vue
+- icon-info.vue
 - icon-laptop.vue
 - icon-lightbulb.vue
 - icon-loading.vue
@@ -30,6 +31,7 @@ Each icon in the library is created using strokes, and can be coloured using the
 - icon-reload.vue
 - icon-sun.vue
 - icon-user.vue
+- icon-warning.vue
 
 ## Example
 
