@@ -13,9 +13,10 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("image-tag-preview");
+const selectedPreview = ref("alert-message-preview");
 
 const previewOptions = [
+	{ label: "alert-message", value: "alert-message-preview" },
 	{ label: "button-group", value: "button-group-preview" },
 	{ label: "donut-chart", value: "donut-chart-preview" },
 	{ label: "form", value: "form-preview" },

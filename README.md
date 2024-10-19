@@ -78,6 +78,5 @@ Some components that I would like to build soon include, likely in this order.
 
 - Checkbox - Replace checkboxes and offer the simple implementation found in `form-radio`.
 - Tabs - Allowing easy, accessible tabbed content.
-- Alerts - Consistently display alert messages to user.
 - Form wrapper - Handling communication between individual form fields and a parent form, collating all responses into one object, providing an accessible error summary based on validation configuration, and more.
 - Data table - Providing built-in options for searching, sorting, pagination, filtering, and custom display of any data in a table.
