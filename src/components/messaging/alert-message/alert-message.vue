@@ -1,12 +1,16 @@
 <template>
-	<div class="flex gap-2 rounded border p-4" :class="alertColours" role="alert" data-test="alert-message">
+	<div class="flex gap-3 rounded border p-4" :class="alertColours" role="alert" data-test="alert-message">
 		<div v-if="haveIcon" class="mt-1">
 			<slot name="icon">
 				<component :is="defaultIcon" data-test="alert-message-icon" />
 			</slot>
 		</div>
 
-		<div class="flex flex-col gap-1">
+		<div class="flex flex-col">
+			<component :is="titleTag" v-if="haveTitleSlot" class="font-semibold" data-test="alert-message-title">
+				<slot name="title" />
+			</component>
+
 			<slot />
 		</div>
 	</div>
@@ -33,6 +37,14 @@ const props = defineProps({
 	showIcon: {
 		type: Boolean,
 		default: true,
+	},
+
+	/**
+	 * The tag to use for the title.
+	 */
+	titleTag: {
+		type: String,
+		default: "h3",
 	},
 });
 
@@ -80,4 +92,7 @@ const defaultIcon = computed(() => {
 
 	return null;
 });
+
+// Whether a title has been provided via the `title` slot.
+const haveTitleSlot = computed(() => isNonEmptySlot(slots.title));
 </script>

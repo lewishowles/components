@@ -12,6 +12,14 @@ describe("alert-message", () => {
 		mount();
 
 		cy.getByData("alert-message").shouldBeVisible();
+		cy.getByData("alert-message-title").should("not.exist");
+	});
+
+	it("A title can be shown", () => {
+		mount({ slots: { title: "Message title" } });
+
+		cy.getByData("alert-message").shouldBeVisible();
+		cy.getByData("alert-message-title").shouldBeVisible();
 	});
 
 	it("An icon is displayed", () => {

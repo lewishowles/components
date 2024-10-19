@@ -4,6 +4,10 @@ The `alert-message` component is designed to display an accessible message to th
 
 ## Slots
 
+### `title`
+
+Any title to display with the message.
+
 ### `default`
 
 The default slot contains the content of the alert.
@@ -34,6 +38,30 @@ Whether to show an icon with the alert.
 
 ```html
 <alert-message v-bind="{ type: 'success' }">
+	Message
+</alert-message>
+```
+
+### With title
+
+```html
+<alert-message v-bind="{ type: 'success' }">
+	<template #title>
+		Message title
+	</template>
+
+	Message
+</alert-message>
+```
+
+### With custom icon
+
+```html
+<alert-message v-bind="{ type: 'success' }">
+	<template #icon>
+		<icon-arrow-up />
+	</template>
+
 	Message
 </alert-message>
 ```

@@ -53,6 +53,7 @@ You can find more information about each component on its relevant docs page.
 
 ### Messaging
 
+- [alert-message](/src/components/messaging/alert-message/alert-message.md)
 - [pill-badge](/src/components/messaging/pill-badge/pill-badge.md)
 
 ### Chart
