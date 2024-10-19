@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.0 - 2024-10-19
+
+### New components
+
+- `alert-message`: Display an alert message to the user.
+
 ## 0.10.0 - 2024-10-18
 
 ### New components
