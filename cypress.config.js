@@ -2,8 +2,8 @@ import { defineConfig } from "cypress";
 
 export default defineConfig({
 	fixturesFolder: "",
-	screenshotsFolder: "test/cypress/screenshots",
-	videosFolder: "test/cypress/videos",
+	screenshotOnRunFailure: false,
+	video: false,
 	viewportWidth: 1440,
 	viewPortHeight: 900,
 
