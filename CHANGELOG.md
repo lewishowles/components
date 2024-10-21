@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.0 - 2024-10-21
+
+### New components
+
+- `skeleton-loader`: Build a skeleton loading indicator.
+
 ## 0.11.0 - 2024-10-19
 
 ### New components

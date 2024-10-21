@@ -1,5 +1,7 @@
 import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
+import SkeletonLoader from "./interaction/skeleton-loader/skeleton-loader.vue";
+import SkeletonIndicator from "./interaction/skeleton-indicator/skeleton-indicator.vue";
 import AlertMessage from "./messaging/alert-message/alert-message.vue";
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
@@ -50,6 +52,8 @@ import IconWarning from "./icon/icon-warning/icon-warning.vue";
 export default {
 	AlertMessage,
 	BaseIcon,
+	SkeletonLoader,
+	SkeletonIndicator,
 	ButtonGroup,
 	ConditionalWrapper,
 	DonutChart,

@@ -14,6 +14,7 @@ import LoadingIndicatorPreview from "@/components/interaction/loading-indicator/
 import PillBadgePreview from "@/components/messaging/pill-badge/pill-badge-preview.vue";
 import ProgressBarPreview from "@/components/chart/progress-bar/progress-bar-preview.vue";
 import RadioGroupPreview from "@/components/form/radio-group/radio-group-preview.vue";
+import SkeletonLoaderPreview from "@/components/interaction/skeleton-loader/skeleton-loader-preview.vue";
 import SummaryDetailsPreview from "@/components/interaction/summary-details/summary-details-preview.vue";
 import UiButtonPreview from "@/components/interaction/ui-button/ui-button-preview.vue";
 
@@ -35,6 +36,7 @@ const previewLibrary = {
 		app.component("PreviewWrapper", PreviewWrapper);
 		app.component("ProgressBarPreview", ProgressBarPreview);
 		app.component("RadioGroupPreview", RadioGroupPreview);
+		app.component("SkeletonLoaderPreview", SkeletonLoaderPreview);
 		app.component("SummaryDetailsPreview", SummaryDetailsPreview);
 		app.component("UiButtonPreview", UiButtonPreview);
 	},
