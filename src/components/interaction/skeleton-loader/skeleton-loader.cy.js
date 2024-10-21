@@ -1,13 +1,17 @@
 import SkeletonLoader from "./skeleton-loader.vue";
+import SkeletonIndicator from "@/components/interaction/skeleton-indicator/skeleton-indicator.vue";
 import { createMount } from "@cypress/support/mount";
+import { h } from "vue";
 
-const mount = createMount(SkeletonLoader);
+const defaultSlots = { default: h(SkeletonIndicator, { class: "h-4" }) };
+const mount = createMount(SkeletonLoader, { slots: defaultSlots });
 
 describe("skeleton-loader", () => {
 	it("A component is rendered", () => {
 		mount();
 
 		cy.getByData("skeleton-loader").shouldBeVisible();
+		cy.getByData("skeleton-indicator").shouldBeVisible();
 	});
 
 	it("A label is included", () => {
