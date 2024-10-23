@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.1 - 2024-10-23
+
+### Fixes
+
+- `skeleton-loader`: Better support non-grey background colours in dark mode.
+- `progress-bar`: Better support non-grey background colours in dark mode.
+- `pill-badge`: Better support non-grey background colours in dark mode.
+
 ## 0.12.0 - 2024-10-21
 
 ### New components

@@ -69,7 +69,7 @@ const themeClasses = computed(() => {
 		case "pink":
 			return "bg-pink-50 text-pink-700 ring-pink-200 dark:bg-pink-500/50 dark:text-pink-200 dark:ring-0";
 		default:
-			return "bg-grey-50 text-grey-700 ring-grey-200 dark:bg-grey-500/50 dark:text-grey-200 dark:ring-0";
+			return "bg-grey-50 text-grey-700 ring-grey-200 dark:bg-white/20 dark:text-grey-200 dark:ring-0";
 	}
 });
 </script>
