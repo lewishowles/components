@@ -13,7 +13,7 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("skeleton-loader-preview");
+const selectedPreview = ref("searchable-list-preview");
 
 const previewOptions = [
 	{ label: "alert-message", value: "alert-message-preview" },
@@ -28,6 +28,7 @@ const previewOptions = [
 	{ label: "pill-badge", value: "pill-badge-preview" },
 	{ label: "progress-bar", value: "progress-bar-preview" },
 	{ label: "radio-group", value: "radio-group-preview" },
+	{ label: "searchable-list", value: "searchable-list-preview" },
 	{ label: "skeleton-loader", value: "skeleton-loader-preview" },
 	{ label: "summary-details", value: "summary-details-preview" },
 	{ label: "ui-button", value: "ui-button-preview" },

@@ -1,5 +1,6 @@
 import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
+import SearchableList from "./data/searchable-list/searchable-list.vue";
 import SkeletonLoader from "./interaction/skeleton-loader/skeleton-loader.vue";
 import SkeletonIndicator from "./interaction/skeleton-indicator/skeleton-indicator.vue";
 import AlertMessage from "./messaging/alert-message/alert-message.vue";
@@ -52,6 +53,7 @@ import IconWarning from "./icon/icon-warning/icon-warning.vue";
 export default {
 	AlertMessage,
 	BaseIcon,
+	SearchableList,
 	SkeletonLoader,
 	SkeletonIndicator,
 	ButtonGroup,

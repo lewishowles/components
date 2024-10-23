@@ -48,6 +48,10 @@ You can find more information about each component on its relevant docs page.
 - [summary-details](/src/components/interaction/summary-details/summary-details.md)
 - [ui-button](/src/components/interaction/ui-button/ui-button.md)
 
+### Data
+
+- [searchable-list](/src/components/data/searchable-list/searchable-list.md)
+
 ### Display
 
 - [image-tag](/src/components/display/image-tag/image-tag.md)
