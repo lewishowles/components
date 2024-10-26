@@ -14,7 +14,7 @@
 	}
 
 	a, button, [contenteditable] {
-		@apply transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-800 focus-visible:ring-offset-2;
+		@apply transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2 dark:focus-visible:ring-purple-400 dark:focus-visible:ring-offset-0;
 	}
 
 	a {

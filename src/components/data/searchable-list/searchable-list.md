@@ -50,6 +50,10 @@ The number of results found.
 
 The total number of items provided.
 
+### `reset-search-label`
+
+The label for the reset search button.
+
 ## Props
 
 ### `data`

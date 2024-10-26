@@ -1,9 +1,15 @@
 <template>
 	<div data-test="searchable-list">
-		<div class="flex gap-4">
+		<div class="flex items-end gap-4">
 			<form-input v-bind="{ placeholder }" v-model="searchQuery" class="w-full max-w-lg" data-test="searchable-list-search">
 				<slot name="label" />
 			</form-input>
+
+			<ui-button v-show="performingSearch" class="button--muted" data-test="searchable-list-reset-search-button" @click="resetSearch">
+				<slot name="reset-search-label">
+					Reset search
+				</slot>
+			</ui-button>
 		</div>
 
 		<div v-show="!haveResults" class="mt-2" data-test="searchable-list-no-results">
@@ -17,10 +23,11 @@
 		<div v-show="haveResults" class="mb-6 mt-2" data-test="searchable-list-toolbar">
 			<slot name="results-count" v-bind="{ performingSearch, resultCount, itemCount }">
 				<pill-badge>
-					Showing {{ resultCount }}
-
 					<template v-if="performingSearch">
-						of {{ itemCount }}
+						Showing {{ resultCount }} of {{ itemCount }}
+					</template>
+					<template v-else>
+						Showing {{ resultCount }}
 					</template>
 				</pill-badge>
 			</slot>
@@ -83,4 +90,11 @@ const itemCount = computed(() => arrayLength(props.data));
 const resultCount = computed(() => arrayLength(results.value));
 // Whether a search is being performed and results have been found.
 const haveResults = computed(() => !performingSearch.value || resultCount.value > 0);
+
+/**
+ * Reset any current search and show all items.
+ */
+function resetSearch() {
+	searchQuery.value = "";
+}
 </script>

@@ -12,11 +12,11 @@
 
 	.button--muted {
 		@apply button;
-		@apply bg-white ring-1 ring-inset ring-grey-300;
-		@apply hocus:bg-grey-50 hocus:ring-grey-400;
-		@apply active:bg-grey-100 active:ring-grey-500;
-		@apply dark:bg-white/20 dark:ring-0;
-		@apply dark:hocus:bg-white/30;
-		@apply dark:active:bg-white/40
+		@apply bg-white border border-grey-300;
+		@apply hocus:bg-grey-50 hocus:border-grey-400;
+		@apply active:bg-grey-100 active:border-grey-500;
+		@apply dark:bg-white/20 dark:border-white/20;
+		@apply dark:hocus:bg-white/30 dark:hocus:border-white/20;
+		@apply dark:active:bg-white/40 dark:hocus:border-white/20;
 	}
 }
