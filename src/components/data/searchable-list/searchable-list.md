@@ -18,6 +18,12 @@ The main "results" display. Contains the following slot props:
 
 The list of items matching any current search options, or all items if no search is being performed.
 
+#### `query`
+
+- type: `string`
+
+The current search query.
+
 ### `label`
 
 The search input label, giving the user an idea of what they are searching.

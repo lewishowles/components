@@ -7,7 +7,7 @@
 		</div>
 
 		<div data-test="searchable-list-results">
-			<slot v-bind="{ items: results }" />
+			<slot v-bind="{ items: results, query: searchQuery }" />
 		</div>
 	</div>
 </template>
