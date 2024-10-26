@@ -1,5 +1,5 @@
 <template>
-	<span class="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset" :class="themeClasses" data-test="pill-badge">
+	<span class="inline-flex items-center gap-1 rounded-md px-2 py-1 font-medium ring-1 ring-inset" :class="[sizeClass, themeClasses]" data-test="pill-badge">
 		<component :is="iconStart" v-if="haveIconStart" class="stroke-current" data-test="pill-badge-icon-start" />
 
 		<slot />
@@ -9,7 +9,8 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, useAttrs } from "vue";
+import { containsTextSizeClass } from "@/helpers/tailwind";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 const props = defineProps({
@@ -40,10 +41,21 @@ const props = defineProps({
 	},
 });
 
+const attributes = useAttrs();
 // Whether a start icon is defined.
 const haveIconStart = computed(() => isNonEmptyString(props.iconStart));
 // Whether an end icon is defined.
 const haveIconEnd = computed(() => isNonEmptyString(props.iconEnd));
+
+// If the user provides their own text size class, allow it to override the
+// default.
+const sizeClass = computed(() => {
+	if (containsTextSizeClass(attributes.class)) {
+		return null;
+	}
+
+	return "text-xs";
+});
 
 // The classes that make up the chosen colour scheme. We write these out in
 // full, rather than composing the classes from the chosen colour, so that

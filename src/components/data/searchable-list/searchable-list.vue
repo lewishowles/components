@@ -1,18 +1,39 @@
 <template>
 	<div data-test="searchable-list">
-		<div class="mb-6 flex gap-4">
+		<div class="flex gap-4">
 			<form-input v-bind="{ placeholder }" v-model="searchQuery" class="w-full max-w-lg" data-test="searchable-list-search">
 				<slot name="label" />
 			</form-input>
 		</div>
 
-		<div data-test="searchable-list-results">
+		<div v-show="!haveResults" class="mt-2" data-test="searchable-list-no-results">
+			<slot name="no-results" v-bind="{ query: searchQuery }">
+				<pill-badge class="text-sm">
+					Sorry, no results could be found for <span class="font-bold">"{{ searchQuery }}"</span>
+				</pill-badge>
+			</slot>
+		</div>
+
+		<div v-show="haveResults" class="mb-6 mt-2" data-test="searchable-list-toolbar">
+			<slot name="results-count" v-bind="{ performingSearch, resultCount, itemCount }">
+				<pill-badge>
+					Showing {{ resultCount }}
+
+					<template v-if="performingSearch">
+						of {{ itemCount }}
+					</template>
+				</pill-badge>
+			</slot>
+		</div>
+
+		<div v-show="haveResults" data-test="searchable-list-results">
 			<slot v-bind="{ items: results, query: searchQuery }" />
 		</div>
 	</div>
 </template>
 
 <script setup>
+import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed, ref } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { objectContains } from "@lewishowles/helpers/object";
@@ -41,14 +62,25 @@ const props = defineProps({
 const searchQuery = ref("");
 // Whether a search query has been provided and a search can be performed. This
 // excludes whitespace at each end of the query.
-const haveSearchQuery = computed(() => isNonEmptyString(searchQuery.value, { trim: true }));
+const performingSearch = computed(() => isNonEmptyString(searchQuery.value, { trim: true }));
 
 // The items to display, based on any current search query.
 const results = computed(() => {
-	if (!haveSearchQuery.value) {
+	if (!isNonEmptyArray(props.data)) {
+		return [];
+	}
+
+	if (!performingSearch.value) {
 		return props.data;
 	}
 
 	return props.data.filter(item => objectContains(item, searchQuery.value, { caseInsensitive: true, allowPartial: true }));
 });
+
+// The number of items provided.
+const itemCount = computed(() => arrayLength(props.data));
+// The number of results currently found.
+const resultCount = computed(() => arrayLength(results.value));
+// Whether a search is being performed and results have been found.
+const haveResults = computed(() => !performingSearch.value || resultCount.value > 0);
 </script>

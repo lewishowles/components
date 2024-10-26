@@ -28,6 +28,28 @@ The current search query.
 
 The search input label, giving the user an idea of what they are searching.
 
+### `results-count`
+
+A slot to override the default results count display, appearing beneath the search box.
+
+#### `performingSearch`
+
+- type: `boolean`
+
+Whether a search is currently being performed.
+
+#### `resultCount`
+
+- type: `number`
+
+The number of results found.
+
+#### `itemCount`
+
+- type: `number`
+
+The total number of items provided.
+
 ## Props
 
 ### `data`
