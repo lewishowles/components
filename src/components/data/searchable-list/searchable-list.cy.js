@@ -33,7 +33,16 @@ describe("searchable-list", () => {
 			cy.getByData("searchable-list-toolbar").shouldHaveText("Showing 9");
 			cy.getByData("searchable-list-demo-item").shouldHaveCount(9);
 
-			cy.fillFormField("searchable-list-search", "Cupid");
+			cy.fillFormField("searchable-list-search", "Dasher");
+
+			cy.getByData("searchable-list-toolbar").shouldHaveText("Showing 1 of 9");
+			cy.getByData("searchable-list-demo-item").shouldHaveCount(1);
+		});
+
+		it("Search can be reset", () => {
+			mount();
+
+			cy.fillFormField("searchable-list-search", "Dancer");
 
 			cy.getByData("searchable-list-toolbar").shouldHaveText("Showing 1 of 9");
 			cy.getByData("searchable-list-demo-item").shouldHaveCount(1);
