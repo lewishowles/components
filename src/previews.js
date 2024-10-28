@@ -1,11 +1,12 @@
 import PreviewSection from "@/preview/preview-section.vue";
 import PreviewWrapper from "@/preview/preview-wrapper.vue";
-import FormLayout from "@/components/form/form-layout/form-layout.vue";
 
 import AlertMessagePreview from "@/components/messaging/alert-message/alert-message-preview.vue";
 import ButtonGroupPreview from "@/components/form/button-group/button-group-preview.vue";
 import DonutChartPreview from "@/components/chart/donut-chart/donut-chart-preview.vue";
+import FormCheckboxPreview from "@/components/form/form-checkbox/form-checkbox-preview.vue";
 import FormInputPreview from "@/components/form/form-input/form-input-preview.vue";
+import FormLayout from "@/components/form/form-layout/form-layout.vue";
 import FormPreview from "@/components/form/form-preview.vue";
 import FormTextareaPreview from "@/components/form/form-textarea/form-textarea-preview.vue";
 import ImageTagPreview from "@/components/display/image-tag/image-tag-preview.vue";
@@ -25,6 +26,7 @@ const previewLibrary = {
 		app.component("AlertMessagePreview", AlertMessagePreview);
 		app.component("ButtonGroupPreview", ButtonGroupPreview);
 		app.component("DonutChartPreview", DonutChartPreview);
+		app.component("FormCheckboxPreview", FormCheckboxPreview);
 		app.component("FormInputPreview", FormInputPreview);
 		app.component("FormLayout", FormLayout);
 		app.component("FormPreview", FormPreview);

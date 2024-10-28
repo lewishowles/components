@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.13.0
+
+### New components
+
+- [`searchable-list`](/src/components/data/searchable-list/searchable-list.md): Allows the properties of a list of objects to be searched, with a display template for the results.
+- [`form-checkbox`](/src/components/form/form-checkbox/form-checkbox.md): A checkbox with extra options.
+
 ## 0.12.1 - 2024-10-23
 
 ### Fixes
@@ -12,19 +19,19 @@
 
 ### New components
 
-- `skeleton-loader`: Build a skeleton loading indicator.
+- [`skeleton-loader`](/src/components/interaction/skeleton-loader/skeleton-loader.md): Build a skeleton loading indicator.
 
 ## 0.11.0 - 2024-10-19
 
 ### New components
 
-- `alert-message`: Display an alert message to the user.
+- [`alert-message`](/src/components/messaging/alert-message/alert-message.md): Display an alert message to the user.
 
 ## 0.10.0 - 2024-10-18
 
 ### New components
 
-- `progress-bar`: Display an accessible progress bar based on a given `min`, `max`, and `value`, with options to show a label or the current value.
+- [`progress-bar`](/src/components/chart/progress-bar/progress-bar.md) Display an accessible progress bar based on a given `min`, `max`, and `value`, with options to show a label or the current value.
 
 ## 0.9.2 - 2024-10-06
 

@@ -1,11 +1,9 @@
+import AlertMessage from "./messaging/alert-message/alert-message.vue";
 import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
-import SearchableList from "./data/searchable-list/searchable-list.vue";
-import SkeletonLoader from "./interaction/skeleton-loader/skeleton-loader.vue";
-import SkeletonIndicator from "./interaction/skeleton-indicator/skeleton-indicator.vue";
-import AlertMessage from "./messaging/alert-message/alert-message.vue";
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
+import FormCheckbox from "./form/form-checkbox/form-checkbox.vue";
 import FormInput from "./form/form-input/form-input.vue";
 import FormLayout from "./form/form-layout/form-layout.vue";
 import FormPrefix from "./form/form-prefix/form-prefix.vue";
@@ -17,6 +15,9 @@ import LoadingIndicator from "./interaction/loading-indicator/loading-indicator.
 import PillBadge from "./messaging/pill-badge/pill-badge.vue";
 import ProgressBar from "./chart/progress-bar/progress-bar.vue";
 import RadioGroup from "./form/radio-group/radio-group.vue";
+import SearchableList from "./data/searchable-list/searchable-list.vue";
+import SkeletonIndicator from "./interaction/skeleton-indicator/skeleton-indicator.vue";
+import SkeletonLoader from "./interaction/skeleton-loader/skeleton-loader.vue";
 import SummaryDetails from "./interaction/summary-details/summary-details.vue";
 import UiButton from "./interaction/ui-button/ui-button.vue";
 
@@ -53,13 +54,11 @@ import IconWarning from "./icon/icon-warning/icon-warning.vue";
 export default {
 	AlertMessage,
 	BaseIcon,
-	SearchableList,
-	SkeletonLoader,
-	SkeletonIndicator,
 	ButtonGroup,
 	ConditionalWrapper,
 	DonutChart,
 	FormActions,
+	FormCheckbox,
 	FormInput,
 	FormLayout,
 	FormPrefix,
@@ -99,6 +98,9 @@ export default {
 	PillBadge,
 	ProgressBar,
 	RadioGroup,
+	SearchableList,
+	SkeletonIndicator,
+	SkeletonLoader,
 	SummaryDetails,
 	UiButton,
 };

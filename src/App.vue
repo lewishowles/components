@@ -13,13 +13,14 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("searchable-list-preview");
+const selectedPreview = ref("form-checkbox-preview");
 
 const previewOptions = [
 	{ label: "alert-message", value: "alert-message-preview" },
 	{ label: "button-group", value: "button-group-preview" },
 	{ label: "donut-chart", value: "donut-chart-preview" },
 	{ label: "form", value: "form-preview" },
+	{ label: "form-checkbox", value: "form-checkbox-preview" },
 	{ label: "form-input", value: "form-input-preview" },
 	{ label: "form-textarea", value: "form-textarea-preview" },
 	{ label: "image-tag", value: "image-tag-preview" },

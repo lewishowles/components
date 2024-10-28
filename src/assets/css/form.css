@@ -30,14 +30,24 @@
 		}
 	}
 
-	.form-input--error {
-		@apply ring-red-300;
-	}
-
 	textarea {
 		@apply min-h-40;
 
 		field-sizing: content;
+	}
+
+	.form-checkbox {
+		@apply mt-1 size-4 shrink-0 appearance-none rounded outline-none ring-1 ring-grey-300 transition-all;
+		@apply dark:bg-white/20 dark:ring-white/30;
+		@apply focus:ring-2 focus:ring-purple-800;
+		@apply checked:bg-current checked:text-purple-800 checked:ring-current;
+		@apply checked:focus:ring-offset-2;
+		@apply dark:focus:ring-purple-500;
+		@apply dark:checked:text-purple-500;
+	}
+
+	[type="checkbox"]:checked {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23FFF' d='m12.796 6.086-5.533 5.706a.675.675 0 0 1-.975 0l-3.086-3.2a.727.727 0 0 1 0-1.005l.861-.889a.675.675 0 0 1 .974 0l1.756 1.757 4.17-4.248a.675.675 0 0 1 .973 0l.86.869c.13.133.204.315.204.505s-.073.371-.204.505'/%3E%3C/svg%3E");
 	}
 
 	.form-radio {
@@ -48,6 +58,10 @@
 		@apply checked:focus:ring-offset-2;
 		@apply dark:focus:ring-purple-500;
 		@apply dark:checked:text-purple-500;
+	}
+
+	[type="radio"]:checked {
+		background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
 	}
 
 	.button-group {
@@ -71,7 +85,7 @@
 		}
 	}
 
-	[type="radio"]:checked {
-		background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e")
+	.form-input--error {
+		@apply ring-red-300;
 	}
 }

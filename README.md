@@ -34,6 +34,7 @@ You can find more information about each component on its relevant docs page.
 ### Forms
 
 - [form-input](/src/components/form/form-input/form-input.md)
+- [form-checkbox](/src/components/form/form-checkbox/form-checkbox.md)
 - [form-textarea](/src/components/form/form-textarea/form-textarea.md)
 - [radio-group](/src/components/form/radio-group/radio-group.md)
 - [button-group](/src/components/form/button-group/button-group.md)
