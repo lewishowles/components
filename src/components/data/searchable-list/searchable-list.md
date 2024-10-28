@@ -63,6 +63,13 @@ The label for the reset search button.
 
 The list of items to search, or display if no search is being performed. This should be an array of objects. Any non-object entries will be ignored.
 
+### `placeholder`
+
+- type: `string`
+- default: `null`
+
+Any placeholder to provide to the search input. This can be used to indicate the kinds of data the user can search for.
+
 ### `exclude`
 
 - type: `array`

@@ -64,6 +64,22 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
+
+	/**
+	 * Any properties to exclude from the search.
+	 */
+	exclude: {
+		type: Array,
+		default: () => [],
+	},
+
+	/**
+	 * Any properties to search exclusively.
+	 */
+	include: {
+		type: Array,
+		default: () => [],
+	},
 });
 
 const searchQuery = ref("");
@@ -81,7 +97,14 @@ const results = computed(() => {
 		return props.data;
 	}
 
-	return props.data.filter(item => objectContains(item, searchQuery.value, { caseInsensitive: true, allowPartial: true }));
+	return props.data.filter(item => {
+		return objectContains(item, searchQuery.value, {
+			exclude: props.exclude,
+			include: props.include,
+			caseInsensitive: true,
+			allowPartial: true,
+		});
+	});
 });
 
 // The number of items provided.

@@ -52,5 +52,27 @@ describe("searchable-list", () => {
 			cy.getByData("searchable-list-toolbar").shouldHaveText("Showing 9");
 			cy.getByData("searchable-list-demo-item").shouldHaveCount(9);
 		});
+
+		it("Object properties can be excluded", () => {
+			mount({
+				data: [{ name: "Dasher", role: "Reindeer" }, { name: "Dancer", role: "Reindeer" }],
+				exclude: ["role"],
+			});
+
+			cy.fillFormField("searchable-list-search", "reindeer");
+			cy.getByData("searchable-list-demo-item").should("not.exist");
+			cy.getByData("searchable-list-no-results").shouldBeVisible();
+		});
+
+		it("Object properties can be searched exclusively", () => {
+			mount({
+				data: [{ name: "Dasher", role: "Reindeer" }, { name: "Dancer", role: "Reindeer" }],
+				include: ["name"],
+			});
+
+			cy.fillFormField("searchable-list-search", "reindeer");
+			cy.getByData("searchable-list-demo-item").should("not.exist");
+			cy.getByData("searchable-list-no-results").shouldBeVisible();
+		});
 	});
 });
