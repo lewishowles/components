@@ -1,5 +1,5 @@
 <template>
-	<div class="flex items-center justify-end" data-test="form-actions">
+	<div class="flex items-center gap-4" data-test="form-actions">
 		<slot />
 	</div>
 </template>
