@@ -77,6 +77,12 @@ The list of object properties that should not be included in the search.
 
 The list of object properties that should be searched exclusively.
 
+## Methods
+
+### `resetSearch`
+
+Resets the current search query for the user.
+
 ## Examples
 
 ### Basic searchable list

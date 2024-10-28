@@ -97,4 +97,8 @@ const haveResults = computed(() => !performingSearch.value || resultCount.value 
 function resetSearch() {
 	searchQuery.value = "";
 }
+
+defineExpose({
+	resetSearch,
+});
 </script>
