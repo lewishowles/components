@@ -2,7 +2,8 @@ import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vitest";
 import SearchableList from "./searchable-list.vue";
 
-const mount = createMount(SearchableList);
+const defaultProps = { data: [{ name: "Wall-E" }] };
+const mount = createMount(SearchableList, { props: defaultProps });
 
 describe("searchable-list", () => {
 	describe("Initialisation", () => {

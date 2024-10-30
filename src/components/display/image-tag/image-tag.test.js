@@ -2,7 +2,8 @@ import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vitest";
 import ImageTag from "./image-tag.vue";
 
-const mount = createMount(ImageTag);
+const defaultProps = { src: "https://picsum.photos/300/300" };
+const mount = createMount(ImageTag, { props: defaultProps });
 
 describe("image-tag", () => {
 	describe("Initialisation", () => {
