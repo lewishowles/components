@@ -13,7 +13,7 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("form-checkbox-preview");
+const selectedPreview = ref("tab-group-preview");
 
 const previewOptions = [
 	{ label: "alert-message", value: "alert-message-preview" },
@@ -32,6 +32,7 @@ const previewOptions = [
 	{ label: "searchable-list", value: "searchable-list-preview" },
 	{ label: "skeleton-loader", value: "skeleton-loader-preview" },
 	{ label: "summary-details", value: "summary-details-preview" },
+	{ label: "tab-group", value: "tab-group-preview" },
 	{ label: "ui-button", value: "ui-button-preview" },
 ];
 </script>

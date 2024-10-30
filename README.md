@@ -47,6 +47,7 @@ You can find more information about each component on its relevant docs page.
 - [loading-indicator](/src/components/interaction/loading-indicator/loading-indicator.md)
 - [skeleton-loader](/src/components/interaction/skeleton-loader/skeleton-loader.md)
 - [summary-details](/src/components/interaction/summary-details/summary-details.md)
+- [tab-group](/src/components/interaction/tab-group/tab-group.md)
 - [ui-button](/src/components/interaction/ui-button/ui-button.md)
 
 ### Data
@@ -84,6 +85,5 @@ Special scaffold scripts have been created to generate files for a new component
 Some components that I would like to build soon include, likely in this order.
 
 - Checkbox - Replace checkboxes and offer the simple implementation found in `form-radio`.
-- Tabs - Allowing easy, accessible tabbed content.
 - Form wrapper - Handling communication between individual form fields and a parent form, collating all responses into one object, providing an accessible error summary based on validation configuration, and more.
 - Data table - Providing built-in options for searching, sorting, pagination, filtering, and custom display of any data in a table.

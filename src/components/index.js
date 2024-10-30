@@ -19,6 +19,8 @@ import SearchableList from "./data/searchable-list/searchable-list.vue";
 import SkeletonIndicator from "./interaction/skeleton-indicator/skeleton-indicator.vue";
 import SkeletonLoader from "./interaction/skeleton-loader/skeleton-loader.vue";
 import SummaryDetails from "./interaction/summary-details/summary-details.vue";
+import TabGroup from "./interaction/tab-group/tab-group.vue";
+import TabItem from "./interaction/tab-item/tab-item.vue";
 import UiButton from "./interaction/ui-button/ui-button.vue";
 
 import BaseIcon from "./icon/base-icon/base-icon.vue";
@@ -54,6 +56,8 @@ import IconWarning from "./icon/icon-warning/icon-warning.vue";
 export default {
 	AlertMessage,
 	BaseIcon,
+	TabItem,
+	TabGroup,
 	ButtonGroup,
 	ConditionalWrapper,
 	DonutChart,

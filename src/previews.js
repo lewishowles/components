@@ -18,6 +18,7 @@ import RadioGroupPreview from "@/components/form/radio-group/radio-group-preview
 import SearchableListPreview from "@/components/data/searchable-list/searchable-list-preview.vue";
 import SkeletonLoaderPreview from "@/components/interaction/skeleton-loader/skeleton-loader-preview.vue";
 import SummaryDetailsPreview from "@/components/interaction/summary-details/summary-details-preview.vue";
+import TabGroupPreview from "@/components/interaction/tab-group/tab-group-preview.vue";
 import UiButtonPreview from "@/components/interaction/ui-button/ui-button-preview.vue";
 
 // Prepare previews for use with <component :is> to simplify preview management.
@@ -42,6 +43,7 @@ const previewLibrary = {
 		app.component("SearchableListPreview", SearchableListPreview);
 		app.component("SkeletonLoaderPreview", SkeletonLoaderPreview);
 		app.component("SummaryDetailsPreview", SummaryDetailsPreview);
+		app.component("TabGroupPreview", TabGroupPreview);
 		app.component("UiButtonPreview", UiButtonPreview);
 	},
 };

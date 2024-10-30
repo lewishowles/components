@@ -1,6 +1,12 @@
 # Changelog
 
-## 0.13.0
+# 0.14.0
+
+### New components
+
+- [`tab-group`](/src/components/interaction/tab-group/tab-group.md): Displays accessible tabbed content.
+
+## 0.13.0 - 2024-10-28
 
 ### New components
 
