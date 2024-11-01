@@ -17,6 +17,7 @@
 					id: inputId,
 					placeholder,
 					'aria-describedby': describedBy,
+					type: 'text',
 					...inputAttributes,
 				}"
 			/>

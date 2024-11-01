@@ -16,7 +16,7 @@ describe("form-input", () => {
 
 		cy.getFormField("form-input")
 			.shouldHaveAttribute("id", "id-abc")
-			.shouldHaveAttribute("type", "type");
+			.shouldHaveAttribute("type", "text");
 
 		cy.getByData("form-input")
 			.getByData("form-label")
