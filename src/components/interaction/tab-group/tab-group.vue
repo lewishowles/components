@@ -1,11 +1,24 @@
 <template>
 	<div data-test="tab-group">
-		<nav class="mb-4 border-b border-grey-200 dark:border-grey-700">
+		<nav ref="tabBarReference" class="mb-4 border-b border-grey-200 dark:border-grey-700">
 			<ol class="-mb-px flex flex-wrap items-end" role="tablist">
 				<li v-for="tab in tabs" :key="tab.tabId">
-					<button v-bind="{ id: tab.tabId, 'aria-controls': tab.panelId, 'aria-selected': isActiveTab(tab.tabId) }" class="border-b-2 px-4 py-2 hocus:text-grey-950 dark:hocus:text-grey-50" :class="{ 'border-grey-950 text-grey-950 dark:border-grey-50 dark:text-grey-50': isActiveTab(tab.tabId), 'border-transparent': !isActiveTab(tab.tabId) }" data-test="tab-group-tab" @click="setActiveTab(tab.tabId)">
+					<a
+						v-bind="{
+							'id': tab.tabId,
+							'href': `#${tab.panelId}`,
+							'aria-controls': tab.panelId,
+							'aria-selected': tab.active,
+							'tabindex': tab.active ? '1' : '-1',
+						}"
+						ref="tabAnchors"
+						class="inline-block border-b-2 px-4 py-2 no-underline hocus:text-grey-950 dark:hocus:text-grey-50"
+						:class="{ 'border-grey-950 text-grey-950 dark:border-grey-50 dark:text-grey-50': tab.active, 'border-transparent text-current': !tab.active }"
+						data-test="tab-group-tab"
+						@click.prevent="setActiveTab(tab.tabId)"
+					>
 						<component :is="tab.label" />
-					</button>
+					</a>
 				</li>
 			</ol>
 		</nav>
@@ -18,11 +31,37 @@
 import { clamp } from "@lewishowles/helpers/number";
 import { computed, provide, ref } from "vue";
 import { get } from "@lewishowles/helpers/object";
-import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { onKeyStroke, useFocusWithin } from "@vueuse/core";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 // The list of available tabs, as registered by `tab-item` components.
-const tabs = ref([]);
+const tabData = ref([]);
+
+// An expansion of the basic tab data to allow each tab to have knowledge of
+// whether it is currently the active tab.
+const tabs = computed(() => {
+	if (!isNonEmptyArray(tabData.value)) {
+		return [];
+	}
+
+	return tabData.value.map(tab => {
+		return {
+			active: isActiveTab(tab.tabId),
+			...tab,
+		};
+	});
+});
+
+// The list of available tabs, as registered by `tab-item` components.
+const tabAnchors = ref([]);
+// A reference to our tab bar, containing the tabs within it. This allows us to
+// check if any of those tabs currently have focus.
+const tabBarReference = ref(null);
+// Whether one of our tabs has focus. If so, we allow keyboard navigation of the
+// tabs.
+const { focused: tabHasFocus } = useFocusWithin(tabBarReference);
 
 // The IDs of the current tabs, allowing us to easily check for a tab's
 // existence.
@@ -44,10 +83,32 @@ const tabIds = computed(() => {
 
 // The currently active tab by its ID.
 const activeTabId = ref(null);
+// The index of the currently active tab in the list of tabs.
+const activeTabIndex = computed(() => Math.max(0, tabs.value.findIndex(tab => tab.tabId === activeTabId.value)));
 
 provide("tab-group", {
 	registerTab,
 	activeTabId,
+});
+
+/**
+ * When using the arrow keys, if a tab is currently focused, navigate forward or
+ * backwards through tabs based on the arrow direction.
+ */
+onKeyStroke(["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"], e => {
+	if (!tabHasFocus.value) {
+		return;
+	}
+
+	e.preventDefault();
+
+	if (["ArrowUp", "ArrowLeft"].includes(e.key)) {
+		selectPreviousTab();
+	}
+
+	if (["ArrowDown", "ArrowRight"].includes(e.key)) {
+		selectNextTab();
+	}
 });
 
 /**
@@ -57,7 +118,7 @@ provide("tab-group", {
  *     The details of the tab to be registered.
  */
 function registerTab(tab) {
-	tabs.value.push(tab);
+	tabData.value.push(tab);
 
 	if (tab.initiallyActive === true) {
 		activeTabId.value = tab.tabId;
@@ -111,6 +172,30 @@ function setActiveTab(tabId) {
 	}
 
 	activeTabId.value = tabId;
+}
+
+/**
+ * Select the tab before the currently active one, wrapping if necessary.
+ *
+ * When selecting a tab, we focus the relevant anchor.
+ */
+function selectPreviousTab() {
+	const previousIndex = getNextIndex(activeTabIndex.value, tabs.value, { reverse: true, wrap: true });
+
+	setActiveTabByIndex(previousIndex);
+	runComponentMethod(tabAnchors.value[previousIndex], "focus");
+}
+
+/**
+ * Select the tab after the currently active one, wrapping if necessary.
+ *
+ * When selecting a tab, we focus the relevant anchor.
+ */
+function selectNextTab() {
+	const nextIndex = getNextIndex(activeTabIndex.value, tabs.value, { reverse: false, wrap: true });
+
+	setActiveTabByIndex(nextIndex);
+	runComponentMethod(tabAnchors.value[nextIndex], "focus");
 }
 
 /**

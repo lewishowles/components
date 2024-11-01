@@ -16,6 +16,72 @@ describe("tab-group", () => {
 		});
 	});
 
+	describe("Computed", () => {
+		describe("tabs", () => {
+			test("should include active tab data", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.tabData = [basicTab, secondaryTab];
+
+				vm.activeTabId = secondaryTab.tabId;
+
+				expect(vm.tabs).toEqual([
+					{
+						...basicTab,
+						active: false,
+					},
+					{
+						...secondaryTab,
+						active: true,
+					},
+				]);
+			});
+		});
+
+		describe("tabIds", () => {
+			test("should extract tab IDs", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.tabData = [basicTab, secondaryTab];
+
+				expect(vm.tabIds).toEqual([basicTab.tabId, secondaryTab.tabId]);
+			});
+
+			test("should ignore invalid tab IDs", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.tabData = [basicTab, { name: "imaginary tab" }, secondaryTab];
+
+				expect(vm.tabIds).toEqual([basicTab.tabId, secondaryTab.tabId]);
+			});
+		});
+
+		describe("activeTabIndex", () => {
+			test("should reflect the currently active tab", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.tabData = [basicTab, secondaryTab];
+				vm.activeTabId = secondaryTab.tabId;
+
+				expect(vm.activeTabIndex).toBe(1);
+			});
+
+			test("should default when the active tab is invalid", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.tabData = [basicTab, secondaryTab];
+				vm.activeTabId = "invalid-id";
+
+				expect(vm.activeTabIndex).toBe(0);
+			});
+		});
+	});
+
 	describe("Methods", () => {
 		describe("registerTab", () => {
 			test("should register a new tab", () => {
@@ -24,7 +90,7 @@ describe("tab-group", () => {
 
 				vm.registerTab(basicTab);
 
-				expect(vm.tabs).toEqual([basicTab]);
+				expect(vm.tabData).toEqual([basicTab]);
 			});
 
 			test("should ensure a tab is marked as active", () => {
@@ -52,7 +118,7 @@ describe("tab-group", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.tabs = [basicTab];
+				vm.tabData = [basicTab];
 
 				vm.ensureActiveTab();
 
@@ -63,7 +129,7 @@ describe("tab-group", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.tabs = [basicTab, secondaryTab];
+				vm.tabData = [basicTab, secondaryTab];
 
 				vm.activeTabId = "id-456";
 
@@ -77,7 +143,7 @@ describe("tab-group", () => {
 				const vm = wrapper.vm;
 
 				vm.activeTabId = "sample-id";
-				vm.tabs = [basicTab, secondaryTab];
+				vm.tabData = [basicTab, secondaryTab];
 
 				vm.ensureActiveTab();
 
@@ -90,7 +156,7 @@ describe("tab-group", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.tabs = [basicTab, secondaryTab];
+				vm.tabData = [basicTab, secondaryTab];
 
 				vm.setActiveTabByIndex(1);
 
@@ -101,7 +167,7 @@ describe("tab-group", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.tabs = [basicTab, secondaryTab];
+				vm.tabData = [basicTab, secondaryTab];
 
 				vm.setActiveTabByIndex(-1);
 
@@ -118,7 +184,7 @@ describe("tab-group", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.tabs = [basicTab, secondaryTab];
+				vm.tabData = [basicTab, secondaryTab];
 
 				vm.setActiveTab(basicTab.tabId);
 
@@ -129,11 +195,67 @@ describe("tab-group", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.tabs = [basicTab, secondaryTab];
+				vm.tabData = [basicTab, secondaryTab];
 
 				vm.setActiveTab("invlaid-id");
 
 				expect(vm.activeTabId).toBe(null);
+			});
+		});
+
+		describe("selectPreviousTab", () => {
+			test("should select the previous tab", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.tabData = [basicTab, secondaryTab];
+
+				vm.setActiveTab(secondaryTab.tabId);
+
+				vm.selectPreviousTab();
+
+				expect(vm.activeTabId).toBe(basicTab.tabId);
+			});
+
+			test("should wrap when reaching the start of the list", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.tabData = [basicTab, secondaryTab];
+
+				vm.setActiveTab(basicTab.tabId);
+
+				vm.selectPreviousTab();
+
+				expect(vm.activeTabId).toBe(secondaryTab.tabId);
+			});
+		});
+
+		describe("selectNextTab", () => {
+			test("should select the next tab", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.tabData = [basicTab, secondaryTab];
+
+				vm.setActiveTab(basicTab.tabId);
+
+				vm.selectNextTab();
+
+				expect(vm.activeTabId).toBe(secondaryTab.tabId);
+			});
+
+			test("should wrap when reaching the end of the list", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.tabData = [basicTab, secondaryTab];
+
+				vm.setActiveTab(secondaryTab.tabId);
+
+				vm.selectNextTab();
+
+				expect(vm.activeTabId).toBe(basicTab.tabId);
 			});
 		});
 
@@ -142,7 +264,7 @@ describe("tab-group", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.tabs = [basicTab, secondaryTab];
+				vm.tabData = [basicTab, secondaryTab];
 
 				expect(vm.isValidTabId(basicTab.tabId)).toBe(true);
 			});
@@ -151,7 +273,7 @@ describe("tab-group", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.tabs = [basicTab, secondaryTab];
+				vm.tabData = [basicTab, secondaryTab];
 
 				expect(vm.isValidTabId("invalid-id")).toBe(false);
 			});
@@ -174,7 +296,7 @@ describe("tab-group", () => {
 					const wrapper = mount();
 					const vm = wrapper.vm;
 
-					vm.tabs = [basicTab, secondaryTab];
+					vm.tabData = [basicTab, secondaryTab];
 
 					expect(vm.isValidTabId(input)).toBe(false);
 				});
@@ -185,7 +307,7 @@ describe("tab-group", () => {
 					const wrapper = mount();
 					const vm = wrapper.vm;
 
-					vm.tabs = [basicTab, secondaryTab];
+					vm.tabData = [basicTab, secondaryTab];
 
 					vm.activeTabId = basicTab.tabId;
 
