@@ -86,3 +86,7 @@ Some components that I would like to build soon include, likely in this order.
 
 - Form wrapper - Handling communication between individual form fields and a parent form, collating all responses into one object, providing an accessible error summary based on validation configuration, and more.
 - Data table - Providing built-in options for searching, sorting, pagination, filtering, and custom display of any data in a table.
+- Pagination - Providing automatic display of pages depending on count and per-page properties, with current page tracking.
+- Dialog - Providing an accessible dialog popup with focus trapping.
+- Form date - including calendar with quick access to months, years and relative dates.
+- Checkbox group - A set of checkboxes with optional introductory text.
