@@ -106,16 +106,40 @@ for i in "${!templates[@]}"; do
 	sed "s/{{COMPONENT_NAME}}/$COMPONENT_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 done
 
-# Add the new icon to src/components/index.js
-INDEX_FILE="../../index.js"
+# Add the new component to src/components/index.js
+# Relative to the script directory.
+cd $SCRIPT_DIR;
+INDEX_FILE="../src/components/index.js"
 
 sed -i '' "/import ConditionalWrapper/a\\
 import $PASCAL_CASE_NAME from \"./$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME.vue\";\\
 " "$INDEX_FILE"
 
-sed -i '' "/BaseIcon,/a\\
+sed -i '' "/AlertMessage,/a\\
 	$PASCAL_CASE_NAME,\\
 " "$INDEX_FILE"
+
+# Development helpers
+
+# Add the new component to src/previews.js
+PREVIEWS_FILE="../src/previews.js"
+
+sed -i '' "/import AlertMessagePreview/a\\
+import ${PASCAL_CASE_NAME}Preview from \"@/components/$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME-preview.vue\";\\
+" "$PREVIEWS_FILE"
+
+sed -i '' "/app.component(\"AlertMessagePreview\", AlertMessagePreview);/a\\
+		app.component(\"${PASCAL_CASE_NAME}Preview\", ${PASCAL_CASE_NAME}Preview);\\
+" "$PREVIEWS_FILE"
+
+APP_FILE="../src/App.vue";
+
+# Add the new component to App.vue
+sed -i '' "/const previewOptions/a\\
+	{ label: \"${COMPONENT_NAME}\", value: \"${COMPONENT_NAME}-preview\" },\\
+" "$APP_FILE"
+
+sed -i '' "s/const selectedPreview = ref(\"[^\"]*\")/const selectedPreview = ref(\"${COMPONENT_NAME}-preview\")/" "$APP_FILE"
 
 # Print the success message
 echo -e "\nComponent ${PURPLE}$COMPONENT_NAME${RESET_COLOUR} scaffolded successfully in ${BLUE}$BASE_PATH/$COMPONENT_NAME${RESET_COLOUR}.\n"
@@ -126,4 +150,6 @@ echo "  ↳ $COMPONENT_NAME-preview.vue"
 echo "  ↳ $COMPONENT_NAME.cy.js"
 echo "  ↳ $COMPONENT_NAME.test.js"
 echo "  ↳ [updated] /src/components/index.js"
+echo "  ↳ [updated] /src/previews.js"
+echo "  ↳ [updated] /src/App.vue"
 
