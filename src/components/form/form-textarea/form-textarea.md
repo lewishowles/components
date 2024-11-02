@@ -43,6 +43,12 @@ Any placeholder to show in the textarea. Do not use a placeholder for critical i
 
 Any additional attributes to pass to the textarea itself, such as `required` or `autocomplete`.
 
+## Methods
+
+### `triggerFocus`
+
+Focus this input.
+
 ## Examples
 
 ### Basic usage

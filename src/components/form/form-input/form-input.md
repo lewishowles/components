@@ -49,6 +49,12 @@ Any placeholder to show in the input. Do not use a placeholder for critical info
 
 Any additional attributes to pass to the input itself, such as `required` or `autocomplete`. This can also be used to change the type of the input, such as to `email`.
 
+## Methods
+
+### `triggerFocus`
+
+Focus this input.
+
 ## Examples
 
 ### Basic usage

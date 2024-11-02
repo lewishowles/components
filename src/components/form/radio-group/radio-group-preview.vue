@@ -14,6 +14,16 @@
 					Favourite ice-cream
 				</radio-group>
 
+				<div>
+					<radio-group ref="focusableRadio" v-bind="{ options: objectArrayOptions }">
+						Focusable
+					</radio-group>
+
+					<ui-button class="button--muted mt-4" @click="triggerFocus">
+						Focus
+					</ui-button>
+				</div>
+
 				<radio-group v-bind="{ options, inline: true }">
 					Favourite ice-cream (inline)
 				</radio-group>
@@ -85,7 +95,16 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
+
 const objectArrayOptions = [{ label: "Chocolate", value: "chocolate" }, { label: "Vanilla", value: "vanilla" }, { label: "Strawberry", value: "strawberry" }];
 const objectOptions = { chocolate: "Chocolate", vanilla: "Vanilla", strawberry: "Strawberry" };
 const stringArrayOptions = ["Chocolate", "Vanilla", "Strawberry"];
+
+const focusableRadio = ref(null);
+
+function triggerFocus() {
+	runComponentMethod(focusableRadio.value, "triggerFocus");
+}
 </script>

@@ -17,6 +17,6 @@
 		@apply active:bg-grey-100 active:border-grey-500;
 		@apply dark:bg-white/20 dark:border-white/20;
 		@apply dark:hocus:bg-white/30 dark:hocus:border-white/20;
-		@apply dark:active:bg-white/40 dark:hocus:border-white/20;
+		@apply dark:active:bg-white/40 dark:hocus:border-transparent;
 	}
 }

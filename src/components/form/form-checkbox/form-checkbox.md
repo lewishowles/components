@@ -34,6 +34,12 @@ Any ID to apply to this field. If an ID is not provided, one will be generated a
 
 Any additional attributes to pass to the input itself, such as `required`.
 
+## Methods
+
+### `triggerFocus`
+
+Focus this input.
+
 ## Examples
 
 ### Basic usage

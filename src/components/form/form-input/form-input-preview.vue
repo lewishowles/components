@@ -16,6 +16,16 @@
 
 				<pre>Value: {{ name }}</pre>
 
+				<div>
+					<form-input ref="focusableInput">
+						Focusable
+					</form-input>
+
+					<ui-button class="button--muted mt-4" @click="triggerFocus">
+						Focus
+					</ui-button>
+				</div>
+
 				<form-input>
 					Your name
 
@@ -108,6 +118,12 @@
 
 <script setup>
 import { ref } from "vue";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const name = ref("");
+const focusableInput = ref(null);
+
+function triggerFocus() {
+	runComponentMethod(focusableInput.value, "triggerFocus");
+}
 </script>

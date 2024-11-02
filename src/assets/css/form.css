@@ -65,24 +65,30 @@
 	}
 
 	.button-group {
-		@apply block cursor-pointer border border-grey-300 px-3 py-2 transition-all;
-		@apply hover:border-grey-400 hover:bg-grey-50;
+		@apply button cursor-pointer rounded-none transition-all;
+		@apply bg-white border border-grey-300;
+		@apply peer-hocus:bg-grey-50 peer-hocus:border-grey-400;
+		@apply peer-focus-visible:outline-none;
+		@apply peer-focus-visible:ring-2;
+		@apply peer-focus-visible:ring-purple-600;
+		@apply peer-focus-visible:ring-offset-2;
 		@apply peer-checked:border-purple-800 peer-checked:bg-purple-800 peer-checked:text-white;
-		@apply dark:border-transparent dark:bg-white/20;
-		@apply dark:hover:bg-white/30;
-		@apply dark:peer-checked:bg-purple-500;
+		@apply dark:bg-white/20 dark:border-white/20;
+		@apply dark:peer-hocus:bg-white/30 dark:peer-hocus:border-white/20;
+		@apply dark:peer-focus-visible:ring-purple-400;
+		@apply dark:peer-focus-visible:ring-offset-0;
+	}
 
-		&--first {
-			@apply rounded-s-lg;
-		}
+	.button-group--first {
+		@apply rounded-s-lg;
+	}
 
-		&--middle {
-			@apply border-s-0 dark:ms-0.5;
-		}
+	.button-group--middle {
+		@apply border-s-0 dark:ms-0.5;
+	}
 
-		&--last {
-			@apply rounded-e-lg;
-		}
+	.button-group--last {
+		@apply rounded-e-lg;
 	}
 
 	.form-input--error {

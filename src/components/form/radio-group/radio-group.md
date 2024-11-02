@@ -62,6 +62,12 @@ Whether to display options inline (horizontally). This is only recommended when 
 
 Note that this only takes effect when the radio buttons are in a _container_ that is at least 320px wide.
 
+## Methods
+
+### `triggerFocus`
+
+Focus this input.
+
 ## Examples
 
 ### Basic usage

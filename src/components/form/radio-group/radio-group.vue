@@ -12,7 +12,7 @@
 			<div class="flex flex-col" :class="{ '@xs:flex-row @xs:gap-10': inline, 'gap-2': !inline }">
 				<template v-for="option in internalOptions" :key="option.id">
 					<div class="flex items-center gap-2">
-						<input v-model="model" type="radio" class="form-radio" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
+						<input ref="inputReferences" v-model="model" type="radio" class="form-radio shrink-0" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
 
 						<form-label v-bind="{ id: option.id, styled: false }" class="leading-6">
 							{{ option.label }}
@@ -40,10 +40,10 @@
  * `radio-group` allows options to be provided in a few different formats for
  * simplicity.
  */
-import { computed, useSlots } from "vue";
+import { computed, ref, useSlots } from "vue";
 import { deepCopy, isNonEmptyObject } from "@lewishowles/helpers/object";
-import { isNonEmptyArray } from "@lewishowles/helpers/array";
-import { isNonEmptySlot } from "@lewishowles/helpers/vue";
+import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
@@ -103,6 +103,8 @@ const slots = useSlots();
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
 const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
+// A reference to the inputs, allowing us to trigger focus.
+const inputReferences = ref([]);
 // Whether an introduction has been provided.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 
@@ -160,5 +162,45 @@ const internalOptions = computed(() => {
 
 		return option;
 	});
+});
+
+/**
+ * Trigger focus on the selected radio button, or the first if no selection has
+ * been made.
+ */
+function triggerFocus() {
+	if (!isNonEmptyArray(inputReferences.value)) {
+		return;
+	}
+
+	// If we have a current value, focus that radio instead.
+	if (model.value === undefined) {
+		focusFirstInput();
+
+		return;
+	}
+
+	const selectedIndex = internalOptions.value.findIndex(option => option.value === model.value);
+
+	if (selectedIndex !== -1) {
+		runComponentMethod(inputReferences.value[selectedIndex], "focus");
+
+		return;
+	}
+
+	focusFirstInput();
+}
+
+/**
+ * Focus the first input of the group.
+ */
+function focusFirstInput() {
+	const input = head(inputReferences.value);
+
+	runComponentMethod(input, "focus");
+}
+
+defineExpose({
+	triggerFocus,
 });
 </script>

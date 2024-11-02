@@ -16,6 +16,16 @@
 
 				<pre>Value: {{ bio }}</pre>
 
+				<div>
+					<form-textarea ref="focusableInput">
+						Focusable
+					</form-textarea>
+
+					<ui-button class="button--muted mt-4" @click="triggerFocus">
+						Focus
+					</ui-button>
+				</div>
+
 				<form-textarea>
 					Bio
 
@@ -52,6 +62,12 @@
 
 <script setup>
 import { ref } from "vue";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const bio = ref("");
+const focusableInput = ref(null);
+
+function triggerFocus() {
+	runComponentMethod(focusableInput.value, "triggerFocus");
+}
 </script>
