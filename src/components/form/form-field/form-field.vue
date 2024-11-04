@@ -1,5 +1,13 @@
 <template>
-	<component :is="fieldComponent" ref="fieldRef" v-model="model">
+	<alert-message v-if="!haveNameIfRequired" type="error">
+		<template #title>
+			&lt;form-field&gt; &mdash; <slot />
+		</template>
+
+		A parent `form-wrapper` was detected, but no `name` was provided for this field.
+	</alert-message>
+
+	<component :is="fieldComponent" v-else ref="fieldRef" v-model="model">
 		<slot />
 
 		<!-- For now, we're listing out slots manually, as one way to
@@ -26,7 +34,9 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, inject, ref, watch } from "vue";
+import { isFunction } from "@lewishowles/helpers/general";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 const props = defineProps({
 	/**
@@ -44,7 +54,21 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
+
+	/**
+	 * The name of the field. This is required when used within a `form-wrapper`
+	 * component, where it is used as the key for the form's data collection. As
+	 * such, its uniqueness will be verified by `form-wrapper` when used
+	 * together.
+	 */
+	name: {
+		type: String,
+		default: null,
+	},
 });
+
+// Retrieve the relevant methods from the wrapper.
+const { registerField, updateFieldValue } = inject("form-wrapper");
 
 const model = defineModel({
 	type: String,
@@ -92,4 +116,27 @@ const fieldComponent = computed(() => {
 			return defaultComponent;
 	}
 });
+
+// Whether we detect a parent form.
+const haveParentForm = computed(() => isFunction(registerField));
+
+// If we have a parent form, whether we have a required name attribute.
+const haveNameIfRequired = computed(() => {
+	if (!haveParentForm.value) {
+		return true;
+	}
+
+	return isNonEmptyString(props.name);
+});
+
+watch(model, () => {
+	if (isFunction(updateFieldValue)) {
+		updateFieldValue(props.name, model.value);
+	}
+});
+
+// If a parent `form-wrapper` is found, register this field with it.
+if (haveParentForm.value) {
+	registerField(props.name);
+}
 </script>

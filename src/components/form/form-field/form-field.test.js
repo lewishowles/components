@@ -1,8 +1,11 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import FormField from "./form-field.vue";
 
-const mount = createMount(FormField);
+const registerFieldMock = vi.fn();
+const defaultProps = { name: "username" };
+const provide = { "form-wrapper": { registerField: registerFieldMock } };
+const mount = createMount(FormField, { props: defaultProps, global: { provide } });
 
 describe("form-field", () => {
 	describe("Initialisation", () => {
@@ -10,6 +13,12 @@ describe("form-field", () => {
 			const wrapper = mount();
 
 			expect(wrapper.vm).toBeTypeOf("object");
+		});
+
+		test("should register with a parent `form-wrapper`", () => {
+			mount();
+
+			expect(registerFieldMock).toHaveBeenCalled();
 		});
 	});
 
@@ -63,6 +72,45 @@ describe("form-field", () => {
 
 					expect(vm.fieldComponent).toBe(component);
 				});
+			});
+		});
+
+		describe("haveParentForm", () => {
+			test("should be true if a parent form exists", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.haveParentForm).toBe(true);
+			});
+
+			test("should be false if a field is used in isolation", () => {
+				const wrapper = mount( { global: { provide: { "form-wrapper": { registerField: null } } } });
+				const vm = wrapper.vm;
+
+				expect(vm.haveParentForm).toBe(false);
+			});
+		});
+
+		describe("haveNameIfRequired", () => {
+			test("should be false if a parent form is detected but no name is provided", () => {
+				const wrapper = mount({ name: null });
+				const vm = wrapper.vm;
+
+				expect(vm.haveNameIfRequired).toBe(false);
+			});
+
+			test("should be true if a parent form is detected and a name is provided", () => {
+				const wrapper = mount({ name: "username" });
+				const vm = wrapper.vm;
+
+				expect(vm.haveNameIfRequired).toBe(true);
+			});
+
+			test("should be true if no parent form is detected", () => {
+				const wrapper = mount( { global: { provide: { "form-wrapper": { registerField: null } } } });
+				const vm = wrapper.vm;
+
+				expect(vm.haveNameIfRequired).toBe(true);
 			});
 		});
 	});

@@ -10,6 +10,7 @@ import FormLayout from "./form/form-layout/form-layout.vue";
 import FormPrefix from "./form/form-prefix/form-prefix.vue";
 import FormSuffix from "./form/form-suffix/form-suffix.vue";
 import FormTextarea from "./form/form-textarea/form-textarea.vue";
+import FormWrapper from "./form/form-wrapper/form-wrapper.vue";
 import ImageTag from "./display/image-tag/image-tag.vue";
 import LinkTag from "./interaction/link-tag/link-tag.vue";
 import LoadingIndicator from "./interaction/loading-indicator/loading-indicator.vue";
@@ -68,6 +69,7 @@ export default {
 	FormPrefix,
 	FormSuffix,
 	FormTextarea,
+	FormWrapper,
 	IconArrowDown,
 	IconArrowLeft,
 	IconArrowRight,

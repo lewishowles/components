@@ -25,6 +25,15 @@ The type of field. Known types include:
 
 Any unknown type will default to `text`.
 
+### `name`
+
+- type: `string`
+- default: `null`
+
+The name of the field. This is required when used within a `form-wrapper` component, where it is used as the key for the form's data collection. As such, its uniqueness will be verified by `form-wrapper` when used together.
+
+### Additional props
+
 Additional props are passed through to the underlying form field. Additional props may be required depending on that field, such as `options` for `radio-group`.
 
 ## Events

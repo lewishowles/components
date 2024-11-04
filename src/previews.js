@@ -7,8 +7,8 @@ import DonutChartPreview from "@/components/chart/donut-chart/donut-chart-previe
 import FormCheckboxPreview from "@/components/form/form-checkbox/form-checkbox-preview.vue";
 import FormInputPreview from "@/components/form/form-input/form-input-preview.vue";
 import FormLayout from "@/components/form/form-layout/form-layout.vue";
-import FormPreview from "@/components/form/form-preview.vue";
 import FormTextareaPreview from "@/components/form/form-textarea/form-textarea-preview.vue";
+import FormWrapperPreview from "@/components/form/form-wrapper/form-wrapper-preview.vue";
 import ImageTagPreview from "@/components/display/image-tag/image-tag-preview.vue";
 import LinkTagPreview from "@/components/interaction/link-tag/link-tag-preview.vue";
 import LoadingIndicatorPreview from "@/components/interaction/loading-indicator/loading-indicator-preview.vue";
@@ -30,8 +30,8 @@ const previewLibrary = {
 		app.component("FormCheckboxPreview", FormCheckboxPreview);
 		app.component("FormInputPreview", FormInputPreview);
 		app.component("FormLayout", FormLayout);
-		app.component("FormPreview", FormPreview);
 		app.component("FormTextareaPreview", FormTextareaPreview);
+		app.component("FormWrapperPreview", FormWrapperPreview);
 		app.component("ImageTagPreview", ImageTagPreview);
 		app.component("LinkTagPreview", LinkTagPreview);
 		app.component("LoadingIndicatorPreview", LoadingIndicatorPreview);

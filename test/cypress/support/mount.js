@@ -41,5 +41,9 @@ export function createMount(component, defaultOptions = {}) {
 		const providedOptions = isDirectProps ? { props: options } : options;
 
 		cy.mount(component, deepMerge(defaultOptions, providedOptions));
+
+		cy.mount(component, deepMerge(defaultOptions, providedOptions)).then(({ wrapper }) => {
+			return cy.wrap(wrapper).as("vue");
+		});
 	};
 }

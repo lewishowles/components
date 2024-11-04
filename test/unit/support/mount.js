@@ -24,7 +24,7 @@ export function createMount(component, defaultOptions = {}) {
 	 *     The options to pass to Vitest for this individual mount.
 	 */
 	return function (options = {}) {
-		const isDirectProps = !Object.hasOwn(options, "props") && !Object.hasOwn(options, "slots");
+		const isDirectProps = !Object.hasOwn(options, "props") && !Object.hasOwn(options, "slots") && !Object.hasOwn(options, "global");
 		const providedOptions = isDirectProps ? { props: options } : options;
 
 		return mount(component, deepMerge(defaultOptions, providedOptions));
