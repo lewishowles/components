@@ -46,7 +46,7 @@ Focus this input.
 
 ```html
 <form-checkbox v-model="termsAccepted">
-	By submitting this form, you accept our <link-tag v-bind="{ external: true }">terms and conditions of sale</link-tag>.
+	By submitting this form, you accept our <link-tag v-bind="{ href: "/terms", external: true }">terms and conditions of sale</link-tag>.
 </form-checkbox>
 ```
 

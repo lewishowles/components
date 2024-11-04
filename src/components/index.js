@@ -4,6 +4,7 @@ import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrappe
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
 import FormCheckbox from "./form/form-checkbox/form-checkbox.vue";
+import FormField from "./form/form-field/form-field.vue";
 import FormInput from "./form/form-input/form-input.vue";
 import FormLayout from "./form/form-layout/form-layout.vue";
 import FormPrefix from "./form/form-prefix/form-prefix.vue";
@@ -55,9 +56,8 @@ import IconWarning from "./icon/icon-warning/icon-warning.vue";
 
 export default {
 	AlertMessage,
+	FormField,
 	BaseIcon,
-	TabItem,
-	TabGroup,
 	ButtonGroup,
 	ConditionalWrapper,
 	DonutChart,
@@ -104,6 +104,8 @@ export default {
 	RadioGroup,
 	SearchableList,
 	SkeletonIndicator,
+	TabGroup,
+	TabItem,
 	SkeletonLoader,
 	SummaryDetails,
 	UiButton,
