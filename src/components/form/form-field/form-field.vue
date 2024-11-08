@@ -160,9 +160,12 @@ const propsForValidation = computed(() => {
 	const additionalProps = {};
 
 	props.validation.forEach(rule => {
-		if (rule.rule === "required") {
-			additionalProps.required = true;
-			additionalProps.inputAttributes = { required: true };
+		switch (rule.rule) {
+			case "required":
+				additionalProps.required = true;
+				additionalProps.inputAttributes = { required: true };
+
+				break;
 		}
 	});
 
