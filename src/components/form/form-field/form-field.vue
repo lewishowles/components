@@ -185,7 +185,7 @@ watch(model, () => {
 
 // If a parent `form-wrapper` is found, register this field with it.
 if (haveParentForm.value) {
-	registerField(props.name, validate);
+	registerField({ name: props.name, validate });
 }
 
 /**
@@ -195,5 +195,18 @@ function validate() {
 	if (!haveValidation.value) {
 		return true;
 	}
+
+	for (const rule of props.validation) {
+		switch (rule.rule) {
+			case "required":
+				if (model.value === undefined) {
+					return rule.message;
+				}
+
+				break;
+		}
+	}
+
+	return true;
 }
 </script>

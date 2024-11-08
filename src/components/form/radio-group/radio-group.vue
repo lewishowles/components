@@ -120,11 +120,13 @@ const internalOptions = computed(() => {
 
 	if (isNonEmptyObject(providedOptions)) {
 		for (const value in providedOptions) {
-			if (Object.hasOwn(providedOptions, value)) {
-				const label = providedOptions[value];
-
-				options.push({ label, value });
+			if (!Object.hasOwn(providedOptions, value)) {
+				continue;
 			}
+
+			const label = providedOptions[value];
+
+			options.push({ label, value });
 		}
 	}
 

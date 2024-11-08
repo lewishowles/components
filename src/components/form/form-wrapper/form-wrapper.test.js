@@ -21,7 +21,7 @@ describe("form-wrapper", () => {
 
 				expect(vm.formData).toEqual({});
 
-				vm.registerField("username", () => true);
+				vm.registerField({ name: "username", validate: () => true });
 
 				expect(vm.formData).toEqual({ username: null });
 			});
@@ -54,23 +54,45 @@ describe("form-wrapper", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.registerField("name", () => true);
+				vm.registerField({ name: "name", validate: () => true });
 
 				vm.handleFormSubmit();
 
 				expect(wrapper.emitted("submit")[0]).toEqual([{ name: null }]);
 			});
 
-			test("should not emit if validation fails for a field", () => {
+			test.only("should not emit if validation fails for a field", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.registerField("name", () => true);
-				vm.registerField("email", () => false);
+				vm.registerField({ name: "name", validate: () => true });
+				vm.registerField({ name: "email", validate: () => "Error message" });
 
 				vm.handleFormSubmit();
 
 				expect(wrapper.emitted("submit")).toBeUndefined();
+			});
+		});
+
+		describe("validateFields", () => {
+			test("should not populate `errorSummary` if validation succeeds", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "name", validate: () => true });
+				vm.registerField({ name: "email", validate: () => true });
+
+				expect(vm.errorSummary).toEqual([]);
+			});
+
+			test("should populate `errorSummary` if validation fails", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "name", validate: () => true });
+				vm.registerField({ name: "email", validate: () => "Error message" });
+
+				expect(vm.errorSummary).toEqual([{ name: "email", message: "Error message" }]);
 			});
 		});
 

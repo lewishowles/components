@@ -29,8 +29,9 @@
 </template>
 
 <script setup>
-import { computed, nextTick, provide, reactive, useSlots } from "vue";
+import { computed, nextTick, provide, reactive, ref, useSlots } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 
@@ -53,16 +54,20 @@ const formData = defineModel({
 const formFields = reactive({});
 // Whether we have any form fields registered to the form.
 const haveFormFields = computed(() => isNonEmptyObject(formFields));
+// A holding pot for any validation errors found during validation.
+const errorSummary = ref([]);
+// Whether our error summary contains any errors.
+const haveErrorSummary = computed(() => isNonEmptyArray(errorSummary.value));
 
 /**
  * Allow a field to register itself with the form.
  *
- * @param  {string}  name
+ * @param  {string}  options.name
  *     The name of the field to register.
- * @param  {function}  validate
+ * @param  {function}  options.validate
  *     The validation function for this field, run when the form is submitted.
  */
-async function registerField(name, validate) {
+async function registerField({ name, validate } = {}) {
 	// If the value bound to the model from the parent isn't an object, set it
 	// to one, and wait for the update cycle to complete to ensure that both
 	// values are in sync.
@@ -108,13 +113,39 @@ function handleFormSubmit() {
 		return;
 	}
 
-	for (const field of Object.values(formFields)) {
-		if (isFunction(field.validate) && !field.validate()) {
-			return;
-		}
+	validateFields();
+
+	if (haveErrorSummary.value) {
+		return;
 	}
 
 	emitSubmit();
+}
+
+/**
+ * Validate each field based on its provided validation function. If any errors
+ * are encountered, populate the `errorSummary`.
+ */
+function validateFields() {
+	errorSummary.value = [];
+
+	for (const fieldName in formFields) {
+		if (!Object.hasOwn(formFields, fieldName)) {
+			continue;
+		}
+
+		const field = formFields[fieldName];
+
+		if (!isFunction(field.validate)) {
+			continue;
+		}
+
+		const validationResult = field.validate();
+
+		if (validationResult !== true) {
+			errorSummary.value.push({ name: fieldName, message: validationResult });
+		}
+	}
 }
 
 /**
