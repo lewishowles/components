@@ -21,7 +21,7 @@ describe("form-wrapper", () => {
 
 				expect(vm.formData).toEqual({});
 
-				vm.registerField("username");
+				vm.registerField("username", () => true);
 
 				expect(vm.formData).toEqual({ username: null });
 			});
@@ -37,6 +37,61 @@ describe("form-wrapper", () => {
 				vm.updateFieldValue("username", "wall-e");
 
 				expect(vm.formData).toEqual({ username: "wall-e" });
+			});
+		});
+
+		describe("handleFormSubmit", () => {
+			test("should emit if no form fields are present", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.handleFormSubmit();
+
+				expect(wrapper.emitted("submit")[0]).toEqual([{}]);
+			});
+
+			test("should emit if no validation is present", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.registerField("name", () => true);
+
+				vm.handleFormSubmit();
+
+				expect(wrapper.emitted("submit")[0]).toEqual([{ name: null }]);
+			});
+
+			test("should not emit if validation fails for a field", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.registerField("name", () => true);
+				vm.registerField("email", () => false);
+
+				vm.handleFormSubmit();
+
+				expect(wrapper.emitted("submit")).toBeUndefined();
+			});
+		});
+
+		describe("emitSubmit", () => {
+			test("should emit the current form value", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.emitSubmit();
+
+				expect(wrapper.emitted("submit")[0]).toEqual([{}]);
+
+				vm.updateFieldValue("name", "my_name");
+				vm.updateFieldValue("email", "my_email");
+
+				expect(wrapper.emitted("submit")[0]).toEqual([
+					{
+						name: "my_name",
+						email: "my_email",
+					},
+				]);
 			});
 		});
 	});

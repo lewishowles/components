@@ -9,7 +9,7 @@
 				Modelled form
 			</template>
 
-			<form-wrapper v-model="formData">
+			<form-wrapper v-model="formData" @submit="submitted = true">
 				<form-field type="email" name="email">
 					Email address
 				</form-field>
@@ -23,7 +23,8 @@
 				</template>
 			</form-wrapper>
 
-			<pre>{{ formData }}</pre>
+			<pre class="mt-4">{{ formData }}</pre>
+			<pre>{{ { submitted } }}</pre>
 		</preview-section>
 
 		<preview-section>
@@ -48,4 +49,5 @@
 import { ref } from "vue";
 
 const formData = ref({});
+const submitted = ref(false);
 </script>

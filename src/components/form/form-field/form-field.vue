@@ -80,16 +80,17 @@ const props = defineProps({
 	},
 });
 
+const model = defineModel({
+	type: String,
+});
+
 // Retrieve the relevant methods from the wrapper.
 const formWrapperInject = inject("form-wrapper");
 // The injection may not be defined, so we get its properties in a safe way.
 const registerField = formWrapperInject?.registerField;
 const updateFieldValue = formWrapperInject?.updateFieldValue;
-
-const model = defineModel({
-	type: String,
-});
-
+// Whether any validation has been provided for this field.
+const haveValidation = computed(() => isNonEmptyArray(props.validation));
 // A reference to the field being rendered.
 const fieldRef = ref(null);
 // The default field type.
@@ -137,9 +138,8 @@ const fieldComponent = computed(() => {
 // added by validation.
 const fieldProps = computed(() => {
 	const baseProps = fieldTypes[fieldType.value];
-	const haveValidationForField = isNonEmptyArray(props.validation);
 
-	if (!isNonEmptyObject(baseProps) && !haveValidationForField) {
+	if (!isNonEmptyObject(baseProps) && !haveValidation.value) {
 		return null;
 	}
 
@@ -185,6 +185,15 @@ watch(model, () => {
 
 // If a parent `form-wrapper` is found, register this field with it.
 if (haveParentForm.value) {
-	registerField(props.name);
+	registerField(props.name, validate);
+}
+
+/**
+ * Validate this field, based on any provided validation.
+ */
+function validate() {
+	if (!haveValidation.value) {
+		return true;
+	}
 }
 </script>

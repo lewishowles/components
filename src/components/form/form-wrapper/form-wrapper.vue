@@ -1,5 +1,5 @@
 <template>
-	<form>
+	<form @submit.prevent="handleFormSubmit">
 		<slot name="pre-form" />
 
 		<form-layout>
@@ -29,15 +29,12 @@
 </template>
 
 <script setup>
-import { computed, nextTick, provide, useSlots } from "vue";
+import { computed, nextTick, provide, reactive, useSlots } from "vue";
+import { isFunction } from "@lewishowles/helpers/general";
+import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
-import { isObject } from "@lewishowles/helpers/object";
 
-// The current data for this form, as provided by the fields themselves.
-const formData = defineModel({
-	type: Object,
-	default: () => ({}),
-});
+const emit = defineEmits(["submit"]);
 
 const slots = useSlots();
 // Determine if we have a label. If not, show a warning to the user about
@@ -46,13 +43,26 @@ const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button
 // Whether we have any tertiary actions to display in the form.
 const haveTertiaryActions = computed(() => isNonEmptySlot(slots["tertiary-actions"]));
 
+// The current data for this form, as provided by the fields themselves.
+const formData = defineModel({
+	type: Object,
+	default: () => ({}),
+});
+
+// A reference to each of our form fields once registered.
+const formFields = reactive({});
+// Whether we have any form fields registered to the form.
+const haveFormFields = computed(() => isNonEmptyObject(formFields));
+
 /**
  * Allow a field to register itself with the form.
  *
  * @param  {string}  name
  *     The name of the field to register.
+ * @param  {function}  validate
+ *     The validation function for this field, run when the form is submitted.
  */
-async function registerField(name) {
+async function registerField(name, validate) {
 	// If the value bound to the model from the parent isn't an object, set it
 	// to one, and wait for the update cycle to complete to ensure that both
 	// values are in sync.
@@ -66,6 +76,7 @@ async function registerField(name) {
 		console.error("<form-wrapper>", `Duplicate field name <${name}> detected. This only one field with a given name will be represented in form data.`);
 	}
 
+	formFields[name] = { validate };
 	formData.value[name] = null;
 }
 
@@ -85,4 +96,32 @@ provide("form-wrapper", {
 	registerField,
 	updateFieldValue,
 });
+
+/**
+ * Handle the submit of the form, checking any provided validation, and
+ * submitting the appropriate event if validation succeeds.
+ */
+function handleFormSubmit() {
+	if (!haveFormFields.value) {
+		emitSubmit();
+
+		return;
+	}
+
+	for (const field of Object.values(formFields)) {
+		if (isFunction(field.validate) && !field.validate()) {
+			return;
+		}
+	}
+
+	emitSubmit();
+}
+
+/**
+ * Emit a submit event for the parent to handle as necessary. We pass the
+ * current form data here just in case its useful in this form.
+ */
+function emitSubmit() {
+	emit("submit", formData.value);
+}
 </script>
