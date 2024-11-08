@@ -32,6 +32,21 @@ Any unknown type will default to `text`.
 
 The name of the field. This is required when used within a `form-wrapper` component, where it is used as the key for the form's data collection. As such, its uniqueness will be verified by `form-wrapper` when used together.
 
+### `validation`
+
+- type: `array`
+- default: `[]`
+
+Any validation to apply to the field. This is used with the externally-facing `validate` function, as well as applying attributes to the field as necessary such as `required`.
+
+Each entry in validation requires at least a `rule`, outlining the type of validation, and a `message`, which is used if validation fails. Available rules and properties include:
+
+#### `required`
+
+`[{ rule: "required", message: "Please enter your name" }]`
+
+Requires a value to be set. Adds the `required` attribute to the field automatically.
+
 ### Additional props
 
 Additional props are passed through to the underlying form field. Additional props may be required depending on that field, such as `options` for `radio-group`.
@@ -65,9 +80,3 @@ The current value of the underlying form field will be available via `v-model`.
 	By submitting this form, you accept our <link-tag v-bind="{ href: "/terms" external: true }">terms and conditions of sale</link-tag>.
 </form-field>
 ```
-
-## To do
-
-- Determine the field type
-- Determine any additional props to pass beyond the defaults
-- Pass through slots

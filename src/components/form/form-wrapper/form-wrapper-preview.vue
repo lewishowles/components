@@ -21,6 +21,18 @@
 
 			<pre>{{ formData }}</pre>
 		</preview-section>
+
+		<preview-section>
+			<template #title>
+				With validation
+			</template>
+
+			<form-wrapper>
+				<form-field type="text" name="required_test" :validation="[{ rule: 'required', message: 'Please enter your name' }]">
+					Your name
+				</form-field>
+			</form-wrapper>
+		</preview-section>
 	</preview-wrapper>
 </template>
 

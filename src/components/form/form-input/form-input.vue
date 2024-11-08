@@ -1,6 +1,6 @@
 <template>
 	<div class="flex flex-col gap-1" data-test="form-input">
-		<form-label v-bind="{ id: inputId }">
+		<form-label v-bind="{ id: inputId, required }">
 			<slot />
 		</form-label>
 
@@ -81,12 +81,21 @@ const props = defineProps({
 	},
 
 	/**
-	 * Any additional attributes to pass to the input itself, such as `required`
-	 * or `autocomplete`.
+	 * Any additional attributes to pass to the input itself, such as
+	 * `autocomplete`.
 	 */
 	inputAttributes: {
 		type: String,
 		default: null,
+	},
+
+	/**
+	 * Whether this field is required. If not required, a field's label is
+	 * updated with `optional` text.
+	 */
+	required: {
+		type: Boolean,
+		default: false,
 	},
 });
 

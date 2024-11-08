@@ -7,7 +7,7 @@
 		A parent `form-wrapper` was detected, but no `name` was provided for this field.
 	</alert-message>
 
-	<component :is="fieldComponent" v-else ref="fieldRef" v-model="model">
+	<component :is="fieldComponent" v-else ref="fieldRef" v-bind="fieldProps" v-model="model">
 		<slot />
 
 		<!-- For now, we're listing out slots manually, as one way to
@@ -35,7 +35,9 @@
 
 <script setup>
 import { computed, inject, ref, watch } from "vue";
+import { deepMerge, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 const props = defineProps({
@@ -65,10 +67,24 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
+
+	/**
+	 * Any validation to apply to the field. This is used with the
+	 * externally-facing `validate` function, as well as applying attributes to
+	 * the field as necessary such as `required`. For more information
+	 * validation types, check the `form-field` docs.
+	 */
+	validation: {
+		type: Array,
+		default: () => [],
+	},
 });
 
 // Retrieve the relevant methods from the wrapper.
-const { registerField, updateFieldValue } = inject("form-wrapper");
+const formWrapperInject = inject("form-wrapper");
+// The injection may not be defined, so we get its properties in a safe way.
+const registerField = formWrapperInject?.registerField;
+const updateFieldValue = formWrapperInject?.updateFieldValue;
 
 const model = defineModel({
 	type: String,
@@ -83,13 +99,13 @@ const defaultComponent = "form-input";
 
 // The available field types, including any additional props to pass by default.
 const fieldTypes = {
-	"text": null,
+	"text": {},
 	"email": { inputAttributes: { type: "email" } },
 	"password": { inputAttributes: { type: "password" } },
-	"textarea": null,
-	"checkbox": null,
-	"radio-group": null,
-	"button-group": null,
+	"textarea": {},
+	"checkbox": {},
+	"radio-group": {},
+	"button-group": {},
 };
 
 // The field type to use, falling back to the default if an unknown type is
@@ -115,6 +131,38 @@ const fieldComponent = computed(() => {
 		default:
 			return defaultComponent;
 	}
+});
+
+// Any additional props to pass to the field, including default props and any
+// added by validation.
+const fieldProps = computed(() => {
+	const baseProps = fieldTypes[fieldType.value];
+	const haveValidationForField = isNonEmptyArray(props.validation);
+
+	if (!isNonEmptyObject(baseProps) && !haveValidationForField) {
+		return null;
+	}
+
+	return deepMerge(baseProps, propsForValidation.value);
+});
+
+// Any additional props to provide to the input based on current validation
+// rules.
+const propsForValidation = computed(() => {
+	if (!isNonEmptyArray(props.validation)) {
+		return {};
+	}
+
+	const additionalProps = {};
+
+	props.validation.forEach(rule => {
+		if (rule.rule === "required") {
+			additionalProps.required = true;
+			additionalProps.inputAttributes = { required: true };
+		}
+	});
+
+	return additionalProps;
 });
 
 // Whether we detect a parent form.

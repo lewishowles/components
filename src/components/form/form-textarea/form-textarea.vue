@@ -73,8 +73,8 @@ const props = defineProps({
 	},
 
 	/**
-	 * Any additional attributes to pass to the input itself, such as `required`
-	 * or `autocomplete`.
+	 * Any additional attributes to pass to the input itself, such as
+	 * `autocomplete`.
 	 */
 	inputAttributes: {
 		type: String,

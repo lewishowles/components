@@ -38,10 +38,4 @@ Update the value of field with `name` to `value`.
 
 ## To do
 
-- Register field with parent - including `name`
-- Display an error if parent `form-wrapper` is detected but no `name` is provided
-- Allow a field ot pass its current value on change to `form-wrapper`
-- Avoid the need to replicate communication in each new field type
-- Provide a v-model for the wrapper, containing all of the form data in an object (based on `name` props)
-- Add validation props to fields, passing the information to `form-wrapper`
 - When attempting to submit a form, ensure that any provided validation is checked

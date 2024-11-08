@@ -1,8 +1,9 @@
 import FormField from "./form-field.vue";
 import { createMount } from "@cypress/support/mount";
 
+const defaultProps = { name: "name" };
 const defaultSlots = { default: "Your name" };
-const mount = createMount(FormField, { slots: defaultSlots });
+const mount = createMount(FormField, { props: defaultProps, slots: defaultSlots });
 
 describe("form-field", () => {
 	it("Each field type can be rendered", () => {
@@ -25,5 +26,19 @@ describe("form-field", () => {
 		mount();
 
 		cy.getByData("form-input").shouldBeVisible();
+	});
+
+	it("Additional props are passed through to the underlying field", () => {
+		mount({ id: "custom-unique-id" });
+
+		cy.getFormField("form-input").shouldBeVisible().shouldHaveAttribute("id", "custom-unique-id");
+	});
+
+	describe("Validation", () => {
+		it("The `required` rule adds appropriate attributes", () => {
+			mount();
+
+			cy.getByData("form-input").shouldBeVisible();
+		});
 	});
 });

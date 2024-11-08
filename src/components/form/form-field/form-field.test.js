@@ -75,6 +75,52 @@ describe("form-field", () => {
 			});
 		});
 
+		describe("fieldProps", () => {
+			test("should not add props if not required", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.fieldProps).toEqual(null);
+			});
+
+			test("should add props for `email` field type", () => {
+				const wrapper = mount({ type: "email" });
+				const vm = wrapper.vm;
+
+				expect(vm.fieldProps).toEqual({ inputAttributes: { type: "email" } });
+			});
+
+			test("should add props for `required` validation rule", () => {
+				const wrapper = mount({ validation: [{ rule: "required", message: "Validation message" }] });
+				const vm = wrapper.vm;
+
+				expect(vm.fieldProps).toEqual({ required: true, inputAttributes: { required: true } });
+			});
+
+			test("should combine type and validation props", () => {
+				const wrapper = mount({ type: "email", validation: [{ rule: "required", message: "Validation message" }] });
+				const vm = wrapper.vm;
+
+				expect(vm.fieldProps).toEqual({ required: true, inputAttributes: { required: true, type: "email" } });
+			});
+		});
+
+		describe("propsForValidation", () => {
+			test("should not add props if no validation is present", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.propsForValidation).toEqual({});
+			});
+
+			test("should add props for `required` rule", () => {
+				const wrapper = mount({ validation: [{ rule: "required", message: "Validation message" }] });
+				const vm = wrapper.vm;
+
+				expect(vm.propsForValidation).toEqual({ required: true, inputAttributes: { required: true } });
+			});
+		});
+
 		describe("haveParentForm", () => {
 			test("should be true if a parent form exists", () => {
 				const wrapper = mount();
