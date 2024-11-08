@@ -76,32 +76,32 @@ describe("form-field", () => {
 		});
 
 		describe("fieldProps", () => {
-			test("should not add props if not required", () => {
+			test("should always generate an internal ID", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.fieldProps).toEqual(null);
+				expect(vm.fieldProps).toEqual({ id: expect.any(String) });
 			});
 
 			test("should add props for `email` field type", () => {
 				const wrapper = mount({ type: "email" });
 				const vm = wrapper.vm;
 
-				expect(vm.fieldProps).toEqual({ inputAttributes: { type: "email" } });
+				expect(vm.fieldProps).toEqual({ id: expect.any(String), inputAttributes: { type: "email" } });
 			});
 
 			test("should add props for `required` validation rule", () => {
 				const wrapper = mount({ validation: [{ rule: "required", message: "Validation message" }] });
 				const vm = wrapper.vm;
 
-				expect(vm.fieldProps).toEqual({ required: true, inputAttributes: { required: true } });
+				expect(vm.fieldProps).toEqual({ required: true, id: expect.any(String), inputAttributes: { required: true } });
 			});
 
 			test("should combine type and validation props", () => {
 				const wrapper = mount({ type: "email", validation: [{ rule: "required", message: "Validation message" }] });
 				const vm = wrapper.vm;
 
-				expect(vm.fieldProps).toEqual({ required: true, inputAttributes: { required: true, type: "email" } });
+				expect(vm.fieldProps).toEqual({ required: true, id: expect.any(String), inputAttributes: { required: true, type: "email" } });
 			});
 		});
 

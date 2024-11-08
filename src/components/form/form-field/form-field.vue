@@ -39,6 +39,8 @@ import { deepMerge, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
+import useInputId from "@/components/form/composables/use-input-id";
 
 const props = defineProps({
 	/**
@@ -84,6 +86,8 @@ const model = defineModel({
 	type: String,
 });
 
+// Generate an appropriate input ID.
+const { inputId } = useInputId(props.id);
 // Retrieve the relevant methods from the wrapper.
 const formWrapperInject = inject("form-wrapper");
 // The injection may not be defined, so we get its properties in a safe way.
@@ -137,7 +141,7 @@ const fieldComponent = computed(() => {
 // Any additional props to pass to the field, including default props and any
 // added by validation.
 const fieldProps = computed(() => {
-	const baseProps = fieldTypes[fieldType.value];
+	const baseProps = deepMerge({ id: inputId.value }, fieldTypes[fieldType.value]);
 
 	if (!isNonEmptyObject(baseProps) && !haveValidation.value) {
 		return null;
@@ -185,7 +189,12 @@ watch(model, () => {
 
 // If a parent `form-wrapper` is found, register this field with it.
 if (haveParentForm.value) {
-	registerField({ name: props.name, validate });
+	registerField({
+		name: props.name,
+		id: inputId.value,
+		validate,
+		triggerFocus,
+	});
 }
 
 /**
@@ -209,4 +218,15 @@ function validate() {
 
 	return true;
 }
+
+/**
+ * Trigger focus on the field.
+ */
+function triggerFocus() {
+	runComponentMethod(fieldRef.value, "triggerFocus");
+}
+
+defineExpose({
+	triggerFocus,
+});
 </script>

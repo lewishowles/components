@@ -59,15 +59,15 @@ const alertType = computed(() => (messageTypes.includes(props.type) ? props.type
 const alertColours = computed(() => {
 	switch (alertType.value) {
 		case "success":
-			return "border-green-200 bg-green-50 text-green-800";
+			return "border-green-200 bg-green-50 text-green-800 dark:border-transparent dark:bg-green-500/50 dark:text-green-200";
 		case "error":
-			return "border-red-200 bg-red-50 text-red-800";
+			return "border-red-200 bg-red-50 text-red-800 dark:border-transparent dark:bg-red-500/50 dark:text-red-200";
 		case "warning":
-			return "border-yellow-200 bg-yellow-50 text-yellow-800";
+			return "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-transparent dark:bg-yellow-500/50 dark:text-yellow-200";
 		case "info":
-			return "border-purple-200 bg-purple-50 text-purple-800";
+			return "border-purple-200 bg-purple-50 text-purple-800 dark:border-transparent dark:bg-purple-500/50 dark:text-purple-200";
 		default:
-			return "border-grey-200 bg-grey-50 text-grey-800";
+			return "border-grey-200 bg-grey-50 text-grey-800 dark:border-transparent dark:bg-grey-500/50 dark:text-grey-200";
 	}
 });
 

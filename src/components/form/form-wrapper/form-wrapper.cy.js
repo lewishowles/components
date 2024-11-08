@@ -14,7 +14,9 @@ describe("form-wrapper", () => {
 	it("A component is rendered", () => {
 		mount();
 
+		cy.getByData("form-wrapper").shouldBeVisible();
 		cy.getByData("form-input").shouldBeVisible();
+		cy.getByData("form-wrapper-submit-button").shouldBeVisible();
 	});
 
 	it("`formData` is updated correctly", () => {
@@ -71,6 +73,25 @@ describe("form-wrapper", () => {
 
 			cy.getByData("tertiary-actions-slot-test").shouldBeVisible();
 		});
+	});
+
+	it("An error summary is shown on submit when a field is invalid", () => {
+		const validation = [{ rule: "required", message: "Enter your username" }];
+
+		mount({ slots: { default: createField({ label: "Username", props: { name: "username", validation } }) } });
+
+		cy.getByData("form-wrapper-submit-button").click();
+
+		cy.getByData("form-wrapper-error-summary")
+			.shouldBeVisible()
+			.shouldHaveFocus()
+			.shouldHaveText("There is a problem")
+			.shouldHaveText("Enter your username");
+
+		cy.getByData("form-wrapper-error-summary-message").shouldHaveCount(1);
+		cy.getByData("form-wrapper-error-summary-message").eq(0).click();
+
+		cy.getFormField("form-input").shouldHaveFocus();
 	});
 });
 

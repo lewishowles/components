@@ -1,5 +1,21 @@
 <template>
-	<form @submit.prevent="handleFormSubmit">
+	<form novalidate data-test="form-wrapper" @submit.prevent="handleFormSubmit">
+		<div v-show="haveErrorSummary" ref="errorSummaryElement" tabindex="0" class="mb-4 w-full rounded border border-red-200 bg-red-50 p-4 text-red-800 dark:border-transparent dark:bg-red-500/50 dark:text-red-200" data-test="form-wrapper-error-summary">
+			<h2 class="mb-2 font-bold">
+				<slot name="error-summary-title">
+					There is a problem
+				</slot>
+			</h2>
+
+			<ul class="list-disc ps-4">
+				<li v-for="error in errorSummary" :key="error.id">
+					<a :href="`#${error.id}`" class="text-current" data-test="form-wrapper-error-summary-message" @click.prevent="focusField(error.fieldName)">
+						{{ error.message }}
+					</a>
+				</li>
+			</ul>
+		</div>
+
 		<slot name="pre-form" />
 
 		<form-layout>
@@ -14,7 +30,7 @@
 					<p>The slot <code>`submit-button-label`</code> is required to provide a meaningful call to action for the form.</p>
 				</alert-message>
 
-				<ui-button v-if="haveSubmitButtonLabel" type="submit" class="button--primary">
+				<ui-button v-if="haveSubmitButtonLabel" type="submit" class="button--primary" data-test="form-wrapper-submit-button">
 					<slot name="submit-button-label" />
 				</ui-button>
 
@@ -33,7 +49,7 @@ import { computed, nextTick, provide, reactive, ref, useSlots } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
-import { isNonEmptySlot } from "@lewishowles/helpers/vue";
+import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 
 const emit = defineEmits(["submit"]);
 
@@ -58,16 +74,23 @@ const haveFormFields = computed(() => isNonEmptyObject(formFields));
 const errorSummary = ref([]);
 // Whether our error summary contains any errors.
 const haveErrorSummary = computed(() => isNonEmptyArray(errorSummary.value));
+// The error summary element, allowing us to focus it.
+const errorSummaryElement = ref(null);
 
 /**
  * Allow a field to register itself with the form.
  *
- * @param  {string}  options.name
+ * @param  {string}  field.name
  *     The name of the field to register.
- * @param  {function}  options.validate
+ * @param  {string}  field.id
+ *     The ID of the field to register, which helps with linking errors to
+ *     fields.
+ * @param  {function}  field.validate
  *     The validation function for this field, run when the form is submitted.
+ * @param  {function}  field.focusField
+ *     A method to focus on this field, used by the error summary.
  */
-async function registerField({ name, validate } = {}) {
+async function registerField(field) {
 	// If the value bound to the model from the parent isn't an object, set it
 	// to one, and wait for the update cycle to complete to ensure that both
 	// values are in sync.
@@ -77,12 +100,12 @@ async function registerField({ name, validate } = {}) {
 		await nextTick();
 	}
 
-	if (Object.hasOwn(formData.value, name)) {
-		console.error("<form-wrapper>", `Duplicate field name <${name}> detected. This only one field with a given name will be represented in form data.`);
+	if (Object.hasOwn(formData.value, field.name)) {
+		console.error("<form-wrapper>", `Duplicate field name <${field.name}> detected. This only one field with a given name will be represented in form data.`);
 	}
 
-	formFields[name] = { validate };
-	formData.value[name] = null;
+	formFields[field.name] = field;
+	formData.value[field.name] = null;
 }
 
 /**
@@ -106,7 +129,7 @@ provide("form-wrapper", {
  * Handle the submit of the form, checking any provided validation, and
  * submitting the appropriate event if validation succeeds.
  */
-function handleFormSubmit() {
+async function handleFormSubmit() {
 	if (!haveFormFields.value) {
 		emitSubmit();
 
@@ -116,6 +139,11 @@ function handleFormSubmit() {
 	validateFields();
 
 	if (haveErrorSummary.value) {
+		await nextTick();
+
+		runComponentMethod(errorSummaryElement.value, "focus");
+
+
 		return;
 	}
 
@@ -143,7 +171,7 @@ function validateFields() {
 		const validationResult = field.validate();
 
 		if (validationResult !== true) {
-			errorSummary.value.push({ name: fieldName, message: validationResult });
+			errorSummary.value.push({ fieldName: fieldName, id: field.id, message: validationResult });
 		}
 	}
 }
@@ -154,5 +182,19 @@ function validateFields() {
  */
 function emitSubmit() {
 	emit("submit", formData.value);
+}
+
+/**
+ * Trigger focus on the underlying form field.
+ *
+ * @param  {string}  fieldName
+ *     The name of the field to focus.
+ */
+function focusField(fieldName) {
+	if (!Object.hasOwn(formFields, fieldName)) {
+		return;
+	}
+
+	runComponentMethod(formFields[fieldName], "triggerFocus");
 }
 </script>

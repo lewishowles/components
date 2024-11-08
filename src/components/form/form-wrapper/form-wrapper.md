@@ -26,6 +26,10 @@ Additional actions to appear beside the submit button—such as "Save and exit" 
 
 Additional actions to appear below the primary and secondary actions, such as "Cancel". Navigational actions, such as "Back to …" or "Forgot password" should appear above the form fields, such as in the `pre-form` slot.
 
+### `error-summary-title`
+
+- default: "There is a problem"
+
 ## Events
 
 ### `v-model`
