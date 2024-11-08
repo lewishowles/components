@@ -30,7 +30,6 @@
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
 import { computed, provide, ref } from "vue";
-import { get } from "@lewishowles/helpers/object";
 import { getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onKeyStroke, useFocusWithin } from "@vueuse/core";
@@ -71,7 +70,7 @@ const tabIds = computed(() => {
 	}
 
 	return tabs.value.reduce((ids, tab) => {
-		const tabId = get(tab, "tabId");
+		const tabId = tab?.tabId;
 
 		if (isNonEmptyString(tabId)) {
 			ids.push(tabId);
@@ -155,7 +154,7 @@ function setActiveTabByIndex(index) {
 	}
 
 	const internalIndex = clamp(index, 0, tabs.value.length - 1);
-	const tabId = get(tabs.value[internalIndex], "tabId");
+	const tabId = tabs.value?.[internalIndex]?.tabId;
 
 	setActiveTab(tabId);
 }
