@@ -1,20 +1,50 @@
 <template>
 	<form>
+		<slot name="pre-form" />
+
 		<form-layout>
 			<slot />
+
+			<form-actions>
+				<alert-message v-if="!haveSubmitButtonLabel" type="error" data-test="form-wrapper-submit-button-label-error">
+					<template #title>
+						&lt;form-wrapper&gt;
+					</template>
+
+					<p>The slot <code>`submit-button-label`</code> is required to provide a meaningful call to action for the form.</p>
+				</alert-message>
+
+				<ui-button v-if="haveSubmitButtonLabel" type="submit" class="button--primary">
+					<slot name="submit-button-label" />
+				</ui-button>
+
+				<slot name="secondary-actions" />
+
+				<div v-if="haveTertiaryActions" class="w-full">
+					<slot name="tertiary-actions" />
+				</div>
+			</form-actions>
 		</form-layout>
 	</form>
 </template>
 
 <script setup>
+import { computed, nextTick, provide, useSlots } from "vue";
+import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isObject } from "@lewishowles/helpers/object";
-import { nextTick, provide } from "vue";
 
 // The current data for this form, as provided by the fields themselves.
 const formData = defineModel({
 	type: Object,
 	default: () => ({}),
 });
+
+const slots = useSlots();
+// Determine if we have a label. If not, show a warning to the user about
+// accessibility.
+const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button-label"]));
+// Whether we have any tertiary actions to display in the form.
+const haveTertiaryActions = computed(() => isNonEmptySlot(slots["tertiary-actions"]));
 
 /**
  * Allow a field to register itself with the form.

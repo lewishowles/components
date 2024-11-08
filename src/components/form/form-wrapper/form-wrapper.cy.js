@@ -4,7 +4,8 @@ import { createMount } from "@cypress/support/mount";
 import { h } from "vue";
 
 const defaultSlots = {
-	default: [createField({ label: "Username", props: { name: "username" } })],
+	"default": [createField({ label: "Username", props: { name: "username" } })],
+	"submit-button-label": "Create user",
 };
 
 const mount = createMount(FormWrapper, { slots: defaultSlots });
@@ -16,7 +17,7 @@ describe("form-wrapper", () => {
 		cy.getByData("form-input").shouldBeVisible();
 	});
 
-	it("Updates formData correctly", () => {
+	it("`formData` is updated correctly", () => {
 		mount();
 
 		cy.get("@vue").then(wrapper => {
@@ -31,6 +32,44 @@ describe("form-wrapper", () => {
 			cy.getByData("form-input").then(() => {
 				expect(wrapper.vm.formData.username).to.eq("wall-e");
 			});
+		});
+	});
+
+	describe("Slots", () => {
+		it("The `default` slot can be utilised", () => {
+			mount({ slots: { default: h("div", { "data-test": "default-slot-test" }, "Slot test") } });
+
+			cy.getByData("default-slot-test").shouldBeVisible();
+		});
+
+		it("An error is shown if `submit-button-label` is not provided", () => {
+			mount({ slots: { "submit-button-label": null } });
+
+			cy.getByData("form-wrapper-submit-button-label-error").shouldBeVisible();
+		});
+
+		it("An error is not shown if `submit-button-label` is provided", () => {
+			mount();
+
+			cy.getByData("form-wrapper-submit-button-label-error").should("not.exist");
+		});
+
+		it("The `pre-form` slot can be utilised", () => {
+			mount({ slots: { "pre-form": h("div", { "data-test": "pre-form-slot-test" }, "Slot test") } });
+
+			cy.getByData("pre-form-slot-test").shouldBeVisible();
+		});
+
+		it("The `secondary-actions` slot can be utilised", () => {
+			mount({ slots: { "secondary-actions": h("div", { "data-test": "secondary-actions-slot-test" }, "Slot test") } });
+
+			cy.getByData("secondary-actions-slot-test").shouldBeVisible();
+		});
+
+		it("The `tertiary-actions` slot can be utilised", () => {
+			mount({ slots: { "tertiary-actions": h("div", { "data-test": "tertiary-actions-slot-test" }, "Slot test") } });
+
+			cy.getByData("tertiary-actions-slot-test").shouldBeVisible();
 		});
 	});
 });
