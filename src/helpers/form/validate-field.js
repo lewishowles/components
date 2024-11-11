@@ -59,6 +59,18 @@ function validateRule(rule) {
 			}
 
 			return model.value.length >= rule.length;
+		case "maximum_length":
+			if (!isNonEmptyString(model.value) || !isNumber(rule.length)) {
+				return false;
+			}
+
+			return model.value.length <= rule.length;
+		case "regexp":
+			if (!isNonEmptyString(model.value) || !(rule.regexp instanceof RegExp)) {
+				return false;
+			}
+
+			return rule.regexp.test(model.value);
 	}
 
 	return true;

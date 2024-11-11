@@ -59,6 +59,18 @@ Perform a minimal check to see if the value contains an `@` symbol. More complex
 
 Ensure that the provided value is at least `length` characters long.
 
+#### `maximum_length`
+
+`[{ rule: "maximum_length", length: 11, message: "Your phone number should be no more than 11 digits long" }]`
+
+Ensure that the provided value is at most `length` characters long.
+
+#### `regexp`
+
+`[{ rule: "regexp", regexp: /[abc]+/, message: "Your ID should only contain the letters a, b, and c" }]`
+
+Ensure that the provided value matches `regexp`.
+
 ### Additional props
 
 Additional props are passed through to the underlying form field. Additional props may be required depending on that field, such as `options` for `radio-group`.
