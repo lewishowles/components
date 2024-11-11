@@ -40,6 +40,7 @@ import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { validateField as validateFormField } from "@/helpers/form";
 import useInputId from "@/components/form/composables/use-input-id";
 
 const props = defineProps({
@@ -195,31 +196,26 @@ if (haveParentForm.value) {
 	registerField({
 		name: props.name,
 		id: inputId.value,
-		validate,
+		validateField,
 		triggerFocus,
 	});
 }
 
 /**
- * Validate this field, based on any provided validation.
+ * Validate this field for all provided validation rules.
+ *
+ * @param  {string}  fieldName
+ *     The name of the field to validate, allowing us to retrieve its value from
+ *     the form data.
+ * @param  {object}  formData
+ *     The current values of each form field.
  */
-function validate() {
+function validateField(fieldName, formData) {
 	if (!haveValidation.value) {
 		return true;
 	}
 
-	for (const rule of props.validation) {
-		switch (rule.rule) {
-			case "required":
-				if (model.value === undefined) {
-					return rule.message;
-				}
-
-				break;
-		}
-	}
-
-	return true;
+	return validateFormField(fieldName, props.validation, formData);
 }
 
 /**

@@ -9,7 +9,7 @@
 				Modelled form
 			</template>
 
-			<form-wrapper v-model="formData" @submit="submitted = true">
+			<form-wrapper v-model="formData">
 				<form-field type="email" name="email">
 					Email address
 				</form-field>
@@ -24,7 +24,6 @@
 			</form-wrapper>
 
 			<pre class="mt-4">{{ formData }}</pre>
-			<pre>{{ { submitted } }}</pre>
 		</preview-section>
 
 		<preview-section>
@@ -32,8 +31,8 @@
 				With validation
 			</template>
 
-			<form-wrapper>
-				<form-field type="text" name="required_test" :validation="[{ rule: 'required', message: 'Please enter your name' }]">
+			<form-wrapper @submit="submitted = true">
+				<form-field type="text" name="required_test" :validation="[{ rule: 'required', message: 'Enter your name so we know what to call you' }]">
 					Your name
 				</form-field>
 
@@ -41,6 +40,8 @@
 					Test submit
 				</template>
 			</form-wrapper>
+
+			<pre class="mt-4">{{ { submitted } }}</pre>
 		</preview-section>
 	</preview-wrapper>
 </template>

@@ -21,7 +21,7 @@ describe("form-wrapper", () => {
 
 				expect(vm.formData).toEqual({});
 
-				vm.registerField({ name: "username", validate: () => true });
+				vm.registerField({ name: "username", validateField: () => true });
 
 				expect(vm.formData).toEqual({ username: null });
 			});
@@ -54,7 +54,7 @@ describe("form-wrapper", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.registerField({ name: "name", validate: () => true });
+				vm.registerField({ name: "name", validateField: () => true });
 
 				vm.handleFormSubmit();
 
@@ -65,8 +65,8 @@ describe("form-wrapper", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.registerField({ name: "name", validate: () => true });
-				vm.registerField({ name: "email", validate: () => "Error message" });
+				vm.registerField({ name: "name", validateField: () => true });
+				vm.registerField({ name: "email", validateField: () => ["Error message"] });
 
 				vm.handleFormSubmit();
 
@@ -79,8 +79,8 @@ describe("form-wrapper", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.registerField({ name: "name", id: "name-id", validate: () => true });
-				vm.registerField({ name: "email", id: "email-id", validate: () => true });
+				vm.registerField({ name: "name", id: "name-id", validateField: () => true });
+				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
 
 				vm.validateFields();
 
@@ -91,8 +91,8 @@ describe("form-wrapper", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.registerField({ name: "name", id: "name-id", validate: () => true });
-				vm.registerField({ name: "email", id: "email-id", validate: () => "Error message" });
+				vm.registerField({ name: "name", id: "name-id", validateField: () => true });
+				vm.registerField({ name: "email", id: "email-id", validateField: () => ["Error message"] });
 
 				vm.validateFields();
 

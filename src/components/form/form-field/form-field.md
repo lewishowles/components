@@ -43,9 +43,21 @@ Each entry in validation requires at least a `rule`, outlining the type of valid
 
 #### `required`
 
-`[{ rule: "required", message: "Please enter your name" }]`
+`[{ rule: "required", message: "Enter your name so we know what to call you" }]`
 
 Requires a value to be set. Adds the `required` attribute to the field automatically.
+
+#### `email`
+
+`[{ rule: "email", message: "We need an email address to set up your account" }]`
+
+Perform a minimal check to see if the value contains an `@` symbol. More complex verification isn't really necessary, and the only true way to test an email address is through verification.
+
+#### `minimum_length`
+
+`[{ rule: "minimum_length", length: 11, message: "Your phone number should be 11 digits long" }]`
+
+Ensure that the provided value is at least `length` characters long.
 
 ### Additional props
 

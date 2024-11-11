@@ -162,28 +162,12 @@ describe("form-field", () => {
 	});
 
 	describe("Methods", () => {
-		describe("validate", () => {
+		describe("validateField", () => {
 			test("should pass if no validation is provided", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.validate()).toBe(true);
-			});
-
-			test("should pass if \"required\" validation passes", () => {
-				const wrapper = mount({ validation: [{ rule: "required", message: "Message" }] });
-				const vm = wrapper.vm;
-
-				vm.model = "username";
-
-				expect(vm.validate()).toBe(true);
-			});
-
-			test("should fail if \"required\" validation fails", () => {
-				const wrapper = mount({ validation: [{ rule: "required", message: "Message" }] });
-				const vm = wrapper.vm;
-
-				expect(vm.validate()).toBe("Message");
+				expect(vm.validateField()).toBe(true);
 			});
 		});
 	});

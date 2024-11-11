@@ -85,7 +85,7 @@ const errorSummaryElement = ref(null);
  * @param  {string}  field.id
  *     The ID of the field to register, which helps with linking errors to
  *     fields.
- * @param  {function}  field.validate
+ * @param  {function}  field.validateField
  *     The validation function for this field, run when the form is submitted.
  * @param  {function}  field.focusField
  *     A method to focus on this field, used by the error summary.
@@ -164,15 +164,19 @@ function validateFields() {
 
 		const field = formFields[fieldName];
 
-		if (!isFunction(field.validate)) {
+		if (!isFunction(field.validateField)) {
 			continue;
 		}
 
-		const validationResult = field.validate();
+		const validationResult = field.validateField(fieldName, formData.value);
 
-		if (validationResult !== true) {
-			errorSummary.value.push({ fieldName: fieldName, id: field.id, message: validationResult });
+		if (!isNonEmptyArray(validationResult)) {
+			continue;
 		}
+
+		validationResult.forEach(message => {
+			errorSummary.value.push({ fieldName, id: field.id, message });
+		});
 	}
 }
 
