@@ -1,13 +1,13 @@
 # Changelog
 
-# 0.15.0
+# 0.15.0 - 2024-11-13
 
 ### New components
 
 - [`form-wrapper`](/src/components/form/form-wrapper/form-wrapper.md): Create an accessible form with validation.
 - [`form-field`](/src/components/form/form-field/form-field.md): Display a form field for a form, with built-in communication with `form-wrapper`.
 
-# 0.14.0
+# 0.14.0 - 2024-11-02
 
 ### New components
 
