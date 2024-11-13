@@ -53,17 +53,41 @@ Requires a value to be set. Adds the `required` attribute to the field automatic
 
 Perform a minimal check to see if the value contains an `@` symbol. More complex verification isn't really necessary, and the only true way to test an email address is through verification.
 
-#### `minimum_length`
+#### `size`
 
-`[{ rule: "minimum_length", length: 11, message: "Your phone number should be 11 digits long" }]`
+`[{ rule: "size", size: 11, message: "Your phone number should be 11 digits long" }]`
 
-Ensure that the provided value is at least `length` characters long.
+Ensure that the provided value is has at least size `size`. For strings, the number of characters is used, for arrays, the length of the array, for objects, the number of properties, for numbers, the number itself is used, and for numeric strings the integer value of the string is used.
 
-#### `maximum_length`
+#### `min`
 
-`[{ rule: "maximum_length", length: 11, message: "Your phone number should be no more than 11 digits long" }]`
+`[{ rule: "min", min: 11, message: "Your phone number should be at least 11 digits long" }]`
 
-Ensure that the provided value is at most `length` characters long.
+Ensure that the provided value is has at least size `min`. Values are evaluated as in the `size` rule.
+
+#### `max`
+
+`[{ rule: "max", max: 11, message: "Your phone number should be no more than 11 digits long" }]`
+
+Ensure that the provided value is has at most size `max`. Values are evaluated as in the `size` rule.
+
+#### `between`
+
+`[{ rule: "between", min: 5, max: 8, message: "Your post code should be between 5 and 8 characters" }]`
+
+Ensure that the provided value is has between `min` and `max` size. Values are evaluated as in the `size` rule.
+
+#### `in`
+
+`[{ rule: "in", options: ["a", "b", "c"], message: "Your choice should be a, b, or c" }]`
+
+Ensure that the given value is included within `options`.
+
+#### `not_in`
+
+`[{ rule: "not_in", options: ["a", "b", "c"], message: "Your choice should not include a, b, or c" }]`
+
+Ensure that the given value is not included within `options`.
 
 #### `regexp`
 
