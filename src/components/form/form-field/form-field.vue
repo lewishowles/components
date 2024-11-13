@@ -25,7 +25,13 @@
 			<slot name="options" />
 		</template>
 		<template #error>
-			<slot name="error" />
+			<slot name="error">
+				<ul v-if="haveValidationMessages">
+					<li v-for="message in validationMessages" :key="message">
+						{{ message }}
+					</li>
+				</ul>
+			</slot>
 		</template>
 		<template #help>
 			<slot name="help" />
@@ -96,6 +102,10 @@ const registerField = formWrapperInject?.registerField;
 const updateFieldValue = formWrapperInject?.updateFieldValue;
 // Whether any validation has been provided for this field.
 const haveValidation = computed(() => isNonEmptyArray(props.validation));
+// Any validation messages as a result of the latest validation run.
+const validationMessages = ref([]);
+// Whether we have any validation messages to show.
+const haveValidationMessages = computed(() => isNonEmptyArray(validationMessages.value));
 // A reference to the field being rendered.
 const fieldRef = ref(null);
 // The default field type.
@@ -202,7 +212,8 @@ if (haveParentForm.value) {
 }
 
 /**
- * Validate this field for all provided validation rules.
+ * Validate this field for all provided validation rules. We also keep a record
+ * of validation messages so that they can be passed down to the field.
  *
  * @param  {string}  fieldName
  *     The name of the field to validate, allowing us to retrieve its value from
@@ -211,11 +222,15 @@ if (haveParentForm.value) {
  *     The current values of each form field.
  */
 function validateField(fieldName, formData) {
+	validationMessages.value = [];
+
 	if (!haveValidation.value) {
 		return true;
 	}
 
-	return validateFormField(fieldName, props.validation, formData);
+	validationMessages.value = validateFormField(fieldName, props.validation, formData);
+
+	return validationMessages.value;
 }
 
 /**

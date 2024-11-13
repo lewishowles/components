@@ -32,7 +32,7 @@
 			</template>
 
 			<form-wrapper @submit="submitted = true">
-				<form-field type="text" name="required_test" :validation="[{ rule: 'required', message: 'Enter your name so we know what to call you' }]">
+				<form-field type="text" name="required_test" v-bind="{ validation }">
 					Your name
 				</form-field>
 
@@ -51,4 +51,9 @@ import { ref } from "vue";
 
 const formData = ref({});
 const submitted = ref(false);
+
+const validation = [
+	{ rule: "minimum_length", length: 5, message: "Your name must be at least 5 characters long" },
+	{ rule: "maximum_length", length: 3, message: "Your name can't be more than 3 characters long" },
+];
 </script>
