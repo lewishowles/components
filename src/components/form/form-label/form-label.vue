@@ -17,12 +17,6 @@
 
 	<component :is="tag" v-bind="{ for: id, ...$attrs }" :class="{ 'sr-only': hidden, 'font-semibold text-grey-950 dark:text-grey-50': styled }" data-test="form-label">
 		<slot />
-
-		<template v-if="!required">
-			<slot name="optional-indicator">
-				(optional)
-			</slot>
-		</template>
 	</component>
 </template>
 

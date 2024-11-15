@@ -1,5 +1,11 @@
 # Changelog
 
+# 0.16.1 - 2024-11-15
+
+### Updates
+
+- `form-label`: No longer automatically adds "(optional)" text, as it applied in too many circumstances by default.
+
 # 0.16.0 - 2024-11-15
 
 ### New components
