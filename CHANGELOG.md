@@ -1,6 +1,6 @@
 # Changelog
 
-# 0.16.0
+# 0.16.0 - 2024-11-15
 
 ### New components
 
