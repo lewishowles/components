@@ -1,6 +1,12 @@
-# `summary-details`
+# `dropdown-menu`
 
-Provides an implementation of the `details` element with optional extras, such as custom icons, and allows a simple way of having content that can be toggled. Suitable for items such as FAQs or even dropdown menus.
+`dropdown-menu` is an extension of a floating `summary-details`, providing a quick and easy way to create dropdown or action menus. From actions in tables to bulk item management, dropdown menus provide an easy, accessible way to de-clutter an interface, but should not be used where very common actions would be hidden and more difficult to access for the sake of cleanliness.
+
+To simplify the creation of a standardised menu, there are a number of companion components that can be used to build up a menu, including:
+
+- `dropdown-menu-button`, a styled extension of `ui-button`
+- `dropdown-menu-link`, a styled extension of `link-tag`
+- `dropdown-menu-divider`, a thematically appropriate divider between menu sections
 
 ## Slots
 
@@ -22,7 +28,7 @@ The computed icon to display for the current state.
 
 ### `default`
 
-The content to be displayed in the details element when open. Contains the following slot props:
+The content to be displayed in the menu when open. Contains the following slot props:
 
 #### `open`
 
@@ -43,21 +49,21 @@ The computed icon to display for the current state.
 - type: `boolean`
 - default: `false`
 
-Whether the details element should initially be open.
+Whether the menu should initially be open.
 
 ### `closeWithEscape`
 
 - type: `boolean`
 - default: `true`
 
-Whether to close the details element when pressing escape. If focus is within this component, focus is moved to the summary element.
+Whether to close the menu when pressing escape. If focus is within this component, focus is moved to the summary element.
 
 ### `closeWithClickOutside`
 
 - type: `boolean`
-- default: `false`
+- default: `true`
 
-Whether to close the details element when clicking outside of the component. This is best combined with `floating` for menus.
+Whether to close the menu when clicking outside of the component. This is best combined with `floating` for menus.
 
 ### `iconOpen`
 
@@ -94,13 +100,6 @@ Whether to display the icon at the start of the summary, as opposed to the end.
 
 Whether to include a summary icon at all. This allows more flexibility with the styling of the summary, but it is important to make it clear to the user what is happening.
 
-### `floating`
-
-- type: `boolean`
-- default: `false`
-
-Whether the details should float when opened, perfect for drop down menus.
-
 ### `align`
 
 - type: `string`
@@ -133,44 +132,44 @@ Any classes to add to the icon itself. Particularly useful if the icon is the on
 
 ### `@open`
 
-Fired when the details element is opened.
+Fired when the menu is opened.
 
 ### `@close`
 
-Fired when the details element is closed.
+Fired when the menu is closed.
 
 ## Methods
 
-### `openDetails`
+### `openMenu`
 
-Open the details.
+Open the menu.
 
-### `closeDetails`
+### `closeMenu`
 
-Close the details.
+Close the menu.
 
 ## Examples
 
-### Basic summary details
+### Simple menu
 
 ```html
-<summary-details>
+<dropdown-menu>
 	<template #summary>
-		Summary content
+		Bulk actions
 	</template>
 
-	Details content
-</summary-details>
-```
+	<dropdown-menu-button icon="icon-pencil">
+		Edit
+	</dropdown-menu-button>
 
-### With a single icon
+	<dropdown-menu-button icon="icon-reload">
+		Refresh
+	</dropdown-menu-button>
 
-```html
-<summary-details v-bind="{ icon: 'icon-user' }">
-	<template #summary>
-		Summary content
-	</template>
+	<dropdown-menu-divider />
 
-	Details content
-</summary-details>
+	<dropdown-menu-button icon="icon-bin">
+		Delete
+	</dropdown-menu-button>
+</dropdown-menu>
 ```

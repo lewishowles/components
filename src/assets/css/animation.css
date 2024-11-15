@@ -3,6 +3,7 @@
 		0% {
 			opacity: 0;
 		}
+
 		100% {
 			opacity: 1;
 		}
@@ -13,6 +14,7 @@
 			opacity: 0;
 			transform: translateY(0.5rem);
 		}
+
 		100% {
 			opacity: 1;
 			transform: translateY(0);
@@ -24,6 +26,7 @@
 			opacity: 0;
 			transform: translateX(-0.5rem);
 		}
+
 		100% {
 			opacity: 1;
 			transform: translateY(0);
@@ -35,6 +38,7 @@
 			opacity: 0;
 			transform: translateY(-0.5rem);
 		}
+
 		100% {
 			opacity: 1;
 			transform: translateY(0);
@@ -46,6 +50,7 @@
 			opacity: 0;
 			transform: translateX(0.5rem);
 		}
+
 		100% {
 			opacity: 1;
 			transform: translateY(0);
@@ -53,9 +58,13 @@
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
+		.animate-fast {
+			--animation-duration: 150ms;
+		}
+
 		.animate-fade-in, .animate-fade-in-up, .animate-fade-in-right, .animate-fade-in-down, .animate-fade-in-left {
 			opacity: 0;
-			animation-duration: 250ms;
+			animation-duration: var(--animation-duration, 250ms);
 			animation-timing-function: ease-in-out;
 			animation-fill-mode: forwards;
 		}
@@ -78,6 +87,14 @@
 
 		.animate-fade-in-left {
 			animation: fadeInLeft;
+		}
+
+		@for $i from 1 to 40 {
+			.delay-micro:nth-child($i) { animation-delay: calc($i * 10ms); }
+		}
+
+		@for $i from 1 to 40 {
+			.delay:nth-child($i) { animation-delay: calc($i * 50ms); }
 		}
 	}
 }

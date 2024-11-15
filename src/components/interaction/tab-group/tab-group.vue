@@ -1,6 +1,6 @@
 <template>
 	<div data-test="tab-group">
-		<nav ref="tabBarReference" class="mb-4 border-b border-grey-200 dark:border-grey-700">
+		<nav ref="tabBarReference" class="mb-4 border-b border-grey-200 dark:border-white/20">
 			<ol class="-mb-px flex flex-wrap items-end" role="tablist">
 				<li v-for="tab in tabs" :key="tab.tabId">
 					<a
@@ -12,8 +12,8 @@
 							'tabindex': tab.active ? '1' : '-1',
 						}"
 						ref="tabAnchors"
-						class="inline-block border-b-2 px-4 py-2 no-underline hocus:text-grey-950 dark:hocus:text-grey-50"
-						:class="{ 'border-grey-950 text-grey-950 dark:border-grey-50 dark:text-grey-50': tab.active, 'border-transparent text-current': !tab.active }"
+						class="inline-block border-b-2 px-4 py-2 no-underline hocus:text-grey-950 dark:hocus:text-white"
+						:class="{ 'border-grey-950 text-grey-950 dark:border-white dark:text-white': tab.active, 'border-transparent text-current': !tab.active }"
 						data-test="tab-group-tab"
 						@click.prevent="setActiveTab(tab.tabId)"
 					>

@@ -1,5 +1,16 @@
 # Changelog
 
+# 0.16.0
+
+### New components
+
+- [`dropdown-menu`](/src/components/interaction/dropdown-menu/dropdown-menu.md):
+
+### Updates
+
+- `summary-details`: Now provides `open` and `closed` events when its status updates.
+- `summary-details`: Now provides `openDetails` and `closeDetails` methods to programmatically control the details display.
+
 # 0.15.0 - 2024-11-13
 
 ### New components

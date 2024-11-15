@@ -42,8 +42,8 @@
 		@apply focus:ring-2 focus:ring-purple-800;
 		@apply checked:bg-current checked:text-purple-800 checked:ring-current;
 		@apply checked:focus:ring-offset-2;
-		@apply dark:focus:ring-purple-500;
-		@apply dark:checked:text-purple-500;
+		@apply dark:focus:ring-purple-400;
+		@apply dark:checked:text-purple-400;
 	}
 
 	[type="checkbox"]:checked {
@@ -56,8 +56,8 @@
 		@apply focus:ring-2 focus:ring-purple-800;
 		@apply checked:bg-current checked:text-purple-800 checked:ring-current;
 		@apply checked:focus:ring-offset-2;
-		@apply dark:focus:ring-purple-500;
-		@apply dark:checked:text-purple-500;
+		@apply dark:focus:ring-purple-400;
+		@apply dark:checked:text-purple-400;
 	}
 
 	[type="radio"]:checked {

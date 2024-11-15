@@ -46,6 +46,7 @@ You can find more information about each component on its relevant docs page.
 
 ### Interaction
 
+- [dropdown-menu](/src/components/interaction/dropdown-menu/dropdown-menu.md)
 - [link-tag](/src/components/interaction/link-tag/link-tag.md)
 - [loading-indicator](/src/components/interaction/loading-indicator/loading-indicator.md)
 - [skeleton-loader](/src/components/interaction/skeleton-loader/skeleton-loader.md)
@@ -85,9 +86,10 @@ Special scaffold scripts have been created to generate files for a new component
 
 ## Roadmap
 
-Some components that I would like to build soon include, likely in this order.
+There are a number of improvements and new components that could be made to improve flexibility.
 
-- Form wrapper - Handling communication between individual form fields and a parent form, collating all responses into one object, providing an accessible error summary based on validation configuration, and more.
+- Devise a system to allow the definition of a "brand colour" and "dark brand colour" to override any defaults. Perhaps a stylesheet.
+- Add notes about default recommended stylesheet.
 - Data table - Providing built-in options for searching, sorting, pagination, filtering, and custom display of any data in a table.
 - Pagination - Providing automatic display of pages depending on count and per-page properties, with current page tracking.
 - Dialog - Providing an accessible dialog popup with focus trapping.

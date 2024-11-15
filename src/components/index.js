@@ -2,6 +2,10 @@ import AlertMessage from "./messaging/alert-message/alert-message.vue";
 import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
+import DropdownMenu from "./interaction/dropdown-menu/dropdown-menu.vue";
+import DropdownMenuButton from "./interaction/dropdown-menu/fragments/dropdown-menu-button.vue";
+import DropdownMenuDivider from "./interaction/dropdown-menu/fragments/dropdown-menu-divider.vue";
+import DropdownMenuLink from "./interaction/dropdown-menu/fragments/dropdown-menu-link.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
 import FormCheckbox from "./form/form-checkbox/form-checkbox.vue";
 import FormField from "./form/form-field/form-field.vue";
@@ -57,6 +61,10 @@ import IconWarning from "./icon/icon-warning/icon-warning.vue";
 
 export default {
 	AlertMessage,
+	DropdownMenu,
+	DropdownMenuButton,
+	DropdownMenuDivider,
+	DropdownMenuLink,
 	FormField,
 	BaseIcon,
 	ButtonGroup,

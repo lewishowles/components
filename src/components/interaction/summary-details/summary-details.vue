@@ -20,7 +20,7 @@
  * such as custom icons, and allows a simple way of having content that can be
  * toggled. Suitable for items such as FAQs or even dropdown menus.
  */
-import { computed, onMounted, ref, useAttrs, useTemplateRef } from "vue";
+import { computed, onMounted, ref, useAttrs, useTemplateRef, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
 
@@ -140,6 +140,8 @@ const props = defineProps({
 	},
 });
 
+const emit = defineEmits(["open", "close"]);
+
 const attrs = useAttrs();
 // Whether the details are currently open.
 const isOpen = ref(props.open);
@@ -239,10 +241,35 @@ function updateState() {
 }
 
 /**
+ * Open the details element and update our internal representation.
+ */
+function openDetails() {
+	detailsElement.value.open = true;
+
+	updateState();
+}
+
+/**
  * Close the details element and update our internal representation.
  */
 function closeDetails() {
 	detailsElement.value.open = false;
-	isOpen.value = false;
+
+	updateState();
 }
+
+watch(isOpen, () => {
+	if (isOpen.value) {
+		emit("open");
+
+		return;
+	}
+
+	emit("close");
+});
+
+defineExpose({
+	openDetails,
+	closeDetails,
+});
 </script>
