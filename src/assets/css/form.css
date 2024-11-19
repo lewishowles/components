@@ -67,16 +67,15 @@
 	.button-group {
 		@apply button cursor-pointer rounded-none transition-all;
 		@apply bg-white border border-grey-300;
-		@apply peer-hocus:bg-grey-50 peer-hocus:border-grey-400;
-		@apply peer-focus-visible:outline-none;
-		@apply peer-focus-visible:ring-2;
-		@apply peer-focus-visible:ring-purple-600;
-		@apply peer-focus-visible:ring-offset-2;
+		@apply peer-focus:bg-grey-50 peer-focus:border-grey-400;
+		@apply peer-focus:outline-none;
+		@apply peer-focus:ring-2;
+		@apply peer-focus:ring-purple-600;
+		@apply peer-focus:ring-offset-2;
 		@apply peer-checked:border-purple-800 peer-checked:bg-purple-800 peer-checked:text-white;
 		@apply dark:bg-white/20 dark:border-white/20;
-		@apply dark:peer-hocus:bg-white/30 dark:peer-hocus:border-white/20;
-		@apply dark:peer-focus-visible:ring-purple-400;
-		@apply dark:peer-focus-visible:ring-offset-0;
+		@apply dark:peer-focus:bg-white/30 dark:peer-focus:border-white/20;
+		@apply dark:peer-focus:ring-purple-400;
 	}
 
 	.button-group--first {
@@ -84,7 +83,7 @@
 	}
 
 	.button-group--middle {
-		@apply border-s-0 dark:ms-0.5;
+		@apply border-s-0;
 	}
 
 	.button-group--last {
