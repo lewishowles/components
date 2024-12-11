@@ -68,15 +68,6 @@ const props = defineProps({
 	},
 
 	/**
-	 * The label for the progress bar. This label is hidden by default, but is
-	 * included for accessibility purposes.
-	 */
-	label: {
-		type: String,
-		default: "Loading…",
-	},
-
-	/**
 	 * Whether to show the label to the user.
 	 */
 	showLabel: {
@@ -106,6 +97,17 @@ const props = defineProps({
 	barClasses: {
 		type: String,
 		default: "h-full rounded-full bg-purple-500",
+	},
+
+	// i18n
+
+	/**
+	 * The label for the progress bar. This label is hidden by default, but is
+	 * included for accessibility purposes.
+	 */
+	label: {
+		type: String,
+		default: "Loading…",
 	},
 });
 

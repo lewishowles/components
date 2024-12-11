@@ -2,6 +2,7 @@ import PreviewSection from "@/preview/preview-section.vue";
 import PreviewWrapper from "@/preview/preview-wrapper.vue";
 
 import AlertMessagePreview from "@/components/messaging/alert-message/alert-message-preview.vue";
+import AppPaginationPreview from "@/components/navigation/app-pagination/app-pagination-preview.vue";
 import ButtonGroupPreview from "@/components/form/button-group/button-group-preview.vue";
 import DonutChartPreview from "@/components/chart/donut-chart/donut-chart-preview.vue";
 import DropdownMenuPreview from "@/components/interaction/dropdown-menu/dropdown-menu-preview.vue";
@@ -26,6 +27,7 @@ import UiButtonPreview from "@/components/interaction/ui-button/ui-button-previe
 const previewLibrary = {
 	install(app) {
 		app.component("AlertMessagePreview", AlertMessagePreview);
+		app.component("AppPaginationPreview", AppPaginationPreview);
 		app.component("ButtonGroupPreview", ButtonGroupPreview);
 		app.component("DonutChartPreview", DonutChartPreview);
 		app.component("DropdownMenuPreview", DropdownMenuPreview);

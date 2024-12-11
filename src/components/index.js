@@ -1,4 +1,5 @@
 import AlertMessage from "./messaging/alert-message/alert-message.vue";
+import AppPagination from "./navigation/app-pagination/app-pagination.vue";
 import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
@@ -59,17 +60,18 @@ import IconWarning from "./icon/icon-warning/icon-warning.vue";
 
 export default {
 	AlertMessage,
-	DropdownMenu,
-	DropdownMenuButton,
-	DropdownMenuDivider,
-	DropdownMenuLink,
-	FormField,
+	AppPagination,
 	BaseIcon,
 	ButtonGroup,
 	ConditionalWrapper,
 	DonutChart,
+	DropdownMenu,
+	DropdownMenuButton,
+	DropdownMenuDivider,
+	DropdownMenuLink,
 	FormActions,
 	FormCheckbox,
+	FormField,
 	FormInput,
 	FormLayout,
 	FormTextarea,
