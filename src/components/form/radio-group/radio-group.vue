@@ -1,6 +1,6 @@
 <template>
 	<fieldset class="flex flex-col gap-2 @container" v-bind="{ 'aria-describedby': describedBy }" data-test="radio-group">
-		<form-label v-bind="{ tag: 'legend' }" class="mb-1">
+		<form-label v-bind="{ tag: 'legend' }" class="mb-4">
 			<slot />
 		</form-label>
 
@@ -9,9 +9,9 @@
 		</conditional-wrapper>
 
 		<slot name="options" v-bind="{ options: internalOptions, name: name || inputId }">
-			<div class="flex flex-col" :class="{ '@xs:flex-row @xs:gap-10': inline, 'gap-2': !inline }">
+			<div class="flex flex-col" :class="{ '@xs:flex-row @xs:gap-10': inline, 'gap-4': !inline }">
 				<template v-for="option in internalOptions" :key="option.id">
-					<div class="flex items-center gap-2">
+					<div class="flex items-center gap-3">
 						<input ref="inputReferences" v-model="model" type="radio" class="form-radio shrink-0" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
 
 						<form-label v-bind="{ id: option.id, styled: false }" class="leading-6">

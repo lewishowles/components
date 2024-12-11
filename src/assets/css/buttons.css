@@ -1,6 +1,6 @@
 @layer components {
 	.button {
-		@apply px-[1em] py-[0.5em] rounded-lg;
+		@apply px-[1em] py-[0.5em] rounded-md;
 	}
 
 	.button--primary {
@@ -18,5 +18,12 @@
 		@apply dark:bg-white/20 dark:border-white/20;
 		@apply dark:hocus:bg-white/30 dark:hocus:border-white/20;
 		@apply dark:active:bg-white/40 dark:hocus:border-transparent;
+	}
+
+	.button--danger {
+		@apply button;
+		@apply font-semibold bg-red-700 text-white;
+		@apply hocus:bg-red-800;
+		@apply active:bg-red-900;
 	}
 }
