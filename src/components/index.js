@@ -11,8 +11,6 @@ import FormCheckbox from "./form/form-checkbox/form-checkbox.vue";
 import FormField from "./form/form-field/form-field.vue";
 import FormInput from "./form/form-input/form-input.vue";
 import FormLayout from "./form/form-layout/form-layout.vue";
-import FormPrefix from "./form/form-prefix/form-prefix.vue";
-import FormSuffix from "./form/form-suffix/form-suffix.vue";
 import FormTextarea from "./form/form-textarea/form-textarea.vue";
 import FormWrapper from "./form/form-wrapper/form-wrapper.vue";
 import ImageTag from "./display/image-tag/image-tag.vue";
@@ -74,8 +72,6 @@ export default {
 	FormCheckbox,
 	FormInput,
 	FormLayout,
-	FormPrefix,
-	FormSuffix,
 	FormTextarea,
 	FormWrapper,
 	IconArrowDown,

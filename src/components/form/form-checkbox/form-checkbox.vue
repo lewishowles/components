@@ -45,7 +45,7 @@ import useFormSupplementary from "@/components/form/composables/use-form-supplem
 import useInputId from "@/components/form/composables/use-input-id";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
-import FormSupplementary from "@/components/form/form-supplementary/form-supplementary.vue";
+import FormSupplementary from "@/components/form/fragments/form-supplementary/form-supplementary.vue";
 
 const props = defineProps({
 	/**

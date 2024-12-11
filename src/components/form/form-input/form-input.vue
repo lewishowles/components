@@ -1,10 +1,10 @@
 <template>
-	<div class="flex flex-col gap-1" data-test="form-input">
+	<field-wrapper v-bind="{ haveError }" data-test="form-input">
 		<form-label v-bind="{ id: inputId, required }">
 			<slot />
 		</form-label>
 
-		<div class="flex transition-shadow" :class="{ 'form-input--error': haveError }" data-test="form-input-wrapper">
+		<div class="flex transition-shadow" :class="{ 'form-input--error': haveError }" data-selector="form-input-wrapper" data-test="form-input-wrapper">
 			<input
 				ref="inputElement"
 				v-model="model"
@@ -38,7 +38,7 @@
 				<slot name="help" />
 			</template>
 		</form-supplementary>
-	</div>
+	</field-wrapper>
 </template>
 
 <script setup>
@@ -55,10 +55,11 @@ import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
 import useInputId from "@/components/form/composables/use-input-id";
 
+import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
 import FormLabel from "@/components/form/form-label/form-label.vue";
-import FormPrefix from "@/components/form/form-prefix/form-prefix.vue";
-import FormSuffix from "@/components/form/form-suffix/form-suffix.vue";
-import FormSupplementary from "@/components/form/form-supplementary/form-supplementary.vue";
+import FormPrefix from "@/components/form/fragments/form-prefix/form-prefix.vue";
+import FormSuffix from "@/components/form/fragments/form-suffix/form-suffix.vue";
+import FormSupplementary from "@/components/form/fragments/form-supplementary/form-supplementary.vue";
 
 const props = defineProps({
 	/**

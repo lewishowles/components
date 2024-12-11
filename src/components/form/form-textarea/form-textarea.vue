@@ -4,7 +4,7 @@
 			<slot />
 		</form-label>
 
-		<div class="flex transition-shadow" :class="{ 'form-input--error': haveError }" data-test="form-input-wrapper">
+		<div class="flex transition-shadow" :class="{ 'form-input--error': haveError }" data-selector="form-input-wrapper" data-test="form-input-wrapper">
 			<textarea
 				ref="inputElement"
 				v-model="model"
@@ -50,7 +50,7 @@ import useFormSupplementary from "@/components/form/composables/use-form-supplem
 import useInputId from "@/components/form/composables/use-input-id";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
-import FormSupplementary from "@/components/form/form-supplementary/form-supplementary.vue";
+import FormSupplementary from "@/components/form/fragments/form-supplementary/form-supplementary.vue";
 
 const props = defineProps({
 	/**

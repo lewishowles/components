@@ -12,8 +12,11 @@
 							'tabindex': tab.active ? '1' : '-1',
 						}"
 						ref="tabAnchors"
-						class="inline-block border-b-2 px-4 py-2 no-underline hocus:text-grey-950 dark:hocus:text-white"
-						:class="{ 'border-grey-950 text-grey-950 dark:border-white dark:text-white': tab.active, 'border-transparent text-current': !tab.active }"
+						class="inline-block border-b-2 px-4 py-2 no-underline dark:hocus:text-white"
+						:class="{
+							'border-purple-800 text-purple-800 dark:border-white dark:text-white': tab.active,
+							'border-transparent text-current hocus:border-grey-500 hocus:text-grey-950': !tab.active,
+						}"
 						data-test="tab-group-tab"
 						@click.prevent="setActiveTab(tab.tabId)"
 					>
