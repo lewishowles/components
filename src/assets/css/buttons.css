@@ -1,6 +1,14 @@
 @layer components {
+	.button-padding-x {
+		@apply px-[1em];
+	}
+
+	.button-padding-y {
+		@apply py-[0.5em];
+	}
+
 	.button {
-		@apply px-[1em] py-[0.5em] rounded-md;
+		@apply button-padding-x button-padding-y rounded-md;
 	}
 
 	.button--primary {

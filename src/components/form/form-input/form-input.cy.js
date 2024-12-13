@@ -16,7 +16,7 @@ describe("form-input", () => {
 
 		cy.getFormField("form-input")
 			.shouldHaveAttribute("id", "id-abc")
-			.shouldHaveAttribute("type", "text");
+			.shouldNotHaveAttribute("type");
 
 		cy.getByData("form-input")
 			.getByData("form-label")
@@ -25,9 +25,11 @@ describe("form-input", () => {
 	});
 
 	it("Additional attributes can be provided to the input", () => {
-		mount({ inputAttributes: { autocomplete: "given-name" } });
+		mount({ inputAttributes: { autocomplete: "given-name", type: "password" } });
 
-		cy.getFormField("form-input").shouldHaveAttribute("autocomplete", "given-name");
+		cy.getFormField("form-input")
+			.shouldHaveAttribute("autocomplete", "given-name")
+			.shouldHaveAttribute("type", "password");
 	});
 
 	describe("Supplementary information", () => {

@@ -8,6 +8,8 @@ The calculations `app-pagination` makes are live, meaning that if the number of 
 
 Pagination will automatically be hidden if there are no items, or if the number of items given all fit onto a single page.
 
+**Please note:** Currently, pagination uses buttons. Ideally, it will be updated to use anchors, updating the URL when the page changes, and be able to read the current page from the URL on load.
+
 ## Slots
 
 ### `previous-page-label`
@@ -21,6 +23,16 @@ The label for the previous page button.
 - default: `Next page`
 
 The label for the previous page button.
+
+### `page-number-label`
+
+- default: `Page {n}`
+- params:
+  - `page`
+    - type: `number`
+    - The number of the page.
+
+The accessible label for each page. This slot is provided a `page` parameter containing the current page number.
 
 ## Props
 
@@ -43,12 +55,6 @@ The label for the pagination, intended to explain to screen reader users the pur
 ### `@update:page`
 
 Updated when the user selects a different page to display, containing a `page` parameter with that selected page.
-
-## Methods
-
-### `method`
-
-...
 
 ## Examples
 

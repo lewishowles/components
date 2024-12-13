@@ -96,7 +96,7 @@ const props = defineProps({
 	 */
 	barClasses: {
 		type: String,
-		default: "h-full rounded-full bg-purple-500",
+		default: "h-full rounded-full bg-purple-800 dark:bg-purple-300",
 	},
 
 	// i18n
