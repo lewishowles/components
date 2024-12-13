@@ -13,11 +13,12 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("app-pagination-preview");
+const selectedPreview = ref("breadcrumb-list-preview");
 
 const previewOptions = [
 	{ label: "alert-message", value: "alert-message-preview" },
 	{ label: "app-pagination", value: "app-pagination-preview" },
+	{ label: "breadcrumb-list", value: "breadcrumb-list-preview" },
 	{ label: "button-group", value: "button-group-preview" },
 	{ label: "donut-chart", value: "donut-chart-preview" },
 	{ label: "dropdown-menu", value: "dropdown-menu-preview" },
