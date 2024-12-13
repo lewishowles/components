@@ -19,6 +19,7 @@ import FormWrapper from "./form/form-wrapper/form-wrapper.vue";
 import ImageTag from "./display/image-tag/image-tag.vue";
 import LinkTag from "./interaction/link-tag/link-tag.vue";
 import LoadingIndicator from "./interaction/loading-indicator/loading-indicator.vue";
+import ModalDialog from "./messaging/modal-dialog/modal-dialog.vue";
 import PillBadge from "./messaging/pill-badge/pill-badge.vue";
 import ProgressBar from "./chart/progress-bar/progress-bar.vue";
 import RadioGroup from "./form/radio-group/radio-group.vue";
@@ -62,6 +63,7 @@ import IconWarning from "./icon/icon-warning/icon-warning.vue";
 
 export default {
 	AlertMessage,
+	ModalDialog,
 	AppPagination,
 	BaseIcon,
 	BreadcrumbItem,

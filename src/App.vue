@@ -13,7 +13,7 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("breadcrumb-list-preview");
+const selectedPreview = ref("modal-dialog-preview");
 
 const previewOptions = [
 	{ label: "alert-message", value: "alert-message-preview" },
@@ -29,6 +29,7 @@ const previewOptions = [
 	{ label: "image-tag", value: "image-tag-preview" },
 	{ label: "link-tag", value: "link-tag-preview" },
 	{ label: "loading-indicator", value: "loading-indicator-preview" },
+	{ label: "modal-dialog", value: "modal-dialog-preview" },
 	{ label: "pill-badge", value: "pill-badge-preview" },
 	{ label: "progress-bar", value: "progress-bar-preview" },
 	{ label: "radio-group", value: "radio-group-preview" },

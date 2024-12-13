@@ -15,6 +15,7 @@ import FormWrapperPreview from "@/components/form/form-wrapper/form-wrapper-prev
 import ImageTagPreview from "@/components/display/image-tag/image-tag-preview.vue";
 import LinkTagPreview from "@/components/interaction/link-tag/link-tag-preview.vue";
 import LoadingIndicatorPreview from "@/components/interaction/loading-indicator/loading-indicator-preview.vue";
+import ModalDialogPreview from "@/components/messaging/modal-dialog/modal-dialog-preview.vue";
 import PillBadgePreview from "@/components/messaging/pill-badge/pill-badge-preview.vue";
 import ProgressBarPreview from "@/components/chart/progress-bar/progress-bar-preview.vue";
 import RadioGroupPreview from "@/components/form/radio-group/radio-group-preview.vue";
@@ -28,6 +29,7 @@ import UiButtonPreview from "@/components/interaction/ui-button/ui-button-previe
 const previewLibrary = {
 	install(app) {
 		app.component("AlertMessagePreview", AlertMessagePreview);
+		app.component("ModalDialogPreview", ModalDialogPreview);
 		app.component("AppPaginationPreview", AppPaginationPreview);
 		app.component("BreadcrumbListPreview", BreadcrumbListPreview);
 		app.component("ButtonGroupPreview", ButtonGroupPreview);
