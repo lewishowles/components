@@ -56,6 +56,7 @@ You can find more information about each component on its relevant docs page.
 
 ### Navigation
 
+- [breadcrumb-list](/src/components/navigation/breadcrumb-list/breadcrumb-list.md)
 - [app-pagination](/src/components/navigation/app-pagination/app-pagination.md)
 
 ### Data
@@ -93,11 +94,8 @@ Special scaffold scripts have been created to generate files for a new component
 
 There are a number of improvements and new components that could be made to improve flexibility.
 
-- Breadcrumbs - Providing automatic styling of breadcrumb items
-- Pagination - Providing automatic display of pages depending on count and per-page properties, with current page tracking.
 - Devise a system to allow the definition of a "brand colour" and "dark brand colour" to override any defaults. Perhaps a stylesheet.
 - Add notes about default recommended stylesheet.
 - Data table - Providing built-in options for searching, sorting, pagination, filtering, and custom display of any data in a table.
-- Dialog - Providing an accessible dialog popup with focus trapping.
 - Form date - including calendar with quick access to months, years and relative dates.
 - Checkbox group - A set of checkboxes with optional introductory text.

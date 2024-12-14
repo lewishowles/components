@@ -1,5 +1,13 @@
 # Changelog
 
+# 0.17.0 - 2024-12-31
+
+### New components
+
+- [breadcrumb-list](/src/components/navigation/breadcrumb-list/breadcrumb-list.md)
+- [app-pagination](/src/components/navigation/app-pagination/app-pagination.md)
+- [modal-dialog](/src/components/messaging/modal-dialog/modal-dialog.md)
+
 # 0.16.1 - 2024-11-15
 
 ### Updates
