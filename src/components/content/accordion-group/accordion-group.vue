@@ -29,7 +29,7 @@ const props = defineProps({
 	 */
 	showSectionLabel: {
 		type: String,
-		default: "Show",
+		default: "Show this section",
 	},
 
 	/**
@@ -37,7 +37,7 @@ const props = defineProps({
 	 */
 	hideSectionLabel: {
 		type: String,
-		default: "Hide",
+		default: "Hide this section",
 	},
 });
 
@@ -100,7 +100,4 @@ function hideAllSections() {
 		runComponentMethod(section, "hide");
 	}
 }
-
-// If all children are show, toggle wording of button
-// Allow button to show and hide all children
 </script>

@@ -66,14 +66,14 @@ The heading level to use for all sections.
 ### `showSectionLabel`
 
 - type: `string`
-- default: `Show`
+- default: `Show this section`
 
 The label to show an individual section. This is a prop because it is provided to each section by the group. This can also be set per-section via the `show-section-label` slot.
 
 ### `hideSectionLabel`
 
 - type: `string`
-- default: `Hide`
+- default: `Hide this section`
 
 The label to hide an individual section. This is a prop because it is provided to each section by the group. This can also be set per-section via the `hide-section-label` slot.
 
