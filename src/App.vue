@@ -13,9 +13,10 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("modal-dialog-preview");
+const selectedPreview = ref("accordion-group-preview");
 
 const previewOptions = [
+	{ label: "accordion-group", value: "accordion-group-preview" },
 	{ label: "alert-message", value: "alert-message-preview" },
 	{ label: "app-pagination", value: "app-pagination-preview" },
 	{ label: "breadcrumb-list", value: "breadcrumb-list-preview" },

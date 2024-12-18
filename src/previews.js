@@ -1,6 +1,7 @@
 import PreviewSection from "@/preview/preview-section.vue";
 import PreviewWrapper from "@/preview/preview-wrapper.vue";
 
+import AccordionGroupPreview from "@/components/content/accordion-group/accordion-group-preview.vue";
 import AlertMessagePreview from "@/components/messaging/alert-message/alert-message-preview.vue";
 import AppPaginationPreview from "@/components/navigation/app-pagination/app-pagination-preview.vue";
 import BreadcrumbListPreview from "@/components/navigation/breadcrumb-list/breadcrumb-list-preview.vue";
@@ -28,6 +29,7 @@ import UiButtonPreview from "@/components/interaction/ui-button/ui-button-previe
 // Prepare previews for use with <component :is> to simplify preview management.
 const previewLibrary = {
 	install(app) {
+		app.component("AccordionGroupPreview", AccordionGroupPreview);
 		app.component("AlertMessagePreview", AlertMessagePreview);
 		app.component("AppPaginationPreview", AppPaginationPreview);
 		app.component("BreadcrumbListPreview", BreadcrumbListPreview);

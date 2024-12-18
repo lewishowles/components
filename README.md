@@ -44,14 +44,18 @@ You can find more information about each component on its relevant docs page.
 - [form-layout](/src/components/form/form-layout/form-layout.md)
 - [form-actions](/src/components/form/form-actions/form-actions.md)
 
+### Content
+
+- [accordion-group](/src/components/content/accordion-group/accordion-group.md)
+- [skeleton-loader](/src/components/interaction/skeleton-loader/skeleton-loader.md)
+- [summary-details](/src/components/content/summary-details/summary-details.md)
+- [tab-group](/src/components/content/tab-group/tab-group.md)
+
 ### Interaction
 
 - [dropdown-menu](/src/components/interaction/dropdown-menu/dropdown-menu.md)
 - [link-tag](/src/components/interaction/link-tag/link-tag.md)
 - [loading-indicator](/src/components/interaction/loading-indicator/loading-indicator.md)
-- [skeleton-loader](/src/components/interaction/skeleton-loader/skeleton-loader.md)
-- [summary-details](/src/components/interaction/summary-details/summary-details.md)
-- [tab-group](/src/components/interaction/tab-group/tab-group.md)
 - [ui-button](/src/components/interaction/ui-button/ui-button.md)
 
 ### Navigation
