@@ -20,13 +20,13 @@ The `default` slot contains the `accordion-section` components that represent th
 
 - default: "Show all sections"
 
-The label for the button which opens all accordion sections.
+The label for the button which shows all accordion sections.
 
 ### `hide-all-sections-label`
 
 - default: "Hide all sections"
 
-The label for the button which closes all accordion sections.
+The label for the button which hides all accordion sections.
 
 ## Slots (`accordion-section`)
 
@@ -40,7 +40,7 @@ Any introduction to further explain the section's content. If used, this should 
 
 ### `default`
 
-The content of the accordion section, which is shown when the section is open.
+The content of the accordion section, which is shown when the section is visible.
 
 ### `show-section-label`
 

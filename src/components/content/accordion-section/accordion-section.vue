@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h2>
-			<button type="button" v-bind="{ 'aria-controls': id, 'aria-expanded': isOpen }" @click="toggle">
+			<button type="button" v-bind="{ 'aria-controls': id, 'aria-expanded': isVisible }" @click="toggle">
 				<slot name="title" />
 
 				<span class="sr-only">, </span>
@@ -11,12 +11,12 @@
 				<span v-if="haveIntroduction" class="sr-only">, </span>
 
 				<div>
-					<span v-show="!isOpen">
+					<span v-show="!isVisible">
 						<slot name="show-section-label">
 							{{ showSectionLabel }}
 						</slot>
 					</span>
-					<span v-show="isOpen">
+					<span v-show="isVisible">
 						<slot name="hide-section-label">
 							{{ hideSectionLabel }}
 						</slot>
@@ -25,7 +25,7 @@
 			</button>
 		</h2>
 
-		<div v-bind="{ id, hidden: isOpen ? null : 'until-found' }">
+		<div v-bind="{ id, hidden: isVisible ? null : 'until-found' }">
 			<slot />
 		</div>
 	</div>
@@ -41,48 +41,48 @@ const { registerSection, showSectionLabel, hideSectionLabel } = inject("accordio
 const slots = useSlots();
 // The internal ID for this accordion section.
 const id = nanoid();
-// Whether this section is open.
-const isOpen = ref(false);
+// Whether this section is visible.
+const isVisible = ref(false);
 // Whether we have an introduction, which helps us determine how best to format
 // the content for screen readers.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.slot));
 
 // Register this section with the accordion, allowing it insight into the
-// current state, and how to open and close this section.
+// current state, and how to show and hide this section.
 registerSection({
-	isOpen,
-	open,
-	close,
+	isVisible,
+	show,
+	hide,
 });
 
 /**
  * Open this section.
  */
-function open() {
-	isOpen.value = true;
+function show() {
+	isVisible.value = true;
 }
 
 /**
  * Open this section.
  */
-function close() {
-	isOpen.value = false;
+function hide() {
+	isVisible.value = false;
 }
 
 /**
- * Toggle the open status. We run through the regular open / close methods to
+ * Toggle the visible status. We run through the regular show / hide methods to
  * ensure that any additional actions or side effects are maintained.
  */
 function toggle() {
-	if (isOpen.value) {
-		close();
+	if (isVisible.value) {
+		hide();
 
 		return;
 	}
 
-	open();
+	show();
 }
 
 // Use intersection-observer to monitor when the div is found by search
-// Save open state in session storage
+// Save visible state in session storage
 </script>

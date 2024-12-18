@@ -16,37 +16,37 @@ describe("accordion-section", () => {
 	});
 
 	describe("Methods", () => {
-		describe("open", () => {
-			test("should mark the section as open", () => {
+		describe("show", () => {
+			test("should mark the section as visible", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.isOpen = false;
+				vm.isVisible = false;
 
-				vm.open();
+				vm.show();
 
-				expect(vm.isOpen).toBe(true);
+				expect(vm.isVisible).toBe(true);
 
-				vm.open();
+				vm.show();
 
-				expect(vm.isOpen).toBe(true);
+				expect(vm.isVisible).toBe(true);
 			});
 		});
 
-		describe("close", () => {
-			test("should mark the section as closed", () => {
+		describe("hide", () => {
+			test("should mark the section as not visible", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.isOpen = true;
+				vm.isVisible = true;
 
-				vm.close();
+				vm.hide();
 
-				expect(vm.isOpen).toBe(false);
+				expect(vm.isVisible).toBe(false);
 
-				vm.close();
+				vm.hide();
 
-				expect(vm.isOpen).toBe(false);
+				expect(vm.isVisible).toBe(false);
 			});
 		});
 
@@ -55,15 +55,15 @@ describe("accordion-section", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.isOpen = false;
+				vm.isVisible = false;
 
 				vm.toggle();
 
-				expect(vm.isOpen).toBe(true);
+				expect(vm.isVisible).toBe(true);
 
 				vm.toggle();
 
-				expect(vm.isOpen).toBe(false);
+				expect(vm.isVisible).toBe(false);
 			});
 		});
 	});

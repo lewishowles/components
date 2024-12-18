@@ -1,12 +1,12 @@
 <template>
 	<div>
-		<ui-button v-bind="{ 'aria-expanded': areAllOpen }">
-			<span v-show="!areAllOpen">
+		<ui-button v-bind="{ 'aria-expanded': allVisible }" @click="toggleAllSections">
+			<span v-show="!allVisible">
 				<slot name="show-all-sections-label">
 					Show all sections
 				</slot>
 			</span>
-			<span v-show="areAllOpen">
+			<span v-show="allVisible">
 				<slot name="hide-all-sections-label">
 					Hide all sections
 				</slot>
@@ -20,6 +20,8 @@
 <script setup>
 import { computed, isRef, provide, ref } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -48,17 +50,57 @@ provide("accordion-group", {
 // A reference to each of the sections belonging to this accordion.
 const sections = ref([]);
 
-// Whether all of the sections are currently open.
-const areAllOpen = computed(() => sections.value.every(section => section.isOpen === true));
+// Whether all of the sections are currently visible.
+const allVisible = computed(() => sections.value.every(section => section.isVisible === true));
 
-function registerSection({ isOpen, open, close }) {
-	if (!isRef(isOpen) || !isFunction(open) || !isFunction(close)) {
+function registerSection({ isVisible, show, hide }) {
+	if (!isRef(isVisible) || !isFunction(show) || !isFunction(hide)) {
 		return;
 	}
 
-	sections.value.push({ isOpen, open, close });
+	sections.value.push({ isVisible, show, hide });
 }
 
-// If all children are open, toggle wording of button
-// Allow button to open and close all children
+/**
+ * Toggle all sections depending on their current state. If all sections are
+ * visible, hide them. Otherwise, show all sections.
+ */
+function toggleAllSections() {
+	if (allVisible.value) {
+		hideAllSections();
+
+		return;
+	}
+
+	showAllSections();
+}
+
+/**
+ * Show all sections of the accordion by calling their `show` methods in turn.
+ */
+function showAllSections() {
+	if (!isNonEmptyArray(sections.value)) {
+		return;
+	}
+
+	for (const section of sections.value) {
+		runComponentMethod(section, "show");
+	}
+}
+
+/**
+ * Hide all sections of the accordion by calling their `hide` methods in turn.
+ */
+function hideAllSections() {
+	if (!isNonEmptyArray(sections.value)) {
+		return;
+	}
+
+	for (const section of sections.value) {
+		runComponentMethod(section, "hide");
+	}
+}
+
+// If all children are show, toggle wording of button
+// Allow button to show and hide all children
 </script>

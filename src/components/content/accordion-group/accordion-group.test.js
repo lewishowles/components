@@ -6,6 +6,9 @@ import AccordionGroup from "./accordion-group.vue";
 const mount = createMount(AccordionGroup);
 
 describe("accordion-group", () => {
+	const show = vi.fn();
+	const hide = vi.fn();
+
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
 			const wrapper = mount();
@@ -14,13 +17,35 @@ describe("accordion-group", () => {
 		});
 	});
 
+	describe("Computed", () => {
+		describe("allOpen", () => {
+			test("should recognise when all sections are visible", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.registerSection({ isVisible: ref(true), show, hide });
+				vm.registerSection({ isVisible: ref(true), show, hide });
+
+				expect(vm.allOpen).toBe(true);
+			});
+
+			test("should recognise when not all sections are visible", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.registerSection({ isVisible: ref(true), show, hide });
+				vm.registerSection({ isVisible: ref(false), show, hide });
+
+				expect(vm.allOpen).toBe(false);
+			});
+		});
+	});
+
 	describe("Methods", () => {
 		describe("registerSection", () => {
-			const open = vi.fn();
-			const close = vi.fn();
-			const isOpen = ref(false);
+			const isVisible = ref(false);
 
-			describe("should not register a section if `isOpen` is not a valid ref", () => {
+			describe("should not register a section if `isVisible` is not a valid ref", () => {
 				test.for([
 					["boolean (true)", true],
 					["boolean (false)", false],
@@ -34,19 +59,19 @@ describe("accordion-group", () => {
 					["object (empty)", {}],
 					["null", null],
 					["undefined", undefined],
-				])("%s", ([, isOpen]) => {
+				])("%s", ([, isVisible]) => {
 					const wrapper = mount();
 					const vm = wrapper.vm;
 
 					expect(vm.sections).toEqual([]);
 
-					vm.registerSection({ isOpen, open, close });
+					vm.registerSection({ isVisible, show, hide });
 
 					expect(vm.sections).toEqual([]);
 				});
 			});
 
-			describe("should not register a section if `open` is not a valid method", () => {
+			describe("should not register a section if `show` is not a valid method", () => {
 				test.for([
 					["boolean (true)", true],
 					["boolean (false)", false],
@@ -60,19 +85,19 @@ describe("accordion-group", () => {
 					["object (empty)", {}],
 					["null", null],
 					["undefined", undefined],
-				])("%s", ([, open]) => {
+				])("%s", ([, show]) => {
 					const wrapper = mount();
 					const vm = wrapper.vm;
 
 					expect(vm.sections).toEqual([]);
 
-					vm.registerSection({ isOpen, open, close });
+					vm.registerSection({ isVisible, show, hide });
 
 					expect(vm.sections).toEqual([]);
 				});
 			});
 
-			describe("should not register a section if `close` is not a valid method", () => {
+			describe("should not register a section if `hide` is not a valid method", () => {
 				test.for([
 					["boolean (true)", true],
 					["boolean (false)", false],
@@ -86,13 +111,13 @@ describe("accordion-group", () => {
 					["object (empty)", {}],
 					["null", null],
 					["undefined", undefined],
-				])("%s", ([, close]) => {
+				])("%s", ([, hide]) => {
 					const wrapper = mount();
 					const vm = wrapper.vm;
 
 					expect(vm.sections).toEqual([]);
 
-					vm.registerSection({ isOpen, open, close });
+					vm.registerSection({ isVisible, show, hide });
 
 					expect(vm.sections).toEqual([]);
 				});
@@ -104,7 +129,7 @@ describe("accordion-group", () => {
 
 				expect(vm.sections).toEqual([]);
 
-				vm.registerSection({ isOpen, open, close });
+				vm.registerSection({ isVisible, show, hide });
 
 				expect(vm.sections).toHaveLength(1);
 			});
