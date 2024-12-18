@@ -45,7 +45,7 @@ const id = nanoid();
 const isVisible = ref(false);
 // Whether we have an introduction, which helps us determine how best to format
 // the content for screen readers.
-const haveIntroduction = computed(() => isNonEmptySlot(slots.slot));
+const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 
 // Register this section with the accordion, allowing it insight into the
 // current state, and how to show and hide this section.
