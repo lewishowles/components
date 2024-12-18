@@ -3,6 +3,8 @@ import AppPagination from "./navigation/app-pagination/app-pagination.vue";
 import BreadcrumbItem from "./navigation/breadcrumb-item/breadcrumb-item.vue";
 import BreadcrumbList from "./navigation/breadcrumb-list/breadcrumb-list.vue";
 import ButtonGroup from "./form/button-group/button-group.vue";
+import AccordionGroup from "./content/accordion-group/accordion-group.vue";
+import AccordionSection from "./content/accordion-section/accordion-section.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import DropdownMenu from "./interaction/dropdown-menu/dropdown-menu.vue";
@@ -24,11 +26,11 @@ import PillBadge from "./messaging/pill-badge/pill-badge.vue";
 import ProgressBar from "./chart/progress-bar/progress-bar.vue";
 import RadioGroup from "./form/radio-group/radio-group.vue";
 import SearchableList from "./data/searchable-list/searchable-list.vue";
-import SkeletonIndicator from "./interaction/skeleton-indicator/skeleton-indicator.vue";
-import SkeletonLoader from "./interaction/skeleton-loader/skeleton-loader.vue";
-import SummaryDetails from "./interaction/summary-details/summary-details.vue";
-import TabGroup from "./interaction/tab-group/tab-group.vue";
-import TabItem from "./interaction/tab-item/tab-item.vue";
+import SkeletonIndicator from "./content/skeleton-indicator/skeleton-indicator.vue";
+import SkeletonLoader from "./content/skeleton-loader/skeleton-loader.vue";
+import SummaryDetails from "./content/summary-details/summary-details.vue";
+import TabGroup from "./content/tab-group/tab-group.vue";
+import TabItem from "./content/tab-item/tab-item.vue";
 import UiButton from "./interaction/ui-button/ui-button.vue";
 
 import BaseIcon from "./icon/base-icon/base-icon.vue";
@@ -62,8 +64,9 @@ import IconUser from "./icon/icon-user/icon-user.vue";
 import IconWarning from "./icon/icon-warning/icon-warning.vue";
 
 export default {
+	AccordionGroup,
+	AccordionSection,
 	AlertMessage,
-	ModalDialog,
 	AppPagination,
 	BaseIcon,
 	BreadcrumbItem,
@@ -113,14 +116,15 @@ export default {
 	ImageTag,
 	LinkTag,
 	LoadingIndicator,
+	ModalDialog,
 	PillBadge,
 	ProgressBar,
 	RadioGroup,
 	SearchableList,
 	SkeletonIndicator,
-	TabGroup,
-	TabItem,
 	SkeletonLoader,
 	SummaryDetails,
+	TabGroup,
+	TabItem,
 	UiButton,
 };

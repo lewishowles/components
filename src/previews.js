@@ -20,16 +20,15 @@ import PillBadgePreview from "@/components/messaging/pill-badge/pill-badge-previ
 import ProgressBarPreview from "@/components/chart/progress-bar/progress-bar-preview.vue";
 import RadioGroupPreview from "@/components/form/radio-group/radio-group-preview.vue";
 import SearchableListPreview from "@/components/data/searchable-list/searchable-list-preview.vue";
-import SkeletonLoaderPreview from "@/components/interaction/skeleton-loader/skeleton-loader-preview.vue";
-import SummaryDetailsPreview from "@/components/interaction/summary-details/summary-details-preview.vue";
-import TabGroupPreview from "@/components/interaction/tab-group/tab-group-preview.vue";
+import SkeletonLoaderPreview from "@/components/content/skeleton-loader/skeleton-loader-preview.vue";
+import SummaryDetailsPreview from "@/components/content/summary-details/summary-details-preview.vue";
+import TabGroupPreview from "@/components/content/tab-group/tab-group-preview.vue";
 import UiButtonPreview from "@/components/interaction/ui-button/ui-button-preview.vue";
 
 // Prepare previews for use with <component :is> to simplify preview management.
 const previewLibrary = {
 	install(app) {
 		app.component("AlertMessagePreview", AlertMessagePreview);
-		app.component("ModalDialogPreview", ModalDialogPreview);
 		app.component("AppPaginationPreview", AppPaginationPreview);
 		app.component("BreadcrumbListPreview", BreadcrumbListPreview);
 		app.component("ButtonGroupPreview", ButtonGroupPreview);
@@ -43,6 +42,7 @@ const previewLibrary = {
 		app.component("ImageTagPreview", ImageTagPreview);
 		app.component("LinkTagPreview", LinkTagPreview);
 		app.component("LoadingIndicatorPreview", LoadingIndicatorPreview);
+		app.component("ModalDialogPreview", ModalDialogPreview);
 		app.component("PillBadgePreview", PillBadgePreview);
 		app.component("PreviewSection", PreviewSection);
 		app.component("PreviewWrapper", PreviewWrapper);
