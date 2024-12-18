@@ -30,6 +30,8 @@ Additional actions to appear below the primary and secondary actions, such as "C
 
 - default: "There is a problem"
 
+The title of the error summary that appears if any errors are found in the form.
+
 ## Events
 
 ### `v-model`

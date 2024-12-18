@@ -16,6 +16,18 @@ If only one section is needed, to provide further context, for example, use the 
 
 The `default` slot contains the `accordion-section` components that represent the tabs.
 
+### `show-all-sections-label`
+
+- default: "Show all sections"
+
+The label for the button which opens all accordion sections.
+
+### `hide-all-sections-label`
+
+- default: "Hide all sections"
+
+The label for the button which closes all accordion sections.
+
 ## Slots (`accordion-section`)
 
 ### `title`
@@ -28,7 +40,19 @@ Any introduction to further explain the section's content. If used, this should 
 
 ### `default`
 
-The `default` slot contains the content of the accordion section, which is shown when the section is open.
+The content of the accordion section, which is shown when the section is open.
+
+### `show-section-label`
+
+- default: The content of the `showSectionLabel` prop.
+
+The label to show this section.
+
+### `hide-section-label`
+
+- default: The content of the `hideSectionLabel` prop.
+
+The label to hide this section.
 
 ## Props
 
@@ -38,6 +62,20 @@ The `default` slot contains the content of the accordion section, which is shown
 - default: `h2`
 
 The heading level to use for all sections.
+
+### `showSectionLabel`
+
+- type: `string`
+- default: `Show`
+
+The label to show an individual section. This is a prop because it is provided to each section by the group. This can also be set per-section via the `show-section-label` slot.
+
+### `hideSectionLabel`
+
+- type: `string`
+- default: `Hide`
+
+The label to hide an individual section. This is a prop because it is provided to each section by the group. This can also be set per-section via the `hide-section-label` slot.
 
 ## Examples
 

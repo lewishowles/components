@@ -3,7 +3,7 @@ import { describe, expect, test, vi } from "vitest";
 import AccordionItem from "./accordion-section.vue";
 
 const registerSectionMock = vi.fn();
-const provide = { "accordion-group": { registerSection: registerSectionMock } };
+const provide = { "accordion-group": { registerSection: registerSectionMock, showSectionLabel: "Show", hideSectionLabel: "Hide" } };
 const mount = createMount(AccordionItem, { global: { provide } });
 
 describe("accordion-section", () => {
