@@ -13,7 +13,7 @@ describe("modal-dialog", () => {
 		});
 	});
 
-	describe("methods", () => {
+	describe("Methods", () => {
 		describe("closeDialog", () => {
 			test("should emit the correct event", () => {
 				const wrapper = mount();

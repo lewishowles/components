@@ -17,7 +17,7 @@ describe("app-pagination", () => {
 		});
 	});
 
-	describe("computed", () => {
+	describe("Computed", () => {
 		describe("pageCount", () => {
 			test("should reject an invalid `count`", () => {
 				const wrapper = mount({ count: "seven" });
@@ -300,7 +300,7 @@ describe("app-pagination", () => {
 		});
 	});
 
-	describe("methods", () => {
+	describe("Methods", () => {
 		describe("selectPreviousPage", () => {
 			test("should select the previous page", () => {
 				const wrapper = mount();
@@ -366,7 +366,7 @@ describe("app-pagination", () => {
 		});
 	});
 
-	describe("watch", () => {
+	describe("Watch", () => {
 		test("should emit the current page on change", async() => {
 			const wrapper = mount();
 			const vm = wrapper.vm;
