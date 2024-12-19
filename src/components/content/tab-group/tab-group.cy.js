@@ -1,5 +1,5 @@
 import TabGroup from "./tab-group.vue";
-import TabItem from "@/components/interaction/tab-item/tab-item.vue";
+import TabItem from "@/components/content/tab-item/tab-item.vue";
 import { createMount } from "@cypress/support/mount";
 import { h } from "vue";
 
