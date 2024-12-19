@@ -47,6 +47,7 @@ You can find more information about each component on its relevant docs page.
 ### Content
 
 - [accordion-group](/src/components/content/accordion-group/accordion-group.md)
+- [accordion-section](/src/components/content/accordion-section/accordion-section.md)
 - [skeleton-loader](/src/components/interaction/skeleton-loader/skeleton-loader.md)
 - [summary-details](/src/components/content/summary-details/summary-details.md)
 - [tab-group](/src/components/content/tab-group/tab-group.md)

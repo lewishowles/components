@@ -1,6 +1,6 @@
 # `accordion-group`
 
-`accordion-group` represents an accordion and is used in conjunction with `accordion-section`, which represents each section in the group, to create a set of accessible content.
+`accordion-group` represents an accordion and is used in conjunction with [`accordion-section`](/src/components/content/accordion-section/accordion-section.md), which represents each section in the group, to create a set of accessible content.
 
 Accordions are very much like tabs, but display content vertically. Accordions provide a few benefits, one of which is that there can be more accordions than there are tabs, as they’re displayed vertically. To that point, accordion buttons can also have more text explaining their purpose—though this should be kept to an absolute minimum.
 
@@ -27,32 +27,6 @@ The label for the button which shows all accordion sections.
 - default: "Hide all sections"
 
 The label for the button which hides all accordion sections.
-
-## Slots (`accordion-section`)
-
-### `title`
-
-The title of the section, which is used in the show / hide button.
-
-### `introduction`
-
-Any introduction to further explain the section's content. If used, this should be as short as possible.
-
-### `default`
-
-The content of the accordion section, which is shown when the section is visible.
-
-### `show-section-label`
-
-- default: The content of the `showSectionLabel` prop.
-
-The label to show this section.
-
-### `hide-section-label`
-
-- default: The content of the `hideSectionLabel` prop.
-
-The label to hide this section.
 
 ## Props
 
@@ -83,7 +57,7 @@ The label to hide an individual section. This is a prop because it is provided t
 
 ```html
 <accordion-group>
-	<accordion-item>
+	<accordion-section>
 		<template #title>
 			The Flux Capacitor
 		</template>
@@ -95,8 +69,8 @@ The label to hide an individual section. This is a prop because it is provided t
 		<p>In the world of Back to the Future, the time circuits are the heart of the DeLorean's time-traveling capabilities. With a simple keypad interface, Doc Brown can input any date and time to travel to. The display shows the destination time, the present time, and the last departed time.</p>
 
 		<p>It's a marvel of 1980s science fiction, giving Marty the ability to journey to the past, present, or future at the press of a button. The time circuits add an element of urgency and excitement, as every second counts when avoiding time paradoxes and ensuring the timeline remains intact.</p>
-	</accordion-item>
-	<accordion-item>
+	</accordion-section>
+	<accordion-section>
 		<template #title>
 			The DeLorean
 		</template>
@@ -106,6 +80,6 @@ The label to hide an individual section. This is a prop because it is provided t
 		</template>
 
 		...
-	</accordion-item>
+	</accordion-section>
 </accordion-group>
 ```

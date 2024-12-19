@@ -2,6 +2,7 @@ import colors from "tailwindcss/colors";
 import containerQueriesPlugin from "@tailwindcss/container-queries";
 import defaultTheme from "tailwindcss/defaultTheme";
 import hocusPlugin from "tailwindcss-hocus";
+import typographyPlugin from "@tailwindcss/typography";
 
 export default {
 	darkMode: "selector",
@@ -19,6 +20,9 @@ export default {
 			minWidth: theme => ({
 				...theme("maxWidth"),
 			}),
+			size: {
+				text: "1em",
+			},
 		},
 		colors: {
 			// Set our preferred colours from those provided by Tailwind
@@ -39,8 +43,9 @@ export default {
 		},
 	},
 	plugins: [
-		hocusPlugin,
 		containerQueriesPlugin,
+		hocusPlugin,
+		typographyPlugin,
 	],
 };
 

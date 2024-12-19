@@ -41,9 +41,13 @@ import IconArrowUp from "./icon/icon-arrow-up/icon-arrow-up.vue";
 import IconCheck from "./icon/icon-check/icon-check.vue";
 import IconCheckCircled from "./icon/icon-check-circled/icon-check-circled.vue";
 import IconChevronDown from "./icon/icon-chevron-down/icon-chevron-down.vue";
+import IconChevronDownCircled from "./icon/icon-chevron-down-circled/icon-chevron-down-circled.vue";
 import IconChevronLeft from "./icon/icon-chevron-left/icon-chevron-left.vue";
+import IconChevronLeftCircled from "./icon/icon-chevron-left-circled/icon-chevron-left-circled.vue";
 import IconChevronRight from "./icon/icon-chevron-right/icon-chevron-right.vue";
+import IconChevronRightCircled from "./icon/icon-chevron-right-circled/icon-chevron-right-circled.vue";
 import IconChevronUp from "./icon/icon-chevron-up/icon-chevron-up.vue";
+import IconChevronUpCircled from "./icon/icon-chevron-up-circled/icon-chevron-up-circled.vue";
 import IconClock from "./icon/icon-clock/icon-clock.vue";
 import IconCross from "./icon/icon-cross/icon-cross.vue";
 import IconDanger from "./icon/icon-danger/icon-danger.vue";
@@ -69,6 +73,10 @@ export default {
 	AlertMessage,
 	AppPagination,
 	BaseIcon,
+	IconChevronRightCircled,
+	IconChevronLeftCircled,
+	IconChevronDownCircled,
+	IconChevronUpCircled,
 	BreadcrumbItem,
 	BreadcrumbList,
 	ButtonGroup,

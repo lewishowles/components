@@ -8,9 +8,13 @@ Each icon in the library is created using strokes, and can be coloured using the
 - icon-arrow-up.vue
 - icon-check-circled.vue
 - icon-check.vue
+- icon-chevron-down-circled.vue
 - icon-chevron-down.vue
+- icon-chevron-left-circled.vue
 - icon-chevron-left.vue
+- icon-chevron-right-circled.vue
 - icon-chevron-right.vue
+- icon-chevron-up-circled.vue
 - icon-chevron-up.vue
 - icon-clock.vue
 - icon-cross.vue

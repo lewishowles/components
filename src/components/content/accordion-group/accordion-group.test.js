@@ -18,7 +18,7 @@ describe("accordion-group", () => {
 	});
 
 	describe("Computed", () => {
-		describe("allOpen", () => {
+		describe("allVisible", () => {
 			test("should recognise when all sections are visible", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
@@ -26,7 +26,7 @@ describe("accordion-group", () => {
 				vm.registerSection({ isVisible: ref(true), show, hide });
 				vm.registerSection({ isVisible: ref(true), show, hide });
 
-				expect(vm.allOpen).toBe(true);
+				expect(vm.allVisible).toBe(true);
 			});
 
 			test("should recognise when not all sections are visible", () => {
@@ -36,7 +36,7 @@ describe("accordion-group", () => {
 				vm.registerSection({ isVisible: ref(true), show, hide });
 				vm.registerSection({ isVisible: ref(false), show, hide });
 
-				expect(vm.allOpen).toBe(false);
+				expect(vm.allVisible).toBe(false);
 			});
 		});
 	});

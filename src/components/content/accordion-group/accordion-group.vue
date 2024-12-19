@@ -1,19 +1,24 @@
 <template>
-	<div>
-		<ui-button v-bind="{ 'aria-expanded': allVisible }" @click="toggleAllSections">
+	<div data-test="accordion-group">
+		<button type="button" class="inline-flex items-center gap-2 text-purple-800 hocus:underline dark:text-purple-300" v-bind="{ 'aria-expanded': allVisible }" data-test="accordion-group-button" @click="toggleAllSections">
+			<component :is="statusIcon" class="size-text" />
+
 			<span v-show="!allVisible">
 				<slot name="show-all-sections-label">
 					Show all sections
 				</slot>
 			</span>
-			<span v-show="allVisible">
+
+			<span v-show="allVisible" class="inline-flex items-center gap-2">
 				<slot name="hide-all-sections-label">
 					Hide all sections
 				</slot>
 			</span>
-		</ui-button>
+		</button>
 
-		<slot />
+		<div class="divide-y divide-grey-200">
+			<slot />
+		</div>
 	</div>
 </template>
 
@@ -52,6 +57,8 @@ const sections = ref([]);
 
 // Whether all of the sections are currently visible.
 const allVisible = computed(() => sections.value.every(section => section.isVisible === true));
+// The icon to show depending on the visibility of each section.
+const statusIcon = computed(() => (allVisible.value ? "icon-chevron-up-circled" : "icon-chevron-down-circled"));
 
 function registerSection({ isVisible, show, hide }) {
 	if (!isRef(isVisible) || !isFunction(show) || !isFunction(hide)) {
