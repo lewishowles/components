@@ -1,5 +1,11 @@
 # Changelog
 
+# 0.18.0 - 2024-12-19
+
+### New components
+
+- [accordion-group](/src/components/content/accordion-group/accordion-group.md)
+
 # 0.17.0 - 2024-12-13
 
 ### New components
