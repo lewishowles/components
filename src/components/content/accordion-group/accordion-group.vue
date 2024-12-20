@@ -30,6 +30,14 @@ import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
+	 * The heading level to use for all sections.
+	 */
+	headingLevel: {
+		type: String,
+		default: "h2",
+	},
+
+	/**
 	 * The label for each individual section's "Show" button.
 	 */
 	showSectionLabel: {
@@ -48,6 +56,7 @@ const props = defineProps({
 
 provide("accordion-group", {
 	registerSection,
+	headingLevel: props.headingLevel,
 	showSectionLabel: props.showSectionLabel,
 	hideSectionLabel: props.hideSectionLabel,
 });

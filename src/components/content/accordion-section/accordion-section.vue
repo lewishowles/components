@@ -1,6 +1,6 @@
 <template>
 	<div data-test="accordion-section">
-		<h2 class="py-6" data-test="accordion-section-title">
+		<component :is="headingLevel" class="py-6" data-test="accordion-section-title">
 			<button type="button" class="group flex flex-col items-start" v-bind="{ 'aria-controls': id, 'aria-expanded': isVisible }" data-test="accordion-section-button" @click="toggle">
 				<span :class="titleClasses">
 					<slot name="title" />
@@ -29,7 +29,7 @@
 					</span>
 				</div>
 			</button>
-		</h2>
+		</component>
 
 		<div v-bind="{ id, hidden: isVisible ? null : 'until-found' }" :class="{ 'pb-6': isVisible }" data-test="accordion-section-content">
 			<slot />
@@ -62,7 +62,7 @@ defineProps({
 	},
 });
 
-const { registerSection, showSectionLabel, hideSectionLabel } = inject("accordion-group");
+const { registerSection, headingLevel, showSectionLabel, hideSectionLabel } = inject("accordion-group");
 
 const slots = useSlots();
 // The internal ID for this accordion section.
