@@ -13,11 +13,11 @@
 		width: 1em;
 	}
 
-	a, button, [contenteditable], [tabindex] {
-		@apply transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2 dark:focus-visible:ring-purple-400 dark:focus-visible:ring-offset-0;
+	a, button, summary, [contenteditable], [tabindex] {
+		@apply transition-all focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2 dark:focus-visible:ring-purple-400 dark:focus-visible:ring-offset-0;
 	}
 
-	a {
+	a, summary {
 		@apply text-purple-800 underline underline-offset-4;
 		@apply hocus:text-purple-900 hocus:no-underline;
 		@apply dark:text-purple-400;
