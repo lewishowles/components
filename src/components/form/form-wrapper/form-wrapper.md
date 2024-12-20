@@ -56,7 +56,9 @@ Update the value of field with `name` to `value`.
 
 ```html
 <form-wrapper v-model="formData">
-	<form-field name="username" />
+	<form-field name="your_name">
+		Your name
+	</form-field>
 </form-wrapper>
 ```
 

@@ -13,7 +13,7 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("accordion-group-preview");
+const selectedPreview = ref("form-fieldset-preview");
 
 const previewOptions = [
 	{ label: "accordion-group", value: "accordion-group-preview" },
@@ -24,6 +24,7 @@ const previewOptions = [
 	{ label: "donut-chart", value: "donut-chart-preview" },
 	{ label: "dropdown-menu", value: "dropdown-menu-preview" },
 	{ label: "form-checkbox", value: "form-checkbox-preview" },
+	{ label: "form-fieldset", value: "form-fieldset-preview" },
 	{ label: "form-input", value: "form-input-preview" },
 	{ label: "form-textarea", value: "form-textarea-preview" },
 	{ label: "form-wrapper", value: "form-wrapper-preview" },

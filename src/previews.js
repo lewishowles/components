@@ -9,6 +9,7 @@ import ButtonGroupPreview from "@/components/form/button-group/button-group-prev
 import DonutChartPreview from "@/components/chart/donut-chart/donut-chart-preview.vue";
 import DropdownMenuPreview from "@/components/interaction/dropdown-menu/dropdown-menu-preview.vue";
 import FormCheckboxPreview from "@/components/form/form-checkbox/form-checkbox-preview.vue";
+import FormFieldsetPreview from "@/components/form/form-fieldset/form-fieldset-preview.vue";
 import FormInputPreview from "@/components/form/form-input/form-input-preview.vue";
 import FormLayout from "@/components/form/form-layout/form-layout.vue";
 import FormTextareaPreview from "@/components/form/form-textarea/form-textarea-preview.vue";
@@ -31,6 +32,7 @@ const previewLibrary = {
 	install(app) {
 		app.component("AccordionGroupPreview", AccordionGroupPreview);
 		app.component("AlertMessagePreview", AlertMessagePreview);
+		app.component("FormFieldsetPreview", FormFieldsetPreview);
 		app.component("AppPaginationPreview", AppPaginationPreview);
 		app.component("BreadcrumbListPreview", BreadcrumbListPreview);
 		app.component("ButtonGroupPreview", ButtonGroupPreview);

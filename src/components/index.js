@@ -1,10 +1,10 @@
+import AccordionGroup from "./content/accordion-group/accordion-group.vue";
+import AccordionSection from "./content/accordion-section/accordion-section.vue";
 import AlertMessage from "./messaging/alert-message/alert-message.vue";
 import AppPagination from "./navigation/app-pagination/app-pagination.vue";
 import BreadcrumbItem from "./navigation/breadcrumb-item/breadcrumb-item.vue";
 import BreadcrumbList from "./navigation/breadcrumb-list/breadcrumb-list.vue";
 import ButtonGroup from "./form/button-group/button-group.vue";
-import AccordionGroup from "./content/accordion-group/accordion-group.vue";
-import AccordionSection from "./content/accordion-section/accordion-section.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import DropdownMenu from "./interaction/dropdown-menu/dropdown-menu.vue";
@@ -14,6 +14,7 @@ import DropdownMenuLink from "./interaction/dropdown-menu/fragments/dropdown-men
 import FormActions from "./form/form-actions/form-actions.vue";
 import FormCheckbox from "./form/form-checkbox/form-checkbox.vue";
 import FormField from "./form/form-field/form-field.vue";
+import FormFieldset from "./form/form-fieldset/form-fieldset.vue";
 import FormInput from "./form/form-input/form-input.vue";
 import FormLayout from "./form/form-layout/form-layout.vue";
 import FormTextarea from "./form/form-textarea/form-textarea.vue";
@@ -71,6 +72,7 @@ export default {
 	AccordionGroup,
 	AccordionSection,
 	AlertMessage,
+	FormFieldset,
 	AppPagination,
 	BaseIcon,
 	IconChevronRightCircled,

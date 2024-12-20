@@ -39,10 +39,11 @@ You can find more information about each component on its relevant docs page.
 
 ### Forms
 
-- [form-wrapper](/src/components/form/form-wrapper/form-wrapper.md)
-- [form-field](/src/components/form/form-field/form-field.md)
-- [form-layout](/src/components/form/form-layout/form-layout.md)
 - [form-actions](/src/components/form/form-actions/form-actions.md)
+- [form-field](/src/components/form/form-field/form-field.md)
+- [form-fieldset](/src/components/form/form-fieldset/form-fieldset.md)
+- [form-layout](/src/components/form/form-layout/form-layout.md)
+- [form-wrapper](/src/components/form/form-wrapper/form-wrapper.md)
 
 ### Content
 

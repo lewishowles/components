@@ -1,5 +1,11 @@
 # Changelog
 
+# 0.19.0
+
+### New components
+
+- [form-fieldset](/src/components/form/form-fieldset/form-fieldset.md)
+
 # 0.18.0 - 2024-12-19
 
 ### New components
