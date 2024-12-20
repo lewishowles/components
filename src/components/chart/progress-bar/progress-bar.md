@@ -1,6 +1,8 @@
 # `progress-bar`
 
-...
+Display the progress of an action, with appropriate accessible labelling.
+
+Currently, progress is assumed to be a percentage, based on the minimum, maximum and current values.
 
 ## Props
 

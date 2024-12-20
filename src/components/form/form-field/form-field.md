@@ -1,5 +1,7 @@
 # `form-field`
 
+A general form component for use in [form-wrapper](/src/components/form/form-wrapper/form-wrapper.md), allowing the definition of field properties and validation rules.
+
 ## Slots
 
 ### `default`
@@ -104,12 +106,6 @@ Additional props are passed through to the underlying form field. Additional pro
 ### `v-model`
 
 The current value of the underlying form field will be available via `v-model`.
-
-## Methods
-
-### `method`
-
-...
 
 ## Examples
 

@@ -2,7 +2,9 @@
 
 `form-input` is an extension of the standard `input` tag, with a consistent design and baked-in accessibility features.
 
-Supports `v-model` to bind the input's current value.
+## Model
+
+The model value is the current value of the input.
 
 ## Slots
 
