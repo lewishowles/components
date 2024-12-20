@@ -59,6 +59,8 @@ for i in "${!templates[@]}"; do
 	OUTPUT_FILE="${output_files[$i]}"
 
 	sed "s/{{ICON_NAME}}/$ICON_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
+
+	code -r $OUTPUT_FILE
 done
 
 # Add the new icon to src/components/index.js

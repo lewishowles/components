@@ -104,6 +104,8 @@ for i in "${!templates[@]}"; do
 	OUTPUT_FILE="${output_files[$i]}"
 
 	sed "s/{{COMPONENT_NAME}}/$COMPONENT_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
+
+	code -r $OUTPUT_FILE
 done
 
 # Add the new component to src/components/index.js
@@ -140,6 +142,8 @@ sed -i '' "/const previewOptions/a\\
 " "$APP_FILE"
 
 sed -i '' "s/const selectedPreview = ref(\"[^\"]*\")/const selectedPreview = ref(\"${COMPONENT_NAME}-preview\")/" "$APP_FILE"
+
+
 
 # Print the success message
 echo -e "\nComponent ${PURPLE}$COMPONENT_NAME${RESET_COLOUR} scaffolded successfully in ${BLUE}$BASE_PATH/$COMPONENT_NAME${RESET_COLOUR}.\n"
