@@ -19,13 +19,13 @@
 	}
 
 	.button--muted {
-		@apply button;
+		@apply button no-underline text-current;
 		@apply bg-white border border-grey-300;
-		@apply hocus:bg-grey-50 hocus:border-grey-400;
-		@apply active:bg-grey-100 active:border-grey-500;
+		@apply hocus:bg-grey-50 hocus:border-grey-400 hocus:text-grey-700;
+		@apply active:bg-grey-100 active:border-grey-500 active:text-grey-800;
 		@apply dark:bg-white/20 dark:border-white/20;
-		@apply dark:hocus:bg-white/30 dark:hocus:border-white/20;
-		@apply dark:active:bg-white/40 dark:hocus:border-transparent;
+		@apply dark:hocus:bg-white/30 dark:hocus:border-white/20 dark:hocus:text-grey-100;
+		@apply dark:active:bg-white/40 dark:hocus:border-transparent dark:active:text-grey-50;
 	}
 
 	.button--danger {

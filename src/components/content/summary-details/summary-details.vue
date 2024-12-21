@@ -127,7 +127,7 @@ const props = defineProps({
 	 */
 	detailsClasses: {
 		type: String,
-		default: null,
+		default: "mt-3",
 	},
 
 	/**
