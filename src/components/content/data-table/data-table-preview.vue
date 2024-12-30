@@ -67,8 +67,15 @@ const data = [
 ];
 
 const columns = {
-	title: { label: "Title" },
-	release_year: { label: "Release year" },
-	box_office: { label: "Box office $m" },
+	title: {
+		label: "Title",
+	},
+	release_year: {
+		label: "Release year",
+	},
+	box_office: {
+		label: "Box office $m",
+		columnClasses: "text-right",
+	},
 };
 </script>

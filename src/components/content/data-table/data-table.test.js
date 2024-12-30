@@ -89,39 +89,30 @@ describe("data-table", () => {
 				});
 			});
 
-			test("should retrieve column labels where found", () => {
+			test("should retrieve column configuration where found", () => {
 				const data = [sampleRow];
-				const columns = { title: { label: "Title" }, release_year: { label: "Release year" } };
+				const columns = { title: { label: "Title" }, release_year: { label: "Release year", columnClasses: "text-right" } };
 				const wrapper = mount({ data, columns });
 				const vm = wrapper.vm;
 
 				expect(vm.columnDefinitions).toEqual({
-					id: { label: "id", first: true, last: false },
-					title: { label: "Title", first: false, last: false },
-					release_year: { label: "Release year", first: false, last: true },
+					id: {
+						label: "id",
+						first: true,
+						last: false,
+					},
+					title: {
+						label: "Title",
+						first: false,
+						last: false,
+					},
+					release_year: {
+						label: "Release year",
+						first: false,
+						last: true,
+						columnClasses: "text-right",
+					},
 				});
-			});
-		});
-	});
-
-	describe("Methods", () => {
-		describe("getColumnLabel", () => {
-			test("should retrieve a label from a column definition", () => {
-				const wrapper = mount({ columns: { release_year: { label: "Release year" } } });
-				const vm = wrapper.vm;
-
-				expect(vm.columnDefinitions).toEqual(expect.objectContaining({
-					release_year: { label: "Release year", first: false, last: true },
-				}));
-			});
-
-			test("should fall back to a column key", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				expect(vm.columnDefinitions).toEqual(expect.objectContaining({
-					release_year: { label: "release_year", first: false, last: true },
-				}));
 			});
 		});
 	});

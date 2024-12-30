@@ -9,7 +9,7 @@
 		<table v-if="haveData" class="w-full" data-test="data-table-table">
 			<thead>
 				<tr class="border-b border-grey-300">
-					<th v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, headingClasses]" data-test="data-table-heading">
+					<th v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-heading">
 						<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
 							{{ column.label }}
 						</slot>
@@ -18,7 +18,7 @@
 			</thead>
 			<tbody>
 				<tr v-for="row in internalData" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
-					<td v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, cellClasses]" data-test="data-table-cell">
+					<td v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
 						<slot :name="columnKey" v-bind="{ cell: row.content[columnKey], row: row.content }">
 							{{ row.content[columnKey] }}
 						</slot>
@@ -33,7 +33,6 @@
 import { computed } from "vue";
 import { firstDefined, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
-import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
 
 const props = defineProps({
@@ -115,28 +114,17 @@ const columnDefinitions = computed(() => {
 
 	// Initialise our columns, using the same keys as the data, with column
 	// configuration.
-	return Object.keys(dataPioneer).reduce((columns, key, index, array) => {
-		columns[key] = {
-			label: getColumnLabel(key),
+	return Object.keys(dataPioneer).reduce((columns, columnKey, index, array) => {
+		const userConfiguration = get(props.columns, columnKey) || {};
+
+		columns[columnKey] = {
+			label: columnKey,
 			first: index === 0,
 			last: index === array.length - 1,
+			...userConfiguration,
 		};
 
 		return columns;
 	}, {});
 });
-
-/**
- * Retrieve the column label for the given column key. If no label can be found,
- * we return the key itself as a fallback.
- */
-function getColumnLabel(columnKey) {
-	const label = get(props.columns, `${columnKey}.label`);
-
-	if (!isNonEmptyString(label)) {
-		return columnKey;
-	}
-
-	return label;
-}
 </script>

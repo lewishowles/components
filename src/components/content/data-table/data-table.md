@@ -69,6 +69,9 @@ Any additional configuration for columns.
 |Key|Type|Default|Description|
 |-|-|-|-|
 |`label`|`string`|""|The label to display in the column header.|
+|`headingClasses`|`string`|""|Classes to apply only to this column's heading.|
+|`cellClasses`|`string`|""|Classes to apply only to this column's cells.|
+|`columnClasses`|`string`|""|Classes to apply to both this column's heading and cells.|
 
 ### `headingClasses`
 
@@ -119,7 +122,6 @@ Classes to apply to all standard cells in the table. Cell padding will always ap
 
 ## To do
 
-- Allow cell classes to be added via column configuration (e.g. text-right)
 - Allow columns to be hidden via configuration
 - Determine the order of columns by their order in configuration
 - Add search option to allow data to be searched

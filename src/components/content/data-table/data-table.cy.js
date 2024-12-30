@@ -61,5 +61,60 @@ describe("data-table", () => {
 			cy.getByData("data-table-heading").eq(2).shouldHaveText("Release year");
 			cy.getByData("data-table-heading").eq(3).shouldHaveText("Box office ($m)");
 		});
+
+		it("Classes can be applied to a column's heading", () => {
+			mount({
+				columns: {
+					box_office: { headingClasses: "text-right" },
+				},
+			});
+
+			cy.getByData("data-table-heading").eq(3).shouldHaveClass("text-right");
+			cy.getByData("data-table-cell").eq(3).shouldNotHaveClass("text-right");
+		});
+
+		it("Classes can be applied to a column's heading", () => {
+			mount({
+				columns: {
+					box_office: { cellClasses: "text-right" },
+				},
+			});
+
+			cy.getByData("data-table-heading").eq(3).shouldNotHaveClass("text-right");
+			cy.getByData("data-table-cell").eq(3).shouldHaveClass("text-right");
+		});
+
+		it("Classes can be applied to both headings and cells in a column", () => {
+			mount({
+				columns: {
+					box_office: { columnClasses: "text-right" },
+				},
+			});
+
+			cy.getByData("data-table-heading").eq(3).shouldHaveClass("text-right");
+			cy.getByData("data-table-cell").eq(3).shouldHaveClass("text-right");
+		});
+
+		it("Classes can be defined for a column in multiple ways and combined", () => {
+			mount({
+				columns: {
+					box_office: {
+						columnClasses: "text-right",
+						headingClasses: "text-purple-800",
+						cellClasses: "text-purple-600",
+					},
+				},
+			});
+
+			cy.getByData("data-table-heading").eq(3)
+				.shouldHaveClass("text-right")
+				.shouldHaveClass("text-purple-800")
+				.shouldNotHaveClass("text-purple-600");
+
+			cy.getByData("data-table-cell").eq(3)
+				.shouldHaveClass("text-right")
+				.shouldHaveClass("text-purple-600")
+				.shouldNotHaveClass("text-purple-800");
+		});
 	});
 });
