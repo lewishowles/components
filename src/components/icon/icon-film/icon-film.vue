@@ -1,19 +1,23 @@
 <template>
 	<base-icon>
-		<g fill="none" fill-rule="evenodd">
-			<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m11.5 8.25 4.259-2.342a.5.5 0 0 1 .741.438v5.809a.5.5 0 0 1-.741.438L11.5 10.251" />
+		<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" stroke-width="1.5">
+			<line x1="9" x2="9" y1="6.5" y2="11.5" />
+			<line x1="2" x2="16" y1="6.5" y2="6.5" />
+			<line x1="2" x2="16" y1="11.5" y2="11.5" />
+			<line x1="9" x2="9" y1="11.5" y2="15" />
+			<line x1="9" x2="9" y1="3" y2="6.5" />
+			<line x1="5.379" x2="5.379" y1="3" y2="6.5" />
+			<line x1="12.621" x2="12.621" y1="3" y2="6.5" />
+			<line x1="5.379" x2="5.379" y1="11.5" y2="15" />
+			<line x1="12.621" x2="12.621" y1="11.5" y2="15" />
 			<rect
-				width="10.5"
-				height="10.5"
-				x="1"
-				y="4"
-				stroke="currentColor"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="1.5"
+				width="14"
+				height="12"
+				x="2"
+				y="3"
 				rx="2"
+				transform="rotate(180 9 9)"
 			/>
-			<circle cx="4" cy="7" r="1" fill="currentColor" fill-rule="nonzero" />
 		</g>
 	</base-icon>
 </template>

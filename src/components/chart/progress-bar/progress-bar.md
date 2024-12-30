@@ -63,9 +63,11 @@ When the label is shown, the default slot can be used to provide a custom label 
 
 ### `value`
 
-When the value is shown, override the default value display. Contains the following slot props:
+When the value is shown, override the default value display.
 
-#### `value`
+#### Slot props
+
+##### `value`
 
 - type: `number`
 

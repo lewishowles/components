@@ -6,15 +6,17 @@ Provides an implementation of the `details` element with optional extras, such a
 
 ### `summary`
 
-The content to be displayed in the summary. Contains the following slot props:
+The content to be displayed in the summary.
 
-#### `open`
+#### Slot props
+
+##### `open`
 
 - type: `boolean`
 
 Whether the details are currently visible.
 
-#### `icon`
+##### `icon`
 
 - type: `string`
 
@@ -22,15 +24,17 @@ The computed icon to display for the current state.
 
 ### `default`
 
-The content to be displayed in the details element when open. Contains the following slot props:
+The content to be displayed in the details element when open.
 
-#### `open`
+#### Slot props
+
+##### `open`
 
 - type: `boolean`
 
 Whether the details are currently visible.
 
-#### `icon`
+##### `icon`
 
 - type: `string`
 

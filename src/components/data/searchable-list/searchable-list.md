@@ -10,15 +10,17 @@ Each property of an object is recursively, case-insensitively searched, and indi
 
 ### `default`
 
-The main "results" display. Contains the following slot props:
+The main "results" display.
 
-#### `items`
+#### Slot props
+
+##### `items`
 
 - type: `array`
 
 The list of items matching any current search options, or all items if no search is being performed.
 
-#### `query`
+##### `query`
 
 - type: `string`
 

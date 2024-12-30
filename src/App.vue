@@ -13,9 +13,10 @@
 <script setup>
 import { ref } from "vue";
 
-const selectedPreview = ref("form-fieldset-preview");
+const selectedPreview = ref("data-table-preview");
 
 const previewOptions = [
+	{ label: "data-table", value: "data-table-preview" },
 	{ label: "accordion-group", value: "accordion-group-preview" },
 	{ label: "alert-message", value: "alert-message-preview" },
 	{ label: "app-pagination", value: "app-pagination-preview" },

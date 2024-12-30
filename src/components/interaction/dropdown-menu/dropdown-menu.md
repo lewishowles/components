@@ -12,15 +12,17 @@ To simplify the creation of a standardised menu, there are a number of companion
 
 ### `summary`
 
-The content to be displayed in the summary. Contains the following slot props:
+The content to be displayed in the summary.
 
-#### `open`
+#### Slot props
+
+##### `open`
 
 - type: `boolean`
 
 Whether the details are currently visible.
 
-#### `icon`
+##### `icon`
 
 - type: `string`
 
@@ -28,15 +30,17 @@ The computed icon to display for the current state.
 
 ### `default`
 
-The content to be displayed in the menu when open. Contains the following slot props:
+The content to be displayed in the menu when open.
 
-#### `open`
+#### Slot props
+
+##### `open`
 
 - type: `boolean`
 
 Whether the details are currently visible.
 
-#### `icon`
+##### `icon`
 
 - type: `string`
 
