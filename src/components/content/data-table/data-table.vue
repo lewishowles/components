@@ -31,7 +31,7 @@
 
 <script setup>
 import { computed } from "vue";
-import { firstDefined, isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { nanoid } from "nanoid";
 
@@ -48,6 +48,10 @@ const props = defineProps({
 	/**
 	 * Any additional configuration for columns. Options are as defined in
 	 * `data-table.md`.
+	 *
+	 * **Note:** Columns without configuration will not be displayed. This is to
+	 * make it easier to hide unnecessary columns, and to help enforce proper
+	 * labelling of column data.
 	 */
 	columns: {
 		type: Object,
@@ -104,17 +108,15 @@ const internalData = computed(() => {
 const haveData = computed(() => isNonEmptyArray(internalData.value));
 
 // A list of columns to display in the table, taking into account validation,
-// and containing the relevant data. We base these columns on the first row.
+// and containing the relevant data. We base these columns on those provided by
+// the user, which means that any column not configured will not be displayed by
+// default.
 const columnDefinitions = computed(() => {
-	if (!haveData.value) {
+	if (!haveData.value || !isNonEmptyObject(props.columns)) {
 		return {};
 	}
 
-	const dataPioneer = get(firstDefined(internalData.value), "content");
-
-	// Initialise our columns, using the same keys as the data, with column
-	// configuration.
-	return Object.keys(dataPioneer).reduce((columns, columnKey, index, array) => {
+	return Object.keys(props.columns).reduce((columns, columnKey, index, array) => {
 		const userConfiguration = get(props.columns, columnKey) || {};
 
 		columns[columnKey] = {

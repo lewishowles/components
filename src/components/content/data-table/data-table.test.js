@@ -79,13 +79,27 @@ describe("data-table", () => {
 			});
 
 			test("should determine which column is first, and which is last", () => {
-				const wrapper = mount({ data: [sampleRow] });
+				const data = [sampleRow];
+				const columns = { id: { label: "ID" }, title: { label: "Title" }, release_year: { label: "Release year" } };
+				const wrapper = mount({ data, columns });
 				const vm = wrapper.vm;
 
 				expect(vm.columnDefinitions).toEqual({
-					id: { label: "id", first: true, last: false },
-					title: { label: "title", first: false, last: false },
-					release_year: { label: "release_year", first: false, last: true },
+					id: { label: "ID", first: true, last: false },
+					title: { label: "Title", first: false, last: false },
+					release_year: { label: "Release year", first: false, last: true },
+				});
+			});
+
+			test("should remove columns without configuration", () => {
+				const data = [sampleRow];
+				const columns = { title: { label: "Title" }, release_year: { label: "Release year" } };
+				const wrapper = mount({ data, columns });
+				const vm = wrapper.vm;
+
+				expect(vm.columnDefinitions).toEqual({
+					title: { label: "Title", first: true, last: false },
+					release_year: { label: "Release year", first: false, last: true },
 				});
 			});
 
@@ -96,14 +110,9 @@ describe("data-table", () => {
 				const vm = wrapper.vm;
 
 				expect(vm.columnDefinitions).toEqual({
-					id: {
-						label: "id",
-						first: true,
-						last: false,
-					},
 					title: {
 						label: "Title",
-						first: false,
+						first: true,
 						last: false,
 					},
 					release_year: {

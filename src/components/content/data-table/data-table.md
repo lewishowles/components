@@ -62,9 +62,9 @@ The content of the entire row that the cell belongs to.
 - type: `object`
 - default: `{}`
 
-Any additional configuration for columns.
+Any additional configuration for columns. **Note:** Any column without configuration will not be displayed. This is to make it easier to hide unnecessary columns, and to help enforce proper labelling of column data.
 
-#### Available Configuration Keys
+#### Available configuration keys
 
 |Key|Type|Default|Description|
 |-|-|-|-|
