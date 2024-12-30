@@ -116,17 +116,33 @@ const columnDefinitions = computed(() => {
 		return {};
 	}
 
-	return Object.keys(props.columns).reduce((columns, columnKey, index, array) => {
+	const columns = Object.keys(props.columns).reduce((columns, columnKey) => {
 		const userConfiguration = get(props.columns, columnKey) || {};
+
+		if (get(userConfiguration, "hidden") === true) {
+			return columns;
+		}
 
 		columns[columnKey] = {
 			label: columnKey,
-			first: index === 0,
-			last: index === array.length - 1,
+			first: false,
+			last: false,
 			...userConfiguration,
 		};
 
 		return columns;
 	}, {});
+
+	// After we determine which columns are present, we need to determine which
+	// column is first and which is last, as columns may have been removed or
+	// re-ordered by configuration.
+	const columnKeys = Object.keys(columns);
+
+	if (columnKeys.length > 0) {
+		columns[columnKeys[0]].first = true;
+		columns[columnKeys[columnKeys.length - 1]].last = true;
+	}
+
+	return columns;
 });
 </script>

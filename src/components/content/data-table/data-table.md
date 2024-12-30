@@ -69,6 +69,7 @@ Any additional configuration for columns. **Note:** Any column without configura
 |Key|Type|Default|Description|
 |-|-|-|-|
 |`label`|`string`|""|The label to display in the column header.|
+|`hidden`|`boolean`|false|Whether this column is hidden, allowing hidden columns to be more explicitly defined where helpful.|
 |`headingClasses`|`string`|""|Classes to apply only to this column's heading.|
 |`cellClasses`|`string`|""|Classes to apply only to this column's cells.|
 |`columnClasses`|`string`|""|Classes to apply to both this column's heading and cells.|
@@ -122,8 +123,6 @@ Classes to apply to all standard cells in the table. Cell padding will always ap
 
 ## To do
 
-- Allow columns to be hidden via configuration
-- Determine the order of columns by their order in configuration
 - Add search option to allow data to be searched
 - Allow custom search data for column value (via callback, given column key and row data)
 - Allow sorting of columns

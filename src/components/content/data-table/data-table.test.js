@@ -91,18 +91,6 @@ describe("data-table", () => {
 				});
 			});
 
-			test("should remove columns without configuration", () => {
-				const data = [sampleRow];
-				const columns = { title: { label: "Title" }, release_year: { label: "Release year" } };
-				const wrapper = mount({ data, columns });
-				const vm = wrapper.vm;
-
-				expect(vm.columnDefinitions).toEqual({
-					title: { label: "Title", first: true, last: false },
-					release_year: { label: "Release year", first: false, last: true },
-				});
-			});
-
 			test("should retrieve column configuration where found", () => {
 				const data = [sampleRow];
 				const columns = { title: { label: "Title" }, release_year: { label: "Release year", columnClasses: "text-right" } };
@@ -121,6 +109,41 @@ describe("data-table", () => {
 						last: true,
 						columnClasses: "text-right",
 					},
+				});
+			});
+
+			test("should order columns by their order in configuration", () => {
+				const data = [sampleRow];
+				const columns = { release_year: { label: "Release year" }, title: { label: "Title" } };
+				const wrapper = mount({ data, columns });
+				const vm = wrapper.vm;
+
+				expect(vm.columnDefinitions).toEqual({
+					release_year: { label: "Release year", first: true, last: false },
+					title: { label: "Title", first: false, last: true },
+				});
+			});
+
+			test("should remove columns without configuration", () => {
+				const data = [sampleRow];
+				const columns = { title: { label: "Title" }, release_year: { label: "Release year" } };
+				const wrapper = mount({ data, columns });
+				const vm = wrapper.vm;
+
+				expect(vm.columnDefinitions).toEqual({
+					title: { label: "Title", first: true, last: false },
+					release_year: { label: "Release year", first: false, last: true },
+				});
+			});
+
+			test("should remove columns that are explicity marked as hidden", () => {
+				const data = [sampleRow];
+				const columns = { title: { label: "Title" }, release_year: { hidden: true } };
+				const wrapper = mount({ data, columns });
+				const vm = wrapper.vm;
+
+				expect(vm.columnDefinitions).toEqual({
+					title: { label: "Title", first: true, last: true },
 				});
 			});
 		});

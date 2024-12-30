@@ -127,5 +127,25 @@ describe("data-table", () => {
 				.shouldHaveClass("text-purple-600")
 				.shouldNotHaveClass("text-purple-800");
 		});
+
+		it("Column order is determined by configuration", () => {
+			// We create a fresh mount here because options are deep merged, and
+			// we're not _changing_ the options, we're simply re-arranging them,
+			// which deepMerge will discard.
+			const freshMount = createMount(DataTable);
+
+			freshMount({
+				data,
+				columns: {
+					box_office: { label: "Box office ($m)" },
+					title: { label: "Title" },
+					release_year: { label: "Release year" },
+				},
+			});
+
+			cy.getByData("data-table-heading").eq(0).shouldHaveText("Box office ($m)");
+			cy.getByData("data-table-heading").eq(1).shouldHaveText("Title");
+			cy.getByData("data-table-heading").eq(2).shouldHaveText("Release year");
+		});
 	});
 });
