@@ -7,8 +7,10 @@
 		</alert-message>
 
 		<div class="flex flex-col gap-6">
-			<form-input v-if="enableSearch" v-model="searchQuery" class="w-full max-w-sm" data-test="data-table-search">
-				Search
+			<form-input v-if="enableSearch" v-bind="{ placeholder: searchPlaceholder }" v-model="searchQuery" class="w-full max-w-sm" data-test="data-table-search">
+				<slot name="search-label">
+					Search
+				</slot>
 			</form-input>
 
 			<table v-show="haveDataToDisplay" class="w-full" data-test="data-table-table">
@@ -79,6 +81,14 @@ const props = defineProps({
 	enableSearch: {
 		type: Boolean,
 		default: true,
+	},
+
+	/**
+	 * The placeholder to apply to the search input.
+	 */
+	searchPlaceholder: {
+		type: String,
+		default: null,
 	},
 
 	/**

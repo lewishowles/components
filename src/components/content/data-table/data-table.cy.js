@@ -38,20 +38,36 @@ describe("data-table", () => {
 		cy.getByData("data-table").shouldBeVisible();
 	});
 
-	it("A message is displayed if no data is available", () => {
-		mount({ data: [] });
+	describe("Rendering", () => {
+		it("A message is displayed if no data is available", () => {
+			mount({ data: [] });
 
-		cy.getByData("data-table-no-data").shouldBeVisible();
-		cy.getByData("data-table-no-results").shouldNotExist();
-	});
+			cy.getByData("data-table-no-data").shouldBeVisible();
+			cy.getByData("data-table-no-results").shouldNotExist();
+		});
 
-	it("The appropriate table is rendered when provided with data", () => {
-		mount();
+		it("The appropriate table is rendered when provided with data", () => {
+			mount();
 
-		cy.getByData("data-table-table").shouldBeVisible();
-		cy.getByData("data-table-heading").shouldHaveCount(3);
-		cy.getByData("data-table-row").shouldHaveCount(3);
-		cy.getByData("data-table-cell").shouldHaveCount(9);
+			cy.getByData("data-table-table").shouldBeVisible();
+			cy.getByData("data-table-heading").shouldHaveCount(3);
+			cy.getByData("data-table-row").shouldHaveCount(3);
+			cy.getByData("data-table-cell").shouldHaveCount(9);
+		});
+
+		it("A label can be provided to the search input", () => {
+			mount({ slots: { "search-label": "Find a character" } });
+
+			cy.getByData("data-table-search").getByData("form-label").shouldHaveText("Find a character");
+		});
+
+		it("A placeholder can be provided to the search input", () => {
+			const placeholder = "Enter a character name or movie to begin";
+
+			mount({ searchPlaceholder: placeholder });
+
+			cy.getFormField("data-table-search").shouldHaveAttribute("placeholder", placeholder);
+		});
 	});
 
 	describe("Column configuration", () => {

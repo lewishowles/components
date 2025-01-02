@@ -4,6 +4,10 @@
 
 ## Slots
 
+### `search-label`
+
+The label to use for the search box.
+
 ### `no-data-message`
 
 - default: "No data to display."
@@ -94,6 +98,13 @@ Any additional configuration for columns. **Note:** Any column without configura
 - default: `true`
 
 Whether to enable the table search. When enabled, anything typed into the search box will search the text for each cell case-insensitively, and hide any rows where none of the cells match.
+
+### `searchPlaceholder`
+
+- type: `string`
+- default: `null`
+
+The placeholder to apply to the search input.
 
 ### `headingClasses`
 
