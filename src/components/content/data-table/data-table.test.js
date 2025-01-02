@@ -70,6 +70,92 @@ describe("data-table", () => {
 			});
 		});
 
+		describe("filteredRows", () => {
+			test("should contain all rows by default", () => {
+				const secondRow = { id: "234", title: "Big Hero 6", release_year: "2014" };
+				const wrapper = mount({ data: [sampleRow, secondRow] });
+				const vm = wrapper.vm;
+
+				expect(vm.filteredRows).toHaveLength(2);
+				expectToHaveRowWith(vm, "title", "Toy Story");
+			});
+
+			test("should display a row matching the current search term, case insensitively", () => {
+				const secondRow = { id: "234", title: "Big Hero 6", release_year: "2014" };
+				const wrapper = mount({ data: [sampleRow, secondRow] });
+				const vm = wrapper.vm;
+
+				vm.searchQuery = "big hero";
+
+				expect(vm.filteredRows).toHaveLength(1);
+				expectToHaveRowWith(vm, "title", "Big Hero 6");
+			});
+
+			test("should contain no rows if a search term does not match", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.searchQuery = "not found";
+
+				expect(vm.filteredRows).toEqual([]);
+			});
+
+			test("should only match a phrase against a single cell", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.searchQuery = "story 1995";
+
+				expect(vm.filteredRows).toEqual([]);
+
+				vm.searchQuery = "story1995";
+
+				expect(vm.filteredRows).toEqual([]);
+
+				vm.searchQuery = "story";
+
+				expect(vm.filteredRows).toHaveLength(1);
+
+				vm.searchQuery = "1995";
+
+				expect(vm.filteredRows).toHaveLength(1);
+			});
+		});
+
+		describe("haveDataToDisplay", () => {
+			test("should return false if no data is provided", () => {
+				const wrapper = mount({ data: [] });
+				const vm = wrapper.vm;
+
+				expect(vm.haveDataToDisplay).toBe(false);
+			});
+
+			test("should return true if no search term is present", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.haveDataToDisplay).toBe(true);
+			});
+
+			test("should return true if a search produces a result", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.searchQuery = "toy";
+
+				expect(vm.haveDataToDisplay).toBe(true);
+			});
+
+			test("should be false if a search produces no results", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.searchQuery = "not found";
+
+				expect(vm.haveDataToDisplay).toBe(false);
+			});
+		});
+
 		describe("columnDefinitions", () => {
 			test("should handle there being no data present", () => {
 				const wrapper = mount({ data: [] });
@@ -149,3 +235,13 @@ describe("data-table", () => {
 		});
 	});
 });
+
+/**
+ * Ensure that the given instance has a row containing the specified key and
+ * value.
+ */
+function expectToHaveRowWith(vm, key, value) {
+	const row = vm.internalData.find((row) => row.content[key] === value);
+
+	return expect(row).toBeDefined();
+}

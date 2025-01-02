@@ -42,6 +42,7 @@ describe("data-table", () => {
 		mount({ data: [] });
 
 		cy.getByData("data-table-no-data").shouldBeVisible();
+		cy.getByData("data-table-no-results").shouldNotExist();
 	});
 
 	it("The appropriate table is rendered when provided with data", () => {
@@ -146,6 +147,30 @@ describe("data-table", () => {
 			cy.getByData("data-table-heading").eq(0).shouldHaveText("Box office ($m)");
 			cy.getByData("data-table-heading").eq(1).shouldHaveText("Title");
 			cy.getByData("data-table-heading").eq(2).shouldHaveText("Release year");
+		});
+	});
+
+	describe("Search", () => {
+		it("No rows are filtered by default", () => {
+			mount();
+
+			cy.getByData("data-table-row").shouldHaveCount(3);
+		});
+
+		it("A search should show matching rows", () => {
+			mount();
+
+			cy.getByData("data-table-search").type("Frozen");
+
+			cy.getByData("data-table-row").shouldHaveCount(1);
+		});
+
+		it("A search with no results should show the no results message", () => {
+			mount();
+
+			cy.getByData("data-table-search").type("Not found");
+
+			cy.getByData("data-table-no-results").shouldBeVisible();
 		});
 	});
 });

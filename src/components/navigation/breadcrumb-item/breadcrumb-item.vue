@@ -1,7 +1,7 @@
 <template>
 	<li class="breadcrumb-item" data-test="breadcrumb-item">
 		<a v-bind="{ href }" class="flex items-center gap-2 text-current">
-			<icon-chevron-right v-if="!first" class="breadcrumb-divider size-3" />
+			<icon-chevron-right class="breadcrumb-divider size-3" />
 
 			<slot />
 		</a>
@@ -21,6 +21,10 @@ defineProps({
 </script>
 
 <style>
+/**
+ * Hide the divider for the first breadcrumb, without relying on knowledge of
+ * the order of breadcrumbs in Javascript
+ */
 .breadcrumb-item:first-child .breadcrumb-divider {
 	display: none;
 }

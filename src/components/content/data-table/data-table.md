@@ -10,6 +10,20 @@
 
 The message to display when no data could be found for the table.
 
+### `no-results-message`
+
+- default: "No results could be found for term &lt;span class="font-bold"&gt;"{{ searchQuery }}"&lt;/span&gt;."
+
+The message to display when no data could be found for the current search term.
+
+#### Slot props
+
+##### `searchQuery`
+
+- type: `string`
+
+The current search term entered by the user.
+
 ### `<columnName>_heading`
 
 - default: The heading provided within `configuration`, or the column key.
@@ -74,6 +88,13 @@ Any additional configuration for columns. **Note:** Any column without configura
 |`cellClasses`|`string`|""|Classes to apply only to this column's cells.|
 |`columnClasses`|`string`|""|Classes to apply to both this column's heading and cells.|
 
+### `enableSearch`
+
+- type: `boolean`
+- default: `true`
+
+Whether to enable the table search. When enabled, anything typed into the search box will search the text for each cell case-insensitively, and hide any rows where none of the cells match.
+
 ### `headingClasses`
 
 - type: `string`
@@ -123,8 +144,13 @@ Classes to apply to all standard cells in the table. Cell padding will always ap
 
 ## To do
 
-- Add search option to allow data to be searched
+- Searching:
+  - Add reset search button when searching
+  - Add "searchable" string / null prop to column configuration
+- Add table title / intro
 - Allow custom search data for column value (via callback, given column key and row data)
+- Add options for changing the table layout (compact, normal, relaxed etc), remembering those choices for the table
 - Allow sorting of columns
 - Add custom sort data for column value (via callback, given column key and row data)
+- Add options for turning columns on and off, and remembering those choices for the table
 - Allow selecting of columns, model of selected columns with their row data (so that you can access IDs etc)

@@ -47,6 +47,12 @@
 <script setup>
 const data = [
 	{
+		id: "2e644b4b-51e8-4519-ab31-d9a37e2d0434",
+		title: "Toy Story",
+		release_year: "1995",
+		box_office: "373.6",
+	},
+	{
 		id: "da9eff2a-c10e-42a3-ab3f-9f252c574384",
 		title: "Frozen",
 		release_year: "2013",
@@ -58,12 +64,6 @@ const data = [
 		release_year: "1994",
 		box_office: "968.5",
 	},
-	{
-		id: "2e644b4b-51e8-4519-ab31-d9a37e2d0434",
-		title: "Toy Story",
-		release_year: "1995",
-		box_office: "373.6",
-	},
 ];
 
 const columns = {
@@ -74,7 +74,7 @@ const columns = {
 		label: "Release year",
 	},
 	box_office: {
-		label: "Box office $m",
+		label: "Box office ($m)",
 		columnClasses: "text-right",
 	},
 };

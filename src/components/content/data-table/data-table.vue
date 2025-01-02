@@ -1,38 +1,51 @@
 <template>
-	<div data-test="data-table">
+	<div class="text-sm" data-test="data-table">
 		<alert-message v-if="!haveData" data-test="data-table-no-data">
 			<slot name="no-data-message">
 				No data to display.
 			</slot>
 		</alert-message>
 
-		<table v-if="haveData" class="w-full" data-test="data-table-table">
-			<thead>
-				<tr class="border-b border-grey-300">
-					<th v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-heading">
-						<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
-							{{ column.label }}
-						</slot>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="row in internalData" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
-					<td v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
-						<slot :name="columnKey" v-bind="{ cell: row.content[columnKey], row: row.content }">
-							{{ row.content[columnKey] }}
-						</slot>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="flex flex-col gap-6">
+			<form-input v-if="enableSearch" v-model="searchQuery" class="w-full max-w-sm" data-test="data-table-search">
+				Search
+			</form-input>
+
+			<table v-show="haveDataToDisplay" class="w-full" data-test="data-table-table">
+				<thead>
+					<tr class="border-b border-grey-300">
+						<th v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-heading">
+							<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
+								{{ column.label }}
+							</slot>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="row in filteredRows" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
+						<td v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
+							<slot :name="columnKey" v-bind="{ cell: row.content[columnKey], row: row.content }">
+								{{ row.content[columnKey] }}
+							</slot>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<alert-message v-show="!haveDataToDisplay" data-test="data-table-no-results">
+				<slot name="no-results-message" v-bind="{ searchQuery }">
+					No results could be found for term <span class="font-bold">"{{ searchQuery }}"</span>.
+				</slot>
+			</alert-message>
+		</div>
 	</div>
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { computed, ref } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
 
 const props = defineProps({
@@ -59,6 +72,16 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether to enable the table search. When enabled, anything typed into the
+	 * search box will search the text for each cell case-insensitively, and
+	 * hide any rows where none of the cells match.
+	 */
+	enableSearch: {
+		type: Boolean,
+		default: true,
+	},
+
+	/**
 	 * Classes to apply to all headings in the table. Cell padding will always
 	 * apply.
 	 */
@@ -76,6 +99,13 @@ const props = defineProps({
 		default: "text-grey-500",
 	},
 });
+
+// The current search query.
+const searchQuery = ref("");
+
+// Whether we have a search term, and thus whether the user is currently
+// searching.
+const haveSearchQuery = computed(() => isNonEmptyString(searchQuery.value));
 
 // Transform the provided data into something more suitable for display in our
 // table. This includes adding cell configuration for internal tracking, and
@@ -103,9 +133,42 @@ const internalData = computed(() => {
 	}, []);
 });
 
-// Whether we have any data to display. That is, the provided data was validated
-// and contains a non-empty array of at least one object.
+// Whether we have any data for our table. That is, the provided data was
+// validated and contains a non-empty array of at least one object.
 const haveData = computed(() => isNonEmptyArray(internalData.value));
+
+// Our internal data, filtered to those rows matching any current search term.
+const filteredRows = computed(() => {
+	if (!haveData.value) {
+		return [];
+	}
+
+	if (!haveSearchQuery.value) {
+		return internalData.value;
+	}
+
+	return internalData.value.reduce((rows, row) => {
+		const rowContent = get(row, "content");
+
+		if (!isNonEmptyObject(rowContent)) {
+			return rows;
+		}
+
+		const rowValues = Object.values(rowContent);
+		const searchTerm = searchQuery.value.toLowerCase();
+
+		if (rowValues.some(cell => cell.toLowerCase().includes(searchTerm))) {
+			rows.push(row);
+		}
+
+		return rows;
+	}, []);
+});
+
+// Whether we have any data to display. That is, not only do we have data for
+// the table, but if the user is performing a search, there are results for that
+// search term.
+const haveDataToDisplay = computed(() => isNonEmptyArray(filteredRows.value));
 
 // A list of columns to display in the table, taking into account validation,
 // and containing the relevant data. We base these columns on those provided by

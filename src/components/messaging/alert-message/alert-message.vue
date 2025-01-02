@@ -11,7 +11,9 @@
 				<slot name="title" />
 			</component>
 
-			<slot />
+			<div>
+				<slot />
+			</div>
 		</div>
 	</div>
 </template>
