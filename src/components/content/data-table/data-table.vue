@@ -7,11 +7,26 @@
 		</alert-message>
 
 		<div class="flex flex-col gap-6">
-			<form-input v-if="enableSearch" v-bind="{ placeholder: searchPlaceholder }" v-model="searchQuery" class="w-full max-w-sm" data-test="data-table-search">
-				<slot name="search-label">
-					Search
-				</slot>
-			</form-input>
+			<div class="flex items-end gap-4">
+				<form-input
+					v-if="enableSearch"
+					ref="searchQueryInput"
+					v-bind="{ placeholder: searchPlaceholder }"
+					v-model="searchQuery"
+					class="w-full max-w-sm"
+					data-test="data-table-search"
+				>
+					<slot name="search-label">
+						Search
+					</slot>
+				</form-input>
+
+				<ui-button v-show="haveSearchQuery" class="button--muted" data-test="data-table-reset-search-button" @click="resetSearchQuery">
+					<slot name="reset-search-label">
+						Reset search
+					</slot>
+				</ui-button>
+			</div>
 
 			<table v-show="haveDataToDisplay" class="w-full" data-test="data-table-table">
 				<thead>
@@ -49,6 +64,7 @@ import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -112,6 +128,8 @@ const props = defineProps({
 
 // The current search query.
 const searchQuery = ref("");
+// The search query input, allowing us to focus it when necessary.
+const searchQueryInput = ref(null);
 
 // Whether we have a search term, and thus whether the user is currently
 // searching.
@@ -218,4 +236,13 @@ const columnDefinitions = computed(() => {
 
 	return columns;
 });
+
+/**
+ * Clear any current search query.
+ */
+function resetSearchQuery() {
+	searchQuery.value = "";
+
+	runComponentMethod(searchQueryInput.value, "triggerFocus");
+}
 </script>

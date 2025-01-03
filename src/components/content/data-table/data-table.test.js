@@ -234,6 +234,21 @@ describe("data-table", () => {
 			});
 		});
 	});
+
+	describe("Methods", () => {
+		describe("resetSearchQuery", () => {
+			test("should reset the current search query", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.searchQuery = "toy";
+
+				vm.resetSearchQuery();
+
+				expect(vm.searchQuery).toBe("");
+			});
+		});
+	});
 });
 
 /**

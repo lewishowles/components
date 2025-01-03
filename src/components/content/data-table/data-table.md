@@ -8,6 +8,12 @@
 
 The label to use for the search box.
 
+### `reset-search-label`
+
+- default: "Reset search"
+
+The label to use for the "Reset search" button.
+
 ### `no-data-message`
 
 - default: "No data to display."
@@ -156,7 +162,6 @@ Classes to apply to all standard cells in the table. Cell padding will always ap
 ## To do
 
 - Searching:
-  - Add reset search button when searching
   - Add "searchable" string / null prop to column configuration
 - Add table title / intro
 - Allow custom search data for column value (via callback, given column key and row data)
