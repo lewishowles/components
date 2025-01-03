@@ -36,6 +36,24 @@
 
 		<preview-section>
 			<template #title>
+				Updating the search (from within the table)
+			</template>
+
+			<data-table ref="setSearchQueryExample" v-bind="{ data, columns }">
+				<template #title="{ cell }">
+					<span class="flex items-center gap-2">
+						{{ cell }}
+
+						<ui-button class="button--muted text-xs" @click="setSearchQuery(cell)">
+							Find similar movies
+						</ui-button>
+					</span>
+				</template>
+			</data-table>
+		</preview-section>
+
+		<preview-section>
+			<template #title>
 				Without data
 			</template>
 
@@ -45,6 +63,9 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
+
 const data = [
 	{
 		id: "2e644b4b-51e8-4519-ab31-d9a37e2d0434",
@@ -78,4 +99,11 @@ const columns = {
 		columnClasses: "text-right",
 	},
 };
+
+// A reference to our table for which we want to set the search query as a test.
+const setSearchQueryExample = ref(null);
+
+function setSearchQuery(query) {
+	runComponentMethod(setSearchQueryExample.value, "setSearchQuery", query);
+}
 </script>

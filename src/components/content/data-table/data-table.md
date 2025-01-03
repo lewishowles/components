@@ -134,16 +134,16 @@ Classes to apply to all standard cells in the table. Cell padding will always ap
 
 ## Methods
 
-### `method`
+### `setSearchQuery`
 
-...
+Set the table's current search query, overriding any current search. This could be used in conjunction with a cell template to allow the user to find all similar rows, for example.
 
 ## Examples
 
 ### Basic table
 
 ```html
-<data-table v-bind="{ data }">
+<data-table v-bind="{ data }" />
 ```
 
 ### Cell overrides

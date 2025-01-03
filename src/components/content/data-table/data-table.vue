@@ -6,7 +6,7 @@
 			</slot>
 		</alert-message>
 
-		<div class="flex flex-col gap-6">
+		<div v-if="haveData" class="flex flex-col gap-6">
 			<div class="flex items-end gap-4">
 				<form-input
 					v-if="enableSearch"
@@ -238,6 +238,20 @@ const columnDefinitions = computed(() => {
 });
 
 /**
+ * Set the search query to the provided value.
+ *
+ * @param  {string}  value
+ *     The search query to set.
+ */
+function setSearchQuery(value) {
+	if (!isNonEmptyString(value)) {
+		return;
+	}
+
+	searchQuery.value = value;
+}
+
+/**
  * Clear any current search query.
  */
 function resetSearchQuery() {
@@ -245,4 +259,8 @@ function resetSearchQuery() {
 
 	runComponentMethod(searchQueryInput.value, "triggerFocus");
 }
+
+defineExpose({
+	setSearchQuery,
+});
 </script>

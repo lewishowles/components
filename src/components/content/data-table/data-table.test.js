@@ -236,6 +236,40 @@ describe("data-table", () => {
 	});
 
 	describe("Methods", () => {
+		describe("setSearchQuery", () => {
+			test("should update the current search query", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.setSearchQuery("Moana");
+
+				expect(vm.searchQuery).toBe("Moana");
+			});
+
+			describe("should not update the search query if an invalid input is provided", () => {
+				test.for([
+					["boolean (true)", true],
+					["boolean (false)", false],
+					["number (positive)", 1],
+					["number (negative)", -1],
+					["number (NaN)", NaN],
+					["string (empty)", ""],
+					["array (empty)", []],
+					["object (non-empty)", { property: "value" }],
+					["object (empty)", {}],
+					["null", null],
+					["undefined", undefined],
+				])("%s", ([, input]) => {
+					const wrapper = mount();
+					const vm = wrapper.vm;
+
+					vm.setSearchQuery(input);
+
+					expect(vm.searchQuery).toBe("");
+				});
+			});
+		});
+
 		describe("resetSearchQuery", () => {
 			test("should reset the current search query", () => {
 				const wrapper = mount();
