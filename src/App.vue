@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const selectedPreview = ref("data-table-preview");
 
@@ -42,6 +42,10 @@ const previewOptions = [
 	{ label: "tab-group", value: "tab-group-preview" },
 	{ label: "ui-button", value: "ui-button-preview" },
 ];
+
+watch(selectedPreview, () => {
+	document.title = selectedPreview.value;
+}, { immediate: true });
 </script>
 
 <style>
