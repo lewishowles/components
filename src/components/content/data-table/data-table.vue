@@ -1,70 +1,80 @@
 <template>
-	<div class="text-sm" data-test="data-table">
-		<alert-message v-if="!haveData" data-test="data-table-no-data">
-			<slot name="no-data-message">
-				No data to display.
-			</slot>
-		</alert-message>
+	<div data-test="data-table">
+		<div v-if="haveTitle || haveIntroduction" class="mb-6 flex flex-col gap-4 border-b border-grey-200 pb-6">
+			<component :is="headingLevel" v-if="haveTitle" class="text-3xl font-bold text-grey-950">
+				<slot name="table-title" />
+			</component>
 
-		<div v-if="haveData" class="flex flex-col gap-6">
-			<div class="flex items-end gap-4">
-				<form-input
-					v-if="enableSearch"
-					ref="searchQueryInput"
-					v-bind="{ placeholder: searchPlaceholder }"
-					v-model="searchQuery"
-					class="w-full max-w-sm"
-					data-test="data-table-search"
-				>
-					<slot name="search-label">
-						Search
-					</slot>
-				</form-input>
+			<slot name="table-introduction" />
+		</div>
 
-				<ui-button v-show="haveSearchQuery" class="button--muted" data-test="data-table-reset-search-button" @click="resetSearchQuery">
-					<slot name="reset-search-label">
-						Reset search
-					</slot>
-				</ui-button>
-			</div>
-
-			<table v-show="haveDataToDisplay" class="w-full" data-test="data-table-table">
-				<thead>
-					<tr class="border-b border-grey-300">
-						<th v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-heading">
-							<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
-								{{ column.label }}
-							</slot>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="row in filteredRows" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
-						<td v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
-							<slot :name="columnKey" v-bind="{ cell: row.content[columnKey], row: row.content }">
-								{{ row.content[columnKey] }}
-							</slot>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-
-			<alert-message v-show="!haveDataToDisplay" data-test="data-table-no-results">
-				<slot name="no-results-message" v-bind="{ searchQuery }">
-					No results could be found for term <span class="font-bold">"{{ searchQuery }}"</span>.
+		<div class="text-sm">
+			<alert-message v-if="!haveData" data-test="data-table-no-data">
+				<slot name="no-data-message">
+					No data to display.
 				</slot>
 			</alert-message>
+
+			<div v-if="haveData" class="flex flex-col gap-6">
+				<div class="flex items-end gap-4">
+					<form-input
+						v-if="enableSearch"
+						ref="searchQueryInput"
+						v-bind="{ placeholder: searchPlaceholder }"
+						v-model="searchQuery"
+						class="w-full max-w-sm"
+						data-test="data-table-search"
+					>
+						<slot name="search-label">
+							Search
+						</slot>
+					</form-input>
+
+					<ui-button v-show="haveSearchQuery" class="button--muted" data-test="data-table-reset-search-button" @click="resetSearchQuery">
+						<slot name="reset-search-label">
+							Reset search
+						</slot>
+					</ui-button>
+				</div>
+
+				<table v-show="haveDataToDisplay" class="w-full" data-test="data-table-table">
+					<thead>
+						<tr class="border-b border-grey-300">
+							<th v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-heading">
+								<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
+									{{ column.label }}
+								</slot>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="row in filteredRows" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
+							<td v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
+								<slot :name="columnKey" v-bind="{ cell: row.content[columnKey], row: row.content }">
+									{{ row.content[columnKey] }}
+								</slot>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<alert-message v-show="!haveDataToDisplay" data-test="data-table-no-results">
+					<slot name="no-results-message" v-bind="{ searchQuery }">
+						No results could be found for term <span class="font-bold">"{{ searchQuery }}"</span>.
+					</slot>
+				</alert-message>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, useSlots } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -108,6 +118,14 @@ const props = defineProps({
 	},
 
 	/**
+	 * The heading level to use for any introduction to this table.
+	 */
+	headingLevel: {
+		type: String,
+		default: "h2",
+	},
+
+	/**
 	 * Classes to apply to all headings in the table. Cell padding will always
 	 * apply.
 	 */
@@ -126,14 +144,18 @@ const props = defineProps({
 	},
 });
 
+const slots = useSlots();
 // The current search query.
 const searchQuery = ref("");
 // The search query input, allowing us to focus it when necessary.
 const searchQueryInput = ref(null);
-
 // Whether we have a search term, and thus whether the user is currently
 // searching.
 const haveSearchQuery = computed(() => isNonEmptyString(searchQuery.value));
+// Whether this table includes a title.
+const haveTitle = computed(() => isNonEmptySlot(slots["table-title"]));
+// Whether this table includes an introduction.
+const haveIntroduction = computed(() => isNonEmptySlot(slots["table-introduction"]));
 
 // Transform the provided data into something more suitable for display in our
 // table. This includes adding cell configuration for internal tracking, and

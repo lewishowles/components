@@ -26,6 +26,14 @@ The message to display when no data could be found for the table.
 
 The message to display when no data could be found for the current search term.
 
+### `table-title`
+
+Any title to display with this table.
+
+### `table-introduction`
+
+Any introduction to display with this table.
+
 #### Slot props
 
 ##### `searchQuery`

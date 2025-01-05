@@ -36,6 +36,22 @@
 
 		<preview-section>
 			<template #title>
+				With title and introduction
+			</template>
+
+			<data-table ref="setSearchQueryExample" v-bind="{ data, columns }">
+				<template #table-title>
+					Classic Disney films
+				</template>
+
+				<template #table-introduction>
+					Some of the most popular Disney films of all time, including their box office takings.
+				</template>
+			</data-table>
+		</preview-section>
+
+		<preview-section>
+			<template #title>
 				Updating the search (from within the table)
 			</template>
 

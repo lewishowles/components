@@ -9,7 +9,7 @@
 		}
 
 		&:has(:focus) {
-			@apply ring-2 ring-purple-600;
+			@apply ring-2 ring-purple-800;
 			@apply dark:ring-purple-400;
 		}
 	}
@@ -39,7 +39,7 @@
 	.form-checkbox {
 		@apply mt-1 size-4 shrink-0 appearance-none rounded outline-none ring-1 ring-grey-300 transition-all;
 		@apply hover:ring-2 hover:ring-grey-500;
-		@apply focus:ring-2 focus:ring-purple-600;
+		@apply focus:ring-2 focus:ring-purple-800;
 		@apply checked:bg-current checked:text-purple-800 checked:ring-current;
 		@apply checked:focus:ring-offset-2;
 		@apply dark:bg-white/20 dark:ring-white/30;
@@ -56,7 +56,7 @@
 		@apply size-4 appearance-none rounded-full outline-none ring-1 ring-grey-300 transition-all;
 		@apply dark:bg-white/20 dark:ring-white/30;
 		@apply hover:ring-2 hover:ring-grey-500;
-		@apply focus:ring-2 focus:ring-purple-600;
+		@apply focus:ring-2 focus:ring-purple-800;
 		@apply checked:bg-current checked:text-purple-800 checked:ring-current;
 		@apply checked:focus:ring-offset-2;
 		@apply dark:hover:ring-white/50;
@@ -71,7 +71,7 @@
 	.button-group {
 		@apply button--muted cursor-pointer rounded-none transition-all;
 		@apply peer-focus:bg-grey-50 peer-focus:border-grey-400;
-		@apply peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-purple-600 peer-focus:ring-offset-2;
+		@apply peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-purple-800 peer-focus:ring-offset-2;
 		@apply peer-checked:border-purple-800 peer-checked:bg-purple-800 peer-checked:text-white;
 		@apply dark:bg-white/20 dark:border-white/20;
 		@apply dark:peer-focus:bg-white/30 dark:peer-focus:border-white/20;
