@@ -3,11 +3,13 @@
 		<div class="guides-horizontal mx-auto max-w-screen-xl">
 			<div class="guides-vertical">
 				<div class="p-10">
-					<h1 class="mb-6 inline-block rounded-md bg-blue-50 px-2 py-1 text-xl font-bold text-blue-800 dark:bg-blue-500/50 dark:text-blue-200">
+					<h1 class="mb-6 inline-block rounded bg-gradient-to-r from-[#be185d] to-[#6a21a7] px-4 py-2 font-mono text-lg text-white">
 						<slot name="title" />
 					</h1>
 
-					<slot />
+					<div class="space-y-24">
+						<slot />
+					</div>
 				</div>
 			</div>
 		</div>
