@@ -120,6 +120,15 @@ describe("data-table", () => {
 
 				expect(vm.filteredRows).toHaveLength(1);
 			});
+
+			test("should skip a column if that column is marked as not searchable", () => {
+				const wrapper = mount({ columns: { title: { searchable: false } } });
+				const vm = wrapper.vm;
+
+				vm.searchQuery = "Toy Story";
+
+				expect(vm.filteredRows).toEqual([]);
+			});
 		});
 
 		describe("haveDataToDisplay", () => {

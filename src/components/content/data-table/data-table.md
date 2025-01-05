@@ -100,11 +100,12 @@ Any additional configuration for columns. **Note:** Any column without configura
 
 |Key|Type|Default|Description|
 |-|-|-|-|
-|`label`|`string`|""|The label to display in the column header.|
-|`hidden`|`boolean`|false|Whether this column is hidden, allowing hidden columns to be more explicitly defined where helpful.|
-|`headingClasses`|`string`|""|Classes to apply only to this column's heading.|
-|`cellClasses`|`string`|""|Classes to apply only to this column's cells.|
-|`columnClasses`|`string`|""|Classes to apply to both this column's heading and cells.|
+|`label`|`string`|`""`|The label to display in the column header.|
+|`hidden`|`boolean`|`false`|Whether this column is hidden, allowing hidden columns to be more explicitly defined where helpful.|
+|`searchable`|`boolean`|`true`|Whether this column is included in searches. If false, search will ignore this column entirely.|
+|`headingClasses`|`string`|`""`|Classes to apply only to this column's heading.|
+|`cellClasses`|`string`|`""`|Classes to apply only to this column's cells.|
+|`columnClasses`|`string`|`""`|Classes to apply to both this column's heading and cells.|
 
 ### `enableSearch`
 
@@ -171,7 +172,6 @@ Set the table's current search query, overriding any current search. This could 
 
 - Searching:
   - Add "searchable" string / null prop to column configuration
-- Add table title / intro
 - Allow custom search data for column value (via callback, given column key and row data)
 - Add options for changing the table layout (compact, normal, relaxed etc), remembering those choices for the table
 - Allow sorting of columns

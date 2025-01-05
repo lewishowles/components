@@ -204,10 +204,24 @@ const filteredRows = computed(() => {
 			return rows;
 		}
 
-		const rowValues = Object.values(rowContent);
 		const searchTerm = searchQuery.value.toLowerCase();
 
-		if (rowValues.some(cell => cell.toLowerCase().includes(searchTerm))) {
+		const includesTerm = Object.entries(rowContent).some(([columnKey, cell]) => {
+			// We check against false here so that the developer can exclude
+			// this key and the column is searchable by default.
+			const searchableColumn = get(props.columns, `${columnKey}.searchable`) !== false;
+
+			// If this column isn't searchable, we don't need to check it.
+			if (!searchableColumn) {
+				return false;
+			}
+
+			return isNonEmptyString(cell) && cell.toLowerCase().includes(searchTerm);
+		});
+
+		// If we find the term in the searchable columns of this row, we add it
+		// to our list of rows to display.
+		if (includesTerm) {
 			rows.push(row);
 		}
 

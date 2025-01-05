@@ -43,7 +43,7 @@ describe("data-table", () => {
 			mount({ data: [] });
 
 			cy.getByData("data-table-no-data").shouldBeVisible();
-			cy.getByData("data-table-no-results").shouldNotExist();
+			cy.getByData("data-table-no-results").should("not.exist");
 		});
 
 		it("The appropriate table is rendered when provided with data", () => {
@@ -93,6 +93,19 @@ describe("data-table", () => {
 			cy.getByData("data-table-heading").eq(0).shouldHaveText("Title");
 			cy.getByData("data-table-heading").eq(1).shouldHaveText("Release year");
 			cy.getByData("data-table-heading").eq(2).shouldHaveText("Box office ($m)");
+		});
+
+		it("Columns can be hidden via configuration", () => {
+			mount({
+				columns: {
+					...columns,
+					release_year: { hidden: true },
+				},
+			});
+
+			cy.getByData("data-table-heading").shouldHaveCount(2);
+			cy.getByData("data-table-row").shouldHaveCount(3);
+			cy.getByData("data-table-cell").shouldHaveCount(6);
 		});
 
 		it("Classes can be applied to a column's heading", () => {
@@ -195,6 +208,19 @@ describe("data-table", () => {
 			mount();
 
 			cy.getByData("data-table-search").type("Not found");
+
+			cy.getByData("data-table-no-results").shouldBeVisible();
+		});
+
+		it("A column can be excluded from the search", () => {
+			mount({
+				columns: {
+					...columns,
+					release_year: { searchable: false },
+				},
+			});
+
+			cy.getByData("data-table-search").type("1994");
 
 			cy.getByData("data-table-no-results").shouldBeVisible();
 		});
