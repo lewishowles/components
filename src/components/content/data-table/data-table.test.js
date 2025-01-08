@@ -1,12 +1,34 @@
+import DataTable from "./data-table.vue";
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vitest";
-import DataTable from "./data-table.vue";
+import { get } from "@lewishowles/helpers/object";
 
 const sampleRow = { id: "123", title: "Toy Story", release_year: "1995" };
 const defaultProps = { data: [sampleRow] };
 const mount = createMount(DataTable, { props: defaultProps });
 
 describe("data-table", () => {
+	const sampleStandardisedRow = {
+		id: {
+			configuration: {
+				searchable: "123",
+			},
+			content: "123",
+		},
+		title: {
+			configuration: {
+				searchable: "toy story",
+			},
+			content: "Toy Story",
+		},
+		release_year: {
+			configuration: {
+				searchable: "1995",
+			},
+			content: "1995",
+		},
+	};
+
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
 			const wrapper = mount();
@@ -47,7 +69,7 @@ describe("data-table", () => {
 							configuration: {
 								id: expect.any(String),
 							},
-							content: sampleRow,
+							content: sampleStandardisedRow,
 						},
 					]);
 				});
@@ -124,6 +146,29 @@ describe("data-table", () => {
 			test("should skip a column if that column is marked as not searchable", () => {
 				const wrapper = mount({ columns: { title: { searchable: false } } });
 				const vm = wrapper.vm;
+
+				vm.searchQuery = "Toy Story";
+
+				expect(vm.filteredRows).toEqual([]);
+			});
+
+			test("should defer to searchableContentCallback if defined", () => {
+				const searchableContentCallback = columnKey => {
+					if (columnKey === "title") {
+						return "abcdef";
+					}
+				};
+
+				const wrapper = mount({ searchableContentCallback });
+				const vm = wrapper.vm;
+
+				vm.searchQuery = "abcdef";
+
+				expect(vm.filteredRows).toHaveLength(1);
+
+				vm.searchQuery = "1995";
+
+				expect(vm.filteredRows).toHaveLength(1);
 
 				vm.searchQuery = "Toy Story";
 
@@ -299,7 +344,7 @@ describe("data-table", () => {
  * value.
  */
 function expectToHaveRowWith(vm, key, value) {
-	const row = vm.internalData.find((row) => row.content[key] === value);
+	const row = vm.internalData.find(row => get(row, `content.${key}.content`) === value);
 
 	return expect(row).toBeDefined();
 }

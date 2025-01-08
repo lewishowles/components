@@ -50,8 +50,8 @@
 					<tbody>
 						<tr v-for="row in filteredRows" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
 							<td v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
-								<slot :name="columnKey" v-bind="{ cell: row.content[columnKey], row: row.content }">
-									{{ row.content[columnKey] }}
+								<slot :name="columnKey" v-bind="{ cell: row.content[columnKey].content, row: row.content }">
+									{{ row.content[columnKey].content }}
 								</slot>
 							</td>
 						</tr>
@@ -71,10 +71,11 @@
 <script setup>
 import { computed, ref, useSlots } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
-import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -107,6 +108,20 @@ const props = defineProps({
 	enableSearch: {
 		type: Boolean,
 		default: true,
+	},
+
+	/**
+	 * If defined, this method is called with a `columnKey` for the current
+	 * column, and `rowData` for the current row. This method is called as the
+	 * table is building up its internal content. If the method returns a
+	 * string, this is used as the searchable content for that column in that
+	 * row, **overriding** the content of the cell. If anything else is
+	 * returned, such as undefined, the original content is used instead. In
+	 * both cases, the searchable content is lower-cased.
+	 */
+	searchableContentCallback: {
+		type: Function,
+		default: null,
 	},
 
 	/**
@@ -170,13 +185,39 @@ const internalData = computed(() => {
 			return data;
 		}
 
-		// We update the structure of our data, allowing for cell configuration
-		// in addition to the provided data.
+		// We update the structure of our data, allowing for both row and cell
+		// configuration in addition to the provided data, but we avoid the user
+		// having to know what that structure is.
+		const rowContent = Object.keys(row).reduce((rowData, columnKey) => {
+			let searchableContent = row[columnKey];
+
+			if (isFunction(props.searchableContentCallback)) {
+				const callbackResponse = props.searchableContentCallback(columnKey, row);
+
+				if (isNonEmptyString(callbackResponse)) {
+					searchableContent = callbackResponse;
+				}
+			}
+
+			if (isNonEmptyString(searchableContent)) {
+				searchableContent = searchableContent.toLowerCase();
+			}
+
+			rowData[columnKey] = {
+				configuration: {
+					searchable: searchableContent,
+				},
+				content: row[columnKey],
+			};
+
+			return rowData;
+		}, {});
+
 		data.push({
 			configuration: {
 				id: nanoid(),
 			},
-			content: row,
+			content: rowContent,
 		});
 
 		return data;
@@ -197,14 +238,14 @@ const filteredRows = computed(() => {
 		return internalData.value;
 	}
 
+	const searchTerm = searchQuery.value.toLowerCase();
+
 	return internalData.value.reduce((rows, row) => {
 		const rowContent = get(row, "content");
 
 		if (!isNonEmptyObject(rowContent)) {
 			return rows;
 		}
-
-		const searchTerm = searchQuery.value.toLowerCase();
 
 		const includesTerm = Object.entries(rowContent).some(([columnKey, cell]) => {
 			// We check against false here so that the developer can exclude
@@ -216,7 +257,9 @@ const filteredRows = computed(() => {
 				return false;
 			}
 
-			return isNonEmptyString(cell) && cell.toLowerCase().includes(searchTerm);
+			const searchableContent = get(cell, "configuration.searchable");
+
+			return isNonEmptyString(searchableContent) && searchableContent.includes(searchTerm);
 		});
 
 		// If we find the term in the searchable columns of this row, we add it

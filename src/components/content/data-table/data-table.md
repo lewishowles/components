@@ -89,6 +89,8 @@ The content of the entire row that the cell belongs to.
 - type: `array`
 - default: `[]`
 
+An array of objects containing the data to display in the table. Each object should match and represents a single row, containing a key for each column of the table, which itself contains the content for that column.
+
 ### `columns`
 
 - type: `object`
@@ -113,6 +115,13 @@ Any additional configuration for columns. **Note:** Any column without configura
 - default: `true`
 
 Whether to enable the table search. When enabled, anything typed into the search box will search the text for each cell case-insensitively, and hide any rows where none of the cells match.
+
+### `searchableContentCallback(columnKey, rowData)`
+
+- type: `function`
+- default: `null`
+
+If defined, this method is called with a `columnKey` for the current column, and `rowData` for the current row. This method is called as the table is building up its internal content. If the method returns a string, this is used as the searchable content for that column in that row, **overriding** the content of the cell. If anything else is returned, such as undefined, the original content is used instead. In both cases, the searchable content is lower-cased.
 
 ### `searchPlaceholder`
 
@@ -170,11 +179,7 @@ Set the table's current search query, overriding any current search. This could 
 
 ## To do
 
-- Searching:
-  - Add "searchable" string / null prop to column configuration
-- Allow custom search data for column value (via callback, given column key and row data)
 - Add options for changing the table layout (compact, normal, relaxed etc), remembering those choices for the table
 - Allow sorting of columns
-- Add custom sort data for column value (via callback, given column key and row data)
 - Add options for turning columns on and off, and remembering those choices for the table
 - Allow selecting of columns, model of selected columns with their row data (so that you can access IDs etc)
