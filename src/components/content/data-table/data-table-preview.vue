@@ -14,6 +14,14 @@
 
 		<preview-section>
 			<template #title>
+				With user configuration
+			</template>
+
+			<data-table v-bind="{ data, columns, name: 'user-configuration-sample' }" />
+		</preview-section>
+
+		<preview-section>
+			<template #title>
 				Utilising heading and cell templates
 			</template>
 

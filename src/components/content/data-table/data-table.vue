@@ -16,7 +16,7 @@
 			</alert-message>
 
 			<div v-if="haveData" class="flex flex-col gap-6">
-				<div class="flex items-end gap-4">
+				<div v-if="enableSearch || showUserConfiguration" class="flex items-end gap-4">
 					<form-input
 						v-if="enableSearch"
 						ref="searchQueryInput"
@@ -35,12 +35,28 @@
 							Reset search
 						</slot>
 					</ui-button>
+
+					<dropdown-menu v-if="showUserConfiguration" v-bind="{ align: 'end' }" class="ms-auto" data-test="data-table-display-options">
+						<template #summary>
+							<slot name="display-options-label">
+								Display options
+							</slot>
+						</template>
+
+						<template v-for="({ label, value }) in tableDensityOptions" :key="value">
+							<dropdown-menu-button v-bind="{ iconStart: `icon-density-${value}`, selected: tableDensity === value }" :data-test="`data-table-density-${value}`" @click="setTableDensity(value)">
+								<slot :name="`display-option-${value}-label`">
+									{{ label }}
+								</slot>
+							</dropdown-menu-button>
+						</template>
+					</dropdown-menu>
 				</div>
 
 				<table v-show="haveDataToDisplay" class="w-full" data-test="data-table-table">
 					<thead>
 						<tr class="border-b border-grey-300">
-							<th v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-heading">
+							<th v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-heading">
 								<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
 									{{ column.label }}
 								</slot>
@@ -49,7 +65,7 @@
 					</thead>
 					<tbody>
 						<tr v-for="row in filteredRows" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
-							<td v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="['py-4', { 'ps-3': !column.first, 'pe-3': !column.last }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
+							<td v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
 								<slot :name="columnKey" v-bind="{ cell: row.content[columnKey].content, row: row.content }">
 									{{ row.content[columnKey].content }}
 								</slot>
@@ -76,6 +92,7 @@ import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
+import { useStorage } from "@vueuse/core";
 
 const props = defineProps({
 	/**
@@ -98,6 +115,18 @@ const props = defineProps({
 	columns: {
 		type: Object,
 		default: () => ({}),
+	},
+
+	/**
+	 * A unique name for this table. This will be used to store the user's
+	 * preferences for how dense the table is, for example. Without a name, this
+	 * option will not be available. The name will be used directly in
+	 * `localStorage`, prefixed with `data-table:`, so should be safe to be
+	 * viewed by users.
+	 */
+	name: {
+		type: String,
+		default: null,
 	},
 
 	/**
@@ -167,10 +196,36 @@ const searchQueryInput = ref(null);
 // Whether we have a search term, and thus whether the user is currently
 // searching.
 const haveSearchQuery = computed(() => isNonEmptyString(searchQuery.value));
+// Whether a name has been provided for this table.
+const haveTableName = computed(() => isNonEmptyString(props.name));
+// Whether to show the "display" options to the user, which require a name for
+// this table.
+const showUserConfiguration = computed(() => haveTableName.value);
 // Whether this table includes a title.
 const haveTitle = computed(() => isNonEmptySlot(slots["table-title"]));
 // Whether this table includes an introduction.
 const haveIntroduction = computed(() => isNonEmptySlot(slots["table-introduction"]));
+// Our user-selected table density.
+const tableDensity = haveTableName.value && useStorage(`data-table:${props.name}:density`, "relaxed");
+
+// Available table densities.
+const tableDensityOptions = ref([
+	{ label: "Compact", value: "compact" },
+	{ label: "Standard", value: "standard" },
+	{ label: "Relaxed", value: "relaxed" },
+]);
+
+// Our table spacing, based on our current density.
+const tableSpacingClasses = computed(() => {
+	switch(tableDensity.value) {
+		case "compact":
+			return "py-2";
+		case "standard":
+			return "py-3";
+		default:
+			return "py-4";
+	}
+});
 
 // Transform the provided data into something more suitable for display in our
 // table. This includes adding cell configuration for internal tracking, and
@@ -315,6 +370,26 @@ const columnDefinitions = computed(() => {
 
 	return columns;
 });
+
+/**
+ * Set the table density based on user choice.
+ *
+ * @param  {string}  density
+ *     The density setting.
+ */
+function setTableDensity(density) {
+	if (!isNonEmptyString(density)) {
+		return;
+	}
+
+	const isValidDensity = tableDensityOptions.value.map(option => option.value).includes(density);
+
+	if (!isValidDensity) {
+		return;
+	}
+
+	tableDensity.value = density;
+}
 
 /**
  * Set the search query to the provided value.

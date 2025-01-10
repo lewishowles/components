@@ -17,8 +17,14 @@ export default {
 				sans: ["\"Inter Variable\"", ...defaultTheme.fontFamily.sans],
 				mono: ["\"IBM Plex Mono\"", ...defaultTheme.fontFamily.mono],
 			},
+			maxWidth: {
+				"3xs": "12rem",
+				"2xs": "16rem",
+			},
 			minWidth: theme => ({
 				...theme("maxWidth"),
+				"3xs": "12rem",
+				"2xs": "16rem",
 			}),
 			size: {
 				text: "1em",

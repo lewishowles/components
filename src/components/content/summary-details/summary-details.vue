@@ -1,14 +1,14 @@
 <template>
-	<details ref="detailsElement" data-test="summary-details" :class="floatingClasses" @toggle="updateState">
-		<summary ref="summaryElement" class="inline-flex cursor-pointer list-none items-center gap-1" :class="summaryClasses" data-test="summary-details-summary">
-			<component :is="currentIcon" v-if="iconStart && includeIcon" :class="iconClasses" data-test="summary-details-icon-start" />
+	<details ref="detailsElement" v-bind="{ 'data-test': dataTest }" :class="floatingClasses" @toggle="updateState">
+		<summary ref="summaryElement" class="inline-flex cursor-pointer list-none items-center gap-1" :class="summaryClasses" v-bind="{ 'data-test': `${dataTest}-summary` }">
+			<component :is="currentIcon" v-if="iconStart && includeIcon" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-start` }" />
 
 			<slot name="summary" v-bind="{ isOpen, icon: currentIcon }" />
 
-			<component :is="currentIcon" v-if="includeIcon && !iconStart" :class="iconClasses" data-test="summary-details-icon-end" />
+			<component :is="currentIcon" v-if="includeIcon && !iconStart" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-end` }" />
 		</summary>
 
-		<div v-show="isOpen" :class="[{ 'absolute top-full': floating, 'start-0': alignStart, 'end-0': !alignStart }, detailsClasses]" data-test="summary-details-content">
+		<div v-show="isOpen" :class="[{ 'absolute top-full': floating, 'start-0': alignStart, 'end-0': !alignStart }, detailsClasses]" v-bind="{ 'data-test': `${dataTest}-content` }">
 			<slot v-bind="{ isOpen, icon: currentIcon }" />
 		</div>
 	</details>
@@ -137,6 +137,15 @@ const props = defineProps({
 	iconClasses: {
 		type: String,
 		default: null,
+	},
+
+	/**
+	 * The data-test attribute for this element. This allows us to re-use the
+	 * provided data-test attribute for sub-components..
+	 */
+	dataTest: {
+		type: String,
+		default: "summary-details",
 	},
 });
 

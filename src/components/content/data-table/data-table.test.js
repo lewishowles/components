@@ -2,6 +2,7 @@ import DataTable from "./data-table.vue";
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vitest";
 import { get } from "@lewishowles/helpers/object";
+import { nanoid } from "nanoid";
 
 const sampleRow = { id: "123", title: "Toy Story", release_year: "1995" };
 const defaultProps = { data: [sampleRow] };
@@ -290,6 +291,56 @@ describe("data-table", () => {
 	});
 
 	describe("Methods", () => {
+		describe("setTableDensity", () => {
+			test("should update the selected table density", () => {
+				const wrapper = mount({ name: nanoid() });
+				const vm = wrapper.vm;
+
+				expect(vm.tableDensity).toBe("relaxed");
+
+				vm.setTableDensity("standard");
+
+				expect(vm.tableDensity).toBe("standard");
+			});
+
+			test("should ignore an invalid density value", () => {
+				const wrapper = mount({ name: nanoid() });
+				const vm = wrapper.vm;
+
+				expect(vm.tableDensity).toBe("relaxed");
+
+				vm.setTableDensity("invalid");
+
+				expect(vm.tableDensity).toBe("relaxed");
+			});
+
+			describe("should ignore anything but a non-empty string density", () => {
+				test.for([
+					["boolean (true)", true],
+					["boolean (false)", false],
+					["number (positive)", 1],
+					["number (negative)", -1],
+					["number (NaN)", NaN],
+					["string (empty)", ""],
+					["object (non-empty)", { property: "value" }],
+					["object (empty)", {}],
+					["array (non-empty)", [1, 2, 3]],
+					["array (empty)", []],
+					["null", null],
+					["undefined", undefined],
+				])("%s", ([, input]) => {
+					const wrapper = mount({ name: nanoid() });
+					const vm = wrapper.vm;
+
+					expect(vm.tableDensity).toBe("relaxed");
+
+					vm.setTableDensity(input);
+
+					expect(vm.tableDensity).toBe("relaxed");
+				});
+			});
+		});
+
 		describe("setSearchQuery", () => {
 			test("should update the current search query", () => {
 				const wrapper = mount();

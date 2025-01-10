@@ -1,8 +1,16 @@
 # `data-table`
 
-...
+`data-table` can display complex data with minimal effort. From hiding columns to controlling their order, managing data is simple and means that the minimum amount of data manipulation needs to be done beforehand.
 
 ## Slots
+
+### `table-title`
+
+Any title to display with this table.
+
+### `table-introduction`
+
+Any introduction to display with this table.
 
 ### `search-label`
 
@@ -25,14 +33,6 @@ The message to display when no data could be found for the table.
 - default: "No results could be found for term &lt;span class="font-bold"&gt;"{{ searchQuery }}"&lt;/span&gt;."
 
 The message to display when no data could be found for the current search term.
-
-### `table-title`
-
-Any title to display with this table.
-
-### `table-introduction`
-
-Any introduction to display with this table.
 
 #### Slot props
 
@@ -82,6 +82,30 @@ The original content of the cell, as provided in `data`.
 
 The content of the entire row that the cell belongs to.
 
+### `display-options-label`
+
+- default: Display options
+
+The label for the "Display" options dropdown.
+
+### `display-option-compact-label`
+
+- default: Compact
+
+The label for the "Compact" display option.
+
+### `display-option-standard-label`
+
+- default: Standard
+
+The label for the "Standard" display option.
+
+### `display-option-relaxed-label`
+
+- default: Relaxed
+
+The label for the "Relaxed" display option.
+
 ## Props
 
 ### `data`
@@ -108,6 +132,13 @@ Any additional configuration for columns. **Note:** Any column without configura
 |`headingClasses`|`string`|`""`|Classes to apply only to this column's heading.|
 |`cellClasses`|`string`|`""`|Classes to apply only to this column's cells.|
 |`columnClasses`|`string`|`""`|Classes to apply to both this column's heading and cells.|
+
+### `name`
+
+- type: `string`
+- default: `null`
+
+A unique name for this table. This will be used to store the user's preferences for how dense the table is, for example. Without a name, this option will not be available. The name will be used directly in `localStorage`, prefixed with `data-table:`, so should be safe to be viewed by users.
 
 ### `enableSearch`
 
@@ -144,12 +175,6 @@ Classes to apply to all headings in the table. Cell padding will always apply.
 
 Classes to apply to all standard cells in the table. Cell padding will always apply.
 
-## Events
-
-### `@click`
-
-...
-
 ## Methods
 
 ### `setSearchQuery`
@@ -179,7 +204,6 @@ Set the table's current search query, overriding any current search. This could 
 
 ## To do
 
-- Add options for changing the table layout (compact, normal, relaxed etc), remembering those choices for the table
 - Allow sorting of columns
 - Add options for turning columns on and off, and remembering those choices for the table
 - Allow selecting of columns, model of selected columns with their row data (so that you can access IDs etc)

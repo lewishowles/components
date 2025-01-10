@@ -36,6 +36,9 @@ import TabItem from "./content/tab-item/tab-item.vue";
 import UiButton from "./interaction/ui-button/ui-button.vue";
 
 import BaseIcon from "./icon/base-icon/base-icon.vue";
+import IconDensityCompact from "./icon/icon-density-compact/icon-density-compact.vue";
+import IconDensityStandard from "./icon/icon-density-standard/icon-density-standard.vue";
+import IconDensityRelaxed from "./icon/icon-density-relaxed/icon-density-relaxed.vue";
 import IconArrowDown from "./icon/icon-arrow-down/icon-arrow-down.vue";
 import IconArrowLeft from "./icon/icon-arrow-left/icon-arrow-left.vue";
 import IconArrowRight from "./icon/icon-arrow-right/icon-arrow-right.vue";
@@ -77,6 +80,9 @@ export default {
 	FormFieldset,
 	AppPagination,
 	BaseIcon,
+	IconDensityCompact,
+	IconDensityStandard,
+	IconDensityRelaxed,
 	IconChevronRightCircled,
 	IconChevronLeftCircled,
 	IconChevronDownCircled,

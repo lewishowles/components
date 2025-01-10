@@ -6,7 +6,7 @@
 
 		<preview-section>
 			<template #title>
-				Section
+				Simple dropdown
 			</template>
 
 			<div class="flex gap-4">

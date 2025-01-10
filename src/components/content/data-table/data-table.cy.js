@@ -1,5 +1,6 @@
 import DataTable from "./data-table.vue";
 import { createMount } from "@cypress/support/mount";
+import { nanoid } from "nanoid";
 
 const columns = {
 	title: { label: "Title" },
@@ -242,6 +243,29 @@ describe("data-table", () => {
 			cy.getByData("data-table-reset-search-button").shouldNotBeVisible();
 
 			cy.getFormField("data-table-search").shouldHaveFocus();
+		});
+	});
+
+	describe("User configuration", () => {
+		it("User configuration cannot be selected if no name is present", () => {
+			mount();
+
+			cy.getByData("data-table-display-options").should("not.exist");
+
+			cy.getByData("data-table-cell").eq(0).shouldHaveClass("py-4");
+		});
+
+		it("Table density can be selected", () => {
+			mount({ name: nanoid() });
+
+			cy.getByData("data-table-display-options").shouldBeVisible();
+
+			cy.getByData("data-table-cell").eq(0).shouldHaveClass("py-4");
+
+			cy.getByData("data-table-display-options-summary").click();
+			cy.getByData("data-table-density-compact").click();
+
+			cy.getByData("data-table-cell").eq(0).shouldHaveClass("py-2");
 		});
 	});
 });
