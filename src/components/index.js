@@ -36,6 +36,7 @@ import TabItem from "./content/tab-item/tab-item.vue";
 import UiButton from "./interaction/ui-button/ui-button.vue";
 
 import BaseIcon from "./icon/base-icon/base-icon.vue";
+import IconEye from "./icon/icon-eye/icon-eye.vue";
 import IconDensityCompact from "./icon/icon-density-compact/icon-density-compact.vue";
 import IconDensityStandard from "./icon/icon-density-standard/icon-density-standard.vue";
 import IconDensityRelaxed from "./icon/icon-density-relaxed/icon-density-relaxed.vue";
@@ -80,6 +81,7 @@ export default {
 	FormFieldset,
 	AppPagination,
 	BaseIcon,
+	IconEye,
 	IconDensityCompact,
 	IconDensityStandard,
 	IconDensityRelaxed,
