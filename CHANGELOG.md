@@ -5,6 +5,15 @@
 ### New components
 
 - [form-fieldset](/src/components/form/form-fieldset/form-fieldset.md)
+- [data-table](/src/components/content/data-table/data-table.md)
+
+### New icons
+
+- `icon-eye`
+
+### Updates
+
+- `ui-button`: The new property `iconOnly` creates a button with only an icon.
 
 # 0.18.0 - 2024-12-19
 
