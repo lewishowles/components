@@ -1,10 +1,10 @@
 <template>
 	<data-table ref="table" v-bind="{ data, columns }">
 		<template #release_year="{ cell }">
-			<span class="group flex items-center gap-2">
+			<span class="flex items-center gap-2">
 				{{ cell }}
 
-				<ui-button class="button--muted invisible text-xs group-hocus:visible" @click="setSearchQuery(cell)">
+				<ui-button class="button--muted" v-bind="{ iconStart: 'icon-eye', iconOnly: true }" @click="setSearchQuery(cell)">
 					Find movies from the same year
 				</ui-button>
 			</span>
@@ -28,15 +28,27 @@ const data = [
 	},
 	{
 		id: "da9eff2a-c10e-42a3-ab3f-9f252c574384",
-		title: "Frozen",
-		release_year: "2013",
-		box_office: "1,290.0",
+		title: "Aladdin",
+		release_year: "1992",
+		box_office: "1,054.0",
 	},
 	{
 		id: "3ffd9ae1-ef4f-4f6e-b408-a2c5b58a3305",
 		title: "The Lion King",
 		release_year: "1994",
 		box_office: "968.5",
+	},
+	{
+		id: "3ffd9ae1-ef4f-4f6e-b408-a2c5b58a3305",
+		title: "The Emperor's New Groove",
+		release_year: "2000",
+		box_office: "169.3",
+	},
+	{
+		id: "3ffd9ae1-ef4f-4f6e-b408-a2c5b58a3305",
+		title: "Up",
+		release_year: "2009",
+		box_office: "735.1",
 	},
 ];
 

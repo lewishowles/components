@@ -75,9 +75,9 @@ const data = [
 	},
 	{
 		id: "da9eff2a-c10e-42a3-ab3f-9f252c574384",
-		title: "Frozen",
-		release_year: "2013",
-		box_office: "1,290.0",
+		title: "Aladdin",
+		release_year: "1992",
+		box_office: "1,054.0",
 	},
 	{
 		id: "3ffd9ae1-ef4f-4f6e-b408-a2c5b58a3305",
@@ -85,11 +85,24 @@ const data = [
 		release_year: "1994",
 		box_office: "968.5",
 	},
+	{
+		id: "3ffd9ae1-ef4f-4f6e-b408-a2c5b58a3305",
+		title: "The Emperor's New Groove",
+		release_year: "2000",
+		box_office: "169.3",
+	},
+	{
+		id: "3ffd9ae1-ef4f-4f6e-b408-a2c5b58a3305",
+		title: "Up",
+		release_year: "2009",
+		box_office: "735.1",
+	},
 ];
 
 const columns = {
 	title: {
 		label: "Title",
+		primary: true,
 	},
 	release_year: {
 		label: "Release year",

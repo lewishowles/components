@@ -3,17 +3,23 @@ import { createMount } from "@cypress/support/mount";
 import { nanoid } from "nanoid";
 
 const columns = {
-	title: { label: "Title" },
+	title: { label: "Title", primary: true },
 	release_year: { label: "Release year" },
 	box_office: { label: "Box office ($m)" },
 };
 
 const data = [
 	{
+		id: "2e644b4b-51e8-4519-ab31-d9a37e2d0434",
+		title: "Toy Story",
+		release_year: "1995",
+		box_office: "373.6",
+	},
+	{
 		id: "da9eff2a-c10e-42a3-ab3f-9f252c574384",
-		title: "Frozen",
-		release_year: "2013",
-		box_office: "1,290.0",
+		title: "Aladdin",
+		release_year: "1992",
+		box_office: "1,054.0",
 	},
 	{
 		id: "3ffd9ae1-ef4f-4f6e-b408-a2c5b58a3305",
@@ -22,10 +28,16 @@ const data = [
 		box_office: "968.5",
 	},
 	{
-		id: "2e644b4b-51e8-4519-ab31-d9a37e2d0434",
-		title: "Toy Story",
-		release_year: "1995",
-		box_office: "373.6",
+		id: "5c247b4a-a64d-46aa-94aa-7794fe9b7b59",
+		title: "The Emperor's New Groove",
+		release_year: "2000",
+		box_office: "169.3",
+	},
+	{
+		id: "6b2d8c0d-76b2-40dd-adf9-5800a0526c0f",
+		title: "Up",
+		release_year: "2009",
+		box_office: "735.1",
 	},
 ];
 
@@ -54,6 +66,12 @@ describe("data-table", () => {
 			cy.getByData("data-table-heading").shouldHaveCount(3);
 			cy.getByData("data-table-row").shouldHaveCount(3);
 			cy.getByData("data-table-cell").shouldHaveCount(9);
+		});
+
+		it("A primary column can be defined", () => {
+			mount();
+
+			cy.getByData("data-table-cell").eq(0).shouldHaveClass("font-semibold");
 		});
 
 		it("A label can be provided to the search input", () => {
@@ -200,7 +218,7 @@ describe("data-table", () => {
 		it("A search should show matching rows", () => {
 			mount();
 
-			cy.getByData("data-table-search").type("Frozen");
+			cy.getByData("data-table-search").type("Aladdin");
 
 			cy.getByData("data-table-row").shouldHaveCount(1);
 		});
@@ -232,7 +250,7 @@ describe("data-table", () => {
 			cy.getByData("data-table-row").shouldHaveCount(3);
 			cy.getByData("data-table-reset-search-button").shouldNotBeVisible();
 
-			cy.getByData("data-table-search").type("Frozen");
+			cy.getByData("data-table-search").type("Aladdin");
 
 			cy.getByData("data-table-row").shouldHaveCount(1);
 			cy.getByData("data-table-reset-search-button").shouldBeVisible();
