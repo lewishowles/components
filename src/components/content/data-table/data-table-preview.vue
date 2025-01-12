@@ -25,21 +25,7 @@
 				Utilising heading and cell templates
 			</template>
 
-			<data-table v-bind="{ data, columns }">
-				<template #title_heading="{ label }">
-					<span class="flex items-center gap-2">
-						<icon-film />
-						{{ label }}
-					</span>
-				</template>
-
-				<template #title="{ cell }">
-					<span class="flex items-center gap-2">
-						<icon-film />
-						{{ cell }}
-					</span>
-				</template>
-			</data-table>
+			<data-table-preview-custom-cells />
 		</preview-section>
 
 		<preview-section>
@@ -47,7 +33,7 @@
 				With title and introduction
 			</template>
 
-			<data-table ref="setSearchQueryExample" v-bind="{ data, columns }">
+			<data-table v-bind="{ data, columns }">
 				<template #table-title>
 					Classic Disney films
 				</template>
@@ -63,17 +49,7 @@
 				Updating the search (from within the table)
 			</template>
 
-			<data-table ref="setSearchQueryExample" v-bind="{ data, columns }">
-				<template #title="{ cell }">
-					<span class="flex items-center gap-2">
-						{{ cell }}
-
-						<ui-button class="button--muted text-xs" @click="setSearchQuery(cell)">
-							Find similar movies
-						</ui-button>
-					</span>
-				</template>
-			</data-table>
+			<data-table-preview-internal-search />
 		</preview-section>
 
 		<preview-section>
@@ -87,8 +63,8 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import DataTablePreviewCustomCells from "./preview/data-table-preview-custom-cells.vue";
+import DataTablePreviewInternalSearch from "./preview/data-table-preview-internal-search.vue";
 
 const data = [
 	{
@@ -123,11 +99,4 @@ const columns = {
 		columnClasses: "text-right",
 	},
 };
-
-// A reference to our table for which we want to set the search query as a test.
-const setSearchQueryExample = ref(null);
-
-function setSearchQuery(query) {
-	runComponentMethod(setSearchQueryExample.value, "setSearchQuery", query);
-}
 </script>

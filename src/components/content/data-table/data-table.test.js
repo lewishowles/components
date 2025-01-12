@@ -71,6 +71,7 @@ describe("data-table", () => {
 								id: expect.any(String),
 							},
 							content: sampleStandardisedRow,
+							raw: sampleRow,
 						},
 					]);
 				});
@@ -291,6 +292,54 @@ describe("data-table", () => {
 	});
 
 	describe("Methods", () => {
+		describe("getRowContent", () => {
+			test("should return the content of a row", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const row = vm.internalData[0];
+				const content = vm.getRowContent(row, "title");
+
+				expect(content).toEqual("Toy Story");
+			});
+
+			describe("should ignore non-string cell content", () => {
+				test.for([
+					["boolean (true)", true],
+					["boolean (false)", false],
+					["number (positive)", 1],
+					["number (negative)", -1],
+					["number (NaN)", NaN],
+					["string (empty)", ""],
+					["object (non-empty)", { property: "value" }],
+					["object (empty)", {}],
+					["array (non-empty)", [1, 2, 3]],
+					["array (empty)", []],
+					["null", null],
+					["undefined", undefined],
+				])("%s", ([, input]) => {
+					const wrapper = mount({ data: [{ id: input }] });
+					const vm = wrapper.vm;
+
+					const row = vm.internalData[0];
+					const content = vm.getRowContent(row, "id");
+
+					expect(content).toEqual("");
+				});
+			});
+		});
+
+		describe("getRawRow", () => {
+			test("should retrieve the original raw row data", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const row = vm.internalData[0];
+
+				expect(vm.getRawRow(row)).toEqual(sampleRow);
+			});
+		});
+
 		describe("setTableDensity", () => {
 			test("should update the selected table density", () => {
 				const wrapper = mount({ name: nanoid() });
