@@ -16,14 +16,24 @@ describe("ui-button", () => {
 		mount({ iconStart: "icon-chevron-left" });
 
 		cy.getByData("ui-button-icon-start").shouldBeVisible();
-		cy.getByData("link-tag-icon-end").should("not.exist");
+		cy.getByData("ui-button-icon-end").should("not.exist");
 	});
 
 	it("An icon can be added to the end", () => {
 		mount({ iconEnd: "icon-chevron-right" });
 
-		cy.getByData("link-tag-icon-start").should("not.exist");
+		cy.getByData("ui-button-icon-start").should("not.exist");
 		cy.getByData("ui-button-icon-end").shouldBeVisible();
+	});
+
+	it("An icon can be shown on its own", () => {
+		mount({ iconStart: "icon-chevron-right", iconOnly: true });
+
+		cy.getByData("ui-button-icon-end").should("not.exist");
+		cy.getByData("ui-button-icon-start").shouldBeVisible();
+		cy.getByData("ui-button-icon-start").shouldHaveClass("size-[1em]");
+		cy.getByData("ui-button-label").shouldBeVisible();
+		cy.getByData("ui-button-label").shouldHaveClass("sr-only");
 	});
 
 	it("Reactive buttons show a loading indicator when activated", () => {

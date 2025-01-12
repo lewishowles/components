@@ -9,7 +9,7 @@
 	>
 		<component :is="iconStart" v-if="haveIconStart" :class="computedIconClasses" data-test="ui-button-icon-start" />
 
-		<conditional-wrapper v-bind="{ wrap: reactive, tag: 'span' }" :class="{ 'invisible': isReacting }" data-test="ui-button-label">
+		<conditional-wrapper v-bind="{ wrap: reactive || iconOnly, tag: 'span' }" :class="{ 'invisible': isReacting, 'sr-only': iconOnly }" data-test="ui-button-label">
 			<slot />
 		</conditional-wrapper>
 
@@ -55,6 +55,14 @@ const props = defineProps({
 	iconEnd: {
 		type: String,
 		default: null,
+	},
+
+	/**
+	 * Only display an icon (with "sr-only" text)
+	 */
+	iconOnly: {
+		type: Boolean,
+		default: false,
 	},
 
 	/**
@@ -105,7 +113,7 @@ const computedIconClasses = computed(() => {
 	}
 
 	const baseStrokeClass = "stroke-current";
-	const baseSizeClass = "size-[0.857em]";
+	const baseSizeClass = props.iconOnly ? "size-[1em]" : "size-[0.857em]";
 	const defaultClasses = [baseStrokeClass, baseSizeClass];
 
 	if (!isNonEmptyString(props.iconClasses)) {

@@ -21,6 +21,13 @@ The icon is implemented using `<component :is="...">`, allowing the button to us
 
 _Note that `start` and `end` depend on the current document direction._
 
+### `iconOnly`
+
+- type: `boolean`
+- default: `false`
+
+Whether to only show an icon (and not the associated text). If true, the text is hidden via an `sr-only` class, so is still accessible to screen readers and therefore important. The displayed icon is also shown at `1em` size when alone, to better fill the button.
+
 ### `reactive`
 
 - type: `boolean`
