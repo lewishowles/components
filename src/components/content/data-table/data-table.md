@@ -129,6 +129,7 @@ Any additional configuration for columns. **Note:** Any column without configura
 |`label`|`string`|`""`|The label to display in the column header.|
 |`hidden`|`boolean`|`false`|Whether this column is hidden, allowing hidden columns to be more explicitly defined where helpful.|
 |`searchable`|`boolean`|`true`|Whether this column is included in searches. If false, search will ignore this column entirely.|
+|`sortable`|`boolean`|`true`|Whether this column can be sorted.|
 |`headingClasses`|`string`|`""`|Classes to apply only to this column's heading.|
 |`cellClasses`|`string`|`""`|Classes to apply only to this column's cells.|
 |`columnClasses`|`string`|`""`|Classes to apply to both this column's heading and cells.|
@@ -204,7 +205,5 @@ Set the table's current search query, overriding any current search. This could 
 
 ## To do
 
-- Add "primary" column definition
-- Allow sorting of columns
 - Add options for turning columns on and off, and remembering those choices for the table
 - Allow selecting of columns, model of selected columns with their row data (so that you can access IDs etc)

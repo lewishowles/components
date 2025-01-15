@@ -178,6 +178,32 @@ describe("data-table", () => {
 			});
 		});
 
+		describe("sortedRows", () => {
+			test("should sort rows by their content", () => {
+				const wrapper = mount({
+					data: [
+						sampleRow,
+						{ id: "234", title: "Big Hero 6", release_year: "2014" },
+					],
+					columns: {
+						title: { label: "Title" },
+					},
+				});
+
+				const vm = wrapper.vm;
+
+				vm.sortColumn("title");
+
+				expect(vm.sortedRows[0].content.title.content).toBe("Big Hero 6");
+				expect(vm.sortedRows[1].content.title.content).toBe("Toy Story");
+
+				vm.sortColumn("title");
+
+				expect(vm.sortedRows[0].content.title.content).toBe("Toy Story");
+				expect(vm.sortedRows[1].content.title.content).toBe("Big Hero 6");
+			});
+		});
+
 		describe("haveDataToDisplay", () => {
 			test("should return false if no data is provided", () => {
 				const wrapper = mount({ data: [] });
@@ -221,22 +247,35 @@ describe("data-table", () => {
 			});
 
 			test("should determine which column is first, and which is last", () => {
-				const data = [sampleRow];
 				const columns = { id: { label: "ID" }, title: { label: "Title" }, release_year: { label: "Release year" } };
-				const wrapper = mount({ data, columns });
+				const wrapper = mount({ columns });
 				const vm = wrapper.vm;
 
 				expect(vm.columnDefinitions).toEqual({
-					id: { label: "ID", first: true, last: false },
-					title: { label: "Title", first: false, last: false },
-					release_year: { label: "Release year", first: false, last: true },
+					id: {
+						label: "ID",
+						first: true,
+						last: false,
+						sortable: true,
+					},
+					title: {
+						label: "Title",
+						first: false,
+						last: false,
+						sortable: true,
+					},
+					release_year: {
+						label: "Release year",
+						first: false,
+						last: true,
+						sortable: true,
+					},
 				});
 			});
 
 			test("should retrieve column configuration where found", () => {
-				const data = [sampleRow];
 				const columns = { title: { label: "Title" }, release_year: { label: "Release year", columnClasses: "text-right" } };
-				const wrapper = mount({ data, columns });
+				const wrapper = mount({ columns });
 				const vm = wrapper.vm;
 
 				expect(vm.columnDefinitions).toEqual({
@@ -244,11 +283,13 @@ describe("data-table", () => {
 						label: "Title",
 						first: true,
 						last: false,
+						sortable: true,
 					},
 					release_year: {
 						label: "Release year",
 						first: false,
 						last: true,
+						sortable: true,
 						columnClasses: "text-right",
 					},
 				});
@@ -261,8 +302,18 @@ describe("data-table", () => {
 				const vm = wrapper.vm;
 
 				expect(vm.columnDefinitions).toEqual({
-					release_year: { label: "Release year", first: true, last: false },
-					title: { label: "Title", first: false, last: true },
+					release_year: {
+						label: "Release year",
+						first: true,
+						last: false,
+						sortable: true,
+					},
+					title: {
+						label: "Title",
+						first: false,
+						last: true,
+						sortable: true,
+					},
 				});
 			});
 
@@ -273,8 +324,18 @@ describe("data-table", () => {
 				const vm = wrapper.vm;
 
 				expect(vm.columnDefinitions).toEqual({
-					title: { label: "Title", first: true, last: false },
-					release_year: { label: "Release year", first: false, last: true },
+					title: {
+						label: "Title",
+						first: true,
+						last: false,
+						sortable: true,
+					},
+					release_year: {
+						label: "Release year",
+						first: false,
+						last: true,
+						sortable: true,
+					},
 				});
 			});
 
@@ -285,7 +346,12 @@ describe("data-table", () => {
 				const vm = wrapper.vm;
 
 				expect(vm.columnDefinitions).toEqual({
-					title: { label: "Title", first: true, last: true },
+					title: {
+						label: "Title",
+						first: true,
+						last: true,
+						sortable: true,
+					},
 				});
 			});
 		});
@@ -434,6 +500,43 @@ describe("data-table", () => {
 				vm.resetSearchQuery();
 
 				expect(vm.searchQuery).toBe("");
+			});
+		});
+
+		describe("sortColumn", () => {
+			const columns = { title: { label: "Title" }, release_year: { label: "Release year" } };
+
+			test("should sort the given column", () => {
+				const wrapper = mount({ columns });
+				const vm = wrapper.vm;
+
+				vm.sortColumn("title");
+
+				expect(vm.sortedColumn).toBe("title");
+			});
+
+			test("should reverse the direction of a search for the same column", () => {
+				const wrapper = mount({ columns });
+				const vm = wrapper.vm;
+
+				vm.sortColumn("title");
+
+				expect(vm.sortedColumn).toBe("title");
+				expect(vm.sortDirection).toBe(1);
+
+				vm.sortColumn("title");
+
+				expect(vm.sortedColumn).toBe("title");
+				expect(vm.sortDirection).toBe(-1);
+			});
+
+			test("should ignore an unknown column", () => {
+				const wrapper = mount({ columns });
+				const vm = wrapper.vm;
+
+				vm.sortColumn("column");
+
+				expect(vm.sortedColumn).toBe(null);
 			});
 		});
 	});

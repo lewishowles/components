@@ -26,7 +26,7 @@ describe("ui-button", () => {
 				const wrapper = mount({ iconStart: "icon-arrow-left" });
 				const vm = wrapper.vm;
 
-				expect(vm.computedIconClasses).toEqual(["stroke-current", "size-[0.857em]"]);
+				expect(vm.computedIconClasses).toEqual(["stroke-current", "inline-block align-[0]", "size-[0.857em]"]);
 			});
 
 			test("should return base classes combined with provided classes if no size is defined", () => {

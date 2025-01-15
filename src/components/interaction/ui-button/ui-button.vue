@@ -1,13 +1,13 @@
 <template>
 	<button
 		type="button"
-		class="flex items-center gap-2"
+		class="inline-block"
 		:class="{ 'relative': reactive }"
 		v-bind="attributes"
 		data-test="ui-button"
 		@click="react"
 	>
-		<component :is="iconStart" v-if="haveIconStart" :class="computedIconClasses" data-test="ui-button-icon-start" />
+		<component :is="iconStart" v-if="haveIconStart" class="me-2" :class="computedIconClasses" data-test="ui-button-icon-start" />
 
 		<conditional-wrapper v-bind="{ wrap: reactive || iconOnly, tag: 'span' }" :class="{ 'invisible': isReacting, 'sr-only': iconOnly }" data-test="ui-button-label">
 			<slot />
@@ -23,7 +23,7 @@
 			</span>
 		</span>
 
-		<component :is="iconEnd" v-if="haveIconEnd" :class="computedIconClasses" data-test="ui-button-icon-end" />
+		<component :is="iconEnd" v-if="haveIconEnd" class="ms-2" :class="computedIconClasses" data-test="ui-button-icon-end" />
 	</button>
 </template>
 
@@ -113,8 +113,9 @@ const computedIconClasses = computed(() => {
 	}
 
 	const baseStrokeClass = "stroke-current";
+	const baseAlignmentClasses = "inline-block align-[0]";
 	const baseSizeClass = props.iconOnly ? "size-[1em]" : "size-[0.857em]";
-	const defaultClasses = [baseStrokeClass, baseSizeClass];
+	const defaultClasses = [baseStrokeClass, baseAlignmentClasses, baseSizeClass];
 
 	if (!isNonEmptyString(props.iconClasses)) {
 		return isReacting.value ? [...defaultClasses, "invisible"] : defaultClasses;

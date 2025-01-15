@@ -56,15 +56,17 @@
 				<table v-show="haveDataToDisplay" class="w-full" data-test="data-table-table">
 					<thead>
 						<tr class="border-b border-grey-300">
-							<th v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-heading">
-								<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
-									{{ column.label }}
-								</slot>
+							<th v-for="(column, columnKey) in columnDefinitions" :key="columnKey" class="py-4" :class="[{ 'ps-3': !column.sortable && !column.first, 'pe-3': !column.sortable && !column.last }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-heading">
+								<conditional-wrapper v-bind="{ wrap: column.sortable, tag: 'ui-button', iconEnd: getSortIcon(columnKey) }" class="-mt-4 mb-[calc(-1rem-1px)] w-full border-b border-transparent py-4 hocus:border-purple-800 hocus:bg-grey-100" :class="[{ 'ps-3': !column.first, 'pe-3': !column.last }]" data-test="data-table-sort" @click="sortColumn(columnKey)">
+									<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
+										{{ column.label }}
+									</slot>
+								</conditional-wrapper>
 							</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="row in filteredRows" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
+						<tr v-for="row in sortedRows" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
 							<td v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
 								<slot :name="columnKey" v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }">
 									{{ getRowContent(row, columnKey) }}
@@ -86,9 +88,9 @@
 
 <script setup>
 import { computed, ref, useSlots } from "vue";
-import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { get, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
-import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isNonEmptyArray, sortObjectsByProperty } from "@lewishowles/helpers/array";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
@@ -196,6 +198,11 @@ const searchQueryInput = ref(null);
 // Whether we have a search term, and thus whether the user is currently
 // searching.
 const haveSearchQuery = computed(() => isNonEmptyString(searchQuery.value));
+// The column currently sorted. If no column is sorted (the default state), then
+// data is displayed as it is provided.
+const sortedColumn = ref(null);
+// The direction to sort the sorted column. 1 for ascending, -1 for descending.
+const sortDirection = ref(1);
 // Whether a name has been provided for this table.
 const haveTableName = computed(() => isNonEmptyString(props.name));
 // Whether to show the "display" options to the user, which require a name for
@@ -243,7 +250,7 @@ const internalData = computed(() => {
 		// We update the structure of our data, allowing for both row and cell
 		// configuration in addition to the provided data, but we avoid the user
 		// having to know what that structure is.
-		const rowContent = Object.keys(row).reduce((rowData, columnKey) => {
+		const rowContent = keys(row).reduce((rowData, columnKey) => {
 			let searchableContent = row[columnKey];
 
 			if (isFunction(props.searchableContentCallback)) {
@@ -328,6 +335,19 @@ const filteredRows = computed(() => {
 	}, []);
 });
 
+// Our filtered rows, sorted by any currently defined sort.
+const sortedRows = computed(() => {
+	if (!haveData.value) {
+		return [];
+	}
+
+	if (sortedColumn.value === null) {
+		return filteredRows.value;
+	}
+
+	return sortObjectsByProperty(filteredRows.value, `content.${sortedColumn.value}.content`, { ascending: sortDirection.value === 1 });
+});
+
 // Whether we have any data to display. That is, not only do we have data for
 // the table, but if the user is performing a search, there are results for that
 // search term.
@@ -342,7 +362,7 @@ const columnDefinitions = computed(() => {
 		return {};
 	}
 
-	const columns = Object.keys(props.columns).reduce((columns, columnKey) => {
+	const columns = keys(props.columns).reduce((columns, columnKey) => {
 		const userConfiguration = get(props.columns, columnKey) || {};
 
 		if (get(userConfiguration, "hidden") === true) {
@@ -353,6 +373,7 @@ const columnDefinitions = computed(() => {
 			label: columnKey,
 			first: false,
 			last: false,
+			sortable: true,
 			...userConfiguration,
 		};
 
@@ -362,7 +383,7 @@ const columnDefinitions = computed(() => {
 	// After we determine which columns are present, we need to determine which
 	// column is first and which is last, as columns may have been removed or
 	// re-ordered by configuration.
-	const columnKeys = Object.keys(columns);
+	const columnKeys = keys(columns);
 
 	if (columnKeys.length > 0) {
 		columns[columnKeys[0]].first = true;
@@ -454,6 +475,51 @@ function resetSearchQuery() {
 	searchQuery.value = "";
 
 	focusSearchInput();
+}
+
+/**
+ * Sort the given column key. This will reset any other column sorting. If the
+ * same column is already sorted, the direction will be reversed.
+ *
+ * @param  {string}  columnKey
+ *     The key of the column to sort.
+ */
+function sortColumn(columnKey) {
+	if (!isNonEmptyString(columnKey)) {
+		return;
+	}
+
+	if (!Object.hasOwn(columnDefinitions.value, columnKey)) {
+		return;
+	}
+
+	if (sortedColumn.value === columnKey) {
+		sortDirection.value = sortDirection.value * -1;
+
+		return;
+	}
+
+	sortedColumn.value = columnKey;
+	sortDirection.value = 1;
+}
+
+/**
+ * Retrieve the appropriate sort icon for a given column by its key, depending
+ * on whether that column is currently sorted.
+ *
+ * @param  {string}  columnKey
+ *     The key of the column to check.
+ */
+function getSortIcon(columnKey) {
+	if (sortedColumn.value !== columnKey) {
+		return null;
+	}
+
+	if (sortDirection.value == -1) {
+		return "icon-arrow-up";
+	}
+
+	return "icon-arrow-down";
 }
 
 defineExpose({

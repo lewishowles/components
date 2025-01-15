@@ -24,6 +24,10 @@
 		@apply dark:hocus:text-purple-300;
 	}
 
+	button {
+		text-align: inherit;
+	}
+
 	img {
 		max-width: 100%;
 	}

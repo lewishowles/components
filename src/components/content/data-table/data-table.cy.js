@@ -264,6 +264,20 @@ describe("data-table", () => {
 		});
 	});
 
+	describe("Sort", () => {
+		it("A table can be sorted", () => {
+			mount();
+
+			cy.getByData("data-table-row").eq(0).getByData("data-table-cell").eq(0).shouldHaveText("Toy Story");
+			cy.getByData("data-table-row").eq(1).getByData("data-table-cell").eq(0).shouldHaveText("Aladdin");
+
+			cy.getByData("data-table-sort").eq(0).click();
+
+			cy.getByData("data-table-row").eq(0).getByData("data-table-cell").eq(0).shouldHaveText("Aladdin");
+			cy.getByData("data-table-row").eq(1).getByData("data-table-cell").eq(0).shouldHaveText("The Emperor's New Groove");
+		});
+	});
+
 	describe("User configuration", () => {
 		it("User configuration cannot be selected if no name is present", () => {
 			mount();
