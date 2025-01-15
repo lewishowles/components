@@ -54,6 +54,22 @@
 				</div>
 
 				<table v-show="haveDataToDisplay" class="w-full" data-test="data-table-table">
+					<caption v-if="haveCaption || (enableSort && sortedColumn)" class="text-left italic" :class="{ 'mb-2': haveCaption }">
+						<slot name="caption" />
+
+						<span class="sr-only">
+							<slot name="sorted-hint" v-bind="{ sortedColumn: getColumnLabel(sortedColumn), ascending: sortDirection === 1 }">
+								Sorted by {{ getColumnLabel(sortedColumn) }}
+								<template v-if="sortDirection === 1">
+									ascending
+								</template>
+								<template v-else>
+									descending
+								</template>
+							</slot>
+						</span>
+					</caption>
+
 					<thead>
 						<tr class="border-b border-grey-300">
 							<th v-for="(column, columnKey) in columnDefinitions" :key="columnKey" class="py-4" :class="[{ 'ps-3': !column.sortable && !column.first, 'pe-3': !column.sortable && !column.last }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-heading">
@@ -142,6 +158,15 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether to enable the table sort. When enabled, columns marked as
+	 * sortable (the default) can be ordered ascending or descending.
+	 */
+	enableSort: {
+		type: Boolean,
+		default: true,
+	},
+
+	/**
 	 * If defined, this method is called with a `columnKey` for the current
 	 * column, and `rowData` for the current row. This method is called as the
 	 * table is building up its internal content. If the method returns a
@@ -223,6 +248,8 @@ const haveTableName = computed(() => isNonEmptyString(props.name));
 // Whether to show the "display" options to the user, which require a name for
 // this table.
 const showUserConfiguration = computed(() => haveTableName.value);
+// Whether this table includes a caption.
+const haveCaption = computed(() => isNonEmptySlot(slots.caption));
 // Whether this table includes a title.
 const haveTitle = computed(() => isNonEmptySlot(slots["table-title"]));
 // Whether this table includes an introduction.
@@ -485,6 +512,16 @@ function getSortableContent(row, columnKey) {
  */
 function getRawRow(row) {
 	return get(row, "raw");
+}
+
+/**
+ * Retrieve the label for the given column key from the column definitions.
+ *
+ * @param  {string}  columnKey
+ *     The column key to retrieve the label for.
+ */
+function getColumnLabel(columnKey) {
+	return get(columnDefinitions.value, `${columnKey}.label`);
 }
 
 /**

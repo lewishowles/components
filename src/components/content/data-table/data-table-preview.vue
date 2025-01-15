@@ -30,10 +30,14 @@
 
 		<preview-section>
 			<template #title>
-				With title and introduction
+				With caption, title and introduction
 			</template>
 
 			<data-table v-bind="{ data, columns }">
+				<template #caption>
+					A table representing classic Disney films and their box office takings.
+				</template>
+
 				<template #table-title>
 					Classic Disney films
 				</template>

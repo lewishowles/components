@@ -148,6 +148,13 @@ A unique name for this table. This will be used to store the user's preferences 
 
 Whether to enable the table search. When enabled, anything typed into the search box will search the text for each cell case-insensitively, and hide any rows where none of the cells match.
 
+### `enableSort`
+
+- type: `boolean`
+- default: `true`
+
+Whether to enable the table sort. When enabled, columns marked as sortable (the default) can be ordered ascending or descending.
+
 ### `searchableContentCallback(columnKey, rowData)`
 
 - type: `function`
@@ -214,5 +221,6 @@ Set the table's current search query, overriding any current search. This could 
 
 ## To do
 
+- Add aria-sort = ascending / descending when sorting.
 - Add options for turning columns on and off, and remembering those choices for the table
 - Allow selecting of columns, model of selected columns with their row data (so that you can access IDs etc)

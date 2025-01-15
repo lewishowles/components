@@ -1,13 +1,13 @@
 <template>
 	<button
 		type="button"
-		class="inline-block"
+		class="inline-block space-x-2"
 		:class="{ 'relative': reactive }"
 		v-bind="attributes"
 		data-test="ui-button"
 		@click="react"
 	>
-		<component :is="iconStart" v-if="haveIconStart" class="me-2" :class="computedIconClasses" data-test="ui-button-icon-start" />
+		<component :is="iconStart" v-if="haveIconStart" :class="computedIconClasses" data-test="ui-button-icon-start" />
 
 		<conditional-wrapper v-bind="{ wrap: reactive || iconOnly, tag: 'span' }" :class="{ 'invisible': isReacting, 'sr-only': iconOnly }" data-test="ui-button-label">
 			<slot />
