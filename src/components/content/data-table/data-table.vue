@@ -147,10 +147,25 @@ const props = defineProps({
 	 * table is building up its internal content. If the method returns a
 	 * string, this is used as the searchable content for that column in that
 	 * row, **overriding** the content of the cell. If anything else is
-	 * returned, such as undefined, the original content is used instead. In
-	 * both cases, the searchable content is lower-cased.
+	 * returned, such as undefined, the original content is used instead.
 	 */
 	searchableContentCallback: {
+		type: Function,
+		default: null,
+	},
+
+	/**
+	 * If defined, this method is called with a `columnKey` for the current
+	 * column, and `rowData` for the current row. This method is called as the
+	 * table is building up its internal content. If the method returns a
+	 * string, this is used as the sortable content for that column in that row,
+	 * **overriding** the content of the cell. If anything else is returned,
+	 * such as undefined, the original content is used instead.
+	 *
+	 * The returned content is used in a `sort` method, so the returned content
+	 * should make sense when sorted in that way.
+	 */
+	sortableContentCallback: {
 		type: Function,
 		default: null,
 	},
@@ -251,23 +266,10 @@ const internalData = computed(() => {
 		// configuration in addition to the provided data, but we avoid the user
 		// having to know what that structure is.
 		const rowContent = keys(row).reduce((rowData, columnKey) => {
-			let searchableContent = row[columnKey];
-
-			if (isFunction(props.searchableContentCallback)) {
-				const callbackResponse = props.searchableContentCallback(columnKey, row);
-
-				if (isNonEmptyString(callbackResponse)) {
-					searchableContent = callbackResponse;
-				}
-			}
-
-			if (isNonEmptyString(searchableContent)) {
-				searchableContent = searchableContent.toLowerCase();
-			}
-
 			rowData[columnKey] = {
 				configuration: {
-					searchable: searchableContent,
+					searchable: getSearchableContent(row, columnKey),
+					sortable: getSortableContent(row, columnKey),
 				},
 				content: row[columnKey],
 			};
@@ -345,7 +347,7 @@ const sortedRows = computed(() => {
 		return filteredRows.value;
 	}
 
-	return sortObjectsByProperty(filteredRows.value, `content.${sortedColumn.value}.content`, { ascending: sortDirection.value === 1 });
+	return sortObjectsByProperty(filteredRows.value, `content.${sortedColumn.value}.configuration.sortable`, { ascending: sortDirection.value === 1 });
 });
 
 // Whether we have any data to display. That is, not only do we have data for
@@ -411,6 +413,66 @@ function getRowContent(row, columnKey) {
 	}
 
 	return cell;
+}
+
+/**
+ * Get the searchable content of a cell; that is, either the content provided by
+ * the searchable content callback, or hte lowercase content of the cell
+ * itself.
+ *
+ * @param  {object}  row
+ *     The row as standardised for the table.
+ * @param  {string}  columnKey
+ *     The key for the column.
+ */
+function getSearchableContent(row, columnKey) {
+	let searchableContent = row[columnKey];
+
+	if (!isNonEmptyString(searchableContent)) {
+		searchableContent = "";
+	}
+
+	if (isFunction(props.searchableContentCallback)) {
+		const callbackResponse = props.searchableContentCallback(columnKey, row);
+
+		if (isNonEmptyString(callbackResponse)) {
+			searchableContent = callbackResponse;
+		}
+	}
+
+	if (isNonEmptyString(searchableContent)) {
+		searchableContent = searchableContent.toLowerCase();
+	}
+
+	return searchableContent;
+}
+
+/**
+ * Get the sortable content of a cell; that is, either the content provided by
+ * the sortable content callback, or hte lowercase content of the cell
+ * itself.
+ *
+ * @param  {object}  row
+ *     The row as standardised for the table.
+ * @param  {string}  columnKey
+ *     The key for the column.
+ */
+function getSortableContent(row, columnKey) {
+	let sortableContent = row[columnKey];
+
+	if (isFunction(props.sortableContentCallback)) {
+		const callbackResponse = props.sortableContentCallback(columnKey, row);
+
+		if (isNonEmptyString(callbackResponse)) {
+			sortableContent = callbackResponse;
+		}
+	}
+
+	if (isNonEmptyString(sortableContent)) {
+		sortableContent = sortableContent.toLowerCase();
+	}
+
+	return sortableContent;
 }
 
 /**

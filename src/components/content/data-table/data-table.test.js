@@ -13,18 +13,21 @@ describe("data-table", () => {
 		id: {
 			configuration: {
 				searchable: "123",
+				sortable: "123",
 			},
 			content: "123",
 		},
 		title: {
 			configuration: {
 				searchable: "toy story",
+				sortable: "toy story",
 			},
 			content: "Toy Story",
 		},
 		release_year: {
 			configuration: {
 				searchable: "1995",
+				sortable: "1995",
 			},
 			content: "1995",
 		},
@@ -392,6 +395,88 @@ describe("data-table", () => {
 
 					expect(content).toEqual("");
 				});
+			});
+		});
+
+		describe("getSearchableContent", () => {
+			test("should return the searchable content of a row", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const row = vm.internalData[0];
+
+				const content = vm.getSearchableContent(row.raw, "title");
+
+				expect(content).toEqual("toy story");
+			});
+
+			describe("should ignore non-string cell content", () => {
+				test.for([
+					["boolean (true)", true],
+					["boolean (false)", false],
+					["number (positive)", 1],
+					["number (negative)", -1],
+					["number (NaN)", NaN],
+					["string (empty)", ""],
+					["object (non-empty)", { property: "value" }],
+					["object (empty)", {}],
+					["array (non-empty)", [1, 2, 3]],
+					["array (empty)", []],
+					["null", null],
+					["undefined", undefined],
+				])("%s", ([, input]) => {
+					const wrapper = mount({ data: [{ id: input }] });
+					const vm = wrapper.vm;
+
+					const row = vm.internalData[0];
+					const content = vm.getSearchableContent(row.raw, "id");
+
+					expect(content).toEqual("");
+				});
+			});
+
+			test("should defer to searchableContentCallback if defined", () => {
+				const searchableContentCallback = columnKey => {
+					if (columnKey === "title") {
+						return "abcdef";
+					}
+				};
+
+				const wrapper = mount({ searchableContentCallback });
+				const vm = wrapper.vm;
+
+				const row = vm.internalData[0];
+				const content = vm.getSearchableContent(row, "title");
+
+				expect(content).toEqual("abcdef");
+			});
+		});
+
+		describe("getSortableContent", () => {
+			test("should return the sortable content of a row", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const row = vm.internalData[0];
+				const content = vm.getSortableContent(row.raw, "title");
+
+				expect(content).toEqual("toy story");
+			});
+
+			test("should defer to sortableContentCallback if defined", () => {
+				const sortableContentCallback = columnKey => {
+					if (columnKey === "title") {
+						return "abcdef";
+					}
+				};
+
+				const wrapper = mount({ sortableContentCallback });
+				const vm = wrapper.vm;
+
+				const row = vm.internalData[0];
+				const content = vm.getSortableContent(row, "title");
+
+				expect(content).toEqual("abcdef");
 			});
 		});
 

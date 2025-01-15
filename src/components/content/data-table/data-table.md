@@ -153,7 +153,16 @@ Whether to enable the table search. When enabled, anything typed into the search
 - type: `function`
 - default: `null`
 
-If defined, this method is called with a `columnKey` for the current column, and `rowData` for the current row. This method is called as the table is building up its internal content. If the method returns a string, this is used as the searchable content for that column in that row, **overriding** the content of the cell. If anything else is returned, such as undefined, the original content is used instead. In both cases, the searchable content is lower-cased.
+If defined, this method is called with a `columnKey` for the current column, and `rowData` for the current row. This method is called as the table is building up its internal content. If the method returns a string, this is used as the searchable content for that column in that row, **overriding** the content of the cell. If anything else is returned, such as undefined, the original content is used instead.
+
+### `sortableContentCallback(columnKey, rowData)`
+
+- type: `function`
+- default: `null`
+
+If defined, this method is called with a `columnKey` for the current column, and `rowData` for the current row. This method is called as the table is building up its internal content. If the method returns a string, this is used as the sortable content for that column in that row, **overriding** the content of the cell. If anything else is returned, such as undefined, the original content is used instead.
+
+The returned content is used in a `sort` method, so the returned content should make sense when sorted in that way.
 
 ### `searchPlaceholder`
 
