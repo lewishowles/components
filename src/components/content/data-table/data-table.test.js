@@ -624,6 +624,70 @@ describe("data-table", () => {
 				expect(vm.sortedColumn).toBe(null);
 			});
 		});
+
+		describe("getColumnSortDirection", () => {
+			test("should detect a column that is sorted ascending", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.sortedColumn = "title";
+				vm.sortDirection = 1;
+
+				expect(vm.getColumnSortDirection("title")).toBe("ascending");
+			});
+
+			test("should detect a column that is sorted descending", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.sortedColumn = "title";
+				vm.sortDirection = -1;
+
+				expect(vm.getColumnSortDirection("title")).toBe("descending");
+			});
+
+			test("should detect a column that is not sorted", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.sortedColumn = "title";
+				vm.sortDirection = -1;
+
+				expect(vm.getColumnSortDirection("unknown")).toBe(null);
+			});
+		});
+
+		describe("getSortIcon", () => {
+			test("should detect a column that is sorted ascending", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.sortedColumn = "title";
+				vm.sortDirection = 1;
+
+				expect(vm.getSortIcon("title")).toBe("icon-arrow-down");
+			});
+
+			test("should detect a column that is sorted descending", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.sortedColumn = "title";
+				vm.sortDirection = -1;
+
+				expect(vm.getSortIcon("title")).toBe("icon-arrow-up");
+			});
+
+			test("should detect a column that is not sorted", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.sortedColumn = "title";
+				vm.sortDirection = -1;
+
+				expect(vm.getSortIcon("unknown")).toBe(null);
+			});
+		});
 	});
 });
 

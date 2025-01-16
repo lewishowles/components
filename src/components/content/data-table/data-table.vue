@@ -72,7 +72,14 @@
 
 					<thead>
 						<tr class="border-b border-grey-300">
-							<th v-for="(column, columnKey) in columnDefinitions" :key="columnKey" class="py-4" :class="[{ 'ps-3': !column.sortable && !column.first, 'pe-3': !column.sortable && !column.last }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-heading">
+							<th
+								v-for="(column, columnKey) in columnDefinitions"
+								:key="columnKey"
+								v-bind="{ 'aria-sort': getColumnSortDirection(columnKey) }"
+								class="py-4"
+								:class="[{ 'ps-3': !column.sortable && !column.first, 'pe-3': !column.sortable && !column.last }, headingClasses, column.columnClasses, column.headingClasses]"
+								data-test="data-table-heading"
+							>
 								<conditional-wrapper v-bind="{ wrap: column.sortable, tag: 'ui-button', iconEnd: getSortIcon(columnKey) }" class="-mt-4 mb-[calc(-1rem-1px)] w-full border-b border-transparent py-4 hocus:border-purple-800 hocus:bg-grey-100" :class="[{ 'ps-3': !column.first, 'pe-3': !column.last }]" data-test="data-table-sort" @click="sortColumn(columnKey)">
 									<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
 										{{ column.label }}
@@ -600,6 +607,25 @@ function sortColumn(columnKey) {
 
 	sortedColumn.value = columnKey;
 	sortDirection.value = 1;
+}
+
+/**
+ * Retrieve the appropriate sort direction label for a given column by its key.
+ * If the column is not sorted, returns null.
+ *
+ * @param  {string}  columnKey
+ *     The key of the column to check.
+ */
+function getColumnSortDirection(columnKey) {
+	if (columnKey !== sortedColumn.value) {
+		return null;
+	}
+
+	if (sortDirection.value === 1) {
+		return "ascending";
+	}
+
+	return "descending";
 }
 
 /**

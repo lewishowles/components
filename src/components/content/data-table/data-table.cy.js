@@ -64,8 +64,8 @@ describe("data-table", () => {
 
 			cy.getByData("data-table-table").shouldBeVisible();
 			cy.getByData("data-table-heading").shouldHaveCount(3);
-			cy.getByData("data-table-row").shouldHaveCount(3);
-			cy.getByData("data-table-cell").shouldHaveCount(9);
+			cy.getByData("data-table-row").shouldHaveCount(5);
+			cy.getByData("data-table-cell").shouldHaveCount(15);
 		});
 
 		it("A primary column can be defined", () => {
@@ -123,8 +123,8 @@ describe("data-table", () => {
 			});
 
 			cy.getByData("data-table-heading").shouldHaveCount(2);
-			cy.getByData("data-table-row").shouldHaveCount(3);
-			cy.getByData("data-table-cell").shouldHaveCount(6);
+			cy.getByData("data-table-row").shouldHaveCount(5);
+			cy.getByData("data-table-cell").shouldHaveCount(10);
 		});
 
 		it("Classes can be applied to a column's heading", () => {
@@ -212,7 +212,7 @@ describe("data-table", () => {
 		it("No rows are filtered by default", () => {
 			mount();
 
-			cy.getByData("data-table-row").shouldHaveCount(3);
+			cy.getByData("data-table-row").shouldHaveCount(5);
 		});
 
 		it("A search should show matching rows", () => {
@@ -247,7 +247,7 @@ describe("data-table", () => {
 		it("A search can be reset", () => {
 			mount();
 
-			cy.getByData("data-table-row").shouldHaveCount(3);
+			cy.getByData("data-table-row").shouldHaveCount(5);
 			cy.getByData("data-table-reset-search-button").shouldNotBeVisible();
 
 			cy.getByData("data-table-search").type("Aladdin");
@@ -257,7 +257,7 @@ describe("data-table", () => {
 
 			cy.getByData("data-table-reset-search-button").click();
 
-			cy.getByData("data-table-row").shouldHaveCount(3);
+			cy.getByData("data-table-row").shouldHaveCount(5);
 			cy.getByData("data-table-reset-search-button").shouldNotBeVisible();
 
 			cy.getFormField("data-table-search").shouldHaveFocus();
@@ -275,6 +275,20 @@ describe("data-table", () => {
 
 			cy.getByData("data-table-row").eq(0).getByData("data-table-cell").eq(0).shouldHaveText("Aladdin");
 			cy.getByData("data-table-row").eq(1).getByData("data-table-cell").eq(0).shouldHaveText("The Emperor's New Groove");
+		});
+
+		it("The appropriate aria-sort is added to the sorted column", () => {
+			mount();
+
+			cy.getByData("data-table-heading").eq(0).shouldNotHaveAttribute("aria-sort");
+
+			cy.getByData("data-table-sort").eq(0).click();
+
+			cy.getByData("data-table-heading").eq(0).shouldHaveAttribute("aria-sort", "ascending");
+
+			cy.getByData("data-table-sort").eq(0).click();
+
+			cy.getByData("data-table-heading").eq(0).shouldHaveAttribute("aria-sort", "descending");
 		});
 	});
 

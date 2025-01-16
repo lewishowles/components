@@ -221,6 +221,5 @@ Set the table's current search query, overriding any current search. This could 
 
 ## To do
 
-- Add aria-sort = ascending / descending when sorting.
 - Add options for turning columns on and off, and remembering those choices for the table
 - Allow selecting of columns, model of selected columns with their row data (so that you can access IDs etc)
