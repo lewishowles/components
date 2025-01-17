@@ -130,7 +130,7 @@ describe("form-field", () => {
 			});
 
 			test("should be false if a field is used in isolation", () => {
-				const wrapper = mount( { global: { provide: { "form-wrapper": { registerField: null } } } });
+				const wrapper = mount({ global: { provide: { "form-wrapper": { registerField: null } } } });
 				const vm = wrapper.vm;
 
 				expect(vm.haveParentForm).toBe(false);

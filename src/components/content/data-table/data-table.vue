@@ -38,18 +38,22 @@
 
 					<dropdown-menu v-if="showUserConfiguration" v-bind="{ align: 'end' }" class="ms-auto" data-test="data-table-display-options">
 						<template #summary>
-							<slot name="display-options-label">
-								Display options
+							<slot name="configure-label">
+								Configure
 							</slot>
 						</template>
 
-						<template v-for="({ label, value }) in tableDensityOptions" :key="value">
-							<dropdown-menu-button v-bind="{ iconStart: `icon-density-${value}`, selected: tableDensity === value }" :data-test="`data-table-density-${value}`" @click="setTableDensity(value)">
-								<slot :name="`display-option-${value}-label`">
-									{{ label }}
-								</slot>
-							</dropdown-menu-button>
-						</template>
+						<dropdown-menu-title>
+							<slot name="display-options-label">
+								Display options
+							</slot>
+						</dropdown-menu-title>
+
+						<data-table-density v-if="haveTableName" v-bind="{ name }" v-model="tableDensity">
+							<template v-for="key in tableDensityOptions" #[`display-option-${key}-label`] :key="key">
+								<slot :name="`display-option-${value}-label`" />
+							</template>
+						</data-table-density>
 					</dropdown-menu>
 				</div>
 
@@ -110,14 +114,15 @@
 </template>
 
 <script setup>
-import { computed, ref, useSlots } from "vue";
+import { computed, provide, ref, useSlots } from "vue";
 import { get, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray, sortObjectsByProperty } from "@lewishowles/helpers/array";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
-import { useStorage } from "@vueuse/core";
+
+import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
 
 const props = defineProps({
 	/**
@@ -146,8 +151,7 @@ const props = defineProps({
 	 * A unique name for this table. This will be used to store the user's
 	 * preferences for how dense the table is, for example. Without a name, this
 	 * option will not be available. The name will be used directly in
-	 * `localStorage`, prefixed with `data-table:`, so should be safe to be
-	 * viewed by users.
+	 * `localStorage`, prefixed with `data-table:`, so should be safe for users.
 	 */
 	name: {
 		type: String,
@@ -237,6 +241,8 @@ const props = defineProps({
 	},
 });
 
+provide("data-table", { setTableDensityOptions });
+
 const slots = useSlots();
 // The current search query.
 const searchQuery = ref("");
@@ -261,15 +267,12 @@ const haveCaption = computed(() => isNonEmptySlot(slots.caption));
 const haveTitle = computed(() => isNonEmptySlot(slots["table-title"]));
 // Whether this table includes an introduction.
 const haveIntroduction = computed(() => isNonEmptySlot(slots["table-introduction"]));
-// Our user-selected table density.
-const tableDensity = haveTableName.value && useStorage(`data-table:${props.name}:density`, "relaxed");
-
-// Available table densities.
-const tableDensityOptions = ref([
-	{ label: "Compact", value: "compact" },
-	{ label: "Standard", value: "standard" },
-	{ label: "Relaxed", value: "relaxed" },
-]);
+// Our user-selected table density from the fragment component.
+const tableDensity = ref(null);
+// Our available table density options, as provided by the `data-table-density`
+// sub-component. This means we can provide slots for their labels, without
+// having to know what those available densities are from this component.
+const tableDensityOptions = ref([]);
 
 // Our table spacing, based on our current density.
 const tableSpacingClasses = computed(() => {
@@ -532,26 +535,6 @@ function getColumnLabel(columnKey) {
 }
 
 /**
- * Set the table density based on user choice.
- *
- * @param  {string}  density
- *     The density setting.
- */
-function setTableDensity(density) {
-	if (!isNonEmptyString(density)) {
-		return;
-	}
-
-	const isValidDensity = tableDensityOptions.value.map(option => option.value).includes(density);
-
-	if (!isValidDensity) {
-		return;
-	}
-
-	tableDensity.value = density;
-}
-
-/**
  * Focus on the search input.
  */
 function focusSearchInput() {
@@ -645,6 +628,18 @@ function getSortIcon(columnKey) {
 	}
 
 	return "icon-arrow-down";
+}
+
+/**
+ * Update our local table density options, which allows us to provide slots to
+ * overwrite the labels, particularly useful for translation.
+ */
+function setTableDensityOptions(options) {
+	if (!isNonEmptyArray(options)) {
+		return;
+	}
+
+	tableDensityOptions.value = options;
 }
 
 defineExpose({

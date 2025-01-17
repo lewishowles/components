@@ -82,11 +82,17 @@ The original content of the cell, as provided in `data`.
 
 The content of the entire row that the cell belongs to.
 
+### `configure-label`
+
+- default: Configure
+
+The label for the "Configure" dropdown, including display options and column visibility.
+
 ### `display-options-label`
 
 - default: Display options
 
-The label for the "Display" options dropdown.
+The label for the "Display" options in the configure dropdown.
 
 ### `display-option-compact-label`
 
@@ -139,7 +145,7 @@ Any additional configuration for columns. **Note:** Any column without configura
 - type: `string`
 - default: `null`
 
-A unique name for this table. This will be used to store the user's preferences for how dense the table is, for example. Without a name, this option will not be available. The name will be used directly in `localStorage`, prefixed with `data-table:`, so should be safe to be viewed by users.
+A unique name for this table. This will be used to store the user's preferences for how dense the table is, for example. Without a name, this option will not be available. The name will be used directly in `localStorage`, prefixed with `data-table:`, so should be safe for users.
 
 ### `enableSearch`
 
@@ -222,4 +228,6 @@ Set the table's current search query, overriding any current search. This could 
 ## To do
 
 - Add options for turning columns on and off, and remembering those choices for the table
+  - When loading, determine the columns that are active based on localstorage, defaulting to all visible
+  - When updating the visibility of a column, store that in localstorage
 - Allow selecting of columns, model of selected columns with their row data (so that you can access IDs etc)

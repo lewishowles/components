@@ -4,8 +4,9 @@
 
 ### New components
 
-- [form-fieldset](/src/components/form/form-fieldset/form-fieldset.md)
-- [data-table](/src/components/content/data-table/data-table.md)
+- [`form-fieldset`](/src/components/form/form-fieldset/form-fieldset.md)
+- [`data-table`](/src/components/content/data-table/data-table.md)
+- Added a new `dropdown-menu-title` component for [`dropdown-menu`](/src/components/interaction/dropdown-menu/dropdown-menu.md).
 
 ### New icons
 
@@ -19,15 +20,15 @@
 
 ### New components
 
-- [accordion-group](/src/components/content/accordion-group/accordion-group.md)
+- [`accordion-group`](/src/components/content/accordion-group/accordion-group.md)
 
 # 0.17.0 - 2024-12-13
 
 ### New components
 
-- [breadcrumb-list](/src/components/navigation/breadcrumb-list/breadcrumb-list.md)
-- [app-pagination](/src/components/navigation/app-pagination/app-pagination.md)
-- [modal-dialog](/src/components/messaging/modal-dialog/modal-dialog.md)
+- [`breadcrumb-list`](/src/components/navigation/breadcrumb-list/breadcrumb-list.md)
+- [`app-pagination`](/src/components/navigation/app-pagination/app-pagination.md)
+- [`modal-dialog`](/src/components/messaging/modal-dialog/modal-dialog.md)
 
 # 0.16.1 - 2024-11-15
 
