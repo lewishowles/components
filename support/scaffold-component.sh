@@ -43,6 +43,7 @@ shift
 
 FOLDER_PATH=""
 PARENT_COMPONENT=""
+IS_FRAGMENT=false
 
 while [[ "$#" -gt 0 ]]; do
 	case $1 in
@@ -52,6 +53,7 @@ while [[ "$#" -gt 0 ]]; do
 			;;
 		--fragment)
 			PARENT_COMPONENT="$2"
+			IS_FRAGMENT=true
 			shift
 			;;
 		*)
@@ -85,19 +87,20 @@ PASCAL_CASE_NAME=$(echo "$COMPONENT_NAME" | awk -F- '{for(i=1;i<=NF;i++) $i=toup
 # Generate our scaffold files from templates.
 templates=(
 	"component.vue"
-	"component.md"
 	"component.cy.js"
 	"component.test.js"
-	"component-preview.vue"
 )
 
 output_files=(
 	"${COMPONENT_NAME}.vue"
-	"${COMPONENT_NAME}.md"
 	"${COMPONENT_NAME}.cy.js"
 	"${COMPONENT_NAME}.test.js"
-	"${COMPONENT_NAME}-preview.vue"
 )
+
+if [ "$IS_FRAGMENT" = false ]; then
+    templates+=("component-preview.vue" "component.md")
+    output_files+=("${COMPONENT_NAME}-preview.vue" "${COMPONENT_NAME}.md")
+fi
 
 for i in "${!templates[@]}"; do
 	TEMPLATE_FILE="$SCRIPT_DIR/templates/${templates[$i]}"
@@ -108,52 +111,54 @@ for i in "${!templates[@]}"; do
 	code -r $OUTPUT_FILE
 done
 
-# Add the new component to src/components/index.js
-# Relative to the script directory.
-cd $SCRIPT_DIR;
-INDEX_FILE="../src/components/index.js"
+if [ "$IS_FRAGMENT" = false ]; then
+	# Add the new component to src/components/index.js
+	# Relative to the script directory.
+	cd $SCRIPT_DIR;
+	INDEX_FILE="../src/components/index.js"
 
-sed -i '' "/import ConditionalWrapper/a\\
-import $PASCAL_CASE_NAME from \"./$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME.vue\";\\
-" "$INDEX_FILE"
+	sed -i '' "/import ConditionalWrapper/a\\
+	import $PASCAL_CASE_NAME from \"./$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME.vue\";\\
+	" "$INDEX_FILE"
 
-sed -i '' "/AlertMessage,/a\\
-	$PASCAL_CASE_NAME,\\
-" "$INDEX_FILE"
+	sed -i '' "/AlertMessage,/a\\
+		$PASCAL_CASE_NAME,\\
+	" "$INDEX_FILE"
 
-# Development helpers
+	# Development helpers
 
-# Add the new component to src/previews.js
-PREVIEWS_FILE="../src/previews.js"
+	# Add the new component to src/previews.js
+	PREVIEWS_FILE="../src/previews.js"
 
-sed -i '' "/import AlertMessagePreview/a\\
-import ${PASCAL_CASE_NAME}Preview from \"@/components/$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME-preview.vue\";\\
-" "$PREVIEWS_FILE"
+	sed -i '' "/import AlertMessagePreview/a\\
+	import ${PASCAL_CASE_NAME}Preview from \"@/components/$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME-preview.vue\";\\
+	" "$PREVIEWS_FILE"
 
-sed -i '' "/app.component(\"AlertMessagePreview\", AlertMessagePreview);/a\\
-		app.component(\"${PASCAL_CASE_NAME}Preview\", ${PASCAL_CASE_NAME}Preview);\\
-" "$PREVIEWS_FILE"
+	sed -i '' "/app.component(\"AlertMessagePreview\", AlertMessagePreview);/a\\
+			app.component(\"${PASCAL_CASE_NAME}Preview\", ${PASCAL_CASE_NAME}Preview);\\
+	" "$PREVIEWS_FILE"
 
-APP_FILE="../src/App.vue";
+	APP_FILE="../src/App.vue";
 
-# Add the new component to App.vue
-sed -i '' "/const previewOptions/a\\
-	{ label: \"${COMPONENT_NAME}\", value: \"${COMPONENT_NAME}-preview\" },\\
-" "$APP_FILE"
+	# Add the new component to App.vue
+	sed -i '' "/const previewOptions/a\\
+		{ label: \"${COMPONENT_NAME}\", value: \"${COMPONENT_NAME}-preview\" },\\
+	" "$APP_FILE"
 
-sed -i '' "s/const selectedPreview = ref(\"[^\"]*\")/const selectedPreview = ref(\"${COMPONENT_NAME}-preview\")/" "$APP_FILE"
-
-
+	sed -i '' "s/const selectedPreview = ref(\"[^\"]*\")/const selectedPreview = ref(\"${COMPONENT_NAME}-preview\")/" "$APP_FILE"
+fi
 
 # Print the success message
 echo -e "\nComponent ${PURPLE}$COMPONENT_NAME${RESET_COLOUR} scaffolded successfully in ${BLUE}$BASE_PATH/$COMPONENT_NAME${RESET_COLOUR}.\n"
 echo -e "${PURPLE}$COMPONENT_NAME${RESET_COLOUR}"
 echo "  ↳ $COMPONENT_NAME.vue"
-echo "  ↳ $COMPONENT_NAME.md"
-echo "  ↳ $COMPONENT_NAME-preview.vue"
 echo "  ↳ $COMPONENT_NAME.cy.js"
 echo "  ↳ $COMPONENT_NAME.test.js"
-echo "  ↳ [updated] /src/components/index.js"
-echo "  ↳ [updated] /src/previews.js"
-echo "  ↳ [updated] /src/App.vue"
 
+if [ "$IS_FRAGMENT" = false ]; then
+	echo "  ↳ $COMPONENT_NAME.md"
+    echo "  ↳ ${COMPONENT_NAME}-preview.vue"
+    echo "  ↳ [updated] /src/components/index.js"
+    echo "  ↳ [updated] /src/previews.js"
+    echo "  ↳ [updated] /src/App.vue"
+fi
