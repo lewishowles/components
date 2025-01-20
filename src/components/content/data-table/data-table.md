@@ -112,6 +112,12 @@ The label for the "Standard" display option.
 
 The label for the "Relaxed" display option.
 
+### `column-options-label`
+
+- default: Columns
+
+The label for the "Column" options in the configure dropdown.
+
 ## Props
 
 ### `data`

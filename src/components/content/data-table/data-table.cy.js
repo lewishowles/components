@@ -79,7 +79,7 @@ describe("data-table", () => {
 
 			mount({ slots: { "search-label": label } });
 
-			cy.getByData("data-table-search").getByData("form-label").shouldHaveText(label);
+			cy.getByData("data-table-search-input").getByData("form-label").shouldHaveText(label);
 		});
 
 		it("A placeholder can be provided to the search input", () => {
@@ -87,7 +87,7 @@ describe("data-table", () => {
 
 			mount({ searchPlaceholder: placeholder });
 
-			cy.getFormField("data-table-search").shouldHaveAttribute("placeholder", placeholder);
+			cy.getFormField("data-table-search-input").shouldHaveAttribute("placeholder", placeholder);
 		});
 
 		it("A label can be provided for the reset search button", () => {
@@ -95,7 +95,7 @@ describe("data-table", () => {
 
 			mount({ slots: { "search-label": label } });
 
-			cy.getByData("data-table-search").getByData("form-label").shouldHaveText(label);
+			cy.getByData("data-table-search-input").getByData("form-label").shouldHaveText(label);
 		});
 	});
 
@@ -218,7 +218,7 @@ describe("data-table", () => {
 		it("A search should show matching rows", () => {
 			mount();
 
-			cy.getByData("data-table-search").type("Aladdin");
+			cy.getByData("data-table-search-input").type("Aladdin");
 
 			cy.getByData("data-table-row").shouldHaveCount(1);
 		});
@@ -226,7 +226,7 @@ describe("data-table", () => {
 		it("A search with no results should show the no results message", () => {
 			mount();
 
-			cy.getByData("data-table-search").type("Not found");
+			cy.getByData("data-table-search-input").type("Not found");
 
 			cy.getByData("data-table-no-results").shouldBeVisible();
 		});
@@ -239,7 +239,7 @@ describe("data-table", () => {
 				},
 			});
 
-			cy.getByData("data-table-search").type("1994");
+			cy.getByData("data-table-search-input").type("1994");
 
 			cy.getByData("data-table-no-results").shouldBeVisible();
 		});
@@ -248,19 +248,19 @@ describe("data-table", () => {
 			mount();
 
 			cy.getByData("data-table-row").shouldHaveCount(5);
-			cy.getByData("data-table-reset-search-button").shouldNotBeVisible();
+			cy.getByData("data-table-search-reset-button").shouldNotBeVisible();
 
-			cy.getByData("data-table-search").type("Aladdin");
+			cy.getByData("data-table-search-input").type("Aladdin");
 
 			cy.getByData("data-table-row").shouldHaveCount(1);
-			cy.getByData("data-table-reset-search-button").shouldBeVisible();
+			cy.getByData("data-table-search-reset-button").shouldBeVisible();
 
-			cy.getByData("data-table-reset-search-button").click();
+			cy.getByData("data-table-search-reset-button").click();
 
 			cy.getByData("data-table-row").shouldHaveCount(5);
-			cy.getByData("data-table-reset-search-button").shouldNotBeVisible();
+			cy.getByData("data-table-search-reset-button").shouldNotBeVisible();
 
-			cy.getFormField("data-table-search").shouldHaveFocus();
+			cy.getFormField("data-table-search-input").shouldHaveFocus();
 		});
 	});
 

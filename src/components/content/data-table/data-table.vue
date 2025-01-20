@@ -17,24 +17,14 @@
 
 			<div v-if="haveData" class="flex flex-col gap-6">
 				<div v-if="enableSearch || showUserConfiguration" class="flex items-end gap-4">
-					<form-input
-						v-if="enableSearch"
-						ref="searchQueryInput"
-						v-bind="{ placeholder: searchPlaceholder }"
-						v-model="searchQuery"
-						class="w-full max-w-sm"
-						data-test="data-table-search"
-					>
-						<slot name="search-label">
-							Search
-						</slot>
-					</form-input>
-
-					<ui-button v-show="haveSearchQuery" class="button--muted" data-test="data-table-reset-search-button" @click="resetSearchQuery">
-						<slot name="reset-search-label">
-							Reset search
-						</slot>
-					</ui-button>
+					<data-table-search v-if="enableSearch" ref="dataTableSearchComponent" v-model="searchQuery" v-bind="{ searchPlaceholder }" class="w-full">
+						<template #search-label>
+							<slot name="search-label" />
+						</template>
+						<template #reset-search-label>
+							<slot name="reset-search-label" />
+						</template>
+					</data-table-search>
 
 					<dropdown-menu v-if="showUserConfiguration" v-bind="{ align: 'end' }" class="ms-auto" data-test="data-table-display-options">
 						<template #summary>
@@ -123,6 +113,7 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
 
 import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
+import DataTableSearch from "./fragments/data-table-search/data-table-search.vue";
 
 const props = defineProps({
 	/**
@@ -244,10 +235,10 @@ const props = defineProps({
 provide("data-table", { setTableDensityOptions });
 
 const slots = useSlots();
-// The current search query.
+// A reference to the search component, allowing us to focus it when necessary.
+const dataTableSearchComponent = ref(null);
+// The current search query, as provided by the search sub-component.
 const searchQuery = ref("");
-// The search query input, allowing us to focus it when necessary.
-const searchQueryInput = ref(null);
 // Whether we have a search term, and thus whether the user is currently
 // searching.
 const haveSearchQuery = computed(() => isNonEmptyString(searchQuery.value));
@@ -535,13 +526,6 @@ function getColumnLabel(columnKey) {
 }
 
 /**
- * Focus on the search input.
- */
-function focusSearchInput() {
-	runComponentMethod(searchQueryInput.value, "triggerFocus");
-}
-
-/**
  * Set the search query to the provided value.
  *
  * @param  {string}  value
@@ -554,16 +538,7 @@ function setSearchQuery(value) {
 
 	searchQuery.value = value;
 
-	focusSearchInput();
-}
-
-/**
- * Clear any current search query.
- */
-function resetSearchQuery() {
-	searchQuery.value = "";
-
-	focusSearchInput();
+	runComponentMethod(dataTableSearchComponent.value, "triggerFocus");
 }
 
 /**

@@ -524,19 +524,6 @@ describe("data-table", () => {
 			});
 		});
 
-		describe("resetSearchQuery", () => {
-			test("should reset the current search query", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				vm.searchQuery = "toy";
-
-				vm.resetSearchQuery();
-
-				expect(vm.searchQuery).toBe("");
-			});
-		});
-
 		describe("sortColumn", () => {
 			const columns = { title: { label: "Title" }, release_year: { label: "Release year" } };
 
