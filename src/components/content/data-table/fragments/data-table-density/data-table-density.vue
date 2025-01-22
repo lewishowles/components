@@ -11,29 +11,14 @@
 </template>
 
 <script setup>
-import { computed, inject, ref } from "vue";
+import { inject, ref } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useStorage } from "@vueuse/core";
 
-const props = defineProps({
-	/**
-	 * A unique name for this table. This will be used to store the user's
-	 * preferences for how dense the table is. Without a name, this option will
-	 * not be available. The name will be used directly in `localStorage`,
-	 * prefixed with `data-table:`, so should be safe for users.
-	 */
-	name: {
-		type: String,
-		default: null,
-	},
-});
-
-const { setTableDensityOptions } = inject("data-table");
-// Whether a name has been provided for this table.
-const haveTableName = computed(() => isNonEmptyString(props.name));
+const { tableName, haveTableName, updateTableDensityOptions } = inject("data-table");
 // The user selected density. We know we will have a table name because this
-// component isn't activated without it, but just in case we check anyway.
-const userDensity = haveTableName.value && useStorage(`data-table:${props.name}:density`, "relaxed");
+// component isn't activated without it, but we check it just in case.
+const userDensity = haveTableName.value && useStorage(`data-table:${tableName.value}:density`, "relaxed");
 
 // Our user-selected table density.
 const tableDensity = defineModel({
@@ -49,10 +34,10 @@ const tableDensityOptions = ref([
 
 // Notify the parent of the available densities, which means it can make the
 // appropriate slots available for users.
-setTableDensityOptions(tableDensityOptions.value.map(density => density.value));
+updateTableDensityOptions(tableDensityOptions.value.map(density => density.value));
 
-// Initialise our user value for table density, which itself defaults to
-// "relaxed".
+// Initialise our model value for table density based on our determined initial
+// value.
 if (haveTableName.value) {
 	tableDensity.value = userDensity.value;
 };

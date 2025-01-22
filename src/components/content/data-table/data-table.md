@@ -2,6 +2,8 @@
 
 `data-table` can display complex data with minimal effort. From hiding columns to controlling their order, managing data is simple and means that the minimum amount of data manipulation needs to be done beforehand.
 
+When it comes to whether to format data before passing it to the table, versus formatting it using cell templates, the latter is recommended. If the data is passed to the table in a more raw form, it may be easier for a table to be sortable out of the box (for example, with integers versus formatted currency strings). You then have ultimate control over formatting for each cell, in a way that's more flexible than passing pre-formatted data through.
+
 ## Slots
 
 ### `table-title`
@@ -112,11 +114,11 @@ The label for the "Standard" display option.
 
 The label for the "Relaxed" display option.
 
-### `column-options-label`
+### `column-visibility-label`
 
 - default: Columns
 
-The label for the "Column" options in the configure dropdown.
+The label for the "Columns" options in the configure dropdown.
 
 ## Props
 

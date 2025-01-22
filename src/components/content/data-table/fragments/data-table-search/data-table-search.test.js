@@ -2,7 +2,8 @@ import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vitest";
 import DataTableSearch from "./data-table-search.vue";
 
-const mount = createMount(DataTableSearch);
+const global = { provide: { "data-table": { searchPlaceholder: "Search movies by title or year of release" } } };
+const mount = createMount(DataTableSearch, { global });
 
 describe("data-table-search", () => {
 	describe("Initialisation", () => {

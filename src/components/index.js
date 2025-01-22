@@ -9,10 +9,11 @@ import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrappe
 import DataTable from "./content/data-table/data-table.vue";
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import DropdownMenu from "./interaction/dropdown-menu/dropdown-menu.vue";
-import DropdownMenuButton from "./interaction/dropdown-menu/fragments/dropdown-menu-button.vue";
-import DropdownMenuDivider from "./interaction/dropdown-menu/fragments/dropdown-menu-divider.vue";
-import DropdownMenuLink from "./interaction/dropdown-menu/fragments/dropdown-menu-link.vue";
-import DropdownMenuTitle from "./interaction/dropdown-menu/fragments/dropdown-menu-title.vue";
+import DropdownMenuButton from "./interaction/dropdown-menu/fragments/dropdown-menu-button/dropdown-menu-button.vue";
+import DropdownMenuCheckbox from "./interaction/dropdown-menu/fragments/dropdown-menu-checkbox/dropdown-menu-checkbox.vue";
+import DropdownMenuDivider from "./interaction/dropdown-menu/fragments/dropdown-menu-divider/dropdown-menu-divider.vue";
+import DropdownMenuLink from "./interaction/dropdown-menu/fragments/dropdown-menu-link/dropdown-menu-link.vue";
+import DropdownMenuTitle from "./interaction/dropdown-menu/fragments/dropdown-menu-title/dropdown-menu-title.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
 import FormCheckbox from "./form/form-checkbox/form-checkbox.vue";
 import FormField from "./form/form-field/form-field.vue";
@@ -88,6 +89,7 @@ export default {
 	DonutChart,
 	DropdownMenu,
 	DropdownMenuButton,
+	DropdownMenuCheckbox,
 	DropdownMenuDivider,
 	DropdownMenuLink,
 	DropdownMenuTitle,

@@ -1,9 +1,11 @@
 import DataTableDensity from "./data-table-density.vue";
 import { createMount } from "@cypress/support/mount";
+import { ref } from "vue";
 
-const defaultProps = { name: "sample-table" };
-const global = { provide: { "data-table": { setTableDensityOptions: () => {} } } };
-const mount = createMount(DataTableDensity, { props: defaultProps, global });
+const tableName = ref("sample-table");
+const haveTableName = ref(true);
+const global = { provide: { "data-table": { tableName, haveTableName, updateTableDensityOptions: () => {} } } };
+const mount = createMount(DataTableDensity, { global });
 
 describe("data-table-density", () => {
 	afterEach(() => {
@@ -38,7 +40,7 @@ describe("data-table-density", () => {
 		cy.getByData("data-table-density-compact").click();
 		cy.getByData("data-table-density-compact").shouldHaveClass("text-purple-800");
 
-		cy.getByData("data-table-density-compact").should(() => {
+		cy.getByData("data-table-density").then(() => {
 			expect(localStorage.getItem("data-table:sample-table:density")).to.equal("compact");
 		});
 	});

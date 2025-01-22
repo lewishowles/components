@@ -17,7 +17,7 @@
 
 			<div v-if="haveData" class="flex flex-col gap-6">
 				<div v-if="enableSearch || showUserConfiguration" class="flex items-end gap-4">
-					<data-table-search v-if="enableSearch" ref="dataTableSearchComponent" v-model="searchQuery" v-bind="{ searchPlaceholder }" class="w-full">
+					<data-table-search v-if="enableSearch" ref="dataTableSearchComponent" v-model="searchQuery" class="w-full">
 						<template #search-label>
 							<slot name="search-label" />
 						</template>
@@ -33,17 +33,27 @@
 							</slot>
 						</template>
 
-						<dropdown-menu-title>
-							<slot name="display-options-label">
-								Display options
-							</slot>
-						</dropdown-menu-title>
+						<template v-if="haveTableName">
+							<dropdown-menu-title>
+								<slot name="display-options-label">
+									Display options
+								</slot>
+							</dropdown-menu-title>
 
-						<data-table-density v-if="haveTableName" v-bind="{ name }" v-model="tableDensity">
-							<template v-for="key in tableDensityOptions" #[`display-option-${key}-label`] :key="key">
-								<slot :name="`display-option-${value}-label`" />
-							</template>
-						</data-table-density>
+							<data-table-density v-model="tableDensity">
+								<template v-for="key in tableDensityOptions" #[`display-option-${key}-label`] :key="key">
+									<slot :name="`display-option-${key}-label`" />
+								</template>
+							</data-table-density>
+
+							<dropdown-menu-title>
+								<slot name="column-visibility-label">
+									Columns
+								</slot>
+							</dropdown-menu-title>
+
+							<data-table-columns v-model="columnVisibility" />
+						</template>
 					</dropdown-menu>
 				</div>
 
@@ -67,7 +77,7 @@
 					<thead>
 						<tr class="border-b border-grey-300">
 							<th
-								v-for="(column, columnKey) in columnDefinitions"
+								v-for="(column, columnKey) in visibleColumnDefinitions"
 								:key="columnKey"
 								v-bind="{ 'aria-sort': getColumnSortDirection(columnKey) }"
 								class="py-4"
@@ -84,7 +94,7 @@
 					</thead>
 					<tbody>
 						<tr v-for="row in sortedRows" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
-							<td v-for="(column, columnKey) in columnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
+							<td v-for="(column, columnKey) in visibleColumnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
 								<slot :name="columnKey" v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }">
 									{{ getRowContent(row, columnKey) }}
 								</slot>
@@ -112,6 +122,7 @@ import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
 
+import DataTableColumns from "./fragments/data-table-columns/data-table-columns.vue";
 import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
 import DataTableSearch from "./fragments/data-table-search/data-table-search.vue";
 
@@ -232,8 +243,6 @@ const props = defineProps({
 	},
 });
 
-provide("data-table", { setTableDensityOptions });
-
 const slots = useSlots();
 // A reference to the search component, allowing us to focus it when necessary.
 const dataTableSearchComponent = ref(null);
@@ -264,6 +273,8 @@ const tableDensity = ref(null);
 // sub-component. This means we can provide slots for their labels, without
 // having to know what those available densities are from this component.
 const tableDensityOptions = ref([]);
+// Our user-selected column visibility from the fragment component.
+const columnVisibility = ref({});
 
 // Our table spacing, based on our current density.
 const tableSpacingClasses = computed(() => {
@@ -275,6 +286,69 @@ const tableSpacingClasses = computed(() => {
 		default:
 			return "py-4";
 	}
+});
+
+// A list of columns to display in the table, taking into account validation,
+// and containing the relevant data. We base these columns on those provided by
+// the user, which means that any column not configured will not be displayed by
+// default.
+const columnDefinitions = computed(() => {
+	if (!haveData.value || !isNonEmptyObject(props.columns)) {
+		return {};
+	}
+
+	const columns = keys(props.columns).reduce((columns, columnKey) => {
+		const userConfiguration = get(props.columns, columnKey) || {};
+
+		// If this column is hidden by configuration, we don't add it at all.
+		const hiddenByConfiguration = get(userConfiguration, "hidden") === true;
+
+		if (hiddenByConfiguration) {
+			return columns;
+		}
+
+		// However, if this column is hidden by the user's preferences, we want
+		// to add it (as that preference may change, and we want to show the
+		// checkbox), but we want to mark it as hidden.
+
+		const hiddenByPreference = get(columnVisibility.value, columnKey) === false;
+
+		columns[columnKey] = {
+			label: columnKey,
+			first: false,
+			last: false,
+			sortable: true,
+			visible: !hiddenByPreference,
+			...userConfiguration,
+		};
+
+		return columns;
+	}, {});
+
+	// After we determine which columns are present, we need to determine which
+	// column is first and which is last, as columns may have been removed or
+	// re-ordered by configuration.
+	const columnKeys = keys(columns);
+
+	if (columnKeys.length > 0) {
+		columns[columnKeys[0]].first = true;
+		columns[columnKeys[columnKeys.length - 1]].last = true;
+	}
+
+	return columns;
+});
+
+// Our column definitions, limited to those that are visible.
+const visibleColumnDefinitions = computed(() => {
+	return keys(columnDefinitions.value).reduce((columns, columnKey) => {
+		const column = columnDefinitions.value[columnKey];
+
+		if (column.visible) {
+			columns[columnKey] = column;
+		}
+
+		return columns;
+	}, {});
 });
 
 // Transform the provided data into something more suitable for display in our
@@ -382,46 +456,6 @@ const sortedRows = computed(() => {
 // the table, but if the user is performing a search, there are results for that
 // search term.
 const haveDataToDisplay = computed(() => isNonEmptyArray(filteredRows.value));
-
-// A list of columns to display in the table, taking into account validation,
-// and containing the relevant data. We base these columns on those provided by
-// the user, which means that any column not configured will not be displayed by
-// default.
-const columnDefinitions = computed(() => {
-	if (!haveData.value || !isNonEmptyObject(props.columns)) {
-		return {};
-	}
-
-	const columns = keys(props.columns).reduce((columns, columnKey) => {
-		const userConfiguration = get(props.columns, columnKey) || {};
-
-		if (get(userConfiguration, "hidden") === true) {
-			return columns;
-		}
-
-		columns[columnKey] = {
-			label: columnKey,
-			first: false,
-			last: false,
-			sortable: true,
-			...userConfiguration,
-		};
-
-		return columns;
-	}, {});
-
-	// After we determine which columns are present, we need to determine which
-	// column is first and which is last, as columns may have been removed or
-	// re-ordered by configuration.
-	const columnKeys = keys(columns);
-
-	if (columnKeys.length > 0) {
-		columns[columnKeys[0]].first = true;
-		columns[columnKeys[columnKeys.length - 1]].last = true;
-	}
-
-	return columns;
-});
 
 /**
  * Get the content for the given columnKey in the given row. This partially
@@ -609,13 +643,21 @@ function getSortIcon(columnKey) {
  * Update our local table density options, which allows us to provide slots to
  * overwrite the labels, particularly useful for translation.
  */
-function setTableDensityOptions(options) {
+function updateTableDensityOptions(options) {
 	if (!isNonEmptyArray(options)) {
 		return;
 	}
 
 	tableDensityOptions.value = options;
 }
+
+provide("data-table", {
+	columnDefinitions,
+	haveTableName,
+	searchPlaceholder: ref(props.searchPlaceholder),
+	tableName: ref(props.name),
+	updateTableDensityOptions,
+});
 
 defineExpose({
 	setSearchQuery,

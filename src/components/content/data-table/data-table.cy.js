@@ -301,17 +301,76 @@ describe("data-table", () => {
 			cy.getByData("data-table-cell").eq(0).shouldHaveClass("py-4");
 		});
 
-		it("Table density can be selected", () => {
-			mount({ name: nanoid() });
+		describe("Table density", () => {
+			it("Table density can be selected", () => {
+				mount({ name: nanoid() });
 
-			cy.getByData("data-table-display-options").shouldBeVisible();
+				cy.getByData("data-table-cell").eq(0).shouldHaveClass("py-4");
 
-			cy.getByData("data-table-cell").eq(0).shouldHaveClass("py-4");
+				openUserConfiguration();
 
-			cy.getByData("data-table-display-options-summary").click();
-			cy.getByData("data-table-density-compact").click();
+				cy.getByData("data-table-density-compact").click();
 
-			cy.getByData("data-table-cell").eq(0).shouldHaveClass("py-2");
+				cy.getByData("data-table-cell").eq(0).shouldHaveClass("py-2");
+			});
+		});
+
+		describe("Column visibility", () => {
+			it("All columns are visible by default", () => {
+				mount({ name: nanoid() });
+
+				cy.getByData("data-table-heading").shouldHaveCount(3);
+
+				cy.getByData("data-table-display-options").shouldBeVisible();
+
+				openUserConfiguration();
+
+				cy.getByData("data-table-columns-checkbox").shouldHaveCount(3);
+
+				cy.getByData("data-table-columns-checkbox").eq(0).getFormField().should("be.checked");
+				cy.getByData("data-table-columns-checkbox").eq(1).getFormField().should("be.checked");
+				cy.getByData("data-table-columns-checkbox").eq(2).getFormField().should("be.checked");
+
+				cy.getByData("data-table-columns-checkbox").eq(0).getFormField().click();
+				cy.getByData("data-table-columns-checkbox").eq(0).getFormField().should("not.be.checked");
+
+				cy.getByData("data-table-heading").shouldHaveCount(2);
+			});
+
+			it("Custom visibility is retrieved from localStorage", () => {
+				localStorage.setItem("data-table:sample-table:columns", "{\"title\":true,\"release_year\":false,\"box_office\":false}");
+
+				mount({ name: "sample-table" });
+
+				cy.getByData("data-table-heading").shouldHaveCount(1);
+
+				cy.getByData("data-table-display-options").shouldBeVisible();
+
+				openUserConfiguration();
+
+				cy.getByData("data-table-columns-checkbox").shouldHaveCount(3);
+
+				cy.getByData("data-table-columns-checkbox").eq(0).getFormField().should("be.checked");
+				cy.getByData("data-table-columns-checkbox").eq(1).getFormField().should("not.be.checked");
+				cy.getByData("data-table-columns-checkbox").eq(2).getFormField().should("not.be.checked");
+
+				cy.getByData("data-table-columns-checkbox").eq(1).getFormField().click();
+				cy.getByData("data-table-columns-checkbox").eq(1).getFormField().should("be.checked");
+
+				cy.getByData("data-table-heading").shouldHaveCount(2);
+
+				cy.getByData("data-table").then(() => {
+					localStorage.removeItem("data-table:sample-table:columns");
+				});
+			});
 		});
 	});
 });
+
+function openUserConfiguration() {
+	cy.getByData("data-table-display-options").shouldBeVisible();
+
+	cy.getByData("data-table-display-options-summary").click();
+
+	cy.getByData("data-table-display-options-content").shouldBeVisible();
+}

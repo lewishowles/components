@@ -9,7 +9,7 @@
 				Simple table
 			</template>
 
-			<data-table v-bind="{ data, columns }" />
+			<data-table v-bind="{ data, columns, searchPlaceholder: 'Find films by title or year of release' }" />
 		</preview-section>
 
 		<preview-section>

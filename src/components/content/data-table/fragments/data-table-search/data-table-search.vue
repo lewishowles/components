@@ -21,19 +21,11 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, inject, ref } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 
-defineProps({
-	/**
-	 * The placeholder to apply to the search input.
-	 */
-	searchPlaceholder: {
-		type: String,
-		default: null,
-	},
-});
+const { searchPlaceholder } = inject("data-table");
 
 // The current search query.
 const searchQuery = defineModel({

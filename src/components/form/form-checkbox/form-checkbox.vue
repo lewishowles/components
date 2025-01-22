@@ -80,7 +80,7 @@ const props = defineProps({
 const slots = useSlots();
 
 const model = defineModel({
-	type: String,
+	type: Boolean,
 });
 
 // A reference to the input, which allows us to trigger focus on it.
