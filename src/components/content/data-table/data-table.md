@@ -235,7 +235,5 @@ Set the table's current search query, overriding any current search. This could 
 
 ## To do
 
-- Add options for turning columns on and off, and remembering those choices for the table
-  - When loading, determine the columns that are active based on localstorage, defaulting to all visible
-  - When updating the visibility of a column, store that in localstorage
+- Allow pagination of rows
 - Allow selecting of columns, model of selected columns with their row data (so that you can access IDs etc)
