@@ -92,8 +92,12 @@ const emit = defineEmits(["@update:page"]);
 const haveLabel = computed(() => isNonEmptyString(props.label));
 // The number of items that will be displayed per page.
 const itemsPerPage = ref(10);
+
 // The current page we're looking at.
-const currentPage = ref(1);
+const currentPage = defineModel({
+	type: String,
+	default: 1,
+});
 
 // The number of pages, based on the total number of items and the items
 // displayed per page.
