@@ -95,7 +95,7 @@ const itemsPerPage = ref(10);
 
 // The current page we're looking at.
 const currentPage = defineModel({
-	type: String,
+	type: Number,
 	default: 1,
 });
 

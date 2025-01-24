@@ -93,7 +93,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="row in sortedRows" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
+						<tr v-for="row in paginatedRows" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
 							<td v-for="(column, columnKey) in visibleColumnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
 								<slot :name="columnKey" v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }">
 									{{ getRowContent(row, columnKey) }}
@@ -103,7 +103,7 @@
 					</tbody>
 				</table>
 
-				<data-table-pagination v-show="haveDataToDisplay" v-bind="{ count: rowCount }">
+				<app-pagination v-show="enablePagination && haveDataToDisplay" v-model="currentPage" v-bind="{ count: rowCount }">
 					<template #page-number-page="{ page }">
 						<slot name="page-number-label" v-bind="{ page }" />
 					</template>
@@ -114,7 +114,7 @@
 					<template #page-number-label>
 						<slot name="page-number-label" />
 					</template>
-				</data-table-pagination>
+				</app-pagination>
 
 				<alert-message v-show="!haveDataToDisplay" data-test="data-table-no-results">
 					<slot name="no-results-message" v-bind="{ searchQuery }">
@@ -137,7 +137,6 @@ import { nanoid } from "nanoid";
 
 import DataTableColumns from "./fragments/data-table-columns/data-table-columns.vue";
 import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
-import DataTablePagination from "./fragments/data-table-pagination/data-table-pagination.vue";
 import DataTableSearch from "./fragments/data-table-search/data-table-search.vue";
 
 const props = defineProps({
@@ -189,6 +188,15 @@ const props = defineProps({
 	 * sortable (the default) can be ordered ascending or descending.
 	 */
 	enableSort: {
+		type: Boolean,
+		default: true,
+	},
+
+	/**
+	 * Whether to enable pagination. When enabled, visible rows are limited to
+	 * those on the currently selected page.
+	 */
+	enablePagination: {
 		type: Boolean,
 		default: true,
 	},
@@ -270,6 +278,8 @@ const haveSearchQuery = computed(() => isNonEmptyString(searchQuery.value));
 const sortedColumn = ref(null);
 // The direction to sort the sorted column. 1 for ascending, -1 for descending.
 const sortDirection = ref(1);
+// The current page of results being viewed.
+const currentPage = ref(1);
 // Whether a name has been provided for this table.
 const haveTableName = computed(() => isNonEmptyString(props.name));
 // Whether to show the "display" options to the user, which require a name for
@@ -464,6 +474,18 @@ const sortedRows = computed(() => {
 	}
 
 	return sortObjectsByProperty(filteredRows.value, `content.${sortedColumn.value}.configuration.sortable`, { ascending: sortDirection.value === 1 });
+});
+
+// Our paginated rows, based on the current page.
+const paginatedRows = computed(() => {
+	if (!props.enablePagination) {
+		return sortedRows.value;
+	}
+
+	const start = (currentPage.value - 1) * 10;
+	const end = start + 10;
+
+	return sortedRows.value.slice(start, end);
 });
 
 // Whether we have any data to display. That is, not only do we have data for

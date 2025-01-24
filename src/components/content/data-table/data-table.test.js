@@ -250,6 +250,47 @@ describe("data-table", () => {
 			});
 		});
 
+		describe("paginatedRows", () => {
+			test("should display a single page of items when more than a single page are available", () => {
+				const data = Array.from({ length: 15 }, (_, i) => ({
+					id: `${i + 1}`,
+					title: `Title ${i + 1}`,
+					release_year: `${1990 + i}`,
+				}));
+
+				const wrapper = mount({ data });
+				const vm = wrapper.vm;
+
+				expect(vm.paginatedRows.length).toBe(10);
+				expect(vm.paginatedRows[0]).toEqual(vm.sortedRows[0]);
+
+				vm.currentPage = 2;
+
+				expect(vm.paginatedRows.length).toBe(5);
+				expect(vm.paginatedRows[0]).toEqual(vm.sortedRows[10]);
+			});
+
+			test("should display all items when fewer than a single page are available", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.paginatedRows.length).toBe(1);
+			});
+
+			test("should show all rows if pagination is not enabled", () => {
+				const data = Array.from({ length: 15 }, (_, i) => ({
+					id: `${i + 1}`,
+					title: `Title ${i + 1}`,
+					release_year: `${1990 + i}`,
+				}));
+
+				const wrapper = mount({ data, enablePagination: false });
+				const vm = wrapper.vm;
+
+				expect(vm.paginatedRows.length).toBe(15);
+			});
+		});
+
 		describe("columnDefinitions", () => {
 			test("should handle there being no data present", () => {
 				const wrapper = mount({ data: [] });
