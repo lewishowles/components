@@ -235,5 +235,4 @@ Set the table's current search query, overriding any current search. This could 
 
 ## To do
 
-- Allow pagination of rows
 - Allow selecting of columns, model of selected columns with their row data (so that you can access IDs etc)

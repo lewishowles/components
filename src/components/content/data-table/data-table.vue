@@ -103,6 +103,19 @@
 					</tbody>
 				</table>
 
+				<data-table-pagination v-show="haveDataToDisplay" v-bind="{ count: rowCount }">
+					<template #page-number-page="{ page }">
+						<slot name="page-number-label" v-bind="{ page }" />
+					</template>
+
+					<template #next-page-label>
+						<slot name="next-page-label" />
+					</template>
+					<template #page-number-label>
+						<slot name="page-number-label" />
+					</template>
+				</data-table-pagination>
+
 				<alert-message v-show="!haveDataToDisplay" data-test="data-table-no-results">
 					<slot name="no-results-message" v-bind="{ searchQuery }">
 						No results could be found for term <span class="font-bold">"{{ searchQuery }}"</span>.
@@ -114,16 +127,17 @@
 </template>
 
 <script setup>
+import { arrayLength, isNonEmptyArray, sortObjectsByProperty } from "@lewishowles/helpers/array";
 import { computed, provide, ref, useSlots } from "vue";
 import { get, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
-import { isNonEmptyArray, sortObjectsByProperty } from "@lewishowles/helpers/array";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
 
 import DataTableColumns from "./fragments/data-table-columns/data-table-columns.vue";
 import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
+import DataTablePagination from "./fragments/data-table-pagination/data-table-pagination.vue";
 import DataTableSearch from "./fragments/data-table-search/data-table-search.vue";
 
 const props = defineProps({
@@ -456,6 +470,9 @@ const sortedRows = computed(() => {
 // the table, but if the user is performing a search, there are results for that
 // search term.
 const haveDataToDisplay = computed(() => isNonEmptyArray(filteredRows.value));
+
+// The count of rows currently included in the table.
+const rowCount = computed(() => arrayLength(filteredRows.value));
 
 /**
  * Get the content for the given columnKey in the given row. This partially
