@@ -63,3 +63,8 @@ Updated when the user selects a different page to display, containing a `page` p
 ```html
 <app-pagination v-bind="{ count: 100 }" />
 ```
+
+## To do
+
+- Add a "Showing items x-y" display
+- Allow overriding "items" with a more appropriate verb

@@ -27,8 +27,8 @@
 				<li v-if="page === pageCount && displayAfterSummary" class="button" data-test="app-pagination-summary">
 					⋯
 				</li>
-				<li data-test="app-pagination-page">
-					<button class="button underline hocus:decoration-2" :class="{ 'hocus:bg-grey-200 hocus:text-grey-700': page !== currentPage, 'bg-purple-800 text-white': page === currentPage }" @click="currentPage = page">
+				<li data-test="app-pagination-page" v-bind="{ 'aria-current': page === currentPage ? 'page' : null }">
+					<button class="button underline hocus:decoration-2" :class="{ 'hocus:bg-grey-200 hocus:text-grey-700': page !== currentPage, 'bg-purple-800 text-white': page === currentPage }" data-test="app-pagination-page-button" @click="currentPage = page">
 						<span class="sr-only">
 							<slot name="page-number-label" v-bind="{ page }">
 								Page {{ page }}

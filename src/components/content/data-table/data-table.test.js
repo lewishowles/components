@@ -2,6 +2,7 @@ import DataTable from "./data-table.vue";
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vitest";
 import { get } from "@lewishowles/helpers/object";
+import { nextTick } from "vue";
 
 const sampleRow = { id: "123", title: "Toy Story", release_year: "1995" };
 const defaultProps = { data: [sampleRow] };
@@ -251,23 +252,18 @@ describe("data-table", () => {
 		});
 
 		describe("paginatedRows", () => {
-			test("should display a single page of items when more than a single page are available", () => {
+			test("should display a single page of items when more than a single page are available", async() => {
 				const data = Array.from({ length: 15 }, (_, i) => ({
-					id: `${i + 1}`,
+					id: i + 1,
 					title: `Title ${i + 1}`,
-					release_year: `${1990 + i}`,
+					release_year: 1990 + i,
 				}));
 
 				const wrapper = mount({ data });
 				const vm = wrapper.vm;
 
 				expect(vm.paginatedRows.length).toBe(10);
-				expect(vm.paginatedRows[0]).toEqual(vm.sortedRows[0]);
-
-				vm.currentPage = 2;
-
-				expect(vm.paginatedRows.length).toBe(5);
-				expect(vm.paginatedRows[0]).toEqual(vm.sortedRows[10]);
+				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 1 }));
 			});
 
 			test("should display all items when fewer than a single page are available", () => {
@@ -279,15 +275,79 @@ describe("data-table", () => {
 
 			test("should show all rows if pagination is not enabled", () => {
 				const data = Array.from({ length: 15 }, (_, i) => ({
-					id: `${i + 1}`,
+					id: i + 1,
 					title: `Title ${i + 1}`,
-					release_year: `${1990 + i}`,
+					release_year: 1990 + i,
 				}));
 
 				const wrapper = mount({ data, enablePagination: false });
 				const vm = wrapper.vm;
 
 				expect(vm.paginatedRows.length).toBe(15);
+			});
+
+			test("should re-calculate if sortedColumn is changed", async() => {
+				const data = Array.from({ length: 15 }, (_, i) => ({
+					id: i + 1,
+					title: `Title ${i + 1}`,
+					release_year: 2000 - i,
+				}));
+
+				const wrapper = mount({ data });
+				const vm = wrapper.vm;
+
+				vm.sortedColumn = "title";
+
+				await nextTick();
+
+				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 1 }));
+
+				vm.sortedColumn = "release_year";
+
+				await nextTick();
+
+				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 15 }));
+			});
+
+			test("should re-calculate if sortDirection is changed", async() => {
+				const data = Array.from({ length: 15 }, (_, i) => ({
+					id: i + 1,
+					title: `Title ${i + 1}`,
+					release_year: 2000 - i,
+				}));
+
+				const wrapper = mount({ data });
+				const vm = wrapper.vm;
+
+				vm.sortedColumn = "title";
+
+				await nextTick();
+
+				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 1 }));
+
+				vm.sortedColumn = "release_year";
+
+				await nextTick();
+
+				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 15 }));
+			});
+
+			test("should re-calculate if currentPage is changed", async() => {
+				const data = Array.from({ length: 15 }, (_, i) => ({
+					id: i + 1,
+					title: `Title ${i + 1}`,
+					release_year: 2000 - i,
+				}));
+
+				const wrapper = mount({ data });
+				const vm = wrapper.vm;
+
+				vm.currentPage = 2;
+
+				await nextTick();
+
+				expect(vm.paginatedRows.length).toBe(5);
+				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 11 }));
 			});
 		});
 

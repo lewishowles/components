@@ -235,4 +235,5 @@ Set the table's current search query, overriding any current search. This could 
 
 ## To do
 
+- Allow overriding app-pagination "items" word with something more appropriate
 - Allow selecting of columns, model of selected columns with their row data (so that you can access IDs etc)

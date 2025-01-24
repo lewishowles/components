@@ -103,7 +103,7 @@
 					</tbody>
 				</table>
 
-				<app-pagination v-show="enablePagination && haveDataToDisplay" v-model="currentPage" v-bind="{ count: rowCount }">
+				<app-pagination v-if="enablePagination" v-show="haveDataToDisplay" v-model="currentPage" v-bind="{ count: rowCount }" data-test="data-table-pagination">
 					<template #page-number-page="{ page }">
 						<slot name="page-number-label" v-bind="{ page }" />
 					</template>
@@ -128,7 +128,7 @@
 
 <script setup>
 import { arrayLength, isNonEmptyArray, sortObjectsByProperty } from "@lewishowles/helpers/array";
-import { computed, provide, ref, useSlots } from "vue";
+import { computed, provide, ref, useSlots, watch } from "vue";
 import { get, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
@@ -477,16 +477,22 @@ const sortedRows = computed(() => {
 });
 
 // Our paginated rows, based on the current page.
-const paginatedRows = computed(() => {
+const paginatedRows = ref([]);
+
+// We use a watch here, rather than another computed property, as with a
+// computed property, Vue didn't seem to be detecting the changes to sortedRows,
+// even though the sortedRows computed property was triggering correctly, the
+// paginatedRows computed property was not.
+watch([sortedRows, currentPage, sortDirection, sortedColumn], ([newSortedRows, newPage]) => {
 	if (!props.enablePagination) {
-		return sortedRows.value;
+		paginatedRows.value = newSortedRows;
+	} else {
+		const start = (newPage - 1) * 10;
+		const end = start + 10;
+
+		paginatedRows.value = newSortedRows.slice(start, end);
 	}
-
-	const start = (currentPage.value - 1) * 10;
-	const end = start + 10;
-
-	return sortedRows.value.slice(start, end);
-});
+}, { deep: true, immediate: true });
 
 // Whether we have any data to display. That is, not only do we have data for
 // the table, but if the user is performing a search, there are results for that
@@ -495,6 +501,11 @@ const haveDataToDisplay = computed(() => isNonEmptyArray(filteredRows.value));
 
 // The count of rows currently included in the table.
 const rowCount = computed(() => arrayLength(filteredRows.value));
+
+// Reset to the first page when our filtered rows or sort change.
+watch([filteredRows, sortedColumn, sortDirection], () => {
+	currentPage.value = 1;
+});
 
 /**
  * Get the content for the given columnKey in the given row. This partially

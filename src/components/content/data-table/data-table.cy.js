@@ -41,6 +41,70 @@ const data = [
 	},
 ];
 
+const extendedData = [
+	...data,
+	{
+		id: "2594b1c7-865f-4e1c-8056-1da172e6e291",
+		title: "Finding Nemo",
+		release_year: "2003",
+		box_office: "940.3",
+	},
+	{
+		id: "c92adb1c-2911-4af2-8262-63edb6e69b0c",
+		title: "Monsters, Inc.",
+		release_year: "2001",
+		box_office: "577.4",
+	},
+	{
+		id: "93e011fd-6d0b-490f-82b9-47a51aa0b039",
+		title: "Ratatouille",
+		release_year: "2007",
+		box_office: "620.7",
+	},
+	{
+		id: "cad1137a-0174-444c-b2da-d97f0f884d63",
+		title: "WALL-E",
+		release_year: "2008",
+		box_office: "521.3",
+	},
+	{
+		id: "018c2baa-efb5-4f8b-a5e2-0f10a6eff30f",
+		title: "Brave",
+		release_year: "2012",
+		box_office: "540.4",
+	},
+	{
+		id: "63b48efa-b91e-4b5d-a92c-a629383993c4",
+		title: "Inside Out",
+		release_year: "2015",
+		box_office: "857.6",
+	},
+	{
+		id: "5a25addd-3e0a-4974-a3e6-4edb8d7e632e",
+		title: "Coco",
+		release_year: "2017",
+		box_office: "807.1",
+	},
+	{
+		id: "e7853c36-6dac-40f6-9aff-b500c7daa17d",
+		title: "Frozen",
+		release_year: "2013",
+		box_office: "1,290.0",
+	},
+	{
+		id: "51ae5c91-3e71-4aff-8c75-9bf3bedea21b",
+		title: "Moana",
+		release_year: "2016",
+		box_office: "643.3",
+	},
+	{
+		id: "b374343a-97cd-413e-af8e-b6601a165671",
+		title: "Zootopia",
+		release_year: "2016",
+		box_office: "1,023.8",
+	},
+];
+
 const defaultProps = { data, columns };
 const mount = createMount(DataTable, { props: defaultProps });
 
@@ -271,7 +335,7 @@ describe("data-table", () => {
 			cy.getByData("data-table-row").eq(0).getByData("data-table-cell").eq(0).shouldHaveText("Toy Story");
 			cy.getByData("data-table-row").eq(1).getByData("data-table-cell").eq(0).shouldHaveText("Aladdin");
 
-			cy.getByData("data-table-sort").eq(0).click();
+			sortByColumn("Title");
 
 			cy.getByData("data-table-row").eq(0).getByData("data-table-cell").eq(0).shouldHaveText("Aladdin");
 			cy.getByData("data-table-row").eq(1).getByData("data-table-cell").eq(0).shouldHaveText("The Emperor's New Groove");
@@ -282,13 +346,82 @@ describe("data-table", () => {
 
 			cy.getByData("data-table-heading").eq(0).shouldNotHaveAttribute("aria-sort");
 
-			cy.getByData("data-table-sort").eq(0).click();
+			sortByColumn("Title");
 
 			cy.getByData("data-table-heading").eq(0).shouldHaveAttribute("aria-sort", "ascending");
 
-			cy.getByData("data-table-sort").eq(0).click();
+			sortByColumn("Title");
 
 			cy.getByData("data-table-heading").eq(0).shouldHaveAttribute("aria-sort", "descending");
+		});
+	});
+
+	describe.only("Pagination", () => {
+		it("Tables are paginated by default", () => {
+			mount({ data: extendedData });
+
+			cy.getByData("data-table-pagination").shouldBeVisible();
+			cy.getByData("data-table-row").shouldHaveCount(10);
+
+			assertCurrentPage(1);
+		});
+
+		it("Pagination can be disabled", () => {
+			mount({ data: extendedData, enablePagination: false });
+
+			cy.getByData("data-table-pagination").should("not.exist");
+			cy.getByData("data-table-row").shouldHaveCount(15);
+		});
+
+		it("The user can choose which page of items to view", () => {
+			mount({ data: extendedData });
+
+			cy.getByData("data-table-pagination").shouldBeVisible();
+			cy.getByData("data-table-row").shouldHaveCount(10);
+
+			cy.getByData("data-table-cell").eq(0).shouldHaveText("Toy Story");
+
+			selectPage(2);
+
+			cy.getByData("data-table-row").shouldHaveCount(5);
+
+			cy.getByData("data-table-cell").eq(0).shouldHaveText("Inside Out");
+		});
+
+		it("The current page is reset when the sorted column is changed", () => {
+			mount({ data: extendedData });
+
+			cy.getByData("data-table-pagination").shouldBeVisible();
+			cy.getByData("data-table-row").shouldHaveCount(10);
+
+			cy.getByData("data-table-cell").eq(0).shouldHaveText("Toy Story");
+
+			selectPage(2);
+
+			sortByColumn("Title");
+
+			assertCurrentPage(1);
+		});
+
+		it("The current page is reset when the sort direction is changed", () => {
+			mount({ data: extendedData });
+
+			cy.getByData("data-table-pagination").shouldBeVisible();
+			cy.getByData("data-table-row").shouldHaveCount(10);
+
+			cy.getByData("data-table-cell").eq(0).shouldHaveText("Toy Story");
+
+			selectPage(2);
+
+			sortByColumn("Title");
+
+			assertCurrentPage(1);
+
+			selectPage(2);
+
+			sortByColumn("Title");
+
+			assertCurrentPage(1);
 		});
 	});
 
@@ -367,6 +500,42 @@ describe("data-table", () => {
 	});
 });
 
+/**
+ * Sort the table by the column with the given title.
+ *
+ * @param  {string}  columnTitle
+ *     The title of the column to sort by.
+ */
+function sortByColumn(columnTitle) {
+	cy.getByData("data-table-sort").contains(columnTitle).click();
+}
+
+/**
+ * Select the given page of results in the table, ensuring that the correct page
+ * is then selected.
+ *
+ * @param  {number}  page
+ *     The page to select.
+ */
+function selectPage(page) {
+	cy.getByData("app-pagination-page-button").eq(page - 1).click();
+
+	assertCurrentPage(page);
+}
+
+/**
+ * Ensure that the given page is the selected page.
+ *
+ * @param  {number}  page
+ *     The page to check.
+ */
+function assertCurrentPage(page) {
+	cy.getByData("app-pagination-page").eq(page - 1).shouldHaveAttribute("aria-current", "page");
+}
+
+/**
+ * Open the user configuration menu.
+ */
 function openUserConfiguration() {
 	cy.getByData("data-table-display-options").shouldBeVisible();
 
