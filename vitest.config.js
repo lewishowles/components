@@ -7,7 +7,7 @@ export default mergeConfig(
 	defineConfig({
 		test: {
 			setupFiles: "./test/unit/setup.js",
-			environment: "jsdom",
+			environment: "happy-dom",
 			root: fileURLToPath(new URL("./", import.meta.url)),
 			include: ["src/components/**/*.test.js"],
 		},

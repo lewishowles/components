@@ -67,9 +67,10 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref, onMounted, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber } from "@lewishowles/helpers/number";
+import { getUrlParameter, updateUrlParameter } from "@lewishowles/helpers/url";
 
 const props = defineProps({
 	/**
@@ -202,6 +203,18 @@ const firstItem = computed(() => ((currentPage.value - 1) * itemsPerPage.value) 
 // contains fewer than the number of items per page.
 const lastItem = computed(() => Math.min(firstItem.value + itemsPerPage.value - 1, props.count));
 
+// When mounting, check if there is a "page" parameter in the URL, and
+// initialise our current page with that.
+onMounted(() => {
+	const pageParam = parseInt(getUrlParameter("page"));
+
+	if (!isNumber(pageParam) || pageParam <= 0 || pageParam > pageCount.value) {
+		return;
+	}
+
+	currentPage.value = pageParam;
+});
+
 /**
  * Select the next page, limited to 1.
  */
@@ -216,8 +229,16 @@ function selectNextPage() {
 	currentPage.value = Math.min(currentPage.value + 1, pageCount.value);
 }
 
+// When our current page changes, emit an event to notify the parent (if they're
+// not using v-model), and update the URL. We only want to update the URL when
+// the page is not the first page, as that is the default anyway and there is no
+// need to add unnecessary parameters.
 watch(currentPage, () => {
 	emit("@update:page", currentPage.value);
+
+	if (currentPage.value > 1) {
+		updateUrlParameter("page", currentPage.value);
+	}
 }, { immediate: true });
 
 // When the number of items changes, assume we're looking at a new view, and

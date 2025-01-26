@@ -1,5 +1,5 @@
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test, vi } from "vitest";
 import { nextTick } from "vue";
 import AppPagination from "./app-pagination.vue";
 
@@ -8,6 +8,10 @@ const mount = createMount(AppPagination, { props: defaultProps });
 
 describe("app-pagination", () => {
 	console.warn = vi.fn();
+
+	beforeEach(() => {
+		window.location.href = "http://example.com";
+	});
 
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {

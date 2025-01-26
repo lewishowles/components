@@ -5,6 +5,13 @@ const defaultProps = { count: 100 };
 const mount = createMount(AppPagination, { props: defaultProps });
 
 describe("app-pagination", () => {
+	afterEach(() => {
+		// Reset the history after each test
+		cy.window().then(window => {
+			window.history.pushState({}, "", "/");
+		});
+	});
+
 	it("A component is rendered", () => {
 		mount();
 
@@ -25,6 +32,16 @@ describe("app-pagination", () => {
 		cy.getByData("app-pagination").should("not.exist");
 	});
 
+	it("The initial page can be set by a \"page\" URL parameter", () => {
+		cy.window().then(window => {
+			window.history.pushState({}, "", "/app-pagination?page=2");
+		});
+
+		mount();
+
+		assertCurrentPage(2);
+	});
+
 	describe("First page", () => {
 		it("The user should not be able to navigate to previous pages", () => {
 			mount();
@@ -33,7 +50,7 @@ describe("app-pagination", () => {
 			cy.getByData("app-pagination-next").shouldNotHaveAttribute("disabled");
 			cy.getByData("app-pagination-summary").shouldHaveCount(1);
 
-			checkHighlightedPage("1");
+			assertCurrentPage("1");
 		});
 
 		it("The correct number of pages should appear for 100 items", () => {
@@ -61,7 +78,7 @@ describe("app-pagination", () => {
 			cy.getByData("app-pagination-summary").shouldHaveCount(2);
 			cy.getByData("app-pagination-page").shouldHaveCount(5);
 
-			checkHighlightedPage("5");
+			assertCurrentPage("5");
 		});
 	});
 
@@ -75,7 +92,7 @@ describe("app-pagination", () => {
 			cy.getByData("app-pagination-next").shouldHaveAttribute("disabled");
 			cy.getByData("app-pagination-summary").shouldHaveCount(1);
 
-			checkHighlightedPage("10");
+			assertCurrentPage("10");
 		});
 
 		it("The correct number of pages should appear for 100 items", () => {
@@ -91,23 +108,23 @@ describe("app-pagination", () => {
 		it("The user should be able to navigate between pages", () => {
 			mount();
 
-			checkHighlightedPage("1");
+			assertCurrentPage("1");
 
 			cy.getByData("app-pagination-next").click();
 
-			checkHighlightedPage("2");
+			assertCurrentPage("2");
 
 			cy.getByData("app-pagination-next").click();
 
-			checkHighlightedPage("3");
+			assertCurrentPage("3");
 
 			cy.getByData("app-pagination-previous").click();
 
-			checkHighlightedPage("2");
+			assertCurrentPage("2");
 
 			cy.getByData("app-pagination-previous").click();
 
-			checkHighlightedPage("1");
+			assertCurrentPage("1");
 
 			cy.getByData("app-pagination-previous").shouldHaveAttribute("disabled");
 		});
@@ -159,6 +176,6 @@ function goToLastPage() {
 
 // Find the page that is highlighted (and thus the current page), and check that
 // it contains the correct number.
-function checkHighlightedPage(number) {
+function assertCurrentPage(number) {
 	cy.get("button.bg-purple-800").shouldHaveText(number);
 }
