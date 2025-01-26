@@ -298,6 +298,67 @@ describe("app-pagination", () => {
 				expect(vm.pagesToDisplay).toEqual([1, 6, 7, 8, 10]);
 			});
 		});
+
+		describe("firstItemNumber", () => {
+			test("should correctly determine the first item for the first page", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.firstItemNumber).toBe(1);
+			});
+
+			test("should correctly determine the first item for the second page", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.currentPage = 2;
+
+				expect(vm.firstItemNumber).toBe(11);
+			});
+
+			test("should correctly determine the first item for the last page", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.currentPage = 10;
+
+				expect(vm.firstItemNumber).toBe(91);
+			});
+		});
+
+		describe("lastItemNumber", () => {
+			test("should correctly determine the last item for the first page", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.lastItemNumber).toBe(10);
+			});
+
+			test("should correctly determine the last item for the second page", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.currentPage = 2;
+
+				expect(vm.lastItemNumber).toBe(20);
+			});
+
+			test("should correctly determine the last item for the last page", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.currentPage = 10;
+
+				expect(vm.lastItemNumber).toBe(100);
+			});
+
+			test("should correctly determine the last item when there are fewer than a single page of items", () => {
+				const wrapper = mount({ count: 7 });
+				const vm = wrapper.vm;
+
+				expect(vm.lastItemNumber).toBe(7);
+			});
+		});
 	});
 
 	describe("Methods", () => {

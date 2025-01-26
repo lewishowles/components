@@ -7,9 +7,9 @@
 		A `label` is required for accessibility purposes.
 	</alert-message>
 
-	<nav v-else-if="!haveSinglePage" :aria-label="label" class="flex items-center text-center" data-test="app-pagination">
+	<nav v-else-if="!haveSinglePage" :aria-label="label" class="flex items-center gap-4 text-center" data-test="app-pagination">
 		<button
-			class="button me-auto flex items-center gap-2"
+			class="button flex items-center gap-2"
 			:class="{ 'text-grey-500': showingFirstPage, 'underline hocus:bg-grey-200 hocus:text-grey-700': !showingFirstPage }"
 			v-bind="{ 'disabled': showingFirstPage ? 'disabled' : null, 'aria-hidden': showingFirstPage ? 'true' : null }"
 			data-test="app-pagination-previous"
@@ -45,7 +45,7 @@
 		</ul>
 
 		<button
-			class="button ms-auto flex items-center gap-2"
+			class="button flex items-center gap-2"
 			:class="{ 'text-grey-500': showingLastPage, 'underline hocus:bg-grey-200 hocus:text-grey-700': !showingLastPage }"
 			v-bind="{ 'disabled': showingLastPage ? 'disabled' : null, 'aria-hidden': showingLastPage ? 'true' : null }"
 			data-test="app-pagination-next"
@@ -57,6 +57,8 @@
 
 			<icon-arrow-right />
 		</button>
+
+		<span class="ms-auto">Showing {{ firstItemNumber }}&ndash;{{ lastItemNumber }} of {{ count }} items</span>
 	</nav>
 </template>
 
@@ -187,6 +189,14 @@ const pagesToDisplay = computed(() => {
 
 	return pages;
 });
+
+// The number of the first item being displayed based on the current pagination
+// settings.
+const firstItemNumber = computed(() => ((currentPage.value - 1) * itemsPerPage.value) + 1);
+// The number of the last item being displayed based on the current pagination
+// settings. With the last item, we need to account for a single page that
+// contains fewer than the number of items per page.
+const lastItemNumber = computed(() => Math.min(firstItemNumber.value + itemsPerPage.value - 1, props.count));
 
 /**
  * Select the next page, limited to 1.

@@ -68,3 +68,4 @@ Updated when the user selects a different page to display, containing a `page` p
 
 - Add a "Showing items x-y" display
 - Allow overriding "items" with a more appropriate verb
+- Update the URL with the current page and read that parameter to allow the current page to be initialised

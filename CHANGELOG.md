@@ -15,6 +15,7 @@
 ### Updates
 
 - `ui-button`: The new property `iconOnly` creates a button with only an icon.
+- `app-pagination`: Now shows the current items being displayed (e.g. 1-10 of 20).
 
 # 0.18.0 - 2024-12-19
 
