@@ -120,6 +120,22 @@ The label for the "Relaxed" display option.
 
 The label for the "Columns" options in the configure dropdown.
 
+### `showing-items-label`
+
+- default: `Showing {{ firstItem }}&ndash;{{ lastItem }} of {{ count }} items`
+- params:
+  - `firstItem`
+    - type: `number`
+    - The first item being displayed
+  - `lastItem`
+    - type: `number`
+    - The last item being displayed
+  - `count`
+    - type: `number`
+    - The total number of items in the list
+
+A display of the current items being shown, giving the user an indication of where they are in the list.
+
 ## Props
 
 ### `data`
@@ -235,5 +251,4 @@ Set the table's current search query, overriding any current search. This could 
 
 ## To do
 
-- Allow overriding app-pagination "items" word with something more appropriate
 - Allow selecting of columns, model of selected columns with their row data (so that you can access IDs etc)

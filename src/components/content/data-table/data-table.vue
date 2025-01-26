@@ -114,6 +114,9 @@
 					<template #page-number-label>
 						<slot name="page-number-label" />
 					</template>
+					<template #showing-items-label="{ firstItem, lastItem, count }">
+						<slot name="showing-items-label" v-bind="{ firstItem, lastItem, count}" />
+					</template>
 				</app-pagination>
 
 				<alert-message v-show="!haveDataToDisplay" data-test="data-table-no-results">

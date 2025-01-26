@@ -48,7 +48,7 @@ The accessible label for each page.
     - type: `number`
     - The total number of items in the list
 
-A display of the current items being shown, giving the user a milestone to help their mental model.
+A display of the current items being shown, giving the user an indication of where they are in the list.
 
 ## Props
 
