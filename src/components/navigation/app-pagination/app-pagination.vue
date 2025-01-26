@@ -58,8 +58,8 @@
 			<icon-arrow-right />
 		</button>
 
-		<span class="ms-auto">
-			<slot name="showing-items-label" v-bind="{ firstItem, lastItem, count }">
+		<span class="ms-auto" data-test="app-pagination-showing-items-label">
+			<slot name="showing-items-label" v-bind="{ first: firstItem, last: lastItem, total: count }">
 				Showing {{ firstItem }}&ndash;{{ lastItem }} of {{ count }} items
 			</slot>
 		</span>

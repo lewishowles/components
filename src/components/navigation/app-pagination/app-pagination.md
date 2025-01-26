@@ -27,28 +27,42 @@ The label for the previous page button.
 ### `page-number-label`
 
 - default: `Page {page}`
-- params:
-  - `page`
-    - type: `number`
-    - The number of the current page.
 
 The accessible label for each page.
 
+#### Slot props
+
+##### `page`
+
+- type: `number`
+
+The number of the current page.
+
 ### `showing-items-label`
 
-- default: `Showing {{ firstItem }}&ndash;{{ lastItem }} of {{ count }} items`
-- params:
-  - `firstItem`
-    - type: `number`
-    - The first item being displayed
-  - `lastItem`
-    - type: `number`
-    - The last item being displayed
-  - `count`
-    - type: `number`
-    - The total number of items in the list
+- default: `Showing {{ first }}&ndash;{{ last }} of {{ total }} items`
 
 A display of the current items being shown, giving the user an indication of where they are in the list.
+
+#### Slot props
+
+##### `first`
+
+- type: `number`
+
+The first item being displayed
+
+##### `last`
+
+- type: `number`
+
+The last item being displayed
+
+##### `count`
+
+- type: `number`
+
+The total number of items in the list
 
 ## Props
 
