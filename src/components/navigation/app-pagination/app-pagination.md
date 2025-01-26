@@ -26,13 +26,29 @@ The label for the previous page button.
 
 ### `page-number-label`
 
-- default: `Page {n}`
+- default: `Page {page}`
 - params:
   - `page`
     - type: `number`
-    - The number of the page.
+    - The number of the current page.
 
-The accessible label for each page. This slot is provided a `page` parameter containing the current page number.
+The accessible label for each page.
+
+### `showing-items-label`
+
+- default: `Showing {{ firstItem }}&ndash;{{ lastItem }} of {{ count }} items`
+- params:
+  - `firstItem`
+    - type: `number`
+    - The first item being displayed
+  - `lastItem`
+    - type: `number`
+    - The last item being displayed
+  - `count`
+    - type: `number`
+    - The total number of items in the list
+
+A display of the current items being shown, giving the user a milestone to help their mental model.
 
 ## Props
 
@@ -66,6 +82,4 @@ Updated when the user selects a different page to display, containing a `page` p
 
 ## To do
 
-- Add a "Showing items x-y" display
-- Allow overriding "items" with a more appropriate verb
 - Update the URL with the current page and read that parameter to allow the current page to be initialised

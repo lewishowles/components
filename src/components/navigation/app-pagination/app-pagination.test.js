@@ -299,12 +299,12 @@ describe("app-pagination", () => {
 			});
 		});
 
-		describe("firstItemNumber", () => {
+		describe("firstItem", () => {
 			test("should correctly determine the first item for the first page", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.firstItemNumber).toBe(1);
+				expect(vm.firstItem).toBe(1);
 			});
 
 			test("should correctly determine the first item for the second page", () => {
@@ -313,7 +313,7 @@ describe("app-pagination", () => {
 
 				vm.currentPage = 2;
 
-				expect(vm.firstItemNumber).toBe(11);
+				expect(vm.firstItem).toBe(11);
 			});
 
 			test("should correctly determine the first item for the last page", () => {
@@ -322,16 +322,16 @@ describe("app-pagination", () => {
 
 				vm.currentPage = 10;
 
-				expect(vm.firstItemNumber).toBe(91);
+				expect(vm.firstItem).toBe(91);
 			});
 		});
 
-		describe("lastItemNumber", () => {
+		describe("lastItem", () => {
 			test("should correctly determine the last item for the first page", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.lastItemNumber).toBe(10);
+				expect(vm.lastItem).toBe(10);
 			});
 
 			test("should correctly determine the last item for the second page", () => {
@@ -340,7 +340,7 @@ describe("app-pagination", () => {
 
 				vm.currentPage = 2;
 
-				expect(vm.lastItemNumber).toBe(20);
+				expect(vm.lastItem).toBe(20);
 			});
 
 			test("should correctly determine the last item for the last page", () => {
@@ -349,14 +349,14 @@ describe("app-pagination", () => {
 
 				vm.currentPage = 10;
 
-				expect(vm.lastItemNumber).toBe(100);
+				expect(vm.lastItem).toBe(100);
 			});
 
 			test("should correctly determine the last item when there are fewer than a single page of items", () => {
 				const wrapper = mount({ count: 7 });
 				const vm = wrapper.vm;
 
-				expect(vm.lastItemNumber).toBe(7);
+				expect(vm.lastItem).toBe(7);
 			});
 		});
 	});

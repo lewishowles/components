@@ -58,7 +58,11 @@
 			<icon-arrow-right />
 		</button>
 
-		<span class="ms-auto">Showing {{ firstItemNumber }}&ndash;{{ lastItemNumber }} of {{ count }} items</span>
+		<span class="ms-auto">
+			<slot name="showing-items-label" v-bind="{ firstItem, lastItem, count }">
+				Showing {{ firstItem }}&ndash;{{ lastItem }} of {{ count }} items
+			</slot>
+		</span>
 	</nav>
 </template>
 
@@ -192,11 +196,11 @@ const pagesToDisplay = computed(() => {
 
 // The number of the first item being displayed based on the current pagination
 // settings.
-const firstItemNumber = computed(() => ((currentPage.value - 1) * itemsPerPage.value) + 1);
+const firstItem = computed(() => ((currentPage.value - 1) * itemsPerPage.value) + 1);
 // The number of the last item being displayed based on the current pagination
 // settings. With the last item, we need to account for a single page that
 // contains fewer than the number of items per page.
-const lastItemNumber = computed(() => Math.min(firstItemNumber.value + itemsPerPage.value - 1, props.count));
+const lastItem = computed(() => Math.min(firstItem.value + itemsPerPage.value - 1, props.count));
 
 /**
  * Select the next page, limited to 1.
