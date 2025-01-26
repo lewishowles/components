@@ -112,6 +112,36 @@ describe("app-pagination", () => {
 			cy.getByData("app-pagination-previous").shouldHaveAttribute("disabled");
 		});
 	});
+
+	describe("Showing items display", () => {
+		it("The correct items indicator is shown for the first page", () => {
+			mount();
+
+			cy.getByData("app-pagination-showing-items-label").shouldHaveText("Showing 1–10 of 100 items");
+		});
+
+		it("The correct items indicator is shown for a central page", () => {
+			mount();
+
+			goToMiddlePage();
+
+			cy.getByData("app-pagination-showing-items-label").shouldHaveText("Showing 41–50 of 100 items");
+		});
+
+		it("The correct items indicator is shown for the last page", () => {
+			mount();
+
+			goToLastPage();
+
+			cy.getByData("app-pagination-showing-items-label").shouldHaveText("Showing 91–100 of 100 items");
+		});
+
+		it("The showing items indicator can be overridden", () => {
+			mount({ slots: { "showing-items-label": ({ first, last, total }) => `${first} to ${last} of ${total}` } });
+
+			cy.getByData("app-pagination-showing-items-label").shouldHaveText("1 to 10 of 100");
+		});
+	});
 });
 
 // A simple method to jump to the middle of a pagination element.

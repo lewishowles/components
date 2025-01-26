@@ -356,7 +356,7 @@ describe("data-table", () => {
 		});
 	});
 
-	describe.only("Pagination", () => {
+	describe("Pagination", () => {
 		it("Tables are paginated by default", () => {
 			mount({ data: extendedData });
 
@@ -422,6 +422,13 @@ describe("data-table", () => {
 			sortByColumn("Title");
 
 			assertCurrentPage(1);
+		});
+
+
+		it("The showing items indicator can be overridden", () => {
+			mount({ props: { data: extendedData }, slots: { "showing-items-label": ({ first, last, total }) => `${first} to ${last} of ${total}` } });
+
+			cy.getByData("app-pagination-showing-items-label").shouldHaveText("1 to 10 of 15");
 		});
 	});
 
