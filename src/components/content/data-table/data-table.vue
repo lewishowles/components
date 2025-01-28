@@ -93,7 +93,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="row in paginatedRows" :key="row.configuration.id" class="border-b border-grey-200" data-test="data-table-row">
+						<tr v-for="row in paginatedRows" :key="row.configuration.id" class="border-b border-grey-200 transition-colors hover:bg-grey-50" data-test="data-table-row">
 							<td v-for="(column, columnKey) in visibleColumnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
 								<slot :name="columnKey" v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }">
 									{{ getRowContent(row, columnKey) }}
