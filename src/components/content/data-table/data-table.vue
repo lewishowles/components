@@ -76,6 +76,7 @@
 
 					<thead>
 						<tr class="border-b border-grey-300">
+							<th v-if="enableSelection" />
 							<th
 								v-for="(column, columnKey) in visibleColumnDefinitions"
 								:key="columnKey"
@@ -94,6 +95,11 @@
 					</thead>
 					<tbody>
 						<tr v-for="row in paginatedRows" :key="row.configuration.id" class="border-b border-grey-200 transition-colors hover:bg-grey-50" data-test="data-table-row">
+							<th v-if="enableSelection">
+								<form-checkbox v-bind="{ displayLabel: false, inputAttributes: { value: getRowId(row) } }" v-model="selectedIds">
+									Select this row
+								</form-checkbox>
+							</th>
 							<td v-for="(column, columnKey) in visibleColumnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
 								<slot :name="columnKey" v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }">
 									{{ getRowContent(row, columnKey) }}
@@ -205,6 +211,16 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether to enable selection. When enabled, a new column is added to the
+	 * start of the table to include selection checkboxes, and v-model on the
+	 * table returns the selected rows' data.
+	 */
+	enableSelection: {
+		type: Boolean,
+		default: false,
+	},
+
+	/**
 	 * If defined, this method is called with a `columnKey` for the current
 	 * column, and `rowData` for the current row. This method is called as the
 	 * table is building up its internal content. If the method returns a
@@ -266,6 +282,11 @@ const props = defineProps({
 		type: String,
 		default: "text-grey-500",
 	},
+});
+
+// The currently selected rows, if selection is enabled.
+const selection = defineModel({
+	type: Array,
 });
 
 const slots = useSlots();
@@ -482,6 +503,38 @@ const sortedRows = computed(() => {
 // Our paginated rows, based on the current page.
 const paginatedRows = ref([]);
 
+// Whether we have any data to display. That is, not only do we have data for
+// the table, but if the user is performing a search, there are results for that
+// search term.
+const haveDataToDisplay = computed(() => isNonEmptyArray(filteredRows.value));
+
+// The count of rows currently included in the table.
+const rowCount = computed(() => arrayLength(filteredRows.value));
+
+// The internal IDs of the selected rows, available when the user has enabled
+// row selection.
+const selectedIds = ref([]);
+
+// The rows and data that correspond to our selectedIds
+const selectedRows = computed(() => {
+	if (props.enableSelection !== true) {
+		return [];
+	}
+
+	const internalRows = internalData.value.filter(row => selectedIds.value.includes(getRowId(row)));
+
+	if (!isNonEmptyArray(internalRows)) {
+		return [];
+	}
+
+	return internalRows.map(row => getRawRow(row));
+});
+
+// Reset to the first page when our filtered rows or sort change.
+watch([filteredRows, sortedColumn, sortDirection], () => {
+	currentPage.value = 1;
+});
+
 // We use a watch here, rather than another computed property, as with a
 // computed property, Vue didn't seem to be detecting the changes to sortedRows,
 // even though the sortedRows computed property was triggering correctly, the
@@ -497,18 +550,31 @@ watch([sortedRows, currentPage, sortDirection, sortedColumn], ([newSortedRows, n
 	}
 }, { deep: true, immediate: true });
 
-// Whether we have any data to display. That is, not only do we have data for
-// the table, but if the user is performing a search, there are results for that
-// search term.
-const haveDataToDisplay = computed(() => isNonEmptyArray(filteredRows.value));
+// When the selected rows change, update our model value.
+watch(selectedRows, () => {
+	if (props.enableSelection !== true) {
+		return;
+	}
 
-// The count of rows currently included in the table.
-const rowCount = computed(() => arrayLength(filteredRows.value));
+	if (!isNonEmptyArray(selectedRows.value)) {
+		selection.value = [];
 
-// Reset to the first page when our filtered rows or sort change.
-watch([filteredRows, sortedColumn, sortDirection], () => {
-	currentPage.value = 1;
+		return;
+	}
+
+	selection.value = selectedRows.value;
 });
+
+/**
+ * Get the unique ID for the given row, which is added when data is
+ * internalised.
+ *
+ * @param  {object}  row
+ *     The row data as provided to the table template.
+ */
+function getRowId(row) {
+	return get(row, "configuration.id");
+}
 
 /**
  * Get the content for the given columnKey in the given row. This partially

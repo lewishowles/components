@@ -52,6 +52,127 @@ describe("data-table", () => {
 	});
 
 	describe("Computed", () => {
+		describe("columnDefinitions", () => {
+			test("should handle there being no data present", () => {
+				const wrapper = mount({ data: [] });
+				const vm = wrapper.vm;
+
+				expect(vm.columnDefinitions).toEqual({});
+			});
+
+			test("should determine which column is first, and which is last", () => {
+				const columns = { id: { label: "ID" }, title: { label: "Title" }, release_year: { label: "Release year" } };
+				const wrapper = mount({ columns });
+				const vm = wrapper.vm;
+
+				expect(vm.columnDefinitions).toEqual({
+					id: {
+						...baseColumnDefinition,
+						label: "ID",
+						first: true,
+					},
+					title: {
+						...baseColumnDefinition,
+						label: "Title",
+					},
+					release_year: {
+						...baseColumnDefinition,
+						label: "Release year",
+						last: true,
+					},
+				});
+			});
+
+			test("should retrieve column configuration where found", () => {
+				const columns = { title: { label: "Title" }, release_year: { label: "Release year", columnClasses: "text-right" } };
+				const wrapper = mount({ columns });
+				const vm = wrapper.vm;
+
+				expect(vm.columnDefinitions).toEqual({
+					title: {
+						...baseColumnDefinition,
+						label: "Title",
+						first: true,
+					},
+					release_year: {
+						...baseColumnDefinition,
+						label: "Release year",
+						last: true,
+						columnClasses: "text-right",
+					},
+				});
+			});
+
+			test("should order columns by their order in configuration", () => {
+				const data = [sampleRow];
+				const columns = { release_year: { label: "Release year" }, title: { label: "Title" } };
+				const wrapper = mount({ data, columns });
+				const vm = wrapper.vm;
+
+				expect(vm.columnDefinitions).toEqual({
+					release_year: {
+						...baseColumnDefinition,
+						label: "Release year",
+						first: true,
+					},
+					title: {
+						...baseColumnDefinition,
+						label: "Title",
+						last: true,
+					},
+				});
+			});
+
+			test("should remove columns without configuration", () => {
+				const data = [sampleRow];
+				const columns = { title: { label: "Title" }, release_year: { label: "Release year" } };
+				const wrapper = mount({ data, columns });
+				const vm = wrapper.vm;
+
+				expect(vm.columnDefinitions).toEqual({
+					title: {
+						...baseColumnDefinition,
+						first: true,
+						label: "Title",
+					},
+					release_year: {
+						...baseColumnDefinition,
+						label: "Release year",
+						last: true,
+					},
+				});
+			});
+
+			test("should remove columns that are explicity marked as hidden", () => {
+				const data = [sampleRow];
+				const columns = { title: { label: "Title" }, release_year: { hidden: true } };
+				const wrapper = mount({ data, columns });
+				const vm = wrapper.vm;
+
+				expect(vm.columnDefinitions).toEqual({
+					title: {
+						...baseColumnDefinition,
+						label: "Title",
+						first: true,
+						last: true,
+					},
+				});
+			});
+		});
+
+		describe("visibleColumnDefinitions", () => {
+			test("should only include visible columns", () => {
+				const columns = { id: { title: "ID" }, title: { label: "Title" }, release_year: { label: "Release year" } };
+				const wrapper = mount({ columns });
+				const vm = wrapper.vm;
+
+				vm.columnVisibility = { title: false };
+
+				expect(Object.keys(vm.columnDefinitions).length).toBe(3);
+				expect(Object.keys(vm.visibleColumnDefinitions).length).toBe(2);
+			});
+		});
+
 		describe("internalData", () => {
 			test("should handle there being no data present", () => {
 				const wrapper = mount({ data: [] });
@@ -217,40 +338,6 @@ describe("data-table", () => {
 			});
 		});
 
-		describe("haveDataToDisplay", () => {
-			test("should return false if no data is provided", () => {
-				const wrapper = mount({ data: [] });
-				const vm = wrapper.vm;
-
-				expect(vm.haveDataToDisplay).toBe(false);
-			});
-
-			test("should return true if no search term is present", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				expect(vm.haveDataToDisplay).toBe(true);
-			});
-
-			test("should return true if a search produces a result", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				vm.searchQuery = "toy";
-
-				expect(vm.haveDataToDisplay).toBe(true);
-			});
-
-			test("should be false if a search produces no results", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				vm.searchQuery = "not found";
-
-				expect(vm.haveDataToDisplay).toBe(false);
-			});
-		});
-
 		describe("paginatedRows", () => {
 			test("should display a single page of items when more than a single page are available", async() => {
 				const data = Array.from({ length: 15 }, (_, i) => ({
@@ -351,116 +438,82 @@ describe("data-table", () => {
 			});
 		});
 
-		describe("columnDefinitions", () => {
-			test("should handle there being no data present", () => {
+		describe("haveDataToDisplay", () => {
+			test("should return false if no data is provided", () => {
 				const wrapper = mount({ data: [] });
 				const vm = wrapper.vm;
 
-				expect(vm.columnDefinitions).toEqual({});
+				expect(vm.haveDataToDisplay).toBe(false);
 			});
 
-			test("should determine which column is first, and which is last", () => {
-				const columns = { id: { label: "ID" }, title: { label: "Title" }, release_year: { label: "Release year" } };
-				const wrapper = mount({ columns });
+			test("should return true if no search term is present", () => {
+				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.columnDefinitions).toEqual({
-					id: {
-						...baseColumnDefinition,
-						label: "ID",
-						first: true,
-					},
-					title: {
-						...baseColumnDefinition,
-						label: "Title",
-					},
-					release_year: {
-						...baseColumnDefinition,
-						label: "Release year",
-						last: true,
-					},
-				});
+				expect(vm.haveDataToDisplay).toBe(true);
 			});
 
-			test("should retrieve column configuration where found", () => {
-				const columns = { title: { label: "Title" }, release_year: { label: "Release year", columnClasses: "text-right" } };
-				const wrapper = mount({ columns });
+			test("should return true if a search produces a result", () => {
+				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.columnDefinitions).toEqual({
-					title: {
-						...baseColumnDefinition,
-						label: "Title",
-						first: true,
-					},
-					release_year: {
-						...baseColumnDefinition,
-						label: "Release year",
-						last: true,
-						columnClasses: "text-right",
-					},
-				});
+				vm.searchQuery = "toy";
+
+				expect(vm.haveDataToDisplay).toBe(true);
 			});
 
-			test("should order columns by their order in configuration", () => {
-				const data = [sampleRow];
-				const columns = { release_year: { label: "Release year" }, title: { label: "Title" } };
-				const wrapper = mount({ data, columns });
+			test("should be false if a search produces no results", () => {
+				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.columnDefinitions).toEqual({
-					release_year: {
-						...baseColumnDefinition,
-						label: "Release year",
-						first: true,
-					},
-					title: {
-						...baseColumnDefinition,
-						label: "Title",
-						last: true,
-					},
-				});
+				vm.searchQuery = "not found";
+
+				expect(vm.haveDataToDisplay).toBe(false);
+			});
+		});
+
+		describe("selectedRows", () => {
+			test("should include raw data for the currently selected rows", () => {
+				const wrapper = mount({ enableSelection: true });
+				const vm = wrapper.vm;
+
+				vm.selectedIds = [vm.internalData[0].configuration.id];
+
+				expect(vm.selectedRows).toEqual([sampleRow]);
 			});
 
-			test("should remove columns without configuration", () => {
-				const data = [sampleRow];
-				const columns = { title: { label: "Title" }, release_year: { label: "Release year" } };
-				const wrapper = mount({ data, columns });
+			test("should not return data if selection is not enabled", () => {
+				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.columnDefinitions).toEqual({
-					title: {
-						...baseColumnDefinition,
-						first: true,
-						label: "Title",
-					},
-					release_year: {
-						...baseColumnDefinition,
-						label: "Release year",
-						last: true,
-					},
-				});
-			});
+				vm.selectedIds = [vm.internalData[0].configuration.id];
 
-			test("should remove columns that are explicity marked as hidden", () => {
-				const data = [sampleRow];
-				const columns = { title: { label: "Title" }, release_year: { hidden: true } };
-				const wrapper = mount({ data, columns });
-				const vm = wrapper.vm;
-
-				expect(vm.columnDefinitions).toEqual({
-					title: {
-						...baseColumnDefinition,
-						label: "Title",
-						first: true,
-						last: true,
-					},
-				});
+				expect(vm.selectedRows).toEqual([]);
 			});
 		});
 	});
 
 	describe("Methods", () => {
+		describe("getRowId", () => {
+			test("should retrieve a row ID from configuration", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const row = { configuration: { id: "abcde" } };
+
+				expect(vm.getRowId(row)).toBe("abcde");
+			});
+
+			test("should handle a malformed row", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const row = { content: {} };
+
+				expect(vm.getRowId(row)).toBe(null);
+			});
+		});
+
 		describe("getRowContent", () => {
 			test("should return the content of a row", () => {
 				const wrapper = mount();

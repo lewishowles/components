@@ -11,6 +11,8 @@ describe("form-checkbox", () => {
 
 		cy.getByData("form-checkbox").shouldBeVisible();
 
+		cy.getByData("form-label-no-label").should("not.exist");
+
 		cy.getFormField("form-checkbox")
 			.shouldHaveAttribute("id", "id-abc")
 			.shouldHaveAttribute("type", "checkbox");
@@ -19,6 +21,20 @@ describe("form-checkbox", () => {
 			.getByData("form-label")
 			.shouldHaveText("Your name")
 			.shouldHaveAttribute("for", "id-abc");
+	});
+
+	describe("Label", () => {
+		it("A label is required", () => {
+			mount({ slots: { default: "" } });
+
+			cy.getByData("form-label-no-label").shouldBeVisible();
+		});
+
+		it("A label can be hidden", () => {
+			mount({ displayLabel: false });
+
+			cy.getByData("form-label").shouldHaveClass("sr-only");
+		});
 	});
 
 	it("Additional attributes can be provided to the input", () => {

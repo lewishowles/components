@@ -27,6 +27,13 @@ Any help text to display below the input.
 
 Any ID to apply to this field. If an ID is not provided, one will be generated at random. Note that when providing an ID, please make sure that it is unique to avoid any unforeseen issues.
 
+### `displayLabel`
+
+- type: `boolean`
+- default: `true`
+
+Whether to display the label. A label is still required for accessibility purposes.
+
 ### `inputAttributes`
 
 - type: `string`

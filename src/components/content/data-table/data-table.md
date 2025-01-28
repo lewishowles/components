@@ -195,6 +195,13 @@ Whether to enable the table search. When enabled, anything typed into the search
 
 Whether to enable the table sort. When enabled, columns marked as sortable (the default) can be ordered ascending or descending.
 
+### `enableSelection`
+
+- type: `boolean`
+- default: `false`
+
+Whether to enable selection. When enabled, a new column is added to the start of the table to include selection checkboxes, and v-model on the table returns the selected rows' data.
+
 ### `searchableContentCallback(columnKey, rowData)`
 
 - type: `function`

@@ -30,6 +30,14 @@
 
 		<preview-section>
 			<template #title>
+				With selection
+			</template>
+
+			<data-table-preview-selection />
+		</preview-section>
+
+		<preview-section>
+			<template #title>
 				Utilising heading and cell templates
 			</template>
 
@@ -75,6 +83,7 @@
 </template>
 
 <script setup>
+import DataTablePreviewSelection from "./preview/data-table-preview-selection.vue";
 import DataTablePreviewCustomCells from "./preview/data-table-preview-custom-cells.vue";
 import DataTablePreviewInternalSearch from "./preview/data-table-preview-internal-search.vue";
 

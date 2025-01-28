@@ -1,6 +1,6 @@
 <template>
 	<div class="flex flex-col gap-1" data-test="form-checkbox">
-		<div class="flex gap-3">
+		<div class="flex gap-3" :class="{ 'justify-center': !displayLabel }">
 			<input
 				ref="inputElement"
 				v-model="model"
@@ -14,7 +14,7 @@
 				}"
 			/>
 
-			<form-label v-bind="{ id: inputId, styled: false }">
+			<form-label :class="{ 'sr-only': !displayLabel }" v-bind="{ id: inputId, styled: false }">
 				<slot />
 			</form-label>
 		</div>
@@ -56,6 +56,15 @@ const props = defineProps({
 	id: {
 		type: String,
 		default: null,
+	},
+
+	/**
+	 * Whether to display the label. A label is still required for accessibility
+	 * purposes.
+	 */
+	displayLabel: {
+		type: Boolean,
+		default: true,
 	},
 
 	/**
