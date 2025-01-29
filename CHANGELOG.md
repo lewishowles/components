@@ -1,6 +1,6 @@
 # Changelog
 
-# 0.19.0
+# 0.19.0 - 2025-01-29
 
 ### New components
 
@@ -8,14 +8,14 @@
 - [`data-table`](/src/components/content/data-table/data-table.md)
 - Added a new `dropdown-menu-title` component for [`dropdown-menu`](/src/components/interaction/dropdown-menu/dropdown-menu.md).
 
-### New icons
-
-- `icon-eye`
-
 ### Updates
 
 - `ui-button`: The new property `iconOnly` creates a button with only an icon.
 - `app-pagination`: Now shows the current items being displayed (e.g. 1-10 of 20).
+
+### New icons
+
+- `icon-eye`
 
 # 0.18.0 - 2024-12-19
 
