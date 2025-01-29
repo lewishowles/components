@@ -357,6 +357,13 @@ describe("data-table", () => {
 	});
 
 	describe("Pagination", () => {
+		afterEach(() => {
+			// Reset the history after each test
+			cy.window().then(window => {
+				window.history.pushState({}, "", "/");
+			});
+		});
+
 		it("Tables are paginated by default", () => {
 			mount({ data: extendedData });
 
@@ -503,6 +510,76 @@ describe("data-table", () => {
 					localStorage.removeItem("data-table:sample-table:columns");
 				});
 			});
+		});
+	});
+
+	describe("Selection", () => {
+		it("Columns cannot be selected by default", () => {
+			mount();
+
+			cy.getByData("data-table-select-all-rows").should("not.exist");
+			cy.getByData("data-table-select-row").should("not.exist");
+		});
+
+		it("Selection can be enabled", () => {
+			mount({ enableSelection: true });
+
+			cy.getByData("data-table-select-all-rows").shouldBeVisible();
+			cy.getByData("data-table-select-row").shouldBeVisible().shouldHaveCount(5);
+
+			cy.getFormField("data-table-select-row").each($checkbox => {
+				cy.wrap($checkbox).should("not.be.checked");
+			});
+		});
+
+		it("A user can select all rows with one press", () => {
+			mount({ enableSelection: true });
+
+			cy.getFormField("data-table-select-all-rows").click();
+
+			cy.getByData("data-table-select-row").each($checkbox => {
+				cy.wrap($checkbox).shouldBeChecked();
+			});
+		});
+
+		it("A user can deselect all rows with one press", () => {
+			mount({ enableSelection: true });
+
+			cy.getFormField("data-table-select-all-rows").click();
+
+			cy.getByData("data-table-select-row").each($checkbox => {
+				cy.wrap($checkbox).shouldBeChecked();
+			});
+
+			cy.getFormField("data-table-select-all-rows").click();
+
+			cy.getByData("data-table-select-row").each($checkbox => {
+				cy.wrap($checkbox).shouldNotBeChecked();
+			});
+		});
+
+		it("Unchecking a single checkbox is reflected in the select all rows checkbox", () => {
+			mount({ enableSelection: true });
+
+			cy.getFormField("data-table-select-all-rows").click();
+
+			cy.getByData("data-table-select-all-rows").shouldBeChecked();
+
+			cy.getFormField("data-table-select-row").eq(0).click();
+
+			cy.getByData("data-table-select-all-rows").shouldNotBeChecked();
+		});
+
+		it("Checking all checkboxes manually is reflected in the select all rows checkbox", () => {
+			mount({ enableSelection: true });
+
+			cy.getByData("data-table-select-all-rows").shouldNotBeChecked();
+
+			cy.getFormField("data-table-select-row").each($checkbox => {
+				cy.wrap($checkbox).click();
+			});
+
+			cy.getByData("data-table-select-all-rows").shouldBeChecked();
 		});
 	});
 });

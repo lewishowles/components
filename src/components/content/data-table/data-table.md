@@ -84,9 +84,37 @@ The original content of the cell, as provided in `data`.
 
 The content of the entire row that the cell belongs to.
 
+### `select-all-rows-label`
+
+- default: "Select all rows"
+
+The hidden label for the "select" checkbox that represents all rows.
+
+#### Slot props
+
+##### `...`
+
+- type: `string`
+
+...
+
+### `select-row-label`
+
+- default: "Select row"
+
+The hidden label for each "select" checkbox, used when `enableSelection` is true.
+
+#### Slot props
+
+##### `row`
+
+- type: `object`
+
+The data for the current row.
+
 ### `configure-label`
 
-- default: Configure
+- default: "Configure"
 
 The label for the "Configure" dropdown, including display options and column visibility.
 
@@ -98,27 +126,41 @@ The label for the "Display" options in the configure dropdown.
 
 ### `display-option-compact-label`
 
-- default: Compact
+- default: "Compact"
 
 The label for the "Compact" display option.
 
 ### `display-option-standard-label`
 
-- default: Standard
+- default: "Standard"
 
 The label for the "Standard" display option.
 
 ### `display-option-relaxed-label`
 
-- default: Relaxed
+- default: "Relaxed"
 
 The label for the "Relaxed" display option.
 
 ### `column-visibility-label`
 
-- default: Columns
+- default: "Columns"
 
 The label for the "Columns" options in the configure dropdown.
+
+### `selected-row-count-label`
+
+- default: "${selectedCount} rows selected"
+
+The label for the number of rows currently selected. This is only shown if `enableSelection` is enabled.
+
+#### Slot props
+
+##### `selectedCount`
+
+- type: `string`
+
+The count of rows currently selected.
 
 ### `showing-items-label`
 
@@ -265,7 +307,3 @@ Set the table's current search query, overriding any current search. This could 
 	</template>
 </data-table>
 ```
-
-## To do
-
-- Allow selecting of columns, model of selected columns with their row data (so that you can access IDs etc)

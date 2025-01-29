@@ -477,7 +477,7 @@ describe("data-table", () => {
 				const wrapper = mount({ enableSelection: true });
 				const vm = wrapper.vm;
 
-				vm.selectedIds = [vm.internalData[0].configuration.id];
+				vm.selectedRowIds = [vm.internalData[0].configuration.id];
 
 				expect(vm.selectedRows).toEqual([sampleRow]);
 			});
@@ -486,9 +486,37 @@ describe("data-table", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.selectedIds = [vm.internalData[0].configuration.id];
+				vm.selectedRowIds = [vm.internalData[0].configuration.id];
 
 				expect(vm.selectedRows).toEqual([]);
+			});
+
+			test("should update `selectAllRows` if all rows are selected", async() => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.selectedRowIds = vm.internalData.map(row => row.configuration.id);
+
+				await nextTick();
+
+				expect(vm.selectAllRows).toBe(true);
+			});
+
+			test("should update `selectAllRows` if a single row is deselected", async() => {
+				const wrapper = mount({ data: [sampleRow, sampleRow] });
+				const vm = wrapper.vm;
+
+				vm.selectedRowIds = vm.internalData.map(row => row.configuration.id);
+
+				await nextTick();
+
+				expect(vm.selectAllRows).toBe(true);
+
+				vm.selectedRowIds = [vm.internalData[0].configuration.id];
+
+				await nextTick();
+
+				expect(vm.selectAllRows).toBe(false);
 			});
 		});
 	});

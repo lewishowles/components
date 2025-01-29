@@ -76,7 +76,13 @@
 
 					<thead>
 						<tr class="border-b border-grey-300">
-							<th v-if="enableSelection" />
+							<th v-if="enableSelection" class="w-px px-4">
+								<form-checkbox v-bind="{ displayLabel: false }" v-model="selectAllRows" class="shrink" data-test="data-table-select-all-rows" @change="toggleAllRows">
+									<slot name="select-all-rows-label">
+										Select all rows
+									</slot>
+								</form-checkbox>
+							</th>
 							<th
 								v-for="(column, columnKey) in visibleColumnDefinitions"
 								:key="columnKey"
@@ -95,11 +101,13 @@
 					</thead>
 					<tbody>
 						<tr v-for="row in paginatedRows" :key="row.configuration.id" class="border-b border-grey-200 transition-colors hover:bg-grey-50" data-test="data-table-row">
-							<th v-if="enableSelection">
-								<form-checkbox v-bind="{ displayLabel: false, inputAttributes: { value: getRowId(row) } }" v-model="selectedIds">
-									Select this row
+							<td v-if="enableSelection" class="px-4">
+								<form-checkbox v-bind="{ displayLabel: false, inputAttributes: { value: getRowId(row) } }" v-model="selectedRowIds" class="shrink" data-test="data-table-select-row">
+									<slot name="select-row-label" v-bind="{ row: getRawRow(row) }">
+										Select row
+									</slot>
 								</form-checkbox>
-							</th>
+							</td>
 							<td v-for="(column, columnKey) in visibleColumnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
 								<slot :name="columnKey" v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }">
 									{{ getRowContent(row, columnKey) }}
@@ -108,6 +116,12 @@
 						</tr>
 					</tbody>
 				</table>
+
+				<div v-if="enableSelection" class="ps-4">
+					<slot name="selected-row-count-label" v-bind="{ selectedCount: selectedRowCount }">
+						{{ selectedRowCount }} rows selected
+					</slot>
+				</div>
 
 				<app-pagination v-if="enablePagination" v-show="haveDataToDisplay" v-model="currentPage" v-bind="{ count: rowCount }" data-test="data-table-pagination">
 					<template #page-number-page="{ page }">
@@ -502,26 +516,23 @@ const sortedRows = computed(() => {
 
 // Our paginated rows, based on the current page.
 const paginatedRows = ref([]);
-
 // Whether we have any data to display. That is, not only do we have data for
 // the table, but if the user is performing a search, there are results for that
 // search term.
 const haveDataToDisplay = computed(() => isNonEmptyArray(filteredRows.value));
-
 // The count of rows currently included in the table.
 const rowCount = computed(() => arrayLength(filteredRows.value));
-
 // The internal IDs of the selected rows, available when the user has enabled
 // row selection.
-const selectedIds = ref([]);
+const selectedRowIds = ref([]);
 
-// The rows and data that correspond to our selectedIds
+// The rows and data that correspond to our `selectedRowIds`
 const selectedRows = computed(() => {
 	if (props.enableSelection !== true) {
 		return [];
 	}
 
-	const internalRows = internalData.value.filter(row => selectedIds.value.includes(getRowId(row)));
+	const internalRows = internalData.value.filter(row => selectedRowIds.value.includes(getRowId(row)));
 
 	if (!isNonEmptyArray(internalRows)) {
 		return [];
@@ -529,6 +540,14 @@ const selectedRows = computed(() => {
 
 	return internalRows.map(row => getRawRow(row));
 });
+
+// Our checkbox that visually determines whether all rows are selected, and
+// allows the user to toggle state globally.
+const selectAllRows = ref(false);
+// The number of rows currently selected.
+const selectedRowCount = computed(() => arrayLength(selectedRowIds.value));
+// Whether all rows are selected.
+const areAllRowsSelected = computed(() => selectedRowCount.value === rowCount.value);
 
 // Reset to the first page when our filtered rows or sort change.
 watch([filteredRows, sortedColumn, sortDirection], () => {
@@ -559,10 +578,24 @@ watch(selectedRows, () => {
 	if (!isNonEmptyArray(selectedRows.value)) {
 		selection.value = [];
 
+		if (selectAllRows.value === true) {
+			selectAllRows.value = false;
+		}
+
 		return;
 	}
 
 	selection.value = selectedRows.value;
+});
+
+// If all rows are now selected, and `selectAllRows` is not, we check it. If not
+// all rows are selected, but `selectAllRows` is, we uncheck it.
+watch(selectedRowIds, () => {
+	if (areAllRowsSelected.value && !selectAllRows.value) {
+		selectAllRows.value = true;
+	} else if (!areAllRowsSelected.value && selectAllRows.value) {
+		selectAllRows.value = false;
+	}
 });
 
 /**
@@ -768,6 +801,20 @@ function updateTableDensityOptions(options) {
 	}
 
 	tableDensityOptions.value = options;
+}
+
+/**
+ * Select, or deselect, all individual rows depending on the current state of
+ * the `selectAllRows` checkbox. We perform this action as part of a function to
+ * separate the display of whether all rows are selected from the intention to
+ * select or deselect all rows.
+ */
+function toggleAllRows() {
+	if (selectAllRows.value) {
+		selectedRowIds.value = filteredRows.value.map(row => getRowId(row));
+	} else {
+		selectedRowIds.value = [];
+	}
 }
 
 provide("data-table", {

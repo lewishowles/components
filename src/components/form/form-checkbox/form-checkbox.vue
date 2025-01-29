@@ -81,7 +81,7 @@ const props = defineProps({
 	 * attributes.
 	 */
 	inputAttributes: {
-		type: String,
+		type: Object,
 		default: null,
 	},
 });

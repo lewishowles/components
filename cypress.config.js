@@ -1,4 +1,6 @@
 import { defineConfig } from "cypress";
+import viteConfig from "./vite.config";
+import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
 	fixturesFolder: "",
@@ -14,6 +16,10 @@ export default defineConfig({
 		devServer: {
 			framework: "vue",
 			bundler: "vite",
+			viteConfig: {
+				...viteConfig,
+				plugins: [vue()],
+			},
 		},
 		viewportWidth: 1000,
 		viewPortHeight: 1000,

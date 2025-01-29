@@ -17,7 +17,7 @@
 				With pagination
 			</template>
 
-			<data-table v-bind="{ data: extendedData, columns, searchPlaceholder: 'Find films by title or year of release' }" />
+			<data-table v-bind="{ data: extendedData, columns, searchPlaceholder: 'Find films by title or year of release', enableSelection: true }" />
 		</preview-section>
 
 		<preview-section>
