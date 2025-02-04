@@ -89,7 +89,7 @@ const props = defineProps({
 const slots = useSlots();
 
 const model = defineModel({
-	type: Boolean,
+	type: [Boolean, Array],
 });
 
 // A reference to the input, which allows us to trigger focus on it.
