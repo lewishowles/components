@@ -77,7 +77,7 @@ const props = defineProps({
 	 * `autocomplete`.
 	 */
 	inputAttributes: {
-		type: String,
+		type: Object,
 		default: null,
 	},
 });

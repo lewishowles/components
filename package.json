@@ -1,6 +1,6 @@
 {
 	"name": "@lewishowles/components",
-	"version": "0.20.0",
+	"version": "0.20.1",
 	"description": "A library of beautiful components, promoting rapid development, while ensuring that usability and accessibility are at the fore.",
 	"type": "module",
 	"files": ["dist"],

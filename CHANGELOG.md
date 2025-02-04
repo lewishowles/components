@@ -1,5 +1,11 @@
 # Changelog
 
+# 0.20.1 - 2025-02-04
+
+### Fixes
+
+- `form-textarea` - Fix an issue where `inputAttributes` expected a string, not an object.
+
 # 0.20.0 - 2025-02-04
 
 ### Updates
