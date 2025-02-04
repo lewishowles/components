@@ -1,9 +1,9 @@
 <template>
 	<div class="min-h-screen p-20">
-		<div class="guides-horizontal mx-auto max-w-screen-xl">
+		<div class="guides-horizontal mx-auto max-w-(--breakpoint-xl)">
 			<div class="guides-vertical">
 				<div class="p-10">
-					<h1 class="mb-6 inline-block rounded bg-gradient-to-r from-[#be185d] to-[#6a21a7] px-4 py-2 font-mono text-lg text-white">
+					<h1 class="mb-6 inline-block rounded-sm bg-linear-to-r from-[#be185d] to-[#6a21a7] px-4 py-2 font-mono text-lg text-white">
 						<slot name="title" />
 					</h1>
 

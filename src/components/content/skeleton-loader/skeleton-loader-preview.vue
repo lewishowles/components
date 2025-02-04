@@ -14,8 +14,8 @@
 					<skeleton-indicator class="size-10 rounded-full" />
 
 					<div class="flex flex-col gap-2">
-						<skeleton-indicator class="h-4 w-28 rounded" />
-						<skeleton-indicator class="h-2 w-12 rounded" />
+						<skeleton-indicator class="h-4 w-28 rounded-sm" />
+						<skeleton-indicator class="h-2 w-12 rounded-sm" />
 					</div>
 				</div>
 			</skeleton-loader>
@@ -35,8 +35,8 @@
 					<skeleton-indicator class="size-10 rounded-full" />
 
 					<div class="flex flex-col gap-2">
-						<skeleton-indicator class="h-4 w-28 rounded" />
-						<skeleton-indicator class="h-2 w-12 rounded" />
+						<skeleton-indicator class="h-4 w-28 rounded-sm" />
+						<skeleton-indicator class="h-2 w-12 rounded-sm" />
 					</div>
 				</div>
 			</skeleton-loader>

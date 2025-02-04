@@ -1,3 +1,79 @@
+@utility animate-fast {
+	@media (prefers-reduced-motion: no-preference) {
+		--animation-duration: 150ms;
+	}
+}
+
+@utility animate-fade-in {
+	@media (prefers-reduced-motion: no-preference) {
+		opacity: 0;
+		animation-duration: var(--animation-duration, 250ms);
+		animation-timing-function: ease-in-out;
+		animation-fill-mode: forwards;
+		animation-name: fadeIn;
+	}
+}
+
+@utility animate-fade-in-up {
+	@media (prefers-reduced-motion: no-preference) {
+		opacity: 0;
+		animation-duration: var(--animation-duration, 250ms);
+		animation-timing-function: ease-in-out;
+		animation-fill-mode: forwards;
+		animation-name: fadeInUp;
+	}
+}
+
+@utility animate-fade-in-right {
+	@media (prefers-reduced-motion: no-preference) {
+		opacity: 0;
+		animation-duration: var(--animation-duration, 250ms);
+		animation-timing-function: ease-in-out;
+		animation-fill-mode: forwards;
+		animation-name: fadeInRight;
+	}
+}
+
+@utility animate-fade-in-down {
+	@media (prefers-reduced-motion: no-preference) {
+		opacity: 0;
+		animation-duration: var(--animation-duration, 250ms);
+		animation-timing-function: ease-in-out;
+		animation-fill-mode: forwards;
+		animation-name: fadeInDown;
+	}
+}
+
+@utility animate-fade-in-left {
+	@media (prefers-reduced-motion: no-preference) {
+		opacity: 0;
+		animation-duration: var(--animation-duration, 250ms);
+		animation-timing-function: ease-in-out;
+		animation-fill-mode: forwards;
+		animation: fadeInLeft;
+	}
+}
+
+@utility delay-micro {
+	@media (prefers-reduced-motion: no-preference) {
+		@for $i from 1 to 40 {
+			&:nth-child($i) {
+				animation-delay: calc($i * 10ms);
+			}
+		}
+	}
+}
+
+@utility delay {
+	@media (prefers-reduced-motion: no-preference) {
+		@for $i from 1 to 40 {
+			&:nth-child($i) {
+				animation-delay: calc($i * 50ms);
+			}
+		}
+	}
+}
+
 @layer utilities {
 	@keyframes fadeIn {
 		0% {
@@ -54,47 +130,6 @@
 		100% {
 			opacity: 1;
 			transform: translateY(0);
-		}
-	}
-
-	@media (prefers-reduced-motion: no-preference) {
-		.animate-fast {
-			--animation-duration: 150ms;
-		}
-
-		.animate-fade-in, .animate-fade-in-up, .animate-fade-in-right, .animate-fade-in-down, .animate-fade-in-left {
-			opacity: 0;
-			animation-duration: var(--animation-duration, 250ms);
-			animation-timing-function: ease-in-out;
-			animation-fill-mode: forwards;
-		}
-
-		.animate-fade-in {
-			animation-name: fadeIn;
-		}
-
-		.animate-fade-in-up {
-			animation-name: fadeInUp;
-		}
-
-		.animate-fade-in-right {
-			animation-name: fadeInRight;
-		}
-
-		.animate-fade-in-down {
-			animation-name: fadeInDown;
-		}
-
-		.animate-fade-in-left {
-			animation: fadeInLeft;
-		}
-
-		@for $i from 1 to 40 {
-			.delay-micro:nth-child($i) { animation-delay: calc($i * 10ms); }
-		}
-
-		@for $i from 1 to 40 {
-			.delay:nth-child($i) { animation-delay: calc($i * 50ms); }
 		}
 	}
 }

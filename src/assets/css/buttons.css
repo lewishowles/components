@@ -1,37 +1,35 @@
-@layer components {
-	.button-padding-x {
-		@apply px-[1em];
-	}
+@utility button-padding-x {
+	@apply px-[1em];
+}
 
-	.button-padding-y {
-		@apply py-[0.5em];
-	}
+@utility button-padding-y {
+	@apply py-[0.5em];
+}
 
-	.button {
-		@apply button-padding-x button-padding-y rounded-md;
-	}
+@utility button {
+	@apply button-padding-x button-padding-y rounded-md;
+}
 
-	.button--primary {
-		@apply button;
-		@apply font-semibold bg-purple-800 text-white;
-		@apply hocus:bg-purple-900;
-		@apply active:bg-purple-950;
-	}
+@utility button--primary {
+	@apply button;
+	@apply font-semibold bg-purple-800 text-white;
+	@apply hocus:bg-purple-900;
+	@apply active:bg-purple-950;
+}
 
-	.button--muted {
-		@apply button no-underline text-current;
-		@apply bg-white border border-grey-300;
-		@apply hocus:bg-grey-50 hocus:border-grey-400 hocus:text-grey-700;
-		@apply active:bg-grey-100 active:border-grey-500 active:text-grey-800;
-		@apply dark:bg-white/20 dark:border-white/20;
-		@apply dark:hocus:bg-white/30 dark:hocus:border-white/20 dark:hocus:text-grey-100;
-		@apply dark:active:bg-white/40 dark:hocus:border-transparent dark:active:text-grey-50;
-	}
+@utility button--muted {
+	@apply button no-underline text-current;
+	@apply bg-white border border-grey-300;
+	@apply hocus:bg-grey-50 hocus:border-grey-400 hocus:text-grey-700;
+	@apply active:bg-grey-100 active:border-grey-500 active:text-grey-800;
+	@apply dark:bg-white/20 dark:border-white/20;
+	@apply dark:hocus:bg-white/30 dark:hocus:border-white/20 dark:hocus:text-grey-100;
+	@apply dark:active:bg-white/40 dark:hocus:border-transparent dark:active:text-grey-50;
+}
 
-	.button--danger {
-		@apply button;
-		@apply font-semibold bg-red-700 text-white;
-		@apply hocus:bg-red-800;
-		@apply active:bg-red-900;
-	}
+@utility button--danger {
+	@apply button;
+	@apply font-semibold bg-red-700 text-white;
+	@apply hocus:bg-red-800;
+	@apply active:bg-red-900;
 }

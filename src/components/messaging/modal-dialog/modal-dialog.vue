@@ -1,6 +1,6 @@
 <template>
 	<dialog ref="dialog" class="relative w-full max-w-2xl rounded-md border border-grey-300 p-12 text-current shadow-2xl dark:border-white/20" data-test="modal-dialog">
-		<ui-button class="absolute end-0 top-0 me-4 mt-4 rounded p-3 hocus:bg-grey-200 dark:hocus:bg-white/20" v-bind="{ 'aria-label': closeDialogLabel }" data-test="modal-dialog-close" @click="closeDialog">
+		<ui-button class="absolute end-0 top-0 me-4 mt-4 rounded-sm p-3 hocus:bg-grey-200 dark:hocus:bg-white/20" v-bind="{ 'aria-label': closeDialogLabel }" data-test="modal-dialog-close" @click="closeDialog">
 			<icon-cross />
 		</ui-button>
 

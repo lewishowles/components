@@ -55,7 +55,7 @@
 						Summary
 					</template>
 
-					<div class="mt-1 min-w-xs rounded-md border border-grey-200 bg-white p-4 shadow">
+					<div class="mt-1 min-w-xs rounded-md border border-grey-200 bg-white p-4 shadow-sm">
 						Details content
 					</div>
 				</summary-details>
@@ -65,7 +65,7 @@
 						Align end
 					</template>
 
-					<div class="mt-1 min-w-xs rounded-md border border-grey-200 bg-white p-4 shadow">
+					<div class="mt-1 min-w-xs rounded-md border border-grey-200 bg-white p-4 shadow-sm">
 						Details content
 					</div>
 				</summary-details>

@@ -1,11 +1,98 @@
-@import url("font.css");
-@import url("buttons.css");
-@import url("form.css");
-@import url("animation.css");
+@import url('font.css') layer(base);
+@import url('buttons.css');
+@import url('form.css');
+@import url('animation.css');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/container-queries';
+@plugin 'tailwindcss-hocus';
+@plugin '@tailwindcss/typography';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	/* Allow us to use a familiar spelling */
+	--color-grey-50: oklch(0.984 0.003 247.858);
+	--color-grey-100: oklch(0.968 0.007 247.896);
+	--color-grey-200: oklch(0.929 0.013 255.508);
+	--color-grey-300: oklch(0.869 0.022 252.894);
+	--color-grey-400: oklch(0.704 0.04 256.788);
+	--color-grey-500: oklch(0.554 0.046 257.417);
+	--color-grey-600: oklch(0.446 0.043 257.281);
+	--color-grey-700: oklch(0.372 0.044 257.287);
+	--color-grey-800: oklch(0.279 0.041 260.031);
+	--color-grey-900: oklch(0.208 0.042 265.755);
+	--color-grey-950: oklch(0.129 0.042 264.695);
+
+	/* Choose our preferred blue */
+	--color-blue-50: oklch(0.977 0.013 236.62);
+	--color-blue-100: oklch(0.951 0.026 236.824);
+	--color-blue-200: oklch(0.901 0.058 230.902);
+	--color-blue-300: oklch(0.828 0.111 230.318);
+	--color-blue-400: oklch(0.746 0.16 232.661);
+	--color-blue-500: oklch(0.685 0.169 237.323);
+	--color-blue-600: oklch(0.588 0.158 241.966);
+	--color-blue-700: oklch(0.5 0.134 242.749);
+	--color-blue-800: oklch(0.443 0.11 240.79);
+	--color-blue-900: oklch(0.391 0.09 240.876);
+	--color-blue-950: oklch(0.293 0.066 243.157);
+
+	/* Remove unused colours */
+	--color-amber-*: initial;
+	--color-lime-*: initial;
+	--color-emerald-*: initial;
+	--color-sky-*: initial;
+	--color-violet-*: initial;
+	--color-fuchsia-*: initial;
+	--color-rose-*: initial;
+	--color-gray-*: initial;
+	--color-zinc-*: initial;
+	--color-neutral-*: initial;
+	--color-stone-*: initial;
+
+	--font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif,
+		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+		Consolas, "Liberation Mono", "Courier New", monospace;
+
+	--container-3xs: 12rem;
+	--container-2xs: 16rem;
+
+	--min-width-3xs: 12rem;
+	--min-width-2xs: 16rem;
+	--min-width-xs: 20rem;
+	--min-width-sm: 24rem;
+	--min-width-md: 28rem;
+	--min-width-lg: 32rem;
+	--min-width-xl: 36rem;
+	--min-width-2xl: 42rem;
+	--min-width-3xl: 48rem;
+	--min-width-4xl: 56rem;
+	--min-width-5xl: 64rem;
+	--min-width-6xl: 72rem;
+	--min-width-7xl: 80rem;
+
+	--size-text: 1em;
+}
+
+/*
+	The default border color has changed to `currentColor` in Tailwind CSS v4,
+	so we've added these compatibility styles to make sure everything still
+	looks the same as it did with Tailwind CSS v3.
+
+	If we ever want to remove these styles, we need to add an explicit border
+	color utility to any element that depends on these defaults.
+*/
+@layer base {
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentColor);
+	}
+}
 
 @layer base {
 	svg {
@@ -14,7 +101,7 @@
 	}
 
 	a, button, summary, [contenteditable], [tabindex] {
-		@apply transition-all focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-800 focus-visible:ring-offset-2 dark:focus-visible:ring-purple-400 dark:focus-visible:ring-offset-0;
+		@apply transition-all focus-visible:rounded-sm focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-purple-800 focus-visible:ring-offset-2 dark:focus-visible:ring-purple-400 dark:focus-visible:ring-offset-0;
 	}
 
 	a, summary {

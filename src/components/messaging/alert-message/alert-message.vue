@@ -1,5 +1,5 @@
 <template>
-	<div class="flex w-full gap-3 rounded border p-4" :class="alertColours" role="alert" data-test="alert-message">
+	<div class="flex w-full gap-3 rounded-sm border p-4" :class="alertColours" role="alert" data-test="alert-message">
 		<div v-if="haveIcon" class="mt-1">
 			<slot name="icon">
 				<component :is="defaultIcon" data-test="alert-message-icon" />
