@@ -1,5 +1,16 @@
 # Changelog
 
+# 0.20.0 - 2025-02-04
+
+### Updates
+
+- [Internal] - Update Tailwind to v4. This won't affect projects that use this package, as CSS is only used internally for testing.
+
+### Fixes
+
+- Better handle scenarios where a form-field is used without a form-wrapper, especially in testing.
+- Remove a warning that could be triggered when using `form-checkbox` in a loop.
+
 # 0.19.0 - 2025-01-29
 
 ### New components
