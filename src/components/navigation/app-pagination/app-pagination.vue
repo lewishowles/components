@@ -7,7 +7,7 @@
 		A `label` is required for accessibility purposes.
 	</alert-message>
 
-	<nav v-else-if="!haveSinglePage" :aria-label="label" class="flex items-center gap-4 text-center" data-test="app-pagination">
+	<nav v-else-if="!haveSinglePage" :aria-label="label" class="flex flex-wrap items-center gap-4 text-center" data-test="app-pagination">
 		<button
 			class="button flex items-center gap-2"
 			:class="{ 'text-grey-500': showingFirstPage, 'underline hocus:bg-grey-200 hocus:text-grey-700': !showingFirstPage }"
