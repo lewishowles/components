@@ -95,8 +95,10 @@ const model = defineModel({
 
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
-// Retrieve the relevant methods from the wrapper.
-const formWrapperInject = inject("form-wrapper");
+// Retrieve the relevant methods from the wrapper. Form fields may be used
+// without a wrapper form, so we provide a default value for our injection in
+// case it isn't provided.
+const formWrapperInject = inject("form-wrapper", {});
 // The injection may not be defined, so we get its properties in a safe way.
 const registerField = formWrapperInject?.registerField;
 const updateFieldValue = formWrapperInject?.updateFieldValue;
