@@ -28,8 +28,13 @@
 				<ui-button class="button--muted" icon-start="icon-chevron-left">
 					Chevron left
 				</ui-button>
+
 				<ui-button class="button--muted" icon-end="icon-chevron-right">
 					Chevron right
+				</ui-button>
+
+				<ui-button class="button--muted" v-bind="{ iconOnly: true, iconEnd: 'icon-chevron-right' }">
+					Icon only
 				</ui-button>
 			</div>
 		</preview-section>

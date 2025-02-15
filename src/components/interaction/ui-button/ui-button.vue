@@ -1,7 +1,7 @@
 <template>
 	<button
 		type="button"
-		class="inline-block"
+		class="inline-flex items-center"
 		:class="{ 'relative': reactive }"
 		v-bind="attributes"
 		data-test="ui-button"
@@ -14,7 +14,7 @@
 		</conditional-wrapper>
 
 		<span v-if="reactive" v-show="isReacting" class="absolute inset-0 flex items-center justify-center" data-test="ui-button-loading">
-			<icon-loading class="stroke-current" />
+			<icon-loading class="stroke-current animate-spin" />
 
 			<span class="sr-only">
 				<slot name="loading">
@@ -23,7 +23,7 @@
 			</span>
 		</span>
 
-		<component :is="iconEnd" v-if="haveIconEnd" class="ms-2" :class="[computedIconClasses, { 'ms-2': !iconOnly }]" data-test="ui-button-icon-end" />
+		<component :is="iconEnd" v-if="haveIconEnd" :class="[computedIconClasses, { 'ms-2': !iconOnly }]" data-test="ui-button-icon-end" />
 	</button>
 </template>
 
