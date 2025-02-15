@@ -1,6 +1,5 @@
 @utility form-input {
 	@apply block w-full rounded-md px-3 py-2 text-grey-700 shadow-xs outline-hidden;
-	@apply placeholder:text-grey-500;
 	@apply dark:bg-transparent;
 }
 
