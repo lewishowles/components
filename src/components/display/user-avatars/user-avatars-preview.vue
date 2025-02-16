@@ -9,21 +9,15 @@
 				Default view
 			</template>
 
-			<template #subtitle>
+			<preview-label>
 				Where provided avatars are square
-			</template>
+			</preview-label>
 
 			<user-avatars v-bind="{ users: generateUsers(5) }" />
-		</preview-section>
 
-		<preview-section>
-			<template #title>
-				Default view
-			</template>
-
-			<template #subtitle>
+			<preview-label>
 				Where provided avatars are portrait
-			</template>
+			</preview-label>
 
 			<user-avatars v-bind="{ users: generatePortraitUsers(5) }" />
 		</preview-section>

@@ -85,5 +85,79 @@ describe("user-avatars", () => {
 				expect(vm.internalUsers[5]).toEqual(expect.objectContaining({ hasAvatar: false }));
 			});
 		});
+
+		describe("shapeClasses", () => {
+			test("should add the appropriate class for \"square\"", () => {
+				const wrapper = mount({ shape: "square" });
+				const vm = wrapper.vm;
+
+				expect(vm.shapeClasses).toBe("");
+			});
+
+			test("should add the appropriate class for \"squircle\"", () => {
+				const wrapper = mount({ shape: "squircle" });
+				const vm = wrapper.vm;
+
+				expect(vm.shapeClasses).toBe("rounded-lg");
+			});
+
+			test("should add the appropriate class for \"circle\"", () => {
+				const wrapper = mount({ shape: "circle" });
+				const vm = wrapper.vm;
+
+				expect(vm.shapeClasses).toBe("rounded-full");
+			});
+
+			test("should default to \"circle\"", () => {
+				const wrapper = mount({ shape: "banana" });
+				const vm = wrapper.vm;
+
+				expect(vm.shapeClasses).toBe("rounded-full");
+			});
+		});
+
+		describe("overlapClasses", () => {
+			test("should default to overlap for \"circle\"", () => {
+				const wrapper = mount({ shape: "circle" });
+				const vm = wrapper.vm;
+
+				expect(vm.overlapClasses).toBe("-ms-2 outline-3 outline-white");
+			});
+
+			test("should allow the default for \"circle\" to be overridden", () => {
+				const wrapper = mount({ shape: "circle", overlap: false });
+				const vm = wrapper.vm;
+
+				expect(vm.overlapClasses).toBeNull();
+			});
+
+			test("should default to no overlap for \"square\"", () => {
+				const wrapper = mount({ shape: "square" });
+				const vm = wrapper.vm;
+
+				expect(vm.overlapClasses).toBeNull("");
+			});
+
+			test("should allow the default for \"square\" to be overridden", () => {
+				const wrapper = mount({ shape: "square", overlap: true });
+				const vm = wrapper.vm;
+
+				expect(vm.overlapClasses).toBe("-ms-2 outline-3 outline-white");
+			});
+
+			test("should default to no overlap for \"squircle\"", () => {
+				const wrapper = mount({ shape: "squircle" });
+				const vm = wrapper.vm;
+
+				expect(vm.overlapClasses).toBeNull("");
+			});
+
+			test("should allow the default for \"squircle\" to be overridden", () => {
+				const wrapper = mount({ shape: "squircle", overlap: true });
+				const vm = wrapper.vm;
+
+				expect(vm.overlapClasses).toBe("-ms-2 outline-3 outline-white");
+			});
+		});
 	});
 });

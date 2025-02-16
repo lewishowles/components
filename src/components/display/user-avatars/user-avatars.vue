@@ -1,7 +1,7 @@
 <template>
 	<ul v-if="haveUsers" class="flex items-center gap-1" data-test="user-avatars">
-		<li v-for="(user, index) in internalUsers" :key="index" data-test="user-avatars-user">
-			<image-tag v-if="user.hasAvatar" v-bind="{ src: user.avatar, alt: user.tooltip, title: user.tooltip }" class="object-cover" :class="[size, shapeClass]" data-test="user-avatars-avatar" />
+		<li v-for="(user, index) in internalUsers" :key="index" :class="[shapeClasses, overlapClasses]" data-test="user-avatars-user">
+			<image-tag v-if="user.hasAvatar" v-bind="{ src: user.avatar, alt: user.tooltip, title: user.tooltip }" class="object-cover" :class="[size, shapeClasses]" data-test="user-avatars-avatar" />
 		</li>
 	</ul>
 </template>
@@ -46,6 +46,18 @@ const props = defineProps({
 	size: {
 		type: String,
 		default: "size-10",
+	},
+
+	/**
+	 * Whether avatars should overlap. If they do, they're given an outline so
+	 * that the images don't clash.
+	 *
+	 * Overlap is true by default for "circle" avatars, and false by default for
+	 * "square" and "squircle", but a value provided here will take precedence.
+	 */
+	overlap: {
+		type: Boolean,
+		default: null,
 	},
 });
 
@@ -95,7 +107,7 @@ const haveUsers = computed(() => isNonEmptyArray(internalUsers.value));
 
 // The classes to apply our selected shape, defaulting to round if we don't
 // recognise the shape provided.
-const shapeClass = computed(() => {
+const shapeClasses = computed(() => {
 	switch (props.shape) {
 		case "square":
 			return "";
@@ -104,5 +116,15 @@ const shapeClass = computed(() => {
 		default:
 			return "rounded-full";
 	}
+});
+
+// The classes to apply our selected shape, defaulting to round if we don't
+// recognise the shape provided.
+const overlapClasses = computed(() => {
+	if (props.overlap === false || (["square", "squircle"].includes(props.shape) && props.overlap === null)) {
+		return null;
+	}
+
+	return "-ms-2 outline-3 outline-white";
 });
 </script>

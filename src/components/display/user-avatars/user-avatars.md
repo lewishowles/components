@@ -39,6 +39,15 @@ The shape of avatars to display. Available values include "round", "square", and
 
 The size of the avatars to display, based on Tailwind size classes.
 
+### `overlap`
+
+- type: `boolean`
+- default: `null`
+
+Whether avatars should overlap. If they do, they're given an outline so that the images don't clash.
+
+Overlap is true by default for "circle" avatars, and false by default for "square" and "squircle", but a value provided here will take precedence.
+
 ## Events
 
 ### `@click`
