@@ -1,12 +1,13 @@
+import PreviewLabel from "@/preview/preview-label.vue";
 import PreviewSection from "@/preview/preview-section.vue";
 import PreviewWrapper from "@/preview/preview-wrapper.vue";
 
 import AccordionGroupPreview from "@/components/content/accordion-group/accordion-group-preview.vue";
 import AlertMessagePreview from "@/components/messaging/alert-message/alert-message-preview.vue";
-import DataTablePreview from "@/components/content/data-table/data-table-preview.vue";
 import AppPaginationPreview from "@/components/navigation/app-pagination/app-pagination-preview.vue";
 import BreadcrumbListPreview from "@/components/navigation/breadcrumb-list/breadcrumb-list-preview.vue";
 import ButtonGroupPreview from "@/components/form/button-group/button-group-preview.vue";
+import DataTablePreview from "@/components/content/data-table/data-table-preview.vue";
 import DonutChartPreview from "@/components/chart/donut-chart/donut-chart-preview.vue";
 import DropdownMenuPreview from "@/components/interaction/dropdown-menu/dropdown-menu-preview.vue";
 import FormCheckboxPreview from "@/components/form/form-checkbox/form-checkbox-preview.vue";
@@ -27,12 +28,14 @@ import SkeletonLoaderPreview from "@/components/content/skeleton-loader/skeleton
 import SummaryDetailsPreview from "@/components/content/summary-details/summary-details-preview.vue";
 import TabGroupPreview from "@/components/content/tab-group/tab-group-preview.vue";
 import UiButtonPreview from "@/components/interaction/ui-button/ui-button-preview.vue";
+import UserAvatarsPreview from "@/components/display/user-avatars/user-avatars-preview.vue";
 
 // Prepare previews for use with <component :is> to simplify preview management.
 const previewLibrary = {
 	install(app) {
 		app.component("AccordionGroupPreview", AccordionGroupPreview);
 		app.component("AlertMessagePreview", AlertMessagePreview);
+		app.component("UserAvatarsPreview", UserAvatarsPreview);
 		app.component("DataTablePreview", DataTablePreview);
 		app.component("FormFieldsetPreview", FormFieldsetPreview);
 		app.component("AppPaginationPreview", AppPaginationPreview);
@@ -50,6 +53,7 @@ const previewLibrary = {
 		app.component("LoadingIndicatorPreview", LoadingIndicatorPreview);
 		app.component("ModalDialogPreview", ModalDialogPreview);
 		app.component("PillBadgePreview", PillBadgePreview);
+		app.component("PreviewLabel", PreviewLabel);
 		app.component("PreviewSection", PreviewSection);
 		app.component("PreviewWrapper", PreviewWrapper);
 		app.component("ProgressBarPreview", ProgressBarPreview);
