@@ -118,7 +118,7 @@ if [ "$IS_FRAGMENT" = false ]; then
 	INDEX_FILE="../src/components/index.js"
 
 	sed -i '' "/import ConditionalWrapper/a\\
-	import $PASCAL_CASE_NAME from \"./$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME.vue\";\\
+import $PASCAL_CASE_NAME from \"./$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME.vue\";\\
 	" "$INDEX_FILE"
 
 	sed -i '' "/AlertMessage,/a\\
@@ -131,19 +131,19 @@ if [ "$IS_FRAGMENT" = false ]; then
 	PREVIEWS_FILE="../src/previews.js"
 
 	sed -i '' "/import AlertMessagePreview/a\\
-	import ${PASCAL_CASE_NAME}Preview from \"@/components/$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME-preview.vue\";\\
-	" "$PREVIEWS_FILE"
+import ${PASCAL_CASE_NAME}Preview from \"@/components/$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME-preview.vue\";\\
+" "$PREVIEWS_FILE"
 
 	sed -i '' "/app.component(\"AlertMessagePreview\", AlertMessagePreview);/a\\
-			app.component(\"${PASCAL_CASE_NAME}Preview\", ${PASCAL_CASE_NAME}Preview);\\
-	" "$PREVIEWS_FILE"
+		app.component(\"${PASCAL_CASE_NAME}Preview\", ${PASCAL_CASE_NAME}Preview);\\
+" "$PREVIEWS_FILE"
 
 	APP_FILE="../src/App.vue";
 
 	# Add the new component to App.vue
 	sed -i '' "/const previewOptions/a\\
-		{ label: \"${COMPONENT_NAME}\", value: \"${COMPONENT_NAME}-preview\" },\\
-	" "$APP_FILE"
+	{ label: \"${COMPONENT_NAME}\", value: \"${COMPONENT_NAME}-preview\" },\\
+" "$APP_FILE"
 
 	sed -i '' "s/const selectedPreview = ref(\"[^\"]*\")/const selectedPreview = ref(\"${COMPONENT_NAME}-preview\")/" "$APP_FILE"
 fi

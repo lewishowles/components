@@ -2,8 +2,8 @@
 	<img
 		v-if="!haveImageError"
 		class="bg-grey-100"
-		v-bind="{ ...$attrs, src }"
 		data-test="image-tag"
+		v-bind="{ ...$attrs, src }"
 		@load="handleImageLoad"
 		@error="handleImageError"
 	/>

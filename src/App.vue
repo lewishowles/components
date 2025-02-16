@@ -13,15 +13,15 @@
 <script setup>
 import { ref, watch } from "vue";
 
-const selectedPreview = ref("data-table-preview");
+const selectedPreview = ref("user-avatars-preview");
 
 const previewOptions = [
-	{ label: "data-table", value: "data-table-preview" },
 	{ label: "accordion-group", value: "accordion-group-preview" },
 	{ label: "alert-message", value: "alert-message-preview" },
 	{ label: "app-pagination", value: "app-pagination-preview" },
 	{ label: "breadcrumb-list", value: "breadcrumb-list-preview" },
 	{ label: "button-group", value: "button-group-preview" },
+	{ label: "data-table", value: "data-table-preview" },
 	{ label: "donut-chart", value: "donut-chart-preview" },
 	{ label: "dropdown-menu", value: "dropdown-menu-preview" },
 	{ label: "form-checkbox", value: "form-checkbox-preview" },
@@ -41,6 +41,7 @@ const previewOptions = [
 	{ label: "summary-details", value: "summary-details-preview" },
 	{ label: "tab-group", value: "tab-group-preview" },
 	{ label: "ui-button", value: "ui-button-preview" },
+	{ label: "user-avatars", value: "user-avatars-preview" },
 ];
 
 watch(selectedPreview, () => {

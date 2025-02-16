@@ -36,6 +36,7 @@ import SummaryDetails from "./content/summary-details/summary-details.vue";
 import TabGroup from "./content/tab-group/tab-group.vue";
 import TabItem from "./content/tab-item/tab-item.vue";
 import UiButton from "./interaction/ui-button/ui-button.vue";
+import UserAvatars from "./display/user-avatars/user-avatars.vue";
 
 import BaseIcon from "./icon/base-icon/base-icon.vue";
 import IconEye from "./icon/icon-eye/icon-eye.vue";
@@ -79,6 +80,7 @@ export default {
 	AccordionGroup,
 	AccordionSection,
 	AlertMessage,
+	UserAvatars,
 	AppPagination,
 	BaseIcon,
 	BreadcrumbItem,
