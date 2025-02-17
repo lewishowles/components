@@ -118,6 +118,13 @@ describe("user-avatars", () => {
 				expect(vm.shapeClasses).toBe("rounded-lg");
 			});
 
+			test("should add the appropriate class for \"roundangle\"", () => {
+				const wrapper = mount({ shape: "roundangle" });
+				const vm = wrapper.vm;
+
+				expect(vm.shapeClasses).toBe("rounded-lg");
+			});
+
 			test("should add the appropriate class for \"circle\"", () => {
 				const wrapper = mount({ shape: "circle" });
 				const vm = wrapper.vm;

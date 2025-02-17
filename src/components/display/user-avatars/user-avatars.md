@@ -31,7 +31,7 @@ Any of the information can be omitted, and the component will do its best to com
 - type: `string`
 - default: `round`
 
-The shape of avatars to display. Available values include "round", "square", and "squircle". Anything else will default to "round".
+The shape of avatars to display. Available values include "round", "square", and "squircle" (or "roundangle"). Anything else will default to "round".
 
 ### `size`
 

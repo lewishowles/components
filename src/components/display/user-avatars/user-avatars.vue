@@ -44,7 +44,8 @@ const props = defineProps({
 
 	/**
 	 * The shape of avatars to display. Available values include "round",
-	 * "square", and "squircle". Anything else will default to "round".
+	 * "square", and "squircle" (or "roundangle"). Anything else will default to
+	 * "round".
 	 */
 	shape: {
 		type: String,
@@ -119,6 +120,7 @@ const shapeClasses = computed(() => {
 		case "square":
 			return "";
 		case "squircle":
+		case "roundangle":
 			return "rounded-lg";
 		default:
 			return "rounded-full";
