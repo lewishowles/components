@@ -2,6 +2,10 @@
 
 # 0.21.0
 
+### New components
+
+- [`user-avatars`](/src/components/display/user-avatars/user-avatars.md)
+
 ### Updates
 
 - `image-tag`: Now emits an `error` event when an image fails to load.

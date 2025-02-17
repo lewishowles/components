@@ -73,6 +73,7 @@ You can find more information about each component on its relevant docs page.
 ### Display
 
 - [image-tag](/src/components/display/image-tag/image-tag.md)
+- [user-avatars](/src/components/display/user-avatars/user-avatars.md)
 
 ### Messaging
 
@@ -101,7 +102,6 @@ Special scaffold scripts have been created to generate files for a new component
 
 There are a number of improvements and new components that could be made to improve flexibility.
 
-- Avatar list - shapes and sizes?
 - Gauge Chart - to show a single piece of information in comparison to a range, allowing for odd-sizes regions, custom colours, and semi-circular or flat options
 - Rating / Star component, with options to just display the rating or let the user change it. Emits an even when changing. Allows different display modes, such as stars, hearts, and whether to show all shapes or just one, and whether to show partial shapes or only full.
 - Form select

@@ -30,6 +30,14 @@
 
 		<preview-section>
 			<template #title>
+				With limit
+			</template>
+
+			<user-avatars v-bind="{ users: generateUsers(10), limit: 5 }" />
+		</preview-section>
+
+		<preview-section>
+			<template #title>
 				Shapes
 			</template>
 

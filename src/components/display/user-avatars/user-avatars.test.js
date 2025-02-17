@@ -101,6 +101,13 @@ describe("user-avatars", () => {
 				expect(vm.internalUsers[0]).toEqual(expect.objectContaining({ showAvatar: false }));
 				expect(vm.internalUsers[1]).toEqual(expect.objectContaining({ showAvatar: true }));
 			});
+
+			test("should respect a defined limit", () => {
+				const wrapper = mount({ limit: 3 });
+				const vm = wrapper.vm;
+
+				expect(vm.internalUsers).toHaveLength(3);
+			});
 		});
 
 		describe("shapeClasses", () => {

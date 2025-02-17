@@ -14,14 +14,20 @@
 				{{ user.initials }}
 			</div>
 		</li>
+		<li v-if="haveOverflowUsers" :class="[shapeClasses, overlapClasses]">
+			<div class="flex items-center justify-center text-sm font-bold" :class="[size, shapeClasses, initialColourClasses]">
+				+{{ overflowUserCount }}
+			</div>
+		</li>
 	</ul>
 </template>
 
 <script setup>
+import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed, ref } from "vue";
-import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { isNumber } from "@lewishowles/helpers/number";
 
 const props = defineProps({
 	/**
@@ -40,6 +46,15 @@ const props = defineProps({
 	users: {
 		type: Array,
 		default: () => [],
+	},
+
+	/**
+	 * The maximum number of avatars to display. Any additional will contribute
+	 * to a "+X" last item.
+	 */
+	limit: {
+		type: [Number, null],
+		default: null,
 	},
 
 	/**
@@ -96,6 +111,11 @@ const internalUsers = computed(() => {
 	}
 
 	return props.users.reduce((users, user) => {
+		// Ensure we stick to any defined limit.
+		if (isNumber(props.limit) && users.length >= props.limit) {
+			return users;
+		}
+
 		const internalUser = standardiseUser(user);
 
 		if (internalUser) {
@@ -110,6 +130,18 @@ const internalUsers = computed(() => {
 
 // Whether we have any avatars to display.
 const haveUsers = computed(() => isNonEmptyArray(internalUsers.value));
+
+// The number of users that cannot be displayed due to a limit.
+const overflowUserCount = computed(() => {
+	if (!isNumber(props.limit)) {
+		return 0;
+	}
+
+	return arrayLength(props.users) - props.limit;
+});
+
+// Whether we have overflow users.
+const haveOverflowUsers = computed(() => overflowUserCount.value > 0);
 // Whether the avatars should overlap.
 const shouldOverlap = computed(() => props.overlap === true || (!["square", "squircle"].includes(props.shape) && props.overlap === null));
 
