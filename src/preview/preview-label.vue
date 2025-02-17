@@ -1,6 +1,6 @@
 <template>
 	<h3 class="preview-label relative mb-3 text-sm text-grey-500 dark:text-white/60">
-		<div class="absolute inset-y-0 end-full me-4 w-1 rounded-sm bg-grey-300" />
+		<div class="absolute inset-y-0 end-full me-4 w-1 rounded-sm bg-grey-300 dark:bg-grey-700" />
 
 		<slot />
 	</h3>

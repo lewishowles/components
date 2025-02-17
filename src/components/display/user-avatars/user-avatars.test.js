@@ -84,6 +84,23 @@ describe("user-avatars", () => {
 				expect(vm.internalUsers[0]).toEqual(expect.objectContaining({ hasAvatar: true }));
 				expect(vm.internalUsers[5]).toEqual(expect.objectContaining({ hasAvatar: false }));
 			});
+
+			test("should show a provided avatar by default", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.internalUsers[0]).toEqual(expect.objectContaining({ showAvatar: true }));
+			});
+
+			test("should not show a provided avatar if it has been marked as invalid", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.failedAvatars.push(users[0].avatar);
+
+				expect(vm.internalUsers[0]).toEqual(expect.objectContaining({ showAvatar: false }));
+				expect(vm.internalUsers[1]).toEqual(expect.objectContaining({ showAvatar: true }));
+			});
 		});
 
 		describe("shapeClasses", () => {
@@ -117,11 +134,13 @@ describe("user-avatars", () => {
 		});
 
 		describe("overlapClasses", () => {
+			const standardOutlineClasses = "-ms-2 outline-3 outline-white dark:outline-purple-200";
+
 			test("should default to overlap for \"circle\"", () => {
 				const wrapper = mount({ shape: "circle" });
 				const vm = wrapper.vm;
 
-				expect(vm.overlapClasses).toBe("-ms-2 outline-3 outline-white");
+				expect(vm.overlapClasses).toBe(standardOutlineClasses);
 			});
 
 			test("should allow the default for \"circle\" to be overridden", () => {
@@ -142,7 +161,7 @@ describe("user-avatars", () => {
 				const wrapper = mount({ shape: "square", overlap: true });
 				const vm = wrapper.vm;
 
-				expect(vm.overlapClasses).toBe("-ms-2 outline-3 outline-white");
+				expect(vm.overlapClasses).toBe(standardOutlineClasses);
 			});
 
 			test("should default to no overlap for \"squircle\"", () => {
@@ -156,7 +175,69 @@ describe("user-avatars", () => {
 				const wrapper = mount({ shape: "squircle", overlap: true });
 				const vm = wrapper.vm;
 
-				expect(vm.overlapClasses).toBe("-ms-2 outline-3 outline-white");
+				expect(vm.overlapClasses).toBe(standardOutlineClasses);
+			});
+		});
+	});
+
+	describe("Methods", () => {
+		describe("standardiseUser", () => {
+			describe("should ignore anything but a non-empty object", () => {
+				test.for([
+					["boolean (true)", true],
+					["boolean (false)", false],
+					["number (positive)", 1],
+					["number (negative)", -1],
+					["number (NaN)", NaN],
+					["string (non-empty)", "string"],
+					["string (empty)", ""],
+					["array (non-empty)", [1, 2, 3]],
+					["array (empty)", []],
+					["object (empty)", {}],
+					["null", null],
+					["undefined", undefined],
+				])("%s", ([, input]) => {
+					const wrapper = mount();
+					const vm = wrapper.vm;
+
+					expect(vm.standardiseUser(input)).toBeNull();
+				});
+			});
+
+			test("should discard a user without enough information", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.standardiseUser({ movie: "Toy Story" })).toBeNull();
+			});
+
+			test("should determine whether a user has an avatar", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.standardiseUser(users[0])).toEqual(expect.objectContaining({ hasAvatar: true }));
+				expect(vm.standardiseUser({ name: "Mike Wazowski", initials: "MW" })).toEqual(expect.objectContaining({ hasAvatar: false }));
+			});
+
+			test("should add initials where they are missing but a name is provided", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.standardiseUser({ name: "Mike Wazowski" })).toEqual(expect.objectContaining({ initials: "MW" }));
+			});
+
+			test("should add a tooltip containing the user's name where provided", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.standardiseUser(users[0])).toEqual(expect.objectContaining({ tooltip: "Mickey Mouse" }));
+			});
+
+			test("should add a tooltip containing the user's initials where provided and no name is available", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.standardiseUser({ initials: "MW" })).toEqual(expect.objectContaining({ tooltip: "MW" }));
 			});
 		});
 	});

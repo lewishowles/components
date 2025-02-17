@@ -15,6 +15,12 @@ A slot provided to override the default fallback image.
 - type: `string`
 - **required**
 
+## Events
+
+### `error`
+
+Fired when an image load error occurs, and the `image-tag` would be showing the fallback.
+
 ## Examples
 
 ### Basic image

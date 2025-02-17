@@ -20,6 +20,12 @@
 			</preview-label>
 
 			<user-avatars v-bind="{ users: generatePortraitUsers(5) }" />
+
+			<preview-label>
+				Where provided avatars are broken
+			</preview-label>
+
+			<user-avatars v-bind="{ users: generateBrokenImageUsers(5) }" />
 		</preview-section>
 
 		<preview-section>
@@ -45,6 +51,30 @@
 
 			<user-avatars v-bind="{ users: generateUsers(5), shape: 'squircle' }" />
 		</preview-section>
+
+		<preview-section>
+			<template #title>
+				Initials
+			</template>
+
+			<preview-label>
+				Without avatars
+			</preview-label>
+
+			<user-avatars v-bind="{ users: generateUsers(5, { includeAvatars: false }) }" />
+
+			<preview-label>
+				Without avatars or names
+			</preview-label>
+
+			<user-avatars v-bind="{ users: generateUsers(5, { includeAvatars: false, includeNames: false }) }" />
+
+			<preview-label>
+				Without avatars or initials
+			</preview-label>
+
+			<user-avatars v-bind="{ users: generateUsers(5, { includeAvatars: false, includeInitials: false }) }" />
+		</preview-section>
 	</preview-wrapper>
 </template>
 
@@ -54,8 +84,14 @@
  *
  * @param  {number}  count
  *     The number of users to generate.
+ * @param  {boolean}  options.includeAvatars
+ *     Whether to include avatars in the generated users.
+ * @param  {boolean}  options.includeNames
+ *     Whether to include names in the generated users.
+ * @param  {boolean}  options.includeInitials
+ *     Whether to include initials in the generated users.
  */
-function generateUsers(count) {
+function generateUsers(count, { includeAvatars = true, includeNames = true, includeInitials = true } = {}) {
 	const users = [];
 
 	const names = [
@@ -78,11 +114,19 @@ function generateUsers(count) {
 		const randomIndex = Math.floor(Math.random() * names.length);
 		const { name, initials } = names.splice(randomIndex, 1)[0];
 
-		const user = {
-			name,
-			initials,
-			avatar: `https://placecats.com/${avatarSize}/${avatarSize}`,
-		};
+		const user = {};
+
+		if (includeNames) {
+			user.name = name;
+		}
+
+		if (includeInitials) {
+			user.initials = initials;
+		}
+
+		if (includeAvatars) {
+			user.avatar = `https://placecats.com/${avatarSize}/${avatarSize}`;
+		}
 
 		users.push(user);
 	}
@@ -104,6 +148,22 @@ function generatePortraitUsers(count) {
 		const height = 140 + index;
 
 		user.avatar = `https://placecats.com/${width}/${height}`;
+	});
+
+	return users;
+}
+
+/**
+ * Generate a number of users with avatar URLs that are invalid.
+ *
+ * @param  {number}  count
+ *     The number of users to generate.
+ */
+function generateBrokenImageUsers(count) {
+	const users = generateUsers(count);
+
+	users.forEach(user => {
+		user.avatar = "/path/to/image";
 	});
 
 	return users;

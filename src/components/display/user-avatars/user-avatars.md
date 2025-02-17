@@ -24,6 +24,7 @@ Any of the information can be omitted, and the component will do its best to com
 - If no initials are provided, they will be generated from the name.
 - If no avatar is provided, the initials will be shown.
 - Without a name or initials, no tooltip is included.
+- If an avatar is provided, but fails to load, the user will fall back to the initials if possible.
 
 ### `shape`
 
@@ -48,22 +49,20 @@ Whether avatars should overlap. If they do, they're given an outline so that the
 
 Overlap is true by default for "circle" avatars, and false by default for "square" and "squircle", but a value provided here will take precedence.
 
-## Events
+### `initialColourClasses`
 
-### `@click`
+- type: `string`
+- default: `bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200`
 
-...
+### `initialOutlineClasses`
 
-## Methods
-
-### `method`
-
-...
+- type: `string`
+- default: `outline-white dark:outline-purple-200`
 
 ## Examples
 
-### Basic button
+### Basic avatars
 
 ```html
-...
+<user-avatars v-bind="{ users }" />
 ```

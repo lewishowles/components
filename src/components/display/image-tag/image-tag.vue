@@ -9,7 +9,7 @@
 	/>
 
 	<slot v-else name="fallback">
-		<div class="flex items-center justify-center bg-grey-100 p-4" v-bind="$attrs" data-test="image-tag-fallback">
+		<div class="flex items-center justify-center bg-grey-100 p-3" v-bind="$attrs" data-test="image-tag-fallback">
 			<icon-image class="aspect-square h-auto w-8 max-w-full text-grey-500" />
 		</div>
 	</slot>
@@ -28,6 +28,8 @@ defineProps({
 	},
 });
 
+const emit = defineEmits(["error"]);
+
 // Whether the image has encountered an error.
 const haveImageError = ref(false);
 
@@ -36,6 +38,8 @@ const haveImageError = ref(false);
  */
 function handleImageError() {
 	haveImageError.value = true;
+
+	emit("error");
 }
 </script>
 

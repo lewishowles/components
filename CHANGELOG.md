@@ -1,5 +1,11 @@
 # Changelog
 
+# 0.21.0
+
+### Updates
+
+- `image-tag`: Now emits an `error` event when an image fails to load.
+
 # 0.20.1 - 2025-02-04
 
 ### Fixes
