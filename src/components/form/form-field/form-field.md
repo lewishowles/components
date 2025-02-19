@@ -21,6 +21,7 @@ The type of field. Known types include:
 - `email`
 - `password`
 - `textarea`
+- `select`
 - `checkbox`
 - `radio-group`
 - `button-group`

@@ -6,7 +6,7 @@
 
 		<preview-section>
 			<template #title>
-				Basic input options
+				Basic field options
 			</template>
 
 			<form-layout class="max-w-sm">
@@ -17,7 +17,7 @@
 				<pre>Value: {{ name }}</pre>
 
 				<div>
-					<form-input ref="focusableInput">
+					<form-input ref="focusable-field">
 						Focusable
 					</form-input>
 
@@ -117,13 +117,13 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const name = ref("");
-const focusableInput = ref(null);
+const focusableField = useTemplateRef("focusable-field");
 
 function triggerFocus() {
-	runComponentMethod(focusableInput.value, "triggerFocus");
+	runComponentMethod(focusableField.value, "triggerFocus");
 }
 </script>

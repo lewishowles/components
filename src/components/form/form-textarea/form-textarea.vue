@@ -4,7 +4,7 @@
 			<slot />
 		</form-label>
 
-		<div class="flex transition-shadow" :class="{ 'form-input--error': haveError }" data-selector="form-input-wrapper" data-test="form-input-wrapper">
+		<div class="flex transition-shadow" :class="{ 'form-field--error': haveError }" data-selector="form-field-wrapper" data-test="form-input-wrapper">
 			<textarea
 				ref="inputElement"
 				v-model="model"

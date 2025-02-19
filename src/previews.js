@@ -4,6 +4,7 @@ import PreviewWrapper from "@/preview/preview-wrapper.vue";
 
 import AccordionGroupPreview from "@/components/content/accordion-group/accordion-group-preview.vue";
 import AlertMessagePreview from "@/components/messaging/alert-message/alert-message-preview.vue";
+import FormSelectPreview from "@/components/form/form-select/form-select-preview.vue";
 import AppPaginationPreview from "@/components/navigation/app-pagination/app-pagination-preview.vue";
 import BreadcrumbListPreview from "@/components/navigation/breadcrumb-list/breadcrumb-list-preview.vue";
 import ButtonGroupPreview from "@/components/form/button-group/button-group-preview.vue";
@@ -35,6 +36,7 @@ const previewLibrary = {
 	install(app) {
 		app.component("AccordionGroupPreview", AccordionGroupPreview);
 		app.component("AlertMessagePreview", AlertMessagePreview);
+		app.component("FormSelectPreview", FormSelectPreview);
 		app.component("UserAvatarsPreview", UserAvatarsPreview);
 		app.component("DataTablePreview", DataTablePreview);
 		app.component("FormFieldsetPreview", FormFieldsetPreview);

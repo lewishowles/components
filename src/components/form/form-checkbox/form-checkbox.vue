@@ -5,7 +5,7 @@
 				ref="inputElement"
 				v-model="model"
 				class="form-checkbox"
-				:class="{ 'form-input--error': haveError }"
+				:class="{ 'form-field--error': haveError }"
 				v-bind="{
 					id: inputId,
 					'aria-describedby': describedBy,

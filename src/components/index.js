@@ -20,6 +20,7 @@ import FormField from "./form/form-field/form-field.vue";
 import FormFieldset from "./form/form-fieldset/form-fieldset.vue";
 import FormInput from "./form/form-input/form-input.vue";
 import FormLayout from "./form/form-layout/form-layout.vue";
+import FormSelect from "./form/form-select/form-select.vue";
 import FormTextarea from "./form/form-textarea/form-textarea.vue";
 import FormWrapper from "./form/form-wrapper/form-wrapper.vue";
 import ImageTag from "./display/image-tag/image-tag.vue";
@@ -80,6 +81,7 @@ export default {
 	AccordionGroup,
 	AccordionSection,
 	AlertMessage,
+	FormSelect,
 	UserAvatars,
 	AppPagination,
 	BaseIcon,

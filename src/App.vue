@@ -1,10 +1,8 @@
 <template>
 	<div class="flex justify-center pt-6">
-		<select v-model="selectedPreview" class="block w-full max-w-sm appearance-none rounded-md bg-white px-3 py-2 text-grey-900 shadow-xs outline-hidden ring-1 ring-inset ring-grey-300 placeholder:text-grey-400 focus:ring-2 focus:ring-purple-800 dark:bg-white/20 dark:text-grey-50 dark:focus:ring-purple-400">
-			<option v-for="option in previewOptions" :key="option" :value="option.value">
-				{{ option.label }}
-			</option>
-		</select>
+		<form-select v-model="selectedPreview" v-bind="{ options: previewOptions }">
+			Select component to preview
+		</form-select>
 	</div>
 
 	<component :is="selectedPreview" />
@@ -13,7 +11,7 @@
 <script setup>
 import { ref, watch } from "vue";
 
-const selectedPreview = ref("user-avatars-preview");
+const selectedPreview = ref("form-select-preview");
 
 const previewOptions = [
 	{ label: "accordion-group", value: "accordion-group-preview" },
@@ -27,6 +25,7 @@ const previewOptions = [
 	{ label: "form-checkbox", value: "form-checkbox-preview" },
 	{ label: "form-fieldset", value: "form-fieldset-preview" },
 	{ label: "form-input", value: "form-input-preview" },
+	{ label: "form-select", value: "form-select-preview" },
 	{ label: "form-textarea", value: "form-textarea-preview" },
 	{ label: "form-wrapper", value: "form-wrapper-preview" },
 	{ label: "image-tag", value: "image-tag-preview" },
@@ -96,29 +95,5 @@ watch(selectedPreview, () => {
 	&::after {
 		right: 0;
 	}
-}
-
-select {
-	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-	background-position: right 0.5rem center;
-	background-repeat: no-repeat;
-	background-size: 1.5em 1.5em;
-	padding-right: 2.5em;
-}
-
-.dark select {
-	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff40' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-	background-position: right 0.5rem center;
-	background-repeat: no-repeat;
-	background-size: 1.5em 1.5em;
-	padding-right: 2.5em;
-}
-
-select:focus {
-	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b21a8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-}
-
-.dark select:focus {
-	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23c084fc' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
 }
 </style>
