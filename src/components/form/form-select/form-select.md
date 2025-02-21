@@ -31,6 +31,13 @@ Any help text to display below the field.
 
 The options for this select. Options can either be a string, which is used for both the label and the value, or a `{ label, value }` object, allowing them to differ.
 
+### `allowEmpty`
+
+- type: `boolean`
+- default: `true`
+
+Whether to allow an empty option, the label of which can be provided via the `empty-option-label` slot.
+
 ### `id`
 
 - type: `string`

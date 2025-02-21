@@ -17,7 +17,7 @@
 				<pre>Value: {{ character }}</pre>
 
 				<form-select v-model="extendedCharacter" v-bind="{ options: extendedOptions }">
-					With differing labels and values
+					{ option, value }
 				</form-select>
 
 				<pre>Value: {{ extendedCharacter }}</pre>
@@ -31,6 +31,10 @@
 						Focus
 					</ui-button>
 				</div>
+
+				<form-select v-bind="{ options, allowEmpty: false }">
+					Wazowski or Sullivan (!allowEmpty)
+				</form-select>
 
 				<form-select v-bind="{ options }">
 					Wazowski or Sullivan
@@ -71,6 +75,7 @@ import { ref, useTemplateRef } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const options = ref(["Mike Wazowski", "James P. Sullivan"]);
+const extendedOptions = ref([{ label: "Mike Wazowski", value: "wazowski" }, { label: "James P. Sullivan", value: "sullivan" }]);
 const character = ref("");
 const extendedCharacter = ref("");
 const focusableField = useTemplateRef("focusable-field");

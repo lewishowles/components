@@ -16,6 +16,11 @@
 					...inputAttributes,
 				}"
 			>
+				<option v-if="allowEmpty" value="">
+					<slot name="empty-option-label">
+						Please select…
+					</slot>
+				</option>
 				<option v-for="option in internalOptions" :key="option.value" :value="option.value">
 					{{ option.label }}
 				</option>
@@ -42,8 +47,8 @@
  * `error` and `help` slots exist for additional descriptive text.
  */
 import { computed, useSlots, useTemplateRef } from "vue";
-import { isNonEmptyArray } from "@lewishowles/helpers/array";
-import { isNonEmptyObject } from "@lewishowles/helpers/object";
+import { firstDefined, isNonEmptyArray } from "@lewishowles/helpers/array";
+import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
@@ -62,6 +67,15 @@ const props = defineProps({
 	options: {
 		type: Array,
 		default: () => [],
+	},
+
+	/**
+	 * Whether to allow an empty option, the label of which can be provided via
+	 * the `empty-option-label` slot..
+	 */
+	allowEmpty: {
+		type: Boolean,
+		default: true,
 	},
 
 	/**
@@ -97,6 +111,7 @@ const slots = useSlots();
 
 const model = defineModel({
 	type: String,
+	default: "",
 });
 
 // A reference to the input, which allows us to trigger focus on it.
@@ -126,6 +141,12 @@ const internalOptions = computed(() => {
 		return options;
 	}, []);
 });
+
+// When initialising, if we are not allowed an empty option, select the first
+// option in the list.
+if (props.allowEmpty !== true) {
+	model.value = get(firstDefined(internalOptions.value), "value");
+}
 
 /**
  * Focus on our input.
