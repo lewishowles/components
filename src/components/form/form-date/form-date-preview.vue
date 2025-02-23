@@ -6,22 +6,50 @@
 
 		<preview-section>
 			<template #title>
-				Empty date
+				Basic field options
 			</template>
 
-			<form-date v-model="emptyDate" />
+			<form-layout class="max-w-sm">
+				<form-date v-model="emptyDate">
+					When did you first request help?
+				</form-date>
 
-			<pre>{{ emptyDate }}</pre>
-		</preview-section>
+				<pre>{{ emptyDate }}</pre>
 
-		<preview-section>
-			<template #title>
-				Empty date
-			</template>
+				<form-date v-model="filledDate">
+					When did you first request help?
+				</form-date>
 
-			<form-date v-model="filledDate" />
+				<pre>{{ filledDate }}</pre>
 
-			<pre>{{ filledDate }}</pre>
+				<form-date>
+					When did you first request help?
+
+					<template #help>
+						With help text
+					</template>
+				</form-date>
+
+				<form-date>
+					When did you first request help?
+
+					<template #error>
+						With an error
+					</template>
+				</form-date>
+
+				<form-date>
+					When did you first request help?
+
+					<template #help>
+						With help text
+					</template>
+
+					<template #error>
+						With an error
+					</template>
+				</form-date>
+			</form-layout>
 		</preview-section>
 	</preview-wrapper>
 </template>

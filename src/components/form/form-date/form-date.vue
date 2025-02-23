@@ -1,23 +1,70 @@
 <template>
-	<div class="flex gap-8" data-test="form-date">
-		<form-input v-if="haveValidDate" v-model="date.day" v-bind="{ required }" class="w-20" data-test="form-date-day">
-			<slot name="day-label">
-				Day
-			</slot>
-		</form-input>
+	<field-wrapper v-bind="{ haveError }" data-test="form-date">
+		<fieldset data-test="form-date-fieldset">
+			<form-label tag="legend" class="mb-2">
+				<slot />
+			</form-label>
 
-		<form-input v-if="haveValidDate" v-model="date.month" v-bind="{ required }" class="w-20" data-test="form-date-month">
-			<slot name="month-label">
-				Month
-			</slot>
-		</form-input>
+			<div class="flex gap-8">
+				<form-input
+					v-if="haveValidDate"
+					v-model="date.day"
+					v-bind="{
+						required,
+						id: `${inputId}-day`,
+						placeholder: dayPlaceholder,
+					}"
+					class="w-20"
+					data-test="form-date-day"
+				>
+					<slot name="day-label">
+						Day
+					</slot>
+				</form-input>
 
-		<form-input v-if="haveValidDate" v-model="date.year" v-bind="{ required }" class="w-40" data-test="form-date-year">
-			<slot name="year-label">
-				Year
-			</slot>
-		</form-input>
-	</div>
+				<form-input
+					v-if="haveValidDate"
+					v-model="date.month"
+					v-bind="{
+						required,
+						id: `${inputId}-month`,
+						placeholder: monthPlaceholder,
+					}"
+					class="w-20"
+					data-test="form-date-month"
+				>
+					<slot name="month-label">
+						Month
+					</slot>
+				</form-input>
+
+				<form-input
+					v-if="haveValidDate"
+					v-model="date.year"
+					v-bind="{
+						required,
+						id: `${inputId}-year`,
+						placeholder: yearPlaceholder,
+					}"
+					class="w-40"
+					data-test="form-date-year"
+				>
+					<slot name="year-label">
+						Year
+					</slot>
+				</form-input>
+			</div>
+
+			<form-supplementary v-bind="{ inputId }">
+				<template #error>
+					<slot name="error" />
+				</template>
+				<template #help>
+					<slot name="help" />
+				</template>
+			</form-supplementary>
+		</fieldset>
+	</field-wrapper>
 </template>
 
 <script setup>
@@ -25,8 +72,23 @@ import { computed } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber, isNumeric } from "@lewishowles/helpers/number";
+import useInputId from "@/components/form/composables/use-input-id";
 
-defineProps({
+import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
+import FormLabel from "@/components/form/form-label/form-label.vue";
+import FormSupplementary from "@/components/form/fragments/form-supplementary/form-supplementary.vue";
+
+const props = defineProps({
+	/**
+	 * Any ID to apply to this field. If an ID is not provided, one will be
+	 * generated at random. Note that when providing an ID, please make sure
+	 * that it is unique.
+	 */
+	id: {
+		type: String,
+		default: null,
+	},
+
 	/**
 	 * Whether this field is required.
 	 */
@@ -40,6 +102,9 @@ defineProps({
 const date = defineModel({
 	type: Object,
 });
+
+// Generate an appropriate input ID.
+const { inputId } = useInputId(props.id);
 
 initialise();
 

@@ -8,6 +8,12 @@ At this time, the component doesn't include a calendar component, which should o
 
 ## Slots
 
+### `default`
+
+The default slot contains the label of the field.
+
+_Note that a label is always required, even if a label is not shown to the user, as it will be critical for screen readers. This component will show an error if no label is provided._
+
 ### `day-label`
 
 The label for the "Day" field.
@@ -22,6 +28,36 @@ The label for the "Year" field.
 
 ## Props
 
+### `id`
+
+- type: `string`
+- default: `null`
+
+Any ID to use as a basis for this field. If an ID is not provided, one will be generated at random. IDs provided will be suffixed with `day`, `month` and `year` as appropriate to differentiate the fields.
+
+Note that when providing an ID, please make sure that it is unique to avoid any unforeseen issues.
+
+### `dayPlaceholder`
+
+- type: `string`
+- default: `null`
+
+Any placeholder to show in the "Day" field. Do not use a placeholder for critical information. Always use the label and help text as priorities.
+
+### `monthPlaceholder`
+
+- type: `string`
+- default: `null`
+
+Any placeholder to show in the "Month" field. Do not use a placeholder for critical information. Always use the label and help text as priorities.
+
+### `yearPlaceholder`
+
+- type: `string`
+- default: `null`
+
+Any placeholder to show in the "Year" field. Do not use a placeholder for critical information. Always use the label and help text as priorities.
+
 ### `required`
 
 - type: `boolean`
@@ -32,5 +68,7 @@ The label for the "Year" field.
 ### Basic date
 
 ```html
-<form-date v-model="date" />
+<form-date v-model="date">
+	When did you first request help?
+</form-date>
 ```
