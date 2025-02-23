@@ -11,9 +11,10 @@
 <script setup>
 import { ref, watch } from "vue";
 
-const selectedPreview = ref("form-select-preview");
+const selectedPreview = ref("form-date-preview");
 
 const previewOptions = [
+	{ label: "form-date", value: "form-date-preview" },
 	{ label: "accordion-group", value: "accordion-group-preview" },
 	{ label: "alert-message", value: "alert-message-preview" },
 	{ label: "app-pagination", value: "app-pagination-preview" },

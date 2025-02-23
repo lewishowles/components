@@ -143,6 +143,8 @@ const fieldComponent = computed(() => {
 			return "form-textarea";
 		case "checkbox":
 			return "form-checkbox";
+		case "date":
+			return "form-date";
 		case "radio-group":
 		case "button-group":
 			return fieldType.value;

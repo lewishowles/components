@@ -92,8 +92,7 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether this field is required. If not required, a field's label is
-	 * updated with `optional` text.
+	 * Whether this field is required.
 	 */
 	required: {
 		type: Boolean,

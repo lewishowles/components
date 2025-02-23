@@ -6,7 +6,8 @@ import BreadcrumbItem from "./navigation/breadcrumb-item/breadcrumb-item.vue";
 import BreadcrumbList from "./navigation/breadcrumb-list/breadcrumb-list.vue";
 import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
-import DataTable from "./content/data-table/data-table.vue";
+import FormDate from "./form/form-date/form-date.vue";
+	import DataTable from "./content/data-table/data-table.vue";
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import DropdownMenu from "./interaction/dropdown-menu/dropdown-menu.vue";
 import DropdownMenuButton from "./interaction/dropdown-menu/fragments/dropdown-menu-button/dropdown-menu-button.vue";
@@ -81,7 +82,8 @@ export default {
 	AccordionGroup,
 	AccordionSection,
 	AlertMessage,
-	FormSelect,
+		FormDate,
+		FormSelect,
 	UserAvatars,
 	AppPagination,
 	BaseIcon,
