@@ -5,10 +5,12 @@
 ### New components
 
 - [`user-avatars`](/src/components/display/user-avatars/user-avatars.md)
+- [`form-date`](/src/components/form/form-date/form-date.md)
 
 ### Updates
 
 - `image-tag`: Now emits an `error` event when an image fails to load.
+- `field-wrapper`: Now has a new `tag` prop, which enables the primary tag to be changed.
 
 # 0.20.1 - 2025-02-04
 

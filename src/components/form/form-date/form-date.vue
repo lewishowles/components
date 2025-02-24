@@ -1,69 +1,67 @@
 <template>
-	<field-wrapper v-bind="{ haveError }" data-test="form-date">
-		<fieldset data-test="form-date-fieldset">
-			<form-label tag="legend" class="mb-2">
-				<slot />
-			</form-label>
+	<field-wrapper v-bind="{ tag: 'fieldset', haveError }" data-test="form-date">
+		<form-label tag="legend">
+			<slot />
+		</form-label>
 
-			<div class="flex gap-8">
-				<form-input
-					v-if="haveValidDate"
-					v-model="date.day"
-					v-bind="{
-						required,
-						id: `${inputId}-day`,
-						placeholder: dayPlaceholder,
-					}"
-					class="w-20"
-					data-test="form-date-day"
-				>
-					<slot name="day-label">
-						Day
-					</slot>
-				</form-input>
+		<div class="flex gap-8">
+			<form-input
+				v-if="haveValidDate"
+				v-model="date.day"
+				v-bind="{
+					required,
+					id: `${inputId}-day`,
+					placeholder: dayPlaceholder,
+				}"
+				class="w-20"
+				data-test="form-date-day"
+			>
+				<slot name="day-label">
+					Day
+				</slot>
+			</form-input>
 
-				<form-input
-					v-if="haveValidDate"
-					v-model="date.month"
-					v-bind="{
-						required,
-						id: `${inputId}-month`,
-						placeholder: monthPlaceholder,
-					}"
-					class="w-20"
-					data-test="form-date-month"
-				>
-					<slot name="month-label">
-						Month
-					</slot>
-				</form-input>
+			<form-input
+				v-if="haveValidDate"
+				v-model="date.month"
+				v-bind="{
+					required,
+					id: `${inputId}-month`,
+					placeholder: monthPlaceholder,
+				}"
+				class="w-20"
+				data-test="form-date-month"
+			>
+				<slot name="month-label">
+					Month
+				</slot>
+			</form-input>
 
-				<form-input
-					v-if="haveValidDate"
-					v-model="date.year"
-					v-bind="{
-						required,
-						id: `${inputId}-year`,
-						placeholder: yearPlaceholder,
-					}"
-					class="w-40"
-					data-test="form-date-year"
-				>
-					<slot name="year-label">
-						Year
-					</slot>
-				</form-input>
-			</div>
+			<form-input
+				v-if="haveValidDate"
+				v-model="date.year"
+				v-bind="{
+					required,
+					id: `${inputId}-year`,
+					placeholder: yearPlaceholder,
+				}"
+				class="w-40"
+				data-test="form-date-year"
+			>
+				<slot name="year-label">
+					Year
+				</slot>
+			</form-input>
+		</div>
 
-			<form-supplementary v-bind="{ inputId }">
-				<template #error>
-					<slot name="error" />
-				</template>
-				<template #help>
-					<slot name="help" />
-				</template>
-			</form-supplementary>
-		</fieldset>
+		<form-supplementary v-bind="{ inputId }">
+			<template #error>
+				<slot name="error" />
+			</template>
+			<template #help>
+				<slot name="help" />
+			</template>
+		</form-supplementary>
 	</field-wrapper>
 </template>
 
