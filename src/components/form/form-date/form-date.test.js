@@ -4,6 +4,8 @@ import FormDate from "./form-date.vue";
 
 const mount = createMount(FormDate);
 
+const standardDate = { day: "01", month: "02", year: "2000" };
+
 describe("form-date", () => {
 	console.warn = vi.fn();
 
@@ -37,10 +39,10 @@ describe("form-date", () => {
 		});
 
 		test("should allow string date components", () => {
-			const wrapper = mount({ modelValue: { day: "01", month: "02", year: "2000" } });
+			const wrapper = mount({ modelValue: standardDate });
 			const vm = wrapper.vm;
 
-			expect(vm.date).toEqual({ day: "01", month: "02", year: "2000" });
+			expect(vm.date).toEqual(standardDate);
 		});
 
 		test("should allow number date components", () => {
@@ -158,7 +160,7 @@ describe("form-date", () => {
 
 	describe("Methods", () => {
 		describe("initialiseDatePart", () => {
-			test.only("should accept a numeric string part", () => {
+			test("should accept a numeric string part", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
@@ -171,7 +173,7 @@ describe("form-date", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.date = { day: 1 };
+				vm.date = { day: 12 };
 
 				expect(vm.initialiseDatePart("day")).toBe("12");
 			});
@@ -222,6 +224,51 @@ describe("form-date", () => {
 
 					expect(vm.initialiseDatePart("day")).toBe("");
 				});
+			});
+		});
+
+		describe("toString", () => {
+			test("should return a string date in RFC 9557 format", () => {
+				const wrapper = mount({ modelValue: standardDate });
+				const vm = wrapper.vm;
+
+				expect(vm.toString()).toBe("2000-02-01");
+			});
+
+			test("should return nothing if the date is invalid", () => {
+				const wrapper = mount({ modelValue: { day: "nine", month: "four", year: "9999" } });
+				const vm = wrapper.vm;
+
+				expect(vm.toString()).toBe("");
+			});
+		});
+
+		describe("setDateFromIsoString", () => {
+			test("should set a date from an string in RFC 9557 format", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.setDateFromIsoString("2010-05-26");
+
+				expect(vm.date).toEqual({ day: "26", month: "5", year: "2010" });
+			});
+
+			test("should set a date from an string in RFC 9557 format including a time", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.setDateFromIsoString("2010-05-26T12:31:33");
+
+				expect(vm.date).toEqual({ day: "26", month: "5", year: "2010" });
+			});
+
+			test("should not overwrite the current date if the string is invalid", () => {
+				const wrapper = mount({ modelValue: standardDate });
+				const vm = wrapper.vm;
+
+				vm.setDateFromIsoString("invalid date");
+
+				expect(vm.date).toEqual(standardDate);
 			});
 		});
 	});

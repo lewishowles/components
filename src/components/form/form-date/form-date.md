@@ -63,6 +63,16 @@ Any placeholder to show in the "Year" field. Do not use a placeholder for critic
 - type: `boolean`
 - default: `false`
 
+## Methods
+
+### toString
+
+Retrieve a pre-formatted string representation of the current (date only) in [RFC 9557 format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDate#rfc_9557_format).
+
+### setDateFromIsoString
+
+Set the current `day`, `month`, and `year`, as parsed from an [RFC 9557 format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDate#rfc_9557_format) date string.
+
 ## Examples
 
 ### Basic date

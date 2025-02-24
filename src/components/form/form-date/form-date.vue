@@ -70,6 +70,7 @@ import { computed } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber, isNumeric } from "@lewishowles/helpers/number";
+import { Temporal } from "temporal-polyfill";
 import useInputId from "@/components/form/composables/use-input-id";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
@@ -159,4 +160,51 @@ function initialiseDatePart(part) {
 
 	return partValue.toString();
 }
+
+/**
+ * Get a string representation of the current date.
+ */
+function toString() {
+	if (!haveValidDate.value) {
+		return "";
+	}
+
+	try {
+		const plainDate = Temporal.PlainDate.from(date.value);
+
+		return plainDate.toString();
+	} catch (error) {
+		console.log("form-date[toString]", error);
+
+		return "";
+	}
+}
+
+/**
+ * Set the current date from a string. If an invalid date is encountered, no new
+ * value will be set.
+ *
+ * @param  {string}  dateString
+ *     The date to set, represented as a string.
+ */
+function setDateFromIsoString(dateString) {
+	if (!isNonEmptyString(dateString)) {
+		return;
+	}
+
+	try {
+		const { day, month, year } = Temporal.PlainDate.from(dateString);
+
+		date.value = { day: day.toString(), month: month.toString(), year: year.toString() };
+	} catch (error) {
+		console.log("form-date[setDateFromString]", error);
+	}
+}
+
+window.Temporal = Temporal;
+
+defineExpose({
+	toString,
+	setDateFromIsoString,
+});
 </script>
