@@ -72,6 +72,13 @@ describe("form-date", () => {
 				expect(vm.date).toEqual({ day: "", month: "", year: "" });
 			});
 		});
+
+		test("should allow an initial date in ISO format", () => {
+			const wrapper = mount({ modelValue: "2025-02-24" });
+			const vm = wrapper.vm;
+
+			expect(vm.date).toEqual({ day: "24", month: "2", year: "2025" });
+		});
 	});
 
 	describe("Computed", () => {

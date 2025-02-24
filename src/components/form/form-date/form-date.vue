@@ -99,7 +99,7 @@ const props = defineProps({
 
 // The current value of our date.
 const date = defineModel({
-	type: Object,
+	type: [Object, String],
 });
 
 // Generate an appropriate input ID.
@@ -130,6 +130,10 @@ const haveValidDate = computed(() => {
  * copying the provided values to our internal date object.
  */
 function initialise() {
+	if (isNonEmptyString(date.value)) {
+		setDateFromIsoString(date.value);
+	}
+
 	if (!isNonEmptyObject(date.value)) {
 		date.value = { day: "", month: "", year: "" };
 

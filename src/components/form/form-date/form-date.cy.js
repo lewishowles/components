@@ -24,6 +24,14 @@ describe("form-date", () => {
 		cy.getFormField("form-date-year").shouldHaveAttribute("required", "required");
 	});
 
+	it("An initial date can be provided in ISO format", () => {
+		mount({ modelValue: "2025-02-24" });
+
+		cy.getFormField("form-date-day").shouldHaveValue("24");
+		cy.getFormField("form-date-month").shouldHaveValue("2");
+		cy.getFormField("form-date-year").shouldHaveValue("2025");
+	});
+
 	describe("Supplementary information", () => {
 		it("Help can be supplied", () => {
 			mount({ slots: { help: "Help text" } });
