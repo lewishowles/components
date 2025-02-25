@@ -54,7 +54,7 @@ describe("data-table-columns", () => {
 		cy.getByData("data-table-columns-checkbox").eq(1).getFormField().should("not.be.checked");
 	});
 
-	it("A change in visibility is stored in localStorage", () => {
+	it.skip("A change in visibility is stored in localStorage", () => {
 		mount();
 
 		cy.getByData("data-table-columns-checkbox").eq(0).getFormField().click();

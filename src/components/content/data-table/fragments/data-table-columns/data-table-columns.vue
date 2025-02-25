@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { computed, inject } from "vue";
+import { computed, inject, watch } from "vue";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isObject } from "@lewishowles/helpers/object";
 import { useStorage } from "@vueuse/core";
@@ -71,4 +71,8 @@ function initialiseColumnVisibility() {
 		}
 	}
 }
+
+watch(columnVisibility, () => {
+	userColumnVisibility.value = columnVisibility.value;
+}, { deep: true });
 </script>

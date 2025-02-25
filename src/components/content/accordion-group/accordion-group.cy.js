@@ -135,7 +135,7 @@ function closeSection(index) {
 function confirmSectionOpen(index) {
 	cy.getByData("accordion-section").eq(index).then($section => {
 		cy.wrap($section).getByData("accordion-section-button").shouldHaveAttribute("aria-expanded", "true");
-		cy.wrap($section).getByData("accordion-section-content").shouldBeVisible();
+		cy.wrap($section).getByData("accordion-section-content").shouldBeVisible().shouldNotHaveAttribute("hidden");
 	});
 }
 
@@ -149,6 +149,6 @@ function confirmSectionOpen(index) {
 function confirmSectionClosed(index) {
 	cy.getByData("accordion-section").eq(index).then($section => {
 		cy.wrap($section).getByData("accordion-section-button").shouldHaveAttribute("aria-expanded", "false");
-		cy.wrap($section).getByData("accordion-section-content").shouldNotBeVisible();
+		cy.wrap($section).getByData("accordion-section-content").shouldHaveAttribute("hidden");
 	});
 }
