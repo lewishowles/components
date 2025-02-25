@@ -8,6 +8,8 @@ const standardDate = { day: "01", month: "02", year: "2000" };
 
 describe("form-date", () => {
 	console.warn = vi.fn();
+	console.error = vi.fn();
+	console.log = vi.fn();
 
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {

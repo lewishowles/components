@@ -1,10 +1,12 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import FormSelect from "./form-select.vue";
 
 const mount = createMount(FormSelect);
 
 describe("form-select", () => {
+	console.warn = vi.fn();
+
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
 			const wrapper = mount();
