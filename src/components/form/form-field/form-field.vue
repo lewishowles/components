@@ -59,6 +59,7 @@ const props = defineProps({
 	 * textarea
 	 * checkbox
 	 * radio-group
+	 * checkbox-group
 	 * button-group
 	 */
 	type: {
@@ -140,12 +141,11 @@ const fieldType = computed(() => {
 const fieldComponent = computed(() => {
 	switch(fieldType.value) {
 		case "textarea":
-			return "form-textarea";
 		case "checkbox":
-			return "form-checkbox";
 		case "date":
-			return "form-date";
 		case "radio-group":
+		case "checkbox-group":
+			return `form-${fieldType.value}`;
 		case "button-group":
 			return fieldType.value;
 		default:

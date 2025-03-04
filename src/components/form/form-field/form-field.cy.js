@@ -13,7 +13,8 @@ describe("form-field", () => {
 			[{ type: "password" }, "form-input"],
 			[{ type: "textarea" }, "form-textarea"],
 			[{ type: "checkbox" }, "form-checkbox"],
-			[{ type: "radio-group", options: [] }, "radio-group"],
+			[{ type: "radio-group", options: [] }, "form-radio-group"],
+			[{ type: "checkbox-group", options: [] }, "form-radio-group"],
 			[{ type: "button-group", options: [] }, "button-group"],
 		].forEach(([props, component]) => {
 			mount({ props });

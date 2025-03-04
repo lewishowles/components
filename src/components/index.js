@@ -6,7 +6,7 @@ import BreadcrumbItem from "./navigation/breadcrumb-item/breadcrumb-item.vue";
 import BreadcrumbList from "./navigation/breadcrumb-list/breadcrumb-list.vue";
 import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
-import FormDate from "./form/form-date/form-date.vue";
+import FormInputGroup from "./form/form-input-group/form-input-group.vue";
 import DataTable from "./content/data-table/data-table.vue";
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import DropdownMenu from "./interaction/dropdown-menu/dropdown-menu.vue";
@@ -17,10 +17,13 @@ import DropdownMenuLink from "./interaction/dropdown-menu/fragments/dropdown-men
 import DropdownMenuTitle from "./interaction/dropdown-menu/fragments/dropdown-menu-title/dropdown-menu-title.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
 import FormCheckbox from "./form/form-checkbox/form-checkbox.vue";
+import FormCheckboxGroup from "./form/form-checkbox-group/form-checkbox-group.vue";
+import FormDate from "./form/form-date/form-date.vue";
 import FormField from "./form/form-field/form-field.vue";
 import FormFieldset from "./form/form-fieldset/form-fieldset.vue";
 import FormInput from "./form/form-input/form-input.vue";
 import FormLayout from "./form/form-layout/form-layout.vue";
+import FormRadioGroup from "./form/form-radio-group/form-radio-group.vue";
 import FormSelect from "./form/form-select/form-select.vue";
 import FormTextarea from "./form/form-textarea/form-textarea.vue";
 import FormWrapper from "./form/form-wrapper/form-wrapper.vue";
@@ -30,7 +33,6 @@ import LoadingIndicator from "./interaction/loading-indicator/loading-indicator.
 import ModalDialog from "./messaging/modal-dialog/modal-dialog.vue";
 import PillBadge from "./messaging/pill-badge/pill-badge.vue";
 import ProgressBar from "./chart/progress-bar/progress-bar.vue";
-import RadioGroup from "./form/radio-group/radio-group.vue";
 import SearchableList from "./data/searchable-list/searchable-list.vue";
 import SkeletonIndicator from "./content/skeleton-indicator/skeleton-indicator.vue";
 import SkeletonLoader from "./content/skeleton-loader/skeleton-loader.vue";
@@ -82,9 +84,7 @@ export default {
 	AccordionGroup,
 	AccordionSection,
 	AlertMessage,
-	FormDate,
-	FormSelect,
-	UserAvatars,
+	FormInputGroup,
 	AppPagination,
 	BaseIcon,
 	BreadcrumbItem,
@@ -101,10 +101,14 @@ export default {
 	DropdownMenuTitle,
 	FormActions,
 	FormCheckbox,
+	FormCheckboxGroup,
+	FormDate,
 	FormField,
 	FormFieldset,
 	FormInput,
 	FormLayout,
+	FormRadioGroup,
+	FormSelect,
 	FormTextarea,
 	FormWrapper,
 	IconArrowDown,
@@ -149,7 +153,6 @@ export default {
 	ModalDialog,
 	PillBadge,
 	ProgressBar,
-	RadioGroup,
 	SearchableList,
 	SkeletonIndicator,
 	SkeletonLoader,
@@ -157,4 +160,5 @@ export default {
 	TabGroup,
 	TabItem,
 	UiButton,
+	UserAvatars,
 };

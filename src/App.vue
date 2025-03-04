@@ -11,10 +11,9 @@
 <script setup>
 import { ref, watch } from "vue";
 
-const selectedPreview = ref("form-date-preview");
+const selectedPreview = ref("form-radio-group-preview");
 
 const previewOptions = [
-	{ label: "form-date", value: "form-date-preview" },
 	{ label: "accordion-group", value: "accordion-group-preview" },
 	{ label: "alert-message", value: "alert-message-preview" },
 	{ label: "app-pagination", value: "app-pagination-preview" },
@@ -24,8 +23,12 @@ const previewOptions = [
 	{ label: "donut-chart", value: "donut-chart-preview" },
 	{ label: "dropdown-menu", value: "dropdown-menu-preview" },
 	{ label: "form-checkbox", value: "form-checkbox-preview" },
+	{ label: "form-checkbox-group", value: "form-checkbox-group-preview" },
+	{ label: "form-date", value: "form-date-preview" },
 	{ label: "form-fieldset", value: "form-fieldset-preview" },
 	{ label: "form-input", value: "form-input-preview" },
+	{ label: "form-input-group", value: "form-input-group-preview" },
+	{ label: "form-radio-group", value: "form-radio-group-preview" },
 	{ label: "form-select", value: "form-select-preview" },
 	{ label: "form-textarea", value: "form-textarea-preview" },
 	{ label: "form-wrapper", value: "form-wrapper-preview" },
@@ -35,7 +38,6 @@ const previewOptions = [
 	{ label: "modal-dialog", value: "modal-dialog-preview" },
 	{ label: "pill-badge", value: "pill-badge-preview" },
 	{ label: "progress-bar", value: "progress-bar-preview" },
-	{ label: "radio-group", value: "radio-group-preview" },
 	{ label: "searchable-list", value: "searchable-list-preview" },
 	{ label: "skeleton-loader", value: "skeleton-loader-preview" },
 	{ label: "summary-details", value: "summary-details-preview" },

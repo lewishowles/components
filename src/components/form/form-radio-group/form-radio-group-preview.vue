@@ -10,41 +10,43 @@
 			</template>
 
 			<form-layout>
-				<radio-group v-bind="{ options: objectArrayOptions }">
+				<form-radio-group v-model="model" v-bind="{ options: objectArrayOptions }">
 					Favourite ice-cream
-				</radio-group>
+				</form-radio-group>
+
+				<pre>{{ model }}</pre>
 
 				<div>
-					<radio-group ref="focusableRadio" v-bind="{ options: objectArrayOptions }">
+					<form-radio-group ref="focusableRadio" v-bind="{ options: objectArrayOptions }">
 						Focusable
-					</radio-group>
+					</form-radio-group>
 
 					<ui-button class="button--muted mt-4" @click="triggerFocus">
 						Focus
 					</ui-button>
 				</div>
 
-				<radio-group v-bind="{ options, inline: true }">
+				<form-radio-group v-bind="{ options: objectArrayOptions, inline: true }">
 					Favourite ice-cream (inline)
-				</radio-group>
+				</form-radio-group>
 
-				<radio-group v-bind="{ options: objectArrayOptions }">
+				<form-radio-group v-bind="{ options: objectArrayOptions }">
 					Favourite ice-cream
 
 					<template #help>
 						With help text
 					</template>
-				</radio-group>
+				</form-radio-group>
 
-				<radio-group v-bind="{ options: objectArrayOptions }">
+				<form-radio-group v-bind="{ options: objectArrayOptions }">
 					Favourite ice-cream
 
 					<template #error>
 						With an error
 					</template>
-				</radio-group>
+				</form-radio-group>
 
-				<radio-group v-bind="{ options: objectArrayOptions }">
+				<form-radio-group v-bind="{ options: objectArrayOptions }">
 					Favourite ice-cream
 
 					<template #help>
@@ -54,7 +56,7 @@
 					<template #error>
 						With an error
 					</template>
-				</radio-group>
+				</form-radio-group>
 			</form-layout>
 		</preview-section>
 
@@ -63,13 +65,13 @@
 				With introduction
 			</template>
 
-			<radio-group v-bind="{ options: stringArrayOptions }">
+			<form-radio-group v-bind="{ options: stringArrayOptions }">
 				Favourite ice-cream
 
 				<template #introduction>
 					You will be judged based on your answer.
 				</template>
-			</radio-group>
+			</form-radio-group>
 		</preview-section>
 
 		<preview-section>
@@ -77,9 +79,9 @@
 				With simple object options
 			</template>
 
-			<radio-group v-bind="{ options: objectOptions }">
+			<form-radio-group v-bind="{ options: objectOptions }">
 				Favourite ice-cream
-			</radio-group>
+			</form-radio-group>
 		</preview-section>
 
 		<preview-section>
@@ -87,9 +89,9 @@
 				With flat array options
 			</template>
 
-			<radio-group v-bind="{ options: stringArrayOptions }">
+			<form-radio-group v-bind="{ options: stringArrayOptions }">
 				Favourite ice-cream
-			</radio-group>
+			</form-radio-group>
 		</preview-section>
 	</preview-wrapper>
 </template>
@@ -98,6 +100,7 @@
 import { ref } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 
+const model = ref(null);
 const objectArrayOptions = [{ label: "Chocolate", value: "chocolate" }, { label: "Vanilla", value: "vanilla" }, { label: "Strawberry", value: "strawberry" }];
 const objectOptions = { chocolate: "Chocolate", vanilla: "Vanilla", strawberry: "Strawberry" };
 const stringArrayOptions = ["Chocolate", "Vanilla", "Strawberry"];

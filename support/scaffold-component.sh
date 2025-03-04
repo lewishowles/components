@@ -119,11 +119,11 @@ if [ "$IS_FRAGMENT" = false ]; then
 
 	sed -i '' "/import ConditionalWrapper/a\\
 import $PASCAL_CASE_NAME from \"./$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME.vue\";\\
-	" "$INDEX_FILE"
+" "$INDEX_FILE"
 
 	sed -i '' "/AlertMessage,/a\\
-		$PASCAL_CASE_NAME,\\
-	" "$INDEX_FILE"
+	$PASCAL_CASE_NAME,\\
+" "$INDEX_FILE"
 
 	# Development helpers
 

@@ -1,17 +1,17 @@
-import RadioGroup from "./radio-group.vue";
+import FormRadioGroup from "./form-radio-group.vue";
 import { createMount } from "@cypress/support/mount";
 
 const defaultProps = { id: "id-abc", options: ["Pineapple", "Banana", "Coconut"] };
 const defaultSlots = { default: "Best smoothie" };
-const mount = createMount(RadioGroup, { props: defaultProps, slots: defaultSlots });
+const mount = createMount(FormRadioGroup, { props: defaultProps, slots: defaultSlots });
 
-describe("radio-group", () => {
+describe("form-radio-group", () => {
 	it("A radio group is rendered", () => {
 		mount();
 
-		cy.getByData("radio-group").shouldBeVisible();
+		cy.getByData("form-radio-group").shouldBeVisible();
 
-		cy.getByData("radio-group")
+		cy.getByData("form-radio-group")
 			.getByData("form-label")
 			.shouldHaveCount(4);
 
@@ -30,7 +30,7 @@ describe("radio-group", () => {
 				.shouldHaveText("Help text")
 				.shouldHaveAttribute("id", "id-abc-help");
 
-			cy.getByData("radio-group")
+			cy.getByData("form-radio-group")
 				.shouldHaveAttribute("aria-describedby", "id-abc-help");
 		});
 
@@ -42,7 +42,7 @@ describe("radio-group", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getByData("radio-group")
+			cy.getByData("form-radio-group")
 				.shouldHaveAttribute("aria-describedby", "id-abc-error");
 		});
 
@@ -59,7 +59,7 @@ describe("radio-group", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getByData("radio-group")
+			cy.getByData("form-radio-group")
 				.shouldHaveAttribute("aria-describedby", "id-abc-help id-abc-error");
 		});
 	});

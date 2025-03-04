@@ -1,5 +1,5 @@
 <template>
-	<radio-group data-test="button-group">
+	<form-radio-group data-test="button-group">
 		<slot name="default" />
 
 		<template #options="{ options, name }">
@@ -33,7 +33,7 @@
 		<template #help>
 			<slot name="help" />
 		</template>
-	</radio-group>
+	</form-radio-group>
 </template>
 
 <script setup>

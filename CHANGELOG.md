@@ -1,6 +1,16 @@
 # Changelog
 
-# 0.21.0
+# 0.22.0
+
+### New components
+
+- [`form-checkbox-group`](/src/components/form/form-checkbox-group/form-checkbox-group.md)
+
+### Updates
+
+- `form-radio-group`: Renamed from `radio-group` to improve consistency with other form fields.
+
+# 0.21.0 2025-02-25
 
 ### New components
 
@@ -132,7 +142,7 @@
 
 ### Fixes
 
-- `radio-group`: `inline` now only takes effect within containers that are at least 320px wide.
+- `form-radio-group`: `inline` now only takes effect within containers that are at least 320px wide.
 
 ## 0.9.0 - 2024-09-07
 
@@ -153,7 +163,7 @@ The following components now support dark mode.
 ### Changes
 
 - `form-input`: Styling is now controlled by `form-input` and `form-input--error` classes.
-- `radio-group`: Styling of radio buttons is now controlled by a `form-radio` class.
+- `form-radio-group`: Styling of radio buttons is now controlled by a `form-radio` class.
 
 ### Fixes
 
@@ -227,8 +237,8 @@ Fix an issue with mismatching export names.
 
 - [`link-tag`](/src/components/interaction/link-tag/link-tag.md) - A link tag for internal or external links.
 - [`form-input`](/src/components/form/form-input/form-input.md) - A text input with extra options.
-- [`radio-group`](/src/components/form/radio-group/radio-group.md) - A group of radio buttons generated from a list of options.
-- [`button-group`](/src/components/form/button-group/button-group.md) - A group of buttons generated from a list of options. An extension of `radio-group` with different styling.
+- [`form-radio-group`](/src/components/form/form-radio-group/form-radio-group.md) - A group of radio buttons generated from a list of options.
+- [`button-group`](/src/components/form/button-group/button-group.md) - A group of buttons generated from a list of options. An extension of `form-radio-group` with different styling.
 - [`conditional-wrapper`](/src/components/general/conditional-wrapper/conditional-wrapper.md) - A convenience component to conditionally wrap (or not) content with an element.
 - [`form-layout`](/src/components/form/form-layout/form-layout.md) - A convenience component to help with basic arrangement of form fields.
 - [`form-actions`](/src/components/form/form-actions/form-actions.md) - A convenience component to help with basic arrangement of form actions.

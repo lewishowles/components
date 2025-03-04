@@ -1,5 +1,5 @@
 <template>
-	<fieldset class="flex flex-col gap-2 @container" v-bind="{ 'aria-describedby': describedBy }" data-test="radio-group">
+	<fieldset class="flex flex-col gap-2 @container" v-bind="{ 'aria-describedby': describedBy }">
 		<form-label v-bind="{ tag: 'legend' }" class="mb-4">
 			<slot />
 		</form-label>
@@ -8,11 +8,27 @@
 			<slot name="introduction" />
 		</conditional-wrapper>
 
-		<slot name="options" v-bind="{ options: internalOptions, name: name || inputId }">
+		<slot name="options" v-bind="{ options: internalOptions, name: fieldName }">
 			<div class="flex flex-col" :class="{ '@xs:flex-row @xs:gap-10': inline, 'gap-4': !inline }">
 				<template v-for="option in internalOptions" :key="option.id">
 					<div class="flex items-center gap-3">
-						<input ref="inputReferences" v-model="model" type="radio" class="form-radio shrink-0" v-bind="{ id: option.id, value: option.value, name: name || inputId }" />
+						<input
+							v-if="isRadio"
+							ref="inputReferences"
+							v-model="model[fieldName]"
+							type="radio"
+							v-bind="{ id: option.id, value: option.value, name: fieldName }"
+							class="shrink-0 form-radio"
+						/>
+
+						<input
+							v-else-if="isCheckbox"
+							ref="inputReferences"
+							v-model="model[option.value]"
+							type="checkbox"
+							v-bind="{ id: option.id, value: option.value, name: fieldName }"
+							class="shrink-0 form-checkbox"
+						/>
 
 						<form-label v-bind="{ id: option.id, styled: false }" class="leading-6">
 							{{ option.label }}
@@ -35,10 +51,11 @@
 
 <script setup>
 /**
- * Create a group of radio buttons based on provided options.
+ * Create a group of inputs (radio buttons or checkboxes) based on provided
+ * options.
  *
- * `radio-group` allows options to be provided in a few different formats for
- * simplicity.
+ * `form-input-group` allows options to be provided in a few different formats
+ * for simplicity.
  */
 import { computed, ref, useSlots } from "vue";
 import { deepCopy, isNonEmptyObject } from "@lewishowles/helpers/object";
@@ -54,7 +71,15 @@ import FormSupplementary from "@/components/form/fragments/form-supplementary/fo
 
 const props = defineProps({
 	/**
-	 * The radio options. Options can be:
+	 * The type of input to use for this group—"radio" or "checkbox"
+	 */
+	type: {
+		type: String,
+		default: null,
+	},
+
+	/**
+	 * The input options. Options can be:
 	 *
 	 * string[] - ["option1", "option2", "option3"]
 	 * object   - { value: "label" }
@@ -66,7 +91,7 @@ const props = defineProps({
 	},
 
 	/**
-	 * A name for this radio group. If not set, the input ID is used.
+	 * A name for this input group. If not set, the input ID is used.
 	 */
 	name: {
 		type: String,
@@ -94,13 +119,24 @@ const props = defineProps({
 	},
 });
 
+// The internal model for an input group is always an object, and the parent
+// component which imposes a particular type can determine the most reasonable
+// way to modify that if necessary.
 const model = defineModel({
-	type: String,
+	type: Object,
+	default: {},
 });
 
 const slots = useSlots();
+// Whether this is a radio group variant
+const isRadio = computed(() => props.type === "radio");
+// Whether this is a checkbox variant
+const isCheckbox = computed(() => props.type === "checkbox");
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
+// The computed name of this field, either the one provided, or one generated
+// for the user.
+const fieldName = computed(() => props.name || inputId.value);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
 const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
 // A reference to the inputs, allowing us to trigger focus.
@@ -167,15 +203,15 @@ const internalOptions = computed(() => {
 });
 
 /**
- * Trigger focus on the selected radio button, or the first if no selection has
- * been made.
+ * Trigger focus on the selected input, or the first if no selection has been
+ * made.
  */
 function triggerFocus() {
 	if (!isNonEmptyArray(inputReferences.value)) {
 		return;
 	}
 
-	// If we have a current value, focus that radio instead.
+	// If we have a current value, focus that input instead.
 	if (model.value === undefined) {
 		focusFirstInput();
 

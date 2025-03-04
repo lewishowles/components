@@ -1,6 +1,6 @@
-# `button-group`
+# `form-radio-group`
 
-`button-group` is an extension of [`form-radio-group`](../form-radio-group/form-radio-group.md), styled as a group of buttons.
+`form-radio-group` provides a convenient way to create a group of `radio` inputs.
 
 Supports `v-model` to bind the currently selected item's value.
 
@@ -31,7 +31,7 @@ Any help text to display below the field.
 - type: `array|object`
 - **required**
 
-The options to display as buttons can be provided in one of three formats for ease.
+The options to display as radio buttons can be provided in one of three formats for ease.
 
 - An array of strings `["option1", "option2", "option3"]`, in which case both the label and value are the same.
 - An object `{ value: "label" }` where each key is the value of oan option, and each value is the label.
@@ -53,34 +53,50 @@ A name for this radio group. If not set, the input ID is used.
 
 Any ID to apply to this field. If an ID is not provided, one will be generated at random. Note that when providing an ID, please make sure that it is unique to avoid any unforeseen issues.
 
+### `inline`
+
+- type: `boolean`
+- default: `false`
+
+Whether to display options inline (horizontally). This is only recommended when there are two to three options. Any more than that, and vertical display is more clear for the user.
+
+Note that this only takes effect when the radio buttons are in a _container_ that is at least 320px wide.
+
+## Methods
+
+### `triggerFocus`
+
+Focus this field.
+
 ## Examples
 
 ### Basic usage
 
 ```html
-<button-group v-model="theme" v-bind="{ options }">
-	Theme
-</button-group>
+<form-radio-group v-model="favouriteIceCream" v-bind="{ options }">
+	Favourite ice-cream
+</form-radio-group>
 ```
 
 ```javascript
 const options = [
-	{ label: "System", value: "system" },
-	{ label: "Light", value: "light" },
-	{ label: "Dark", value: "dark" },
+	{ label: "Vanilla", value: "vanilla" },
+	{ label: "Chocolate", value: "chocolate" },
+	{ label: "Banana", value: "banana" },
+	// Strawberry is gross
 ];
 ```
 
 ### With help
 
 ```html
-<button-group v-model="accountType" v-bind="{ inline: true }">
+<form-radio-group v-model="accountType" v-bind="{ inline: true }">
 	Account type
 
 	<template #help>
 		You can change the account type from the user screen later.
 	</template>
-</button-group>
+</form-radio-group>
 ```
 
 ```javascript
