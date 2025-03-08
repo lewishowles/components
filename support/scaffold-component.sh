@@ -144,8 +144,6 @@ import ${PASCAL_CASE_NAME}Preview from \"@/components/$FOLDER_PATH/$COMPONENT_NA
 	sed -i '' "/const previewOptions/a\\
 	{ label: \"${COMPONENT_NAME}\", value: \"${COMPONENT_NAME}-preview\" },\\
 " "$APP_FILE"
-
-	sed -i '' "s/const selectedPreview = ref(\"[^\"]*\")/const selectedPreview = ref(\"${COMPONENT_NAME}-preview\")/" "$APP_FILE"
 fi
 
 # Print the success message

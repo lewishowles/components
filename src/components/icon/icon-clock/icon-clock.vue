@@ -1,6 +1,13 @@
 <template>
 	<base-icon>
-		<g fill="none" fill-rule="evenodd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+		<g
+			fill="none"
+			fill-rule="evenodd"
+			stroke-width="1.5"
+			stroke="currentColor"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
 			<line x1="14.5" x2="16.5" y1="2" y2="4" />
 			<line x1="3.5" x2="1.5" y1="2" y2="4" />
 			<path d="M9,15.75 C12.4518,15.75 15.25,12.9518 15.25,9.5 C15.25,6.04822 12.4518,3.25 9,3.25 C5.54822,3.25 2.75,6.04822 2.75,9.5 C2.75,12.9518 5.54822,15.75 9,15.75 Z" />

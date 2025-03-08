@@ -1,17 +1,20 @@
 <template>
-	<div class="flex justify-center pt-6">
-		<form-select v-model="selectedPreview" v-bind="{ options: previewOptions }">
-			Select component to preview
-		</form-select>
-	</div>
+	<div class="mx-auto flex max-w-(--breakpoint-xl) flex-col gap-6">
+		<div class="flex px-2 text-sm">
+			<form-select v-model="selectedPreview" v-bind="{ options: previewOptions }">
+				Component
+			</form-select>
+		</div>
 
-	<component :is="selectedPreview" />
+		<component :is="selectedPreview" class="flex-grow" />
+	</div>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { useStorage } from "@vueuse/core";
+import { watch } from "vue";
 
-const selectedPreview = ref("form-radio-group-preview");
+const selectedPreview = useStorage("components:preview-component", "form-radio-group-preview");
 
 const previewOptions = [
 	{ label: "accordion-group", value: "accordion-group-preview" },
@@ -32,6 +35,7 @@ const previewOptions = [
 	{ label: "form-select", value: "form-select-preview" },
 	{ label: "form-textarea", value: "form-textarea-preview" },
 	{ label: "form-wrapper", value: "form-wrapper-preview" },
+	{ label: "icons", value: "icon-preview" },
 	{ label: "image-tag", value: "image-tag-preview" },
 	{ label: "link-tag", value: "link-tag-preview" },
 	{ label: "loading-indicator", value: "loading-indicator-preview" },
