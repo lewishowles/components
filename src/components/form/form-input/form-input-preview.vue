@@ -9,53 +9,51 @@
 				Basic field options
 			</template>
 
-			<form-layout class="max-w-sm">
-				<form-input v-model="name">
-					Your name (modelled)
+			<form-input v-model="name">
+				Your name (modelled)
+			</form-input>
+
+			<pre>Value: {{ name }}</pre>
+
+			<div>
+				<form-input ref="focusable-field">
+					Focusable
 				</form-input>
 
-				<pre>Value: {{ name }}</pre>
+				<ui-button class="button--muted mt-4" @click="triggerFocus">
+					Focus
+				</ui-button>
+			</div>
 
-				<div>
-					<form-input ref="focusable-field">
-						Focusable
-					</form-input>
+			<form-input>
+				Your name
 
-					<ui-button class="button--muted mt-4" @click="triggerFocus">
-						Focus
-					</ui-button>
-				</div>
+				<template #help>
+					With help text
+				</template>
+			</form-input>
 
-				<form-input>
-					Your name
+			<form-input>
+				Your name
 
-					<template #help>
-						With help text
-					</template>
-				</form-input>
+				<template #error>
+					With an error
+				</template>
+			</form-input>
 
-				<form-input>
-					Your name
+			<form-input>
+				Your name
 
-					<template #error>
-						With an error
-					</template>
-				</form-input>
+				<template #help>
+					With help text
+				</template>
 
-				<form-input>
-					Your name
+				<template #error>
+					With an error
+				</template>
+			</form-input>
 
-					<template #help>
-						With help text
-					</template>
-
-					<template #error>
-						With an error
-					</template>
-				</form-input>
-
-				<form-input />
-			</form-layout>
+			<form-input />
 		</preview-section>
 
 		<preview-section>
@@ -63,55 +61,53 @@
 				With decoration
 			</template>
 
-			<form-layout class="max-w-sm">
-				<form-input>
-					Prefix icon
+			<form-input>
+				Prefix icon
 
-					<template #prefix>
-						<icon-user />
-					</template>
+				<template #prefix>
+					<icon-user />
+				</template>
 
-					<template #help>
-						With help text
-					</template>
-				</form-input>
+				<template #help>
+					With help text
+				</template>
+			</form-input>
 
-				<form-input>
-					Suffix icon
+			<form-input>
+				Suffix icon
 
-					<template #suffix>
-						<icon-email />
-					</template>
+				<template #suffix>
+					<icon-email />
+				</template>
 
-					<template #help>
-						With help text
-					</template>
-				</form-input>
+				<template #help>
+					With help text
+				</template>
+			</form-input>
 
-				<form-input>
-					Prefix text
+			<form-input>
+				Prefix text
 
-					<template #prefix>
-						https://
-					</template>
+				<template #prefix>
+					https://
+				</template>
 
-					<template #help>
-						With help text
-					</template>
-				</form-input>
+				<template #help>
+					With help text
+				</template>
+			</form-input>
 
-				<form-input>
-					Suffix text
+			<form-input>
+				Suffix text
 
-					<template #suffix>
-						mph
-					</template>
+				<template #suffix>
+					mph
+				</template>
 
-					<template #help>
-						With help text
-					</template>
-				</form-input>
-			</form-layout>
+				<template #help>
+					With help text
+				</template>
+			</form-input>
 		</preview-section>
 	</preview-wrapper>
 </template>

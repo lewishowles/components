@@ -9,51 +9,49 @@
 				Basic radio options
 			</template>
 
-			<form-layout>
-				<button-group v-model="model" v-bind="{ options }">
-					Favourite ice-cream
+			<button-group v-model="model" v-bind="{ options }">
+				Favourite ice-cream
+			</button-group>
+
+			<pre>{{ {model} }}</pre>
+
+			<div>
+				<button-group ref="focusableRadio" v-bind="{ options }">
+					Focusable
 				</button-group>
 
-				<pre>{{ {model} }}</pre>
+				<ui-button class="button--muted mt-4" @click="triggerFocus">
+					Focus
+				</ui-button>
+			</div>
 
-				<div>
-					<button-group ref="focusableRadio" v-bind="{ options }">
-						Focusable
-					</button-group>
+			<button-group v-bind="{ options }">
+				Favourite ice-cream
 
-					<ui-button class="button--muted mt-4" @click="triggerFocus">
-						Focus
-					</ui-button>
-				</div>
+				<template #help>
+					With help text
+				</template>
+			</button-group>
 
-				<button-group v-bind="{ options }">
-					Favourite ice-cream
+			<button-group v-bind="{ options }">
+				Favourite ice-cream
 
-					<template #help>
-						With help text
-					</template>
-				</button-group>
+				<template #error>
+					With an error
+				</template>
+			</button-group>
 
-				<button-group v-bind="{ options }">
-					Favourite ice-cream
+			<button-group v-bind="{ options }">
+				Favourite ice-cream
 
-					<template #error>
-						With an error
-					</template>
-				</button-group>
+				<template #help>
+					With help text
+				</template>
 
-				<button-group v-bind="{ options }">
-					Favourite ice-cream
-
-					<template #help>
-						With help text
-					</template>
-
-					<template #error>
-						With an error
-					</template>
-				</button-group>
-			</form-layout>
+				<template #error>
+					With an error
+				</template>
+			</button-group>
 		</preview-section>
 
 		<preview-section>

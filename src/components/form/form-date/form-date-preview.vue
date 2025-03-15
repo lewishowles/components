@@ -9,47 +9,45 @@
 				Basic field options
 			</template>
 
-			<form-layout class="max-w-sm">
-				<form-date v-model="emptyDate">
-					When did you first request help?
-				</form-date>
+			<form-date v-model="emptyDate">
+				When did you first request help?
+			</form-date>
 
-				<pre>{{ emptyDate }}</pre>
+			<pre>{{ emptyDate }}</pre>
 
-				<form-date v-model="filledDate">
-					When did you first request help?
-				</form-date>
+			<form-date v-model="filledDate">
+				When did you first request help?
+			</form-date>
 
-				<pre>{{ filledDate }}</pre>
+			<pre>{{ filledDate }}</pre>
 
-				<form-date>
-					When did you first request help?
+			<form-date>
+				When did you first request help?
 
-					<template #help>
-						With help text
-					</template>
-				</form-date>
+				<template #help>
+					With help text
+				</template>
+			</form-date>
 
-				<form-date>
-					When did you first request help?
+			<form-date>
+				When did you first request help?
 
-					<template #error>
-						With an error
-					</template>
-				</form-date>
+				<template #error>
+					With an error
+				</template>
+			</form-date>
 
-				<form-date>
-					When did you first request help?
+			<form-date>
+				When did you first request help?
 
-					<template #help>
-						With help text
-					</template>
+				<template #help>
+					With help text
+				</template>
 
-					<template #error>
-						With an error
-					</template>
-				</form-date>
-			</form-layout>
+				<template #error>
+					With an error
+				</template>
+			</form-date>
 		</preview-section>
 	</preview-wrapper>
 </template>

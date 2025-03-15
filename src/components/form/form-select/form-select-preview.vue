@@ -9,63 +9,61 @@
 				Basic field options
 			</template>
 
-			<form-layout class="max-w-sm">
-				<form-select v-model="character" v-bind="{ options }">
-					Wazowski or Sullivan (modelled)
+			<form-select v-model="character" v-bind="{ options }">
+				Wazowski or Sullivan (modelled)
+			</form-select>
+
+			<pre>Value: {{ character }}</pre>
+
+			<form-select v-model="extendedCharacter" v-bind="{ options: extendedOptions }">
+				{ option, value }
+			</form-select>
+
+			<pre>Value: {{ extendedCharacter }}</pre>
+
+			<div>
+				<form-select ref="focusable-field" v-bind="{ options }">
+					Focusable
 				</form-select>
 
-				<pre>Value: {{ character }}</pre>
+				<ui-button class="button--muted mt-4" @click="triggerFocus">
+					Focus
+				</ui-button>
+			</div>
 
-				<form-select v-model="extendedCharacter" v-bind="{ options: extendedOptions }">
-					{ option, value }
-				</form-select>
+			<form-select v-bind="{ options, allowEmpty: false }">
+				Wazowski or Sullivan (!allowEmpty)
+			</form-select>
 
-				<pre>Value: {{ extendedCharacter }}</pre>
+			<form-select v-bind="{ options }">
+				Wazowski or Sullivan
 
-				<div>
-					<form-select ref="focusable-field" v-bind="{ options }">
-						Focusable
-					</form-select>
+				<template #help>
+					With help text
+				</template>
+			</form-select>
 
-					<ui-button class="button--muted mt-4" @click="triggerFocus">
-						Focus
-					</ui-button>
-				</div>
+			<form-select v-bind="{ options }">
+				Wazowski or Sullivan
 
-				<form-select v-bind="{ options, allowEmpty: false }">
-					Wazowski or Sullivan (!allowEmpty)
-				</form-select>
+				<template #error>
+					With an error
+				</template>
+			</form-select>
 
-				<form-select v-bind="{ options }">
-					Wazowski or Sullivan
+			<form-select v-bind="{ options }">
+				Wazowski or Sullivan
 
-					<template #help>
-						With help text
-					</template>
-				</form-select>
+				<template #help>
+					With help text
+				</template>
 
-				<form-select v-bind="{ options }">
-					Wazowski or Sullivan
+				<template #error>
+					With an error
+				</template>
+			</form-select>
 
-					<template #error>
-						With an error
-					</template>
-				</form-select>
-
-				<form-select v-bind="{ options }">
-					Wazowski or Sullivan
-
-					<template #help>
-						With help text
-					</template>
-
-					<template #error>
-						With an error
-					</template>
-				</form-select>
-
-				<form-select v-bind="{ options }" />
-			</form-layout>
+			<form-select v-bind="{ options }" />
 		</preview-section>
 	</preview-wrapper>
 </template>

@@ -9,19 +9,17 @@
 				Basic radio options
 			</template>
 
-			<form-layout>
-				<form-input-group v-model="radioModel" v-bind="{ type: 'radio', options }">
-					`type="radio"`
-				</form-input-group>
+			<form-input-group v-model="radioModel" v-bind="{ type: 'radio', options }">
+				`type="radio"`
+			</form-input-group>
 
-				<pre>{{ radioModel }}</pre>
+			<pre>{{ radioModel }}</pre>
 
-				<form-input-group v-model="checkboxModel" v-bind="{ type: 'checkbox', options }">
-					`type="checkbox"`
-				</form-input-group>
+			<form-input-group v-model="checkboxModel" v-bind="{ type: 'checkbox', options }">
+				`type="checkbox"`
+			</form-input-group>
 
-				<pre>{{ checkboxModel }}</pre>
-			</form-layout>
+			<pre>{{ checkboxModel }}</pre>
 		</preview-section>
 	</preview-wrapper>
 </template>

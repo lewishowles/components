@@ -9,55 +9,53 @@
 				Basic radio options
 			</template>
 
-			<form-layout>
-				<form-radio-group v-model="model" v-bind="{ options: objectArrayOptions }">
-					Favourite ice-cream
+			<form-radio-group v-model="model" v-bind="{ options: objectArrayOptions }">
+				Favourite ice-cream
+			</form-radio-group>
+
+			<pre>{{ model }}</pre>
+
+			<div>
+				<form-radio-group ref="focusableRadio" v-bind="{ options: objectArrayOptions }">
+					Focusable
 				</form-radio-group>
 
-				<pre>{{ model }}</pre>
+				<ui-button class="button--muted mt-4" @click="triggerFocus">
+					Focus
+				</ui-button>
+			</div>
 
-				<div>
-					<form-radio-group ref="focusableRadio" v-bind="{ options: objectArrayOptions }">
-						Focusable
-					</form-radio-group>
+			<form-radio-group v-bind="{ options: objectArrayOptions, inline: true }">
+				Favourite ice-cream (inline)
+			</form-radio-group>
 
-					<ui-button class="button--muted mt-4" @click="triggerFocus">
-						Focus
-					</ui-button>
-				</div>
+			<form-radio-group v-bind="{ options: objectArrayOptions }">
+				Favourite ice-cream
 
-				<form-radio-group v-bind="{ options: objectArrayOptions, inline: true }">
-					Favourite ice-cream (inline)
-				</form-radio-group>
+				<template #help>
+					With help text
+				</template>
+			</form-radio-group>
 
-				<form-radio-group v-bind="{ options: objectArrayOptions }">
-					Favourite ice-cream
+			<form-radio-group v-bind="{ options: objectArrayOptions }">
+				Favourite ice-cream
 
-					<template #help>
-						With help text
-					</template>
-				</form-radio-group>
+				<template #error>
+					With an error
+				</template>
+			</form-radio-group>
 
-				<form-radio-group v-bind="{ options: objectArrayOptions }">
-					Favourite ice-cream
+			<form-radio-group v-bind="{ options: objectArrayOptions }">
+				Favourite ice-cream
 
-					<template #error>
-						With an error
-					</template>
-				</form-radio-group>
+				<template #help>
+					With help text
+				</template>
 
-				<form-radio-group v-bind="{ options: objectArrayOptions }">
-					Favourite ice-cream
-
-					<template #help>
-						With help text
-					</template>
-
-					<template #error>
-						With an error
-					</template>
-				</form-radio-group>
-			</form-layout>
+				<template #error>
+					With an error
+				</template>
+			</form-radio-group>
 		</preview-section>
 
 		<preview-section>

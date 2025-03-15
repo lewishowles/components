@@ -9,53 +9,51 @@
 				Basic input options
 			</template>
 
-			<form-layout class="max-w-sm">
-				<form-textarea v-model="bio">
-					Bio (modelled)
+			<form-textarea v-model="bio">
+				Bio (modelled)
+			</form-textarea>
+
+			<pre>Value: {{ bio }}</pre>
+
+			<div>
+				<form-textarea ref="focusableInput">
+					Focusable
 				</form-textarea>
 
-				<pre>Value: {{ bio }}</pre>
+				<ui-button class="button--muted mt-4" @click="triggerFocus">
+					Focus
+				</ui-button>
+			</div>
 
-				<div>
-					<form-textarea ref="focusableInput">
-						Focusable
-					</form-textarea>
+			<form-textarea>
+				Bio
 
-					<ui-button class="button--muted mt-4" @click="triggerFocus">
-						Focus
-					</ui-button>
-				</div>
+				<template #help>
+					With help text
+				</template>
+			</form-textarea>
 
-				<form-textarea>
-					Bio
+			<form-textarea>
+				Bio
 
-					<template #help>
-						With help text
-					</template>
-				</form-textarea>
+				<template #error>
+					With an error
+				</template>
+			</form-textarea>
 
-				<form-textarea>
-					Bio
+			<form-textarea>
+				Bio
 
-					<template #error>
-						With an error
-					</template>
-				</form-textarea>
+				<template #help>
+					With help text
+				</template>
 
-				<form-textarea>
-					Bio
+				<template #error>
+					With an error
+				</template>
+			</form-textarea>
 
-					<template #help>
-						With help text
-					</template>
-
-					<template #error>
-						With an error
-					</template>
-				</form-textarea>
-
-				<form-textarea />
-			</form-layout>
+			<form-textarea />
 		</preview-section>
 	</preview-wrapper>
 </template>

@@ -9,55 +9,53 @@
 				Basic checkbox group options
 			</template>
 
-			<form-layout>
-				<form-checkbox-group v-model="model" v-bind="{ options: objectArrayOptions }">
-					Favourite ice-cream
+			<form-checkbox-group v-model="model" v-bind="{ options: objectArrayOptions }">
+				Favourite ice-cream
+			</form-checkbox-group>
+
+			<pre>{{ model }}</pre>
+
+			<div>
+				<form-checkbox-group ref="focusableCheckboxGroup" v-bind="{ options: objectArrayOptions }">
+					Focusable
 				</form-checkbox-group>
 
-				<pre>{{ model }}</pre>
+				<ui-button class="button--muted mt-4" @click="triggerFocus">
+					Focus
+				</ui-button>
+			</div>
 
-				<div>
-					<form-checkbox-group ref="focusableCheckboxGroup" v-bind="{ options: objectArrayOptions }">
-						Focusable
-					</form-checkbox-group>
+			<form-checkbox-group v-bind="{ options: objectArrayOptions, inline: true }">
+				Favourite ice-cream (inline)
+			</form-checkbox-group>
 
-					<ui-button class="button--muted mt-4" @click="triggerFocus">
-						Focus
-					</ui-button>
-				</div>
+			<form-checkbox-group v-bind="{ options: objectArrayOptions }">
+				Favourite ice-cream
 
-				<form-checkbox-group v-bind="{ options: objectArrayOptions, inline: true }">
-					Favourite ice-cream (inline)
-				</form-checkbox-group>
+				<template #help>
+					With help text
+				</template>
+			</form-checkbox-group>
 
-				<form-checkbox-group v-bind="{ options: objectArrayOptions }">
-					Favourite ice-cream
+			<form-checkbox-group v-bind="{ options: objectArrayOptions }">
+				Favourite ice-cream
 
-					<template #help>
-						With help text
-					</template>
-				</form-checkbox-group>
+				<template #error>
+					With an error
+				</template>
+			</form-checkbox-group>
 
-				<form-checkbox-group v-bind="{ options: objectArrayOptions }">
-					Favourite ice-cream
+			<form-checkbox-group v-bind="{ options: objectArrayOptions }">
+				Favourite ice-cream
 
-					<template #error>
-						With an error
-					</template>
-				</form-checkbox-group>
+				<template #help>
+					With help text
+				</template>
 
-				<form-checkbox-group v-bind="{ options: objectArrayOptions }">
-					Favourite ice-cream
-
-					<template #help>
-						With help text
-					</template>
-
-					<template #error>
-						With an error
-					</template>
-				</form-checkbox-group>
-			</form-layout>
+				<template #error>
+					With an error
+				</template>
+			</form-checkbox-group>
 		</preview-section>
 
 		<preview-section>

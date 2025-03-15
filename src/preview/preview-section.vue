@@ -9,7 +9,9 @@
 			</small>
 		</h2>
 
-		<slot />
+		<div class="flex flex-col gap-14">
+			<slot />
+		</div>
 	</div>
 </template>
 
