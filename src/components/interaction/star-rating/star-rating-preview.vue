@@ -29,6 +29,14 @@
 				<star-rating>
 					Rate your experience
 
+					<template #current-rating>
+						<strong>4.6/5</strong> based on 300 ratings
+					</template>
+				</star-rating>
+
+				<star-rating>
+					Rate your experience
+
 					<template #help>
 						With help text
 					</template>

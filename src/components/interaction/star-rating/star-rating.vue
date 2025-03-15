@@ -3,7 +3,7 @@
 		<slot />
 
 		<template #options="{ options, name }">
-			<div ref="optionsWrapperElement" class="mt-1 flex gap-1">
+			<div ref="optionsWrapperElement" class="mt-1 flex items-center gap-1">
 				<div v-for="option in options" :key="option.id">
 					<input ref="inputReferences" v-model="model" type="radio" class="peer sr-only" v-bind="{ id: option.id, value: option.value, name }" />
 
@@ -21,6 +21,10 @@
 							<path stroke="currentColor" d="M8 .5a.3.3 0 0 1 .157.038.16.16 0 0 1 .067.067l2.182 4.423 4.88.709a.25.25 0 0 1 .125.056c.086.204.08.303.012.369l-3.531 3.441.834 4.862a.25.25 0 0 1-.099.243.25.25 0 0 1-.263.02l-4.365-2.296-4.364 2.295a.25.25 0 0 1-.348-.126.25.25 0 0 1-.015-.137l.834-4.86L.574 6.16a.25.25 0 0 1-.062-.256.25.25 0 0 1 .2-.17l4.881-.708L7.776.605a.16.16 0 0 1 .066-.067A.3.3 0 0 1 7.999.5Z" />
 						</base-icon>
 					</form-label>
+				</div>
+
+				<div v-if="haveCurrentRating" class="text-sm ms-1" data-test="star-rating-current-rating">
+					<slot name="current-rating" />
 				</div>
 			</div>
 		</template>
@@ -44,9 +48,9 @@
  * `button-group` allows options to be provided in a few different formats for
  * simplicity.
  */
+import { computed, ref, useSlots } from "vue";
 import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
-import { ref } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
 
@@ -54,6 +58,7 @@ const model = defineModel({
 	type: [String, Number],
 });
 
+const slots = useSlots();
 // The currently highlighted star, allowing us to be smarter with our
 // highlighting.
 const highlightedStar = ref(null);
@@ -63,6 +68,8 @@ const inputReferences = ref([]);
 // The element wrapping our options template, which allows us to determine which
 // radio button is checked and focus the appropriate label.
 const optionsWrapperElement = ref(null);
+// Whether the user has provided any "current rating" text.
+const haveCurrentRating = computed(() => isNonEmptySlot(slots["current-rating"]));
 
 /**
  * Trigger focus on the selected radio button, or the first if no selection has

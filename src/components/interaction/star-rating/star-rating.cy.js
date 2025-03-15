@@ -21,6 +21,11 @@ describe("star-rating", () => {
 		cy.getByData("form-label").eq(3).shouldHaveText("3");
 		cy.getByData("form-label").eq(4).shouldHaveText("4");
 		cy.getByData("form-label").eq(5).shouldHaveText("5");
+
+		cy.getByData("star-rating-current-rating").should("not.exist");
+		cy.getByData("form-input-group-introduction").should("not.exist");
+		cy.getByData("form-help").should("not.exist");
+		cy.getByData("form-error").should("not.exist");
 	});
 
 	describe("Supplementary information", () => {
@@ -30,6 +35,14 @@ describe("star-rating", () => {
 			cy.getByData("form-input-group-introduction")
 				.shouldBeVisible()
 				.shouldHaveText("Introductory text");
+		});
+
+		it("A current rating can be provided", () => {
+			mount({ slots: { "current-rating": "4.5/5 based on 600 reviews" } });
+
+			cy.getByData("star-rating-current-rating")
+				.shouldBeVisible()
+				.shouldHaveText("4.5/5 based on 600 reviews");
 		});
 
 		it("Help can be supplied", () => {
