@@ -28,6 +28,16 @@ describe("star-rating", () => {
 		cy.getByData("form-error").should("not.exist");
 	});
 
+	describe("Display", () => {
+		it("Read-only mode can be activated", () => {
+			mount({ readOnly: true });
+
+			cy.getByData("star-rating")
+				.getByData("form-label")
+				.shouldHaveCount(1);
+		});
+	});
+
 	describe("Supplementary information", () => {
 		it("An introduction can be supplied", () => {
 			mount({ slots: { introduction: "Introductory text" } });

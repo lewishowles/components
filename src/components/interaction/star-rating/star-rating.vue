@@ -4,24 +4,30 @@
 
 		<template #options="{ options, name }">
 			<div ref="optionsWrapperElement" class="mt-1 flex items-center gap-1">
-				<div v-for="option in options" :key="option.id">
-					<input ref="inputReferences" v-model="model" type="radio" class="peer sr-only" v-bind="{ id: option.id, value: option.value, name }" />
+				<template v-if="!readOnly">
+					<div v-for="option in options" :key="option.id">
+						<input ref="inputReferences" v-model="model" type="radio" class="peer sr-only" v-bind="{ id: option.id, value: option.value, name }" />
 
-					<form-label v-bind="{ id: option.id, styled: false }" class="block cursor-pointer rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-purple-800 peer-focus-visible:ring-offset-2 dark:peer-focus-visible:ring-purple-400 dark:peer-focus-visible:ring-offset-0" @mouseover="highlightedStar = option.value">
-						<base-icon
-							viewBox="0 0 16 16"
-							class="size-6 transition-colors"
-							:class="{
-								'text-yellow-600': highlightedStar >= option.value && (option.value > model || !model),
-								'fill-yellow-600 text-yellow-600 hover:fill-yellow-800 hover:text-yellow-800': option.value <= model,
-								'fill-transparent text-grey-300 hover:text-yellow-600': option.value > model || !model
-							}"
-						>
-							<title>{{ option.value }}</title>
-							<path stroke="currentColor" d="M8 .5a.3.3 0 0 1 .157.038.16.16 0 0 1 .067.067l2.182 4.423 4.88.709a.25.25 0 0 1 .125.056c.086.204.08.303.012.369l-3.531 3.441.834 4.862a.25.25 0 0 1-.099.243.25.25 0 0 1-.263.02l-4.365-2.296-4.364 2.295a.25.25 0 0 1-.348-.126.25.25 0 0 1-.015-.137l.834-4.86L.574 6.16a.25.25 0 0 1-.062-.256.25.25 0 0 1 .2-.17l4.881-.708L7.776.605a.16.16 0 0 1 .066-.067A.3.3 0 0 1 7.999.5Z" />
-						</base-icon>
-					</form-label>
-				</div>
+						<form-label v-bind="{ id: option.id, styled: false }" class="block cursor-pointer rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-purple-800 peer-focus-visible:ring-offset-2 dark:peer-focus-visible:ring-purple-400 dark:peer-focus-visible:ring-offset-0" @mouseover="highlightedStar = option.value">
+							<base-icon
+								viewBox="0 0 16 16"
+								class="size-6 transition-colors"
+								:class="{
+									'text-yellow-600': highlightedStar >= option.value && (option.value > model || !model),
+									'fill-yellow-600 text-yellow-600 hover:fill-yellow-800 hover:text-yellow-800': option.value <= model,
+									'fill-transparent text-grey-300 hover:text-yellow-600': option.value > model || !model
+								}"
+							>
+								<title>{{ option.value }}</title>
+								<path stroke="currentColor" d="M8 .5a.3.3 0 0 1 .157.038.16.16 0 0 1 .067.067l2.182 4.423 4.88.709a.25.25 0 0 1 .125.056c.086.204.08.303.012.369l-3.531 3.441.834 4.862a.25.25 0 0 1-.099.243.25.25 0 0 1-.263.02l-4.365-2.296-4.364 2.295a.25.25 0 0 1-.348-.126.25.25 0 0 1-.015-.137l.834-4.86L.574 6.16a.25.25 0 0 1-.062-.256.25.25 0 0 1 .2-.17l4.881-.708L7.776.605a.16.16 0 0 1 .066-.067A.3.3 0 0 1 7.999.5Z" />
+							</base-icon>
+						</form-label>
+					</div>
+				</template>
+
+				<base-icon v-else viewBox="0 0 16 16" class="size-6 text-yellow-600 fill-yellow-600">
+					<path stroke="currentColor" d="M8 .5a.3.3 0 0 1 .157.038.16.16 0 0 1 .067.067l2.182 4.423 4.88.709a.25.25 0 0 1 .125.056c.086.204.08.303.012.369l-3.531 3.441.834 4.862a.25.25 0 0 1-.099.243.25.25 0 0 1-.263.02l-4.365-2.296-4.364 2.295a.25.25 0 0 1-.348-.126.25.25 0 0 1-.015-.137l.834-4.86L.574 6.16a.25.25 0 0 1-.062-.256.25.25 0 0 1 .2-.17l4.881-.708L7.776.605a.16.16 0 0 1 .066-.067A.3.3 0 0 1 7.999.5Z" />
+				</base-icon>
 
 				<div v-if="haveCurrentRating" class="text-sm ms-1" data-test="star-rating-current-rating">
 					<slot name="current-rating" />
@@ -53,6 +59,18 @@ import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
+
+defineProps({
+	/**
+	 * Whether to allow the user to choose a rating. If false, this component
+	 * can just be used to display a current rating, or activated based on some
+	 * other change, such as an edit.
+	 */
+	readOnly: {
+		type: Boolean,
+		default: false,
+	},
+});
 
 const model = defineModel({
 	type: [String, Number],
