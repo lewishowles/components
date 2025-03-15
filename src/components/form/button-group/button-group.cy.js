@@ -6,7 +6,7 @@ const defaultSlots = { default: "Best smoothie" };
 const mount = createMount(ButtonGroup, { props: defaultProps, slots: defaultSlots });
 
 describe("button-group", () => {
-	it("A radio group is rendered", () => {
+	it("A button group is rendered", () => {
 		mount();
 
 		cy.getByData("button-group").shouldBeVisible();
@@ -22,6 +22,14 @@ describe("button-group", () => {
 	});
 
 	describe("Supplementary information", () => {
+		it("An introduction can be supplied", () => {
+			mount({ slots: { introduction: "Introductory text" } });
+
+			cy.getByData("form-input-group-introduction")
+				.shouldBeVisible()
+				.shouldHaveText("Introductory text");
+		});
+
 		it("Help can be supplied", () => {
 			mount({ slots: { help: "Help text" } });
 

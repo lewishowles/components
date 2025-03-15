@@ -1,24 +1,26 @@
-import FormRadioGroup from "./form-radio-group.vue";
+import StarRating from "./star-rating.vue";
 import { createMount } from "@cypress/support/mount";
 
-const defaultProps = { id: "id-abc", options: ["Pineapple", "Banana", "Coconut"] };
-const defaultSlots = { default: "Best smoothie" };
-const mount = createMount(FormRadioGroup, { props: defaultProps, slots: defaultSlots });
+const defaultProps = { id: "id-abc" };
+const defaultSlots = { default: "Rate your experience" };
+const mount = createMount(StarRating, { props: defaultProps, slots: defaultSlots });
 
-describe("form-radio-group", () => {
-	it("A radio group is rendered", () => {
+describe("star-rating", () => {
+	it("A star rating is rendered", () => {
 		mount();
 
-		cy.getByData("form-radio-group").shouldBeVisible();
+		cy.getByData("star-rating").shouldBeVisible();
 
-		cy.getByData("form-radio-group")
+		cy.getByData("star-rating")
 			.getByData("form-label")
-			.shouldHaveCount(4);
+			.shouldHaveCount(6);
 
-		cy.getByData("form-label").eq(0).shouldHaveText("Best smoothie");
-		cy.getByData("form-label").eq(1).shouldHaveText("Pineapple");
-		cy.getByData("form-label").eq(2).shouldHaveText("Banana");
-		cy.getByData("form-label").eq(3).shouldHaveText("Coconut");
+		cy.getByData("form-label").eq(0).shouldHaveText("Rate your experience");
+		cy.getByData("form-label").eq(1).shouldHaveText("1");
+		cy.getByData("form-label").eq(2).shouldHaveText("2");
+		cy.getByData("form-label").eq(3).shouldHaveText("3");
+		cy.getByData("form-label").eq(4).shouldHaveText("4");
+		cy.getByData("form-label").eq(5).shouldHaveText("5");
 	});
 
 	describe("Supplementary information", () => {
@@ -38,7 +40,7 @@ describe("form-radio-group", () => {
 				.shouldHaveText("Help text")
 				.shouldHaveAttribute("id", "id-abc-help");
 
-			cy.getByData("form-radio-group")
+			cy.getByData("star-rating")
 				.shouldHaveAttribute("aria-describedby", "id-abc-help");
 		});
 
@@ -50,7 +52,7 @@ describe("form-radio-group", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getByData("form-radio-group")
+			cy.getByData("star-rating")
 				.shouldHaveAttribute("aria-describedby", "id-abc-error");
 		});
 
@@ -67,7 +69,7 @@ describe("form-radio-group", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getByData("form-radio-group")
+			cy.getByData("star-rating")
 				.shouldHaveAttribute("aria-describedby", "id-abc-help id-abc-error");
 		});
 	});

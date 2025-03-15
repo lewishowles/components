@@ -10,9 +10,11 @@
 			</template>
 
 			<form-layout>
-				<button-group v-bind="{ options }">
+				<button-group v-model="model" v-bind="{ options }">
 					Favourite ice-cream
 				</button-group>
+
+				<pre>{{ {model} }}</pre>
 
 				<div>
 					<button-group ref="focusableRadio" v-bind="{ options }">
@@ -94,6 +96,7 @@
 import { ref } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 
+const model = ref(null);
 const options = [{ label: "Chocolate", value: "chocolate" }, { label: "Vanilla", value: "vanilla" }, { label: "Strawberry", value: "strawberry" }];
 const objectOptions = { chocolate: "Chocolate", vanilla: "Vanilla", strawberry: "Strawberry" };
 const flatArrayOptions = ["Chocolate", "Vanilla", "Strawberry"];

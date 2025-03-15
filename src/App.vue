@@ -44,6 +44,7 @@ const previewOptions = [
 	{ label: "progress-bar", value: "progress-bar-preview" },
 	{ label: "searchable-list", value: "searchable-list-preview" },
 	{ label: "skeleton-loader", value: "skeleton-loader-preview" },
+	{ label: "star-rating", value: "star-rating-preview" },
 	{ label: "summary-details", value: "summary-details-preview" },
 	{ label: "tab-group", value: "tab-group-preview" },
 	{ label: "ui-button", value: "ui-button-preview" },

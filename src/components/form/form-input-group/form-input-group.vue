@@ -4,7 +4,7 @@
 			<slot />
 		</form-label>
 
-		<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }">
+		<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }" data-test="form-input-group-introduction">
 			<slot name="introduction" />
 		</conditional-wrapper>
 
@@ -62,6 +62,7 @@ import { deepCopy, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { isNumber } from "@lewishowles/helpers/number";
 import { nanoid } from "nanoid";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
 import useInputId from "@/components/form/composables/use-input-id";
@@ -82,6 +83,7 @@ const props = defineProps({
 	 * The input options. Options can be:
 	 *
 	 * string[] - ["option1", "option2", "option3"]
+	 * number[] - [1, 2, 3]
 	 * object   - { value: "label" }
 	 * object[] - [{ label: "Label", value: "value" }]
 	 */
@@ -168,11 +170,13 @@ const internalOptions = computed(() => {
 
 	if (isNonEmptyArray(providedOptions)) {
 		providedOptions.forEach(option => {
-			if (!isNonEmptyString(option) && !isNonEmptyObject(option)) {
+			const isSimpleOption = isNumber(option) || isNonEmptyString(option);
+
+			if (!isSimpleOption && !isNonEmptyObject(option)) {
 				return;
 			}
 
-			if (isNonEmptyString(option)) {
+			if (isSimpleOption) {
 				options.push({ label: option, value: option });
 
 				return;

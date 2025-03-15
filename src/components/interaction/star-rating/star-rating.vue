@@ -1,29 +1,28 @@
 <template>
-	<form-radio-group data-test="button-group">
+	<form-radio-group v-bind="{ options: ratingOptions }" data-test="star-rating" @mouseleave="highlightedStar = null">
 		<slot />
 
 		<template #options="{ options, name }">
-			<slot name="options" v-bind="{ options, name }">
-				<div ref="optionsWrapperElement" class="mt-1 flex">
-					<div v-for="option in options" :key="option.id">
-						<input ref="inputReferences" v-model="model" type="radio" class="peer sr-only" v-bind="{ id: option.id, value: option.value, name }" />
+			<div ref="optionsWrapperElement" class="mt-1 flex gap-1">
+				<div v-for="option in options" :key="option.id">
+					<input ref="inputReferences" v-model="model" type="radio" class="peer sr-only" v-bind="{ id: option.id, value: option.value, name }" />
 
-						<form-label
-							v-bind="{ id: option.id, styled: false }"
-							class="button-group flex items-center gap-2"
+					<form-label v-bind="{ id: option.id, styled: false }" class="block cursor-pointer rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-purple-800 peer-focus-visible:ring-offset-2 dark:peer-focus-visible:ring-purple-400 dark:peer-focus-visible:ring-offset-0" @mouseover="highlightedStar = option.value">
+						<base-icon
+							viewBox="0 0 16 16"
+							class="size-6 transition-colors"
 							:class="{
-								'button-group--middle': !option.first,
-								'button-group--first': option.first,
-								'button-group--last': option.last,
+								'text-yellow-600': highlightedStar >= option.value && (option.value > model || !model),
+								'fill-yellow-600 text-yellow-600 hover:fill-yellow-800 hover:text-yellow-800': option.value <= model,
+								'fill-transparent text-grey-300 hover:text-yellow-600': option.value > model || !model
 							}"
 						>
-							<component :is="option.icon" v-if="option.icon" />
-
-							{{ option.label }}
-						</form-label>
-					</div>
+							<title>{{ option.value }}</title>
+							<path stroke="currentColor" d="M8 .5a.3.3 0 0 1 .157.038.16.16 0 0 1 .067.067l2.182 4.423 4.88.709a.25.25 0 0 1 .125.056c.086.204.08.303.012.369l-3.531 3.441.834 4.862a.25.25 0 0 1-.099.243.25.25 0 0 1-.263.02l-4.365-2.296-4.364 2.295a.25.25 0 0 1-.348-.126.25.25 0 0 1-.015-.137l.834-4.86L.574 6.16a.25.25 0 0 1-.062-.256.25.25 0 0 1 .2-.17l4.881-.708L7.776.605a.16.16 0 0 1 .066-.067A.3.3 0 0 1 7.999.5Z" />
+						</base-icon>
+					</form-label>
 				</div>
-			</slot>
+			</div>
 		</template>
 
 		<template #introduction>
@@ -55,6 +54,10 @@ const model = defineModel({
 	type: [String, Number],
 });
 
+// The currently highlighted star, allowing us to be smarter with our
+// highlighting.
+const highlightedStar = ref(null);
+const ratingOptions = ref([1, 2, 3, 4, 5]);
 // A reference to the inputs, allowing us to trigger focus.
 const inputReferences = ref([]);
 // The element wrapping our options template, which allows us to determine which

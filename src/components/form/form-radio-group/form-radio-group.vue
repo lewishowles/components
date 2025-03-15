@@ -1,6 +1,21 @@
 <template>
 	<form-input-group ref="input-group" v-model="internalModel" v-bind="{ type: 'radio' }" data-test="form-radio-group">
 		<slot />
+
+		<template #introduction>
+			<slot name="introduction" />
+		</template>
+
+		<template #options="{ options, name }">
+			<slot name="options" v-bind="{ options, name }" />
+		</template>
+
+		<template #error>
+			<slot name="error" />
+		</template>
+		<template #help>
+			<slot name="help" />
+		</template>
 	</form-input-group>
 </template>
 
@@ -17,7 +32,7 @@ const props = defineProps({
 	 * something that can be provided to our input group.
 	 */
 	modelValue: {
-		type: String,
+		type: [String, Number],
 		default: null,
 	},
 });

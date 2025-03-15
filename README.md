@@ -59,6 +59,7 @@ You can find more information about each component on its relevant docs page.
 - [dropdown-menu](/src/components/interaction/dropdown-menu/dropdown-menu.md)
 - [link-tag](/src/components/interaction/link-tag/link-tag.md)
 - [loading-indicator](/src/components/interaction/loading-indicator/loading-indicator.md)
+- [star-rating](/src/components/interaction/star-rating/star-rating.md)
 - [ui-button](/src/components/interaction/ui-button/ui-button.md)
 
 ### Navigation
@@ -109,3 +110,4 @@ There are a number of improvements and new components that could be made to impr
   - "Allow backtrack"
 - Devise a system to allow the definition of a "brand colour" and "dark brand colour" to override any defaults. Perhaps a stylesheet.
 - Add notes about default recommended stylesheet.
+- Create a new public-facing website to display components and variants
