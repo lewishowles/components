@@ -9,7 +9,7 @@
 				Basic rating
 			</template>
 
-			<star-rating v-model="model">
+			<star-rating>
 				Rate your experience
 			</star-rating>
 		</preview-section>
@@ -35,8 +35,20 @@
 				</template>
 			</star-rating>
 
+			<star-rating v-bind="{ shape: 'heart' }">
+				Heart
+			</star-rating>
+
 			<star-rating v-bind="{ readOnly: true }">
 				Read only
+
+				<template #current-rating>
+					<strong>4.6/5</strong> based on 300 ratings
+				</template>
+			</star-rating>
+
+			<star-rating v-bind="{ shape: 'heart', readOnly: true }">
+				Read only (heart)
 
 				<template #current-rating>
 					<strong>4.6/5</strong> based on 300 ratings

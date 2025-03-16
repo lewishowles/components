@@ -42,6 +42,20 @@ A name for this rating group. If not set, the input ID is used.
 
 Any ID to apply to this field. If an ID is not provided, one will be generated at random. Note that when providing an ID, please make sure that it is unique to avoid any unforeseen issues.
 
+### `readOnly`
+
+- type: `boolean`
+- default: `false`
+
+Whether to allow the user to choose a rating. If false, this component can just be used to display a current rating, or activated based on some other change, such as an edit.
+
+### `shape`
+
+- type: `string`
+- default: `star`
+
+One of `star` or `heart`. Defaults to `star` if the shape is unrecognised.
+
 ## Examples
 
 ### Basic usage
