@@ -4,7 +4,6 @@ import PreviewWrapper from "@/preview/preview-wrapper.vue";
 
 import AccordionGroupPreview from "@/components/content/accordion-group/accordion-group-preview.vue";
 import AlertMessagePreview from "@/components/messaging/alert-message/alert-message-preview.vue";
-import StarRatingPreview from "@/components/interaction/star-rating/star-rating-preview.vue";
 import AppPaginationPreview from "@/components/navigation/app-pagination/app-pagination-preview.vue";
 import BreadcrumbListPreview from "@/components/navigation/breadcrumb-list/breadcrumb-list-preview.vue";
 import ButtonGroupPreview from "@/components/form/button-group/button-group-preview.vue";
@@ -22,6 +21,7 @@ import FormRadioGroupPreview from "@/components/form/form-radio-group/form-radio
 import FormSelectPreview from "@/components/form/form-select/form-select-preview.vue";
 import FormTextareaPreview from "@/components/form/form-textarea/form-textarea-preview.vue";
 import FormWrapperPreview from "@/components/form/form-wrapper/form-wrapper-preview.vue";
+import IconPreview from "./components/icon/icon-preview.vue";
 import ImageTagPreview from "@/components/display/image-tag/image-tag-preview.vue";
 import LinkTagPreview from "@/components/interaction/link-tag/link-tag-preview.vue";
 import LoadingIndicatorPreview from "@/components/interaction/loading-indicator/loading-indicator-preview.vue";
@@ -30,6 +30,7 @@ import PillBadgePreview from "@/components/messaging/pill-badge/pill-badge-previ
 import ProgressBarPreview from "@/components/chart/progress-bar/progress-bar-preview.vue";
 import SearchableListPreview from "@/components/data/searchable-list/searchable-list-preview.vue";
 import SkeletonLoaderPreview from "@/components/content/skeleton-loader/skeleton-loader-preview.vue";
+import StarRatingPreview from "@/components/interaction/star-rating/star-rating-preview.vue";
 import SummaryDetailsPreview from "@/components/content/summary-details/summary-details-preview.vue";
 import TabGroupPreview from "@/components/content/tab-group/tab-group-preview.vue";
 import UiButtonPreview from "@/components/interaction/ui-button/ui-button-preview.vue";
@@ -40,8 +41,6 @@ const previewLibrary = {
 	install(app) {
 		app.component("AccordionGroupPreview", AccordionGroupPreview);
 		app.component("AlertMessagePreview", AlertMessagePreview);
-		app.component("StarRatingPreview", StarRatingPreview);
-		app.component("FormInputGroupPreview", FormInputGroupPreview);
 		app.component("AppPaginationPreview", AppPaginationPreview);
 		app.component("BreadcrumbListPreview", BreadcrumbListPreview);
 		app.component("ButtonGroupPreview", ButtonGroupPreview);
@@ -52,12 +51,14 @@ const previewLibrary = {
 		app.component("FormCheckboxPreview", FormCheckboxPreview);
 		app.component("FormDatePreview", FormDatePreview);
 		app.component("FormFieldsetPreview", FormFieldsetPreview);
+		app.component("FormInputGroupPreview", FormInputGroupPreview);
 		app.component("FormInputPreview", FormInputPreview);
 		app.component("FormLayout", FormLayout);
 		app.component("FormRadioGroupPreview", FormRadioGroupPreview);
 		app.component("FormSelectPreview", FormSelectPreview);
 		app.component("FormTextareaPreview", FormTextareaPreview);
 		app.component("FormWrapperPreview", FormWrapperPreview);
+		app.component("IconPreview", IconPreview);
 		app.component("ImageTagPreview", ImageTagPreview);
 		app.component("LinkTagPreview", LinkTagPreview);
 		app.component("LoadingIndicatorPreview", LoadingIndicatorPreview);
@@ -69,10 +70,11 @@ const previewLibrary = {
 		app.component("ProgressBarPreview", ProgressBarPreview);
 		app.component("SearchableListPreview", SearchableListPreview);
 		app.component("SkeletonLoaderPreview", SkeletonLoaderPreview);
+		app.component("StarRatingPreview", StarRatingPreview);
 		app.component("SummaryDetailsPreview", SummaryDetailsPreview);
 		app.component("TabGroupPreview", TabGroupPreview);
-		app.component("UserAvatarsPreview", UserAvatarsPreview);
 		app.component("UiButtonPreview", UiButtonPreview);
+		app.component("UserAvatarsPreview", UserAvatarsPreview);
 	},
 };
 

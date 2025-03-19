@@ -103,8 +103,6 @@ Special scaffold scripts have been created to generate files for a new component
 
 There are a number of improvements and new components that could be made to improve flexibility.
 
-- Rating / Star component, with options to just display the rating or let the user change it. Emits an even when changing. Allows different display modes, such as stars, hearts, and whether to show all shapes or just one, and whether to show partial shapes or only full.
-- Notifications - an extension of summary-details, when provided a list of notifications letting the user view those notifications, showing an unread count, highlighting unread notifications, marking notifications as read, marking all notifications as read, dismissing notifications, and limiting the number of notifications (read) that appear.
 - Stepper - to show step-by-step information or a multi-page form
   - "Allow progress" setting and method
   - "Allow backtrack"

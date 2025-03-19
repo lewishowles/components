@@ -5,6 +5,7 @@
 ### New components
 
 - [`form-checkbox-group`](/src/components/form/form-checkbox-group/form-checkbox-group.md)
+- [`star-rating`](/src/components/interaction/star-rating/star-rating.md)
 
 ### Updates
 
