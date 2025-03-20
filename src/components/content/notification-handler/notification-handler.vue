@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 
@@ -58,24 +58,46 @@ const internalNotifications = computed(() => {
 		return [];
 	}
 
-	return props.notifications.reduce((notifications, notification) => {
-		if (!isNonEmptyObject(notification)) {
+	return props.notifications
+		.reduce((notifications, notification) => {
+			if (!isNonEmptyObject(notification)) {
+				return notifications;
+			}
+
+			// A notification must contain at least a message.
+			if (!Object.hasOwn(notification, "message")) {
+				return notifications;
+			}
+
+			// If set, hide any notifications that are marked as read.
+			if (props.hideNotificationsWhenRead && get(notification, "read") === true) {
+				return notifications;
+			}
+
+			notifications.push(notification);
+
 			return notifications;
-		}
+		}, [])
+		.sort((a, b) => {
+			// Sort our notifications by provided date, allowing one or both
+			// notifications to be missing a date property. Notifications with
+			// dates appear before those without.
+			const dateA = get(a, "date");
+			const dateB = get(b, "date");
 
-		// A notification must contain at least a message.
-		if (!Object.hasOwn(notification, "message")) {
-			return notifications;
-		}
+			if (dateA === null && dateB === null) {
+				return 0;
+			}
 
-		// If set, hide any notifications that are marked as read.
-		if (props.hideNotificationsWhenRead && get(notification, "read") === true) {
-			return notifications;
-		}
+			if (dateA === null) {
+				return 1;
+			}
 
-		notifications.push(notification);
+			if (dateB === null) {
+				return -1;
+			}
 
-		return notifications;
-	}, []);
+			return new Date(dateB) - new Date(dateA);
+		});
 });
 </script>

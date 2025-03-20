@@ -1,10 +1,12 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import NotificationHandler from "./notification-handler.vue";
 
 const mount = createMount(NotificationHandler);
 
 describe("notification-handler", () => {
+	console.log = vi.fn();
+
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
 			const wrapper = mount();
@@ -71,6 +73,72 @@ describe("notification-handler", () => {
 				const vm = wrapper.vm;
 
 				expect(vm.internalNotifications).toEqual([]);
+			});
+
+			describe("sorting by date", () => {
+				test("should handle notifications where neither has a date", () => {
+					const wrapper = mount({
+						notifications: [
+							{ id: "id-1", message: "Notification 1" },
+							{ id: "id-2", message: "Notification 2" },
+						],
+					});
+
+					const vm = wrapper.vm;
+
+					expect(vm.internalNotifications).toEqual([
+						{ id: "id-1", message: "Notification 1" },
+						{ id: "id-2", message: "Notification 2" },
+					]);
+				});
+
+				test("should handle notifications where only the first has a date", () => {
+					const wrapper = mount({
+						notifications: [
+							{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
+							{ id: "id-2", message: "Notification 2" },
+						],
+					});
+
+					const vm = wrapper.vm;
+
+					expect(vm.internalNotifications).toEqual([
+						{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
+						{ id: "id-2", message: "Notification 2" },
+					]);
+				});
+
+				test("should handle notifications where only the second has a date", () => {
+					const wrapper = mount({
+						notifications: [
+							{ id: "id-1", message: "Notification 1" },
+							{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
+						],
+					});
+
+					const vm = wrapper.vm;
+
+					expect(vm.internalNotifications).toEqual([
+						{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
+						{ id: "id-1", message: "Notification 1" },
+					]);
+				});
+
+				test("should handle notifications where both have dates", () => {
+					const wrapper = mount({
+						notifications: [
+							{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
+							{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
+						],
+					});
+
+					const vm = wrapper.vm;
+
+					expect(vm.internalNotifications).toEqual([
+						{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
+						{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
+					]);
+				});
 			});
 		});
 	});
