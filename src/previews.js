@@ -26,6 +26,7 @@ import ImageTagPreview from "@/components/display/image-tag/image-tag-preview.vu
 import LinkTagPreview from "@/components/interaction/link-tag/link-tag-preview.vue";
 import LoadingIndicatorPreview from "@/components/interaction/loading-indicator/loading-indicator-preview.vue";
 import ModalDialogPreview from "@/components/messaging/modal-dialog/modal-dialog-preview.vue";
+import NotificationHandlerPreview from "@/components/content/notification-handler/notification-handler-preview.vue";
 import PillBadgePreview from "@/components/messaging/pill-badge/pill-badge-preview.vue";
 import ProgressBarPreview from "@/components/chart/progress-bar/progress-bar-preview.vue";
 import SearchableListPreview from "@/components/data/searchable-list/searchable-list-preview.vue";
@@ -63,6 +64,7 @@ const previewLibrary = {
 		app.component("LinkTagPreview", LinkTagPreview);
 		app.component("LoadingIndicatorPreview", LoadingIndicatorPreview);
 		app.component("ModalDialogPreview", ModalDialogPreview);
+		app.component("NotificationHandlerPreview", NotificationHandlerPreview);
 		app.component("PillBadgePreview", PillBadgePreview);
 		app.component("PreviewLabel", PreviewLabel);
 		app.component("PreviewSection", PreviewSection);

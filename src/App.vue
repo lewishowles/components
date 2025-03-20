@@ -40,6 +40,7 @@ const previewOptions = [
 	{ label: "link-tag", value: "link-tag-preview" },
 	{ label: "loading-indicator", value: "loading-indicator-preview" },
 	{ label: "modal-dialog", value: "modal-dialog-preview" },
+	{ label: "notification-handler", value: "notification-handler-preview" },
 	{ label: "pill-badge", value: "pill-badge-preview" },
 	{ label: "progress-bar", value: "progress-bar-preview" },
 	{ label: "searchable-list", value: "searchable-list-preview" },

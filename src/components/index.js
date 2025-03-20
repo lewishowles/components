@@ -6,6 +6,7 @@ import BreadcrumbItem from "./navigation/breadcrumb-item/breadcrumb-item.vue";
 import BreadcrumbList from "./navigation/breadcrumb-list/breadcrumb-list.vue";
 import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
+import NotificationHandler from "./content/notification-handler/notification-handler.vue";
 import StarRating from "./interaction/star-rating/star-rating.vue";
 import FormInputGroup from "./form/form-input-group/form-input-group.vue";
 import DataTable from "./content/data-table/data-table.vue";
@@ -52,6 +53,7 @@ import IconArrowDown from "./icon/icon-arrow-down/icon-arrow-down.vue";
 import IconArrowLeft from "./icon/icon-arrow-left/icon-arrow-left.vue";
 import IconArrowRight from "./icon/icon-arrow-right/icon-arrow-right.vue";
 import IconArrowUp from "./icon/icon-arrow-up/icon-arrow-up.vue";
+import IconBell from "./icon/icon-bell/icon-bell.vue";
 import IconCheck from "./icon/icon-check/icon-check.vue";
 import IconCheckCircled from "./icon/icon-check-circled/icon-check-circled.vue";
 import IconChevronDown from "./icon/icon-chevron-down/icon-chevron-down.vue";
@@ -85,6 +87,7 @@ export default {
 	AccordionGroup,
 	AccordionSection,
 	AlertMessage,
+	NotificationHandler,
 	StarRating,
 	FormInputGroup,
 	AppPagination,
@@ -117,6 +120,7 @@ export default {
 	IconArrowLeft,
 	IconArrowRight,
 	IconArrowUp,
+	IconBell,
 	IconCheck,
 	IconCheckCircled,
 	IconChevronDown,
