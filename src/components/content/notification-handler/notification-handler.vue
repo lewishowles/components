@@ -1,5 +1,5 @@
 <template>
-	<summary-details v-bind="{ includeIcon: false, floating: true, align, summaryClasses: 'button--muted p-3', detailsClasses: 'mt-3 rounded-md border border-grey-200 bg-white p-4 shadow' }" class="w-min">
+	<summary-details v-bind="{ includeIcon: false, floating: true, align, summaryClasses: 'button--muted relative p-3', detailsClasses: 'mt-3 rounded-md border border-grey-200 bg-white p-4 shadow' }" class="w-min">
 		<template #summary>
 			<icon-bell />
 
@@ -8,6 +8,10 @@
 					Show notifications
 				</slot>
 			</span>
+
+			<pill-badge v-if="haveUnreadNotifications" class="absolute start-full bottom-full -ms-3 -mb-3" colour="orange">
+				{{ unreadNotificationCount }}
+			</pill-badge>
 		</template>
 
 		Notification panel
@@ -15,9 +19,9 @@
 </template>
 
 <script setup>
+import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
-import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNumber } from "@lewishowles/helpers/number";
 
 const props = defineProps({
@@ -94,6 +98,18 @@ const internalNotifications = computed(() => {
 
 	return notifications;
 });
+
+// How many unread notifications are present.
+const unreadNotificationCount = computed(() => {
+	if (!isNonEmptyArray(internalNotifications.value)) {
+		return 0;
+	}
+
+	return arrayLength(internalNotifications.value.filter(notification => get(notification, "read") !== true));
+});
+
+// Whether there are any unread notifications to display.
+const haveUnreadNotifications = computed(() => unreadNotificationCount.value > 0);
 
 /**
  * Sort the given notifications by their `date` property, allowing one or both

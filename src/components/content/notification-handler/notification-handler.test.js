@@ -236,6 +236,56 @@ describe("notification-handler", () => {
 				});
 			});
 		});
+
+		describe("unreadNotificationCount", () => {
+			test("should return 0 if all notifications are marked as read", () => {
+				const wrapper = mount({
+					notifications: [
+						{ id: "id-1", message: "Notification 1", read: true },
+						{ id: "id-2", message: "Notification 2", read: true },
+					],
+				});
+
+				const vm = wrapper.vm;
+
+				expect(vm.unreadNotificationCount).toBe(0);
+			});
+
+			test("should return the correct count of unread notifications", () => {
+				const wrapper = mount({
+					notifications: [
+						{ id: "id-1", message: "Notification 1", read: true },
+						{ id: "id-2", message: "Notification 2", read: false },
+						{ id: "id-3", message: "Notification 3", read: false },
+					],
+				});
+
+				const vm = wrapper.vm;
+
+				expect(vm.unreadNotificationCount).toBe(2);
+			});
+
+			test("should handle notifications without a `read` property", () => {
+				const wrapper = mount({
+					notifications: [
+						{ id: "id-1", message: "Notification 1" },
+						{ id: "id-2", message: "Notification 2", read: false },
+						{ id: "id-3", message: "Notification 3", read: true },
+					],
+				});
+
+				const vm = wrapper.vm;
+
+				expect(vm.unreadNotificationCount).toBe(2);
+			});
+
+			test("should handle an empty `internalNotifications` array", () => {
+				const wrapper = mount({ notifications: [] });
+				const vm = wrapper.vm;
+
+				expect(vm.unreadNotificationCount).toBe(0);
+			});
+		});
 	});
 
 	describe("Methods", () => {
