@@ -18,6 +18,7 @@
 import { computed } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isNumber } from "@lewishowles/helpers/number";
 
 const props = defineProps({
 	/**
@@ -46,6 +47,15 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+
+	/**
+	 * The number of read notifications to display at maximum. Unread
+	 * notifications are always shown.
+	 */
+	readNotificationCount: {
+		type: Number,
+		default: null,
+	},
 });
 
 // Our internal notifications to display.
@@ -58,7 +68,7 @@ const internalNotifications = computed(() => {
 		return [];
 	}
 
-	return props.notifications
+	let notifications = props.notifications
 		.reduce((notifications, notification) => {
 			if (!isNonEmptyObject(notification)) {
 				return notifications;
@@ -77,27 +87,73 @@ const internalNotifications = computed(() => {
 			notifications.push(notification);
 
 			return notifications;
-		}, [])
-		.sort((a, b) => {
-			// Sort our notifications by provided date, allowing one or both
-			// notifications to be missing a date property. Notifications with
-			// dates appear before those without.
-			const dateA = get(a, "date");
-			const dateB = get(b, "date");
+		}, []);
 
-			if (dateA === null && dateB === null) {
-				return 0;
-			}
+	notifications = sortNotificationsByDate(notifications);
+	notifications = limitReadNotifications(notifications);
 
-			if (dateA === null) {
-				return 1;
-			}
-
-			if (dateB === null) {
-				return -1;
-			}
-
-			return new Date(dateB) - new Date(dateA);
-		});
+	return notifications;
 });
+
+/**
+ * Sort the given notifications by their `date` property, allowing one or both
+ * notifications to be missing a date property. Notifications with dates appear
+ * before those without.
+ *
+ * @param  {array}  notifications
+ *     The notifications to sort.
+ */
+function sortNotificationsByDate(notifications) {
+	return notifications.sort((a, b) => {
+		const dateA = get(a, "date");
+		const dateB = get(b, "date");
+
+		if (dateA === null && dateB === null) {
+			return 0;
+		}
+
+		if (dateA === null) {
+			return 1;
+		}
+
+		if (dateB === null) {
+			return -1;
+		}
+
+		return new Date(dateB) - new Date(dateA);
+	});
+}
+
+/**
+ * Limit the number of "read" notifications, based on the value of the
+ * `readNotificationCount` prop.
+ *
+ * @param  {array}  notifications
+ *     The notifications to limit.
+ */
+function limitReadNotifications(notifications) {
+	if (!isNumber(props.readNotificationCount)) {
+		return notifications;
+	}
+
+	if (!isNonEmptyArray(notifications)) {
+		return [];
+	}
+
+	let readCount = 0;
+
+	return notifications.filter((notification) => {
+		if (get(notification, "read") !== true) {
+			return true;
+		}
+
+		if (readCount < props.readNotificationCount) {
+			readCount++;
+
+			return true;
+		}
+
+		return false;
+	});
+}
 </script>

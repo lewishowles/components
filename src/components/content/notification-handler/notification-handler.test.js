@@ -5,7 +5,7 @@ import NotificationHandler from "./notification-handler.vue";
 const mount = createMount(NotificationHandler);
 
 describe("notification-handler", () => {
-	console.log = vi.fn();
+	console.warn = vi.fn();
 
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
@@ -75,7 +75,7 @@ describe("notification-handler", () => {
 				expect(vm.internalNotifications).toEqual([]);
 			});
 
-			describe("sorting by date", () => {
+			describe("Sorting by date", () => {
 				test("should handle notifications where neither has a date", () => {
 					const wrapper = mount({
 						notifications: [
@@ -139,6 +139,238 @@ describe("notification-handler", () => {
 						{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
 					]);
 				});
+			});
+
+			describe("Limit the number of \"read\" notifications", () => {
+				test("should return all notifications if `readNotificationCount` is not a number", () => {
+					const wrapper = mount({
+						readNotificationCount: "not-a-number",
+						notifications: [
+							{ id: "id-1", message: "Notification 1", read: true },
+							{ id: "id-2", message: "Notification 2", read: false },
+						],
+					});
+
+					const vm = wrapper.vm;
+
+					expect(vm.internalNotifications).toEqual([
+						{ id: "id-1", message: "Notification 1", read: true },
+						{ id: "id-2", message: "Notification 2", read: false },
+					]);
+				});
+
+				test("should return all notifications if `readNotificationCount` is undefined", () => {
+					const wrapper = mount({
+						notifications: [
+							{ id: "id-1", message: "Notification 1", read: true },
+							{ id: "id-2", message: "Notification 2", read: false },
+						],
+					});
+
+					const vm = wrapper.vm;
+
+					expect(vm.internalNotifications).toEqual([
+						{ id: "id-1", message: "Notification 1", read: true },
+						{ id: "id-2", message: "Notification 2", read: false },
+					]);
+				});
+
+				test("should limit the number of read notifications to the value of `readNotificationCount`", () => {
+					const wrapper = mount({
+						readNotificationCount: 1,
+						notifications: [
+							{ id: "id-1", message: "Notification 1", read: true },
+							{ id: "id-2", message: "Notification 2", read: true },
+							{ id: "id-3", message: "Notification 3", read: false },
+						],
+					});
+
+					const vm = wrapper.vm;
+
+					expect(vm.internalNotifications).toEqual([
+						{ id: "id-1", message: "Notification 1", read: true },
+						{ id: "id-3", message: "Notification 3", read: false },
+					]);
+				});
+
+				test("should not limit unread notifications", () => {
+					const wrapper = mount({
+						readNotificationCount: 1,
+						notifications: [
+							{ id: "id-1", message: "Notification 1", read: false },
+							{ id: "id-2", message: "Notification 2", read: false },
+						],
+					});
+
+					const vm = wrapper.vm;
+
+					expect(vm.internalNotifications).toEqual([
+						{ id: "id-1", message: "Notification 1", read: false },
+						{ id: "id-2", message: "Notification 2", read: false },
+					]);
+				});
+
+				test("should handle an empty notifications array", () => {
+					const wrapper = mount({
+						readNotificationCount: 1,
+						notifications: [],
+					});
+
+					const vm = wrapper.vm;
+
+					expect(vm.internalNotifications).toEqual([]);
+				});
+
+				test("should handle a `readNotificationCount` of 0", () => {
+					const wrapper = mount({
+						readNotificationCount: 0,
+						notifications: [
+							{ id: "id-1", message: "Notification 1", read: true },
+							{ id: "id-2", message: "Notification 2", read: false },
+						],
+					});
+
+					const vm = wrapper.vm;
+
+					expect(vm.internalNotifications).toEqual([{ id: "id-2", message: "Notification 2", read: false }]);
+				});
+			});
+		});
+	});
+
+	describe("Methods", () => {
+		describe("sortNotificationsByDate", () => {
+			test("should handle notifications where neither has a date", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notifications = [
+					{ id: "id-1", message: "Notification 1" },
+					{ id: "id-2", message: "Notification 2" },
+				];
+
+				expect(vm.sortNotificationsByDate(notifications)).toEqual([
+					{ id: "id-1", message: "Notification 1" },
+					{ id: "id-2", message: "Notification 2" },
+				]);
+			});
+
+			test("should handle notifications where only the first has a date", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notifications = [
+					{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
+					{ id: "id-2", message: "Notification 2" },
+				];
+
+				expect(vm.sortNotificationsByDate(notifications)).toEqual([
+					{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
+					{ id: "id-2", message: "Notification 2" },
+				]);
+			});
+
+			test("should handle notifications where only the second has a date", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notifications = [
+					{ id: "id-1", message: "Notification 1" },
+					{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
+				];
+
+				expect(vm.sortNotificationsByDate(notifications)).toEqual([
+					{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
+					{ id: "id-1", message: "Notification 1" },
+				]);
+			});
+
+			test("should handle notifications where both have dates", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notifications = [
+					{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
+					{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
+				];
+
+				expect(vm.sortNotificationsByDate(notifications)).toEqual([
+					{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
+					{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
+				]);
+			});
+		});
+
+		describe("limitReadNotifications", () => {
+			test("should return all notifications if `readNotificationCount` is not a number", () => {
+				const wrapper = mount({ readNotificationCount: "not-a-number" });
+				const vm = wrapper.vm;
+
+				const notifications = [
+					{ id: "id-1", message: "Notification 1", read: true },
+					{ id: "id-2", message: "Notification 2", read: false },
+				];
+
+				expect(vm.limitReadNotifications(notifications)).toEqual(notifications);
+			});
+
+			test("should return all notifications if `readNotificationCount` is undefined", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notifications = [
+					{ id: "id-1", message: "Notification 1", read: true },
+					{ id: "id-2", message: "Notification 2", read: false },
+				];
+
+				expect(vm.limitReadNotifications(notifications)).toEqual(notifications);
+			});
+
+			test("should limit the number of read notifications to the value of `readNotificationCount`", () => {
+				const wrapper = mount({ readNotificationCount: 1 });
+				const vm = wrapper.vm;
+
+				const notifications = [
+					{ id: "id-1", message: "Notification 1", read: true },
+					{ id: "id-2", message: "Notification 2", read: true },
+					{ id: "id-3", message: "Notification 3", read: false },
+				];
+
+				expect(vm.limitReadNotifications(notifications)).toEqual([
+					{ id: "id-1", message: "Notification 1", read: true },
+					{ id: "id-3", message: "Notification 3", read: false },
+				]);
+			});
+
+			test("should not limit unread notifications", () => {
+				const wrapper = mount({ readNotificationCount: 1 });
+				const vm = wrapper.vm;
+
+				const notifications = [
+					{ id: "id-1", message: "Notification 1", read: false },
+					{ id: "id-2", message: "Notification 2", read: false },
+				];
+
+				expect(vm.limitReadNotifications(notifications)).toEqual(notifications);
+			});
+
+			test("should handle an empty notifications array", () => {
+				const wrapper = mount({ readNotificationCount: 1 });
+				const vm = wrapper.vm;
+
+				expect(vm.limitReadNotifications([])).toEqual([]);
+			});
+
+			test("should handle a `readNotificationCount` of 0", () => {
+				const wrapper = mount({ readNotificationCount: 0 });
+				const vm = wrapper.vm;
+
+				const notifications = [
+					{ id: "id-1", message: "Notification 1", read: true },
+					{ id: "id-2", message: "Notification 2", read: false },
+				];
+
+				expect(vm.limitReadNotifications(notifications)).toEqual([{ id: "id-2", message: "Notification 2", read: false }]);
 			});
 		});
 	});
