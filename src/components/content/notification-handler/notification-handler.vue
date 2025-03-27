@@ -9,9 +9,9 @@
 				</slot>
 			</span>
 
-			<pill-badge v-if="haveUnreadNotifications" class="absolute start-full bottom-full -ms-3 -mb-3" colour="orange">
+			<div v-if="haveUnreadNotifications" class="absolute end-0 top-0 -me-2 -mt-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-800 p-1 text-xs leading-none text-white">
 				{{ unreadNotificationCount }}
-			</pill-badge>
+			</div>
 		</template>
 
 		<div class="divide-y divide-grey-200">
