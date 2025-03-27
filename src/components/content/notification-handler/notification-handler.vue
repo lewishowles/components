@@ -14,9 +14,10 @@
 			</div>
 		</template>
 
-		<div class="divide-y divide-grey-200">
+		<div class="flex flex-col gap-4">
 			<template v-for="notification in internalNotifications" :key="notification.id">
-				<notification-read v-bind="{ notification }" />
+				<notification-read v-if="notification.read" v-bind="{ notification }" />
+				<notification-info v-else v-bind="{ notification }" />
 			</template>
 		</div>
 	</summary-details>
@@ -28,6 +29,7 @@ import { computed } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNumber } from "@lewishowles/helpers/number";
 
+import NotificationInfo from "./fragments/notification-info/notification-info.vue";
 import NotificationRead from "./fragments/notification-read/notification-read.vue";
 
 const props = defineProps({
