@@ -1,10 +1,18 @@
 <template>
-	<div class="px-8 py-4 text-grey-500" data-test="notification-read">
-		{{ notification.message }}
-	</div>
+	<notification-base
+		v-bind="{
+			notification,
+			stripeClasses: 'hidden',
+			badgeClasses: 'hidden',
+			textClasses: 'text-grey-500',
+		}"
+		data-test="notification-read"
+	/>
 </template>
 
 <script setup>
+import NotificationBase from "../notification-base/notification-base.vue";
+
 defineProps({
 	/**
 	 * The details of the notification to display.
