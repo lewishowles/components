@@ -1,5 +1,5 @@
 <template>
-	<div class="relative py-4 ps-8 pe-12" data-test="notification-info">
+	<div class="relative py-4 ps-8 pe-12" data-test="notification-base">
 		<div class="absolute inset-y-0 start-0 w-1 rounded-full" :class="stripeClasses" />
 
 		<div :class="textClasses">

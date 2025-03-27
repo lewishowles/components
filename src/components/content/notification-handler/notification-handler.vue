@@ -1,5 +1,5 @@
 <template>
-	<summary-details v-bind="{ includeIcon: false, floating: true, closeWithClickOutside: true, align, summaryClasses: 'button--muted relative p-3', detailsClasses: 'mt-3 w-lg rounded-md border border-grey-200 bg-white p-4 shadow' }" class="w-min text-sm">
+	<summary-details v-bind="{ includeIcon: false, floating: true, closeWithClickOutside: true, align, summaryClasses: 'button--muted relative p-3', detailsClasses: 'mt-3 w-lg rounded-md border border-grey-200 bg-white p-4 shadow' }" class="w-min text-sm" data-test="notification-handler">
 		<template #summary>
 			<icon-bell />
 
@@ -9,12 +9,12 @@
 				</slot>
 			</span>
 
-			<div v-if="haveUnreadNotifications" class="absolute end-0 top-0 -me-2 -mt-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-800 p-1 text-xs leading-none text-white">
+			<div v-if="haveUnreadNotifications" class="absolute end-0 top-0 -me-2 -mt-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-800 p-1 text-xs leading-none text-white" data-test="notification-handler-badge">
 				{{ unreadNotificationCount }}
 			</div>
 		</template>
 
-		<div class="flex flex-col gap-4">
+		<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
 			<template v-for="notification in internalNotifications" :key="notification.id">
 				<notification-read v-if="notification.read" v-bind="{ notification }" />
 				<notification-info v-else v-bind="{ notification }" />
