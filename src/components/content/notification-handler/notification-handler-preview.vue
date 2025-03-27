@@ -31,51 +31,51 @@ import { nanoid } from "nanoid";
 
 const unreadNotification = {
 	id: nanoid(),
-	message: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+	message: "Don't forget to check your tasks for today!",
 };
 
 const readNotification = {
 	id: nanoid(),
-	message: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+	message: "Your profile has been successfully updated.",
 	read: true,
 };
 
 const extendedNotification = {
 	id: nanoid(),
-	title: "Notification title",
-	message: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+	title: "System Maintenance",
+	message: "Our system will undergo maintenance on March 15th from 2 AM to 5 AM. Please save your work and log out before this time.",
 	date: "2025-03-12",
-	url: "https://duckduckgo.com",
+	url: "https://example.com/maintenance-info",
 };
 
 const warningNotification = {
 	id: nanoid(),
-	message: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+	message: "Your subscription is about to expire in 3 days. Renew now to avoid interruptions.",
 	type: "warning",
 };
 
 const dangerNotification = {
 	id: nanoid(),
-	message: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+	message: "Unauthorised login attempt detected. Please secure your account immediately.",
 	type: "danger",
 };
 
 const pinnedNotification = {
 	id: nanoid(),
-	message: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+	message: "Welcome to our platform! Check out the getting started guide to make the most of your experience.",
 	pinned: true,
 };
 
 const imageNotification = {
 	id: nanoid(),
-	message: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+	message: "Check out our latest product launch! Click to learn more.",
 	image_url: "https://placehold.co/100x100",
 };
 
 const iconNotification = {
 	id: nanoid(),
-	message: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
-	icon: "icon-film",
+	message: "You have 5 new messages in your inbox.",
+	icon: "icon-envelope",
 };
 
 const notifications = [

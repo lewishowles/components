@@ -1,5 +1,5 @@
 <template>
-	<summary-details v-bind="{ includeIcon: false, floating: true, align, summaryClasses: 'button--muted relative p-3', detailsClasses: 'mt-3 rounded-md border border-grey-200 bg-white p-4 shadow' }" class="w-min">
+	<summary-details v-bind="{ includeIcon: false, floating: true, closeWithClickOutside: true, align, summaryClasses: 'button--muted relative p-3', detailsClasses: 'mt-3 w-lg rounded-md border border-grey-200 bg-white p-4 shadow' }" class="w-min text-sm">
 		<template #summary>
 			<icon-bell />
 
@@ -14,7 +14,11 @@
 			</pill-badge>
 		</template>
 
-		Notification panel
+		<div class="divide-y divide-grey-200">
+			<template v-for="notification in internalNotifications" :key="notification.id">
+				<notification-read v-bind="{ notification }" />
+			</template>
+		</div>
 	</summary-details>
 </template>
 
@@ -23,6 +27,8 @@ import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNumber } from "@lewishowles/helpers/number";
+
+import NotificationRead from "./fragments/notification-read/notification-read.vue";
 
 const props = defineProps({
 	/**
