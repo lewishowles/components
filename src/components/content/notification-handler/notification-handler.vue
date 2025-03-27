@@ -16,8 +16,12 @@
 
 		<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
 			<template v-for="notification in internalNotifications" :key="notification.id">
-				<notification-read v-if="notification.read" v-bind="{ notification }" />
-				<notification-info v-else v-bind="{ notification }" />
+				<slot v-if="notification.read" name="notification-read-template" v-bind="{ notification }">
+					<notification-read v-bind="{ notification }" />
+				</slot>
+				<slot v-else name="notification-info-template" v-bind="{ notification }">
+					<notification-info v-bind="{ notification }" />
+				</slot>
 			</template>
 		</div>
 	</summary-details>

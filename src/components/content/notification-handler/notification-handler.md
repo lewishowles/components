@@ -6,19 +6,31 @@
 
 ## Slots
 
-### `notification-read`
+### `notification-read-template`
 
-A general slot to allow custom designs for notifications marked as `{ read: true }` (where `hideNotificationsWhenRead` is `false`).
+A general slot to allow custom designs for notifications marked as `{ read: true }` (where `hideNotificationsWhenRead` is `false`). The data for the notification itself is bound to the slot, e.g.:
 
-### `notification-unread`
+```
+<template #notification-read-template="{ notification }">
+	...
+</template>
+```
 
-A general slot to allow custom designs for notifications marked as `{ read: false }` .
+### `notification-unread-template`
 
-### `notification-<type>`
+A general slot to allow custom designs for notifications marked as `{ read: false }`. The data for the notification itself is bound to the slot, e.g.:
+
+```
+<template #notification-unread-template="{ notification }">
+	...
+</template>
+```
+
+### `notification-<type>-template`
 
 A general slot to allow custom designs for notifications of a given `<type>` (one of `danger`, `warning`, and `info`). Takes precedence over the `notification-read` and `notification-unread` slots.
 
-### `notification-pinned`
+### `notification-pinned-template`
 
 A general slot to allow custom designs for notifications that are `{ pinned: true }` . Takes precedence over the `notification-read`, `notification-unread` and `notification-<type>` slots.
 
@@ -120,7 +132,7 @@ The user has requested that the notifications be reloaded. A loading indicator i
 
 ```html
 <notification-handler v-bind="{ notifications }">
-	<template #notification-danger={ notification }>
+	<template #notification-danger-template="{ notification }">
 		This is a danger notification, with message {{ notification.message }}
 	</template>
 </notification-handler>

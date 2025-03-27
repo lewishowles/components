@@ -3,6 +3,7 @@ import { createMount } from "@cypress/support/mount";
 import { nanoid } from "nanoid";
 
 const mount = createMount(NotificationHandler, { props: { align: "start" } });
+const notificationMessage = "Mollit esse mollit aute id adipisicing. Do reprehenderit consequat non amet eu aliqua consequat do labore cupidatat sit sint elit pariatur. Mollit reprehenderit non et excepteur. Excepteur aliqua culpa nulla sint ad.";
 
 describe("notification-handler", () => {
 	it("A component is rendered", () => {
@@ -57,6 +58,30 @@ describe("notification-handler", () => {
 			cy.getByData("notification-info").shouldHaveCount(3);
 			cy.getByData("notification-read").shouldHaveCount(2);
 		});
+
+		describe("Slots", () => {
+			it("The `notification-read-template` can be implemented", () => {
+				mount({
+					props: { notifications: generateNotifications(1, { read: true }) },
+					slots: { "notification-read-template": "Read slot {{ params.notification.message }}" },
+				});
+
+				openNotificationPanel();
+
+				cy.getByData("notification-handler-notifications").shouldHaveText(`Read slot ${notificationMessage}`);
+			});
+
+			it("The `notification-info-template` can be implemented", () => {
+				mount({
+					props: { notifications: generateNotifications(1, { read: false }) },
+					slots: { "notification-info-template": "Info slot {{ params.notification.message }}" },
+				});
+
+				openNotificationPanel();
+
+				cy.getByData("notification-handler-notifications").shouldHaveText(`Info slot ${notificationMessage}`);
+			});
+		});
 	});
 });
 
@@ -82,7 +107,7 @@ function generateNotifications(count, overrides) {
 function generateNotification(overrides) {
 	return {
 		id: nanoid(),
-		message: "Mollit esse mollit aute id adipisicing. Do reprehenderit consequat non amet eu aliqua consequat do labore cupidatat sit sint elit pariatur. Mollit reprehenderit non et excepteur. Excepteur aliqua culpa nulla sint ad.",
+		message: notificationMessage,
 		...overrides,
 	};
 }
