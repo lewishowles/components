@@ -8,6 +8,7 @@ import AppPaginationPreview from "@/components/navigation/app-pagination/app-pag
 import BreadcrumbListPreview from "@/components/navigation/breadcrumb-list/breadcrumb-list-preview.vue";
 import ButtonGroupPreview from "@/components/form/button-group/button-group-preview.vue";
 import DataTablePreview from "@/components/content/data-table/data-table-preview.vue";
+import DisplayDatePreview from "@/components/content/display-date/display-date-preview.vue";
 import DonutChartPreview from "@/components/chart/donut-chart/donut-chart-preview.vue";
 import DropdownMenuPreview from "@/components/interaction/dropdown-menu/dropdown-menu-preview.vue";
 import FormCheckboxGroupPreview from "@/components/form/form-checkbox-group/form-checkbox-group-preview.vue";
@@ -46,6 +47,7 @@ const previewLibrary = {
 		app.component("BreadcrumbListPreview", BreadcrumbListPreview);
 		app.component("ButtonGroupPreview", ButtonGroupPreview);
 		app.component("DataTablePreview", DataTablePreview);
+		app.component("DisplayDatePreview", DisplayDatePreview);
 		app.component("DonutChartPreview", DonutChartPreview);
 		app.component("DropdownMenuPreview", DropdownMenuPreview);
 		app.component("FormCheckboxGroupPreview", FormCheckboxGroupPreview);

@@ -23,6 +23,7 @@ const previewOptions = [
 	{ label: "breadcrumb-list", value: "breadcrumb-list-preview" },
 	{ label: "button-group", value: "button-group-preview" },
 	{ label: "data-table", value: "data-table-preview" },
+	{ label: "display-date", value: "display-date-preview" },
 	{ label: "donut-chart", value: "donut-chart-preview" },
 	{ label: "dropdown-menu", value: "dropdown-menu-preview" },
 	{ label: "form-checkbox", value: "form-checkbox-preview" },

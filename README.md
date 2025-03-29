@@ -50,6 +50,7 @@ You can find more information about each component on its relevant docs page.
 - [accordion-group](/src/components/content/accordion-group/accordion-group.md)
 - [accordion-section](/src/components/content/accordion-section/accordion-section.md)
 - [data-table](/src/components/content/data-table/data-table.md)
+- [display-date](/src/components/content/display-date/display-date.md)
 - [notification-handler](/src/components/content/notification-handler/notification-handler.md)
 - [skeleton-loader](/src/components/interaction/skeleton-loader/skeleton-loader.md)
 - [summary-details](/src/components/content/summary-details/summary-details.md)

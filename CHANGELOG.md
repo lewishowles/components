@@ -4,9 +4,10 @@
 
 ### New components
 
+- [`display-date`](/src/components/content/display-date/display-date.md)
 - [`form-checkbox-group`](/src/components/form/form-checkbox-group/form-checkbox-group.md)
-- [`star-rating`](/src/components/interaction/star-rating/star-rating.md)
 - [`notification-handler`](/src/components/content/notification-handler/notification-handler.md)
+- [`star-rating`](/src/components/interaction/star-rating/star-rating.md)
 
 ### Updates
 
