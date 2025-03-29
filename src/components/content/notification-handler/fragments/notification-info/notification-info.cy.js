@@ -15,4 +15,18 @@ describe("notification-info", () => {
 		cy.getByData("notification-info-stripe").shouldBeVisible();
 		cy.getByData("notification-info-badge").shouldBeVisible();
 	});
+
+	describe("Features", () => {
+		it("A simple notification does not include extras", () => {
+			mount();
+
+			cy.getByData("notification-info-title").should("not.exist");
+		});
+
+		it("A notification can have a title", () => {
+			mount({ notification: { ...notification, title: "Notification title" } });
+
+			cy.getByData("notification-info-title").shouldBeVisible();
+		});
+	});
 });

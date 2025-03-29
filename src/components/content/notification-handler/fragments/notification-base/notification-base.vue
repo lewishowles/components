@@ -2,6 +2,10 @@
 	<div class="relative py-4 ps-8 pe-12" :data-test="dataTest">
 		<div class="absolute inset-y-0 start-0 w-1 rounded-full" :class="stripeClasses" :data-test="`${dataTest}-stripe`" />
 
+		<h3 v-if="hasTitle" class="font-semibold" :class="titleClasses" :data-test="`${dataTest}-title`">
+			{{ notification.title }}
+		</h3>
+
 		<div :class="textClasses">
 			{{ notification.message }}
 		</div>
@@ -11,7 +15,11 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from "vue";
+import { get } from "@lewishowles/helpers/object";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
+
+const props = defineProps({
 	/**
 	 * The details of the notification to display.
 	 */
@@ -27,6 +35,14 @@ defineProps({
 	stripeClasses: {
 		type: String,
 		default: "bg-grey-100",
+	},
+
+	/**
+	 * Any classes to apply to the title for this notification.
+	 */
+	titleClasses: {
+		type: String,
+		default: null,
 	},
 
 	/**
@@ -55,4 +71,7 @@ defineProps({
 		default: "notification-base",
 	},
 });
+
+// Whether this notification has a title.
+const hasTitle = computed(() => isNonEmptyString(get(props, "notification.title")));
 </script>

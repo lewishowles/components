@@ -4,6 +4,7 @@
 			notification,
 			stripeClasses: 'bg-purple-100',
 			badgeClasses: 'bg-purple-800',
+			titleClasses: 'text-grey-950'
 		}"
 		data-test="notification-info"
 	/>
