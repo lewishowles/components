@@ -10,6 +10,13 @@
 			{{ notification.message }}
 		</div>
 
+		<display-date
+			v-if="hasDate"
+			class="mt-2 text-xs text-grey-500"
+			v-bind="{ date: notification.date, locale, format: dateFormat }"
+			:data-test="`${dataTest}-date`"
+		/>
+
 		<div class="absolute end-0 top-0 me-6 mt-5.5 size-2 rounded-full" :class="badgeClasses" :data-test="`${dataTest}-badge`" />
 	</div>
 </template>
@@ -26,6 +33,23 @@ const props = defineProps({
 	notification: {
 		type: Object,
 		default: () => ({}),
+	},
+
+	/**
+	 * The locale to use when displaying dates.
+	 */
+	locale: {
+		type: String,
+		default: undefined,
+	},
+
+	/**
+	 * The date format to use in the display of the date. To reset to the user's
+	 * locale settings, set the format to null.
+	 */
+	dateFormat: {
+		type: Object,
+		default: null,
 	},
 
 	/**
@@ -74,4 +98,6 @@ const props = defineProps({
 
 // Whether this notification has a title.
 const hasTitle = computed(() => isNonEmptyString(get(props, "notification.title")));
+// Whether this notification has a date.
+const hasDate = computed(() => isNonEmptyString(get(props, "notification.date")));
 </script>

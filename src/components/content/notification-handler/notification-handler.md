@@ -66,19 +66,33 @@ The label to use for the button the link to view more information, if a notifica
 
 ## Props
 
-### notifications
+### `notifications`
 
 - type: `Object[]`
 - default: `null`
 
 The notifications to display to the user.
 
+### `locale`
+
+- type: `string`
+- default: `null`
+
+The locale to use when displaying dates. To reset to the user's locale settings, set the locale to undefined.
+
+### `dateFormat`
+
+- type: `object`
+- default: `{ year: "numeric", day: "numeric", month: "long" }`
+
+The date format to use in the display of the date. To reset to the user's locale settings, set the format to null.
+
 ### allowReload
 
 - type: `Boolean`
 - default: `true`
 
-Whether to display the “Reload” button. Deactivating means new notifications will only be shown when something triggers a re-load in the consuming component.
+Whether to display the “Reload” button. Deactivating means new notifications will only be shown when something triggers a re-load in the parent component.
 
 ### allowMarkAllRead
 

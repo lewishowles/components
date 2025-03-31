@@ -1,6 +1,8 @@
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test, vi } from "vitest";
 import NotificationHandler from "./notification-handler.vue";
+import NotificationInfo from "./fragments/notification-info/notification-info.vue";
+import NotificationRead from "./fragments/notification-read/notification-read.vue";
 
 const mount = createMount(NotificationHandler);
 
@@ -421,6 +423,64 @@ describe("notification-handler", () => {
 				];
 
 				expect(vm.limitReadNotifications(notifications)).toEqual([{ id: "id-2", message: "Notification 2", read: false }]);
+			});
+		});
+
+		describe("getNotificationSlotName", () => {
+			test("should return 'notification-read-template' if the notification is marked as read", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notification = { read: true };
+
+				expect(vm.getNotificationSlotName(notification)).toBe("notification-read-template");
+			});
+
+			test("should return 'notification-info-template' if the notification is not marked as read", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notification = { read: false };
+
+				expect(vm.getNotificationSlotName(notification)).toBe("notification-info-template");
+			});
+
+			test("should return 'notification-info-template' if the notification does not have a 'read' property", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notification = { message: "Notification without read property" };
+
+				expect(vm.getNotificationSlotName(notification)).toBe("notification-info-template");
+			});
+		});
+
+		describe("getNotificationComponent", () => {
+			test("should return NotificationRead if the notification is marked as read", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notification = { read: true };
+
+				expect(vm.getNotificationComponent(notification)).toEqual(NotificationRead);
+			});
+
+			test("should return NotificationInfo if the notification is not marked as read", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notification = { read: false };
+
+				expect(vm.getNotificationComponent(notification)).toEqual(NotificationInfo);
+			});
+
+			test("should return NotificationInfo if the notification does not have a 'read' property", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notification = { message: "Notification without read property" };
+
+				expect(vm.getNotificationComponent(notification)).toEqual(NotificationInfo);
 			});
 		});
 	});

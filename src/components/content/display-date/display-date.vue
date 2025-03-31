@@ -73,6 +73,4 @@ const displayDate = computed(() => {
 		return null;
 	}
 });
-
-window.Temporal = Temporal;
 </script>

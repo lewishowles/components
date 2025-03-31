@@ -16,11 +16,8 @@
 
 		<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
 			<template v-for="notification in internalNotifications" :key="notification.id">
-				<slot v-if="notification.read" name="notification-read-template" v-bind="{ notification }">
-					<notification-read v-bind="{ notification }" />
-				</slot>
-				<slot v-else name="notification-info-template" v-bind="{ notification }">
-					<notification-info v-bind="{ notification }" />
+				<slot :name="getNotificationSlotName(notification)" v-bind="{ notification }">
+					<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }" />
 				</slot>
 			</template>
 		</div>
@@ -43,6 +40,28 @@ const props = defineProps({
 	notifications: {
 		type: Array,
 		default: null,
+	},
+
+	/**
+	 * The locale to use when displaying dates. To reset to the user's
+	 * locale settings, set the locale to undefined.
+	 */
+	locale: {
+		type: String,
+		default: undefined,
+	},
+
+	/**
+	 * The date format to use in the display of the date. To reset to the user's
+	 * locale settings, set the format to null.
+	 */
+	dateFormat: {
+		type: Object,
+		default: () => ({
+			year: "numeric",
+			day: "numeric",
+			month: "long",
+		}),
 	},
 
 	/**
@@ -183,5 +202,35 @@ function limitReadNotifications(notifications) {
 
 		return false;
 	});
+}
+
+/**
+ * Get the appropriate slot name for the given notification type, based on its
+ * information.
+ *
+ * @param  {object}  notification
+ *     The details of the notification to display.
+ */
+function getNotificationSlotName(notification) {
+	if (get(notification, "read") === true) {
+		return "notification-read-template";
+	}
+
+	return "notification-info-template";
+}
+
+/**
+ * Get the appropriate component for the given notification type, based on its
+ * information.
+ *
+ * @param  {object}  notification
+ *     The details of the notification to display.
+ */
+function getNotificationComponent(notification) {
+	if (get(notification, "read") === true) {
+		return NotificationRead;
+	}
+
+	return NotificationInfo;
 }
 </script>

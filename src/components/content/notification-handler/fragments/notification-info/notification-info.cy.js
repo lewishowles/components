@@ -23,10 +23,48 @@ describe("notification-info", () => {
 			cy.getByData("notification-info-title").should("not.exist");
 		});
 
-		it("A notification can have a title", () => {
-			mount({ notification: { ...notification, title: "Notification title" } });
+		describe("Title", () => {
+			it("A notification can have a title", () => {
+				mount({ notification: { ...notification, title: "Notification title" } });
 
-			cy.getByData("notification-info-title").shouldBeVisible();
+				cy.getByData("notification-info-title").shouldBeVisible();
+			});
+		});
+
+		describe("Date", () => {
+			it("A notification can have a date", () => {
+				mount({ notification: { ...notification, date: "2025-03-29" } });
+
+				cy.getByData("notification-info-date").shouldBeVisible().shouldHaveText("29/03/2025");
+			});
+
+			it("The date format can be customised", () => {
+				mount({
+					notification: {
+						...notification,
+						date: "2025-03-29",
+					},
+					dateFormat: {
+						year: "numeric",
+						day: "2-digit",
+						month: "short",
+					},
+				});
+
+				cy.getByData("notification-info-date").shouldBeVisible().shouldHaveText("29 Mar 2025");
+			});
+
+			it("The date locale can be changed", () => {
+				mount({
+					notification: {
+						...notification,
+						date: "2025-03-29",
+					},
+					locale: "de-DE",
+				});
+
+				cy.getByData("notification-info-date").shouldBeVisible().shouldHaveText("29.3.2025");
+			});
 		});
 	});
 });
