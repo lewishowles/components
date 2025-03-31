@@ -2,12 +2,14 @@
 	<div class="relative py-4 ps-8 pe-12" :data-test="dataTest">
 		<div class="absolute inset-y-0 start-0 w-1 rounded-full" :class="stripeClasses" :data-test="`${dataTest}-stripe`" />
 
-		<conditional-wrapper v-bind="{ wrap: hasIcon }" class="flex items-start gap-4">
-			<div v-if="hasIcon" class="w-10 rounded-md p-3" :class="iconBackgroundClasses" :data-test="`${dataTest}-icon`">
+		<conditional-wrapper v-bind="{ wrap: hasImage || hasIcon }" class="flex items-start gap-4">
+			<image-tag v-if="hasImage" :src="notification.image_url" class="size-10 rounded-md object-cover" :data-test="`${dataTest}-image`" />
+
+			<div v-else-if="hasIcon" class="w-10 rounded-md p-3" :class="iconBackgroundClasses" :data-test="`${dataTest}-icon`">
 				<component :is="notification.icon" class="size-4.5" :class="iconClasses" />
 			</div>
 
-			<conditional-wrapper v-bind="{ wrap: hasIcon }">
+			<conditional-wrapper v-bind="{ wrap: hasImage || hasIcon }">
 				<h3 v-if="hasTitle" class="font-semibold" :class="titleClasses" :data-test="`${dataTest}-title`">
 					{{ notification.title }}
 				</h3>
@@ -126,6 +128,8 @@ const props = defineProps({
 const hasTitle = computed(() => isNonEmptyString(get(props, "notification.title")));
 // Whether this notification has a date.
 const hasDate = computed(() => isNonEmptyString(get(props, "notification.date")));
+// Whether this notification has an image to display.
+const hasImage = computed(() => isNonEmptyString(get(props, "notification.image_url")));
 // Whether this notification has an icon to display.
 const hasIcon = computed(() => isNonEmptyString(get(props, "notification.icon")));
 </script>

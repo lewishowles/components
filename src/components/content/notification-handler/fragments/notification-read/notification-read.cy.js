@@ -92,5 +92,26 @@ describe("notification-read", () => {
 				cy.getByData("notification-read-icon").shouldBeVisible();
 			});
 		});
+
+		describe("Image", () => {
+			it("An image is not shown when it isn't present", () => {
+				mount();
+
+				cy.getByData("notification-read-image").should("not.exist");
+			});
+
+			it("A notification can have an image", () => {
+				mount({ notification: { ...notification, image_url: "https://placehold.co/100x100" } });
+
+				cy.getByData("notification-read-image").shouldBeVisible();
+			});
+
+			it("A notification image takes precedence if both an image and an icon are defined", () => {
+				mount({ notification: { ...notification, icon: "icon-user", image_url: "https://placehold.co/100x100" } });
+
+				cy.getByData("notification-read-image").shouldBeVisible();
+				cy.getByData("notification-read-icon").should("not.exist");
+			});
+		});
 	});
 });
