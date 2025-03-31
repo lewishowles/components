@@ -36,46 +36,46 @@ const unreadNotification = {
 
 const readNotification = {
 	id: nanoid(),
+	title: "Profile updated",
 	message: "Your profile has been successfully updated.",
 	read: true,
 };
 
 const extendedNotification = {
 	id: nanoid(),
-	title: "System Maintenance",
+	title: "Scheduled maintenance",
 	message: "Our system will undergo maintenance on March 15th from 2 AM to 5 AM. Please save your work and log out before this time.",
-	date: "2025-03-12",
+	date: "2025-03-22",
+	pinned: true,
 	url: "https://example.com/maintenance-info",
 };
 
 const warningNotification = {
 	id: nanoid(),
-	message: "Your subscription is about to expire in 3 days. Renew now to avoid interruptions.",
+	title: "Your subscription is due to expire",
+	message: "Your subscription is due to expire in 3 days (24 Mar). Renew now to avoid interruptions.",
 	type: "warning",
 };
 
 const dangerNotification = {
 	id: nanoid(),
+	title: "Security alert",
 	message: "Unauthorised login attempt detected. Please secure your account immediately.",
 	type: "danger",
 };
 
-const pinnedNotification = {
-	id: nanoid(),
-	message: "Welcome to our platform! Check out the getting started guide to make the most of your experience.",
-	pinned: true,
-};
-
 const imageNotification = {
 	id: nanoid(),
-	message: "Check out our latest product launch! Click to learn more.",
+	title: "Notification with image",
+	message: "This notification has a an image",
 	image_url: "https://placehold.co/100x100",
 };
 
 const iconNotification = {
 	id: nanoid(),
-	message: "You have 5 new messages in your inbox.",
-	icon: "icon-envelope",
+	title: "Notification with icon",
+	message: "This notification has an icon",
+	icon: "icon-user",
 };
 
 const notifications = [
@@ -84,7 +84,6 @@ const notifications = [
 	extendedNotification,
 	warningNotification,
 	dangerNotification,
-	pinnedNotification,
 	imageNotification,
 	iconNotification,
 ];

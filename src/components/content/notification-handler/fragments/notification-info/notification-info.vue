@@ -5,7 +5,9 @@
 			locale,
 			dateFormat,
 			stripeClasses: 'bg-purple-100',
-			badgeClasses: 'bg-purple-800',
+			iconBackgroundClasses: 'bg-purple-50',
+			iconClasses: 'text-purple-600',
+			badgeClasses: 'bg-purple-600',
 			titleClasses: 'text-grey-950'
 		}"
 		data-test="notification-info"

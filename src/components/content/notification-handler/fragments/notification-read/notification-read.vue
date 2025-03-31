@@ -4,6 +4,7 @@
 			notification,
 			stripeClasses: 'hidden',
 			badgeClasses: 'hidden',
+			titleClasses: 'text-grey-500',
 			textClasses: 'text-grey-500',
 		}"
 		data-test="notification-read"

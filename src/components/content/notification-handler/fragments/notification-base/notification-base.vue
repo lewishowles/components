@@ -2,20 +2,28 @@
 	<div class="relative py-4 ps-8 pe-12" :data-test="dataTest">
 		<div class="absolute inset-y-0 start-0 w-1 rounded-full" :class="stripeClasses" :data-test="`${dataTest}-stripe`" />
 
-		<h3 v-if="hasTitle" class="font-semibold" :class="titleClasses" :data-test="`${dataTest}-title`">
-			{{ notification.title }}
-		</h3>
+		<conditional-wrapper v-bind="{ wrap: hasIcon }" class="flex items-start gap-4">
+			<div v-if="hasIcon" class="w-10 rounded-md p-3" :class="iconBackgroundClasses" :data-test="`${dataTest}-icon`">
+				<component :is="notification.icon" class="size-4.5" :class="iconClasses" />
+			</div>
 
-		<div :class="textClasses">
-			{{ notification.message }}
-		</div>
+			<conditional-wrapper v-bind="{ wrap: hasIcon }">
+				<h3 v-if="hasTitle" class="font-semibold" :class="titleClasses" :data-test="`${dataTest}-title`">
+					{{ notification.title }}
+				</h3>
 
-		<display-date
-			v-if="hasDate"
-			class="mt-2 text-xs text-grey-500"
-			v-bind="{ date: notification.date, locale, format: dateFormat }"
-			:data-test="`${dataTest}-date`"
-		/>
+				<div :class="textClasses">
+					{{ notification.message }}
+				</div>
+
+				<display-date
+					v-if="hasDate"
+					class="mt-2 text-xs text-grey-500"
+					v-bind="{ date: notification.date, locale, format: dateFormat }"
+					:data-test="`${dataTest}-date`"
+				/>
+			</conditional-wrapper>
+		</conditional-wrapper>
 
 		<div class="absolute end-0 top-0 me-6 mt-5.5 size-2 rounded-full" :class="badgeClasses" :data-test="`${dataTest}-badge`" />
 	</div>
@@ -62,6 +70,24 @@ const props = defineProps({
 	},
 
 	/**
+	 * Any classes to apply to the box around a displayed icon, which appears to
+	 * the left of the notification content.
+	 */
+	iconBackgroundClasses: {
+		type: String,
+		default: "bg-grey-50",
+	},
+
+	/**
+	 * Any classes to apply to the displayed icon, which appears to the left of
+	 * the notification content inside a box.
+	 */
+	iconClasses: {
+		type: String,
+		default: "text-grey-500",
+	},
+
+	/**
 	 * Any classes to apply to the title for this notification.
 	 */
 	titleClasses: {
@@ -100,4 +126,6 @@ const props = defineProps({
 const hasTitle = computed(() => isNonEmptyString(get(props, "notification.title")));
 // Whether this notification has a date.
 const hasDate = computed(() => isNonEmptyString(get(props, "notification.date")));
+// Whether this notification has an icon to display.
+const hasIcon = computed(() => isNonEmptyString(get(props, "notification.icon")));
 </script>

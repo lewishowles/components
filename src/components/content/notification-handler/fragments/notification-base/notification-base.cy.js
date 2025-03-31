@@ -24,6 +24,12 @@ describe("notification-base", () => {
 		});
 
 		describe("Title", () => {
+			it("A title is not shown when it isn't present", () => {
+				mount();
+
+				cy.getByData("notification-base-title").should("not.exist");
+			});
+
 			it("A notification can have a title", () => {
 				mount({ notification: { ...notification, title: "Notification title" } });
 
@@ -32,6 +38,12 @@ describe("notification-base", () => {
 		});
 
 		describe("Date", () => {
+			it("A date is not shown when it isn't present", () => {
+				mount();
+
+				cy.getByData("notification-base-date").should("not.exist");
+			});
+
 			it("A notification can have a date", () => {
 				mount({ notification: { ...notification, date: "2025-03-29" } });
 
@@ -64,6 +76,20 @@ describe("notification-base", () => {
 				});
 
 				cy.getByData("notification-base-date").shouldBeVisible().shouldHaveText("29.3.2025");
+			});
+		});
+
+		describe("Icon", () => {
+			it("An icon is not shown when it isn't present", () => {
+				mount();
+
+				cy.getByData("notification-base-icon").should("not.exist");
+			});
+
+			it("A notification can have an icon", () => {
+				mount({ notification: { ...notification, icon: "icon-user" } });
+
+				cy.getByData("notification-base-icon").shouldBeVisible();
 			});
 		});
 	});
