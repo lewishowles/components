@@ -92,6 +92,17 @@ describe("notification-handler", () => {
 
 				cy.getByData("notification-info-view-more").shouldHaveText("View something");
 			});
+
+			it("The `notification-actions` slot can be implemented", () => {
+				mount({
+					props: { notifications: generateNotifications(1) },
+					slots: { "notification-actions": "Additional actions" },
+				});
+
+				openNotificationPanel();
+
+				cy.getByData("notification-info-actions").shouldHaveText("Additional actions");
+			});
 		});
 	});
 });

@@ -8,31 +8,27 @@
 
 ### `notification-read-template`
 
-A general slot to allow custom designs for notifications marked as `{ read: true }` (where `hideNotificationsWhenRead` is `false`). The data for the notification itself is bound to the slot, e.g.:
-
-```
-<template #notification-read-template="{ notification }">
-	...
-</template>
-```
+A general slot to allow custom designs for notifications marked as `{ read: true }` (where `hideNotificationsWhenRead` is `false`). The slot is provided with a `{ notification }` containing the details of the individual notification.
 
 ### `notification-unread-template`
 
-A general slot to allow custom designs for notifications marked as `{ read: false }`. The data for the notification itself is bound to the slot, e.g.:
-
-```
-<template #notification-unread-template="{ notification }">
-	...
-</template>
-```
+A general slot to allow custom designs for notifications marked as `{ read: false }`. The slot is provided with a `{ notification }` containing the details of the individual notification.
 
 ### `notification-<type>-template`
 
-A general slot to allow custom designs for notifications of a given `<type>` (one of `danger`, `warning`, and `info`). Takes precedence over the `notification-read` and `notification-unread` slots.
+A general slot to allow custom designs for notifications of a given `<type>` (one of `danger`, `warning`, and `info`). Takes precedence over the `notification-read` and `notification-unread` slots. The slot is provided with a `{ notification }` containing the details of the individual notification.
 
 ### `notification-pinned-template`
 
-A general slot to allow custom designs for notifications that are `{ pinned: true }` . Takes precedence over the `notification-read`, `notification-unread` and `notification-<type>` slots.
+A general slot to allow custom designs for notifications that are `{ pinned: true }` . Takes precedence over the `notification-read`, `notification-unread` and `notification-<type>` slots. The slot is provided with a `{ notification }` containing the details of the individual notification.
+
+### `notification-<id>-template`
+
+A general slot to allow custom designs for notifications that are `{ pinned: true }` . Takes precedence over the `notification-read`, `notification-unread` and `notification-<type>` slots. The slot is provided with a `{ notification }` containing the details of the individual notification.
+
+### `notification-actions`
+
+A slot intended to allow actions to be added to individual notifications as required. The contents of this slot appear _after_ any "Mark as read" and "View more" actions. The slot is provided with a `{ notification }` containing the details of the individual notification.
 
 ### `show-notifications-label`
 

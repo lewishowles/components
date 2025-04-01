@@ -12,6 +12,10 @@
 		<template #view-more-label>
 			<slot name="view-more-label" />
 		</template>
+
+		<template #actions="slotParameters">
+			<slot name="actions" v-bind="slotParameters || {}" />
+		</template>
 	</notification-base>
 </template>
 

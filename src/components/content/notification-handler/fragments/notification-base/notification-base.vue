@@ -27,19 +27,24 @@
 			</conditional-wrapper>
 		</conditional-wrapper>
 
-		<link-tag v-if="hasMoreInformationUrl" class="mt-2" v-bind="{ href: notification.url, external: true }" :data-test="`${dataTest}-view-more`">
-			<slot name="view-more-label">
-				View more
-			</slot>
-		</link-tag>
+		<div v-if="hasMoreInformationUrl || haveActions" class="mt-2 flex items-center gap-2" :data-test="`${dataTest}-actions`">
+			<link-tag v-if="hasMoreInformationUrl" v-bind="{ href: notification.url, external: true }" :data-test="`${dataTest}-view-more`">
+				<slot name="view-more-label">
+					View more
+				</slot>
+			</link-tag>
+
+			<slot name="actions" v-bind="{ notification }" />
+		</div>
 
 		<div class="absolute end-0 top-0 me-6 mt-5.5 size-2 rounded-full" :class="badgeClasses" :data-test="`${dataTest}-badge`" />
 	</div>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, useSlots } from "vue";
 import { get } from "@lewishowles/helpers/object";
+import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 const props = defineProps({
@@ -130,6 +135,7 @@ const props = defineProps({
 	},
 });
 
+const slots = useSlots();
 // Whether this notification has a title.
 const hasTitle = computed(() => isNonEmptyString(get(props, "notification.title")));
 // Whether this notification has a date.
@@ -140,4 +146,6 @@ const hasImage = computed(() => isNonEmptyString(get(props, "notification.image_
 const hasIcon = computed(() => isNonEmptyString(get(props, "notification.icon")));
 // Whether this notification a URL to view more information.
 const hasMoreInformationUrl = computed(() => isNonEmptyString(get(props, "notification.url")));
+// Whether actions have been provided for this notification.
+const haveActions = computed(() => isNonEmptySlot(slots.actions));
 </script>
