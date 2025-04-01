@@ -17,7 +17,11 @@
 		<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
 			<template v-for="notification in internalNotifications" :key="notification.id">
 				<slot :name="getNotificationSlotName(notification)" v-bind="{ notification }">
-					<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }" />
+					<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }">
+						<template #view-more-label>
+							<slot name="view-more-label" />
+						</template>
+					</component>
 				</slot>
 			</template>
 		</div>

@@ -11,7 +11,11 @@
 			titleClasses: 'text-grey-950'
 		}"
 		data-test="notification-info"
-	/>
+	>
+		<template #view-more-label>
+			<slot name="view-more-label" />
+		</template>
+	</notification-base>
 </template>
 
 <script setup>

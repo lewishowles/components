@@ -113,5 +113,28 @@ describe("notification-base", () => {
 				cy.getByData("notification-base-icon").should("not.exist");
 			});
 		});
+
+		describe("View more", () => {
+			it("A link to view more is not shown when no URL is present", () => {
+				mount();
+
+				cy.getByData("notification-base-view-more").should("not.exist");
+			});
+
+			it("A notification can have a link to view more information", () => {
+				mount({ notification: { ...notification, url: "https://example.com" } });
+
+				cy.getByData("notification-base-view-more").shouldBeVisible();
+			});
+
+			it("The `view-more-label` slot can be implemented", () => {
+				mount({
+					props: {  notification: { ...notification, url: "https://example.com" } },
+					slots: { "view-more-label": "View something" },
+				});
+
+				cy.getByData("notification-base-view-more").shouldHaveText("View something");
+			});
+		});
 	});
 });

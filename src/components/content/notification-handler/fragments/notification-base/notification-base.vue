@@ -20,12 +20,18 @@
 
 				<display-date
 					v-if="hasDate"
-					class="mt-2 text-xs text-grey-500"
+					class="mt-2 block text-xs text-grey-500"
 					v-bind="{ date: notification.date, locale, format: dateFormat }"
 					:data-test="`${dataTest}-date`"
 				/>
 			</conditional-wrapper>
 		</conditional-wrapper>
+
+		<link-tag v-if="hasMoreInformationUrl" class="mt-2" v-bind="{ href: notification.url, external: true }" :data-test="`${dataTest}-view-more`">
+			<slot name="view-more-label">
+				View more
+			</slot>
+		</link-tag>
 
 		<div class="absolute end-0 top-0 me-6 mt-5.5 size-2 rounded-full" :class="badgeClasses" :data-test="`${dataTest}-badge`" />
 	</div>
@@ -132,4 +138,6 @@ const hasDate = computed(() => isNonEmptyString(get(props, "notification.date"))
 const hasImage = computed(() => isNonEmptyString(get(props, "notification.image_url")));
 // Whether this notification has an icon to display.
 const hasIcon = computed(() => isNonEmptyString(get(props, "notification.icon")));
+// Whether this notification a URL to view more information.
+const hasMoreInformationUrl = computed(() => isNonEmptyString(get(props, "notification.url")));
 </script>

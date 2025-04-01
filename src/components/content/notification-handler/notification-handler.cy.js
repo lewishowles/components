@@ -60,7 +60,7 @@ describe("notification-handler", () => {
 		});
 
 		describe("Slots", () => {
-			it("The `notification-read-template` can be implemented", () => {
+			it("The `notification-read-template` slot can be implemented", () => {
 				mount({
 					props: { notifications: generateNotifications(1, { read: true }) },
 					slots: { "notification-read-template": "Read slot {{ params.notification.message }}" },
@@ -71,7 +71,7 @@ describe("notification-handler", () => {
 				cy.getByData("notification-handler-notifications").shouldHaveText(`Read slot ${notificationMessage}`);
 			});
 
-			it("The `notification-info-template` can be implemented", () => {
+			it("The `notification-info-template` slot can be implemented", () => {
 				mount({
 					props: { notifications: generateNotifications(1, { read: false }) },
 					slots: { "notification-info-template": "Info slot {{ params.notification.message }}" },
@@ -80,6 +80,17 @@ describe("notification-handler", () => {
 				openNotificationPanel();
 
 				cy.getByData("notification-handler-notifications").shouldHaveText(`Info slot ${notificationMessage}`);
+			});
+
+			it("The `view-more-label` slot can be implemented", () => {
+				mount({
+					props: { notifications: generateNotifications(1, { url: "https://example.com" }) },
+					slots: { "view-more-label": "View something" },
+				});
+
+				openNotificationPanel();
+
+				cy.getByData("notification-info-view-more").shouldHaveText("View something");
 			});
 		});
 	});
