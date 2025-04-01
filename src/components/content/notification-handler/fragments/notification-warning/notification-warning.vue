@@ -1,15 +1,17 @@
 <template>
 	<notification-base
+		class="bg-orange-50/50 rounded-e-lg"
 		v-bind="{
 			notification,
 			locale,
 			dateFormat,
-			stripeClasses: 'bg-purple-100',
-			iconBackgroundClasses: 'bg-purple-50',
-			iconClasses: 'text-purple-600',
-			badgeClasses: 'bg-purple-600',
+			stripeClasses: 'bg-orange-100',
+			iconBackgroundClasses: 'bg-orange-50',
+			iconClasses: 'text-orange-600',
+			badgeClasses: 'bg-orange-600',
+			titleClasses: 'text-orange-800'
 		}"
-		data-test="notification-info"
+		data-test="notification-warning"
 	>
 		<template #view-more-label>
 			<slot name="view-more-label" />

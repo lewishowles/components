@@ -38,8 +38,10 @@ import { computed } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNumber } from "@lewishowles/helpers/number";
 
+import NotificationDanger from "./fragments/notification-danger/notification-danger.vue";
 import NotificationInfo from "./fragments/notification-info/notification-info.vue";
 import NotificationRead from "./fragments/notification-read/notification-read.vue";
+import NotificationWarning from "./fragments/notification-warning/notification-warning.vue";
 
 const props = defineProps({
 	/**
@@ -220,6 +222,14 @@ function limitReadNotifications(notifications) {
  *     The details of the notification to display.
  */
 function getNotificationSlotName(notification) {
+	if (get(notification, "type") === "danger") {
+		return "notification-danger-template";
+	}
+
+	if (get(notification, "type") === "warning") {
+		return "notification-warning-template";
+	}
+
 	if (get(notification, "read") === true) {
 		return "notification-read-template";
 	}
@@ -235,6 +245,14 @@ function getNotificationSlotName(notification) {
  *     The details of the notification to display.
  */
 function getNotificationComponent(notification) {
+	if (get(notification, "type") === "danger") {
+		return NotificationDanger;
+	}
+
+	if (get(notification, "type") === "warning") {
+		return NotificationWarning;
+	}
+
 	if (get(notification, "read") === true) {
 		return NotificationRead;
 	}

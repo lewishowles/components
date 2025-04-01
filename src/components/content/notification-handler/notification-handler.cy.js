@@ -82,6 +82,28 @@ describe("notification-handler", () => {
 				cy.getByData("notification-handler-notifications").shouldHaveText(`Info slot ${notificationMessage}`);
 			});
 
+			it("The `notification-warning-template` slot can be implemented", () => {
+				mount({
+					props: { notifications: generateNotifications(1, { type: "warning" }) },
+					slots: { "notification-warning-template": "Warning slot {{ params.notification.message }}" },
+				});
+
+				openNotificationPanel();
+
+				cy.getByData("notification-handler-notifications").shouldHaveText(`Warning slot ${notificationMessage}`);
+			});
+
+			it("The `notification-danger-template` slot can be implemented", () => {
+				mount({
+					props: { notifications: generateNotifications(1, { type: "danger" }) },
+					slots: { "notification-danger-template": "Danger slot {{ params.notification.message }}" },
+				});
+
+				openNotificationPanel();
+
+				cy.getByData("notification-handler-notifications").shouldHaveText(`Danger slot ${notificationMessage}`);
+			});
+
 			it("The `view-more-label` slot can be implemented", () => {
 				mount({
 					props: { notifications: generateNotifications(1, { url: "https://example.com" }) },

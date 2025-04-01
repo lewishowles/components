@@ -105,7 +105,7 @@ const props = defineProps({
 	 */
 	titleClasses: {
 		type: String,
-		default: null,
+		default: "text-grey-950",
 	},
 
 	/**

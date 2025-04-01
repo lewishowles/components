@@ -2,6 +2,8 @@
 	<notification-base
 		v-bind="{
 			notification,
+			locale,
+			dateFormat,
 			stripeClasses: 'hidden',
 			badgeClasses: 'hidden',
 			titleClasses: 'text-grey-500',
@@ -29,6 +31,23 @@ defineProps({
 	notification: {
 		type: Object,
 		default: () => ({}),
+	},
+
+	/**
+	 * The locale to use when displaying dates.
+	 */
+	locale: {
+		type: String,
+		default: undefined,
+	},
+
+	/**
+	 * The date format to use in the display of the date. To reset to the user's
+	 * locale settings, set the format to null.
+	 */
+	dateFormat: {
+		type: Object,
+		default: null,
 	},
 });
 </script>
