@@ -10,6 +10,7 @@ Each icon in the library is created using strokes, and can be coloured using the
 - icon-check.vue
 - icon-chevron-down-circled.vue
 - icon-chevron-down.vue
+- icon-pin.vue
 - icon-eye.vue
 - icon-density-compact.vue
 - icon-density-standard.vue

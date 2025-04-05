@@ -37,7 +37,7 @@
 			<slot name="actions" v-bind="{ notification }" />
 		</div>
 
-		<div class="absolute end-0 top-0 me-6 mt-5.5 size-2 rounded-full" :class="badgeClasses" :data-test="`${dataTest}-badge`" />
+		<component :is="isPinned ? 'icon-pin' : 'div'" class="absolute end-0 top-0" :class="[badgeClasses, { 'size-4 me-5 mt-4.5': isPinned, 'bg-current size-2 rounded-full me-6 mt-5.5': !isPinned }]" :data-test="`${dataTest}-badge`" />
 	</div>
 </template>
 
@@ -144,6 +144,8 @@ const hasDate = computed(() => isNonEmptyString(get(props, "notification.date"))
 const hasImage = computed(() => isNonEmptyString(get(props, "notification.image_url")));
 // Whether this notification has an icon to display.
 const hasIcon = computed(() => isNonEmptyString(get(props, "notification.icon")));
+// Whether this notification is pinned.
+const isPinned = computed(() => get(props, "notification.pinned") === true);
 // Whether this notification a URL to view more information.
 const hasMoreInformationUrl = computed(() => isNonEmptyString(get(props, "notification.url")));
 // Whether actions have been provided for this notification.

@@ -8,7 +8,7 @@
 			stripeClasses: 'bg-red-100',
 			iconBackgroundClasses: 'bg-red-50',
 			iconClasses: 'text-red-600',
-			badgeClasses: 'bg-red-600',
+			badgeClasses: 'text-red-600',
 			titleClasses: 'text-red-800'
 		}"
 		data-test="notification-danger"

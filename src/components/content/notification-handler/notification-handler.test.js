@@ -1,8 +1,10 @@
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test, vi } from "vitest";
 import NotificationHandler from "./notification-handler.vue";
+import NotificationDanger from "./fragments/notification-danger/notification-danger.vue";
 import NotificationInfo from "./fragments/notification-info/notification-info.vue";
 import NotificationRead from "./fragments/notification-read/notification-read.vue";
+import NotificationWarning from "./fragments/notification-warning/notification-warning.vue";
 
 const mount = createMount(NotificationHandler);
 
@@ -427,6 +429,24 @@ describe("notification-handler", () => {
 		});
 
 		describe("getNotificationSlotName", () => {
+			test("should return \"notification-danger-template\" if the notification has type \"danger\"", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notification = { type: "danger" };
+
+				expect(vm.getNotificationSlotName(notification)).toEqual("notification-danger-template");
+			});
+
+			test("should return \"notification-warning-template\" if the notification has type \"warning\"", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notification = { type: "warning" };
+
+				expect(vm.getNotificationSlotName(notification)).toEqual("notification-warning-template");
+			});
+
 			test("should return 'notification-read-template' if the notification is marked as read", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
@@ -456,6 +476,24 @@ describe("notification-handler", () => {
 		});
 
 		describe("getNotificationComponent", () => {
+			test("should return NotificationDanger if the notification has type \"danger\"", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notification = { type: "danger" };
+
+				expect(vm.getNotificationComponent(notification)).toEqual(NotificationDanger);
+			});
+
+			test("should return NotificationWarning if the notification has type \"warning\"", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notification = { type: "warning" };
+
+				expect(vm.getNotificationComponent(notification)).toEqual(NotificationWarning);
+			});
+
 			test("should return NotificationRead if the notification is marked as read", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;

@@ -6,11 +6,8 @@ import BreadcrumbItem from "./navigation/breadcrumb-item/breadcrumb-item.vue";
 import BreadcrumbList from "./navigation/breadcrumb-list/breadcrumb-list.vue";
 import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
-import DisplayDate from "./content/display-date/display-date.vue";
-import NotificationHandler from "./content/notification-handler/notification-handler.vue";
-import StarRating from "./interaction/star-rating/star-rating.vue";
-import FormInputGroup from "./form/form-input-group/form-input-group.vue";
 import DataTable from "./content/data-table/data-table.vue";
+import DisplayDate from "./content/display-date/display-date.vue";
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
 import DropdownMenu from "./interaction/dropdown-menu/dropdown-menu.vue";
 import DropdownMenuButton from "./interaction/dropdown-menu/fragments/dropdown-menu-button/dropdown-menu-button.vue";
@@ -25,6 +22,7 @@ import FormDate from "./form/form-date/form-date.vue";
 import FormField from "./form/form-field/form-field.vue";
 import FormFieldset from "./form/form-fieldset/form-fieldset.vue";
 import FormInput from "./form/form-input/form-input.vue";
+import FormInputGroup from "./form/form-input-group/form-input-group.vue";
 import FormLayout from "./form/form-layout/form-layout.vue";
 import FormRadioGroup from "./form/form-radio-group/form-radio-group.vue";
 import FormSelect from "./form/form-select/form-select.vue";
@@ -34,11 +32,13 @@ import ImageTag from "./display/image-tag/image-tag.vue";
 import LinkTag from "./interaction/link-tag/link-tag.vue";
 import LoadingIndicator from "./interaction/loading-indicator/loading-indicator.vue";
 import ModalDialog from "./messaging/modal-dialog/modal-dialog.vue";
+import NotificationHandler from "./content/notification-handler/notification-handler.vue";
 import PillBadge from "./messaging/pill-badge/pill-badge.vue";
 import ProgressBar from "./chart/progress-bar/progress-bar.vue";
 import SearchableList from "./data/searchable-list/searchable-list.vue";
 import SkeletonIndicator from "./content/skeleton-indicator/skeleton-indicator.vue";
 import SkeletonLoader from "./content/skeleton-loader/skeleton-loader.vue";
+import StarRating from "./interaction/star-rating/star-rating.vue";
 import SummaryDetails from "./content/summary-details/summary-details.vue";
 import TabGroup from "./content/tab-group/tab-group.vue";
 import TabItem from "./content/tab-item/tab-item.vue";
@@ -46,10 +46,6 @@ import UiButton from "./interaction/ui-button/ui-button.vue";
 import UserAvatars from "./display/user-avatars/user-avatars.vue";
 
 import BaseIcon from "./icon/base-icon/base-icon.vue";
-import IconEye from "./icon/icon-eye/icon-eye.vue";
-import IconDensityCompact from "./icon/icon-density-compact/icon-density-compact.vue";
-import IconDensityStandard from "./icon/icon-density-standard/icon-density-standard.vue";
-import IconDensityRelaxed from "./icon/icon-density-relaxed/icon-density-relaxed.vue";
 import IconArrowDown from "./icon/icon-arrow-down/icon-arrow-down.vue";
 import IconArrowLeft from "./icon/icon-arrow-left/icon-arrow-left.vue";
 import IconArrowRight from "./icon/icon-arrow-right/icon-arrow-right.vue";
@@ -68,9 +64,13 @@ import IconChevronUpCircled from "./icon/icon-chevron-up-circled/icon-chevron-up
 import IconClock from "./icon/icon-clock/icon-clock.vue";
 import IconCross from "./icon/icon-cross/icon-cross.vue";
 import IconDanger from "./icon/icon-danger/icon-danger.vue";
+import IconDensityCompact from "./icon/icon-density-compact/icon-density-compact.vue";
+import IconDensityRelaxed from "./icon/icon-density-relaxed/icon-density-relaxed.vue";
+import IconDensityStandard from "./icon/icon-density-standard/icon-density-standard.vue";
 import IconDownload from "./icon/icon-download/icon-download.vue";
 import IconEmail from "./icon/icon-email/icon-email.vue";
 import IconExternal from "./icon/icon-external/icon-external.vue";
+import IconEye from "./icon/icon-eye/icon-eye.vue";
 import IconFilm from "./icon/icon-film/icon-film.vue";
 import IconImage from "./icon/icon-image/icon-image.vue";
 import IconInfo from "./icon/icon-info/icon-info.vue";
@@ -78,6 +78,7 @@ import IconLaptop from "./icon/icon-laptop/icon-laptop.vue";
 import IconLightbulb from "./icon/icon-lightbulb/icon-lightbulb.vue";
 import IconLoading from "./icon/icon-loading/icon-loading.vue";
 import IconMoon from "./icon/icon-moon/icon-moon.vue";
+import IconPin from "./icon/icon-pin/icon-pin.vue";
 import IconPlus from "./icon/icon-plus/icon-plus.vue";
 import IconReload from "./icon/icon-reload/icon-reload.vue";
 import IconSun from "./icon/icon-sun/icon-sun.vue";
@@ -88,10 +89,6 @@ export default {
 	AccordionGroup,
 	AccordionSection,
 	AlertMessage,
-	DisplayDate,
-	NotificationHandler,
-	StarRating,
-	FormInputGroup,
 	AppPagination,
 	BaseIcon,
 	BreadcrumbItem,
@@ -99,6 +96,7 @@ export default {
 	ButtonGroup,
 	ConditionalWrapper,
 	DataTable,
+	DisplayDate,
 	DonutChart,
 	DropdownMenu,
 	DropdownMenuButton,
@@ -113,6 +111,7 @@ export default {
 	FormField,
 	FormFieldset,
 	FormInput,
+	FormInputGroup,
 	FormLayout,
 	FormRadioGroup,
 	FormSelect,
@@ -150,6 +149,7 @@ export default {
 	IconLightbulb,
 	IconLoading,
 	IconMoon,
+	IconPin,
 	IconPlus,
 	IconReload,
 	IconSun,
@@ -159,11 +159,13 @@ export default {
 	LinkTag,
 	LoadingIndicator,
 	ModalDialog,
+	NotificationHandler,
 	PillBadge,
 	ProgressBar,
 	SearchableList,
 	SkeletonIndicator,
 	SkeletonLoader,
+	StarRating,
 	SummaryDetails,
 	TabGroup,
 	TabItem,

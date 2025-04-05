@@ -14,19 +14,29 @@
 			</div>
 		</template>
 
-		<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
-			<template v-for="notification in internalNotifications" :key="notification.id">
-				<slot :name="getNotificationSlotName(notification)" v-bind="{ notification }">
-					<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }">
-						<template #view-more-label>
-							<slot name="view-more-label" />
-						</template>
+		<define-template v-slot="{ notification }">
+			<slot :name="getNotificationSlotName(notification)" v-bind="{ notification }">
+				<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }">
+					<template #view-more-label>
+						<slot name="view-more-label" />
+					</template>
 
-						<template #actions="slotParameters">
-							<slot name="notification-actions" v-bind="slotParameters" />
-						</template>
-					</component>
+					<template #actions="slotParameters">
+						<slot name="notification-actions" v-bind="slotParameters" />
+					</template>
+				</component>
+			</slot>
+		</define-template>
+
+		<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
+			<template v-for="notification in pinnedNotifications" :key="notification.id">
+				<slot name="notification-pinned-template" v-bind="{ notification}">
+					<reuse-template v-bind="{ notification }" />
 				</slot>
+			</template>
+
+			<template v-for="notification in unpinnedNotifications" :key="notification.id">
+				<reuse-template v-bind="{ notification }" />
 			</template>
 		</div>
 	</summary-details>
@@ -37,11 +47,7 @@ import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNumber } from "@lewishowles/helpers/number";
-
-import NotificationDanger from "./fragments/notification-danger/notification-danger.vue";
-import NotificationInfo from "./fragments/notification-info/notification-info.vue";
-import NotificationRead from "./fragments/notification-read/notification-read.vue";
-import NotificationWarning from "./fragments/notification-warning/notification-warning.vue";
+import { createReusableTemplate } from "@vueuse/core";
 
 const props = defineProps({
 	/**
@@ -103,6 +109,13 @@ const props = defineProps({
 	},
 });
 
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
+
+import NotificationDanger from "./fragments/notification-danger/notification-danger.vue";
+import NotificationInfo from "./fragments/notification-info/notification-info.vue";
+import NotificationRead from "./fragments/notification-read/notification-read.vue";
+import NotificationWarning from "./fragments/notification-warning/notification-warning.vue";
+
 // Our internal notifications to display.
 //
 // - Remove invalid notifications (those that aren't objects and those that do
@@ -151,6 +164,11 @@ const unreadNotificationCount = computed(() => {
 
 // Whether there are any unread notifications to display.
 const haveUnreadNotifications = computed(() => unreadNotificationCount.value > 0);
+
+// Notifications that have been pinned, allowing us to display them separately.
+const pinnedNotifications = computed(() => internalNotifications.value.filter(notification => get(notification, "pinned") === true));
+// Notifications that have not been pinned.
+const unpinnedNotifications = computed(() => internalNotifications.value.filter(notification => get(notification, "pinned") !== true));
 
 /**
  * Sort the given notifications by their `date` property, allowing one or both

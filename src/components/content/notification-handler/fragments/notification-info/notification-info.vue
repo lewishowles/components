@@ -7,7 +7,7 @@
 			stripeClasses: 'bg-purple-100',
 			iconBackgroundClasses: 'bg-purple-50',
 			iconClasses: 'text-purple-600',
-			badgeClasses: 'bg-purple-600',
+			badgeClasses: 'text-purple-600',
 		}"
 		data-test="notification-info"
 	>
