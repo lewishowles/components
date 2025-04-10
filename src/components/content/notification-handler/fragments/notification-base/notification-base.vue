@@ -27,12 +27,18 @@
 			</conditional-wrapper>
 		</conditional-wrapper>
 
-		<div v-if="hasMoreInformationUrl || haveActions" class="mt-2 flex items-center gap-2" :data-test="`${dataTest}-actions`">
+		<div v-if="showToolbar" class="mt-2 flex items-center gap-4 text-xs" :data-test="`${dataTest}-actions`">
 			<link-tag v-if="hasMoreInformationUrl" v-bind="{ href: notification.url, external: true }" :data-test="`${dataTest}-view-more`">
 				<slot name="view-more-label">
 					View more
 				</slot>
 			</link-tag>
+
+			<ui-button v-if="canMarkRead" v-bind="{ iconStart: 'icon-check' }" class="button--muted" :data-test="`${dataTest}-mark-read`" @click="markNotificationRead">
+				<slot name="mark-read-label">
+					Mark as read
+				</slot>
+			</ui-button>
 
 			<slot name="actions" v-bind="{ notification }" />
 		</div>
@@ -135,7 +141,12 @@ const props = defineProps({
 	},
 });
 
+const emit = defineEmits(["notification:read"]);
 const slots = useSlots();
+// The ID for this notification, used to mark it as read.
+const notificationId = computed(() => get(props, "notification.id"));
+// Whether this notification has an ID.
+const hasId = computed(() => isNonEmptyString(notificationId.value));
 // Whether this notification has a title.
 const hasTitle = computed(() => isNonEmptyString(get(props, "notification.title")));
 // Whether this notification has a date.
@@ -150,4 +161,24 @@ const isPinned = computed(() => get(props, "notification.pinned") === true);
 const hasMoreInformationUrl = computed(() => isNonEmptyString(get(props, "notification.url")));
 // Whether actions have been provided for this notification.
 const haveActions = computed(() => isNonEmptySlot(slots.actions));
+// Whether this notification can be marked as read, which requires an ID and
+// that this type of notification can be marked read.
+const canMarkRead = computed(() => hasId.value === true);
+// Whether we should include the toolbar for the notification, including "mark
+// read", "view more", etc.
+const showToolbar = computed(() => hasMoreInformationUrl.value || canMarkRead.value || haveActions.value);
+
+/**
+ * Emit an event requesting that this notification be marked as "read".
+ *
+ * @param  {string}  notificationId
+ *     The ID of the current notification.
+ */
+function markNotificationRead() {
+	if (!canMarkRead.value) {
+		return;
+	}
+
+	emit("notification:read", notificationId.value);
+}
 </script>

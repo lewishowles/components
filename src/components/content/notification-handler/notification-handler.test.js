@@ -6,7 +6,10 @@ import NotificationInfo from "./fragments/notification-info/notification-info.vu
 import NotificationRead from "./fragments/notification-read/notification-read.vue";
 import NotificationWarning from "./fragments/notification-warning/notification-warning.vue";
 
-const mount = createMount(NotificationHandler);
+const notificationMessage = "Ullamco eu amet labore elit quis eiusmod ea consectetur fugiat do commodo esse dolore consequat ipsum.";
+const notification = { id: "notification-1", message: notificationMessage };
+const defaultProps = { notifications: [notification] };
+const mount = createMount(NotificationHandler, { props: defaultProps });
 
 describe("notification-handler", () => {
 	console.warn = vi.fn();
@@ -519,6 +522,41 @@ describe("notification-handler", () => {
 				const notification = { message: "Notification without read property" };
 
 				expect(vm.getNotificationComponent(notification)).toEqual(NotificationInfo);
+			});
+		});
+
+		describe("markNotificationRead", () => {
+			describe("should not emit if the provided ID is not a non-empty string", () => {
+				test.for([
+					["boolean (true)", true],
+					["boolean (false)", false],
+					["number (positive)", 1],
+					["number (negative)", -1],
+					["number (NaN)", NaN],
+					["string (empty)", ""],
+					["object (non-empty)", { property: "value" }],
+					["object (empty)", {}],
+					["array (non-empty)", [1, 2, 3]],
+					["array (empty)", []],
+					["null", null],
+					["undefined", undefined],
+				])("%s", ([, id]) => {
+					const wrapper = mount({ notifications: [{ ...notification, id }] });
+					const vm = wrapper.vm;
+
+					vm.markNotificationRead(id);
+
+					expect(wrapper.emitted("notifications:read")).toBeUndefined();
+				});
+			});
+
+			test("should emit a notification ID", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.markNotificationRead(notification.id);
+
+				expect(wrapper.emitted("notifications:read")).toEqual([[["notification-1"]]]);
 			});
 		});
 	});

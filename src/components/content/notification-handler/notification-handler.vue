@@ -16,7 +16,7 @@
 
 		<define-template v-slot="{ notification }">
 			<slot :name="getNotificationSlotName(notification)" v-bind="{ notification }">
-				<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }">
+				<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }" @notification:read="markNotificationRead">
 					<template #view-more-label>
 						<slot name="view-more-label" />
 					</template>
@@ -45,9 +45,10 @@
 <script setup>
 import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed } from "vue";
-import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
-import { isNumber } from "@lewishowles/helpers/number";
 import { createReusableTemplate } from "@vueuse/core";
+import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { isNumber } from "@lewishowles/helpers/number";
 
 const props = defineProps({
 	/**
@@ -108,6 +109,8 @@ const props = defineProps({
 		default: null,
 	},
 });
+
+const emit = defineEmits(["notifications:read"]);
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 
@@ -276,5 +279,20 @@ function getNotificationComponent(notification) {
 	}
 
 	return NotificationInfo;
+}
+
+/**
+ * Mark a single notification as read, using the same format as marking multiple
+ * notifications read for simplicity.
+ *
+ * @param  {string}  notificationId
+ *     The ID of the notification to mark as read.
+ */
+function markNotificationRead(notificationId) {
+	if (!isNonEmptyString(notificationId)) {
+		return;
+	}
+
+	emit("notifications:read", [notificationId]);
 }
 </script>

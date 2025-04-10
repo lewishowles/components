@@ -136,5 +136,33 @@ describe("notification-base", () => {
 				cy.getByData("notification-base-view-more").shouldHaveText("View something");
 			});
 		});
+
+		describe("Mark read", () => {
+			it("A button to mark read is not shown when no ID is present", () => {
+				mount({ notification: { ...notification, id: undefined } });
+
+				cy.getByData("notification-base-mark-read").should("not.exist");
+			});
+
+			it("A button can be marked as read", () => {
+				mount();
+
+				cy.getByData("notification-base-mark-read").shouldBeVisible().click();
+
+				cy.get("@vue").should((wrapper) => {
+					expect(wrapper.emitted("notification:read")).to.have.length;
+					expect(wrapper.emitted("notification:read")[0][0]).to.equal("notification-1");
+				});
+			});
+
+			it("The `mark-read-label` slot can be implemented", () => {
+				mount({
+					props: {  notification: { ...notification } },
+					slots: { "mark-read-label": "Read something" },
+				});
+
+				cy.getByData("notification-base-mark-read").shouldHaveText("Read something");
+			});
+		});
 	});
 });

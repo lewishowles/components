@@ -105,10 +105,7 @@
 	}
 
 	a, summary {
-		@apply text-purple-800 underline underline-offset-4;
-		@apply hocus:text-purple-900 hocus:no-underline;
-		@apply dark:text-purple-400;
-		@apply dark:hocus:text-purple-300;
+		@apply link;
 	}
 
 	button {
