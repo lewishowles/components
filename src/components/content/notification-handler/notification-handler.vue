@@ -15,7 +15,7 @@
 		</template>
 
 		<define-template v-slot="{ notification }">
-			<slot :name="getNotificationSlotName(notification)" v-bind="{ notification }">
+			<slot :name="getNotificationSlotName(notification)" v-bind="{ notification, markNotificationRead: () => markNotificationRead(notification.id) }">
 				<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }" @notification:read="markNotificationRead">
 					<template #view-more-label>
 						<slot name="view-more-label" />
