@@ -36,6 +36,12 @@ Default: `Show notifications`
 
 The label to use for the button that opens the notifications panel. This label is hidden from view, but is required for accessibility purposes.
 
+### `no-notifications-label`
+
+Default: `No new notifications`
+
+The text to show when no notifications are being displayed, either because none were provided, none were viable, or all notification have been marked as read and should not be shown.
+
 ### `mark-all-read-label`
 
 Default: `Mark all notifications read`

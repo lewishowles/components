@@ -459,6 +459,26 @@ describe("notification-handler", () => {
 				expect(vm.getNotificationSlotName(notification)).toBe("notification-read-template");
 			});
 
+			test("should return 'notification-read-template' if the notification is marked as read, even if it has a type", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notification = { read: true, type: "danger" };
+
+				expect(vm.getNotificationSlotName(notification)).toBe("notification-read-template");
+			});
+
+			test("should return 'notification-read-template' if the notification has been marked as read since initialisation", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const notification = { id: "notification-1", type: "danger" };
+
+				vm.notificationsMarkedAsRead = ["notification-1"];
+
+				expect(vm.getNotificationSlotName(notification)).toBe("notification-read-template");
+			});
+
 			test("should return 'notification-info-template' if the notification is not marked as read", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
@@ -557,6 +577,65 @@ describe("notification-handler", () => {
 				vm.markNotificationRead(notification.id);
 
 				expect(wrapper.emitted("notifications:read")).toEqual([[["notification-1"]]]);
+				expect(vm.notificationsMarkedAsRead).toEqual(["notification-1"]);
+			});
+		});
+
+		describe("hasNotificationBeenMarkedAsRead", () => {
+			describe("should return false for anything but a non-empty string ID", () => {
+				test.for([
+					["boolean (true)", true],
+					["boolean (false)", false],
+					["number (positive)", 1],
+					["number (negative)", -1],
+					["number (NaN)", NaN],
+					["string (empty)", ""],
+					["object (non-empty)", { property: "value" }],
+					["object (empty)", {}],
+					["array (non-empty)", [1, 2, 3]],
+					["array (empty)", []],
+					["null", null],
+					["undefined", undefined],
+				])("%s", ([, input]) => {
+					const wrapper = mount();
+					const vm = wrapper.vm;
+
+					expect(vm.hasNotificationBeenMarkedAsRead(input)).toBe(false);
+				});
+			});
+
+			describe("should return false if notificationsMarkedAsRead is anything but a non-empty array", () => {
+				test.for([
+					["boolean (true)", true],
+					["boolean (false)", false],
+					["number (positive)", 1],
+					["number (negative)", -1],
+					["number (NaN)", NaN],
+					["string (non-empty)", "string"],
+					["string (empty)", ""],
+					["array (empty)", []],
+					["object (non-empty)", { property: "value" }],
+					["object (empty)", {}],
+					["null", null],
+					["undefined", undefined],
+				])("%s", ([, input]) => {
+					const wrapper = mount();
+					const vm = wrapper.vm;
+
+					vm.notificationsMarkedAsRead = input;
+
+					expect(vm.hasNotificationBeenMarkedAsRead("notification-1")).toBe(false);
+				});
+			});
+
+			test("should determine if a notification has been marked as read", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.notificationsMarkedAsRead = ["notification-1"];
+
+				expect(vm.hasNotificationBeenMarkedAsRead("notification-1")).toBe(true);
+				expect(vm.hasNotificationBeenMarkedAsRead("notification-2")).toBe(false);
 			});
 		});
 	});

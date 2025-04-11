@@ -44,7 +44,7 @@
 
 <script setup>
 import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { createReusableTemplate } from "@vueuse/core";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
@@ -119,6 +119,12 @@ import NotificationInfo from "./fragments/notification-info/notification-info.vu
 import NotificationRead from "./fragments/notification-read/notification-read.vue";
 import NotificationWarning from "./fragments/notification-warning/notification-warning.vue";
 
+// Keep track of notifications that have been marked as read internally. This
+// allows us to determine their style, and whether they should be visible, aside
+// from the information provided when the notifications were originally
+// initialised.
+const notificationsMarkedAsRead = ref([]);
+
 // Our internal notifications to display.
 //
 // - Remove invalid notifications (those that aren't objects and those that do
@@ -141,7 +147,7 @@ const internalNotifications = computed(() => {
 			}
 
 			// If set, hide any notifications that are marked as read.
-			if (props.hideNotificationsWhenRead && get(notification, "read") === true) {
+			if (props.hideNotificationsWhenRead && (get(notification, "read") === true || hasNotificationBeenMarkedAsRead(notification.id))) {
 				return notifications;
 			}
 
@@ -243,16 +249,16 @@ function limitReadNotifications(notifications) {
  *     The details of the notification to display.
  */
 function getNotificationSlotName(notification) {
+	if (get(notification, "read") === true || hasNotificationBeenMarkedAsRead(get(notification, "id"))) {
+		return "notification-read-template";
+	}
+
 	if (get(notification, "type") === "danger") {
 		return "notification-danger-template";
 	}
 
 	if (get(notification, "type") === "warning") {
 		return "notification-warning-template";
-	}
-
-	if (get(notification, "read") === true) {
-		return "notification-read-template";
 	}
 
 	return "notification-info-template";
@@ -294,5 +300,26 @@ function markNotificationRead(notificationId) {
 	}
 
 	emit("notifications:read", [notificationId]);
+
+	notificationsMarkedAsRead.value.push(notificationId);
+}
+
+/**
+ * Determine whether a notification has been marked as read by the user since
+ * the notifications have been displayed.
+ *
+ * @param  {string}  notificationId
+ *     The ID of the notification to check.
+ */
+function hasNotificationBeenMarkedAsRead(notificationId) {
+	if (!isNonEmptyString(notificationId)) {
+		return false;
+	}
+
+	if (!isNonEmptyArray(notificationsMarkedAsRead.value)) {
+		return false;
+	}
+
+	return notificationsMarkedAsRead.value.includes(notificationId);
 }
 </script>
