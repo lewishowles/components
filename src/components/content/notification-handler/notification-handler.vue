@@ -28,16 +28,26 @@
 			</slot>
 		</define-template>
 
-		<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
-			<template v-for="notification in pinnedNotifications" :key="notification.id">
-				<slot name="notification-pinned-template" v-bind="{ notification}">
-					<reuse-template v-bind="{ notification }" />
-				</slot>
-			</template>
+		<template v-if="haveNotificationsToDisplay">
+			<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
+				<template v-for="notification in pinnedNotifications" :key="notification.id">
+					<slot name="notification-pinned-template" v-bind="{ notification}">
+						<reuse-template v-bind="{ notification }" />
+					</slot>
+				</template>
 
-			<template v-for="notification in unpinnedNotifications" :key="notification.id">
-				<reuse-template v-bind="{ notification }" />
-			</template>
+				<template v-for="notification in unpinnedNotifications" :key="notification.id">
+					<reuse-template v-bind="{ notification }" />
+				</template>
+			</div>
+		</template>
+
+		<div v-else class="flex flex-col items-center gap-2 py-4">
+			<icon-bell class="size-10 p-3 rounded-full bg-purple-100 text-purple-800" />
+
+			<slot name="no-notifications-label">
+				No new notifications
+			</slot>
 		</div>
 	</summary-details>
 </template>
@@ -162,6 +172,9 @@ const internalNotifications = computed(() => {
 	return notifications;
 });
 
+// Whether we have any notifications to display.
+const haveNotificationsToDisplay = computed(() => isNonEmptyArray(internalNotifications.value));
+
 // How many unread notifications are present.
 const unreadNotificationCount = computed(() => {
 	if (!isNonEmptyArray(internalNotifications.value)) {
@@ -173,7 +186,6 @@ const unreadNotificationCount = computed(() => {
 
 // Whether there are any unread notifications to display.
 const haveUnreadNotifications = computed(() => unreadNotificationCount.value > 0);
-
 // Notifications that have been pinned, allowing us to display them separately.
 const pinnedNotifications = computed(() => internalNotifications.value.filter(notification => get(notification, "pinned") === true));
 // Notifications that have not been pinned.

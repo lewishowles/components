@@ -14,14 +14,18 @@
 
 		<preview-section>
 			<template #title>
-				Component options
-			</template>
-
-			<template #subtitle>
 				Hiding "read" notifications
 			</template>
 
 			<notification-handler v-bind="{ notifications, align: 'start', hideNotificationsWhenRead: true }" />
+		</preview-section>
+
+		<preview-section>
+			<template #title>
+				No notifications
+			</template>
+
+			<notification-handler v-bind="{ notifications: [], align: 'start' }" />
 		</preview-section>
 	</preview-wrapper>
 </template>
