@@ -43,7 +43,9 @@
 			<slot name="actions" v-bind="{ notification }" />
 		</div>
 
-		<component :is="isPinned ? 'icon-pin' : 'div'" class="absolute end-0 top-0" :class="[badgeClasses, { 'size-4 me-5 mt-4.5': isPinned, 'bg-current size-2 rounded-full me-6 mt-5.5': !isPinned }]" :data-test="`${dataTest}-badge`" />
+		<slot name="badge">
+			<div class="absolute end-0 top-0" :class="[badgeClasses, 'bg-current size-2 rounded-full me-6 mt-5.5']" :data-test="`${dataTest}-badge`" />
+		</slot>
 	</div>
 </template>
 

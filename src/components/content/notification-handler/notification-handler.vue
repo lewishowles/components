@@ -16,7 +16,7 @@
 
 		<define-template v-slot="{ notification }">
 			<slot :name="getNotificationSlotName(notification)" v-bind="{ notification, markNotificationRead: () => markNotificationRead(notification.id) }">
-				<component :is="getNotificationComponent(notification)" v-bind="{ notification, allowMarkRead: allowMarkReadForNotification(notification), locale, dateFormat }" @notification:read="markNotificationRead">
+				<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }" @notification:read="markNotificationRead">
 					<template #view-more-label>
 						<slot name="view-more-label" />
 					</template>
@@ -126,6 +126,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 
 import NotificationDanger from "./fragments/notification-danger/notification-danger.vue";
 import NotificationInfo from "./fragments/notification-info/notification-info.vue";
+import NotificationPinned from "./fragments/notification-pinned/notification-pinned.vue";
 import NotificationRead from "./fragments/notification-read/notification-read.vue";
 import NotificationWarning from "./fragments/notification-warning/notification-warning.vue";
 
@@ -257,6 +258,10 @@ function limitReadNotifications(notifications) {
  * Get the appropriate slot name for the given notification type, based on its
  * information.
  *
+ * We don't specifically return `notification-pinned-template` here, as we still
+ * want to allow the regular template to override the appearance of pinned
+ * templates, but a pinned template to also exist, which takes precedence.
+ *
  * @param  {object}  notification
  *     The details of the notification to display.
  */
@@ -284,6 +289,14 @@ function getNotificationSlotName(notification) {
  *     The details of the notification to display.
  */
 function getNotificationComponent(notification) {
+	if (get(notification, "pinned") === true) {
+		return NotificationPinned;
+	}
+
+	if (get(notification, "read") === true || hasNotificationBeenMarkedAsRead(get(notification, "id"))) {
+		return NotificationRead;
+	}
+
 	if (get(notification, "type") === "danger") {
 		return NotificationDanger;
 	}
@@ -292,31 +305,7 @@ function getNotificationComponent(notification) {
 		return NotificationWarning;
 	}
 
-	if (get(notification, "read") === true) {
-		return NotificationRead;
-	}
-
 	return NotificationInfo;
-}
-
-/**
- * Whether the given notification should allow itself to be marked as read. For
- * example, notifications that are already read, or pinned notifications, cannot
- * be marked as read.
- *
- * @param  {object}  notification
- *     The details of the notification to display.
- */
-function allowMarkReadForNotification(notification) {
-	if (get(notification, "read") === true) {
-		return false;
-	}
-
-	if (get(notification, "pinned") === true) {
-		return false;
-	}
-
-	return true;
 }
 
 /**

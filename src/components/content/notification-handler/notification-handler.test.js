@@ -602,6 +602,15 @@ describe("notification-handler", () => {
 
 				expect(vm.allowMarkReadForNotification({ message: "Notification without read or pinned property" })).toBe(true);
 			});
+
+			test("should return true if the notification has been manually marked as read by the user", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.notificationsMarkedAsRead = ["notification-1"];
+
+				expect(vm.allowMarkReadForNotification({ id: "notification-1", message: "Notification without read or pinned property" })).toBe(false);
+			});
 		});
 
 		describe("markNotificationRead", () => {

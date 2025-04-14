@@ -5,12 +5,12 @@
 			allowMarkRead: false,
 			locale,
 			dateFormat,
-			stripeClasses: 'hidden',
-			badgeClasses: 'hidden',
-			titleClasses: 'text-grey-500',
-			textClasses: 'text-grey-500',
+			stripeClasses: 'bg-purple-100',
+			iconBackgroundClasses: 'bg-purple-50',
+			iconClasses: 'text-purple-600',
+			badgeClasses: 'text-purple-600',
 		}"
-		data-test="notification-read"
+		data-test="notification-pinned"
 	>
 		<template #view-more-label>
 			<slot name="view-more-label" />
@@ -18,6 +18,10 @@
 
 		<template #actions="slotParameters">
 			<slot name="actions" v-bind="slotParameters || {}" />
+		</template>
+
+		<template #badge>
+			<icon-pin class="absolute end-0 top-0 me-5 mt-4.5 size-4 text-purple-600" data-test="notification-pinned-badge" />
 		</template>
 	</notification-base>
 </template>
