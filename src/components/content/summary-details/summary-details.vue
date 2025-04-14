@@ -8,7 +8,7 @@
 			<component :is="currentIcon" v-if="includeIcon && !iconStart" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-end` }" />
 		</summary>
 
-		<div v-show="isOpen" :class="[{ 'absolute top-full': floating, 'start-0': alignStart, 'end-0': !alignStart }, detailsClasses]" v-bind="{ 'data-test': `${dataTest}-content` }">
+		<div v-show="isOpen" :class="[{ 'absolute top-full animate-fade-in-down': floating, 'start-0': alignStart, 'end-0': !alignStart }, detailsClasses]" v-bind="{ 'data-test': `${dataTest}-content` }">
 			<slot v-bind="{ isOpen, icon: currentIcon }" />
 		</div>
 	</details>

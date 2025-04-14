@@ -16,7 +16,7 @@
 
 		<define-template v-slot="{ notification }">
 			<slot :name="getNotificationSlotName(notification)" v-bind="{ notification, markNotificationRead: () => markNotificationRead(notification.id) }">
-				<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }" @notification:read="markNotificationRead">
+				<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }" class="animate-fade-in delay" @notification:read="markNotificationRead">
 					<template #view-more-label>
 						<slot name="view-more-label" />
 					</template>
@@ -43,11 +43,13 @@
 		</template>
 
 		<div v-else class="flex flex-col items-center gap-2 py-4">
-			<icon-bell class="size-10 p-3 rounded-full bg-purple-100 text-purple-800" />
+			<icon-bell class="size-10 p-3 rounded-full bg-purple-100 text-purple-800 animate-fade-in delay" />
 
-			<slot name="no-notifications-label">
-				No new notifications
-			</slot>
+			<span class="animate-fade-in delay">
+				<slot name="no-notifications-label">
+					No new notifications
+				</slot>
+			</span>
 		</div>
 	</summary-details>
 </template>
