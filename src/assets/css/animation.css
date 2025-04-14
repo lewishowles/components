@@ -56,20 +56,250 @@
 
 @utility delay-micro {
 	@media (prefers-reduced-motion: no-preference) {
-		@for $i from 1 to 40 {
-			&:nth-child($i) {
-				animation-delay: calc($i * 10ms);
-			}
+		&:nth-child(1) {
+			animation-delay: 10ms;
+		}
+		&:nth-child(2) {
+			animation-delay: 20ms;
+		}
+		&:nth-child(3) {
+			animation-delay: 30ms;
+		}
+		&:nth-child(4) {
+			animation-delay: 40ms;
+		}
+		&:nth-child(5) {
+			animation-delay: 50ms;
+		}
+		&:nth-child(6) {
+			animation-delay: 60ms;
+		}
+		&:nth-child(7) {
+			animation-delay: 70ms;
+		}
+		&:nth-child(8) {
+			animation-delay: 80ms;
+		}
+		&:nth-child(9) {
+			animation-delay: 90ms;
+		}
+		&:nth-child(10) {
+			animation-delay: 100ms;
+		}
+		&:nth-child(11) {
+			animation-delay: 110ms;
+		}
+		&:nth-child(12) {
+			animation-delay: 120ms;
+		}
+		&:nth-child(13) {
+			animation-delay: 130ms;
+		}
+		&:nth-child(14) {
+			animation-delay: 140ms;
+		}
+		&:nth-child(15) {
+			animation-delay: 150ms;
+		}
+		&:nth-child(16) {
+			animation-delay: 160ms;
+		}
+		&:nth-child(17) {
+			animation-delay: 170ms;
+		}
+		&:nth-child(18) {
+			animation-delay: 180ms;
+		}
+		&:nth-child(19) {
+			animation-delay: 190ms;
+		}
+		&:nth-child(20) {
+			animation-delay: 200ms;
+		}
+		&:nth-child(21) {
+			animation-delay: 210ms;
+		}
+		&:nth-child(22) {
+			animation-delay: 220ms;
+		}
+		&:nth-child(23) {
+			animation-delay: 230ms;
+		}
+		&:nth-child(24) {
+			animation-delay: 240ms;
+		}
+		&:nth-child(25) {
+			animation-delay: 250ms;
+		}
+		&:nth-child(26) {
+			animation-delay: 260ms;
+		}
+		&:nth-child(27) {
+			animation-delay: 270ms;
+		}
+		&:nth-child(28) {
+			animation-delay: 280ms;
+		}
+		&:nth-child(29) {
+			animation-delay: 290ms;
+		}
+		&:nth-child(30) {
+			animation-delay: 300ms;
+		}
+		&:nth-child(31) {
+			animation-delay: 310ms;
+		}
+		&:nth-child(32) {
+			animation-delay: 320ms;
+		}
+		&:nth-child(33) {
+			animation-delay: 330ms;
+		}
+		&:nth-child(34) {
+			animation-delay: 340ms;
+		}
+		&:nth-child(35) {
+			animation-delay: 350ms;
+		}
+		&:nth-child(36) {
+			animation-delay: 360ms;
+		}
+		&:nth-child(37) {
+			animation-delay: 370ms;
+		}
+		&:nth-child(38) {
+			animation-delay: 380ms;
+		}
+		&:nth-child(39) {
+			animation-delay: 390ms;
+		}
+		&:nth-child(40) {
+			animation-delay: 400ms;
 		}
 	}
 }
 
 @utility delay {
 	@media (prefers-reduced-motion: no-preference) {
-		@for $i from 1 to 40 {
-			&:nth-child($i) {
-				animation-delay: calc($i * 50ms);
-			}
+		&:nth-child(1) {
+			animation-delay: 50ms;
+		}
+		&:nth-child(2) {
+			animation-delay: 100ms;
+		}
+		&:nth-child(3) {
+			animation-delay: 150ms;
+		}
+		&:nth-child(4) {
+			animation-delay: 200ms;
+		}
+		&:nth-child(5) {
+			animation-delay: 250ms;
+		}
+		&:nth-child(6) {
+			animation-delay: 300ms;
+		}
+		&:nth-child(7) {
+			animation-delay: 350ms;
+		}
+		&:nth-child(8) {
+			animation-delay: 400ms;
+		}
+		&:nth-child(9) {
+			animation-delay: 450ms;
+		}
+		&:nth-child(10) {
+			animation-delay: 500ms;
+		}
+		&:nth-child(11) {
+			animation-delay: 550ms;
+		}
+		&:nth-child(12) {
+			animation-delay: 600ms;
+		}
+		&:nth-child(13) {
+			animation-delay: 650ms;
+		}
+		&:nth-child(14) {
+			animation-delay: 700ms;
+		}
+		&:nth-child(15) {
+			animation-delay: 750ms;
+		}
+		&:nth-child(16) {
+			animation-delay: 800ms;
+		}
+		&:nth-child(17) {
+			animation-delay: 850ms;
+		}
+		&:nth-child(18) {
+			animation-delay: 900ms;
+		}
+		&:nth-child(19) {
+			animation-delay: 950ms;
+		}
+		&:nth-child(20) {
+			animation-delay: 1000ms;
+		}
+		&:nth-child(21) {
+			animation-delay: 1050ms;
+		}
+		&:nth-child(22) {
+			animation-delay: 1100ms;
+		}
+		&:nth-child(23) {
+			animation-delay: 1150ms;
+		}
+		&:nth-child(24) {
+			animation-delay: 1200ms;
+		}
+		&:nth-child(25) {
+			animation-delay: 1250ms;
+		}
+		&:nth-child(26) {
+			animation-delay: 1300ms;
+		}
+		&:nth-child(27) {
+			animation-delay: 1350ms;
+		}
+		&:nth-child(28) {
+			animation-delay: 1400ms;
+		}
+		&:nth-child(29) {
+			animation-delay: 1450ms;
+		}
+		&:nth-child(30) {
+			animation-delay: 1500ms;
+		}
+		&:nth-child(31) {
+			animation-delay: 1550ms;
+		}
+		&:nth-child(32) {
+			animation-delay: 1600ms;
+		}
+		&:nth-child(33) {
+			animation-delay: 1650ms;
+		}
+		&:nth-child(34) {
+			animation-delay: 1700ms;
+		}
+		&:nth-child(35) {
+			animation-delay: 1750ms;
+		}
+		&:nth-child(36) {
+			animation-delay: 1800ms;
+		}
+		&:nth-child(37) {
+			animation-delay: 1850ms;
+		}
+		&:nth-child(38) {
+			animation-delay: 1900ms;
+		}
+		&:nth-child(39) {
+			animation-delay: 1950ms;
+		}
+		&:nth-child(40) {
+			animation-delay: 2000ms;
 		}
 	}
 }
