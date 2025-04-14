@@ -63,6 +63,14 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether to allow this notification to be marked as read.
+	 */
+	allowMarkRead: {
+		type: Boolean,
+		default: true,
+	},
+
+	/**
 	 * The locale to use when displaying dates.
 	 */
 	locale: {
@@ -163,7 +171,7 @@ const hasMoreInformationUrl = computed(() => isNonEmptyString(get(props, "notifi
 const haveActions = computed(() => isNonEmptySlot(slots.actions));
 // Whether this notification can be marked as read, which requires an ID and
 // that this type of notification can be marked read.
-const canMarkRead = computed(() => hasId.value === true);
+const canMarkRead = computed(() => props.allowMarkRead === true && hasId.value === true);
 // Whether we should include the toolbar for the notification, including "mark
 // read", "view more", etc.
 const showToolbar = computed(() => hasMoreInformationUrl.value || canMarkRead.value || haveActions.value);

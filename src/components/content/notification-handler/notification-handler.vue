@@ -16,7 +16,7 @@
 
 		<define-template v-slot="{ notification }">
 			<slot :name="getNotificationSlotName(notification)" v-bind="{ notification, markNotificationRead: () => markNotificationRead(notification.id) }">
-				<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }" @notification:read="markNotificationRead">
+				<component :is="getNotificationComponent(notification)" v-bind="{ notification, allowMarkRead: allowMarkReadForNotification(notification), locale, dateFormat }" @notification:read="markNotificationRead">
 					<template #view-more-label>
 						<slot name="view-more-label" />
 					</template>
@@ -285,6 +285,26 @@ function getNotificationComponent(notification) {
 	}
 
 	return NotificationInfo;
+}
+
+/**
+ * Whether the given notification should allow itself to be marked as read. For
+ * example, notifications that are already read, or pinned notifications, cannot
+ * be marked as read.
+ *
+ * @param  {object}  notification
+ *     The details of the notification to display.
+ */
+function allowMarkReadForNotification(notification) {
+	if (get(notification, "read") === true) {
+		return false;
+	}
+
+	if (get(notification, "pinned") === true) {
+		return false;
+	}
+
+	return true;
 }
 
 /**

@@ -9,9 +9,7 @@
 				Basic notifications
 			</template>
 
-			<div class="flex flex-col items-end">
-				<notification-handler v-bind="{ notifications }" />
-			</div>
+			<notification-handler v-bind="{ notifications, align: 'start', }" />
 		</preview-section>
 
 		<preview-section>
@@ -19,10 +17,11 @@
 				Component options
 			</template>
 
-			<div class="flex flex-col items-end gap-4">
-				<span>Hide notifications when marked as read</span>
-				<notification-handler v-bind="{ notifications, hideNotificationsWhenRead: true }" />
-			</div>
+			<template #subtitle>
+				Hiding "read" notifications
+			</template>
+
+			<notification-handler v-bind="{ notifications, align: 'start', hideNotificationsWhenRead: true }" />
 		</preview-section>
 	</preview-wrapper>
 </template>
