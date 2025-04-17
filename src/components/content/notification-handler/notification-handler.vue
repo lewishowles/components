@@ -29,7 +29,7 @@
 		</define-template>
 
 		<div v-if="haveNotificationsToDisplay" class="flex flex-col gap-4">
-			<div class="flex content-between items-center text-xs">
+			<div v-if="allowMarkAllRead && haveUnreadNotifications" class="flex content-between items-center text-xs">
 				<ui-button class="button--muted" icon-start="icon-check" data-test="notification-handler-mark-all-read" @click="markAllNotificationsRead">
 					<slot name="mark-all-read-label">
 						Mark all notifications read
@@ -108,6 +108,15 @@ const props = defineProps({
 	align: {
 		type: String,
 		default: "end",
+	},
+
+	/**
+	 * Whether to display the “Mark all read” button. Deactivating means the
+	 * user will be required to mark notifications as read individually.
+	 */
+	allowMarkAllRead: {
+		type: Boolean,
+		default: true,
 	},
 
 	/**

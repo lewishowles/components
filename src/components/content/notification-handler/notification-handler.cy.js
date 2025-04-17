@@ -256,31 +256,45 @@ describe("notification-handler", () => {
 			cy.getByData("notification-read-mark-read").should("not.exist");
 		});
 
-		it("All notifications can be marked as read", () => {
-			mount({
-				props: {
-					notifications: [
-						{ id: "notification-1", message: "Notification sample" },
-						{ id: "notification-2", message: "Notification sample" },
-						{ id: "notification-3", message: "Notification sample" },
-					],
-				},
+		describe("Mark all read", () => {
+			it("All notifications can be marked as read", () => {
+				mount({
+					props: {
+						notifications: [
+							{ id: "notification-1", message: "Notification sample" },
+							{ id: "notification-2", message: "Notification sample" },
+							{ id: "notification-3", message: "Notification sample" },
+						],
+					},
+				});
+
+				openNotificationPanel();
+
+				cy.getByData("notification-read").should("not.exist");
+				cy.getByData("notification-info").shouldHaveCount(3);
+
+				cy.getByData("notification-handler-mark-all-read").click();
+
+				cy.get("@vue").then((wrapper) => {
+					expect(wrapper.emitted("notifications:read")).to.have.length(1);
+					expect(wrapper.emitted("notifications:read")[0][0][0]).to.deep.equal(["notification-1", "notification-2", "notification-3"]);
+				});
+
+				cy.getByData("notification-info").should("not.exist");
+				cy.getByData("notification-read").shouldHaveCount(3);
 			});
 
-			openNotificationPanel();
+			it("`allowMarkAllRead` controls the visibility of the mark all notifications read button", () => {
+				mount({ notifications: generateNotifications(5, { read: false }), allowMarkAllRead: false });
 
-			cy.getByData("notification-read").should("not.exist");
-			cy.getByData("notification-info").shouldHaveCount(3);
-
-			cy.getByData("notification-handler-mark-all-read").click();
-
-			cy.get("@vue").then((wrapper) => {
-				expect(wrapper.emitted("notifications:read")).to.have.length(1);
-				expect(wrapper.emitted("notifications:read")[0][0][0]).to.deep.equal(["notification-1", "notification-2", "notification-3"]);
+				cy.getByData("notification-handler-mark-all-read").should("not.exist");
 			});
 
-			cy.getByData("notification-info").should("not.exist");
-			cy.getByData("notification-read").shouldHaveCount(3);
+			it("Mark all ready is only available if there are unread notifications", () => {
+				mount({ notifications: generateNotifications(5, { read: true }) });
+
+				cy.getByData("notification-handler-mark-all-read").should("not.exist");
+			});
 		});
 	});
 });

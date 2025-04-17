@@ -89,6 +89,13 @@ The locale to use when displaying dates. To reset to the user's locale settings,
 
 The date format to use in the display of the date. To reset to the user's locale settings, set the format to null.
 
+### `align`
+
+- type: `string`
+- default: `end`
+
+The alignment of the pop up notifications panel. Anything but `start` will be treated as `end`.
+
 ### allowReload
 
 - type: `Boolean`
