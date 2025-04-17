@@ -581,6 +581,61 @@ describe("notification-handler", () => {
 			});
 		});
 
+		describe("markAllNotificationsRead", () => {
+			test("should not emit if there are no unread notifications", () => {
+				const wrapper = mount({ notifications: [] });
+				const vm = wrapper.vm;
+
+				vm.markAllNotificationsRead();
+
+				expect(wrapper.emitted("notifications:read")).toBeUndefined();
+				expect(vm.notificationsMarkedAsRead).toEqual([]);
+			});
+
+			test("should emit IDs of all unread notifications that are not pinned", () => {
+				const wrapper = mount({
+					notifications: [
+						{
+							id: "notification-1", message: "Notification", pinned: false, read: false,
+						},
+						{
+							id: "notification-2", message: "Notification", pinned: true, read: false,
+						},
+						{
+							id: "notification-3", message: "Notification", pinned: false, read: false,
+						},
+					],
+				});
+
+				const vm = wrapper.vm;
+
+				vm.markAllNotificationsRead();
+
+				expect(wrapper.emitted("notifications:read")).toEqual([[[["notification-1", "notification-3"]]]]);
+				expect(vm.notificationsMarkedAsRead).toEqual(["notification-1", "notification-3"]);
+			});
+
+			test("should not emit IDs of notifications that are already marked as read", () => {
+				const wrapper = mount({
+					notifications: [
+						{
+							id: "notification-1", message: "Notification", pinned: false, read: true,
+						},
+						{
+							id: "notification-2", message: "Notification", pinned: false, read: false,
+						},
+					],
+				});
+
+				const vm = wrapper.vm;
+
+				vm.markAllNotificationsRead();
+
+				expect(wrapper.emitted("notifications:read")).toEqual([[[["notification-2"]]]]);
+				expect(vm.notificationsMarkedAsRead).toEqual(["notification-2"]);
+			});
+		});
+
 		describe("hasNotificationBeenMarkedAsRead", () => {
 			describe("should return false for anything but a non-empty string ID", () => {
 				test.for([

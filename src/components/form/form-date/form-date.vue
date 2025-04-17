@@ -178,7 +178,7 @@ function toString() {
 
 		return plainDate.toString();
 	} catch (error) {
-		console.log("form-date[toString]", error);
+		console.error("form-date[toString]", error);
 
 		return "";
 	}
@@ -201,7 +201,7 @@ function setDateFromIsoString(dateString) {
 
 		date.value = { day: day.toString(), month: month.toString(), year: year.toString() };
 	} catch (error) {
-		console.log("form-date[setDateFromString]", error);
+		console.error("form-date[setDateFromString]", error);
 	}
 }
 

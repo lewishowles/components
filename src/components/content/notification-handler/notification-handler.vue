@@ -28,7 +28,15 @@
 			</slot>
 		</define-template>
 
-		<template v-if="haveNotificationsToDisplay">
+		<div v-if="haveNotificationsToDisplay" class="flex flex-col gap-4">
+			<div class="flex content-between items-center text-xs">
+				<ui-button class="button--muted" icon-start="icon-check" data-test="notification-handler-mark-all-read" @click="markAllNotificationsRead">
+					<slot name="mark-all-read-label">
+						Mark all notifications read
+					</slot>
+				</ui-button>
+			</div>
+
 			<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
 				<template v-for="notification in pinnedNotifications" :key="notification.id">
 					<slot name="notification-pinned-template" v-bind="{ notification}">
@@ -40,10 +48,10 @@
 					<reuse-template v-bind="{ notification }" />
 				</template>
 			</div>
-		</template>
+		</div>
 
 		<div v-else class="flex flex-col items-center gap-2 py-4">
-			<icon-bell class="size-10 p-3 rounded-full bg-purple-100 text-purple-800 animate-fade-in delay" />
+			<icon-bell class="animate-fade-in delay size-10 rounded-full bg-purple-100 p-3 text-purple-800" />
 
 			<span class="animate-fade-in delay">
 				<slot name="no-notifications-label">
@@ -55,7 +63,7 @@
 </template>
 
 <script setup>
-import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
+import { arrayLength, isNonEmptyArray, pluck } from "@lewishowles/helpers/array";
 import { computed, ref } from "vue";
 import { createReusableTemplate } from "@vueuse/core";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
@@ -178,13 +186,22 @@ const internalNotifications = computed(() => {
 // Whether we have any notifications to display.
 const haveNotificationsToDisplay = computed(() => isNonEmptyArray(internalNotifications.value));
 
+// A list of all notifications that are not marked as "read".
+const unreadNotifications = computed(() => {
+	if (!haveNotificationsToDisplay.value) {
+		return [];
+	}
+
+	return internalNotifications.value.filter(notification => get(notification, "read") !== true);
+});
+
 // How many unread notifications are present.
 const unreadNotificationCount = computed(() => {
-	if (!isNonEmptyArray(internalNotifications.value)) {
+	if (!haveNotificationsToDisplay.value) {
 		return 0;
 	}
 
-	return arrayLength(internalNotifications.value.filter(notification => get(notification, "read") !== true));
+	return arrayLength(unreadNotifications.value);
 });
 
 // Whether there are any unread notifications to display.
@@ -325,6 +342,27 @@ function markNotificationRead(notificationId) {
 	emit("notifications:read", [notificationId]);
 
 	notificationsMarkedAsRead.value.push(notificationId);
+}
+
+/**
+ * Mark all unread notifications as read, excluding those that are pinned and
+ * those that are already marked as read.
+ */
+function markAllNotificationsRead() {
+	if (!haveUnreadNotifications.value) {
+		return;
+	}
+
+	const relevantNotifications = unreadNotifications.value.filter(notification => get(notification, "pinned") !== true);
+	const notificationIDs = pluck(relevantNotifications, "id");
+
+	if (!isNonEmptyArray(notificationIDs)) {
+		return;
+	}
+
+	emit("notifications:read", [notificationIDs]);
+
+	notificationsMarkedAsRead.value.push(...notificationIDs);
 }
 
 /**
