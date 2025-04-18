@@ -104,7 +104,7 @@ describe("notification-handler", () => {
 
 					cy.getByData("notification-info-custom-mark-read").shouldBeVisible().click();
 
-					cy.get("@vue").then((wrapper) => {
+					cy.get("@vue").then(wrapper => {
 						expect(wrapper.emitted("notifications:read")).to.have.length(1);
 						expect(wrapper.emitted("notifications:read")[0][0][0]).to.equal("notification-1");
 					});
@@ -142,7 +142,7 @@ describe("notification-handler", () => {
 
 					cy.getByData("notification-warning-custom-mark-read").shouldBeVisible().click();
 
-					cy.get("@vue").then((wrapper) => {
+					cy.get("@vue").then(wrapper => {
 						expect(wrapper.emitted("notifications:read")).to.have.length(1);
 						expect(wrapper.emitted("notifications:read")[0][0][0]).to.equal("notification-1");
 					});
@@ -180,7 +180,7 @@ describe("notification-handler", () => {
 
 					cy.getByData("notification-danger-custom-mark-read").shouldBeVisible().click();
 
-					cy.get("@vue").then((wrapper) => {
+					cy.get("@vue").then(wrapper => {
 						expect(wrapper.emitted("notifications:read")).to.have.length(1);
 						expect(wrapper.emitted("notifications:read")[0][0][0]).to.equal("notification-1");
 					});
@@ -222,6 +222,14 @@ describe("notification-handler", () => {
 				cy.getByData("notification-info-actions").shouldHaveText("Additional actions");
 			});
 		});
+
+		describe("Toolbar", () => {
+			it("The global toolbar is not visible if the user cannot reload notifications or mark them all read", () => {
+				mount({ notifications: generateNotifications(1), allowMarkAllRead: false, allowReload: false });
+
+				cy.getByData("notification-handler-toolbar").should("not.exist");
+			});
+		});
 	});
 
 	describe("Interaction", () => {
@@ -235,7 +243,7 @@ describe("notification-handler", () => {
 			cy.getByData("notification-read").should("not.exist");
 			cy.getByData("notification-info-mark-read").shouldBeVisible().click();
 
-			cy.get("@vue").then((wrapper) => {
+			cy.get("@vue").then(wrapper => {
 				expect(wrapper.emitted("notifications:read")).to.have.length(1);
 				expect(wrapper.emitted("notifications:read")[0][0][0]).to.equal("notification-1");
 			});
@@ -254,6 +262,26 @@ describe("notification-handler", () => {
 			cy.getByData("notification-info").should("not.exist");
 			cy.getByData("notification-read").shouldBeVisible();
 			cy.getByData("notification-read-mark-read").should("not.exist");
+		});
+
+		describe("Reload notifications", () => {
+			it("A reload request can be sent", () => {
+				mount({ notifications: generateNotifications(5) });
+
+				openNotificationPanel();
+
+				cy.getByData("notification-handler-reload").click();
+
+				cy.get("@vue").then(wrapper => {
+					expect(wrapper.emitted("notifications:reload")).to.have.length(1);
+				});
+			});
+
+			it("`allowReload` controls the visibility of the reload button", () => {
+				mount({ notifications: generateNotifications(5), allowReload: false });
+
+				cy.getByData("notification-handler-reload").should("not.exist");
+			});
 		});
 
 		describe("Mark all read", () => {
@@ -275,7 +303,7 @@ describe("notification-handler", () => {
 
 				cy.getByData("notification-handler-mark-all-read").click();
 
-				cy.get("@vue").then((wrapper) => {
+				cy.get("@vue").then(wrapper => {
 					expect(wrapper.emitted("notifications:read")).to.have.length(1);
 					expect(wrapper.emitted("notifications:read")[0][0][0]).to.deep.equal(["notification-1", "notification-2", "notification-3"]);
 				});

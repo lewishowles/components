@@ -581,6 +581,26 @@ describe("notification-handler", () => {
 			});
 		});
 
+		describe("reloadNotifications", () => {
+			test("should emit an event", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.reloadNotifications();
+
+				expect(wrapper.emitted("notifications:reload")).not.toBeUndefined();
+			});
+
+			test("should not emit an event if `allowReload` is false", () => {
+				const wrapper = mount({ allowReload: false });
+				const vm = wrapper.vm;
+
+				vm.reloadNotifications();
+
+				expect(wrapper.emitted("notifications:reload")).toBeUndefined();
+			});
+		});
+
 		describe("markAllNotificationsRead", () => {
 			test("should not emit if there are no unread notifications", () => {
 				const wrapper = mount({ notifications: [] });

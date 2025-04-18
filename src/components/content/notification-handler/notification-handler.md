@@ -96,19 +96,19 @@ The date format to use in the display of the date. To reset to the user's locale
 
 The alignment of the pop up notifications panel. Anything but `start` will be treated as `end`.
 
-### allowReload
-
-- type: `Boolean`
-- default: `true`
-
-Whether to display the “Reload” button. Deactivating means new notifications will only be shown when something triggers a re-load in the parent component.
-
 ### allowMarkAllRead
 
 - type: `Boolean`
 - default: `true`
 
 Whether to display the “Mark all read” button. Deactivating means the user will be required to mark notifications as read individually.
+
+### allowReload
+
+- type: `Boolean`
+- default: `true`
+
+Whether to display the “Reload” button. Deactivating means new notifications will only be shown when something triggers a re-load in the parent component.
 
 ### loading
 

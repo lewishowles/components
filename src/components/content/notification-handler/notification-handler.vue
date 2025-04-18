@@ -29,8 +29,14 @@
 		</define-template>
 
 		<div v-if="haveNotificationsToDisplay" class="flex flex-col gap-4">
-			<div v-if="allowMarkAllRead && haveUnreadNotifications" class="flex content-between items-center text-xs">
-				<ui-button class="button--muted" icon-start="icon-check" data-test="notification-handler-mark-all-read" @click="markAllNotificationsRead">
+			<div v-if="canMarkAllNotificationsRead || allowReload" class="flex items-center justify-between text-xs" data-test="notification-handler-toolbar">
+				<ui-button v-if="allowReload" class="button--muted" icon-start="icon-reload" data-test="notification-handler-reload" @click="reloadNotifications">
+					<slot name="reload-label">
+						Reload notifications
+					</slot>
+				</ui-button>
+
+				<ui-button v-if="canMarkAllNotificationsRead" class="button--muted" icon-start="icon-check" data-test="notification-handler-mark-all-read" @click="markAllNotificationsRead">
 					<slot name="mark-all-read-label">
 						Mark all notifications read
 					</slot>
@@ -120,6 +126,16 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether to display the “Reload” button. Deactivating means new
+	 * notifications will only be shown when something triggers a re-load in the
+	 * parent component.
+	 */
+	allowReload: {
+		type: Boolean,
+		default: true,
+	},
+
+	/**
 	 * Whether to hide notifications when they are marked as read. If false,
 	 * notifications will remain, but will appear less prominent. If true, any
 	 * notifications that are already read when initialised will not be shown.
@@ -139,7 +155,7 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits(["notifications:read"]);
+const emit = defineEmits(["notifications:read", "notifications:reload"]);
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 
@@ -215,6 +231,9 @@ const unreadNotificationCount = computed(() => {
 
 // Whether there are any unread notifications to display.
 const haveUnreadNotifications = computed(() => unreadNotificationCount.value > 0);
+// Whether we're able to mark all notifications read, based on whether the
+// option is enabled, and whether there are any notifications to mark.
+const canMarkAllNotificationsRead = computed(() => props.allowMarkAllRead && haveUnreadNotifications.value);
 // Notifications that have been pinned, allowing us to display them separately.
 const pinnedNotifications = computed(() => internalNotifications.value.filter(notification => get(notification, "pinned") === true));
 // Notifications that have not been pinned.
@@ -351,6 +370,18 @@ function markNotificationRead(notificationId) {
 	emit("notifications:read", [notificationId]);
 
 	notificationsMarkedAsRead.value.push(notificationId);
+}
+
+/**
+ * Request that notifications are "reloaded", which is implemented by the parent
+ * component based on how that information is loaded.
+ */
+function reloadNotifications() {
+	if (!props.allowReload) {
+		return;
+	}
+
+	emit("notifications:reload");
 }
 
 /**
