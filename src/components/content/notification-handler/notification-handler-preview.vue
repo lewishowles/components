@@ -27,6 +27,14 @@
 
 			<notification-handler v-bind="{ notifications: [], align: 'start' }" />
 		</preview-section>
+
+		<preview-section>
+			<template #title>
+				Loading
+			</template>
+
+			<notification-handler v-bind="{ notifications: [], align: 'start', loading: true }" />
+		</preview-section>
 	</preview-wrapper>
 </template>
 

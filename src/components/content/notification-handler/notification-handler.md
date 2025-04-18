@@ -54,6 +54,12 @@ Default: `Reload notifications`
 
 The label to use for the button that attempts to re-load notifications.
 
+### `loading-label`
+
+Default: `Loading notifications`
+
+The label to use when the loading indicator is shown.
+
 ### `mark-read-label`
 
 Default: `Mark read`

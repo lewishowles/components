@@ -28,42 +28,50 @@
 			</slot>
 		</define-template>
 
-		<div v-if="haveNotificationsToDisplay" class="flex flex-col gap-4">
-			<div v-if="canMarkAllNotificationsRead || allowReload" class="flex items-center justify-between text-xs" data-test="notification-handler-toolbar">
-				<ui-button v-if="allowReload" class="button--muted" icon-start="icon-reload" data-test="notification-handler-reload" @click="reloadNotifications">
-					<slot name="reload-label">
-						Reload notifications
-					</slot>
-				</ui-button>
+		<loading-indicator v-if="props.loading" v-bind="{ large: true }">
+			<slot name="loading-label">
+				Loading notifications
+			</slot>
+		</loading-indicator>
 
-				<ui-button v-if="canMarkAllNotificationsRead" class="button--muted" icon-start="icon-check" data-test="notification-handler-mark-all-read" @click="markAllNotificationsRead">
-					<slot name="mark-all-read-label">
-						Mark all notifications read
-					</slot>
-				</ui-button>
-			</div>
+		<div v-if="!props.loading">
+			<div v-if="haveNotificationsToDisplay" class="flex flex-col gap-4">
+				<div v-if="canMarkAllNotificationsRead || allowReload" class="flex items-center justify-between text-xs" data-test="notification-handler-toolbar">
+					<ui-button v-if="allowReload" class="button--muted" icon-start="icon-reload" data-test="notification-handler-reload" @click="reloadNotifications">
+						<slot name="reload-label">
+							Reload notifications
+						</slot>
+					</ui-button>
 
-			<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
-				<template v-for="notification in pinnedNotifications" :key="notification.id">
-					<slot name="notification-pinned-template" v-bind="{ notification}">
+					<ui-button v-if="canMarkAllNotificationsRead" class="button--muted" icon-start="icon-check" data-test="notification-handler-mark-all-read" @click="markAllNotificationsRead">
+						<slot name="mark-all-read-label">
+							Mark all notifications read
+						</slot>
+					</ui-button>
+				</div>
+
+				<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
+					<template v-for="notification in pinnedNotifications" :key="notification.id">
+						<slot name="notification-pinned-template" v-bind="{ notification}">
+							<reuse-template v-bind="{ notification }" />
+						</slot>
+					</template>
+
+					<template v-for="notification in unpinnedNotifications" :key="notification.id">
 						<reuse-template v-bind="{ notification }" />
-					</slot>
-				</template>
-
-				<template v-for="notification in unpinnedNotifications" :key="notification.id">
-					<reuse-template v-bind="{ notification }" />
-				</template>
+					</template>
+				</div>
 			</div>
-		</div>
 
-		<div v-else class="flex flex-col items-center gap-2 py-4">
-			<icon-bell class="animate-fade-in delay size-10 rounded-full bg-purple-100 p-3 text-purple-800" />
+			<div v-else class="flex flex-col items-center gap-2 py-4">
+				<icon-bell class="animate-fade-in delay size-10 rounded-full bg-purple-100 p-3 text-purple-800" />
 
-			<span class="animate-fade-in delay">
-				<slot name="no-notifications-label">
-					No new notifications
-				</slot>
-			</span>
+				<span class="animate-fade-in delay">
+					<slot name="no-notifications-label">
+						No new notifications
+					</slot>
+				</span>
+			</div>
 		</div>
 	</summary-details>
 </template>
@@ -133,6 +141,15 @@ const props = defineProps({
 	allowReload: {
 		type: Boolean,
 		default: true,
+	},
+
+	/**
+	 * Whether the notifications are currently loading (or re-loading). This
+	 * will show a loading indicator to the user to provide feedback.
+	 */
+	loading: {
+		type: Boolean,
+		default: false,
 	},
 
 	/**
