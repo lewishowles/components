@@ -1,6 +1,6 @@
 # Changelog
 
-# 0.22.0
+# 0.22.0 - 2025-04-18
 
 ### New components
 
