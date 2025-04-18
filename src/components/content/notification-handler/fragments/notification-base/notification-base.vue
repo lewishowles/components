@@ -165,8 +165,6 @@ const hasDate = computed(() => isNonEmptyString(get(props, "notification.date"))
 const hasImage = computed(() => isNonEmptyString(get(props, "notification.image_url")));
 // Whether this notification has an icon to display.
 const hasIcon = computed(() => isNonEmptyString(get(props, "notification.icon")));
-// Whether this notification is pinned.
-const isPinned = computed(() => get(props, "notification.pinned") === true);
 // Whether this notification a URL to view more information.
 const hasMoreInformationUrl = computed(() => isNonEmptyString(get(props, "notification.url")));
 // Whether actions have been provided for this notification.
