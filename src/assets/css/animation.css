@@ -50,7 +50,7 @@
 		animation-duration: var(--animation-duration, 250ms);
 		animation-timing-function: ease-in-out;
 		animation-fill-mode: forwards;
-		animation: fadeInLeft;
+		animation-name: fadeInLeft;
 	}
 }
 
