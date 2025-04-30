@@ -39,11 +39,19 @@ You can find more information about each component on its relevant docs page.
 
 ### Forms
 
-- [form-actions](/src/components/form/form-actions/form-actions.md)
 - [form-field](/src/components/form/form-field/form-field.md)
 - [form-fieldset](/src/components/form/form-fieldset/form-fieldset.md)
 - [form-layout](/src/components/form/form-layout/form-layout.md)
 - [form-wrapper](/src/components/form/form-wrapper/form-wrapper.md)
+- [form-actions](/src/components/form/form-actions/form-actions.md)
+
+### Interaction
+
+- [dropdown-menu](/src/components/interaction/dropdown-menu/dropdown-menu.md)
+- [link-tag](/src/components/interaction/link-tag/link-tag.md)
+- [loading-indicator](/src/components/interaction/loading-indicator/loading-indicator.md)
+- [star-rating](/src/components/interaction/star-rating/star-rating.md)
+- [ui-button](/src/components/interaction/ui-button/ui-button.md)
 
 ### Content
 
@@ -56,13 +64,9 @@ You can find more information about each component on its relevant docs page.
 - [summary-details](/src/components/content/summary-details/summary-details.md)
 - [tab-group](/src/components/content/tab-group/tab-group.md)
 
-### Interaction
+### Icons
 
-- [dropdown-menu](/src/components/interaction/dropdown-menu/dropdown-menu.md)
-- [link-tag](/src/components/interaction/link-tag/link-tag.md)
-- [loading-indicator](/src/components/interaction/loading-indicator/loading-indicator.md)
-- [star-rating](/src/components/interaction/star-rating/star-rating.md)
-- [ui-button](/src/components/interaction/ui-button/ui-button.md)
+- [icons](/src/components/icon/icon.md)
 
 ### Navigation
 
@@ -92,10 +96,6 @@ You can find more information about each component on its relevant docs page.
 ### General
 
 - [conditional-wrapper](/src/components/general/conditional-wrapper/conditional-wrapper.md)
-
-### Icons
-
-- [icons](/src/components/icon/icon.md)
 
 ## Scaffolding
 
