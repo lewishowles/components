@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import PageHome from "@/views/page-home/page-home.vue";
+import PageGettingStarted from "@/views/page-getting-started/page-getting-started.vue";
 
 // We want to auto-generate routes from our available views.
 const views = import.meta.glob("@/views/**/*.vue");
@@ -35,6 +36,11 @@ const router = createRouter({
 			path: "/",
 			name: "home",
 			component: PageHome,
+		},
+		{
+			path: "/getting-started",
+			name: "getting-started",
+			component: PageGettingStarted,
 		},
 		...routes,
 	],

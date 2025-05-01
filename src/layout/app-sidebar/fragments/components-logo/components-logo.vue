@@ -2,8 +2,8 @@
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 193 37" aria-hidden="true">
 		<defs>
 			<linearGradient id="logo-gradient" x1="0%" x2="100%" y1="48.15%" y2="51.85%">
-				<stop offset=".008%" stop-color="#BE185D" />
-				<stop offset="100%" stop-color="#6A21A7" />
+				<stop offset="0%" class="logo-gradient-start" />
+				<stop offset="100%" class="logo-gradient-end" />
 			</linearGradient>
 		</defs>
 		<path
@@ -14,3 +14,21 @@
 		/>
 	</svg>
 </template>
+
+<style>
+.logo-gradient-start {
+	stop-color: var(--color-pink-700);
+
+	.dark & {
+		stop-color: var(--color-pink-200);
+	}
+}
+
+.logo-gradient-end {
+	stop-color: var(--color-purple-800);
+
+	.dark & {
+		stop-color: var(--color-grey-50);
+	}
+}
+</style>

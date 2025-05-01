@@ -6,7 +6,7 @@ A library of beautiful components with a focus on accessibility, as well as ease
 
 Accessibility is one of the most important things we can spend time improving. The web is for everyone, and making steps to ensure content is as accessible as possible helps everyone, not just those who need it most.
 
-This library helps improve accessibility not just by implementing a set of standards into the components so that they're provided without effort from the developer, but the docs also help promote the mindset of accessibility, and some components even show visible errors if standards are not met—such as form fields requiring labels.
+This library helps improve accessibility in two primary ways; the first by implementing the components with accessibility in mind, so a developer can be confident out of the box; and the second by using the documentation to help promote the mindset of accessibility. In addition, some components show visible errors if standards are not met—such as form fields requiring labels.
 
 ## Setup
 

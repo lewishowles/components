@@ -51,6 +51,9 @@
 	--color-neutral-*: initial;
 	--color-stone-*: initial;
 
+	--color-neon-pink: #e61980;
+	--color-neon-blue: #19cbe6;
+
 	--font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif,
 		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 	--font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,

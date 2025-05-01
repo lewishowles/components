@@ -6,17 +6,21 @@
 			<span class="sr-only">@lewishowles/components</span>
 		</router-link>
 
-		<div class="my-8 bg-gradient-to-r to-grey-200 h-px" />
+		<div class="my-8 bg-gradient-to-r to-grey-200 dark:to-white/20 h-px" />
 
-		<ol>
+		<ol class="flex flex-col gap-6">
+			<app-menu-item name="getting-started">
+				Getting started
+			</app-menu-item>
+
 			<app-menu-section>
 				<template #title>
 					Forms
 				</template>
 
-				<app-menu-item to="forms/form-field">
+				<app-menu-component to="forms/form-field">
 					form-field
-				</app-menu-item>
+				</app-menu-component>
 			</app-menu-section>
 		</ol>
 	</nav>
@@ -31,6 +35,7 @@
  * importance, or exclude supplementary components, for example.
  */
 
+import AppMenuComponent from "./fragments/app-menu-component/app-menu-component.vue";
 import AppMenuItem from "./fragments/app-menu-item/app-menu-item.vue";
 import AppMenuSection from "./fragments/app-menu-section/app-menu-section.vue";
 import ComponentsLogo from "./fragments/components-logo/components-logo.vue";

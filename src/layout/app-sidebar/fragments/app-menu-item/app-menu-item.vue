@@ -1,6 +1,6 @@
 <template>
 	<li>
-		<router-link v-bind="{ to }" class="font-mono text-grey-700 no-underline hocus:underline py-1 block">
+		<router-link v-bind="{ to: { name } }" class="text-current no-underline hocus:underline py-1 block">
 			<slot />
 		</router-link>
 	</li>
@@ -9,9 +9,9 @@
 <script setup>
 defineProps({
 	/**
-	 * The destination page, utilising router-link's `to` property.
+	 * The destination page name, utilising router-link's `to` property.
 	 */
-	to: {
+	name: {
 		type: String,
 		default: null,
 	},
