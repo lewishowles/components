@@ -1,0 +1,46 @@
+<template>
+	<base-icon>
+		<g fill="none">
+			<rect
+				width="12.375"
+				height="2.813"
+				x="2.813"
+				y="8.438"
+				stroke="currentColor"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="1.5"
+				rx=".563"
+			/>
+			<rect
+				width="12.375"
+				height="2.813"
+				x="2.813"
+				y="3.375"
+				stroke="currentColor"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="1.5"
+				rx=".563"
+			/><line
+				x1="7.313"
+				x2="10.688"
+				y1="15.202"
+				y2="15.202"
+				stroke="currentColor"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="1.5"
+			/><line
+				x1="9.015"
+				x2="9.015"
+				y1="13.5"
+				y2="16.875"
+				stroke="currentColor"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="1.5"
+			/>
+		</g>
+	</base-icon>
+</template>

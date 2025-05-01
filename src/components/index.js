@@ -62,6 +62,7 @@ import IconChevronRightCircled from "./icon/icon-chevron-right-circled/icon-chev
 import IconChevronUp from "./icon/icon-chevron-up/icon-chevron-up.vue";
 import IconChevronUpCircled from "./icon/icon-chevron-up-circled/icon-chevron-up-circled.vue";
 import IconClock from "./icon/icon-clock/icon-clock.vue";
+import IconCode from "./icon/icon-code/icon-code.vue";
 import IconCross from "./icon/icon-cross/icon-cross.vue";
 import IconDanger from "./icon/icon-danger/icon-danger.vue";
 import IconDensityCompact from "./icon/icon-density-compact/icon-density-compact.vue";
@@ -77,10 +78,13 @@ import IconInfo from "./icon/icon-info/icon-info.vue";
 import IconLaptop from "./icon/icon-laptop/icon-laptop.vue";
 import IconLightbulb from "./icon/icon-lightbulb/icon-lightbulb.vue";
 import IconLoading from "./icon/icon-loading/icon-loading.vue";
+import IconMegaphone from "./icon/icon-megaphone/icon-megaphone.vue";
 import IconMoon from "./icon/icon-moon/icon-moon.vue";
+import IconObject from "./icon/icon-object/icon-object.vue";
 import IconPin from "./icon/icon-pin/icon-pin.vue";
 import IconPlus from "./icon/icon-plus/icon-plus.vue";
 import IconReload from "./icon/icon-reload/icon-reload.vue";
+import IconSlot from "./icon/icon-slot/icon-slot.vue";
 import IconSun from "./icon/icon-sun/icon-sun.vue";
 import IconUser from "./icon/icon-user/icon-user.vue";
 import IconWarning from "./icon/icon-warning/icon-warning.vue";
@@ -133,6 +137,7 @@ export default {
 	IconChevronUp,
 	IconChevronUpCircled,
 	IconClock,
+	IconCode,
 	IconCross,
 	IconDanger,
 	IconDensityCompact,
@@ -148,10 +153,13 @@ export default {
 	IconLaptop,
 	IconLightbulb,
 	IconLoading,
+	IconMegaphone,
 	IconMoon,
+	IconObject,
 	IconPin,
 	IconPlus,
 	IconReload,
+	IconSlot,
 	IconSun,
 	IconUser,
 	IconWarning,

@@ -1,5 +1,20 @@
 # Changelog
 
+# 1.0.0
+
+This version introduces a new documentation site to demonstrate each component and allow you to quickly copy the relevant code.
+
+### New icons
+
+- `icon-code`
+- `icon-megaphone`
+- `icon-object`
+- `icon-slot`
+
+### Updates
+
+- `tab-group`: Icons can now be added to tabs via the `icon` prop on a `tab-item`.
+
 # 0.22.0 - 2025-04-18
 
 ### New components
