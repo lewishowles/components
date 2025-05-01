@@ -1,5 +1,5 @@
 <template>
-	<div class="prose dark:prose-invert">
+	<div class="prose prose-slate dark:prose-invert">
 		<h1>@lewishowles/components</h1>
 
 		<p>A library of beautiful components with a focus on accessibility, as well as ease of use for developers and for users.</p>

@@ -1,5 +1,5 @@
 <template>
-	<div class="prose dark:prose-invert">
+	<div class="prose prose-slate dark:prose-invert">
 		<h1>Getting started</h1>
 
 		<p>At the moment, components in the library are registered globally, so there is no need to manually import any of the components. To use the library, set it up in your main file, for example:</p>

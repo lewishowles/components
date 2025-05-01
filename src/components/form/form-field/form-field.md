@@ -41,7 +41,7 @@ The name of the field. This is required when used within a `form-wrapper` compon
 - type: `array`
 - default: `[]`
 
-Any validation to apply to the field. This is used with the externally-facing `validate` function, as well as applying attributes to the field as necessary such as `required`.
+Any validation to apply to the field. This is used with the externally-facing `validate` function, as well as applying attributes to the field as necessary, such as `required`.
 
 Each entry in validation requires at least a `rule`, outlining the type of validation, and a `message`, which is used if validation fails. Available rules and properties include:
 
