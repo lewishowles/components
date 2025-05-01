@@ -3,13 +3,14 @@
 		<nav ref="tabBarReference" class="mb-4 border-b border-grey-200 dark:border-white/20">
 			<ol class="-mb-px flex flex-wrap items-end" role="tablist">
 				<li v-for="tab in tabs" :key="tab.tabId">
-					<a
+					<link-tag
 						v-bind="{
 							'id': tab.tabId,
 							'href': `#${tab.panelId}`,
 							'aria-controls': tab.panelId,
 							'aria-selected': tab.active,
 							'tabindex': tab.active ? '1' : '-1',
+							'icon-start': tab.icon,
 						}"
 						ref="tabAnchors"
 						class="inline-block border-b-2 px-4 py-2 no-underline dark:hocus:text-white"
@@ -21,7 +22,7 @@
 						@click.prevent="setActiveTab(tab.tabId)"
 					>
 						<component :is="tab.label" />
-					</a>
+					</link-tag>
 				</li>
 			</ol>
 		</nav>

@@ -20,6 +20,14 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+
+	/**
+	 * An icon to display with the tab button.
+	 */
+	icon: {
+		type: String,
+		default: null,
+	},
 });
 
 const { registerTab, activeTabId } = inject("tab-group");
@@ -42,6 +50,7 @@ onMounted(() => {
 		label,
 		tabId,
 		panelId,
+		icon: props.icon,
 	}, active);
 });
 </script>
