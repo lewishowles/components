@@ -18,6 +18,7 @@ This version introduces a new documentation site to demonstrate each component a
 ### Updates
 
 - `tab-group`: Icons can now be added to tabs via the `icon` prop on a `tab-item`.
+- `tab-group`: When the URL contains a fragment, if that fragment is contained within a tab, it will activate itself.
 
 # 0.22.0 - 2025-04-18
 
