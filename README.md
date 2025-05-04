@@ -47,6 +47,7 @@ You can find more information about each component on its relevant docs page.
 
 ### Interaction
 
+- [copy-content](/src/components/interaction/copy-content/copy-content.md)
 - [dropdown-menu](/src/components/interaction/dropdown-menu/dropdown-menu.md)
 - [link-tag](/src/components/interaction/link-tag/link-tag.md)
 - [loading-indicator](/src/components/interaction/loading-indicator/loading-indicator.md)

@@ -6,6 +6,7 @@ import BreadcrumbItem from "./navigation/breadcrumb-item/breadcrumb-item.vue";
 import BreadcrumbList from "./navigation/breadcrumb-list/breadcrumb-list.vue";
 import ButtonGroup from "./form/button-group/button-group.vue";
 import ConditionalWrapper from "./general/conditional-wrapper/conditional-wrapper.vue";
+import CopyContent from "./interaction/copy-content/copy-content.vue";
 import DataTable from "./content/data-table/data-table.vue";
 import DisplayDate from "./content/display-date/display-date.vue";
 import DonutChart from "./chart/donut-chart/donut-chart.vue";
@@ -93,6 +94,7 @@ export default {
 	AccordionGroup,
 	AccordionSection,
 	AlertMessage,
+	CopyContent,
 	AppPagination,
 	BaseIcon,
 	BreadcrumbItem,

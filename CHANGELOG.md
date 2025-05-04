@@ -4,6 +4,10 @@
 
 This version introduces a new documentation site to demonstrate each component and allow you to quickly copy the relevant code.
 
+### New components
+
+- [`copy-content`](/src/components/interaction/copy-content/copy-content.md)
+
 ### New icons
 
 - `icon-code`
