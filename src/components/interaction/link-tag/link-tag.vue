@@ -1,5 +1,5 @@
 <template>
-	<a class="inline-flex items-center gap-[0.5em]" v-bind="{ href, ...attributes }" data-test="link-tag">
+	<a ref="anchorElement" class="inline-flex items-center gap-[0.5em]" v-bind="{ href, ...attributes }" data-test="link-tag">
 		<component :is="iconStart" v-if="haveIconStart" class="size-[0.857em] stroke-current" data-test="link-tag-icon-start" />
 
 		<slot />
@@ -20,8 +20,9 @@
  * shows an external icon. This icon overrides any defined `iconEnd`, but can be
  * disabled via `showExternalIcon`.
  */
-import { computed } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -66,6 +67,8 @@ const props = defineProps({
 	},
 });
 
+// The anchor element itself.
+const anchorElement = useTemplateRef("anchorElement");
 // Whether a start icon is defined.
 const haveIconStart = computed(() => isNonEmptyString(props.iconStart));
 // Whether an end icon is defined.
@@ -86,5 +89,16 @@ const attributes = computed(() => {
 	}
 
 	return attributes;
+});
+
+/**
+ * Trigger focus on this link.
+ */
+function triggerFocus() {
+	runComponentMethod(anchorElement.value, "focus");
+}
+
+defineExpose({
+	triggerFocus,
 });
 </script>

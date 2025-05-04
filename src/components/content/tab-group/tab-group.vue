@@ -186,14 +186,12 @@ function setActiveTab(tabId) {
  *
  * When selecting a tab, we focus the relevant anchor.
  */
-async function selectPreviousTab() {
+function selectPreviousTab() {
 	const previousIndex = getNextIndex(activeTabIndex.value, tabs.value, { reverse: true, wrap: true });
 
 	setActiveTabByIndex(previousIndex);
 
-	await nextTick();
-
-	runComponentMethod(tabAnchors.value[previousIndex], "focus");
+	focusTabByIndex(previousIndex);
 }
 
 /**
@@ -201,14 +199,25 @@ async function selectPreviousTab() {
  *
  * When selecting a tab, we focus the relevant anchor.
  */
-async function selectNextTab() {
+function selectNextTab() {
 	const nextIndex = getNextIndex(activeTabIndex.value, tabs.value, { reverse: false, wrap: true });
 
 	setActiveTabByIndex(nextIndex);
 
+	focusTabByIndex(nextIndex);
+}
+
+/**
+ * Focus a given tab to provide visual feedback to keyboard users.
+ */
+async function focusTabByIndex(tabIndex) {
+	if (tabIndex < 0 || tabIndex >= tabAnchors.value.length) {
+		return;
+	}
+
 	await nextTick();
 
-	runComponentMethod(tabAnchors.value[nextIndex], "focus");
+	runComponentMethod(tabAnchors.value[tabIndex], "triggerFocus");
 }
 
 /**
