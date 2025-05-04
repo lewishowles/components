@@ -11,15 +11,13 @@
 				Props
 			</template>
 
-			<div class="prose">
+			<div class="prose dark:prose-invert">
 				<h2>Props</h2>
 
 				<ol class="not-prose font-mono">
 					<li><a href="#prop-type">type</a></li>
 					<li><a href="#prop-id">id</a></li>
 					<li><a href="#prop-name">name</a></li>
-					<li><a href="#prop-placeholder">placeholder</a></li>
-					<li><a href="#prop-inputAttributes">inputAttributes</a></li>
 					<li><a href="#prop-validation">validation</a></li>
 				</ol>
 
@@ -87,39 +85,6 @@
 					The name of the field. This is required when used within a <code>form-wrapper</code> component, where it is used as the key for the form's data collection. As such, its uniqueness will be verified by <code>form-wrapper</code> when used together.
 				</p>
 
-
-				<prop-title id="prop-placeholder">
-					<template #title>
-						placeholder
-					</template>
-
-					<template #type>
-						String
-					</template>
-
-					<template #default>
-						null
-					</template>
-				</prop-title>
-
-				<p>Any placeholder to show in the field. Do not use a placeholder for critical information. Always use the label and help text as priorities.</p>
-
-				<prop-title id="prop-inputAttributes">
-					<template #title>
-						inputAttributes
-					</template>
-
-					<template #type>
-						String
-					</template>
-
-					<template #default>
-						null
-					</template>
-				</prop-title>
-
-				<p>Any additional attributes to pass to the field itself, such as `required` or `autocomplete`. This can also be used to change the type of the field, such as to `email`.</p>
-
 				<prop-title id="prop-validation">
 					<template #title>
 						validation
@@ -146,99 +111,99 @@
 					required
 				</h4>
 
-				<code-block>
-					[{ rule: "required", message: "Enter your name so we know what to call you" }]
-				</code-block>
-
 				<p>
 					Requires a value to be set. Adds the <code>required</code> attribute to the field automatically.
 				</p>
+
+				<code-block>
+					[{ rule: "required", message: "Enter your name so we know what to call you" }]
+				</code-block>
 
 				<h4 id="validation-email">
 					email
 				</h4>
 
-				<code-block>
-					[{ rule: "email", message: "We need an email address to set up your account" }]
-				</code-block>
-
 				<p>
 					Perform a minimal check to see if the value contains an <code>@</code> symbol. More complex verification isn't really necessary, and the only true way to test an email address is through verification.
 				</p>
+
+				<code-block>
+					[{ rule: "email", message: "We need an email address to set up your account" }]
+				</code-block>
 
 				<h4 id="validation-size">
 					size
 				</h4>
 
-				<code-block>
-					[{ rule: "size", size: 11, message: "Your phone number should be 11 digits long" }]
-				</code-block>
-
 				<p>
 					Ensure that the provided value has at least size <code>size</code>. For strings, the number of characters is used, for arrays, the length of the array, for objects, the number of properties, for numbers, the number itself is used, and for numeric strings the integer value of the string is used.
 				</p>
+
+				<code-block>
+					[{ rule: "size", size: 11, message: "Your phone number should be 11 digits long" }]
+				</code-block>
 
 				<h4 id="validation-min">
 					min
 				</h4>
 
-				<code-block>
-					[{ rule: "min", min: 11, message: "Your phone number should be at least 11 digits long" }]
-				</code-block>
-
 				<p>
 					Ensure that the provided value has at least size <code>min</code>. Values are evaluated as in the <code>size</code> rule.
 				</p>
+
+				<code-block>
+					[{ rule: "min", min: 11, message: "Your phone number should be at least 11 digits long" }]
+				</code-block>
 
 				<h4 id="validation-max">
 					max
 				</h4>
 
+				<p>Ensure that the provided value is has at most size <code>max</code>. Values are evaluated as in the <code>size</code> rule.</p>
+
 				<code-block>
 					[{ rule: "max", max: 11, message: "Your phone number should be no more than 11 digits long" }]
 				</code-block>
-
-				<p>Ensure that the provided value is has at most size <code>max</code>. Values are evaluated as in the <code>size</code> rule.</p>
 
 				<h4 id="validation-max">
 					between
 				</h4>
 
+				<p>Ensure that the provided value is has between <code>min</code> and <code>max</code> size. Values are evaluated as in the <code>size</code> rule.</p>
+
 				<code-block>
 					[{ rule: "between", min: 5, max: 8, message: "Your post code should be between 5 and 8 characters" }]
 				</code-block>
-
-				<p>Ensure that the provided value is has between <code>min</code> and <code>max</code> size. Values are evaluated as in the <code>size</code> rule.</p>
 
 				<h4 id="validation-in">
 					in
 				</h4>
 
+				<p>Ensure that the given value is included within <code>options</code>.</p>
+
 				<code-block>
 					[{ rule: "in", options: ["a", "b", "c"], message: "Your choice should be a, b, or c" }]
 				</code-block>
-
-				<p>Ensure that the given value is included within <code>options</code>.</p>
 
 				<h4 id="validation-not-in">
 					not_in
 				</h4>
 
+				<p>Ensure that the given value is not included within <code>options</code>.</p>
+
 				<code-block>
 					[{ rule: "not_in", options: ["a", "b", "c"], message: "Your choice should not include a, b, or c" }]
 				</code-block>
-
-				<p>Ensure that the given value is not included within <code>options</code>.</p>
 
 				<h4 id="validation-regexp">
 					regexp
 				</h4>
 
+				<p>Ensure that the provided value matches <code>regexp</code>.</p>
+
 				<code-block>
 					[{ rule: "regexp", regexp: /[abc]+/, message: "Your ID should only contain the letters a, b, and c" }]
 				</code-block>
-
-				<p>Ensure that the provided value matches <code>regexp</code>.</p>
 
 				<h3>Additional props</h3>
 
@@ -252,12 +217,36 @@
 			<template #label>
 				Slots
 			</template>
+
+			<div class="prose dark:prose-invert">
+				<h2>Slots</h2>
+
+				<prop-title id="slot-default">
+					<template #title>
+						default
+					</template>
+				</prop-title>
+
+				<p>Passed through to the <code>default</code> slot of the relevant form field, the <code>default</code> slot generally contains the label for the form element.</p>
+			</div>
 		</tab-item>
 
 		<tab-item icon="icon-megaphone">
 			<template #label>
 				Events
 			</template>
+
+			<div class="prose dark:prose-invert">
+				<h2>Events</h2>
+
+				<prop-title id="event-vmodel">
+					<template #title>
+						v-model
+					</template>
+				</prop-title>
+
+				<p>The current value of the underlying form field will be available via <code>v-model</code>.</p>
+			</div>
 		</tab-item>
 
 		<tab-item icon="icon-code">
