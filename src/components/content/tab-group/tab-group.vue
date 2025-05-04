@@ -13,10 +13,10 @@
 							'icon-start': tab.icon,
 						}"
 						ref="tabAnchors"
-						class="inline-block border-b-2 px-4 py-2 no-underline dark:hocus:text-white"
+						class="inline-block border-b-2 px-4 py-2 no-underline"
 						:class="{
 							'border-purple-800 text-purple-800 dark:border-white dark:text-white': tab.active,
-							'border-transparent text-current hocus:border-grey-500 hocus:text-grey-950': !tab.active,
+							'border-transparent text-current hocus:border-grey-500 hocus:text-grey-950 dark:hocus:border-white/60 dark:hocus:text-white': !tab.active,
 						}"
 						data-test="tab-group-tab"
 						@click.prevent="setActiveTab(tab.tabId)"
@@ -33,7 +33,7 @@
 
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
-import { computed, provide, ref } from "vue";
+import { computed, nextTick, provide, ref } from "vue";
 import { getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onKeyStroke, useFocusWithin } from "@vueuse/core";
@@ -121,6 +121,10 @@ onKeyStroke(["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"], e => {
  *     The details of the tab to be registered.
  */
 function registerTab(tab) {
+	if (tabData.value.find(existingTab => existingTab.tabId === tab.tabId) !== undefined) {
+		return;
+	}
+
 	tabData.value.push(tab);
 
 	if (tab.initiallyActive === true) {
@@ -182,10 +186,13 @@ function setActiveTab(tabId) {
  *
  * When selecting a tab, we focus the relevant anchor.
  */
-function selectPreviousTab() {
+async function selectPreviousTab() {
 	const previousIndex = getNextIndex(activeTabIndex.value, tabs.value, { reverse: true, wrap: true });
 
 	setActiveTabByIndex(previousIndex);
+
+	await nextTick();
+
 	runComponentMethod(tabAnchors.value[previousIndex], "focus");
 }
 
@@ -194,10 +201,13 @@ function selectPreviousTab() {
  *
  * When selecting a tab, we focus the relevant anchor.
  */
-function selectNextTab() {
+async function selectNextTab() {
 	const nextIndex = getNextIndex(activeTabIndex.value, tabs.value, { reverse: false, wrap: true });
 
 	setActiveTabByIndex(nextIndex);
+
+	await nextTick();
+
 	runComponentMethod(tabAnchors.value[nextIndex], "focus");
 }
 

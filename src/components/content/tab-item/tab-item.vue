@@ -10,6 +10,7 @@
 
 <script setup>
 import { computed, inject, onMounted, useSlots } from "vue";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
 
 const props = defineProps({
@@ -52,5 +53,16 @@ onMounted(() => {
 		panelId,
 		icon: props.icon,
 	}, active);
+
+	// If there is a hash
+	const hash = window.location.hash.slice(1);
+
+	if (!isNonEmptyString(hash)) {
+		return;
+	}
+
+	if (hash === tabId.value || document.querySelector(`[id="${panelId.value}"]  #${hash}`)) {
+		activeTabId.value = tabId.value;
+	}
 });
 </script>
