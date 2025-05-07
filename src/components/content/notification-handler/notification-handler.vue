@@ -1,5 +1,5 @@
 <template>
-	<summary-details v-bind="{ includeIcon: false, floating: true, closeWithClickOutside: true, align, summaryClasses: 'button--muted relative p-3', detailsClasses: 'mt-3 w-lg rounded-md border border-grey-200 bg-white p-4 shadow' }" class="w-min text-sm" data-test="notification-handler">
+	<floating-details v-bind="{ includeIcon: false, align, summaryClasses: 'button--muted relative p-3' }" class="w-min text-sm" data-test="notification-handler">
 		<template #summary>
 			<icon-bell />
 
@@ -73,7 +73,7 @@
 				</span>
 			</div>
 		</div>
-	</summary-details>
+	</floating-details>
 </template>
 
 <script setup>

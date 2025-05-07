@@ -2,11 +2,12 @@
 
 # 1.0.0
 
-This version introduces a new documentation site to demonstrate each component and allow you to quickly copy the relevant code.
+This version introduces a new documentation site to demonstrate each component and allow you to quickly copy the relevant code, as well as new components that especially support that site.
 
 ### New components
 
 - [`copy-content`](/src/components/interaction/copy-content/copy-content.md)
+- [`floating-details`](/src/components/content/floating-details/floating-details.md)
 
 ### New icons
 

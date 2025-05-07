@@ -118,7 +118,7 @@ const props = defineProps({
 	 * the summary and icons.
 	 */
 	summaryClasses: {
-		type: String,
+		type: [String, Array, Object],
 		default: null,
 	},
 
@@ -126,7 +126,7 @@ const props = defineProps({
 	 * Any classes to add to the details content.
 	 */
 	detailsClasses: {
-		type: String,
+		type: [String, Array, Object],
 		default: "mt-3",
 	},
 
@@ -135,7 +135,7 @@ const props = defineProps({
 	 * the only visible summary element.
 	 */
 	iconClasses: {
-		type: String,
+		type: [String, Array, Object],
 		default: null,
 	},
 

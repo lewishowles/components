@@ -16,6 +16,7 @@ import DropdownMenuCheckbox from "./interaction/dropdown-menu/fragments/dropdown
 import DropdownMenuDivider from "./interaction/dropdown-menu/fragments/dropdown-menu-divider/dropdown-menu-divider.vue";
 import DropdownMenuLink from "./interaction/dropdown-menu/fragments/dropdown-menu-link/dropdown-menu-link.vue";
 import DropdownMenuTitle from "./interaction/dropdown-menu/fragments/dropdown-menu-title/dropdown-menu-title.vue";
+import FloatingDetails from "./content/floating-details/floating-details.vue";
 import FormActions from "./form/form-actions/form-actions.vue";
 import FormCheckbox from "./form/form-checkbox/form-checkbox.vue";
 import FormCheckboxGroup from "./form/form-checkbox-group/form-checkbox-group.vue";
@@ -95,6 +96,7 @@ export default {
 	AccordionGroup,
 	AccordionSection,
 	AlertMessage,
+	FloatingDetails,
 	CopyContent,
 	AppPagination,
 	BaseIcon,
