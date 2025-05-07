@@ -10,6 +10,7 @@ This version introduces a new documentation site to demonstrate each component a
 
 ### New icons
 
+- `icon-clipboard`
 - `icon-code`
 - `icon-megaphone`
 - `icon-object`

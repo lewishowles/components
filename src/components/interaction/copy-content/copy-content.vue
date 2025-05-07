@@ -1,7 +1,7 @@
 <template>
 	<ui-button :class="{ 'relative': !$attrs.class?.includes('absolute') }" data-test="copy-content" @click="copyContent">
-		<span class="transition-opacity" :class="{ 'opacity-0': showCopySuccess || showCopyError }" data-test="copy-content-label">
-			<icon-copy />
+		<span class="flex gap-2 items-center transition-opacity" :class="{ 'opacity-0': showCopySuccess || showCopyError }" data-test="copy-content-label">
+			<icon-clipboard />
 
 			<slot>
 				Copy

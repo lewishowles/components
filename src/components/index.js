@@ -62,6 +62,7 @@ import IconChevronRight from "./icon/icon-chevron-right/icon-chevron-right.vue";
 import IconChevronRightCircled from "./icon/icon-chevron-right-circled/icon-chevron-right-circled.vue";
 import IconChevronUp from "./icon/icon-chevron-up/icon-chevron-up.vue";
 import IconChevronUpCircled from "./icon/icon-chevron-up-circled/icon-chevron-up-circled.vue";
+import IconClipboard from "./icon/icon-clipboard/icon-clipboard.vue";
 import IconClock from "./icon/icon-clock/icon-clock.vue";
 import IconCode from "./icon/icon-code/icon-code.vue";
 import IconCross from "./icon/icon-cross/icon-cross.vue";
@@ -138,6 +139,7 @@ export default {
 	IconChevronRightCircled,
 	IconChevronUp,
 	IconChevronUpCircled,
+	IconClipboard,
 	IconClock,
 	IconCode,
 	IconCross,
