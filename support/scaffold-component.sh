@@ -99,7 +99,7 @@ output_files=(
 
 if [ "$IS_FRAGMENT" = false ]; then
     templates+=("component-preview.vue" "component.md")
-    output_files+=("${COMPONENT_NAME}-preview.vue" "${COMPONENT_NAME}.md")
+    output_files+=("${COMPONENT_NAME}.md")
 fi
 
 for i in "${!templates[@]}"; do
@@ -127,23 +127,7 @@ import $PASCAL_CASE_NAME from \"./$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME.v
 
 	# Development helpers
 
-	# Add the new component to src/previews.js
-	PREVIEWS_FILE="../src/previews.js"
-
-	sed -i '' "/import AlertMessagePreview/a\\
-import ${PASCAL_CASE_NAME}Preview from \"@/components/$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME-preview.vue\";\\
-" "$PREVIEWS_FILE"
-
-	sed -i '' "/app.component(\"AlertMessagePreview\", AlertMessagePreview);/a\\
-		app.component(\"${PASCAL_CASE_NAME}Preview\", ${PASCAL_CASE_NAME}Preview);\\
-" "$PREVIEWS_FILE"
-
 	APP_FILE="../src/App.vue";
-
-	# Add the new component to App.vue
-	sed -i '' "/const previewOptions/a\\
-	{ label: \"${COMPONENT_NAME}\", value: \"${COMPONENT_NAME}-preview\" },\\
-" "$APP_FILE"
 fi
 
 # Print the success message
@@ -155,8 +139,6 @@ echo "  ↳ $COMPONENT_NAME.test.js"
 
 if [ "$IS_FRAGMENT" = false ]; then
 	echo "  ↳ $COMPONENT_NAME.md"
-    echo "  ↳ ${COMPONENT_NAME}-preview.vue"
     echo "  ↳ [updated] /src/components/index.js"
-    echo "  ↳ [updated] /src/previews.js"
     echo "  ↳ [updated] /src/App.vue"
 fi
