@@ -91,19 +91,17 @@ function initialise() {
 	// Initialise values from local storage, where possible.
 	for (const slotKey in storedTextSlots.value) {
 		if (Object.prototype.hasOwnProperty.call(storedTextSlots.value, slotKey)) {
-			const storedTextSlot = storedTextSlots.value[slotKey];
-
 			if (!Object.prototype.hasOwnProperty.call(textSlots.value, slotKey)) {
 				return;
 			}
 
-			const storedTextSlotContent = storedTextSlot.value;
+			const storedTextValue = storedTextSlots.value[slotKey];
 
-			if (!isNonEmptyString(storedTextSlotContent)) {
+			if (!isNonEmptyString(storedTextValue)) {
 				return;
 			}
 
-			textSlots.value[slotKey].value = storedTextSlotContent;
+			textSlots.value[slotKey].value = storedTextValue;
 		}
 	}
 }
@@ -115,8 +113,13 @@ function resetTextSlots() {
 	textSlots.value = deepCopy(originalTextSlots.value);
 }
 
+// When the text slots change (modelValue under the hood), update our stored
+// slot values.
 watch(() => props.modelValue, () => {
-	console.log("Text slots changed");
-	storedTextSlots.value = textSlots.value;
+	// Before we store our slots, we remove any extraneous information for
+	// brevity.
+	storedTextSlots.value = Object.fromEntries(
+		Object.entries(textSlots.value).map(([key, slot]) => [key, slot.value]),
+	);
 }, { deep: true });
 </script>
