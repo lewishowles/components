@@ -1,5 +1,5 @@
 <template>
-	<summary-details v-bind="{ floating: true, closeWithClickOutside: true, align: 'end', summaryClasses, detailsClasses: [detailsClasses, maxWidthClass] }" data-test="floating-menu">
+	<summary-details v-bind="{ floating: true, closeWithClickOutside: true, align: 'end', summaryClasses, detailsClasses: [detailsClasses, 'w-screen', maxWidthClass] }" data-test="floating-menu">
 		<template #summary>
 			<slot name="summary" />
 		</template>

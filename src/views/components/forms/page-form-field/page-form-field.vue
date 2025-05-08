@@ -115,9 +115,7 @@
 					Requires a value to be set. Adds the <code>required</code> attribute to the field automatically.
 				</p>
 
-				<code-block>
-					[{ rule: "required", message: "Enter your name so we know what to call you" }]
-				</code-block>
+				<code-block>[{ rule: "required", message: "Enter your name so we know what to call you" }]</code-block>
 
 				<h4 id="validation-email">
 					email
@@ -127,9 +125,7 @@
 					Perform a minimal check to see if the value contains an <code>@</code> symbol. More complex verification isn't really necessary, and the only true way to test an email address is through verification.
 				</p>
 
-				<code-block>
-					[{ rule: "email", message: "We need an email address to set up your account" }]
-				</code-block>
+				<code-block>[{ rule: "email", message: "We need an email address to set up your account" }]</code-block>
 
 				<h4 id="validation-size">
 					size
@@ -139,9 +135,7 @@
 					Ensure that the provided value has at least size <code>size</code>. For strings, the number of characters is used, for arrays, the length of the array, for objects, the number of properties, for numbers, the number itself is used, and for numeric strings the integer value of the string is used.
 				</p>
 
-				<code-block>
-					[{ rule: "size", size: 11, message: "Your phone number should be 11 digits long" }]
-				</code-block>
+				<code-block>[{ rule: "size", size: 11, message: "Your phone number should be 11 digits long" }]</code-block>
 
 				<h4 id="validation-min">
 					min
@@ -151,9 +145,7 @@
 					Ensure that the provided value has at least size <code>min</code>. Values are evaluated as in the <code>size</code> rule.
 				</p>
 
-				<code-block>
-					[{ rule: "min", min: 11, message: "Your phone number should be at least 11 digits long" }]
-				</code-block>
+				<code-block>[{ rule: "min", min: 11, message: "Your phone number should be at least 11 digits long" }]</code-block>
 
 				<h4 id="validation-max">
 					max
@@ -161,9 +153,7 @@
 
 				<p>Ensure that the provided value is has at most size <code>max</code>. Values are evaluated as in the <code>size</code> rule.</p>
 
-				<code-block>
-					[{ rule: "max", max: 11, message: "Your phone number should be no more than 11 digits long" }]
-				</code-block>
+				<code-block>[{ rule: "max", max: 11, message: "Your phone number should be no more than 11 digits long" }]</code-block>
 
 				<h4 id="validation-max">
 					between
@@ -171,9 +161,7 @@
 
 				<p>Ensure that the provided value is has between <code>min</code> and <code>max</code> size. Values are evaluated as in the <code>size</code> rule.</p>
 
-				<code-block>
-					[{ rule: "between", min: 5, max: 8, message: "Your post code should be between 5 and 8 characters" }]
-				</code-block>
+				<code-block>[{ rule: "between", min: 5, max: 8, message: "Your post code should be between 5 and 8 characters" }]</code-block>
 
 				<h4 id="validation-in">
 					in
@@ -181,9 +169,7 @@
 
 				<p>Ensure that the given value is included within <code>options</code>.</p>
 
-				<code-block>
-					[{ rule: "in", options: ["a", "b", "c"], message: "Your choice should be a, b, or c" }]
-				</code-block>
+				<code-block>[{ rule: "in", options: ["a", "b", "c"], message: "Your choice should be a, b, or c" }]</code-block>
 
 				<h4 id="validation-not-in">
 					not_in
@@ -191,9 +177,7 @@
 
 				<p>Ensure that the given value is not included within <code>options</code>.</p>
 
-				<code-block>
-					[{ rule: "not_in", options: ["a", "b", "c"], message: "Your choice should not include a, b, or c" }]
-				</code-block>
+				<code-block>[{ rule: "not_in", options: ["a", "b", "c"], message: "Your choice should not include a, b, or c" }]</code-block>
 
 				<h4 id="validation-regexp">
 					regexp
@@ -201,9 +185,7 @@
 
 				<p>Ensure that the provided value matches <code>regexp</code>.</p>
 
-				<code-block>
-					[{ rule: "regexp", regexp: /[abc]+/, message: "Your ID should only contain the letters a, b, and c" }]
-				</code-block>
+				<code-block>[{ rule: "regexp", regexp: /[abc]+/, message: "Your ID should only contain the letters a, b, and c" }]</code-block>
 
 				<h3>Additional props</h3>
 
@@ -253,6 +235,12 @@
 			<template #label>
 				Playground
 			</template>
+
+			<playground-form-field-text />
 		</tab-item>
 	</tab-group>
 </template>
+
+<script setup>
+import PlaygroundFormFieldText from "./fragments/playground-form-field-text.vue";
+</script>
