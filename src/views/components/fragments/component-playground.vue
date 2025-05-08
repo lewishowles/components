@@ -20,6 +20,10 @@
 					<form-field v-for="(slot, key) in textSlots" :key="key" v-bind="{ type: slot.type }" v-model="textSlots[key].value">
 						{{ slot.label }}
 					</form-field>
+
+					<ui-button class="button--muted self-start" icon-start="icon-reload" @click="resetTextSlots">
+						Reset content
+					</ui-button>
 				</form-layout>
 			</floating-details>
 		</div>
@@ -31,6 +35,9 @@
 </template>
 
 <script setup>
+import { deepCopy } from "@lewishowles/helpers/object";
+import { ref } from "vue";
+
 defineProps({
 	/**
 	 * The template ot copy.
@@ -46,4 +53,15 @@ defineProps({
 const textSlots = defineModel({
 	type: Object,
 });
+
+// Copy our original text slots so that we can provide the functionality to
+// reset them later should the user require.
+const originalTextSlots = ref(deepCopy(textSlots.value));
+
+/**
+ * Reset the provided slots to their original value.
+ */
+function resetTextSlots() {
+	textSlots.value = deepCopy(originalTextSlots.value);
+}
 </script>
