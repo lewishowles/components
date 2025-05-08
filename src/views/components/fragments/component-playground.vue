@@ -35,10 +35,12 @@
 </template>
 
 <script setup>
-import { deepCopy } from "@lewishowles/helpers/object";
-import { ref } from "vue";
+import { computed, getCurrentInstance, ref, watch } from "vue";
+import { deepCopy, get, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { useStorage } from "@vueuse/core";
 
-defineProps({
+const props = defineProps({
 	/**
 	 * The template ot copy.
 	 */
@@ -48,15 +50,63 @@ defineProps({
 	},
 });
 
+// The current Vue instance, which we'll use to automatically determine the
+// parent name, simplifying the boilerplate for creating various playgrounds.
+const instance = getCurrentInstance();
+// We also look for any current values in local storage, so that we can re-use
+// those values.
+const parentComponentName = get(instance, "parent.type.__name");
+// Whether we are able to determine the parent's component name, used to
+// namespace any storage.
+const haveParentComponentName = computed(() => isNonEmptyString(parentComponentName));
+
 // We define our text slots as our model so that we can easily access their
 // values both here and in the parent component.
 const textSlots = defineModel({
 	type: Object,
 });
 
-// Copy our original text slots so that we can provide the functionality to
-// reset them later should the user require.
-const originalTextSlots = ref(deepCopy(textSlots.value));
+// Our stored values from last time.
+const storedTextSlots = useStorage(`component-playground:${parentComponentName}`, {});
+
+// A copy of the original text slot values. We refer to these if the user
+// chooses to reset data later, which is particularly useful if we save data to
+// local storage.
+const originalTextSlots = ref({});
+
+initialise();
+
+/**
+ * Initialise the component, determining the starting data for our text slots.
+ */
+function initialise() {
+	originalTextSlots.value = deepCopy(textSlots.value);
+
+	// If we can't determine a name, we won't be able to reliably retrieve data
+	// from storage.
+	if (!haveParentComponentName.value || !isNonEmptyObject(storedTextSlots.value)) {
+		return;
+	}
+
+	// Initialise values from local storage, where possible.
+	for (const slotKey in storedTextSlots.value) {
+		if (Object.prototype.hasOwnProperty.call(storedTextSlots.value, slotKey)) {
+			const storedTextSlot = storedTextSlots.value[slotKey];
+
+			if (!Object.prototype.hasOwnProperty.call(textSlots.value, slotKey)) {
+				return;
+			}
+
+			const storedTextSlotContent = storedTextSlot.value;
+
+			if (!isNonEmptyString(storedTextSlotContent)) {
+				return;
+			}
+
+			textSlots.value[slotKey].value = storedTextSlotContent;
+		}
+	}
+}
 
 /**
  * Reset the provided slots to their original value.
@@ -64,4 +114,9 @@ const originalTextSlots = ref(deepCopy(textSlots.value));
 function resetTextSlots() {
 	textSlots.value = deepCopy(originalTextSlots.value);
 }
+
+watch(() => props.modelValue, () => {
+	console.log("Text slots changed");
+	storedTextSlots.value = textSlots.value;
+}, { deep: true });
 </script>
