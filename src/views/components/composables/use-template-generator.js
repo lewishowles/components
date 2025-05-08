@@ -14,17 +14,19 @@ export default function useTemplateGenerator(componentTag, slots) {
 		// For each of our text slots, we generate a template string and add it
 		// to the template, if it contains content.
 		for (const slotKey in slots.value) {
-			if (Object.prototype.hasOwnProperty.call(slots.value, slotKey)) {
-				// We ignore label, as it follows a different pattern.
-				if (slotKey === "label") {
-					continue;
-				}
+			if (!Object.prototype.hasOwnProperty.call(slots.value, slotKey)) {
+				return;
+			}
 
-				const slotContent = slots.value[slotKey].value;
+			// We ignore label, as it follows a different pattern.
+			if (slotKey === "label") {
+				continue;
+			}
 
-				if (isNonEmptyString(slotContent)) {
-					template += `\n\n\t<template #${slotKey}>\n\t\t${slotContent}\n\t</template>`;
-				}
+			const slotContent = slots.value[slotKey].value;
+
+			if (isNonEmptyString(slotContent)) {
+				template += `\n\n\t<template #${slotKey}>\n\t\t${slotContent}\n\t</template>`;
 			}
 		}
 

@@ -20,5 +20,12 @@ describe("tab-item", () => {
 
 			expect(registerTabMock).toHaveBeenCalled();
 		});
+
+		test("should allow an ID to be provided", () => {
+			const wrapper = mount({ id: "tab-playground" });
+			const vm = wrapper.vm;
+
+			expect(vm.id).toBe("tab-playground");
+		});
 	});
 });

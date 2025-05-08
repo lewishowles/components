@@ -19,7 +19,7 @@
 							'border-transparent text-current hocus:border-grey-500 hocus:text-grey-950 dark:hocus:border-white/60 dark:hocus:text-white': !tab.active,
 						}"
 						data-test="tab-group-tab"
-						@click.prevent="setActiveTab(tab.tabId)"
+						@click.prevent="setActiveTabById(tab.tabId)"
 					>
 						<component :is="tab.label" />
 					</link-tag>
@@ -38,6 +38,19 @@ import { getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onKeyStroke, useFocusWithin } from "@vueuse/core";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
+
+const props = defineProps({
+	/**
+	 * Whether to update the URL with the ID of provided tabs when switching,
+	 * which will allow them to be reinstated on load. Note that when using this
+	 * feature, tabs must be given custom IDs, as opposed to the default IDs,
+	 * which are randomly generated.
+	 */
+	updateUrl: {
+		type: Boolean,
+		default: false,
+	},
+});
 
 // The list of available tabs, as registered by `tab-item` components.
 const tabData = ref([]);
@@ -147,7 +160,7 @@ function ensureActiveTab() {
 		}
 	}
 
-	setActiveTabByIndex(0);
+	setActiveTabByIndex(0, { updateUrl: false });
 }
 
 /**
@@ -155,8 +168,13 @@ function ensureActiveTab() {
  *
  * @param  {number}  index
  *     The index of the tab to activate.
+ * @param  {object}  options
+ *     Additional options when setting the active tab.
+ * @param  {boolean}  updateUrl
+ *     Whether to update the URL for this change. We don't want to do this when
+ *     setting the default tab to active, for example.
  */
-function setActiveTabByIndex(index) {
+function setActiveTabByIndex(index, { updateUrl = true } = {}) {
 	if (!isNonEmptyArray(tabs.value)) {
 		return;
 	}
@@ -164,7 +182,7 @@ function setActiveTabByIndex(index) {
 	const internalIndex = clamp(index, 0, tabs.value.length - 1);
 	const tabId = tabs.value?.[internalIndex]?.tabId;
 
-	setActiveTab(tabId);
+	setActiveTabById(tabId, { updateUrl });
 }
 
 /**
@@ -172,13 +190,22 @@ function setActiveTabByIndex(index) {
  *
  * @param  {string}  tabId
  *     The ID of the tab to mark as active.
+ * @param  {object}  options
+ *     Additional options when setting the active tab.
+ * @param  {boolean}  updateUrl
+ *     Whether to update the URL for this change. We don't want to do this when
+ *     setting the default tab to active, for example.
  */
-function setActiveTab(tabId) {
+function setActiveTabById(tabId, { updateUrl = true } = {}) {
 	if (!isValidTabId(tabId)) {
 		return;
 	}
 
 	activeTabId.value = tabId;
+
+	if (updateUrl === true && props.updateUrl === true && window.location.hash.slice(1) !== tabId) {
+		window.history.pushState(null, null, `#${tabId}`);
+	}
 }
 
 /**
@@ -190,7 +217,6 @@ function selectPreviousTab() {
 	const previousIndex = getNextIndex(activeTabIndex.value, tabs.value, { reverse: true, wrap: true });
 
 	setActiveTabByIndex(previousIndex);
-
 	focusTabByIndex(previousIndex);
 }
 
@@ -203,12 +229,14 @@ function selectNextTab() {
 	const nextIndex = getNextIndex(activeTabIndex.value, tabs.value, { reverse: false, wrap: true });
 
 	setActiveTabByIndex(nextIndex);
-
 	focusTabByIndex(nextIndex);
 }
 
 /**
  * Focus a given tab to provide visual feedback to keyboard users.
+ *
+ * @param  {number}  index
+ *     The index of the tab to focus.
  */
 async function focusTabByIndex(tabIndex) {
 	if (tabIndex < 0 || tabIndex >= tabAnchors.value.length) {

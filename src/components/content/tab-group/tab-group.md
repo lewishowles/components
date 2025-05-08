@@ -28,6 +28,38 @@ The `default` slot for `tab-item` contains the content of the tab.
 
 The label for this tab, to be displayed in the tab bar.
 
+## Props
+
+### `updateUrl`
+
+- type: `boolean`
+- default: `false`
+
+Whether to update the URL with the ID of provided tabs when switching, which will allow them to be reinstated on load. Note that when using this feature, tabs must be given custom IDs, as opposed to the default IDs, which are randomly generated.
+
+## Props (`tab-item`)
+
+### `id`
+
+- type: `string`
+- default: `null`
+
+Any ID to apply to this tab. This can be used in conjunction with prop `updateUrl` to reinstate tabs on page refresh. When providing an ID, ensure that it is unique.
+
+### `initiallyActive`
+
+- type: `boolean`
+- default: `false`
+
+Whether this tab is initially active.
+
+### `icon`
+
+- type: `string`
+- default: `null`
+
+An icon to display with the tab button.
+
 ## Examples
 
 ### Basic tabs

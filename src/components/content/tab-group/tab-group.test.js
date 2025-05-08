@@ -179,14 +179,14 @@ describe("tab-group", () => {
 			});
 		});
 
-		describe("setActiveTab", () => {
+		describe("setActiveTabById", () => {
 			test("should allow an active tab to be set", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
 				vm.tabData = [basicTab, secondaryTab];
 
-				vm.setActiveTab(basicTab.tabId);
+				vm.setActiveTabById(basicTab.tabId);
 
 				expect(vm.activeTabId).toBe(basicTab.tabId);
 			});
@@ -197,7 +197,7 @@ describe("tab-group", () => {
 
 				vm.tabData = [basicTab, secondaryTab];
 
-				vm.setActiveTab("invlaid-id");
+				vm.setActiveTabById("invlaid-id");
 
 				expect(vm.activeTabId).toBe(null);
 			});
@@ -210,7 +210,7 @@ describe("tab-group", () => {
 
 				vm.tabData = [basicTab, secondaryTab];
 
-				vm.setActiveTab(secondaryTab.tabId);
+				vm.setActiveTabById(secondaryTab.tabId);
 
 				vm.selectPreviousTab();
 
@@ -223,7 +223,7 @@ describe("tab-group", () => {
 
 				vm.tabData = [basicTab, secondaryTab];
 
-				vm.setActiveTab(basicTab.tabId);
+				vm.setActiveTabById(basicTab.tabId);
 
 				vm.selectPreviousTab();
 
@@ -238,7 +238,7 @@ describe("tab-group", () => {
 
 				vm.tabData = [basicTab, secondaryTab];
 
-				vm.setActiveTab(basicTab.tabId);
+				vm.setActiveTabById(basicTab.tabId);
 
 				vm.selectNextTab();
 
@@ -251,7 +251,7 @@ describe("tab-group", () => {
 
 				vm.tabData = [basicTab, secondaryTab];
 
-				vm.setActiveTab(secondaryTab.tabId);
+				vm.setActiveTabById(secondaryTab.tabId);
 
 				vm.selectNextTab();
 

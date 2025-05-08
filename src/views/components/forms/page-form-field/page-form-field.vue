@@ -5,8 +5,8 @@
 		<p>A general form component that can take the place of a text input, select, textarea, and more, providing compatibility with <code>form-wrapper</code>, allowing a form to be built up quickly and simply.</p>
 	</div>
 
-	<tab-group class="mt-10">
-		<tab-item icon="icon-object">
+	<tab-group class="mt-10" v-bind="{ updateUrl: true }">
+		<tab-item v-bind="{ id: 'tab-props', icon: 'icon-object' }">
 			<template #label>
 				Props
 			</template>
@@ -195,7 +195,7 @@
 			</div>
 		</tab-item>
 
-		<tab-item icon="icon-slot">
+		<tab-item v-bind="{ id: 'tab-slots', icon: 'icon-slot' }">
 			<template #label>
 				Slots
 			</template>
@@ -213,7 +213,7 @@
 			</div>
 		</tab-item>
 
-		<tab-item icon="icon-megaphone">
+		<tab-item v-bind="{ id: 'tab-events', icon: 'icon-megaphone' }">
 			<template #label>
 				Events
 			</template>
@@ -231,7 +231,7 @@
 			</div>
 		</tab-item>
 
-		<tab-item icon="icon-code">
+		<tab-item v-bind="{ id: 'tab-playground', icon: 'icon-code' }">
 			<template #label>
 				Playground
 			</template>

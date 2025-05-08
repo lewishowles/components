@@ -29,11 +29,13 @@ const columns = computed(() => {
 	const columns = [];
 
 	for (const columnKey in columnDefinitions.value) {
-		if (Object.prototype.hasOwnProperty.call(columnDefinitions.value, columnKey)) {
-			const definition = columnDefinitions.value[columnKey];
-
-			columns.push({ key: columnKey, label: definition.label });
+		if (!Object.prototype.hasOwnProperty.call(columnDefinitions.value, columnKey)) {
+			return;
 		}
+
+		const definition = columnDefinitions.value[columnKey];
+
+		columns.push({ key: columnKey, label: definition.label });
 	}
 
 	return columns;

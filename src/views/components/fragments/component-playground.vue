@@ -1,12 +1,12 @@
 <template>
 	<div class="flex flex-col gap-8">
-		<div class="prose">
+		<div class="prose dark:prose-invert">
 			<h3><slot name="title" /></h3>
 
 			<slot name="introduction" />
 		</div>
 
-		<div class="p-3 flex justify-end gap-3 border border-grey-300 rounded-md bg-grey-50 text-sm">
+		<div class="p-3 flex justify-end gap-3 border border-grey-300 rounded-md bg-grey-50 dark:bg-grey-950/20 dark:border-transparent text-sm">
 			<copy-content v-bind="{ content: copy }" class="button--muted">
 				Copy code
 			</copy-content>
@@ -28,7 +28,7 @@
 			</floating-details>
 		</div>
 
-		<div class="inset-shadow-sm p-24 rounded-md border border-grey-300">
+		<div class="inset-shadow-sm p-24 rounded-md border border-grey-300 dark:border-white/20">
 			<slot />
 		</div>
 	</div>
@@ -90,19 +90,21 @@ function initialise() {
 
 	// Initialise values from local storage, where possible.
 	for (const slotKey in storedTextSlots.value) {
-		if (Object.prototype.hasOwnProperty.call(storedTextSlots.value, slotKey)) {
-			if (!Object.prototype.hasOwnProperty.call(textSlots.value, slotKey)) {
-				return;
-			}
-
-			const storedTextValue = storedTextSlots.value[slotKey];
-
-			if (!isNonEmptyString(storedTextValue)) {
-				return;
-			}
-
-			textSlots.value[slotKey].value = storedTextValue;
+		if (!Object.prototype.hasOwnProperty.call(storedTextSlots.value, slotKey)) {
+			return;
 		}
+
+		if (!Object.prototype.hasOwnProperty.call(textSlots.value, slotKey)) {
+			return;
+		}
+
+		const storedTextValue = storedTextSlots.value[slotKey];
+
+		if (!isNonEmptyString(storedTextValue)) {
+			return;
+		}
+
+		textSlots.value[slotKey].value = storedTextValue;
 	}
 }
 
