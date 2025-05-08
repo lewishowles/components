@@ -6,7 +6,7 @@
 			<span class="sr-only">@lewishowles/components</span>
 		</router-link>
 
-		<div class="my-8 bg-gradient-to-r to-grey-200 dark:to-white/20 h-px" />
+		<div class="my-8 bg-gradient-to-r from-grey-200 dark:from-white/20 h-px" />
 
 		<ol class="flex flex-col gap-6">
 			<app-menu-item name="getting-started">
