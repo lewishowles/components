@@ -1,14 +1,14 @@
 <template>
 	<component-playground v-bind="{ copy: template }" v-model="textSlots">
 		<template #title>
-			Text input
+			Textarea
 		</template>
 
 		<template #introduction>
-			<p>When using a text input, it is strongly recommended that a visible label is used, and that the placeholder is not used for meaningful information, as this can cause some users to lose context. Use the label to describe the information required of the user, and help text for any additional explanation that would be useful.</p>
+			<p>As with a text input, when using a textarea, it is strongly recommended that a visible label is used, and that the placeholder is not used for meaningful information, as this can cause some users to lose context. Use the label to describe the information required of the user, and help text for any additional explanation that would be useful.</p>
 		</template>
 
-		<form-field>
+		<form-field type="textarea">
 			{{ textSlots.label.value }}
 
 			<template #help>
@@ -30,11 +30,11 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 const textSlots = ref({
 	label: {
 		label: "Field label",
-		value: "Your name",
+		value: "About you",
 	},
 	help: {
 		label: "Help text",
-		value: "We will only use your name to address you in your account and communications, and will not pass it on to third parties.",
+		value: "This will be displayed on your profile and will be public to other users of the website.",
 		type: "textarea",
 	},
 	error: {
@@ -44,5 +44,13 @@ const textSlots = ref({
 	},
 });
 
-const { template } = useTemplateGenerator("form-field", textSlots.value);
+const componentProps = {
+	type: {
+		label: "Type",
+		value: "textarea",
+		type: "text",
+	},
+};
+
+const { template } = useTemplateGenerator("form-field", textSlots.value, componentProps);
 </script>

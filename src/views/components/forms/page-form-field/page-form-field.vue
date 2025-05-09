@@ -236,11 +236,15 @@
 				Playground
 			</template>
 
-			<playground-form-field-text />
+			<div class="flex flex-col gap-10">
+				<playground-form-field-text />
+				<playground-form-field-textarea />
+			</div>
 		</tab-item>
 	</tab-group>
 </template>
 
 <script setup>
 import PlaygroundFormFieldText from "./fragments/playground-form-field-text.vue";
+import PlaygroundFormFieldTextarea from "./fragments/playground-form-field-textarea.vue";
 </script>
