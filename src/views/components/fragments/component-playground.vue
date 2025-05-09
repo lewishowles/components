@@ -28,9 +28,26 @@
 			</floating-details>
 		</div>
 
-		<div class="inset-shadow-sm p-24 rounded-md border border-grey-300 dark:border-white/20">
-			<slot />
-		</div>
+		<tab-group class="inset-shadow-sm p-4 rounded-md border border-grey-300 dark:border-white/20">
+			<tab-item>
+				<template #label>
+					Demo
+				</template>
+
+				<div class="p-20">
+					<slot />
+				</div>
+			</tab-item>
+			<tab-item>
+				<template #label>
+					Code
+				</template>
+
+				<div class="p-20">
+					<pre>{{ copy }}</pre>
+				</div>
+			</tab-item>
+		</tab-group>
 	</div>
 </template>
 
