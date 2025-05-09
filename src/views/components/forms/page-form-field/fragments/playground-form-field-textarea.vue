@@ -44,13 +44,13 @@ const textSlots = ref({
 	},
 });
 
-const componentProps = {
+const componentProps = ref({
 	type: {
 		label: "Type",
 		value: "textarea",
 		type: "text",
 	},
-};
+});
 
-const { template } = useTemplateGenerator("form-field", textSlots.value, componentProps);
+const { template } = useTemplateGenerator("form-field", textSlots, componentProps);
 </script>

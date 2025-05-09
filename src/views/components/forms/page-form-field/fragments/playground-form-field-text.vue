@@ -44,5 +44,5 @@ const textSlots = ref({
 	},
 });
 
-const { template } = useTemplateGenerator("form-field", textSlots.value);
+const { template } = useTemplateGenerator("form-field", textSlots);
 </script>
