@@ -236,8 +236,9 @@
 				Playground
 			</template>
 
-			<div class="flex flex-col gap-10">
+			<div class="flex flex-col gap-24 divide-y divide-grey-200">
 				<playground-form-field-text />
+
 				<playground-form-field-textarea />
 			</div>
 		</tab-item>
