@@ -1,6 +1,6 @@
 <template>
-	<div class="flex flex-col gap-1" data-test="form-textarea">
-		<form-label v-bind="{ id: inputId }">
+	<field-wrapper v-bind="{ haveError }" class="flex flex-col gap-1" data-test="form-textarea">
+		<form-label v-bind="{ id: inputId, required }">
 			<slot />
 		</form-label>
 
@@ -13,6 +13,7 @@
 					id: inputId,
 					placeholder,
 					'aria-describedby': describedBy,
+					required,
 					...inputAttributes,
 				}"
 			/>
@@ -26,7 +27,7 @@
 				<slot name="help" />
 			</template>
 		</form-supplementary>
-	</div>
+	</field-wrapper>
 </template>
 
 <script setup>
@@ -49,6 +50,7 @@ import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
 import useInputId from "@/components/form/composables/use-input-id";
 
+import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
 import FormLabel from "@/components/form/form-label/form-label.vue";
 import FormSupplementary from "@/components/form/fragments/form-supplementary/form-supplementary.vue";
 
@@ -79,6 +81,14 @@ const props = defineProps({
 	inputAttributes: {
 		type: Object,
 		default: null,
+	},
+
+	/**
+	 * Whether this field is required.
+	 */
+	required: {
+		type: Boolean,
+		default: false,
 	},
 });
 
