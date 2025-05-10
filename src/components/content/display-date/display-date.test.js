@@ -6,6 +6,7 @@ const defaultProps = { date: "2025-03-29" };
 const mount = createMount(DisplayDate, { props: defaultProps });
 
 describe("display-date", () => {
+	console.error = vi.fn();
 	console.warn = vi.fn();
 
 	describe("Initialisation", () => {

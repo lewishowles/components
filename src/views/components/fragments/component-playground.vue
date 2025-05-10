@@ -6,30 +6,32 @@
 			<slot name="introduction" />
 		</div>
 
-		<div class="sticky top-0 p-3 flex justify-end gap-3 border border-grey-400/40 rounded-md bg-grey-400/3 backdrop-blur-sm dark:bg-grey-950/20 dark:border-transparent text-sm">
-			<copy-content v-bind="{ content: copy }" class="button--muted">
-				Copy code
-			</copy-content>
+		<div class="flex flex-col gap-8">
+			<div class="sticky top-0 p-3 flex justify-end gap-3 border border-grey-400/40 rounded-md bg-grey-400/3 backdrop-blur-sm dark:bg-grey-950/20 dark:border-transparent text-sm">
+				<copy-content v-bind="{ content: copy }" class="button--muted">
+					Copy code
+				</copy-content>
 
-			<floating-details>
-				<template #summary>
-					Text slots
-				</template>
+				<floating-details>
+					<template #summary>
+						Text slots
+					</template>
 
-				<form-layout>
-					<form-field v-for="(slot, key) in textSlots" :key="key" v-bind="{ type: slot.type }" v-model="textSlots[key].value">
-						{{ slot.label }}
-					</form-field>
+					<form-layout>
+						<form-field v-for="(slot, key) in textSlots" :key="key" v-bind="{ type: slot.type }" v-model="textSlots[key].value">
+							{{ slot.label }}
+						</form-field>
 
-					<ui-button class="button--muted self-start" icon-start="icon-reload" @click="resetTextSlots">
-						Reset content
-					</ui-button>
-				</form-layout>
-			</floating-details>
-		</div>
+						<ui-button class="button--muted self-start" icon-start="icon-reload" @click="resetTextSlots">
+							Reset content
+						</ui-button>
+					</form-layout>
+				</floating-details>
+			</div>
 
-		<div class="inset-shadow-sm p-24 rounded-md border border-grey-300 dark:border-white/20">
-			<slot />
+			<div class="inset-shadow-sm p-24 rounded-md border border-grey-300 dark:border-white/20">
+				<slot />
+			</div>
 		</div>
 
 		<code-block>{{ copy }}</code-block>
