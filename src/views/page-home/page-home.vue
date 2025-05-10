@@ -1,5 +1,5 @@
 <template>
-	<div class="prose prose-slate dark:prose-invert">
+	<div class="prose prose-slate dark:prose-invert *:animate-fade-in *:delay">
 		<h1>@lewishowles/components</h1>
 
 		<p>A library of beautiful components with a focus on accessibility, as well as ease of use for developers and for users.</p>
@@ -20,7 +20,7 @@
 	</div>
 
 	<div class="grid grid-cols-4 gap-4 mt-12">
-		<div class="bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-md">
+		<div class="bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-md animate-fade-in delay">
 			<img src="/icon/forms.svg" class="size-12 block mx-auto my-6" />
 
 			<h3 class="font-semibold">

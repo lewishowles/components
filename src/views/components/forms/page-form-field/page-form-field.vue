@@ -1,5 +1,5 @@
 <template>
-	<div class="prose prose-slate dark:prose-invert">
+	<div class="prose prose-slate dark:prose-invert *:animate-fade-in *:delay">
 		<h1>Form field</h1>
 
 		<p>A general form component that can take the place of a text input, select, textarea, and more, providing compatibility with <code>form-wrapper</code>, allowing a form to be built up quickly and simply.</p>
@@ -11,7 +11,7 @@
 				Props
 			</template>
 
-			<div class="prose dark:prose-invert">
+			<div class="prose dark:prose-invert *:animate-fade-in *:delay">
 				<h2>Props</h2>
 
 				<ol class="not-prose font-mono">
@@ -236,7 +236,7 @@
 				Playground
 			</template>
 
-			<div class="flex flex-col gap-24 divide-y divide-grey-200">
+			<div class="flex flex-col gap-16">
 				<playground-form-field-text />
 
 				<playground-form-field-textarea />
