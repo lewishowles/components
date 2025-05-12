@@ -5,7 +5,7 @@
 		<p>A general form component that can take the place of a text input, select, textarea, and more, providing compatibility with <code>form-wrapper</code>, allowing a form to be built up quickly and simply.</p>
 	</div>
 
-	<tab-group class="mt-10" v-bind="{ updateUrl: true }">
+	<tab-group class="mt-10">
 		<tab-item v-bind="{ id: 'tab-props', icon: 'icon-object' }">
 			<template #label>
 				Props

@@ -41,12 +41,12 @@ import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
-	 * Whether to update the URL with the ID of provided tabs when switching,
-	 * which will allow them to be reinstated on load. Note that when using this
+	 * Whether to remember the selected tab, updating the URL and allowing the
+	 * appropriate tab to be reinstated on load. Note that when using this
 	 * feature, tabs must be given custom IDs, as opposed to the default IDs,
 	 * which are randomly generated.
 	 */
-	updateUrl: {
+	rememberSelection: {
 		type: Boolean,
 		default: false,
 	},
@@ -160,7 +160,7 @@ function ensureActiveTab() {
 		}
 	}
 
-	setActiveTabByIndex(0, { updateUrl: false });
+	setActiveTabByIndex(0, { rememberSelection: false });
 }
 
 /**
@@ -170,11 +170,11 @@ function ensureActiveTab() {
  *     The index of the tab to activate.
  * @param  {object}  options
  *     Additional options when setting the active tab.
- * @param  {boolean}  updateUrl
+ * @param  {boolean}  rememberSelection
  *     Whether to update the URL for this change. We don't want to do this when
  *     setting the default tab to active, for example.
  */
-function setActiveTabByIndex(index, { updateUrl = true } = {}) {
+function setActiveTabByIndex(index, { rememberSelection = true } = {}) {
 	if (!isNonEmptyArray(tabs.value)) {
 		return;
 	}
@@ -182,7 +182,7 @@ function setActiveTabByIndex(index, { updateUrl = true } = {}) {
 	const internalIndex = clamp(index, 0, tabs.value.length - 1);
 	const tabId = tabs.value?.[internalIndex]?.tabId;
 
-	setActiveTabById(tabId, { updateUrl });
+	setActiveTabById(tabId, { rememberSelection });
 }
 
 /**
@@ -192,18 +192,18 @@ function setActiveTabByIndex(index, { updateUrl = true } = {}) {
  *     The ID of the tab to mark as active.
  * @param  {object}  options
  *     Additional options when setting the active tab.
- * @param  {boolean}  updateUrl
+ * @param  {boolean}  rememberSelection
  *     Whether to update the URL for this change. We don't want to do this when
  *     setting the default tab to active, for example.
  */
-function setActiveTabById(tabId, { updateUrl = true } = {}) {
+function setActiveTabById(tabId, { rememberSelection = true } = {}) {
 	if (!isValidTabId(tabId)) {
 		return;
 	}
 
 	activeTabId.value = tabId;
 
-	if (updateUrl === true && props.updateUrl === true && window.location.hash.slice(1) !== tabId) {
+	if (rememberSelection === true && props.rememberSelection === true && window.location.hash.slice(1) !== tabId) {
 		window.history.pushState(null, null, `#${tabId}`);
 	}
 }

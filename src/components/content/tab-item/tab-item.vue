@@ -16,8 +16,8 @@ import { nanoid } from "nanoid";
 const props = defineProps({
 	/**
 	 * Any ID to apply to this tab. This can be used in conjunction with
-	 * `tab-group` prop `updateUrl` to reinstate tabs on page refresh. When
-	 * providing an ID, ensure that it is unique.
+	 * `tab-group` prop `rememberSelection` to reinstate tabs on page refresh.
+	 * When providing an ID, ensure that it is unique.
 	 */
 	id: {
 		type: String,

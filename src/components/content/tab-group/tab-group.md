@@ -30,12 +30,12 @@ The label for this tab, to be displayed in the tab bar.
 
 ## Props
 
-### `updateUrl`
+### `rememberSelection`
 
 - type: `boolean`
 - default: `false`
 
-Whether to update the URL with the ID of provided tabs when switching, which will allow them to be reinstated on load. Note that when using this feature, tabs must be given custom IDs, as opposed to the default IDs, which are randomly generated.
+Whether to remember the selected tab, updating the URL and allowing the appropriate tab to be reinstated on load. Note that when using this feature, tabs must be given custom IDs, as opposed to the default IDs, which are randomly generated.
 
 ## Props (`tab-item`)
 
@@ -44,7 +44,7 @@ Whether to update the URL with the ID of provided tabs when switching, which wil
 - type: `string`
 - default: `null`
 
-Any ID to apply to this tab. This can be used in conjunction with prop `updateUrl` to reinstate tabs on page refresh. When providing an ID, ensure that it is unique.
+Any ID to apply to this tab. This can be used in conjunction with prop `rememberSelection` to reinstate tabs on page refresh. When providing an ID, ensure that it is unique.
 
 ### `initiallyActive`
 
