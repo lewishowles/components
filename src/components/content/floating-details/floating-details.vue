@@ -1,5 +1,5 @@
 <template>
-	<summary-details v-bind="{ floating: true, closeWithClickOutside: true, align: 'end', summaryClasses, detailsClasses: [detailsClasses, 'w-screen', maxWidthClass] }" data-test="floating-menu">
+	<summary-details v-bind="{ floating: true, closeWithClickOutside: true, align: 'end', summaryClasses, detailsClasses: ['w-screen', detailsClasses, detailsSizeClasses] }" data-test="floating-menu">
 		<template #summary>
 			<slot name="summary" />
 		</template>
@@ -38,11 +38,12 @@ defineProps({
 	},
 
 	/**
-	 * A class to add to detailsClasses to set a max width, allowing the size of
-	 * the menu to be changed without affecting its appearance.
+	 * Any classes to add to specify the details content's size. This is
+	 * separate to details classes so that the appearance can be consistent even
+	 * if the size is not.
 	 */
-	maxWidthClass: {
-		type: String,
+	detailsSizeClasses: {
+		type: [String, Array, Object],
 		default: "max-w-lg",
 	},
 });

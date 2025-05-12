@@ -115,9 +115,16 @@ Any classes to add to the summary element, allowing styling to wrap both the sum
 ### `detailsClasses`
 
 - type: `string`
-- default: `null`
+- default: `mt-3 rounded-md border border-grey-200 bg-white p-4 shadow`
 
 Any classes to add to the details content wrapper.
+
+### `detailsSizeClasses`
+
+- type: `string`
+- default: `max-w-lg`
+
+Any classes to add to specify the details content's size. This is separate to details classes so that the appearance can be consistent even if the size is not.
 
 ### `iconClasses`
 
