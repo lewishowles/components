@@ -7,12 +7,12 @@
 		</div>
 
 		<div class="flex flex-col gap-8">
-			<div class="sticky top-0 p-3 flex justify-end gap-3 border border-grey-400/40 rounded-md bg-grey-400/3 backdrop-blur-sm dark:bg-grey-950/20 dark:border-transparent text-sm">
+			<div class="sticky z-10 top-0 p-3 flex justify-end gap-3 border border-grey-400/40 rounded-md bg-grey-400/3 backdrop-blur-sm dark:bg-grey-950/20 dark:border-transparent text-sm">
 				<copy-content v-bind="{ content: copy }" class="button--muted">
 					Copy code
 				</copy-content>
 
-				<floating-details>
+				<floating-details v-show="!useTranslation">
 					<template #summary>
 						Text slots
 					</template>
@@ -43,6 +43,7 @@ import { computed, getCurrentInstance, ref, watch } from "vue";
 import { deepCopy, get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useStorage } from "@vueuse/core";
+import useTranslationMode from "@/composables/use-translation-mode/use-translation-mode";
 
 const props = defineProps({
 	/**
@@ -63,6 +64,8 @@ const parentComponentName = get(instance, "parent.type.__name");
 // Whether we are able to determine the parent's component name, used to
 // namespace any storage.
 const haveParentComponentName = computed(() => isNonEmptyString(parentComponentName));
+// Whether the user is using translation mode.
+const { useTranslation } = useTranslationMode();
 
 // We define our text slots as our model so that we can easily access their
 // values both here and in the parent component.

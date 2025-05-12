@@ -1,6 +1,7 @@
-import { computed, ref, unref } from "vue";
+import { computed, unref } from "vue";
 import { isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import useTranslationMode from "@/composables/use-translation-mode/use-translation-mode";
 
 /**
  * Generate a component template based on the provided text slots.
@@ -14,12 +15,12 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
  *     The template will extract the key and `.value` to generate pairs.
  */
 export default function useTemplateGenerator(componentTag, slots, props) {
-	const template = computed(() => {
-		const stableSlots = unref(slots);
+	const { useTranslation, translationPathPrefix } = useTranslationMode();
 
+	const template = computed(() => {
 		let template = `<${componentTag}${propsTemplate.value}>`;
 
-		template += `\n\t${stableSlots.label?.value || ""}`;
+		template += `\n\t${getPlaygroundSlotContent("label")}`;
 
 		template += slotsTemplate.value;
 
@@ -96,7 +97,7 @@ export default function useTemplateGenerator(componentTag, slots, props) {
 				continue;
 			}
 
-			const slotContent = stableSlots[slotKey].value;
+			const slotContent = getPlaygroundSlotContent(slotKey);
 
 			if (isNonEmptyString(slotContent)) {
 				template += `\n\n\t<template #${slotKey}>\n\t\t${slotContent}\n\t</template>`;
@@ -105,6 +106,30 @@ export default function useTemplateGenerator(componentTag, slots, props) {
 
 		return template;
 	});
+
+	/**
+	 * Retrieve the appropriate slot content for a given slot key; either raw
+	 * content, or a vue-i18n ready translation string.
+	 *
+	 * @param  {string}  slotKey
+	 *     The key of the slot for which to retrieve slot content.
+	 */
+	function getPlaygroundSlotContent(slotKey) {
+		const stableSlots = unref(slots);
+
+		// If we're using translation mode, we return a vue-i18n ready
+		// translation, combining any translationPathPrefix with the key for
+		// the slot.
+		if (useTranslation.value) {
+			let slotContent = [translationPathPrefix.value, slotKey].filter(pathPart => pathPart).join(".");
+
+			slotContent = `{{ t("${slotContent}") }}`;
+
+			return slotContent;
+		}
+
+		return stableSlots[slotKey].value;
+	}
 
 	return {
 		template,

@@ -24,7 +24,7 @@
 
 <script setup>
 import { ref } from "vue";
-import useTemplateGenerator from "@/views/components/composables/use-template-generator";
+import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
 
 // Our base text slots, available for the user to update.
 const textSlots = ref({
