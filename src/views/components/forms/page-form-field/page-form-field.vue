@@ -6,7 +6,7 @@
 	</div>
 
 	<tab-group class="mt-10">
-		<tab-item v-bind="{ id: 'tab-props', icon: 'icon-object' }">
+		<tab-item v-bind="{ id: 'tab-props', icon: 'icon-object' }" class="pt-8">
 			<template #label>
 				Props
 			</template>
@@ -195,7 +195,7 @@
 			</div>
 		</tab-item>
 
-		<tab-item v-bind="{ id: 'tab-slots', icon: 'icon-slot' }">
+		<tab-item v-bind="{ id: 'tab-slots', icon: 'icon-slot' }" class="pt-8">
 			<template #label>
 				Slots
 			</template>
@@ -213,7 +213,7 @@
 			</div>
 		</tab-item>
 
-		<tab-item v-bind="{ id: 'tab-events', icon: 'icon-megaphone' }">
+		<tab-item v-bind="{ id: 'tab-events', icon: 'icon-megaphone' }" class="pt-8">
 			<template #label>
 				Events
 			</template>
@@ -231,12 +231,21 @@
 			</div>
 		</tab-item>
 
-		<tab-item v-bind="{ id: 'tab-playground', icon: 'icon-code' }">
+		<tab-item v-bind="{ id: 'tab-playground', icon: 'icon-code' }" class="pt-8">
 			<template #label>
 				Playground
 			</template>
 
 			<div class="flex flex-col gap-16">
+				<div class="prose dark:prose-invert">
+					<h2>Playground</h2>
+
+					<ol class="not-prose">
+						<li><a href="#playground-form-field-text">Text input</a></li>
+						<li><a href="#playground-form-field-textarea">Textarea</a></li>
+					</ol>
+				</div>
+
 				<playground-form-field-text />
 
 				<playground-form-field-textarea />

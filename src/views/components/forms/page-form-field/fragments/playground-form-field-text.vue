@@ -1,5 +1,5 @@
 <template>
-	<component-playground v-bind="{ copy: template }" v-model="textSlots">
+	<component-playground v-bind="{ copy: template }" id="playground-form-field-text" v-model="textSlots">
 		<template #title>
 			Text input
 		</template>
