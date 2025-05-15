@@ -1,5 +1,5 @@
 <template>
-	<summary-details v-bind="{ floating: true, closeWithClickOutside: true, align: 'end', summaryClasses, detailsClasses: ['w-screen', detailsClasses, detailsSizeClasses] }" data-test="floating-menu">
+	<summary-details v-bind="{ floating: true, closeWithClickOutside: true, align: 'end', summaryClasses, detailsClasses: ['w-screen', detailsClasses, detailsColourClasses, detailsSizeClasses] }" data-test="floating-menu">
 		<template #summary>
 			<slot name="summary" />
 		</template>
@@ -34,7 +34,17 @@ defineProps({
 	 */
 	detailsClasses: {
 		type: [String, Array, Object],
-		default: "mt-3 rounded-md border border-grey-200 bg-white p-4 shadow",
+		default: "mt-3 rounded-md border p-4 shadow",
+	},
+
+	/**
+	 * Any colours to apply to the details. These are passed as additional
+	 * classes, but are separate so that colours can be redefined without
+	 * affecting remaining styling.
+	 */
+	detailsColourClasses: {
+		type: [String, Array, Object],
+		default: "border-grey-200 bg-white dark:border-transparent dark:bg-grey-950/20 backdrop-blur-lg",
 	},
 
 	/**

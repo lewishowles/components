@@ -14,7 +14,7 @@
 			<div class="prose dark:prose-invert *:animate-fade-in *:delay">
 				<h2>Props</h2>
 
-				<ol class="not-prose font-mono">
+				<ol class="font-mono">
 					<li><a href="#prop-type">type</a></li>
 					<li><a href="#prop-id">id</a></li>
 					<li><a href="#prop-name">name</a></li>
@@ -240,7 +240,7 @@
 				<div class="prose dark:prose-invert">
 					<h2>Playground</h2>
 
-					<ol class="not-prose">
+					<ol>
 						<li><a href="#playground-form-field-text">Text input</a></li>
 						<li><a href="#playground-form-field-textarea">Textarea</a></li>
 					</ol>

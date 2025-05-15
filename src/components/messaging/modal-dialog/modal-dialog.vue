@@ -10,7 +10,7 @@
 
 		<slot />
 
-		<div v-if="haveActions" class="mt-12 flex items-center gap-6 border-t border-grey-200 pt-6">
+		<div v-if="haveActions" class="mt-12 flex items-center gap-6 border-t border-grey-200 dark:border-white/60 pt-6">
 			<slot name="actions" />
 		</div>
 	</dialog>

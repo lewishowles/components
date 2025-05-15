@@ -11,6 +11,22 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+.dark\:prose-invert {
+    &:where(.dark, .dark *) {
+		--tw-prose-body: color-mix(in oklab, var(--color-white) 80%, transparent);
+		--tw-prose-headings: var(--color-white);
+		--tw-prose-lead: color-mix(in oklab, var(--color-white) 90%, transparent);
+		--tw-prose-counters: color-mix(in oklab, var(--color-white) 60%, transparent);
+		--tw-prose-bullets: color-mix(in oklab, var(--color-white) 60%, transparent);
+		--tw-prose-hr: color-mix(in oklab, var(--color-white) 60%, transparent);
+		--tw-prose-quotes: color-mix(in oklab, var(--color-white) 80%, transparent);
+		--tw-prose-quote-borders: color-mix(in oklab, var(--color-white) 60%, transparent);
+		--tw-prose-captions: color-mix(in oklab, var(--color-white) 60%, transparent);
+		--tw-prose-th-borders: color-mix(in oklab, var(--color-white) 60%, transparent);
+		--tw-prose-td-borders: color-mix(in oklab, var(--color-white) 50%, transparent);
+	}
+}
+
 @theme {
 	/* Allow us to use a familiar spelling */
 	--color-grey-50: oklch(0.984 0.003 247.858);
