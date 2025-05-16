@@ -242,19 +242,42 @@
 
 					<ol>
 						<li><a href="#playground-form-field-text">Text input</a></li>
+						<li><a href="#playground-form-field-email">Email</a></li>
+						<li><a href="#playground-form-field-password">Password</a></li>
 						<li><a href="#playground-form-field-textarea">Textarea</a></li>
+						<li><a href="#playground-form-field-checkbox">Checkbox</a></li>
+						<li><a href="#playground-form-field-checkbox-group">Checkbox group</a></li>
+						<li><a href="#playground-form-field-radio-group">Radio group</a></li>
+						<li><a href="#playground-form-field-button-group">Button group</a></li>
+						<li><a href="#playground-form-field-date">Date</a></li>
+						<li><a href="#playground-form-field-select">Select</a></li>
 					</ol>
 				</div>
 
 				<playground-form-field-text />
-
+				<playground-form-field-email />
+				<playground-form-field-password />
 				<playground-form-field-textarea />
+				<playground-form-field-checkbox />
+				<playground-form-field-checkbox-group />
+				<playground-form-field-radio-group />
+				<playground-form-field-button-group />
+				<playground-form-field-date />
+				<playground-form-field-select />
 			</div>
 		</tab-item>
 	</tab-group>
 </template>
 
 <script setup>
+import PlaygroundFormFieldButtonGroup from "./fragments/playground-form-field-button-group.vue";
+import PlaygroundFormFieldCheckbox from "./fragments/playground-form-field-checkbox.vue";
+import PlaygroundFormFieldCheckboxGroup from "./fragments/playground-form-field-checkbox-group.vue";
+import PlaygroundFormFieldDate from "./fragments/playground-form-field-date.vue";
+import PlaygroundFormFieldEmail from "./fragments/playground-form-field-email.vue";
+import PlaygroundFormFieldPassword from "./fragments/playground-form-field-password.vue";
+import PlaygroundFormFieldRadioGroup from "./fragments/playground-form-field-radio-group.vue";
+import PlaygroundFormFieldSelect from "./fragments/playground-form-field-select.vue";
 import PlaygroundFormFieldText from "./fragments/playground-form-field-text.vue";
 import PlaygroundFormFieldTextarea from "./fragments/playground-form-field-textarea.vue";
 </script>

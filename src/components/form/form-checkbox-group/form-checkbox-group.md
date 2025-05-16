@@ -35,7 +35,7 @@ The options to display as checkboxes can be provided in one of three formats for
 
 - An array of strings `["option1", "option2", "option3"]`, in which case both the label and value are the same.
 - An array of numbers `[1, 2, 3]`, in which case both the label and value are the same.
-- An object `{ value: "label" }` where each key is the value of oan option, and each value is the label.
+- An object `{ value: "label" }` where each key is the value of an option, and each value is the label.
 - An array of objects `[{ label: "Label", value: "value" }]` where labels and values are explicitly defined.
 
 It is possible to combine both array options, but generally not recommended.

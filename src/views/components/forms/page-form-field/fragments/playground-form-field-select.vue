@@ -1,11 +1,11 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-field-textarea" v-model="textSlots">
+	<component-playground v-bind="{ copy: template }" id="playground-form-field-select" v-model="textSlots">
 		<template #title>
-			Textarea
+			Select
 		</template>
 
 		<template #introduction>
-			<p>A larger input that invites the user to enter longer strings of text. As with a text input, when using a textarea, it is strongly recommended that a visible label is used, and that the placeholder is not used for meaningful information, as this can cause some users to lose context. Use the label to describe the information required of the user, and help text for any additional explanation that would be useful.</p>
+			<p>Allow a user to select one option from a list of possible options. When wanting to use a select, consider whether it is the most appropriate option. Often, radio buttons or checkboxes are more user-friendly, both because selects can be harder to activate for some, and you cannot add explanations to each option if necessary.</p>
 		</template>
 
 		<form-field v-bind="componentProps">
@@ -30,11 +30,11 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 const textSlots = ref({
 	label: {
 		label: "Field label",
-		value: "About you",
+		value: "Choose your favourite flavour of ice-cream",
 	},
 	help: {
 		label: "Help text",
-		value: "This will be displayed on your profile and will be public to other users of the website.",
+		value: "We're sorry if your favourite isn't listed, but please pick from one of the options provided.",
 		type: "textarea",
 	},
 	error: {
@@ -48,8 +48,13 @@ const textSlots = ref({
 const props = ref({
 	type: {
 		label: "Type",
-		value: "textarea",
+		value: "select",
 		type: "text",
+	},
+	options: {
+		label: "Options",
+		value: ["Chocolate", "Banana", "Vanilla", "Strawberry"],
+		type: "select",
 	},
 });
 

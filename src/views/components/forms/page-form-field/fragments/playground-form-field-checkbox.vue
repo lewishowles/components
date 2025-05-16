@@ -1,11 +1,11 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-field-textarea" v-model="textSlots">
+	<component-playground v-bind="{ copy: template }" id="playground-form-field-checkbox" v-model="textSlots">
 		<template #title>
-			Textarea
+			Checkbox
 		</template>
 
 		<template #introduction>
-			<p>A larger input that invites the user to enter longer strings of text. As with a text input, when using a textarea, it is strongly recommended that a visible label is used, and that the placeholder is not used for meaningful information, as this can cause some users to lose context. Use the label to describe the information required of the user, and help text for any additional explanation that would be useful.</p>
+			<p>Allow the user to select a single checkbox, to confirm terms, for example. A single checkbox returns <code>true</code> or <code>false</code> depending on whether it's checked.</p>
 		</template>
 
 		<form-field v-bind="componentProps">
@@ -30,11 +30,11 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 const textSlots = ref({
 	label: {
 		label: "Field label",
-		value: "About you",
+		value: "I would love to sign up to the newsletter and get 10% off my next order",
 	},
 	help: {
 		label: "Help text",
-		value: "This will be displayed on your profile and will be public to other users of the website.",
+		value: "",
 		type: "textarea",
 	},
 	error: {
@@ -48,7 +48,7 @@ const textSlots = ref({
 const props = ref({
 	type: {
 		label: "Type",
-		value: "textarea",
+		value: "checkbox",
 		type: "text",
 	},
 });

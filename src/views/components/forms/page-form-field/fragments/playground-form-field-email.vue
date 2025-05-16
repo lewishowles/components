@@ -1,11 +1,11 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-field-textarea" v-model="textSlots">
+	<component-playground v-bind="{ copy: template }" id="playground-form-field-email" v-model="textSlots">
 		<template #title>
-			Textarea
+			Email
 		</template>
 
 		<template #introduction>
-			<p>A larger input that invites the user to enter longer strings of text. As with a text input, when using a textarea, it is strongly recommended that a visible label is used, and that the placeholder is not used for meaningful information, as this can cause some users to lose context. Use the label to describe the information required of the user, and help text for any additional explanation that would be useful.</p>
+			<p>Email is a variant of <code>text</code>, automatically applying a <code>type</code> of <code>email</code>.</p>
 		</template>
 
 		<form-field v-bind="componentProps">
@@ -30,11 +30,11 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 const textSlots = ref({
 	label: {
 		label: "Field label",
-		value: "About you",
+		value: "Email address",
 	},
 	help: {
 		label: "Help text",
-		value: "This will be displayed on your profile and will be public to other users of the website.",
+		value: "We will not use your email address for marketing purposes.",
 		type: "textarea",
 	},
 	error: {
@@ -48,7 +48,7 @@ const textSlots = ref({
 const props = ref({
 	type: {
 		label: "Type",
-		value: "textarea",
+		value: "email",
 		type: "text",
 	},
 });

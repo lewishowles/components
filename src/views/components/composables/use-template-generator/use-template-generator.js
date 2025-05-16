@@ -60,7 +60,15 @@ export default function useTemplateGenerator(componentTag, slots, props) {
 			switch (prop.type) {
 				case "boolean":
 					break;
+				case "select":
+					// We set this to null so that the prop is defined as just a
+					// variable, which is how it would be defined in most
+					// occasions. This allows the playground to define real
+					// options, for example, that don't show up in the template
+					// and just need to be removed.
+					propContent = null;
 
+					break;
 				default:
 					propContent = `'${propContent}'`;
 
@@ -69,6 +77,8 @@ export default function useTemplateGenerator(componentTag, slots, props) {
 
 			if (isNonEmptyString(propContent)) {
 				propParts.push(`${propKey}: ${propContent}`);
+			} else {
+				propParts.push(`${propKey}`);
 			}
 		}
 

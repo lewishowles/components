@@ -121,10 +121,13 @@ const fieldTypes = {
 	"text": {},
 	"email": { inputAttributes: { type: "email" } },
 	"password": { inputAttributes: { type: "password" } },
+	"date": {},
 	"textarea": {},
 	"checkbox": {},
+	"checkbox-group": {},
 	"radio-group": {},
 	"button-group": {},
+	"select": {},
 };
 
 // The field type to use, falling back to the default if an unknown type is
@@ -145,6 +148,7 @@ const fieldComponent = computed(() => {
 		case "date":
 		case "radio-group":
 		case "checkbox-group":
+		case "select":
 			return `form-${fieldType.value}`;
 		case "button-group":
 			return fieldType.value;

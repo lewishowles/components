@@ -13,7 +13,7 @@
 	background-size: 1.5em 1.5em;
 
 	@variant dark {
-		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff40' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff90' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
 	}
 
 	.form-field--error & {
@@ -54,8 +54,11 @@
 	@apply peer-focus:bg-grey-50 peer-focus:border-grey-400;
 	@apply peer-focus:outline-hidden peer-focus:ring-2 peer-focus:ring-purple-800 peer-focus:ring-offset-2;
 	@apply peer-checked:border-purple-800 peer-checked:bg-purple-800 peer-checked:text-white;
+	@apply peer-checked:peer-focus:border-purple-800 peer-checked:peer-focus:bg-purple-800 peer-checked:peer-focus:text-white;
 	@apply dark:bg-white/20 dark:border-white/20;
 	@apply dark:peer-focus:bg-white/30 dark:peer-focus:border-white/20;
+	@apply dark:peer-checked:bg-purple-500 dark:peer-checked:border-purple-400;
+	@apply dark:peer-checked:peer-focus:bg-purple-600 dark:peer-checked:peer-focus:border-purple-500;
 	@apply dark:peer-focus:ring-purple-400;
 }
 

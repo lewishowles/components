@@ -5,7 +5,7 @@
 		</template>
 
 		<template #introduction>
-			<p>When using a text input, it is strongly recommended that a visible label is used, and that the placeholder is not used for meaningful information, as this can cause some users to lose context. Use the label to describe the information required of the user, and help text for any additional explanation that would be useful.</p>
+			<p>A basic text input, allowing a user to enter short strings of text. When using a text input, it is strongly recommended that a visible label is used, and that the placeholder is not used for meaningful information, as this can cause some users to lose context. Use the label to describe the information required of the user, and help text for any additional explanation that would be useful.</p>
 		</template>
 
 		<form-field>

@@ -1,11 +1,11 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-field-textarea" v-model="textSlots">
+	<component-playground v-bind="{ copy: template }" id="playground-form-field-checkbox-group" v-model="textSlots">
 		<template #title>
-			Textarea
+			Checkbox group
 		</template>
 
 		<template #introduction>
-			<p>A larger input that invites the user to enter longer strings of text. As with a text input, when using a textarea, it is strongly recommended that a visible label is used, and that the placeholder is not used for meaningful information, as this can cause some users to lose context. Use the label to describe the information required of the user, and help text for any additional explanation that would be useful.</p>
+			<p>Allow a user to select one or more options from those available. A checkbox group differs from a singular checkbox in that the <code>value</code> of each selected checkbox is returned.</p>
 		</template>
 
 		<form-field v-bind="componentProps">
@@ -30,11 +30,11 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 const textSlots = ref({
 	label: {
 		label: "Field label",
-		value: "About you",
+		value: "Select the reasons you think Tails is better than Sonic",
 	},
 	help: {
 		label: "Help text",
-		value: "This will be displayed on your profile and will be public to other users of the website.",
+		value: "",
 		type: "textarea",
 	},
 	error: {
@@ -48,8 +48,13 @@ const textSlots = ref({
 const props = ref({
 	type: {
 		label: "Type",
-		value: "textarea",
+		value: "checkbox-group",
 		type: "text",
+	},
+	options: {
+		label: "Options",
+		value: ["Two tails", "Orange", "Can fly"],
+		type: "select",
 	},
 });
 

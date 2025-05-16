@@ -1,11 +1,11 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-field-textarea" v-model="textSlots">
+	<component-playground v-bind="{ copy: template }" id="playground-form-field-radio-group" v-model="textSlots">
 		<template #title>
-			Textarea
+			Radio group
 		</template>
 
 		<template #introduction>
-			<p>A larger input that invites the user to enter longer strings of text. As with a text input, when using a textarea, it is strongly recommended that a visible label is used, and that the placeholder is not used for meaningful information, as this can cause some users to lose context. Use the label to describe the information required of the user, and help text for any additional explanation that would be useful.</p>
+			<p>Much like a select, a radio group allows a user to select one option from a list of those available. The main difference, however, is that it is (generally) possible to see all of the options of a radio group without interacting with it, and additional help text can be added to each option.</p>
 		</template>
 
 		<form-field v-bind="componentProps">
@@ -30,11 +30,11 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 const textSlots = ref({
 	label: {
 		label: "Field label",
-		value: "About you",
+		value: "Would you like to continue with your application?",
 	},
 	help: {
 		label: "Help text",
-		value: "This will be displayed on your profile and will be public to other users of the website.",
+		value: "You can return to your application at any time if you choose not to continue.",
 		type: "textarea",
 	},
 	error: {
@@ -48,8 +48,13 @@ const textSlots = ref({
 const props = ref({
 	type: {
 		label: "Type",
-		value: "textarea",
+		value: "radio-group",
 		type: "text",
+	},
+	options: {
+		label: "Options",
+		value: ["Yes", "No"],
+		type: "select",
 	},
 });
 
