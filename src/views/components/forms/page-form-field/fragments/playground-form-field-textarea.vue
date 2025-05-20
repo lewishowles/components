@@ -9,14 +9,18 @@
 		</template>
 
 		<form-field v-bind="componentProps">
-			{{ textSlots.label.value }}
+			{{ textSlots.label?.value }}
+
+			<template #introduction>
+				{{ textSlots.introduction?.value }}
+			</template>
 
 			<template #help>
-				{{ textSlots.help.value }}
+				{{ textSlots.help?.value }}
 			</template>
 
 			<template #error>
-				{{ textSlots.error.value }}
+				{{ textSlots.error?.value }}
 			</template>
 		</form-field>
 	</component-playground>
@@ -32,9 +36,14 @@ const textSlots = ref({
 		label: "Field label",
 		value: "About you",
 	},
+	introduction: {
+		label: "Introduction",
+		value: "This will be displayed on your profile and will be visible to other users of the website.",
+		type: "textarea",
+	},
 	help: {
 		label: "Help text",
-		value: "This will be displayed on your profile and will be public to other users of the website.",
+		value: "You can use basic Markdown such as **bold** and _italic_.",
 		type: "textarea",
 	},
 	error: {

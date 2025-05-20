@@ -1,5 +1,5 @@
 <template>
-	<div v-if="haveHelp || haveError" class="flex flex-col">
+	<div v-if="haveHelp || haveError" class="flex flex-col text-sm">
 		<form-error v-if="haveError" v-bind="{ id: errorId }">
 			<slot name="error" />
 		</form-error>

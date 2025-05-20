@@ -4,6 +4,10 @@
 			<slot />
 		</form-label>
 
+		<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }">
+			<slot name="introduction" />
+		</conditional-wrapper>
+
 		<div class="flex transition-shadow" :class="{ 'form-field--error': haveError }" data-selector="form-field-wrapper" data-test="form-input-wrapper">
 			<input
 				ref="inputElement"
@@ -112,6 +116,8 @@ const inputElement = useTemplateRef("inputElement");
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
 const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
+// Whether an introduction has been provided.
+const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 // Whether a prefix is defined.
 const havePrefix = computed(() => isNonEmptySlot(slots.prefix));
 // Whether a suffix is defined.

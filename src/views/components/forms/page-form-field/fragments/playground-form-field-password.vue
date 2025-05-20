@@ -9,14 +9,18 @@
 		</template>
 
 		<form-field v-bind="componentProps">
-			{{ textSlots.label.value }}
+			{{ textSlots.label?.value }}
+
+			<template #introduction>
+				{{ textSlots.introduction?.value }}
+			</template>
 
 			<template #help>
-				{{ textSlots.help.value }}
+				{{ textSlots.help?.value }}
 			</template>
 
 			<template #error>
-				{{ textSlots.error.value }}
+				{{ textSlots.error?.value }}
 			</template>
 		</form-field>
 	</component-playground>
@@ -32,9 +36,14 @@ const textSlots = ref({
 		label: "Field label",
 		value: "Password",
 	},
+	introduction: {
+		label: "Introduction",
+		value: "Please make your password as complex as you're comfortable with.",
+		type: "textarea",
+	},
 	help: {
 		label: "Help text",
-		value: "",
+		value: "You can change your password later in your account settings.",
 		type: "textarea",
 	},
 	error: {

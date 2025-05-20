@@ -9,14 +9,18 @@
 		</template>
 
 		<form-field v-bind="componentProps">
-			{{ textSlots.label.value }}
+			{{ textSlots.label?.value }}
+
+			<template #introduction>
+				{{ textSlots.introduction?.value }}
+			</template>
 
 			<template #help>
-				{{ textSlots.help.value }}
+				{{ textSlots.help?.value }}
 			</template>
 
 			<template #error>
-				{{ textSlots.error.value }}
+				{{ textSlots.error?.value }}
 			</template>
 		</form-field>
 	</component-playground>
@@ -32,9 +36,14 @@ const textSlots = ref({
 		label: "Field label",
 		value: "Application theme",
 	},
+	introduction: {
+		label: "Introduction",
+		value: "Choose how you want to view the application.",
+		type: "textarea",
+	},
 	help: {
 		label: "Help text",
-		value: "You can return to your application at any time if you choose not to continue.",
+		value: "\"System\" will match your operating system or browser settings.",
 		type: "textarea",
 	},
 	error: {

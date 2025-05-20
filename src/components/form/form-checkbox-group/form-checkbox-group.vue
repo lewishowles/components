@@ -1,6 +1,18 @@
 <template>
 	<form-input-group ref="input-group" v-model="internalModel" v-bind="{ type: 'checkbox' }" data-test="form-checkbox-group">
 		<slot />
+
+		<template #introduction>
+			<slot name="introduction" />
+		</template>
+
+		<template #help>
+			<slot name="help" />
+		</template>
+
+		<template #error>
+			<slot name="error" />
+		</template>
 	</form-input-group>
 </template>
 

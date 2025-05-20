@@ -33,6 +33,14 @@ describe("form-input", () => {
 	});
 
 	describe("Supplementary information", () => {
+		it("An introduction can be supplied", () => {
+			mount({ slots: { introduction: "Introductory text" } });
+
+			cy.getByData("form-input-introduction")
+				.shouldBeVisible()
+				.shouldHaveText("Introductory text");
+		});
+
 		it("Help can be supplied", () => {
 			mount({ slots: { help: "Help text" } });
 

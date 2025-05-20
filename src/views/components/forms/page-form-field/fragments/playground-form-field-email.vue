@@ -9,14 +9,18 @@
 		</template>
 
 		<form-field v-bind="componentProps">
-			{{ textSlots.label.value }}
+			{{ textSlots.label?.value }}
+
+			<template #introduction>
+				{{ textSlots.introduction?.value }}
+			</template>
 
 			<template #help>
-				{{ textSlots.help.value }}
+				{{ textSlots.help?.value }}
 			</template>
 
 			<template #error>
-				{{ textSlots.error.value }}
+				{{ textSlots.error?.value }}
 			</template>
 		</form-field>
 	</component-playground>
@@ -32,9 +36,14 @@ const textSlots = ref({
 		label: "Field label",
 		value: "Email address",
 	},
+	introduction: {
+		label: "Introduction",
+		value: "We will not use your email address for marketing purposes.",
+		type: "textarea",
+	},
 	help: {
 		label: "Help text",
-		value: "We will not use your email address for marketing purposes.",
+		value: "You can change your email address later in your account settings.",
 		type: "textarea",
 	},
 	error: {

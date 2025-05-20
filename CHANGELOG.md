@@ -22,6 +22,11 @@ This version introduces a new documentation site to demonstrate each component a
 - `tab-group`: Icons can now be added to tabs via the `icon` prop on a `tab-item`.
 - `tab-group`: When the URL contains a fragment, if that fragment is contained within a tab, it will activate itself.
 - `tab-group`: A new `rememberSelection` prop allows an active tab to be reinstated on page reload.
+- `form-button-group`: Added new `introduction` slot.
+- `form-date`: Added new `introduction` slot.
+- `form-input`: Added new `introduction` slot.
+- `form-select`: Added new `introduction` slot.
+- `form-textarea`: Added new `introduction` slot.
 
 # 0.22.0 - 2025-04-18
 

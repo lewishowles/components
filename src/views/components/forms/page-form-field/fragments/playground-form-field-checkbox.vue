@@ -9,14 +9,14 @@
 		</template>
 
 		<form-field v-bind="componentProps">
-			{{ textSlots.label.value }}
+			{{ textSlots.label?.value }}
 
 			<template #help>
-				{{ textSlots.help.value }}
+				{{ textSlots.help?.value }}
 			</template>
 
 			<template #error>
-				{{ textSlots.error.value }}
+				{{ textSlots.error?.value }}
 			</template>
 		</form-field>
 	</component-playground>
@@ -34,7 +34,7 @@ const textSlots = ref({
 	},
 	help: {
 		label: "Help text",
-		value: "",
+		value: "When you confirm your newsletter subscription, we'll send you an email with your exclusive discount code.",
 		type: "textarea",
 	},
 	error: {

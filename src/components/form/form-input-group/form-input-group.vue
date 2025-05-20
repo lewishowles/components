@@ -1,6 +1,6 @@
 <template>
-	<fieldset class="flex flex-col gap-2 @container" v-bind="{ 'aria-describedby': describedBy }">
-		<form-label v-bind="{ tag: 'legend' }" class="mb-4">
+	<field-wrapper v-bind="{ tag: 'fieldset', 'aria-describedby': describedBy }" class="@container">
+		<form-label v-bind="{ tag: 'legend' }">
 			<slot />
 		</form-label>
 
@@ -9,7 +9,7 @@
 		</conditional-wrapper>
 
 		<slot name="options" v-bind="{ options: internalOptions, name: fieldName }">
-			<div class="flex flex-col" :class="{ '@xs:flex-row @xs:gap-10': inline, 'gap-4': !inline }">
+			<div class="flex flex-col mt-2" :class="{ '@xs:flex-row @xs:gap-10': inline, 'gap-2': !inline }">
 				<template v-for="option in internalOptions" :key="option.id">
 					<div class="flex items-center gap-3">
 						<input
@@ -38,7 +38,7 @@
 			</div>
 		</slot>
 
-		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy">
+		<form-supplementary v-bind="{ inputId }" class="mt-1" @update:describedby="updateDescribedBy">
 			<template #error>
 				<slot name="error" />
 			</template>
@@ -46,7 +46,7 @@
 				<slot name="help" />
 			</template>
 		</form-supplementary>
-	</fieldset>
+	</field-wrapper>
 </template>
 
 <script setup>
@@ -67,6 +67,7 @@ import { nanoid } from "nanoid";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
 import useInputId from "@/components/form/composables/use-input-id";
 
+import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
 import FormLabel from "@/components/form/form-label/form-label.vue";
 import FormSupplementary from "@/components/form/fragments/form-supplementary/form-supplementary.vue";
 

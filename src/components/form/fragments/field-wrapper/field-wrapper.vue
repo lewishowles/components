@@ -1,6 +1,6 @@
 <template>
 	<component :is="tag" class="flex flex-col gap-1" :class="{ 'relative ps-5': haveError }" data-test="field-wrapper">
-		<div :class="{ 'absolute inset-y-0 start-0 w-1 rounded-full bg-red-600 dark:bg-red-300': haveError }" />
+		<div v-if="haveError" class="absolute inset-y-0 start-0 w-1 rounded-full bg-red-600 dark:bg-red-300" />
 
 		<slot />
 	</component>

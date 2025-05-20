@@ -9,14 +9,18 @@
 		</template>
 
 		<form-field>
-			{{ textSlots.label.value }}
+			{{ textSlots.label?.value }}
+
+			<template #introduction>
+				{{ textSlots.introduction?.value }}
+			</template>
 
 			<template #help>
-				{{ textSlots.help.value }}
+				{{ textSlots.help?.value }}
 			</template>
 
 			<template #error>
-				{{ textSlots.error.value }}
+				{{ textSlots.error?.value }}
 			</template>
 		</form-field>
 	</component-playground>
@@ -32,9 +36,14 @@ const textSlots = ref({
 		label: "Field label",
 		value: "Your name",
 	},
+	introduction: {
+		label: "Introduction",
+		value: "We will only use your name to address you in your account and communications, and will not pass it on to third parties.",
+		type: "textarea",
+	},
 	help: {
 		label: "Help text",
-		value: "We will only use your name to address you in your account and communications, and will not pass it on to third parties.",
+		value: "Please use the name you wish to be addressed by, even if this is different to your legal name.",
 		type: "textarea",
 	},
 	error: {

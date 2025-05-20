@@ -10,11 +10,12 @@
 			<slot name="options" v-bind="{ options, name }" />
 		</template>
 
-		<template #error>
-			<slot name="error" />
-		</template>
 		<template #help>
 			<slot name="help" />
+		</template>
+
+		<template #error>
+			<slot name="error" />
 		</template>
 	</form-input-group>
 </template>

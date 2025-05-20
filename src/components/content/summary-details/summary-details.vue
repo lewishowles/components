@@ -152,8 +152,12 @@ const props = defineProps({
 const emit = defineEmits(["open", "close"]);
 
 const attrs = useAttrs();
+
 // Whether the details are currently open.
-const isOpen = ref(props.open);
+const isOpen = defineModel({
+	type: String,
+});
+
 // A reference to the details element, from which we can determine the current
 // "open" state.
 const detailsElement = useTemplateRef("detailsElement");

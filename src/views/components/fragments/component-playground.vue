@@ -7,12 +7,12 @@
 		</div>
 
 		<div class="flex flex-col gap-8">
-			<div class="sticky z-10 top-0 p-3 flex justify-end gap-3 border border-grey-400/40 rounded-md bg-grey-400/3 backdrop-blur-sm dark:bg-grey-950/20 dark:border-transparent text-sm">
+			<div class="p-3 flex justify-end gap-3 border border-grey-400/40 rounded-md bg-grey-400/3 backdrop-blur-sm dark:bg-grey-950/20 dark:border-transparent text-sm" :class="{ 'z-10': isTextSlotsOpen }">
 				<copy-content v-bind="{ content: copy }" class="button--muted">
 					Copy code
 				</copy-content>
 
-				<floating-details v-show="!useTranslation">
+				<floating-details v-show="!useTranslation" v-model="isTextSlotsOpen">
 					<template #summary>
 						Text slots
 					</template>
@@ -80,6 +80,9 @@ const storedTextSlots = useStorage(`component-playground:${parentComponentName}`
 // chooses to reset data later, which is particularly useful if we save data to
 // local storage.
 const originalTextSlots = ref({});
+
+// Whether the text slots details is open.
+const isTextSlotsOpen = ref(false);
 
 initialise();
 

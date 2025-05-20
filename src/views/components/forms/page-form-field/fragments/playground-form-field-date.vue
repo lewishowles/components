@@ -1,22 +1,26 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-field-text" v-model="textSlots">
+	<component-playground v-bind="{ copy: template }" id="playground-form-field-date" v-model="textSlots">
 		<template #title>
 			Date
 		</template>
 
 		<template #introduction>
-			<p>Allow the user to enter a date. The date input comprises three different inputs to avoid any confusion.</p>
+			<p>Allow the user to enter a date. The date input comprises three different inputs, which helps to avoid any confusion, and makes parsing the date simpler.</p>
 		</template>
 
 		<form-field v-bind="componentProps">
-			{{ textSlots.label.value }}
+			{{ textSlots.label?.value }}
+
+			<template #introduction>
+				{{ textSlots.introduction?.value }}
+			</template>
 
 			<template #help>
-				{{ textSlots.help.value }}
+				{{ textSlots.help?.value }}
 			</template>
 
 			<template #error>
-				{{ textSlots.error.value }}
+				{{ textSlots.error?.value }}
 			</template>
 		</form-field>
 	</component-playground>
@@ -32,9 +36,14 @@ const textSlots = ref({
 		label: "Field label",
 		value: "When did you first apply?",
 	},
+	introduction: {
+		label: "Introduction",
+		value: "Please enter the date you applied, regardless of when your application was processed.",
+		type: "textarea",
+	},
 	help: {
 		label: "Help text",
-		value: "Please enter the date you applied. If you don't know the exact date, please get as close as you can.",
+		value: "If you don't know the exact date, please get as close as you can.",
 		type: "textarea",
 	},
 	error: {

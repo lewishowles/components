@@ -9,14 +9,18 @@
 		</template>
 
 		<form-field v-bind="componentProps">
-			{{ textSlots.label.value }}
+			{{ textSlots.label?.value }}
+
+			<template #introduction>
+				{{ textSlots.introduction?.value }}
+			</template>
 
 			<template #help>
-				{{ textSlots.help.value }}
+				{{ textSlots.help?.value }}
 			</template>
 
 			<template #error>
-				{{ textSlots.error.value }}
+				{{ textSlots.error?.value }}
 			</template>
 		</form-field>
 	</component-playground>
@@ -30,11 +34,16 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 const textSlots = ref({
 	label: {
 		label: "Field label",
-		value: "Select the reasons you think Tails is better than Sonic",
+		value: "Why is Tails is cooler than Sonic?",
+	},
+	introduction: {
+		label: "Introduction",
+		value: "We know it's true, but let's find out why.",
+		type: "textarea",
 	},
 	help: {
 		label: "Help text",
-		value: "",
+		value: "You can select as many answers as you see fit.",
 		type: "textarea",
 	},
 	error: {
@@ -53,7 +62,7 @@ const props = ref({
 	},
 	options: {
 		label: "Options",
-		value: ["Two tails", "Orange", "Can fly"],
+		value: ["He has two tails", "He's orange", "He can fly"],
 		type: "select",
 	},
 });

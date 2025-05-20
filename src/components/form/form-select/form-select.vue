@@ -4,6 +4,10 @@
 			<slot />
 		</form-label>
 
+		<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }">
+			<slot name="introduction" />
+		</conditional-wrapper>
+
 		<div class="flex transition-shadow" :class="{ 'form-field--error': haveError }" data-selector="form-field-wrapper" data-test="form-input-wrapper">
 			<select
 				ref="select-element"
@@ -120,6 +124,8 @@ const selectElement = useTemplateRef("select-element");
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
 const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
+// Whether an introduction has been provided.
+const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 // Whether error text has been provided.
 const haveError = computed(() => isNonEmptySlot(slots.error));
 

@@ -1,8 +1,12 @@
 <template>
-	<field-wrapper v-bind="{ haveError }" class="flex flex-col gap-1" data-test="form-textarea">
+	<field-wrapper v-bind="{ haveError }" data-test="form-textarea">
 		<form-label v-bind="{ id: inputId, required }">
 			<slot />
 		</form-label>
+
+		<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }">
+			<slot name="introduction" />
+		</conditional-wrapper>
 
 		<div class="flex transition-shadow" :class="{ 'form-field--error': haveError }" data-selector="form-field-wrapper" data-test="form-input-wrapper">
 			<textarea
@@ -104,6 +108,8 @@ const inputElement = useTemplateRef("inputElement");
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
 const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
+// Whether an introduction has been provided.
+const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 // Whether error text has been provided.
 const haveError = computed(() => isNonEmptySlot(slots.error));
 

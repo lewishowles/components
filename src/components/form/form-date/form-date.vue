@@ -4,7 +4,11 @@
 			<slot />
 		</form-label>
 
-		<div class="flex gap-8">
+		<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }">
+			<slot name="introduction" />
+		</conditional-wrapper>
+
+		<div class="flex gap-8 mt-1">
 			<form-input
 				v-if="haveValidDate"
 				v-model="date.day"
@@ -66,10 +70,11 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, useSlots } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber, isNumeric } from "@lewishowles/helpers/number";
+import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { Temporal } from "temporal-polyfill";
 import useInputId from "@/components/form/composables/use-input-id";
 
@@ -102,8 +107,12 @@ const date = defineModel({
 	type: [Object, String],
 });
 
+const slots = useSlots();
+
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
+// Whether an introduction has been provided.
+const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 
 initialise();
 

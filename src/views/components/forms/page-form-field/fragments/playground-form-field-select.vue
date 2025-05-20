@@ -9,14 +9,18 @@
 		</template>
 
 		<form-field v-bind="componentProps">
-			{{ textSlots.label.value }}
+			{{ textSlots.label?.value }}
+
+			<template #introduction>
+				{{ textSlots.introduction?.value }}
+			</template>
 
 			<template #help>
-				{{ textSlots.help.value }}
+				{{ textSlots.help?.value }}
 			</template>
 
 			<template #error>
-				{{ textSlots.error.value }}
+				{{ textSlots.error?.value }}
 			</template>
 		</form-field>
 	</component-playground>
@@ -31,6 +35,11 @@ const textSlots = ref({
 	label: {
 		label: "Field label",
 		value: "Choose your favourite flavour of ice-cream",
+	},
+	introduction: {
+		label: "Introduction",
+		value: "This will be used as a base for your first box.",
+		type: "textarea",
 	},
 	help: {
 		label: "Help text",
