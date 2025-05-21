@@ -1,7 +1,11 @@
 <template>
-	<div class="flex flex-col gap-8">
+	<div class="flex flex-col gap-8" v-bind="{ id }">
 		<div class="prose dark:prose-invert">
-			<h3><slot name="title" /></h3>
+			<section-title v-bind="{ id }">
+				<template #title>
+					<slot name="title" />
+				</template>
+			</section-title>
 
 			<slot name="introduction" />
 		</div>
@@ -45,7 +49,17 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useStorage } from "@vueuse/core";
 import useTranslationMode from "@/composables/use-translation-mode/use-translation-mode";
 
+import SectionTitle from "./section-title.vue";
+
 const props = defineProps({
+	/**
+	 * The ID of this section, allow it to be linked to.
+	 */
+	id: {
+		type: String,
+		default: null,
+	},
+
 	/**
 	 * The template ot copy.
 	 */

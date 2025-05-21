@@ -29,7 +29,7 @@
 
 			<ol class="font-mono">
 				<li>
-					<router-link v-bind="{ to: 'forms/form-field' }" class="flex justify-between items-center group font-mono text-current no-underline hocus:underline py-1 block">
+					<router-link v-bind="{ to: '/forms/form-field' }" class="flex justify-between items-center group font-mono text-current no-underline hocus:underline py-1 block">
 						form-field
 
 						<icon-arrow-right class="size-3 group-hocus:opacity-100 -translate-x-1 group-hocus:translate-x-0 opacity-0 transition-all" />

@@ -18,8 +18,11 @@
 					Forms
 				</template>
 
-				<app-menu-component to="forms/form-field">
+				<app-menu-component to="/forms/form-field">
 					form-field
+				</app-menu-component>
+				<app-menu-component to="/forms/form-fieldset">
+					form-fieldset
 				</app-menu-component>
 			</app-menu-section>
 		</ol>

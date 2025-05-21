@@ -1,39 +1,37 @@
 <template>
-	<div v-bind="{ id }" class="flex gap-4 items-baseline relative group/prop-title">
-		<a v-bind="{ href: `#${id}` }" class="opacity-0 absolute top-8.5 end-full pe-3 block group-hover/prop-title:opacity-100 transition-opacity">
-			# <span class="sr-only">Link to this section</span>
-		</a>
-
-		<h3>
+	<section-title v-bind="{ id }" class="flex gap-4 items-baseline relative group/prop-title">
+		<template #title>
 			<slot name="title" />
-		</h3>
+		</template>
 
-		<dl v-if="haveType || haveDefault" class="flex gap-4 not-prose text-sm">
-			<div v-if="haveType" class="rounded-full bg-grey-100 dark:bg-grey-950/20 flex items-center gap-2 px-3 py-1">
-				<dt class="font-bold">
-					Type
-				</dt>
-				<dd class="text-grey-500 dark:text-white/60">
-					<slot name="type" />
-				</dd>
-			</div>
-			<div v-if="haveDefault" class="rounded-full bg-grey-100 dark:bg-grey-950/20 flex items-center gap-2 px-3 py-1">
-				<dt class="font-bold">
-					Default
-				</dt>
-				<dd class="text-grey-500 dark:text-white/60 font-mono">
-					<slot name="default" />
-				</dd>
-			</div>
-		</dl>
-
-		<a href="#content" class="text-sm opacity-0 group-hover/prop-title:opacity-100 transition-opacity">&uarr; Top</a>
-	</div>
+		<template #post-title>
+			<dl v-if="haveType || haveDefault" class="flex gap-4 not-prose text-sm">
+				<div v-if="haveType" class="rounded-full bg-grey-100 dark:bg-grey-950/20 flex items-center gap-2 px-3 py-1">
+					<dt class="font-bold">
+						Type
+					</dt>
+					<dd class="text-grey-500 dark:text-white/60">
+						<slot name="type" />
+					</dd>
+				</div>
+				<div v-if="haveDefault" class="rounded-full bg-grey-100 dark:bg-grey-950/20 flex items-center gap-2 px-3 py-1">
+					<dt class="font-bold">
+						Default
+					</dt>
+					<dd class="text-grey-500 dark:text-white/60 font-mono">
+						<slot name="default" />
+					</dd>
+				</div>
+			</dl>
+		</template>
+	</section-title>
 </template>
 
 <script setup>
 import { computed, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
+
+import SectionTitle from "./section-title.vue";
 
 defineProps({
 	/**

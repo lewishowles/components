@@ -20,9 +20,13 @@ export default function useTemplateGenerator(componentTag, slots, props) {
 	const template = computed(() => {
 		let template = `<${componentTag}${propsTemplate.value}>`;
 
-		template += `\n\t${getPlaygroundSlotContent("label")}`;
+		const label = getPlaygroundSlotContent("label");
 
-		template += slotsTemplate.value;
+		if (isNonEmptyString(label)) {
+			template += `\n\t${getPlaygroundSlotContent("label")}\n`;
+		}
+
+		template += `\n\t${slotTemplateSegments.value.filter(piece => piece).join("\n\n\t")}`;
 
 		template += `\n</${componentTag}>`;
 
@@ -86,14 +90,14 @@ export default function useTemplateGenerator(componentTag, slots, props) {
 	});
 
 	// Generate a template fragment representing the provided slots.
-	const slotsTemplate = computed(() => {
+	const slotTemplateSegments = computed(() => {
 		const stableSlots = unref(slots);
 
 		if (!isNonEmptyObject(stableSlots)) {
-			return "";
+			return [];
 		}
 
-		let template = "";
+		let templateSegments = [];
 
 		// For each of our text slots, we generate a template string and add it
 		// to the template, if it contains content.
@@ -110,11 +114,11 @@ export default function useTemplateGenerator(componentTag, slots, props) {
 			const slotContent = getPlaygroundSlotContent(slotKey);
 
 			if (isNonEmptyString(slotContent)) {
-				template += `\n\n\t<template #${slotKey}>\n\t\t${slotContent}\n\t</template>`;
+				templateSegments.push(`<template #${slotKey}>\n\t\t${slotContent}\n\t</template>`);
 			}
 		}
 
-		return template;
+		return templateSegments;
 	});
 
 	/**
@@ -126,6 +130,10 @@ export default function useTemplateGenerator(componentTag, slots, props) {
 	 */
 	function getPlaygroundSlotContent(slotKey) {
 		const stableSlots = unref(slots);
+
+		if (!isNonEmptyObject(slots) || !stableSlots[slotKey]) {
+			return "";
+		}
 
 		// If we're using translation mode, we return a vue-i18n ready
 		// translation, combining any translationPathPrefix with the key for

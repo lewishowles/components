@@ -236,7 +236,7 @@
 				Playground
 			</template>
 
-			<div class="flex flex-col gap-16">
+			<div class="flex flex-col gap-8">
 				<div class="prose dark:prose-invert">
 					<h2>Playground</h2>
 
