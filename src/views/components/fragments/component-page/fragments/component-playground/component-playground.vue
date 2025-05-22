@@ -43,13 +43,14 @@
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, ref, watch } from "vue";
+import { computed, getCurrentInstance, inject, ref, useSlots, watch } from "vue";
 import { deepCopy, get, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { getSlotText } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useStorage } from "@vueuse/core";
 import useTranslationMode from "@/composables/use-translation-mode/use-translation-mode";
 
-import SectionTitle from "./section-title.vue";
+import SectionTitle from "../section-title/section-title.vue";
 
 const props = defineProps({
 	/**
@@ -69,6 +70,10 @@ const props = defineProps({
 	},
 });
 
+const { registerSection } = inject("component-tab");
+const slots = useSlots();
+// The text contained in our title slot.
+const titleText = computed(() => getSlotText(slots.title));
 // The current Vue instance, which we'll use to automatically determine the
 // parent name, simplifying the boilerplate for creating various playgrounds.
 const instance = getCurrentInstance();
@@ -97,6 +102,8 @@ const originalTextSlots = ref({});
 
 // Whether the text slots details is open.
 const isTextSlotsOpen = ref(false);
+
+registerSection({ id: props.id, title: titleText.value });
 
 initialise();
 

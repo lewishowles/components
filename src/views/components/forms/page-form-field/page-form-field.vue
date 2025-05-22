@@ -1,39 +1,26 @@
 <template>
-	<div class="prose prose-slate dark:prose-invert *:animate-fade-in *:delay">
-		<h1>Form field</h1>
+	<component-page>
+		<template #title>
+			Form field
+		</template>
 
-		<p>A general form component that can take the place of a text input, select, textarea, and more, providing compatibility with <code>form-wrapper</code>, allowing a form to be built up quickly and simply.</p>
-	</div>
+		<template #introduction>
+			<p>A general form component that can take the place of a text input, select, textarea, and more, providing compatibility with <code>form-wrapper</code>, allowing a form to be built up quickly and simply.</p>
+		</template>
 
-	<tab-group class="mt-10">
-		<tab-item v-bind="{ id: 'tab-props', icon: 'icon-object' }" class="pt-8">
-			<template #label>
-				Props
-			</template>
+		<component-props>
+			<component-prop id="prop-type">
+				<template #name>
+					type
+				</template>
 
-			<div class="prose dark:prose-invert *:animate-fade-in *:delay">
-				<h2>Props</h2>
+				<template #type>
+					String
+				</template>
 
-				<ol class="font-mono">
-					<li><a href="#prop-type">type</a></li>
-					<li><a href="#prop-id">id</a></li>
-					<li><a href="#prop-name">name</a></li>
-					<li><a href="#prop-validation">validation</a></li>
-				</ol>
-
-				<prop-title id="prop-type">
-					<template #title>
-						type
-					</template>
-
-					<template #type>
-						String
-					</template>
-
-					<template #default>
-						text
-					</template>
-				</prop-title>
+				<template #default-value>
+					text
+				</template>
 
 				<p>The type of field. Known types include:</p>
 
@@ -50,54 +37,54 @@
 				</ul>
 
 				<p>Any unknown type will default to <code>text</code>.</p>
+			</component-prop>
 
-				<prop-title id="prop-id">
-					<template #title>
-						id
-					</template>
+			<component-prop id="prop-id">
+				<template #name>
+					id
+				</template>
 
-					<template #type>
-						String
-					</template>
+				<template #type>
+					String
+				</template>
 
-					<template #default>
-						null
-					</template>
-				</prop-title>
+				<template #default-value>
+					null
+				</template>
 
 				<p>Any ID to apply to this field. If an ID is not provided, one will be generated at random. Note that when providing an ID, please make sure that it is unique to avoid any unforeseen issues.</p>
+			</component-prop>
 
-				<prop-title id="prop-name">
-					<template #title>
-						name
-					</template>
+			<component-prop id="prop-name">
+				<template #name>
+					name
+				</template>
 
-					<template #type>
-						String
-					</template>
+				<template #type>
+					String
+				</template>
 
-					<template #default>
-						null
-					</template>
-				</prop-title>
+				<template #default-value>
+					null
+				</template>
 
 				<p>
 					The name of the field. This is required when used within a <code>form-wrapper</code> component, where it is used as the key for the form's data collection. As such, its uniqueness will be verified by <code>form-wrapper</code> when used together.
 				</p>
+			</component-prop>
 
-				<prop-title id="prop-validation">
-					<template #title>
-						validation
-					</template>
+			<component-prop id="prop-validation">
+				<template #name>
+					validation
+				</template>
 
-					<template #type>
-						Array
-					</template>
+				<template #type>
+					Array
+				</template>
 
-					<template #default>
-						[]
-					</template>
-				</prop-title>
+				<template #default-value>
+					[]
+				</template>
 
 				<p>
 					Any validation to apply to the field. This is used with the externally-facing <code>validate</code> function, as well as applying attributes to the field as necessary, such as <code>required</code>.
@@ -192,81 +179,42 @@
 				<p>
 					Additional props are passed through to the underlying form field. Additional props may be required depending on that field, such as <code>options</code> for <code>radio-group</code>.
 				</p>
-			</div>
-		</tab-item>
+			</component-prop>
+		</component-props>
 
-		<tab-item v-bind="{ id: 'tab-slots', icon: 'icon-slot' }" class="pt-8">
-			<template #label>
-				Slots
-			</template>
-
-			<div class="prose dark:prose-invert">
-				<h2>Slots</h2>
-
-				<prop-title id="slot-default">
-					<template #title>
-						default
-					</template>
-				</prop-title>
+		<component-slots>
+			<component-slot id="slot-default">
+				<template #name>
+					default
+				</template>
 
 				<p>Passed through to the <code>default</code> slot of the relevant form field, the <code>default</code> slot generally contains the label for the form element.</p>
-			</div>
-		</tab-item>
+			</component-slot>
+		</component-slots>
 
-		<tab-item v-bind="{ id: 'tab-events', icon: 'icon-megaphone' }" class="pt-8">
-			<template #label>
-				Events
-			</template>
-
-			<div class="prose dark:prose-invert">
-				<h2>Events</h2>
-
-				<prop-title id="event-vmodel">
-					<template #title>
-						v-model
-					</template>
-				</prop-title>
+		<component-events>
+			<component-event id="event-v-model">
+				<template #name>
+					v-model
+				</template>
 
 				<p>The current value of the underlying form field will be available via <code>v-model</code>.</p>
-			</div>
-		</tab-item>
+			</component-event>
+		</component-events>
 
-		<tab-item v-bind="{ id: 'tab-playground', icon: 'icon-code' }" class="pt-8">
-			<template #label>
-				Playground
-			</template>
-
-			<div class="flex flex-col gap-8">
-				<div class="prose dark:prose-invert">
-					<h2>Playground</h2>
-
-					<ol>
-						<li><a href="#playground-form-field-text">Text input</a></li>
-						<li><a href="#playground-form-field-email">Email</a></li>
-						<li><a href="#playground-form-field-password">Password</a></li>
-						<li><a href="#playground-form-field-textarea">Textarea</a></li>
-						<li><a href="#playground-form-field-checkbox">Checkbox</a></li>
-						<li><a href="#playground-form-field-checkbox-group">Checkbox group</a></li>
-						<li><a href="#playground-form-field-radio-group">Radio group</a></li>
-						<li><a href="#playground-form-field-button-group">Button group</a></li>
-						<li><a href="#playground-form-field-date">Date</a></li>
-						<li><a href="#playground-form-field-select">Select</a></li>
-					</ol>
-				</div>
-
-				<playground-form-field-text />
-				<playground-form-field-email />
-				<playground-form-field-password />
-				<playground-form-field-textarea />
-				<playground-form-field-checkbox />
-				<playground-form-field-checkbox-group />
-				<playground-form-field-radio-group />
-				<playground-form-field-button-group />
-				<playground-form-field-date />
-				<playground-form-field-select />
-			</div>
-		</tab-item>
-	</tab-group>
+		<component-playgrounds>
+			<playground-form-field-text />
+			<playground-form-field-email />
+			<playground-form-field-password />
+			<playground-form-field-textarea />
+			<playground-form-field-checkbox />
+			<playground-form-field-checkbox-group />
+			<playground-form-field-radio-group />
+			<playground-form-field-button-group />
+			<playground-form-field-date />
+			<playground-form-field-select />
+		</component-playgrounds>
+	</component-page>
 </template>
 
 <script setup>

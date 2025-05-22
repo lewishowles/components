@@ -19,7 +19,7 @@
 						Default
 					</dt>
 					<dd class="text-grey-500 dark:text-white/60 font-mono">
-						<slot name="default" />
+						<slot name="default-value" />
 					</dd>
 				</div>
 			</dl>
@@ -31,7 +31,7 @@
 import { computed, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 
-import SectionTitle from "./section-title.vue";
+import SectionTitle from "../section-title/section-title.vue";
 
 defineProps({
 	/**
@@ -47,5 +47,5 @@ const slots = useSlots();
 // Whether a "type" slot has been provided.
 const haveType = computed(() => isNonEmptySlot(slots.type));
 // Whether a "default" slot has been provided.
-const haveDefault = computed(() => isNonEmptySlot(slots.default));
+const haveDefault = computed(() => isNonEmptySlot(slots["default-value"]));
 </script>

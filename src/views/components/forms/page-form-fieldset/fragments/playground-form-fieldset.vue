@@ -27,15 +27,15 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 // Our base text slots, available for the user to update.
 const textSlots = ref({
 	title: {
-		label: "Field label",
-		value: "Your name",
+		label: "Fieldset label",
+		value: "Your details",
 	},
 	introduction: {
 		label: "Introduction",
-		value: "We will only use your name to address you in your account and communications, and will not pass it on to third parties.",
+		value: "We use your details to identify your account should you need help.",
 		type: "textarea",
 	},
 });
 
-const { template } = useTemplateGenerator("form-field", textSlots);
+const { template } = useTemplateGenerator("form-fieldset", textSlots);
 </script>
