@@ -10,11 +10,11 @@
 #
 # Parameters:
 #   <component-name>  (required)
-#     The name of the component in kebab-case that this documentation page will
-#     represent
+#	 The name of the component in kebab-case that this documentation page will
+#	 represent
 #   --folder [folder-name]  (optional)
-#     The name of the folder where the component will be created in the root
-#     components documentation folder.
+#	 The name of the folder where the component will be created in the root
+#	 components documentation folder.
 #
 # Example:
 #   ./support/scaffold-documentation.sh data-table --folder data
@@ -28,7 +28,7 @@ source "$SCRIPT_DIR/colours.sh"
 
 if [ -z "$1" ]; then
 	echo -e "\nPlease provide a ${BLUE}component-name${RESET_COLOUR} for the component."
-	echo -e "Usage: ${PURPLE}./support/scaffold-documentation.sh${RESET_COLOUR} ${BLUE}<component-name>${RESET_COLOUR} [--folder <folder-name>]"
+	echo -e "Usage: ${PURPLE}./support/scaffold-documentation.sh${RESET_COLOUR} ${BLUE}<component-name>${RESET_COLOUR} [--folder <folder-name>] [--props <prop1,prop2,...>] [--slots <slot1,slot2,...>]"
 	exit 1
 fi
 
@@ -37,6 +37,8 @@ COMPONENT_NAME="$1"
 shift
 
 FOLDER_PATH=""
+PROPS=""
+SLOTS=""
 
 while [[ "$#" -gt 0 ]]; do
 	case $1 in
@@ -44,13 +46,21 @@ while [[ "$#" -gt 0 ]]; do
 			FOLDER_PATH="$2"
 			shift
 			;;
+		--props)
+			PROPS="$2"
+			shift
+			;;
+		--slots)
+			SLOTS="$2"
+			shift
+			;;
 		*)
 			echo -e "\nUnknown parameter passed: $1"
-			echo -e "Usage: ${PURPLE}./support/scaffold-documentation.sh${RESET_COLOUR} ${BLUE}<component-name>${RESET_COLOUR} [--folder <folder-name>]"
+			echo -e "Usage: ${PURPLE}./support/scaffold-documentation.sh${RESET_COLOUR} ${BLUE}<component-name>${RESET_COLOUR} [--folder <folder-name>] [--props <prop1,prop2,...>] [--slots <slot1,slot2,...>]"
 			exit 1
 			;;
 	esac
-    shift
+	shift
 done
 
 # The base path is where the component will be created.
@@ -58,7 +68,7 @@ BASE_PATH="src/views/components"
 
 # If a folder path is provided, append it to the base path
 if [ -n "$FOLDER_PATH" ]; then
-    BASE_PATH="$BASE_PATH/$FOLDER_PATH"
+	BASE_PATH="$BASE_PATH/$FOLDER_PATH"
 fi
 
 mkdir -p "$BASE_PATH/page-$COMPONENT_NAME"
@@ -72,8 +82,8 @@ SENTENCE_CASE_NAME="$(echo "$COMPONENT_NAME" | tr '-' ' ' | awk '{ $1=toupper(su
 
 # Generate our scaffold files from templates.
 templates=(
-	"documentation-page.vue"
-	"documentation-playground.vue"
+	"documentation-page/documentation-page.vue"
+	"documentation-page/documentation-playground.vue"
 )
 
 output_files=(
@@ -81,13 +91,51 @@ output_files=(
 	"fragments/playground-${COMPONENT_NAME}.vue"
 )
 
+# Generate props section if props are provided
+COMPONENT_PROPS=""
+
+if [ -n "$PROPS" ]; then
+	PROP_TEMPLATE_FILE="$SCRIPT_DIR/templates/documentation-page/fragment-component-prop.txt"
+	PROP_TEMPLATE_CONTENT=$(cat "$PROP_TEMPLATE_FILE")
+
+	IFS=',' read -ra PROP_ARRAY <<< "$PROPS"
+
+	for prop in "${PROP_ARRAY[@]}"; do
+		PROP_CONTENT=$(echo "$PROP_TEMPLATE_CONTENT" | sed "s/{{PROP_NAME}}/$prop/g")
+		COMPONENT_PROPS+="$PROP_CONTENT"$'\n'
+	done
+fi
+
+# Generate slots section if slots are provided
+COMPONENT_SLOTS=""
+
+if [ -n "$SLOTS" ]; then
+	SLOT_TEMPLATE_FILE="$SCRIPT_DIR/templates/documentation-page/fragment-component-slot.txt"
+	SLOT_TEMPLATE_CONTENT=$(cat "$SLOT_TEMPLATE_FILE")
+
+	IFS=',' read -ra SLOT_ARRAY <<< "$SLOTS"
+
+	for slot in "${SLOT_ARRAY[@]}"; do
+		SLOT_CONTENT=$(echo "$SLOT_TEMPLATE_CONTENT" | sed "s/{{SLOT_NAME}}/$slot/g")
+		COMPONENT_SLOTS+="$SLOT_CONTENT"$'\n'
+	done
+fi
+
+# Process templates
 for i in "${!templates[@]}"; do
 	TEMPLATE_FILE="$SCRIPT_DIR/templates/${templates[$i]}"
 	OUTPUT_FILE="${output_files[$i]}"
 
-	sed "s/{{COMPONENT_NAME}}/$COMPONENT_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g; s/{{SENTENCE_CASE_NAME}}/$SENTENCE_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
+	# Replace placeholders in the template
+	perl -pe "
+		s|{{COMPONENT_NAME}}|$COMPONENT_NAME|g;
+		s|{{PASCAL_CASE_NAME}}|$PASCAL_CASE_NAME|g;
+		s|{{SENTENCE_CASE_NAME}}|$SENTENCE_CASE_NAME|g;
+		s|{{COMPONENT_PROPS}}|$COMPONENT_PROPS|g;
+		s|{{COMPONENT_SLOTS}}|$COMPONENT_SLOTS|g;
+	" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
-	code -r $OUTPUT_FILE
+	code -r "$OUTPUT_FILE"
 done
 
 # Print the success message
