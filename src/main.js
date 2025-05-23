@@ -13,6 +13,8 @@ import ComponentSlots from "@/views/components/fragments/component-page/fragment
 import ComponentSlot from "@/views/components/fragments/component-page/fragments/component-slot/component-slot.vue";
 import ComponentEvents from "@/views/components/fragments/component-page/fragments/component-events/component-events.vue";
 import ComponentEvent from "@/views/components/fragments/component-page/fragments/component-event/component-event.vue";
+import ComponentProvides from "@/views/components/fragments/component-page/fragments/component-provides/component-provides.vue";
+import ComponentProvide from "@/views/components/fragments/component-page/fragments/component-provide/component-provide.vue";
 import ComponentPlaygrounds from "@/views/components/fragments/component-page/fragments/component-playgrounds/component-playgrounds.vue";
 import ComponentPlayground from "@/views/components/fragments/component-page/fragments/component-playground/component-playground.vue";
 
@@ -27,6 +29,8 @@ app.component("ComponentSlots", ComponentSlots);
 app.component("ComponentSlot", ComponentSlot);
 app.component("ComponentEvents", ComponentEvents);
 app.component("ComponentEvent", ComponentEvent);
+app.component("ComponentProvides", ComponentProvides);
+app.component("ComponentProvide", ComponentProvide);
 app.component("ComponentPlaygrounds", ComponentPlaygrounds);
 app.component("ComponentPlayground", ComponentPlayground);
 

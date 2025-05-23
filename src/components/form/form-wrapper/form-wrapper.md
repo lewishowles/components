@@ -42,13 +42,25 @@ The current values of each of the `form-field` elements contained within the for
 
 Two methods are provided by `form-wrapper` under the "form-wrapper" namespace to allow a field to communicate and update its value.
 
-### `registerField(name)`
+### `registerField(field)`
 
-Register a field with the form, providing its name. This will initialise its value to `null`.
+Allow a field to register itself with the form.
+
+| Parameter            | Type       | Description |
+|----------------------|-----------|-------------|
+| `field.name`        | `string`   | Name of the field to register. |
+| `field.id`          | `string`   | The ID of the field, helpful for linking errors to fields. |
+| `field.validateField` | `function` | Validation function, run when the form is submitted. |
+| `field.focusField`  | `function` | Method to focus on this field, used by the error summary. |
 
 ### `updateFieldValue(name, value)`
 
-Update the value of field with `name` to `value`.
+Allow a field to update its value in the form.
+
+| Parameter | Type     | Description |
+|-----------|---------|-------------|
+| `name`    | `string`  | The name of the field to update. |
+| `value`   | `unknown` | The value to set. |
 
 ## Examples
 

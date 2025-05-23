@@ -7,6 +7,8 @@
 		<div class="prose dark:prose-invert *:animate-fade-in *:delay">
 			<h2><slot name="title" /></h2>
 
+			<slot name="post-title" />
+
 			<ol v-if="haveSections">
 				<li v-for="section in sections" :key="section.id">
 					<a :href="`#${section.id}`">{{ section.title }}</a>

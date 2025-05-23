@@ -18,6 +18,9 @@
 					Forms
 				</template>
 
+				<app-menu-component to="/forms/form-wrapper">
+					form-wrapper
+				</app-menu-component>
 				<app-menu-component to="/forms/form-field">
 					form-field
 				</app-menu-component>
