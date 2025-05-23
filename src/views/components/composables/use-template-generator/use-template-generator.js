@@ -17,7 +17,7 @@ import useTranslationMode from "@/composables/use-translation-mode/use-translati
  *     Any additional props to pass to the opening component tag as a `v-model`.
  *     The template will extract the key and `.value` to generate pairs.
  * @param  {mixed}  options.additionalContent
- *     Any additional content to add to the template (before slots). This can be
+ *     Any additional content to add to the template (after slots). This can be
  *     a string to be used as-is, or an array of strings. It is recommended to
  *     use the output from another instance of `useTemplateGenerator` if
  *     intending to join multiple components.
@@ -40,6 +40,10 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 			templateSections.push(`\t${defaultContent}`);
 		}
 
+		if (isNonEmptyArray(slotTemplateSegments.value)) {
+			templateSections.push(...slotTemplateSegments.value.map(content => `\t${content}`));
+		}
+
 		// Add any additional content, if provided.
 		if (isNonEmptyString(additionalContent)) {
 			templateSections.push(`\t${unref(additionalContent)}`);
@@ -47,10 +51,6 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 
 		if (isNonEmptyArray(additionalContent)) {
 			templateSections.push(...additionalContent.map(content => unref(content)));
-		}
-
-		if (isNonEmptyArray(slotTemplateSegments.value)) {
-			templateSections.push(...slotTemplateSegments.value.map(content => `\t${content}`));
 		}
 
 		template += `\n${templateSections.join("\n\n")}`;
@@ -71,7 +71,10 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 			return "";
 		}
 
-		const propParts = [];
+		// Props that will appear inline, e.g. name="name"
+		const inlineProps = [];
+		// Props that will appear in a bind, e.g. v-bind="{ name: 'name' }"
+		const boundProps = [];
 
 		// For each of our props, we generate a template string and add it
 		// to the template, if it contains content.
@@ -81,6 +84,7 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 			}
 
 			const prop = stableProps[propKey];
+			const isPropInline = prop.inline === true;
 
 			let propContent = prop.value;
 
@@ -97,19 +101,39 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 
 					break;
 				default:
-					propContent = `'${propContent}'`;
+					// If the prop is inline, we don't want to wrap it in
+					// further quotes.
+					if (!isPropInline) {
+						propContent = `'${propContent}'`;
+					}
 
 					break;
 			}
 
 			if (isNonEmptyString(propContent)) {
-				propParts.push(`${propKey}: ${propContent}`);
+				if (isPropInline === true) {
+					inlineProps.push(`${propKey}="${propContent}"`);
+
+					continue;
+				}
+
+				boundProps.push(`${propKey}: ${propContent}`);
 			} else {
-				propParts.push(`${propKey}`);
+				boundProps.push(`${propKey}`);
 			}
 		}
 
-		return ` v-bind="{ ${propParts.join(", ")} }"`;
+		const propsString = [];
+
+		if (isNonEmptyArray(inlineProps)) {
+			propsString.push(...inlineProps);
+		}
+
+		if (isNonEmptyArray(boundProps)) {
+			propsString.push(`v-bind="{ ${boundProps.join(", ")} }"`);
+		}
+
+		return ` ${propsString.join(" ")}`;
 	});
 
 	// Generate a template fragment representing the provided slots.

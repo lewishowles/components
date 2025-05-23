@@ -9,7 +9,7 @@
 		</template>
 
 		<form-field>
-			{{ textSlots.label?.value }}
+			{{ textSlots.default?.value }}
 
 			<template #introduction>
 				{{ textSlots.introduction?.value }}

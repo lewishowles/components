@@ -9,7 +9,7 @@
 
 			<slot name="post-title" />
 
-			<ol v-if="haveSections">
+			<ol v-if="haveSections && sectionCount > 1">
 				<li v-for="section in sections" :key="section.id">
 					<a :href="`#${section.id}`">{{ section.title }}</a>
 				</li>
@@ -23,8 +23,8 @@
 </template>
 
 <script setup>
+import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed, provide, ref } from "vue";
-import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 // Any sections that are contained in this tab, which are used to populate the
@@ -32,6 +32,8 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
 const sections = ref([]);
 // Whether any sections are present.
 const haveSections = computed(() => isNonEmptyArray(sections.value));
+// Whether any sections are present.
+const sectionCount = computed(() => arrayLength(sections.value));
 
 provide("component-tab", {
 	registerSection,

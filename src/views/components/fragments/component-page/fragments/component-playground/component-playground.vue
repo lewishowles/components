@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col gap-8" v-bind="{ id }">
-		<div class="prose dark:prose-invert">
-			<section-title v-bind="{ id }">
+		<div v-if="haveTitle || haveIntroduction" class="prose dark:prose-invert">
+			<section-title v-if="haveTitle" v-bind="{ id }">
 				<template #title>
 					<slot name="title" />
 				</template>
@@ -45,7 +45,7 @@
 <script setup>
 import { computed, getCurrentInstance, inject, ref, useSlots, watch } from "vue";
 import { deepCopy, get, isNonEmptyObject } from "@lewishowles/helpers/object";
-import { getSlotText } from "@lewishowles/helpers/vue";
+import { getSlotText, isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useStorage } from "@vueuse/core";
 import useTranslationMode from "@/composables/use-translation-mode/use-translation-mode";
@@ -72,8 +72,12 @@ const props = defineProps({
 
 const { registerSection } = inject("component-tab");
 const slots = useSlots();
+// Whether a title has been provided
+const haveTitle = computed(() => isNonEmptySlot(slots.title));
 // The text contained in our title slot.
 const titleText = computed(() => getSlotText(slots.title));
+// Whether an introduction has been provided
+const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 // The current Vue instance, which we'll use to automatically determine the
 // parent name, simplifying the boilerplate for creating various playgrounds.
 const instance = getCurrentInstance();

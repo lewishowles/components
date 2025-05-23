@@ -8,6 +8,8 @@
 			<p>A fieldset represents a group of fields, containing a title and optional, but preferred, introduction.</p>
 
 			<p>When deciding whether to group fields, ideally if some fields are grouped, all should be, otherwise the form could look incomplete.</p>
+
+			<p><code>form-fieldset</code> automatically includes <code>form-layout</code> around its <code>default</code> content.</p>
 		</template>
 
 		<component-props>

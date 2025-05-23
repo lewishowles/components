@@ -4,6 +4,8 @@
 
 We recommend a [required by default, marked if optional technique](https://adamsilver.io/blog/how-to-highlight-required-and-optional-form-fields/) for form fields, meaning that optional fields should be marked as such.
 
+`form-wrapper` automatically includes `form-layout` around its `default` content.
+
 ## Slots
 
 ### `pre-form`

@@ -5,7 +5,7 @@
 		</template>
 
 		<form-layout>
-			<form-field>
+			<form-field name="name">
 				Your name
 
 				<template #introduction>
@@ -17,7 +17,7 @@
 				</template>
 			</form-field>
 
-			<form-field v-bind="{ type: 'email' }">
+			<form-field type="email" name="email">
 				Email address
 
 				<template #introduction>
@@ -37,10 +37,17 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 
 const additionalContent = [
 	useTemplateGenerator("form-field", {
+		props: {
+			name: {
+				value: "name",
+				inline: true,
+			},
+		},
 		slots: {
 			default: {
 				value: "Your name",
 			},
+
 			introduction: {
 				value: "We will only use your name to address you in your account and communications, and will not pass it on to third parties.",
 			},
@@ -53,10 +60,17 @@ const additionalContent = [
 	}),
 
 	useTemplateGenerator("form-field", {
+		props: {
+			name: {
+				value: "email",
+				inline: true,
+			},
+		},
 		slots: {
 			default: {
 				value: "Email address",
 			},
+
 			introduction: {
 				value: "We will not use your email address for marketing purposes.",
 			},

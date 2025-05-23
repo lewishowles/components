@@ -21,14 +21,14 @@
 				<app-menu-component to="/forms/form-wrapper">
 					form-wrapper
 				</app-menu-component>
-				<app-menu-component to="/forms/form-field">
-					form-field
-				</app-menu-component>
 				<app-menu-component to="/forms/form-fieldset">
 					form-fieldset
 				</app-menu-component>
 				<app-menu-component to="/forms/form-layout">
 					form-layout
+				</app-menu-component>
+				<app-menu-component to="/forms/form-field">
+					form-field
 				</app-menu-component>
 			</app-menu-section>
 		</ol>

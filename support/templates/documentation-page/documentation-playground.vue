@@ -9,7 +9,7 @@
 		</template>
 
 		<{{COMPONENT_NAME}} v-bind="componentProps">
-			{{ textSlots.label?.value }}
+			{{ textSlots.default?.value }}
 
 			<template #introduction>
 				{{ textSlots.introduction?.value }}

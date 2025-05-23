@@ -6,6 +6,7 @@
 
 		<template #introduction>
 			<p><code>form-wrapper</code> is intended as a complete form, wrapped around individual fields. The wrapper automatically adds actions and, when fields are provided validation information, handles field validation and the generation of an error summary to maximise the accessibility of the form.</p>
+
 			<p>
 				We recommend a
 				<link-tag href="https://adamsilver.io/blog/how-to-highlight-required-and-optional-form-fields/" v-bind="{ external: true }">
@@ -13,6 +14,8 @@
 				</link-tag>
 				for form fields, meaning that optional fields should be marked as such.
 			</p>
+
+			<p><code>form-wrapper</code> automatically includes <code>form-layout</code> around its <code>default</code> content.</p>
 		</template>
 
 		<component-slots>

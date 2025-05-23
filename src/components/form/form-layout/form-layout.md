@@ -1,6 +1,6 @@
 # `form-layout`
 
-`form-layout` is a functional component that adds consistent spacing between elements in a form.
+`form-layout` is a functional component that adds consistent spacing between elements in a form. Both `form-wrapper` and `form-fieldset` automatically include a `form-layout` element.
 
 ## Slots
 

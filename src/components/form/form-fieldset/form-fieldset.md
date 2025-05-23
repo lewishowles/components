@@ -4,6 +4,8 @@ A fieldset represents a group of fields, containing a title and optional, but pr
 
 When deciding whether to group fields, ideally if some fields are grouped, all should be, otherwise the form could look incomplete.
 
+`form-fieldset` automatically includes `form-layout` around its `default` content.
+
 ## Slots
 
 ### `title`

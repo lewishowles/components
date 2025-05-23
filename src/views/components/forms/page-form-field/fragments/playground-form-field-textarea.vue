@@ -9,7 +9,7 @@
 		</template>
 
 		<form-field v-bind="componentProps">
-			{{ textSlots.label?.value }}
+			{{ textSlots.default?.value }}
 
 			<template #introduction>
 				{{ textSlots.introduction?.value }}
