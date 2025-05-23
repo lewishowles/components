@@ -1,0 +1,15 @@
+			<component-prop id="prop-{{PROP_NAME}}">
+				<template #name>
+					{{PROP_NAME}}
+				</template>
+
+				<template #type>
+					String
+				</template>
+
+				<template #default-value>
+					text
+				</template>
+
+				<p></p>
+			</component-prop>

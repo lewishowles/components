@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
 
 // Our base text slots, available for the user to update.

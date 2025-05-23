@@ -9,31 +9,11 @@
 		</template>
 
 		<component-props>
-			<component-prop id="prop-type">
-				<template #name>
-					type
-				</template>
-
-				<template #type>
-					String
-				</template>
-
-				<template #default-value>
-					text
-				</template>
-
-				<p></p>
-			</component-prop>
+{{COMPONENT_PROPS}}
 		</component-props>
 
 		<component-slots>
-			<component-slot id="slot-default">
-				<template #name>
-					default
-				</template>
-
-				<p>...</p>
-			</component-slot>
+{{COMPONENT_SLOTS}}
 		</component-slots>
 
 		<component-events>
