@@ -1,5 +1,5 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-field-select" v-model="textSlots">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-field-select" v-model="textSlots">
 		<template #title>
 			Select
 		</template>
@@ -8,7 +8,7 @@
 			<p>Allow a user to select one option from a list of possible options. When wanting to use a select, consider whether it is the most appropriate option. Often, radio buttons or checkboxes are more user-friendly, both because selects can be harder to activate for some, and you cannot add explanations to each option if necessary.</p>
 		</template>
 
-		<form-field v-bind="componentProps">
+		<form-field v-model="componentModel" v-bind="componentProps">
 			{{ textSlots.default?.value }}
 
 			<template #introduction>
@@ -29,6 +29,9 @@
 <script setup>
 import { computed, ref } from "vue";
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
+
+// The current model value.
+const componentModel = ref(null);
 
 // Our base text slots, available for the user to update.
 const textSlots = ref({

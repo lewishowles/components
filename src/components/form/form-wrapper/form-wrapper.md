@@ -36,6 +36,10 @@ The title of the error summary that appears if any errors are found in the form.
 
 ## Events
 
+### `submit`
+
+Fired when the user submits the form and validation succeeds, containing the current values of each of the `form-field` elements contained within the form.
+
 ### `v-model`
 
 The current values of each of the `form-field` elements contained within the form will be available as an object through `v-model`.

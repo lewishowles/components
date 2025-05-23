@@ -30,6 +30,9 @@
 				<app-menu-component to="/forms/form-field">
 					form-field
 				</app-menu-component>
+				<app-menu-component to="/forms/form-actions">
+					form-actions
+				</app-menu-component>
 			</app-menu-section>
 		</ol>
 	</nav>

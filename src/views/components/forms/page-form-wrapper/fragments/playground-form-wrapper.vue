@@ -1,10 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-wrapper" v-model="textSlots">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-wrapper" v-model="textSlots">
 		<template #title>
 			Form wrapper
 		</template>
 
-		<form-wrapper v-bind="componentProps">
+		<form-wrapper v-model="componentModel" v-bind="componentProps">
 			<form-field name="name">
 				Your name
 
@@ -43,6 +43,9 @@
 <script setup>
 import { computed, ref } from "vue";
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
+
+// The current model value.
+const componentModel = ref(null);
 
 // Our base text slots, available for the user to update.
 const textSlots = ref({

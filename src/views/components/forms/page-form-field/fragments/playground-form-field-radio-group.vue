@@ -1,5 +1,5 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-field-radio-group" v-model="textSlots">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-field-radio-group" v-model="textSlots">
 		<template #title>
 			Radio group
 		</template>
@@ -8,7 +8,7 @@
 			<p>Much like a select, a radio group allows a user to select one option from a list of those available. The main difference, however, is that it is (generally) possible to see all of the options of a radio group without interacting with it, and additional help text can be added to each option.</p>
 		</template>
 
-		<form-field v-bind="componentProps">
+		<form-field v-model="componentModel" v-bind="componentProps">
 			{{ textSlots.default?.value }}
 
 			<template #introduction>
@@ -29,6 +29,9 @@
 <script setup>
 import { computed, ref } from "vue";
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
+
+// The current model value.
+const componentModel = ref(null);
 
 // Our base text slots, available for the user to update.
 const textSlots = ref({

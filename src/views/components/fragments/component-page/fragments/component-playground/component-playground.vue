@@ -33,8 +33,16 @@
 				</floating-details>
 			</div>
 
-			<div class="inset-shadow-sm p-24 rounded-md border border-grey-300 dark:border-white/20">
+			<div class="relative inset-shadow-sm p-24 rounded-md border border-grey-300 dark:border-white/20">
 				<slot />
+
+				<div v-if="haveComponentModel" class="relative mt-12 rounded-md bg-grey-50 border border-grey-200 text-grey-800 p-6">
+					<pill-badge class="absolute top-0 start-0 ms-6 -translate-y-1/2">
+						Model value
+					</pill-badge>
+
+					<pre>{{ componentModel }}</pre>
+				</div>
 			</div>
 		</div>
 
@@ -44,8 +52,9 @@
 
 <script setup>
 import { computed, getCurrentInstance, inject, ref, useSlots, watch } from "vue";
-import { deepCopy, get, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { deepCopy, get, isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
 import { getSlotText, isNonEmptySlot } from "@lewishowles/helpers/vue";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useStorage } from "@vueuse/core";
 import useTranslationMode from "@/composables/use-translation-mode/use-translation-mode";
@@ -68,9 +77,44 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
+
+	/**
+	 * The current model value of the component being represented. If present,
+	 * will be displayed alongside the code.
+	 */
+	componentModel: {
+		type: [String, Object, Boolean, Array],
+		default: null,
+	},
 });
 
 const { registerSection } = inject("component-tab");
+
+// Whether a component model value has been provided.
+const haveComponentModel = computed(() => {
+	if (typeof props.componentModel === "boolean") {
+		return true;
+	}
+
+	if (typeof props.componentModel === "string") {
+		return isNonEmptyString(props.componentModel);
+	}
+
+	if (Array.isArray(props.componentModel)) {
+		return isNonEmptyArray(props.componentModel);
+	}
+
+	if (isObject(props.componentModel)) {
+		return isNonEmptyObject(props.componentModel);
+	}
+
+	if (props.componentModel !== null) {
+		return true;
+	}
+
+	return false;
+});
+
 const slots = useSlots();
 // Whether a title has been provided
 const haveTitle = computed(() => isNonEmptySlot(slots.title));

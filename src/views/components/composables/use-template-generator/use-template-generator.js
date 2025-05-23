@@ -2,6 +2,7 @@ import { computed, unref } from "vue";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { isNumber } from "@lewishowles/helpers/number";
 import useTranslationMode from "@/composables/use-translation-mode/use-translation-mode";
 
 /**
@@ -34,10 +35,14 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 		const templateSections = [];
 
 		// Add the default slot, if provided
-		const defaultContent = getPlaygroundSlotContent("default");
+		let defaultContent = getPlaygroundSlotContent("default");
 
 		if (isNonEmptyString(defaultContent)) {
-			templateSections.push(`\t${defaultContent}`);
+			if (!defaultContent.includes("\n")) {
+				defaultContent = `\t${defaultContent}`;
+			}
+
+			templateSections.push(defaultContent);
 		}
 
 		if (isNonEmptyArray(slotTemplateSegments.value)) {
@@ -203,10 +208,10 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 	 * @param  {string}  template
 	 *     The template to indent
 	 * @param  {number}  indentLevel
-	 *     The
+	 *     The base indent level for this template
 	 */
 	function applyIndent(template, indentLevel) {
-		if (!indentLevel || indentLevel <= 0) {
+		if (!isNumber(indentLevel) || indentLevel <= 0) {
 			return template;
 		}
 
@@ -215,5 +220,5 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 		return `\t${template.replace(/\n(?!\n)/g, `\n${tabString}`)}`;
 	}
 
-	return template;
+	return template.value;
 }

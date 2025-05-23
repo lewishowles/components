@@ -8,6 +8,10 @@
 
 The default slot contains the content to wrap.
 
+### `tertiary-actions`
+
+Any additional actions that should appear below the main row.
+
 ## Props
 
 `form-actions` provides no props.

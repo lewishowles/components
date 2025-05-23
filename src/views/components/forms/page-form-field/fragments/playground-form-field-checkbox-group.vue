@@ -1,5 +1,5 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-field-checkbox-group" v-model="textSlots">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-field-checkbox-group" v-model="textSlots">
 		<template #title>
 			Checkbox group
 		</template>
@@ -8,7 +8,7 @@
 			<p>Allow a user to select one or more options from those available. A checkbox group differs from a singular checkbox in that the <code>value</code> of each selected checkbox is returned.</p>
 		</template>
 
-		<form-field v-bind="componentProps">
+		<form-field v-model="componentModel" v-bind="componentProps">
 			{{ textSlots.default?.value }}
 
 			<template #introduction>
@@ -29,6 +29,9 @@
 <script setup>
 import { computed, ref } from "vue";
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
+
+// The current model value.
+const componentModel = ref(null);
 
 // Our base text slots, available for the user to update.
 const textSlots = ref({

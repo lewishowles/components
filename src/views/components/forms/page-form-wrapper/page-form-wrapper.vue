@@ -68,6 +68,14 @@
 		</component-slots>
 
 		<component-events>
+			<component-event id="event-submit">
+				<template #name>
+					submit
+				</template>
+
+				<p>Fired when the user submits the form and validation succeeds, containing the current values of each of the <code>form-field</code> elements contained within the form.</p>
+			</component-event>
+
 			<component-event id="event-v-model">
 				<template #name>
 					v-model

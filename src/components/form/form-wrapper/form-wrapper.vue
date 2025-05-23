@@ -36,9 +36,9 @@
 
 				<slot name="secondary-actions" />
 
-				<div v-if="haveTertiaryActions" class="w-full">
+				<template #tertiary-actions>
 					<slot name="tertiary-actions" />
-				</div>
+				</template>
 			</form-actions>
 		</form-layout>
 	</form>
@@ -57,8 +57,6 @@ const slots = useSlots();
 // Determine if we have a label. If not, show a warning to the user about
 // accessibility.
 const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button-label"]));
-// Whether we have any tertiary actions to display in the form.
-const haveTertiaryActions = computed(() => isNonEmptySlot(slots["tertiary-actions"]));
 
 // The current data for this form, as provided by the fields themselves.
 const formData = defineModel({

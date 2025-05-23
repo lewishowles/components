@@ -1,5 +1,5 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-field-text" v-model="textSlots">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-field-text" v-model="textSlots">
 		<template #title>
 			Text input
 		</template>
@@ -8,7 +8,7 @@
 			<p>A basic text input, allowing a user to enter short strings of text. When using a text input, it is strongly recommended that a visible label is used, and that the placeholder is not used for meaningful information, as this can cause some users to lose context. Use the label to describe the information required of the user, and help text for any additional explanation that would be useful.</p>
 		</template>
 
-		<form-field>
+		<form-field v-model="componentModel">
 			{{ textSlots.default?.value }}
 
 			<template #introduction>
@@ -29,6 +29,9 @@
 <script setup>
 import { ref } from "vue";
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
+
+// The current model value.
+const componentModel = ref(null);
 
 // Our base text slots, available for the user to update.
 const textSlots = ref({
