@@ -4,10 +4,6 @@
 			Fieldset
 		</template>
 
-		<template #introduction>
-			A standard fieldset containing a title and introduction, ready to receive fields.
-		</template>
-
 		<form-fieldset>
 			<template #title>
 				{{ textSlots.title?.value }}
