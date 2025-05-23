@@ -9,7 +9,7 @@ export default mergeConfig(
 			setupFiles: "./test/unit/setup.js",
 			environment: "happy-dom",
 			root: fileURLToPath(new URL("./", import.meta.url)),
-			include: ["src/components/**/*.test.js"],
+			include: ["src/**/*.test.js"],
 		},
 	}),
 );

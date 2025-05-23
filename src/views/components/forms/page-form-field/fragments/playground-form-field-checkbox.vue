@@ -28,7 +28,7 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 
 // Our base text slots, available for the user to update.
 const textSlots = ref({
-	label: {
+	default: {
 		label: "Field label",
 		value: "I would love to sign up to the newsletter and get 10% off my next order",
 	},
@@ -60,5 +60,5 @@ const componentProps = computed(() => {
 	);
 });
 
-const { template } = useTemplateGenerator("form-field", textSlots, props);
+const template = useTemplateGenerator("form-field", { slots: textSlots, props });
 </script>

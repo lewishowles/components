@@ -33,5 +33,5 @@ const textSlots = ref({
 	},
 });
 
-const { template } = useTemplateGenerator("form-fieldset", textSlots);
+const template = useTemplateGenerator("form-fieldset", { slots: textSlots });
 </script>

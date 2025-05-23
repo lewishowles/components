@@ -57,5 +57,5 @@ const componentProps = computed(() => {
 	);
 });
 
-const { template } = useTemplateGenerator("form-field", textSlots, props);
+const template = useTemplateGenerator("form-field", { slots: textSlots, props });
 </script>

@@ -19,9 +19,11 @@
 		</component-slots>
 
 		<component-playgrounds>
-			<template #additional-content>
-				<p><code>form-layout</code> is a functional component that only provides template, and as such provides no options.</p>
-			</template>
+			<playground-form-layout />
 		</component-playgrounds>
 	</component-page>
 </template>
+
+<script setup>
+import PlaygroundFormLayout from "./fragments/playground-form-layout.vue";
+</script>

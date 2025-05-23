@@ -16,7 +16,7 @@
 					Copy code
 				</copy-content>
 
-				<floating-details v-show="!useTranslation" v-model="isTextSlotsOpen">
+				<floating-details v-show="!useTranslation && haveTextSlots" v-model="isTextSlotsOpen">
 					<template #summary>
 						Text slots
 					</template>
@@ -91,6 +91,9 @@ const { useTranslation } = useTranslationMode();
 const textSlots = defineModel({
 	type: Object,
 });
+
+// Whether any text slots are present.
+const haveTextSlots = computed(() => isNonEmptyObject(textSlots.value));
 
 // Our stored values from last time.
 const storedTextSlots = useStorage(`component-playground:${parentComponentName}`, {});

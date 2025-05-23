@@ -1,4 +1,5 @@
 import { computed, unref } from "vue";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import useTranslationMode from "@/composables/use-translation-mode/use-translation-mode";
@@ -8,29 +9,56 @@ import useTranslationMode from "@/composables/use-translation-mode/use-translati
  *
  * @param  {string}  componentTag
  *     The tag for this component, e.g. `form-field`.
- * @param  {ref}  slots
+ * @param  {object}  options
+ *     Additional options
+ * @param  {ref}  options.slots
  *     The slots to add to the component code.
- * @param  {ref}  props
+ * @param  {ref}  options.props
  *     Any additional props to pass to the opening component tag as a `v-model`.
  *     The template will extract the key and `.value` to generate pairs.
+ * @param  {mixed}  options.additionalContent
+ *     Any additional content to add to the template (before slots). This can be
+ *     a string to be used as-is, or an array of strings. It is recommended to
+ *     use the output from another instance of `useTemplateGenerator` if
+ *     intending to join multiple components.
+ * @param  {number}  options.indent
+ *     Whether to indent the output, useful when using the output of this
+ *     composable in the content of another component.
  */
-export default function useTemplateGenerator(componentTag, slots, props) {
+export default function useTemplateGenerator(componentTag, { slots = null, props = null, additionalContent = null, indent = 0 } = {}) {
 	const { useTranslation, translationPathPrefix } = useTranslationMode();
 
 	const template = computed(() => {
 		let template = `<${componentTag}${propsTemplate.value}>`;
 
-		const label = getPlaygroundSlotContent("label");
+		const templateSections = [];
 
-		if (isNonEmptyString(label)) {
-			template += `\n\t${getPlaygroundSlotContent("label")}\n`;
+		// Add the default slot, if provided
+		const defaultContent = getPlaygroundSlotContent("default");
+
+		if (isNonEmptyString(defaultContent)) {
+			templateSections.push(`\t${defaultContent}`);
 		}
 
-		template += `\n\t${slotTemplateSegments.value.filter(piece => piece).join("\n\n\t")}`;
+		// Add any additional content, if provided.
+		if (isNonEmptyString(additionalContent)) {
+			templateSections.push(`\t${unref(additionalContent)}`);
+		}
+
+		if (isNonEmptyArray(additionalContent)) {
+			templateSections.push(...additionalContent.map(content => unref(content)));
+		}
+
+		if (isNonEmptyArray(slotTemplateSegments.value)) {
+			templateSections.push(...slotTemplateSegments.value.map(content => `\t${content}`));
+		}
+
+		template += `\n${templateSections.join("\n\n")}`;
 
 		template += `\n</${componentTag}>`;
 
-		return template;
+		// Apply indentation if needed
+		return applyIndent(template, indent);
 	});
 
 	// Generate a template fragment representing the provided props, extracting
@@ -49,11 +77,6 @@ export default function useTemplateGenerator(componentTag, slots, props) {
 		// to the template, if it contains content.
 		for (const propKey in stableProps) {
 			if (!Object.prototype.hasOwnProperty.call(stableProps, propKey)) {
-				continue;
-			}
-
-			// We ignore label, as it follows a different pattern.
-			if (propKey === "label") {
 				continue;
 			}
 
@@ -106,8 +129,8 @@ export default function useTemplateGenerator(componentTag, slots, props) {
 				continue;
 			}
 
-			// We ignore label, as it follows a different pattern.
-			if (slotKey === "label") {
+			// We ignore default, as it follows a different pattern.
+			if (slotKey === "default") {
 				continue;
 			}
 
@@ -131,7 +154,7 @@ export default function useTemplateGenerator(componentTag, slots, props) {
 	function getPlaygroundSlotContent(slotKey) {
 		const stableSlots = unref(slots);
 
-		if (!isNonEmptyObject(slots) || !stableSlots[slotKey]) {
+		if (!isNonEmptyObject(stableSlots) || !stableSlots[slotKey]) {
 			return "";
 		}
 
@@ -149,7 +172,24 @@ export default function useTemplateGenerator(componentTag, slots, props) {
 		return stableSlots[slotKey].value;
 	}
 
-	return {
-		template,
-	};
+	/**
+	 * If an indent is provided, indent the template output each time we
+	 * encounter a new line.
+	 *
+	 * @param  {string}  template
+	 *     The template to indent
+	 * @param  {number}  indentLevel
+	 *     The
+	 */
+	function applyIndent(template, indentLevel) {
+		if (!indentLevel || indentLevel <= 0) {
+			return template;
+		}
+
+		const tabString = "\t".repeat(indentLevel);
+
+		return `\t${template.replace(/\n(?!\n)/g, `\n${tabString}`)}`;
+	}
+
+	return template;
 }
