@@ -4,6 +4,10 @@
 			Playground
 		</template>
 
+		<template #default>
+			<slot name="additional-content" />
+		</template>
+
 		<template #post-content>
 			<slot />
 		</template>
