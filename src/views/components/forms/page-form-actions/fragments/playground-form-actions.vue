@@ -21,31 +21,50 @@
 <script setup>
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
 
+const buttonTemplate = useTemplateGenerator("ui-button", {
+	props: {
+		type: {
+			value: "submit",
+			inline: true,
+		},
+		class: {
+			value: "button--primary",
+			inline: true,
+		},
+	},
+
+	slots: {
+		default: {
+			value: "Create account",
+		},
+	},
+
+	indent: 1,
+});
+
+const linkTemplate = useTemplateGenerator("link-tag", {
+	props: {
+		href: {
+			value: "#",
+			inline: true,
+		},
+	},
+
+	slots: {
+		default: {
+			value: "Cancel",
+		},
+	},
+
+	indent: 2,
+});
+
 const slots = {
 	"default": {
-		value: useTemplateGenerator("ui-button", {
-			props: {
-				type: {
-					value: "submit",
-					inline: true,
-				},
-				class: {
-					value: "button--primary",
-					inline: true,
-				},
-			},
-
-			slots: {
-				default: {
-					value: "Create account",
-				},
-			},
-
-			indent: 1,
-		}),
+		value: buttonTemplate.value,
 	},
 	"tertiary-actions": {
-		value: "",
+		value: linkTemplate.value,
 	},
 };
 

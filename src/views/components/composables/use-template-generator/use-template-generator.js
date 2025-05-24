@@ -38,7 +38,10 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 		let defaultContent = getPlaygroundSlotContent("default");
 
 		if (isNonEmptyString(defaultContent)) {
-			if (!defaultContent.includes("\n")) {
+			// If the content is itself a component, its indentation needs to be
+			// handled differently to if it's just text, because a component
+			// will be indented as a whole.
+			if (!defaultContent.startsWith("\t")) {
 				defaultContent = `\t${defaultContent}`;
 			}
 
@@ -163,10 +166,18 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 				continue;
 			}
 
-			const slotContent = getPlaygroundSlotContent(slotKey);
+			let slotContent = getPlaygroundSlotContent(slotKey);
 
 			if (isNonEmptyString(slotContent)) {
-				templateSegments.push(`<template #${slotKey}>\n\t\t${slotContent}\n\t</template>`);
+				// Similar to default content, if the content is itself a
+				// component, its indentation needs to be handled differently to
+				// if it's just text, because a component should be generated
+				// using this method, and indented appropriately.
+				if (!slotContent.startsWith("\t")) {
+					slotContent = `\t${slotContent}`;
+				}
+
+				templateSegments.push(`<template #${slotKey}>\n\t${slotContent}\n\t</template>`);
 			}
 		}
 
@@ -220,5 +231,5 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 		return `\t${template.replace(/\n(?!\n)/g, `\n${tabString}`)}`;
 	}
 
-	return template.value;
+	return template;
 }
