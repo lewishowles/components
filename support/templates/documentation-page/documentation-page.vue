@@ -26,6 +26,33 @@
 			</component-event>
 		</component-events>
 
+		<component-methods>
+			<component-method id="method-something">
+				<template #name>
+					something
+				</template>
+
+				<p>...</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Parameter</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>...</code></td>
+							<td><code>...</code></td>
+							<td>...</td>
+						</tr>
+					</tbody>
+				</table>
+			</component-method>
+		</component-methods>
+
 		<component-provides>
 			<template #introduction>
 				<p>...</p>

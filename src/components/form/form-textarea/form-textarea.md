@@ -47,7 +47,7 @@ Any additional attributes to pass to the textarea itself, such as `required` or 
 
 ### `triggerFocus`
 
-Focus this input.
+Focus this textarea.
 
 ## Examples
 

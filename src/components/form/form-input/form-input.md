@@ -2,10 +2,6 @@
 
 `form-input` is an extension of the standard `input` tag, with a consistent design and baked-in accessibility features.
 
-## Model
-
-The model value is the current value of the field.
-
 ## Slots
 
 ### `default`
@@ -50,6 +46,12 @@ Any placeholder to show in the field. Do not use a placeholder for critical info
 - default: `null`
 
 Any additional attributes to pass to the field itself, such as `required` or `autocomplete`. This can also be used to change the type of the field, such as to `email`.
+
+## Events
+
+### `v-model`
+
+The current value of the form field will be available via `v-model`.
 
 ## Methods
 

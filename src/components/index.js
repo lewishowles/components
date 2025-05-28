@@ -76,6 +76,7 @@ import IconEmail from "./icon/icon-email/icon-email.vue";
 import IconExternal from "./icon/icon-external/icon-external.vue";
 import IconEye from "./icon/icon-eye/icon-eye.vue";
 import IconFilm from "./icon/icon-film/icon-film.vue";
+import IconFunction from "./icon/icon-function/icon-function.vue";
 import IconImage from "./icon/icon-image/icon-image.vue";
 import IconInfo from "./icon/icon-info/icon-info.vue";
 import IconLaptop from "./icon/icon-laptop/icon-laptop.vue";
@@ -96,14 +97,13 @@ export default {
 	AccordionGroup,
 	AccordionSection,
 	AlertMessage,
-	FloatingDetails,
-	CopyContent,
 	AppPagination,
 	BaseIcon,
 	BreadcrumbItem,
 	BreadcrumbList,
 	ButtonGroup,
 	ConditionalWrapper,
+	CopyContent,
 	DataTable,
 	DisplayDate,
 	DonutChart,
@@ -113,6 +113,7 @@ export default {
 	DropdownMenuDivider,
 	DropdownMenuLink,
 	DropdownMenuTitle,
+	FloatingDetails,
 	FormActions,
 	FormCheckbox,
 	FormCheckboxGroup,
@@ -154,6 +155,7 @@ export default {
 	IconExternal,
 	IconEye,
 	IconFilm,
+	IconFunction,
 	IconImage,
 	IconInfo,
 	IconLaptop,

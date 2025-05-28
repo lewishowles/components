@@ -33,6 +33,15 @@
 				<app-menu-component to="/forms/form-actions">
 					form-actions
 				</app-menu-component>
+				<app-menu-component to="/forms/form-input">
+					form-input
+				</app-menu-component>
+				<app-menu-component to="/forms/form-textarea">
+					form-textarea
+				</app-menu-component>
+				<app-menu-component to="/forms/form-checkbox">
+					form-checkbox
+				</app-menu-component>
 			</app-menu-section>
 		</ol>
 	</nav>
