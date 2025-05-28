@@ -18,30 +18,30 @@
 					Forms
 				</template>
 
-				<app-menu-component to="/forms/form-wrapper">
+				<app-menu-link to="/forms/form-wrapper">
 					form-wrapper
-				</app-menu-component>
-				<app-menu-component to="/forms/form-fieldset">
+				</app-menu-link>
+				<app-menu-link to="/forms/form-fieldset">
 					form-fieldset
-				</app-menu-component>
-				<app-menu-component to="/forms/form-layout">
+				</app-menu-link>
+				<app-menu-link to="/forms/form-layout">
 					form-layout
-				</app-menu-component>
-				<app-menu-component to="/forms/form-field">
+				</app-menu-link>
+				<app-menu-link to="/forms/form-field">
 					form-field
-				</app-menu-component>
-				<app-menu-component to="/forms/form-actions">
+				</app-menu-link>
+				<app-menu-link to="/forms/form-actions">
 					form-actions
-				</app-menu-component>
-				<app-menu-component to="/forms/form-input">
+				</app-menu-link>
+				<app-menu-link to="/forms/form-input">
 					form-input
-				</app-menu-component>
-				<app-menu-component to="/forms/form-textarea">
+				</app-menu-link>
+				<app-menu-link to="/forms/form-textarea">
 					form-textarea
-				</app-menu-component>
-				<app-menu-component to="/forms/form-checkbox">
+				</app-menu-link>
+				<app-menu-link to="/forms/form-checkbox">
 					form-checkbox
-				</app-menu-component>
+				</app-menu-link>
 			</app-menu-section>
 		</ol>
 	</nav>
@@ -56,7 +56,7 @@
  * importance, or exclude supplementary components, for example.
  */
 
-import AppMenuComponent from "./fragments/app-menu-component/app-menu-component.vue";
+import AppMenuLink from "./fragments/app-menu-link/app-menu-link.vue";
 import AppMenuItem from "./fragments/app-menu-item/app-menu-item.vue";
 import AppMenuSection from "./fragments/app-menu-section/app-menu-section.vue";
 import ComponentsLogo from "./fragments/components-logo/components-logo.vue";
