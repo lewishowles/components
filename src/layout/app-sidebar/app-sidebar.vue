@@ -42,6 +42,9 @@
 				<app-menu-link to="/form/form-checkbox">
 					form-checkbox
 				</app-menu-link>
+				<app-menu-link to="/form/form-checkbox-group">
+					form-checkbox-group
+				</app-menu-link>
 				<app-menu-link to="/form/button-group">
 					button-group
 				</app-menu-link>
