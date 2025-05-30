@@ -17,6 +17,9 @@ import useTranslationMode from "@/composables/use-translation-mode/use-translati
  * @param  {ref}  options.props
  *     Any additional props to pass to the opening component tag as a `v-model`.
  *     The template will extract the key and `.value` to generate pairs.
+ * @param  {ref}  options.events
+ *     Any additional events to pass to apply to the opening component tag.
+ *     The template will extract the key and `.value` to generate pairs.
  * @param  {mixed}  options.additionalContent
  *     Any additional content to add to the template (after slots). This can be
  *     a string to be used as-is, or an array of strings. It is recommended to
@@ -26,11 +29,11 @@ import useTranslationMode from "@/composables/use-translation-mode/use-translati
  *     Whether to indent the output, useful when using the output of this
  *     composable in the content of another component.
  */
-export default function useTemplateGenerator(componentTag, { slots = null, props = null, additionalContent = null, indent = 0 } = {}) {
+export default function useTemplateGenerator(componentTag, { slots = null, props = null, events = null, additionalContent = null, indent = 0 } = {}) {
 	const { useTranslation, translationPathPrefix } = useTranslationMode();
 
 	const template = computed(() => {
-		let template = `<${componentTag}${propsTemplate.value}>`;
+		let template = `<${componentTag}${propsTemplate.value}${eventsTemplate.value}>`;
 
 		const templateSections = [];
 
@@ -70,8 +73,7 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 	});
 
 	// Generate a template fragment representing the provided props, extracting
-	// each prop's key and ".value" to generate pairs to use in a v-model
-	// string.
+	// each prop's key and ".value" to generate pairs to use in a v-bind string.
 	const propsTemplate = computed(() => {
 		const stableProps = unref(props);
 
@@ -118,7 +120,7 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 					break;
 			}
 
-			if (isNonEmptyString(propContent)) {
+			if (propContent !== null) {
 				if (isPropInline === true) {
 					inlineProps.push(`${propKey}="${propContent}"`);
 
@@ -131,17 +133,54 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 			}
 		}
 
-		const propsString = [];
+		const propsStringPieces = [];
 
 		if (isNonEmptyArray(inlineProps)) {
-			propsString.push(...inlineProps);
+			propsStringPieces.push(...inlineProps);
 		}
 
 		if (isNonEmptyArray(boundProps)) {
-			propsString.push(`v-bind="{ ${boundProps.join(", ")} }"`);
+			propsStringPieces.push(`v-bind="{ ${boundProps.join(", ")} }"`);
 		}
 
-		return ` ${propsString.join(" ")}`;
+		if (!isNonEmptyArray(propsStringPieces)) {
+			return "";
+		}
+
+		return ` ${propsStringPieces.join(" ")}`;
+	});
+
+	// Generate a template fragment representing the provided events, extracting
+	// each event's key and ".value" to generate pairs.
+	const eventsTemplate = computed(() => {
+		const stableEvents = unref(events);
+
+		if (!isNonEmptyObject(stableEvents)) {
+			return "";
+		}
+
+		const inlineEvents = [];
+
+		// For each of our props, we generate a template string and add it
+		// to the template, if it contains content.
+		for (const eventKey in stableEvents) {
+			if (!Object.prototype.hasOwnProperty.call(stableEvents, eventKey)) {
+				continue;
+			}
+
+			const event = stableEvents[eventKey];
+			const eventContent = event.value;
+
+			if (isNonEmptyString(eventContent)) {
+				inlineEvents.push(`@${eventKey}="${eventContent}"`);
+			}
+		}
+
+		if (!isNonEmptyArray(inlineEvents)) {
+			return "";
+		}
+
+		return ` ${inlineEvents.join(" ")}`;
 	});
 
 	// Generate a template fragment representing the provided slots.
