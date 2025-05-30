@@ -1,10 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-checkbox" v-model="textSlots">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-checkbox" v-model="textSlots">
 		<template #title>
 			Form checkbox
 		</template>
 
-		<form-checkbox>
+		<form-checkbox v-model="componentModel">
 			{{ textSlots.default?.value }}
 
 			<template #help>
@@ -21,6 +21,9 @@
 <script setup>
 import { ref } from "vue";
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
+
+// The current model value.
+const componentModel = ref(null);
 
 // Our base text slots, available for the user to update.
 const textSlots = ref({

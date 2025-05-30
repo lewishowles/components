@@ -94,7 +94,7 @@
 		<component-methods>
 			<component-method id="method-trigger-focus">
 				<template #name>
-					triggerFocus
+					<code>triggerFocus</code>
 				</template>
 
 				<p>Focus this checkbox.</p>
