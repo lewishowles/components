@@ -1,5 +1,5 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-{{COMPONENT_NAME}}" v-model="textSlots">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-{{COMPONENT_NAME}}" v-model="textSlots">
 		<template #title>
 			{{SENTENCE_CASE_NAME}}
 		</template>
@@ -8,20 +8,8 @@
 			<p>...</p>
 		</template>
 
-		<{{COMPONENT_NAME}} v-bind="componentProps">
+		<{{COMPONENT_NAME}} v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}
-
-			<template #introduction>
-				{{ textSlots.introduction?.value }}
-			</template>
-
-			<template #help>
-				{{ textSlots.help?.value }}
-			</template>
-
-			<template #error>
-				{{ textSlots.error?.value }}
-			</template>
 		</{{COMPONENT_NAME}}>
 	</component-playground>
 </template>
@@ -30,26 +18,14 @@
 import { computed, ref } from "vue";
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
 
+// The current model value.
+const componentModel = ref(null);
+
 // Our base text slots, available for the user to update.
 const textSlots = ref({
 	default: {
-		label: "Field label",
+		label: "",
 		value: "",
-	},
-	introduction: {
-		label: "Introduction",
-		value: "",
-		type: "textarea",
-	},
-	help: {
-		label: "Help text",
-		value: "",
-		type: "textarea",
-	},
-	error: {
-		label: "Error text",
-		value: "",
-		type: "textarea",
 	},
 });
 

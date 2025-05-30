@@ -7,52 +7,10 @@
 		<template #introduction>
 			<p></p>
 		</template>
-
-		<component-props>
 {{COMPONENT_PROPS}}
-		</component-props>
-
-		<component-slots>
 {{COMPONENT_SLOTS}}
-		</component-slots>
-
-		<component-events>
-			<component-event id="event-v-model">
-				<template #name>
-					v-model
-				</template>
-
-				<p>The current value of ... will be available via <code>v-model</code>.</p>
-			</component-event>
-		</component-events>
-
-		<component-methods>
-			<component-method id="method-something">
-				<template #name>
-					something
-				</template>
-
-				<p>...</p>
-
-				<table>
-					<thead>
-						<tr>
-							<th>Parameter</th>
-							<th>Type</th>
-							<th>Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><code>...</code></td>
-							<td><code>...</code></td>
-							<td>...</td>
-						</tr>
-					</tbody>
-				</table>
-			</component-method>
-		</component-methods>
-
+{{COMPONENT_EVENTS}}
+{{COMPONENT_METHODS}}
 		<component-provides>
 			<template #introduction>
 				<p>...</p>

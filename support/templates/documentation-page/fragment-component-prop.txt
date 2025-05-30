@@ -1,4 +1,4 @@
-			<component-prop id="prop-{{PROP_NAME}}">
+			<component-prop id="prop-{{KEBAB_CASE_PROP_NAME}}">
 				<template #name>
 					{{PROP_NAME}}
 				</template>
