@@ -17,7 +17,7 @@
 			<icon-loading class="stroke-current animate-spin" />
 
 			<span class="sr-only">
-				<slot name="loading">
+				<slot name="loading-label">
 					Loading
 				</slot>
 			</span>

@@ -42,6 +42,15 @@
 				<app-menu-link to="/forms/form-checkbox">
 					form-checkbox
 				</app-menu-link>
+			<app-menu-section>
+				<template #title>
+					Interaction
+				</template>
+
+				<app-menu-link to="/interaction/ui-button">
+					ui-button
+				</app-menu-link>
+			</app-menu-section>
 			</app-menu-section>
 		</ol>
 	</nav>

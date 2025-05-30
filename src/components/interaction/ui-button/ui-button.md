@@ -8,6 +8,12 @@
 
 The default slot contains the content to display in the button.
 
+### `loading-label`
+
+- default: "Loading"
+
+The text to show to screen-reader users when this button is in its `reactive` state.
+
 ## Props
 
 ### `iconStart` and `iconEnd`
@@ -44,9 +50,9 @@ Any classes to add to the icon itself. If a size class is added (`size-`), the d
 
 ## Events
 
-### `@click`
+### `click`
 
-Emitted when the button is clicked.
+Emitted when the button is clicked or activated via keyboard.
 
 ## Methods
 
