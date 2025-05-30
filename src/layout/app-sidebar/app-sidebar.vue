@@ -54,6 +54,15 @@
 					link-tag
 				</app-menu-link>
 			</app-menu-section>
+
+			<app-menu-section>
+				<template #title>
+					Content
+				</template>
+
+				<app-menu-link to="/content/loading-indicator">
+					loading-indicator
+				</app-menu-link>
 			</app-menu-section>
 		</ol>
 	</nav>
