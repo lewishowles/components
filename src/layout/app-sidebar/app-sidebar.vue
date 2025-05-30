@@ -51,6 +51,9 @@
 				<app-menu-link to="/form/button-group">
 					button-group
 				</app-menu-link>
+				<app-menu-link to="/form/form-date">
+					form-date
+				</app-menu-link>
 			<app-menu-section>
 				<template #title>
 					Interaction
