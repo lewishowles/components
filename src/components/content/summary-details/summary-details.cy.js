@@ -51,7 +51,7 @@ describe("summary-details", () => {
 		});
 
 		it("An icon can be placed at the start", () => {
-			mount({ iconStart: true });
+			mount({ iconAtStart: true });
 
 			cy.getByData("summary-details-icon-start").shouldBeVisible();
 			cy.getByData("summary-details-icon-end").should("not.exist");

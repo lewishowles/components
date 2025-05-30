@@ -11,6 +11,7 @@
 		<div class="flex gap-8 mt-1">
 			<form-input
 				v-if="haveValidDate"
+				ref="dayInput"
 				v-model="date.day"
 				v-bind="{
 					required,
@@ -70,11 +71,11 @@
 </template>
 
 <script setup>
-import { computed, useSlots } from "vue";
+import { computed, useSlots, useTemplateRef } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber, isNumeric } from "@lewishowles/helpers/number";
-import { isNonEmptySlot } from "@lewishowles/helpers/vue";
+import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { Temporal } from "temporal-polyfill";
 import useInputId from "@/components/form/composables/use-input-id";
 
@@ -108,7 +109,8 @@ const date = defineModel({
 });
 
 const slots = useSlots();
-
+// A reference to the day input, which we will use to focus this field.
+const dayInput = useTemplateRef("dayInput");
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
 // Whether an introduction has been provided.
@@ -214,10 +216,16 @@ function setDateFromIsoString(dateString) {
 	}
 }
 
-window.Temporal = Temporal;
+/**
+ * Trigger focus on the "day" input.
+ */
+function triggerFocus() {
+	runComponentMethod(dayInput, "triggerFocus");
+}
 
 defineExpose({
 	toString,
 	setDateFromIsoString,
+	triggerFocus,
 });
 </script>

@@ -20,7 +20,7 @@
  * such as custom icons, and allows a simple way of having content that can be
  * toggled. Suitable for items such as FAQs or even dropdown menus.
  */
-import { computed, onMounted, ref, useAttrs, useTemplateRef, watch } from "vue";
+import { computed, onMounted, useAttrs, useTemplateRef, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
 

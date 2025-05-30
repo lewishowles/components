@@ -44,7 +44,7 @@ describe("floating-details", () => {
 		});
 
 		it("An icon can be placed at the start", () => {
-			mount({ iconStart: true });
+			mount({ iconAtStart: true });
 
 			cy.getByData("floating-details-icon-start").shouldBeVisible();
 			cy.getByData("floating-details-icon-end").should("not.exist");

@@ -18,28 +18,28 @@
 					Forms
 				</template>
 
-				<app-menu-link to="/forms/form-wrapper">
+				<app-menu-link to="/form/form-wrapper">
 					form-wrapper
 				</app-menu-link>
-				<app-menu-link to="/forms/form-fieldset">
+				<app-menu-link to="/form/form-fieldset">
 					form-fieldset
 				</app-menu-link>
-				<app-menu-link to="/forms/form-layout">
+				<app-menu-link to="/form/form-layout">
 					form-layout
 				</app-menu-link>
-				<app-menu-link to="/forms/form-field">
+				<app-menu-link to="/form/form-field">
 					form-field
 				</app-menu-link>
-				<app-menu-link to="/forms/form-actions">
+				<app-menu-link to="/form/form-actions">
 					form-actions
 				</app-menu-link>
-				<app-menu-link to="/forms/form-input">
+				<app-menu-link to="/form/form-input">
 					form-input
 				</app-menu-link>
-				<app-menu-link to="/forms/form-textarea">
+				<app-menu-link to="/form/form-textarea">
 					form-textarea
 				</app-menu-link>
-				<app-menu-link to="/forms/form-checkbox">
+				<app-menu-link to="/form/form-checkbox">
 					form-checkbox
 				</app-menu-link>
 			<app-menu-section>

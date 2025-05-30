@@ -14,6 +14,10 @@ The default slot contains the label of the field.
 
 _Note that a label is always required, even if a label is not shown to the user, as it will be critical for screen readers. This component will show an error if no label is provided._
 
+### `introduction`
+
+Any additional text to introduce this input, which appears between the label and the input.
+
 ### `error`
 
 Any error text to display below the field.
@@ -29,7 +33,14 @@ Any help text to display below the field.
 - type: `array`
 - default: `[]`
 
-The options for this select. Options can either be a string, which is used for both the label and the value, or a `{ label, value }` object, allowing them to differ.
+The options for this select can be provided in a number of formats for ease.
+
+- An array of strings `["option1", "option2", "option3"]`, in which case both the label and value are the same.
+- An array of numbers `[1, 2, 3]`, in which case both the label and value are the same.
+- An object `{ value: "label" }` where each key is the value of oan option, and each value is the label.
+- An array of objects `[{ label: "Label", value: "value" }]` where labels and values are explicitly defined.
+
+It is possible to combine both array options, but generally not recommended.
 
 ### `allowEmpty`
 
@@ -56,7 +67,7 @@ Any additional attributes to pass to the field itself, such as `required`.
 
 ### `triggerFocus`
 
-Focus this field.
+Focus this select.
 
 ## Examples
 

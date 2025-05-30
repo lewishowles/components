@@ -14,6 +14,10 @@ The default slot contains the label of the field.
 
 _Note that a label is always required, even if a label is not shown to the user, as it will be critical for screen readers. This component will show an error if no label is provided._
 
+### `introduction`
+
+Any additional text to introduce this field, which appears between the label and the inputs.
+
 ### `day-label`
 
 The label for the "Day" field.
@@ -25,6 +29,14 @@ The label for the "Month" field.
 ### `year-label`
 
 The label for the "Year" field.
+
+### `error`
+
+Any error text to display below the field.
+
+### `help`
+
+Any help text to display below the field.
 
 ## Props
 
@@ -58,11 +70,6 @@ Any placeholder to show in the "Month" field. Do not use a placeholder for criti
 
 Any placeholder to show in the "Year" field. Do not use a placeholder for critical information. Always use the label and help text as priorities.
 
-### `required`
-
-- type: `boolean`
-- default: `false`
-
 ## Methods
 
 ### toString
@@ -72,6 +79,10 @@ Retrieve a pre-formatted string representation of the current (date only) in [RF
 ### setDateFromIsoString
 
 Set the current `day`, `month`, and `year`, as parsed from an [RFC 9557 format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDate#rfc_9557_format) date string.
+
+### triggerFocus
+
+Focus the "day" input of this field.
 
 ## Examples
 

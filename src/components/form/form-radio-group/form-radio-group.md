@@ -31,7 +31,7 @@ Any help text to display below the field.
 - type: `array|object`
 - **required**
 
-The options to display as radio buttons can be provided in one of three formats for ease.
+The options to display as radio buttons can be provided in a number of formats for ease.
 
 - An array of strings `["option1", "option2", "option3"]`, in which case both the label and value are the same.
 - An array of numbers `[1, 2, 3]`, in which case both the label and value are the same.
@@ -67,7 +67,7 @@ Note that this only takes effect when the radio buttons are in a _container_ tha
 
 ### `triggerFocus`
 
-Focus this field.
+Focus this radio group.
 
 ## Examples
 

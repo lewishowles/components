@@ -10,6 +10,10 @@ The default slot contains the label of the field.
 
 _Note that a label is always required, even if a label is not shown to the user, as it will be critical for screen readers. This component will show an error if no label is provided._
 
+### `introduction`
+
+Any additional text to introduce this input, which appears between the label and the input.
+
 ### `prefix` and `suffix`
 
 Any element—text or icon—to place at the start or end of the field.
@@ -57,7 +61,7 @@ The current value of the form field will be available via `v-model`.
 
 ### `triggerFocus`
 
-Focus this field.
+Focus this input.
 
 ## Examples
 

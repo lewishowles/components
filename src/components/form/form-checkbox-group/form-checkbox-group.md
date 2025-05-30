@@ -31,7 +31,7 @@ Any help text to display below the field.
 - type: `array|object`
 - **required**
 
-The options to display as checkboxes can be provided in one of three formats for ease.
+The options to display as checkboxes can be provided in a number of formats for ease.
 
 - An array of strings `["option1", "option2", "option3"]`, in which case both the label and value are the same.
 - An array of numbers `[1, 2, 3]`, in which case both the label and value are the same.
@@ -52,13 +52,13 @@ A name for this checkbox group. If not set, the input ID is used.
 - type: `string`
 - default: `null`
 
-Any ID to apply to this field. If an ID is not provided, one will be generated at random. Note that when providing an ID, please make sure that it is unique to avoid any unforeseen issues.
+Any ID to apply to this checkbox group. If an ID is not provided, one will be generated at random. Note that when providing an ID, please make sure that it is unique to avoid any unforeseen issues.
 
 ## Methods
 
 ### `triggerFocus`
 
-Focus this field.
+Focus this checkbox group.
 
 ## Examples
 
