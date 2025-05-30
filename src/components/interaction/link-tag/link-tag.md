@@ -31,7 +31,7 @@ Whether this is an external link. If so, `target="_blank"` is added and an appro
 
 When `external` is true, but an external icon is not desired, `showExternalIcon` can be set to false.
 
-_Note that if a link is `external`, `showExternalIcon` is true and `iconEnd` is defined, the external icon takes precedence._
+_Note that if a link is `external`, `showExternalIcon` is true and, `iconEnd` is defined, the external icon takes precedence._
 
 ### `iconStart` and `iconEnd`
 

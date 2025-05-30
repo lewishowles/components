@@ -50,6 +50,9 @@
 				<app-menu-link to="/interaction/ui-button">
 					ui-button
 				</app-menu-link>
+				<app-menu-link to="/interaction/link-tag">
+					link-tag
+				</app-menu-link>
 			</app-menu-section>
 			</app-menu-section>
 		</ol>
