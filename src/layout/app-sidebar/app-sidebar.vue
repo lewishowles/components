@@ -54,6 +54,11 @@
 				<app-menu-link to="/form/form-date">
 					form-date
 				</app-menu-link>
+				<app-menu-link to="/form/form-select">
+					form-select
+				</app-menu-link>
+			</app-menu-section>
+
 			<app-menu-section>
 				<template #title>
 					Interaction
