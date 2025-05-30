@@ -1,14 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-field-radio-group" v-model="textSlots">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-button-group" v-model="textSlots">
 		<template #title>
 			Button group
 		</template>
 
-		<template #introduction>
-			<p>A button group is a variant of radio group, designed for a more succinct choice between options.</p>
-		</template>
-
-		<form-field v-model="componentModel" v-bind="componentProps">
+		<button-group v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}
 
 			<template #introduction>
@@ -22,7 +18,7 @@
 			<template #error>
 				{{ textSlots.error?.value }}
 			</template>
-		</form-field>
+		</button-group>
 	</component-playground>
 </template>
 
@@ -58,11 +54,6 @@ const textSlots = ref({
 
 // Props both for the template and for the component example itself.
 const props = ref({
-	type: {
-		label: "Type",
-		value: "button-group",
-		type: "text",
-	},
 	options: {
 		label: "Options",
 		value: ["Light", "Dark", "System"],
@@ -77,5 +68,5 @@ const componentProps = computed(() => {
 	);
 });
 
-const template = useTemplateGenerator("form-field", { slots: textSlots, props });
+const template = useTemplateGenerator("button-group", { slots: textSlots, props });
 </script>
