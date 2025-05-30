@@ -52,7 +52,13 @@
 					default
 				</template>
 
-				<p>The content of the fieldset, which will be wrapped in a <code><router-link v-bind="{ to: '/forms/form-layout' }">form-layout</router-link></code> component.</p>
+				<p>
+					The content of the fieldset, which will be wrapped in a
+					<router-link v-bind="{ to: '/forms/form-layout' }">
+						<code>form-layout</code>
+					</router-link>
+					component.
+				</p>
 			</component-slot>
 		</component-slots>
 

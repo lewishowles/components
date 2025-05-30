@@ -65,6 +65,13 @@
 				<p>The default slot contains the label of the field.</p>
 				<p><em>Note that a label is always required, even if a label is not shown to the user, as it will be critical for screen readers. This component will show an error if no label is provided.</em></p>
 			</component-slot>
+			<component-slot id="slot-introduction">
+				<template #name>
+					introduction
+				</template>
+
+				<p>Any additional text to introduce this input, which appears between the label and the input.</p>
+			</component-slot>
 			<component-slot id="slot-prefix">
 				<template #name>
 					prefix
@@ -116,6 +123,16 @@
 				<p>The current value of the input will be available via <code>v-model</code>.</p>
 			</component-event>
 		</component-events>
+
+		<component-methods>
+			<component-method id="method-trigger-focus">
+				<template #name>
+					<code>triggerFocus</code>
+				</template>
+
+				<p>Focus this input.</p>
+			</component-method>
+		</component-methods>
 
 		<component-playgrounds>
 			<playground-form-input />

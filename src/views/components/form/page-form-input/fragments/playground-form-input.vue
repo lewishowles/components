@@ -1,10 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-textarea" v-model="textSlots">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-input" v-model="textSlots">
 		<template #title>
-			Form textarea
+			Form input
 		</template>
 
-		<form-textarea>
+		<form-input v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}
 
 			<template #introduction>
@@ -18,7 +18,7 @@
 			<template #error>
 				{{ textSlots.error?.value }}
 			</template>
-		</form-textarea>
+		</form-input>
 	</component-playground>
 </template>
 
@@ -26,20 +26,23 @@
 import { ref } from "vue";
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
 
+// The current model value.
+const componentModel = ref(null);
+
 // Our base text slots, available for the user to update.
 const textSlots = ref({
 	default: {
 		label: "Field label",
-		value: "About you",
+		value: "Your name",
 	},
 	introduction: {
 		label: "Introduction",
-		value: "This will be displayed on your profile and will be visible to other users of the website.",
+		value: "We will only use your name to address you in your account and communications, and will not pass it on to third parties.",
 		type: "textarea",
 	},
 	help: {
 		label: "Help text",
-		value: "You can use basic Markdown such as **bold** and _italic_.",
+		value: "Please use the name you wish to be addressed by, even if this is different to your legal name.",
 		type: "textarea",
 	},
 	error: {
@@ -49,5 +52,5 @@ const textSlots = ref({
 	},
 });
 
-const template = useTemplateGenerator("form-textarea", { slots: textSlots });
+const template = useTemplateGenerator("form-input", { slots: textSlots });
 </script>

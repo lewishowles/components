@@ -66,6 +66,13 @@
 				<p>The default slot contains the label of the textarea.</p>
 				<p><em>Note that a label is always required, even if a label is not shown to the user, as it will be critical for screen readers. This component will show an error if no label is provided.</em></p>
 			</component-slot>
+			<component-slot id="slot-introduction">
+				<template #name>
+					introduction
+				</template>
+
+				<p>Any additional text to introduce this textarea, which appears between the label and the input.</p>
+			</component-slot>
 			<component-slot id="slot-error">
 				<template #name>
 					error
