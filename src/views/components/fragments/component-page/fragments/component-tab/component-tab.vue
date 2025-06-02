@@ -1,5 +1,5 @@
 <template>
-	<tab-item class="pt-8">
+	<tab-item>
 		<template #label>
 			<slot name="title" />
 		</template>

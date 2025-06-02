@@ -1,6 +1,6 @@
 <template>
 	<div data-test="tab-group">
-		<nav ref="tabBarReference" class="mb-4 border-b border-grey-200 dark:border-white/20">
+		<nav ref="tabBarReference" class="mb-12 border-b border-grey-200 dark:border-white/20">
 			<ol class="-mb-px flex flex-wrap items-end" role="tablist">
 				<li v-for="tab in tabs" :key="tab.tabId">
 					<link-tag

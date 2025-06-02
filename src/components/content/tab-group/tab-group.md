@@ -2,7 +2,9 @@
 
 `tab-group` represents a group of tabs and is used in conjunction with `tab-item`, which represents each tab in the group, to create a set of accessible tabbed content.
 
-Tabs are a good way to help a user focus on the task at hand, organising what could be an overhwleming number of options into distinct groups. A tab should clearly label its contents, meaning the user has to do the minimum thinking to determine where to look for the item they need.
+Note that neither `tab-group` nor `tab-item` can be used without the other, hence their documentation being combined.
+
+Tabs are a good way to help a user focus on the task at hand, organising what could be an overwhelming number of options into distinct groups. A tab should clearly label its contents, meaning the user has to do the minimum thinking to determine where to look for the item they need.
 
 However, tabs may also mean a page is too complex, and other solutions should be considered.
 

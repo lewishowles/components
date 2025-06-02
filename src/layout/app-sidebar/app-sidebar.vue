@@ -80,6 +80,9 @@
 					Content
 				</template>
 
+				<app-menu-link to="/content/tab-group">
+					tab-group
+				</app-menu-link>
 				<app-menu-link to="/content/loading-indicator">
 					loading-indicator
 				</app-menu-link>
