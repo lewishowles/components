@@ -1,6 +1,6 @@
 # `star-rating`
 
-`star-rating` offers two optional, mutually inclusive options. Users can either select a rating (out of 5), or view the current aggregate rating. `star-rating` is an extension of `form-radio-group` (and `form-field[type="radio"]`).
+`star-rating` offers two optional, mutually inclusive options. Users can either select a rating (out of 5), or view the current aggregate rating. `star-rating` is an extension of `form-field[type="radio"]` (and thus `form-radio-group`).
 
 ## Slots
 

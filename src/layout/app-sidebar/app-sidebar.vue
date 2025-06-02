@@ -70,6 +70,9 @@
 				<app-menu-link to="/interaction/link-tag">
 					link-tag
 				</app-menu-link>
+				<app-menu-link to="/interaction/star-rating">
+					star-rating
+				</app-menu-link>
 			</app-menu-section>
 
 			<app-menu-section>
