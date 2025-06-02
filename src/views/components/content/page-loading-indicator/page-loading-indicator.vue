@@ -33,7 +33,7 @@
 				</template>
 
 				<p>The default slot contains the text to display beside the loading indicator.</p>
-				<p><em>Note that no default text is provided because it is recommended to be clear about what is happening, and what is loading, instead of using a generic message.</em></p>
+				<p><em>Note that no default text is provided by design. Using a specific message related to what is loaded is strongly encouraged.</em></p>
 			</component-slot>
 		</component-slots>
 

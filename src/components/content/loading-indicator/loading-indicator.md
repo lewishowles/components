@@ -8,7 +8,7 @@
 
 The default slot contains the text to display beside the loading indicator.
 
-_Note that no default text is provided because it is recommended to be clear about what is happening, and what is loading, instead of using a generic message._
+_Note that no default text is provided by design. Using a specific message related to what is loaded is strongly encouraged._
 
 ## Props
 

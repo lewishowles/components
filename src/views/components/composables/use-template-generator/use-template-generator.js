@@ -33,14 +33,25 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 	const { useTranslation, translationPathPrefix } = useTranslationMode();
 
 	const template = computed(() => {
+		let defaultContent = getPlaygroundSlotContent("default");
+
+		const stableAdditionalContent = unref(additionalContent);
+
+		const hasDefaultContent = isNonEmptyString(defaultContent);
+		const hasSlots = isNonEmptyObject(slots);
+		const hasAdditionalContent = isNonEmptyArray(stableAdditionalContent) || isNonEmptyString(stableAdditionalContent);
+
+		// If this is an empty component, render it as self-closing.
+		if (!hasDefaultContent && !hasSlots && !hasAdditionalContent) {
+			return applyIndent(`<${componentTag}${propsTemplate.value}${eventsTemplate.value} />`, indent);
+		}
+
 		let template = `<${componentTag}${propsTemplate.value}${eventsTemplate.value}>`;
 
 		const templateSections = [];
 
-		// Add the default slot, if provided
-		let defaultContent = getPlaygroundSlotContent("default");
-
-		if (isNonEmptyString(defaultContent)) {
+		// Add the default slot content, if provided
+		if (hasDefaultContent) {
 			// If the content is itself a component, its indentation needs to be
 			// handled differently to if it's just text, because a component
 			// will be indented as a whole.
@@ -56,12 +67,12 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 		}
 
 		// Add any additional content, if provided.
-		if (isNonEmptyString(additionalContent)) {
-			templateSections.push(`\t${unref(additionalContent)}`);
+		if (isNonEmptyString(stableAdditionalContent)) {
+			templateSections.push(stableAdditionalContent);
 		}
 
-		if (isNonEmptyArray(additionalContent)) {
-			templateSections.push(...additionalContent.map(content => unref(content)));
+		if (isNonEmptyArray(stableAdditionalContent)) {
+			templateSections.push(...stableAdditionalContent.map(content => unref(content)));
 		}
 
 		template += `\n${templateSections.join("\n\n")}`;
