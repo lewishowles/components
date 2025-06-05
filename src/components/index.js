@@ -53,6 +53,7 @@ import IconArrowLeft from "./icon/icon-arrow-left/icon-arrow-left.vue";
 import IconArrowRight from "./icon/icon-arrow-right/icon-arrow-right.vue";
 import IconArrowUp from "./icon/icon-arrow-up/icon-arrow-up.vue";
 import IconBell from "./icon/icon-bell/icon-bell.vue";
+import IconBin from "./icon/icon-bin/icon-bin.vue";
 import IconCheck from "./icon/icon-check/icon-check.vue";
 import IconCheckCircled from "./icon/icon-check-circled/icon-check-circled.vue";
 import IconChevronDown from "./icon/icon-chevron-down/icon-chevron-down.vue";
@@ -85,6 +86,7 @@ import IconLoading from "./icon/icon-loading/icon-loading.vue";
 import IconMegaphone from "./icon/icon-megaphone/icon-megaphone.vue";
 import IconMoon from "./icon/icon-moon/icon-moon.vue";
 import IconObject from "./icon/icon-object/icon-object.vue";
+import IconPencil from "./icon/icon-pencil/icon-pencil.vue";
 import IconPin from "./icon/icon-pin/icon-pin.vue";
 import IconPlus from "./icon/icon-plus/icon-plus.vue";
 import IconReload from "./icon/icon-reload/icon-reload.vue";
@@ -132,6 +134,7 @@ export default {
 	IconArrowRight,
 	IconArrowUp,
 	IconBell,
+	IconBin,
 	IconCheck,
 	IconCheckCircled,
 	IconChevronDown,
@@ -164,6 +167,7 @@ export default {
 	IconMegaphone,
 	IconMoon,
 	IconObject,
+	IconPencil,
 	IconPin,
 	IconPlus,
 	IconReload,
