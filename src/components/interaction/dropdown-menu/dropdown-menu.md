@@ -49,7 +49,7 @@ Whether to close the menu when pressing escape. If focus is within this componen
 - type: `boolean`
 - default: `true`
 
-Whether to close the menu when clicking outside of the component. This is best combined with `floating` for menus.
+Whether to close the menu when clicking outside of the component.
 
 ### `iconOpen`
 

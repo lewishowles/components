@@ -8,37 +8,19 @@ Provides an implementation of the `details` element with optional extras, such a
 
 The content to be displayed in the summary.
 
-#### Slot props
-
-##### `open`
-
-- type: `boolean`
-
-Whether the details are currently visible.
-
-##### `icon`
-
-- type: `string`
-
-The computed icon to display for the current state.
+| Slot prop | Type | Description |
+| --- | --- | --- |
+| `open` | `boolean` | Whether the details are currently visible. |
+| `icon` | `string` | The computed icon to display for the current state. |
 
 ### `default`
 
 The content to be displayed in the details element when open.
 
-#### Slot props
-
-##### `open`
-
-- type: `boolean`
-
-Whether the details are currently visible.
-
-##### `icon`
-
-- type: `string`
-
-The computed icon to display for the current state.
+| Slot prop | Type | Description |
+| --- | --- | --- |
+| `open` | `boolean` | Whether the details are currently visible. |
+| `icon` | `string` | The computed icon to display for the current state. |
 
 ## Props
 
@@ -84,7 +66,7 @@ The icon to display when the details are closed.
 
 An override icon, shown both when details are open and closed.
 
-### `iconStart`
+### `iconAtStart`
 
 - type: `boolean`
 - default: `false`

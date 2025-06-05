@@ -83,6 +83,12 @@
 				<app-menu-link to="/content/tab-group">
 					tab-group
 				</app-menu-link>
+				<app-menu-link to="/content/summary-details">
+					summary-details
+				</app-menu-link>
+				<app-menu-link to="/content/dropdown-menu">
+					dropdown-menu
+				</app-menu-link>
 				<app-menu-link to="/content/loading-indicator">
 					loading-indicator
 				</app-menu-link>

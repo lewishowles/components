@@ -1,11 +1,11 @@
 <template>
 	<details ref="detailsElement" v-bind="{ 'data-test': dataTest }" :class="floatingClasses" @toggle="updateState">
 		<summary ref="summaryElement" class="inline-flex cursor-pointer list-none items-center gap-1" :class="summaryClasses" v-bind="{ 'data-test': `${dataTest}-summary` }">
-			<component :is="currentIcon" v-if="iconStart && includeIcon" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-start` }" />
+			<component :is="currentIcon" v-if="iconAtStart && includeIcon" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-start` }" />
 
 			<slot name="summary" v-bind="{ isOpen, icon: currentIcon }" />
 
-			<component :is="currentIcon" v-if="includeIcon && !iconStart" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-end` }" />
+			<component :is="currentIcon" v-if="includeIcon && !iconAtStart" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-end` }" />
 		</summary>
 
 		<div v-show="isOpen" :class="[{ 'absolute top-full animate-fade-in-down': floating, 'start-0': alignStart, 'end-0': !alignStart }, detailsClasses]" v-bind="{ 'data-test': `${dataTest}-content` }">
@@ -79,7 +79,7 @@ const props = defineProps({
 	 * Whether to display the icon at the start of the summary, as opposed to
 	 * the end.
 	 */
-	iconStart: {
+	iconAtStart: {
 		type: Boolean,
 		default: false,
 	},
