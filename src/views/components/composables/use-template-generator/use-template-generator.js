@@ -33,16 +33,15 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 	const { useTranslation, translationPathPrefix } = useTranslationMode();
 
 	const template = computed(() => {
-		let defaultContent = getPlaygroundSlotContent("default");
+		let internalDefaultContent = getPlaygroundSlotContent("default");
+		let internalAdditionalContent = getStandardisedContentString(additionalContent);
 
-		const stableAdditionalContent = unref(additionalContent);
-
-		const hasDefaultContent = isNonEmptyString(defaultContent);
-		const hasSlots = isNonEmptyObject(slots);
-		const hasAdditionalContent = isNonEmptyArray(stableAdditionalContent) || isNonEmptyString(stableAdditionalContent);
+		const haveSlots = isNonEmptyObject(slots);
+		const haveDefaultContent = isNonEmptyString(internalDefaultContent);
+		const haveAdditionalContent = isNonEmptyString(internalAdditionalContent);
 
 		// If this is an empty component, render it as self-closing.
-		if (!hasDefaultContent && !hasSlots && !hasAdditionalContent) {
+		if (!haveDefaultContent && !haveSlots && !haveAdditionalContent) {
 			return applyIndent(`<${componentTag}${propsTemplate.value}${eventsTemplate.value} />`, indent);
 		}
 
@@ -51,31 +50,28 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 		const templateSections = [];
 
 		// Add the default slot content, if provided
-		if (hasDefaultContent) {
+		if (haveDefaultContent) {
 			// If the content is itself a component, its indentation needs to be
 			// handled differently to if it's just text, because a component
 			// will be indented as a whole.
-			if (!defaultContent.startsWith("\t")) {
-				defaultContent = `\t${defaultContent}`;
+			if (!internalDefaultContent.startsWith("\t")) {
+				internalDefaultContent = applyIndent(internalDefaultContent, 1);
 			}
 
-			templateSections.push(defaultContent);
+			templateSections.push(internalDefaultContent);
 		}
 
+		// Add any existing slot templates.
 		if (isNonEmptyArray(slotTemplateSegments.value)) {
 			templateSections.push(...slotTemplateSegments.value.map(content => `\t${content}`));
 		}
 
-		// Add any additional content, if provided.
-		if (isNonEmptyString(stableAdditionalContent)) {
-			templateSections.push(stableAdditionalContent);
+		// Add any existing additional content.
+		if (isNonEmptyString(internalAdditionalContent)) {
+			templateSections.push(internalAdditionalContent);
 		}
 
-		if (isNonEmptyArray(stableAdditionalContent)) {
-			templateSections.push(...stableAdditionalContent.map(content => unref(content)));
-		}
-
-		template += `\n${templateSections.join("\n\n")}`;
+		template += `\n${getStandardisedContentString(templateSections)}`;
 
 		template += `\n</${componentTag}>`;
 
@@ -174,8 +170,8 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 
 		const inlineEvents = [];
 
-		// For each of our props, we generate a template string and add it
-		// to the template, if it contains content.
+		// For each of our props, we generate a template string and add it to
+		// the template, if it contains content.
 		for (const eventKey in stableEvents) {
 			if (!Object.prototype.hasOwnProperty.call(stableEvents, eventKey)) {
 				continue;
@@ -261,7 +257,28 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 			return slotContent;
 		}
 
-		return stableSlots[slotKey].value;
+		return getStandardisedContentString(stableSlots[slotKey].value);
+	}
+
+	/**
+	 * Get a standardised form of the given content, converting refs or arrays
+	 * as necessary.
+	 *
+	 * @param  {array|string|ref}  content
+	 *     The provided content to standardise.
+	 */
+	function getStandardisedContentString(content) {
+		const stableContent = unref(content);
+
+		if (isNonEmptyArray(stableContent)) {
+			return stableContent.map(section => unref(section)).join("\n\n");
+		}
+
+		if (isNonEmptyString(stableContent)) {
+			return stableContent;
+		}
+
+		return "";
 	}
 
 	/**

@@ -14,7 +14,13 @@
 					<li v-for="person in items" :key="person.id" class="flex items-center gap-4">
 						<image-tag :src="person.image_url" class="size-8 rounded" />
 
-						{{ person.name }}
+						<div class="flex flex-col">
+							{{ person.name }}
+
+							<span class="text-xs text-grey-500">
+								{{ person.role }}
+							</span>
+						</div>
 					</li>
 				</ul>
 			</template>
@@ -115,29 +121,59 @@ const props = ref({
 
 const additionalContent = [
 	useTemplateGenerator("template", {
-		props: { "#default": { value: "{ items }", inline: true } },
-		additionalContent: useTemplateGenerator("ul", {
-			props: { class: { value: "flex flex-col gap-4", inline: true } },
-			additionalContent: useTemplateGenerator("li", {
-				props: {
-					"v-for": { value: "person in items", inline: true },
-					":key": { value: "person.id", inline: true },
-					"class": { value: "flex items-center gap-4", inline: true },
-				},
-				additionalContent: [
-					useTemplateGenerator("image-tag", {
-						props: {
-							":src": { value: "person.image_url", inline: true },
-							"class": { value: "size-8 rounded", inline: true },
+		props: {
+			"#default": { value: "{ items }", inline: true },
+		},
+		slots: {
+			default: {
+				value: useTemplateGenerator("ul", {
+					props: { class: { value: "flex flex-col gap-4", inline: true } },
+					slots: {
+						default: {
+							value: useTemplateGenerator("li", {
+								props: {
+									"v-for": { value: "person in items", inline: true },
+									":key": { value: "person.id", inline: true },
+									"class": { value: "flex items-center gap-4", inline: true },
+								},
+								additionalContent: [
+									useTemplateGenerator("image-tag", {
+										props: {
+											":src": { value: "person.image_url", inline: true },
+											"class": { value: "size-8 rounded", inline: true },
+										},
+										indent: 1,
+									}),
+									useTemplateGenerator("div", {
+										props: { class: { value: "flex flex-col", inline: true } },
+										additionalContent: [
+											"\t{{ person.name }}",
+
+											useTemplateGenerator("span", {
+												props: {
+													class: {
+														value: "text-xs text-grey-500", inline: true,
+													},
+												},
+												slots: {
+													default: {
+														value: "{{ person.role }}",
+													},
+												},
+												indent: 1,
+											}),
+										],
+										indent: 1,
+									}),
+								],
+								indent: 1,
+							}),
 						},
-						additionalContent: "\t{{ person.name }}",
-						indent: 1,
-					}),
-				],
-				indent: 1,
-			}),
-			indent: 1,
-		}),
+					},
+					indent: 1,
+				}),
+			},
+		},
 		indent: 1,
 	}),
 ];
