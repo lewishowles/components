@@ -87,7 +87,7 @@
 
 		<component-provides>
 			<template #introduction>
-				<p>Two methods are provided by <code>form-wrapper</code> under the &quot;form-wrapper&quot; namespace to allow a field to communicate and update its value.</p>
+				<p>Two methods are provided by <code>form-wrapper</code> under the <code>form-wrapper</code> namespace to allow a field to communicate and update its value.</p>
 			</template>
 
 			<component-provide id="provide-register-field">

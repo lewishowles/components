@@ -46,7 +46,11 @@
 			</div>
 		</div>
 
-		<code-block>{{ copy }}</code-block>
+		<div>
+			<code-block>{{ copy }}</code-block>
+
+			<slot name="additional-code" />
+		</div>
 	</div>
 </template>
 
@@ -71,7 +75,7 @@ const props = defineProps({
 	},
 
 	/**
-	 * The template ot copy.
+	 * The template to copy.
 	 */
 	copy: {
 		type: String,

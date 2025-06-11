@@ -88,10 +88,10 @@
 								:key="columnKey"
 								v-bind="{ 'aria-sort': getColumnSortDirection(columnKey) }"
 								class="py-4"
-								:class="[{ 'ps-3': !column.sortable && !column.first, 'pe-3': !column.sortable && !column.last }, headingClasses, column.columnClasses, column.headingClasses]"
+								:class="[{ 'ps-3': !column.sortable && !column.first, 'pe-3': !column.sortable && !column.last, 'text-end': column.align === 'right', [headingClasses]: !column.sortable, [column.columnClasses]: !column.sortable, [column.headingClasses]: !column.sortable }]"
 								data-test="data-table-heading"
 							>
-								<conditional-wrapper v-bind="{ wrap: column.sortable, tag: 'ui-button', iconEnd: getSortIcon(columnKey) }" class="-mt-4 mb-[calc(-1rem-1px)] w-full border-b border-transparent py-4 hocus:border-purple-800 hocus:bg-grey-100" :class="[{ 'ps-3': !column.first, 'pe-3': !column.last }]" data-test="data-table-sort" @click="sortColumn(columnKey)">
+								<conditional-wrapper v-bind="{ wrap: column.sortable, tag: 'ui-button', iconEnd: getSortIcon(columnKey) }" class="-mt-4 mb-[calc(-1rem-1px)] w-full border-b border-transparent py-4 hocus:border-purple-800 hocus:bg-grey-100" :class="[{ 'ps-3': !column.first, 'pe-3': !column.last, 'justify-end': column.align === 'right' }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-sort" @click="sortColumn(columnKey)">
 									<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
 										{{ column.label }}
 									</slot>
@@ -108,7 +108,7 @@
 									</slot>
 								</form-checkbox>
 							</td>
-							<td v-for="(column, columnKey) in visibleColumnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
+							<td v-for="(column, columnKey) in visibleColumnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary, 'text-end': column.align === 'right' }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
 								<slot :name="columnKey" v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }">
 									{{ getRowContent(row, columnKey) }}
 								</slot>
@@ -156,6 +156,7 @@ import { get, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { isNumber } from "@lewishowles/helpers/number";
 import { nanoid } from "nanoid";
 
 import DataTableColumns from "./fragments/data-table-columns/data-table-columns.vue";
@@ -622,7 +623,7 @@ function getRowId(row) {
 function getRowContent(row, columnKey) {
 	const cell = get(row, `content.${columnKey}.content`);
 
-	if (!isNonEmptyString(cell)) {
+	if (!isNonEmptyString(cell) && !isNumber(cell)) {
 		return "";
 	}
 

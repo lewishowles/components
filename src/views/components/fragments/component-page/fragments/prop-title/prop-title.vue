@@ -1,12 +1,12 @@
 <template>
-	<section-title v-bind="{ id }" class="flex gap-4 items-baseline relative group/prop-title">
+	<section-title v-bind="{ id }" class="flex flex-wrap gap-4 items-baseline relative group/prop-title">
 		<template #title>
 			<slot name="title" />
 		</template>
 
 		<template #post-title>
-			<dl v-if="haveType || haveDefault" class="flex gap-4 not-prose text-sm">
-				<div v-if="haveType" class="rounded-full bg-grey-100 dark:bg-grey-950/20 flex items-center gap-2 px-3 py-1">
+			<dl v-if="haveType || haveDefault" class="flex not-prose text-sm border border-grey-200 rounded">
+				<div v-if="haveType" class="flex flex-wrap items-center gap-2 px-2 py-1 items-start">
 					<dt class="font-bold">
 						Type
 					</dt>
@@ -14,11 +14,11 @@
 						<slot name="type" />
 					</dd>
 				</div>
-				<div v-if="haveDefault" class="rounded-full bg-grey-100 dark:bg-grey-950/20 flex items-center gap-2 px-3 py-1">
+				<div v-if="haveDefault" class="flex flex-wrap items-center gap-2 px-2 py-1 items-start" :class="{ 'border-s border-grey-200': haveType }">
 					<dt class="font-bold">
 						Default
 					</dt>
-					<dd class="text-grey-500 dark:text-white/60 font-mono">
+					<dd class="text-grey-500 dark:text-white/60 font-mono text-balance">
 						<slot name="default-value" />
 					</dd>
 				</div>

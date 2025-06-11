@@ -108,7 +108,7 @@
 
 		<component-provides>
 			<template #introduction>
-				<p><code>tab-group</code> provides methods to enable other components to mimic a <code>tab-item</code>. If choosing to do so, however, you must ensure that all of the same accessibility features are present.</p>
+				<p><code>tab-group</code> provides methods under the <code>tab-group</code> namespace to enable other components to mimic a <code>tab-item</code>. If choosing to do so, however, you must ensure that all of the same accessibility features are present.</p>
 			</template>
 
 			<component-provide id="provide-register-tab">

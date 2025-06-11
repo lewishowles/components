@@ -36,13 +36,9 @@ The message to display when no data could be found for the table.
 
 The message to display when no data could be found for the current search term.
 
-#### Slot props
-
-##### `searchQuery`
-
-- type: `string`
-
-The current search term entered by the user.
+| Slot prop | Type | Description |
+| --- | --- | --- |
+| `searchQuery` | `string` | The current search query in the table. |
 
 ### `<columnName>_heading`
 
@@ -50,19 +46,10 @@ The current search term entered by the user.
 
 Provides the ability to override the label for a particular column, by its key from the original data. Provided to the slot are is the key for that column.
 
-#### Slot props
-
-##### `key`
-
-- type: `string`
-
-The key for this column, as determined by the original data provided.
-
-##### `label`
-
-- type: `string`
-
-The current label for the column, as determined by any column configuration.
+| Slot prop | Type   | Description                                                                 |
+|-----------|--------|-----------------------------------------------------------------------------|
+| `key`     | string | The key for this column, as determined by the original data provided.        |
+| `label`   | string | The current label for the column, as determined by any column configuration. |
 
 ### `<columnName>`
 
@@ -70,19 +57,10 @@ The current label for the column, as determined by any column configuration.
 
 Provides the ability to override the display for a particular column, by its key from the original data. Provided to the slot are the content of the cell itself, as well as the rest of its row, allowing cells to be combined where necessary.
 
-#### Slot props
-
-##### `cell`
-
-- type: `string`
-
-The original content of the cell, as provided in `data`.
-
-##### `row`
-
-- type: `object`
-
-The content of the entire row that the cell belongs to.
+| Slot prop | Type   | Description                                              |
+|-----------|--------|----------------------------------------------------------|
+| `cell`    | string | The original content of the cell, as provided in `data`. |
+| `row`     | object | The content of the entire row that the cell belongs to.  |
 
 ### `select-all-rows-label`
 
@@ -90,27 +68,15 @@ The content of the entire row that the cell belongs to.
 
 The hidden label for the "select" checkbox that represents all rows.
 
-#### Slot props
-
-##### `...`
-
-- type: `string`
-
-...
-
 ### `select-row-label`
 
 - default: "Select row"
 
 The hidden label for each "select" checkbox, used when `enableSelection` is true.
 
-#### Slot props
-
-##### `row`
-
-- type: `object`
-
-The data for the current row.
+| Slot prop | Type   | Description                      |
+|-----------|--------|----------------------------------|
+| `row`     | object | The data for the current row.    |
 
 ### `configure-label`
 
@@ -120,7 +86,7 @@ The label for the "Configure" dropdown, including display options and column vis
 
 ### `display-options-label`
 
-- default: Display options
+- default: "Display options"
 
 The label for the "Display" options in the configure dropdown.
 
@@ -154,13 +120,9 @@ The label for the "Columns" options in the configure dropdown.
 
 The label for the number of rows currently selected. This is only shown if `enableSelection` is enabled.
 
-#### Slot props
-
-##### `selectedCount`
-
-- type: `string`
-
-The count of rows currently selected.
+| Slot prop      | Type   | Description                        |
+|----------------|--------|------------------------------------|
+| `selectedCount`| string | The count of rows currently selected.|
 
 ### `showing-items-label`
 
@@ -168,25 +130,11 @@ The count of rows currently selected.
 
 A display of the current items being shown, giving the user an indication of where they are in the list.
 
-#### Slot props
-
-##### `first`
-
-- type: `number`
-
-The first item being displayed.
-
-##### `last`
-
-- type: `number`
-
-The last item being displayed.
-
-##### `count`
-
-- type: `number`
-
-The total number of items in the list.
+| Slot prop | Type   | Description                        |
+|-----------|--------|------------------------------------|
+| `first`   | number | The first item being displayed.     |
+| `last`    | number | The last item being displayed.      |
+| `count`   | number | The total number of items in the list. |
 
 ## Props
 
@@ -195,7 +143,7 @@ The total number of items in the list.
 - type: `array`
 - default: `[]`
 
-An array of objects containing the data to display in the table. Each object should match and represents a single row, containing a key for each column of the table, which itself contains the content for that column.
+An array of objects containing the data to display in the table. Each object represents a single row, containing a key for each column of the table, which itself contains the content for that column.
 
 ### `columns`
 
@@ -212,6 +160,7 @@ Any additional configuration for columns. **Note:** Any column without configura
 |`hidden`|`boolean`|`false`|Whether this column is hidden, allowing hidden columns to be more explicitly defined where helpful.|
 |`searchable`|`boolean`|`true`|Whether this column is included in searches. If false, search will ignore this column entirely.|
 |`sortable`|`boolean`|`true`|Whether this column can be sorted.|
+|`align`|`string`|`left`|The alignment of the column. Anything but "right" will be treated as "left".|
 |`headingClasses`|`string`|`""`|Classes to apply only to this column's heading.|
 |`cellClasses`|`string`|`""`|Classes to apply only to this column's cells.|
 |`columnClasses`|`string`|`""`|Classes to apply to both this column's heading and cells.|
@@ -286,6 +235,10 @@ Classes to apply to all standard cells in the table. Cell padding will always ap
 ### `setSearchQuery`
 
 Set the table's current search query, overriding any current search. This could be used in conjunction with a cell template to allow the user to find all similar rows, for example.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `searchQuery` | string | The new search query to set. |
 
 ## Examples
 

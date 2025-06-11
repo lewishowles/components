@@ -113,6 +113,8 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 				case "boolean":
 					break;
 				case "select":
+				case "object":
+				case "array":
 					// We set this to null so that the prop is defined as just a
 					// variable, which is how it would be defined in most
 					// occasions. This allows the playground to define real

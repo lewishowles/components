@@ -95,6 +95,9 @@
 				<app-menu-link to="/content/skeleton-loader">
 					skeleton-loader
 				</app-menu-link>
+				<app-menu-link to="/content/data-table">
+					data-table
+				</app-menu-link>
 			</app-menu-section>
 		</ol>
 	</nav>
