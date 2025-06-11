@@ -1,7 +1,7 @@
 <template>
 	<div data-test="searchable-list">
 		<div class="flex items-end gap-4">
-			<form-input v-bind="{ placeholder }" v-model="searchQuery" class="w-full max-w-lg" data-test="searchable-list-search">
+			<form-input ref="search-field" v-bind="{ placeholder }" v-model="searchQuery" class="w-full max-w-lg" data-test="searchable-list-search">
 				<slot name="label" />
 			</form-input>
 
@@ -41,9 +41,10 @@
 
 <script setup>
 import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
-import { computed, ref } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { objectContains } from "@lewishowles/helpers/object";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -82,6 +83,10 @@ const props = defineProps({
 	},
 });
 
+// A reference to the search field, so that we can trigger focus on it as
+// required.
+const searchField = useTemplateRef("search-field");
+// The current search query.
 const searchQuery = ref("");
 // Whether a search query has been provided and a search can be performed. This
 // excludes whitespace at each end of the query.
@@ -115,13 +120,23 @@ const resultCount = computed(() => arrayLength(results.value));
 const haveResults = computed(() => !performingSearch.value || resultCount.value > 0);
 
 /**
- * Reset any current search and show all items.
+ * Reset any current search and show all items, focusing the search input.
  */
 function resetSearch() {
 	searchQuery.value = "";
+
+	triggerFocus();
+}
+
+/**
+ * Trigger focus on the search field.
+ */
+function triggerFocus() {
+	runComponentMethod(searchField.value, "triggerFocus");
 }
 
 defineExpose({
 	resetSearch,
+	triggerFocus,
 });
 </script>

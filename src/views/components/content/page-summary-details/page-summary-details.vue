@@ -229,7 +229,9 @@
 				<table>
 					<thead>
 						<tr>
-							<th>Slot prop</th>
+							<th class="whitespace-nowrap">
+								Slot prop
+							</th>
 							<th>Type</th>
 							<th>Description</th>
 						</tr>
@@ -259,7 +261,9 @@
 				<table>
 					<thead>
 						<tr>
-							<th>Slot prop</th>
+							<th class="whitespace-nowrap">
+								Slot prop
+							</th>
 							<th>Type</th>
 							<th>Description</th>
 						</tr>

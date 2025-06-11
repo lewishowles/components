@@ -98,6 +98,9 @@
 				<app-menu-link to="/content/data-table">
 					data-table
 				</app-menu-link>
+				<app-menu-link to="/content/searchable-list">
+					searchable-list
+				</app-menu-link>
 			</app-menu-section>
 		</ol>
 	</nav>

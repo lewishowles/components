@@ -12,19 +12,10 @@ Each property of an object is recursively, case-insensitively searched, and indi
 
 The main "results" display.
 
-#### Slot props
-
-##### `items`
-
-- type: `array`
-
-The list of items matching any current search options, or all items if no search is being performed.
-
-##### `query`
-
-- type: `string`
-
-The current search query.
+| Slot prop | Type | Description |
+|-|-|-|
+| `items` | `array` | The list of items matching any current search options, or all items if no search is being performed. |
+| `query` | `string` | The current search query. |
 
 ### `label`
 
@@ -34,23 +25,11 @@ The search input label, giving the user an idea of what they are searching.
 
 A slot to override the default results count display, appearing beneath the search box.
 
-#### `performingSearch`
-
-- type: `boolean`
-
-Whether a search is currently being performed.
-
-#### `resultCount`
-
-- type: `number`
-
-The number of results found.
-
-#### `itemCount`
-
-- type: `number`
-
-The total number of items provided.
+| Slot prop | Type | Description |
+|-|-|-|
+| `performingSearch` | `boolean` | Whether a search is currently being performed. |
+| `resultCount` | `number` | The number of results found. |
+| `itemCount` | `number` | The total number of items provided. |
 
 ### `reset-search-label`
 
@@ -91,6 +70,10 @@ The list of object properties that should be searched exclusively.
 ### `resetSearch`
 
 Resets the current search query for the user.
+
+### `triggerFocus`
+
+Trigger focus on the search input.
 
 ## Examples
 
