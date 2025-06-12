@@ -553,12 +553,10 @@ describe("data-table", () => {
 				expect(content).toEqual("Toy Story");
 			});
 
-			describe("should ignore non-string cell content", () => {
+			describe("should ignore invalid cell content", () => {
 				test.for([
 					["boolean (true)", true],
 					["boolean (false)", false],
-					["number (positive)", 1],
-					["number (negative)", -1],
 					["number (NaN)", NaN],
 					["string (empty)", ""],
 					["object (non-empty)", { property: "value" }],
