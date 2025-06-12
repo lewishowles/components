@@ -104,6 +104,9 @@
 				<app-menu-link to="/content/accordion-group">
 					accordion-group
 				</app-menu-link>
+				<app-menu-link to="/content/display-date">
+					display-date
+				</app-menu-link>
 			</app-menu-section>
 		</ol>
 	</nav>
