@@ -28,9 +28,7 @@ describe("useTemplateGenerator", () => {
 	test("should generate a template with only the component's tag", () => {
 		const template = useTemplateGenerator("my-component");
 
-		expect(template.value).toBe(`<my-component>
-
-</my-component>`);
+		expect(template.value).toBe("<my-component />");
 	});
 
 	describe("additionalContent", () => {
@@ -50,9 +48,7 @@ describe("useTemplateGenerator", () => {
 		test("should handle empty additionalContent", () => {
 			const template = useTemplateGenerator("foo-bar", { additionalContent: "" });
 
-			expect(template.value).toBe(`<foo-bar>
-
-</foo-bar>`);
+			expect(template.value).toBe("<foo-bar />");
 		});
 	});
 
@@ -65,7 +61,7 @@ describe("useTemplateGenerator", () => {
 
 		const template = useTemplateGenerator("foo-bar", { props });
 
-		expect(template.value).toContain("v-bind=\"{ propA: 'foo', propB, propC }\"");
+		expect(template.value).toContain("v-bind=\"{ propA: 'foo', propB: true, propC }\"");
 	});
 
 	test("should generate a template with slots", () => {
