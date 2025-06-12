@@ -1,13 +1,13 @@
 import AccordionGroup from "./accordion-group.vue";
-import AccordionSection from "@/components/content/accordion-section/accordion-section.vue";
+import AccordionPanel from "@/components/content/accordion-panel/accordion-panel.vue";
 import { createMount } from "@cypress/support/mount";
 import { h } from "vue";
 
 const defaultSlots = {
 	default: [
-		createSection({ title: "First section", content: "First section content" }),
-		createSection({ title: "Second section", content: "Second section content" }),
-		createSection({ title: "Third section", content: "Third section content" }),
+		createPanel({ title: "First panel", content: "First panel content" }),
+		createPanel({ title: "Second panel", content: "Second panel content" }),
+		createPanel({ title: "Third panel", content: "Third panel content" }),
 	],
 };
 
@@ -18,22 +18,22 @@ describe("accordion-group", () => {
 		mount();
 
 		cy.getByData("accordion-group").shouldBeVisible();
-		cy.getByData("accordion-section").shouldBeVisible().shouldHaveCount(3);
+		cy.getByData("accordion-panel").shouldBeVisible().shouldHaveCount(3);
 	});
 
-	describe("accordion-section", () => {
-		it("A section can be opened", () => {
+	describe("accordion-panel", () => {
+		it("A panel can be opened", () => {
 			mount();
 
 			openSection(0);
 		});
 
-		it("A section can be opened via keyboard", () => {
+		it("A panel can be opened via keyboard", () => {
 			mount();
 
-			cy.getByData("accordion-section").eq(0).then($section => {
-				cy.wrap($section).getByData("accordion-section-button").focus();
-				cy.wrap($section).getByData("accordion-section-button").realPress("Enter");
+			cy.getByData("accordion-panel").eq(0).then($panel => {
+				cy.wrap($panel).getByData("accordion-panel-button").focus();
+				cy.wrap($panel).getByData("accordion-panel-button").realPress("Enter");
 
 				confirmSectionOpen(0);
 			});
@@ -59,7 +59,7 @@ describe("accordion-group", () => {
 			confirmSectionOpen(2);
 		});
 
-		it("Closing one section appropriately updates the all sections button", () => {
+		it("Closing one panel appropriately updates the all sections button", () => {
 			mount();
 
 			cy.getByData("accordion-group-button").click();
@@ -74,17 +74,17 @@ describe("accordion-group", () => {
 });
 
 /**
- * Simplify the process of creating a new accordion section to test with.
+ * Simplify the process of creating a new accordion panel to test with.
  *
  * @param  {string}  options.title
- *     The title of the section, to appear in the button.
+ *     The title of the panel, to appear in the button.
  * @param  {string}  options.introduction
- *     The introduction for the section, to appear in the button.
+ *     The introduction for the panel, to appear in the button.
  * @param  {string}  options.content
- *     The content of the section.
+ *     The content of the panel.
  */
-function createSection({ title, introduction, content }) {
-	return h(AccordionSection, {}, {
+function createPanel({ title, introduction, content }) {
+	return h(AccordionPanel, {}, {
 		title: () => title,
 		introduction: () => introduction,
 		default: () => h("p", content),
@@ -92,63 +92,63 @@ function createSection({ title, introduction, content }) {
 }
 
 /**
- * Open an accordion section by its zero-based index in the accordion, and
+ * Open an accordion panel by its zero-based index in the accordion, and
  * verify that it is open.
  *
  * @param  {number}  index
- *     The index of the section to open.
+ *     The index of the panel to open.
  */
 function openSection(index) {
-	cy.getByData("accordion-section").eq(index).then($section => {
+	cy.getByData("accordion-panel").eq(index).then($panel => {
 		confirmSectionClosed(index);
 
-		cy.wrap($section).getByData("accordion-section-button").click();
+		cy.wrap($panel).getByData("accordion-panel-button").click();
 
 		confirmSectionOpen(index);
 	});
 }
 
 /**
- * Close an accordion section by its zero-based index in the accordion, and
+ * Close an accordion panel by its zero-based index in the accordion, and
  * verify that it is closed.
  *
  * @param  {number}  index
- *     The index of the section to close.
+ *     The index of the panel to close.
  */
 function closeSection(index) {
-	cy.getByData("accordion-section").eq(index).then($section => {
+	cy.getByData("accordion-panel").eq(index).then($panel => {
 		confirmSectionOpen(index);
 
-		cy.wrap($section).getByData("accordion-section-button").click();
+		cy.wrap($panel).getByData("accordion-panel-button").click();
 
 		confirmSectionClosed(index);
 	});
 }
 
 /**
- * Ensure that an accordion section is open, given its zero-based index in the
+ * Ensure that an accordion panel is open, given its zero-based index in the
  * accordion.
  *
  * @param  {number}  index
- *     The index of the section to verify.
+ *     The index of the panel to verify.
  */
 function confirmSectionOpen(index) {
-	cy.getByData("accordion-section").eq(index).then($section => {
-		cy.wrap($section).getByData("accordion-section-button").shouldHaveAttribute("aria-expanded", "true");
-		cy.wrap($section).getByData("accordion-section-content").shouldBeVisible().shouldNotHaveAttribute("hidden");
+	cy.getByData("accordion-panel").eq(index).then($panel => {
+		cy.wrap($panel).getByData("accordion-panel-button").shouldHaveAttribute("aria-expanded", "true");
+		cy.wrap($panel).getByData("accordion-panel-content").shouldBeVisible().shouldNotHaveAttribute("hidden");
 	});
 }
 
 /**
- * Ensure that an accordion section is closed, given its zero-based index in the
+ * Ensure that an accordion panel is closed, given its zero-based index in the
  * accordion.
  *
  * @param  {number}  index
- *     The index of the section to verify.
+ *     The index of the panel to verify.
  */
 function confirmSectionClosed(index) {
-	cy.getByData("accordion-section").eq(index).then($section => {
-		cy.wrap($section).getByData("accordion-section-button").shouldHaveAttribute("aria-expanded", "false");
-		cy.wrap($section).getByData("accordion-section-content").shouldHaveAttribute("hidden");
+	cy.getByData("accordion-panel").eq(index).then($panel => {
+		cy.wrap($panel).getByData("accordion-panel-button").shouldHaveAttribute("aria-expanded", "false");
+		cy.wrap($panel).getByData("accordion-panel-content").shouldHaveAttribute("hidden");
 	});
 }

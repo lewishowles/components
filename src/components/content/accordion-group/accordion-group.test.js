@@ -18,34 +18,34 @@ describe("accordion-group", () => {
 	});
 
 	describe("Computed", () => {
-		describe("allVisible", () => {
-			test("should recognise when all sections are visible", () => {
+		describe("areAllPanelsVisible", () => {
+			test("should recognise when all panels are visible", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.registerSection({ isVisible: ref(true), show, hide });
-				vm.registerSection({ isVisible: ref(true), show, hide });
+				vm.registerPanel({ isVisible: ref(true), show, hide });
+				vm.registerPanel({ isVisible: ref(true), show, hide });
 
-				expect(vm.allVisible).toBe(true);
+				expect(vm.areAllPanelsVisible).toBe(true);
 			});
 
-			test("should recognise when not all sections are visible", () => {
+			test("should recognise when not all panels are visible", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.registerSection({ isVisible: ref(true), show, hide });
-				vm.registerSection({ isVisible: ref(false), show, hide });
+				vm.registerPanel({ isVisible: ref(true), show, hide });
+				vm.registerPanel({ isVisible: ref(false), show, hide });
 
-				expect(vm.allVisible).toBe(false);
+				expect(vm.areAllPanelsVisible).toBe(false);
 			});
 		});
 	});
 
 	describe("Methods", () => {
-		describe("registerSection", () => {
+		describe("registerPanels", () => {
 			const isVisible = ref(false);
 
-			describe("should not register a section if `isVisible` is not a valid ref", () => {
+			describe("should not register a panel if `isVisible` is not a valid ref", () => {
 				test.for([
 					["boolean (true)", true],
 					["boolean (false)", false],
@@ -63,15 +63,15 @@ describe("accordion-group", () => {
 					const wrapper = mount();
 					const vm = wrapper.vm;
 
-					expect(vm.sections).toEqual([]);
+					expect(vm.panels).toEqual([]);
 
-					vm.registerSection({ isVisible, show, hide });
+					vm.registerPanel({ isVisible, show, hide });
 
-					expect(vm.sections).toEqual([]);
+					expect(vm.panels).toEqual([]);
 				});
 			});
 
-			describe("should not register a section if `show` is not a valid method", () => {
+			describe("should not register a panel if `show` is not a valid method", () => {
 				test.for([
 					["boolean (true)", true],
 					["boolean (false)", false],
@@ -89,15 +89,15 @@ describe("accordion-group", () => {
 					const wrapper = mount();
 					const vm = wrapper.vm;
 
-					expect(vm.sections).toEqual([]);
+					expect(vm.panels).toEqual([]);
 
-					vm.registerSection({ isVisible, show, hide });
+					vm.registerPanel({ isVisible, show, hide });
 
-					expect(vm.sections).toEqual([]);
+					expect(vm.panels).toEqual([]);
 				});
 			});
 
-			describe("should not register a section if `hide` is not a valid method", () => {
+			describe("should not register a panel if `hide` is not a valid method", () => {
 				test.for([
 					["boolean (true)", true],
 					["boolean (false)", false],
@@ -115,23 +115,23 @@ describe("accordion-group", () => {
 					const wrapper = mount();
 					const vm = wrapper.vm;
 
-					expect(vm.sections).toEqual([]);
+					expect(vm.panels).toEqual([]);
 
-					vm.registerSection({ isVisible, show, hide });
+					vm.registerPanel({ isVisible, show, hide });
 
-					expect(vm.sections).toEqual([]);
+					expect(vm.panels).toEqual([]);
 				});
 			});
 
-			test("should register a valid section", () => {
+			test("should register a valid panel", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.sections).toEqual([]);
+				expect(vm.panels).toEqual([]);
 
-				vm.registerSection({ isVisible, show, hide });
+				vm.registerPanel({ isVisible, show, hide });
 
-				expect(vm.sections).toHaveLength(1);
+				expect(vm.panels).toHaveLength(1);
 			});
 		});
 	});

@@ -34,13 +34,7 @@ import { computed, ref } from "vue";
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
 
 // Props both for the template and for the component example itself.
-const props = ref({
-	//type: {
-	//	label: "Type",
-	//	value: "select",
-	//	type: "text",
-	//},
-});
+const props = ref({});
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {

@@ -1,12 +1,12 @@
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test, vi } from "vitest";
-import AccordionItem from "./accordion-section.vue";
+import AccordionItem from "./accordion-panel.vue";
 
-const registerSectionMock = vi.fn();
-const provide = { "accordion-group": { registerSection: registerSectionMock, showSectionLabel: "Show", hideSectionLabel: "Hide" } };
+const registerPanelMock = vi.fn();
+const provide = { "accordion-group": { registerPanel: registerPanelMock, showPanelLabel: "Show panel", hidePanelLabel: "Hide panel" } };
 const mount = createMount(AccordionItem, { global: { provide } });
 
-describe("accordion-section", () => {
+describe("accordion-panel", () => {
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
 			const wrapper = mount();
@@ -17,7 +17,7 @@ describe("accordion-section", () => {
 
 	describe("Methods", () => {
 		describe("show", () => {
-			test("should mark the section as visible", () => {
+			test("should mark the panel as visible", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
@@ -34,7 +34,7 @@ describe("accordion-section", () => {
 		});
 
 		describe("hide", () => {
-			test("should mark the section as not visible", () => {
+			test("should mark the panel as not visible", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
@@ -51,7 +51,7 @@ describe("accordion-section", () => {
 		});
 
 		describe("toggle", () => {
-			test("should toggle the section", () => {
+			test("should toggle the panel", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 

@@ -1,5 +1,5 @@
 import AccordionGroup from "./content/accordion-group/accordion-group.vue";
-import AccordionSection from "./content/accordion-section/accordion-section.vue";
+import AccordionPanel from "./content/accordion-panel/accordion-panel.vue";
 import AlertMessage from "./messaging/alert-message/alert-message.vue";
 import AppPagination from "./navigation/app-pagination/app-pagination.vue";
 import BreadcrumbItem from "./navigation/breadcrumb-item/breadcrumb-item.vue";
@@ -97,7 +97,7 @@ import IconWarning from "./icon/icon-warning/icon-warning.vue";
 
 export default {
 	AccordionGroup,
-	AccordionSection,
+	AccordionPanel,
 	AlertMessage,
 	AppPagination,
 	BaseIcon,

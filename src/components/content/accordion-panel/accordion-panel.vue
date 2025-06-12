@@ -1,14 +1,14 @@
 <template>
-	<div data-test="accordion-section">
-		<component :is="headingLevel" class="py-6" data-test="accordion-section-title">
-			<button type="button" class="group flex flex-col items-start" v-bind="{ 'aria-controls': id, 'aria-expanded': isVisible }" data-test="accordion-section-button" @click="toggle">
-				<span :class="titleClasses">
+	<div data-test="accordion-panel">
+		<component :is="headingLevel" class="py-6" data-test="accordion-panel-title">
+			<button type="button" class="group flex flex-col items-start" v-bind="{ 'aria-controls': id, 'aria-expanded': isVisible }" data-test="accordion-panel-button" @click="toggle">
+				<span class="mb-1 text-2xl font-bold text-grey-950">
 					<slot name="title" />
 				</span>
 
 				<span class="sr-only">, </span>
 
-				<span :class="introductionClasses">
+				<span class="mb-2">
 					<slot name="introduction" />
 				</span>
 
@@ -18,20 +18,20 @@
 					<component :is="statusIcon" class="size-text" />
 
 					<span v-show="!isVisible" class="inline-flex items-center gap-2">
-						<slot name="show-section-label">
-							{{ showSectionLabel }}
+						<slot name="show-panel-label">
+							{{ showPanelLabel }}
 						</slot>
 					</span>
 					<span v-show="isVisible" class="inline-flex items-center gap-2">
-						<slot name="hide-section-label">
-							{{ hideSectionLabel }}
+						<slot name="hide-panel-label">
+							{{ hidePanelLabel }}
 						</slot>
 					</span>
 				</div>
 			</button>
 		</component>
 
-		<div v-bind="{ id, hidden: isVisible ? null : 'until-found' }" :class="{ 'pb-6': isVisible }" data-test="accordion-section-content">
+		<div v-bind="{ id, hidden: isVisible ? null : 'until-found' }" :class="{ 'pb-6': isVisible }" data-test="accordion-panel-content">
 			<slot />
 		</div>
 	</div>
@@ -42,56 +42,36 @@ import { computed, inject, ref, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { nanoid } from "nanoid";
 
-defineProps({
-	/**
-	 * Any classes to apply to the section "title", which appears in the control
-	 * button.
-	 */
-	titleClasses: {
-		type: String,
-		default: "mb-1 text-2xl font-bold text-grey-950",
-	},
-
-	/**
-	 * Any classes to apply to the section "introduction", which optionally
-	 * appears in the control button.
-	 */
-	introductionClasses: {
-		type: String,
-		default: "mb-2",
-	},
-});
-
-const { registerSection, headingLevel, showSectionLabel, hideSectionLabel } = inject("accordion-group");
+const { registerPanel, headingLevel, showPanelLabel, hidePanelLabel } = inject("accordion-group");
 
 const slots = useSlots();
-// The internal ID for this accordion section.
+// The internal ID for this accordion panel.
 const id = nanoid();
-// Whether this section is visible.
+// Whether this panel is visible.
 const isVisible = ref(false);
-// The icon to show depending on the visibility of this section.
+// The icon to show depending on the visibility of this panel.
 const statusIcon = computed(() => (isVisible.value ? "icon-chevron-up-circled" : "icon-chevron-down-circled"));
 // Whether we have an introduction, which helps us determine how best to format
 // the content for screen readers.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 
-// Register this section with the accordion, allowing it insight into the
-// current state, and how to show and hide this section.
-registerSection({
+// Register this panel with the accordion, allowing it insight into the
+// current state, and how to show and hide this panel.
+registerPanel({
 	isVisible,
 	show,
 	hide,
 });
 
 /**
- * Open this section.
+ * Open this panel.
  */
 function show() {
 	isVisible.value = true;
 }
 
 /**
- * Open this section.
+ * Open this panel.
  */
 function hide() {
 	isVisible.value = false;
