@@ -20,7 +20,7 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 const props = ref({
 	date: {
 		label: "Date",
-		value: "2025-03-29T13:15:20",
+		value: "2025-03-02",
 		type: "text",
 	},
 });

@@ -5,7 +5,7 @@
 		</template>
 
 		<template #introduction>
-			Display a date with the default format in a custom locale.
+			Display a date with the default format and a custom locale.
 		</template>
 
 		<display-date v-bind="componentProps" />
@@ -20,12 +20,12 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 const props = ref({
 	date: {
 		label: "Date",
-		value: "2025-03-29T13:15:20",
+		value: "2025-03-02T17:00:00",
 		type: "text",
 	},
 	locale: {
 		label: "Locale",
-		value: "de-DE",
+		value: "ko-KR",
 		type: "text",
 	},
 });
