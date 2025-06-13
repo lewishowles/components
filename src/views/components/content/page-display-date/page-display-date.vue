@@ -10,9 +10,9 @@
 				<link-tag href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDateTime" :external="true">
 					Temporal API's PlainDateTime
 				</link-tag>
-				to parse a date, and either formats the date to the user's current locale by default, or provides options for customising the format of the date using the options provided by
+				to parse a date, and either formats the date to the user's current locale by default, or provides options for customising the format of the date using
 				<link-tag href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDateTime/toLocaleString#options" :external="true">
-					<code>toLocaleString</code>'s options
+					the options provided by <code>toLocaleString</code>
 				</link-tag>.
 			</p>
 

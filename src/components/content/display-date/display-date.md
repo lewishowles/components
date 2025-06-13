@@ -1,6 +1,6 @@
 # `display-date`
 
-`display-date` displays a given ISO-formatted date in a human-readable form. The component makes use of the [Temporal API's PlainDateTime](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDateTime) to parse a date, and either formats the date to the user's current locale by default, or provides options for customising the format of the date using the options provided by [`toLocaleString`'s options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDateTime/toLocaleString#options).
+`display-date` displays a given ISO-formatted date in a human-readable form. The component makes use of the [Temporal API's PlainDateTime](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDateTime) to parse a date, and either formats the date to the user's current locale by default, or provides options for customising the format of the date using [the options provided by `toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDateTime/toLocaleString#options).
 
 **Note** if the provided date contains `[` to indicate a time zone component, we use `ZonedDateTime`. If it does not, but contains `T` for a time component, we use a `PlainDateTime`, otherwise a `PlainDate` is used. Note that these different options produce different outputs via `toLocaleString` by default.
 
