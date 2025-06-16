@@ -26,6 +26,13 @@ Any of the information can be omitted, and the component will do its best to com
 - Without a name or initials, no tooltip is included.
 - If an avatar is provided, but fails to load, the user will fall back to the initials if possible.
 
+### `limit`
+
+- type: `number|null`
+- default: `null`
+
+The maximum number of avatars to display. Any additional will contribute to a "+X" last item.
+
 ### `shape`
 
 - type: `string`
@@ -49,15 +56,19 @@ Whether avatars should overlap. If they do, they're given an outline so that the
 
 Overlap is true by default for "circle" avatars, and false by default for "square" and "squircle", but a value provided here will take precedence.
 
-### `initialColourClasses`
+### `initialsColourClasses`
 
 - type: `string`
 - default: `bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200`
 
-### `initialOutlineClasses`
+The colour classes to apply when displaying initials.
+
+### `initialsOutlineClasses`
 
 - type: `string`
 - default: `outline-white dark:outline-purple-200`
+
+The colour classes to apply when displaying initials.
 
 ## Examples
 

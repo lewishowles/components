@@ -117,6 +117,9 @@
 				<app-menu-link to="/display/image-tag">
 					image-tag
 				</app-menu-link>
+				<app-menu-link to="/display/user-avatars">
+					user-avatars
+				</app-menu-link>
 			</app-menu-section>
 		</ol>
 	</nav>

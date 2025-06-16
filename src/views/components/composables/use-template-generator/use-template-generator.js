@@ -119,6 +119,9 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 					propContent = null;
 
 					break;
+				case "number":
+					// We don't want to modify numbers.
+					break;
 				default:
 					// If the prop is inline, we don't want to wrap it in
 					// further quotes.

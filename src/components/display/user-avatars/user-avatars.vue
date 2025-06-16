@@ -10,12 +10,12 @@
 				@error="handleImageError(user.avatar)"
 			/>
 
-			<div v-else-if="user.hasInitials" v-bind="{ title: user.tooltip }" class="flex items-center justify-center text-sm font-bold" :class="[size, shapeClasses, initialColourClasses]">
+			<div v-else-if="user.hasInitials" v-bind="{ title: user.tooltip }" class="flex items-center justify-center text-sm font-bold" :class="[size, shapeClasses, initialsColourClasses]">
 				{{ user.initials }}
 			</div>
 		</li>
 		<li v-if="haveOverflowUsers" :class="[shapeClasses, overlapClasses]">
-			<div class="flex items-center justify-center text-sm font-bold" :class="[size, shapeClasses, initialColourClasses]">
+			<div class="flex items-center justify-center text-sm font-bold" :class="[size, shapeClasses, initialsColourClasses]">
 				+{{ overflowUserCount }}
 			</div>
 		</li>
@@ -90,15 +90,15 @@ const props = defineProps({
 	/**
 	 * The colour classes to apply when displaying initials.
 	 */
-	initialColourClasses: {
+	initialsColourClasses: {
 		type: String,
 		default: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
 	},
 
 	/**
-	 * The colour classes to apply for the initial outline.
+	 * The colour classes to apply when displaying initials.
 	 */
-	initialOutlineClasses: {
+	initialsOutlineClasses: {
 		type: String,
 		default: "outline-white dark:outline-purple-200",
 	},
@@ -168,11 +168,11 @@ const overlapClasses = computed(() => {
 
 	const baseClasses = "-ms-2 outline-3";
 
-	if (!isNonEmptyString(props.initialOutlineClasses)) {
+	if (!isNonEmptyString(props.initialsOutlineClasses)) {
 		return baseClasses;
 	}
 
-	return `${baseClasses} ${props.initialOutlineClasses}`;
+	return `${baseClasses} ${props.initialsOutlineClasses}`;
 });
 
 // Any avatar URLs that have failed to load.
