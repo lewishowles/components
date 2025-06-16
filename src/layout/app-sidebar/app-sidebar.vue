@@ -121,6 +121,16 @@
 					user-avatars
 				</app-menu-link>
 			</app-menu-section>
+
+			<app-menu-section>
+				<template #title>
+					Messaging
+				</template>
+
+				<app-menu-link to="/messaging/alert-message">
+					alert-message
+				</app-menu-link>
+			</app-menu-section>
 		</ol>
 	</nav>
 </template>

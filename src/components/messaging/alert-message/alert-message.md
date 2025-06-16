@@ -23,14 +23,14 @@ Any icon to display in the alert, overriding any default icon.
 - type: `string`
 - *required*
 
-The type of alert, one of "success", "error", "warning", "info" or "muted".
+The type of alert, one of "success", "error", "warning", "info" or "muted". Note that a "muted" alert does not have an icon by default.
 
 ### `showIcon`
 
 - type: `boolean`
 - default: `true`
 
-Whether to show an icon with the alert.
+Whether to show an icon with the alert. Note that a "muted" alert does not have an icon by default.
 
 ## Examples
 
