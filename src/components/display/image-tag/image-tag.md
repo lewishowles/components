@@ -1,6 +1,6 @@
 # `image-tag`
 
-Display an image, automatically handling broken images and displaying a fallback.
+Display an image with automatic fallback where an image doesn't load.
 
 ## Slots
 
@@ -14,6 +14,8 @@ A slot provided to override the default fallback image.
 
 - type: `string`
 - **required**
+
+The URL to the image, which is applied directly to the underlying `img` tag.
 
 ## Events
 

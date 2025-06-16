@@ -108,6 +108,16 @@
 					display-date
 				</app-menu-link>
 			</app-menu-section>
+
+			<app-menu-section>
+				<template #title>
+					Display
+				</template>
+
+				<app-menu-link to="/display/image-tag">
+					image-tag
+				</app-menu-link>
+			</app-menu-section>
 		</ol>
 	</nav>
 </template>
