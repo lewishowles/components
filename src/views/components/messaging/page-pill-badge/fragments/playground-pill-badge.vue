@@ -1,10 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-pill-badge" v-model="textSlots">
+	<component-playground v-bind="{ copy: template }" id="playground-pill-badge" v-model="textSlots">
 		<template #title>
 			Simple pill badge
 		</template>
 
-		<pill-badge v-bind="componentProps" v-model="componentModel">
+		<pill-badge v-bind="componentProps">
 			{{ textSlots.default?.value }}
 		</pill-badge>
 	</component-playground>
@@ -13,9 +13,6 @@
 <script setup>
 import { computed, ref } from "vue";
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
-
-// The current model value.
-const componentModel = ref(null);
 
 // Our base text slots, available for the user to update.
 const textSlots = ref({

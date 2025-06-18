@@ -25,7 +25,7 @@ Any specific action buttons the user should be able to interact with.
 - type: `boolean`
 - default: `false`
 
-Whether the dialog should be open initially.
+Whether the dialog should open itself immediately.
 
 ### `focusDialogOnOpen`
 

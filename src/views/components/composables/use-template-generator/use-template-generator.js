@@ -228,7 +228,7 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 					slotContent = `\t${slotContent}`;
 				}
 
-				templateSegments.push(`<template #${slotKey}>\n\t${slotContent}\n\t</template>`);
+				templateSegments.push(`<template #${slotKey}>\n${applyIndent(slotContent, 1)}\n\t</template>`);
 			}
 		}
 
@@ -300,7 +300,7 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 
 		const tabString = "\t".repeat(indentLevel);
 
-		return `\t${template.replace(/\n(?!\n)/g, `\n${tabString}`)}`;
+		return `${tabString}${template.replace(/\n(?!\n)/g, `\n${tabString}`)}`;
 	}
 
 	return template;
