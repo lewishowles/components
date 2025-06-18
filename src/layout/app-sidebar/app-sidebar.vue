@@ -130,6 +130,9 @@
 				<app-menu-link to="/messaging/alert-message">
 					alert-message
 				</app-menu-link>
+				<app-menu-link to="/messaging/pill-badge">
+					pill-badge
+				</app-menu-link>
 			</app-menu-section>
 		</ol>
 	</nav>
