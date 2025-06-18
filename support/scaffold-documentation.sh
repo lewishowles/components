@@ -15,6 +15,14 @@
 #   --folder [folder-name]  (optional)
 #	 The name of the folder where the component will be created in the root
 #	 components documentation folder.
+#   --props [prop:type=default,...]  (optional)
+#	 List of component props, optionally including type and default value.
+#   --slots [slot1,slot2,...]  (optional)
+#	 List of named slots available for the component.
+#   --methods [method1,method2,...]  (optional)
+#	 List of available public methods for the component.
+#   --events [event1,event2,...]  (optional)
+#	 List of events emitted by the component.
 #
 # Example:
 #   ./support/scaffold-documentation.sh data-table --folder data
@@ -28,7 +36,7 @@ source "$SCRIPT_DIR/colours.sh"
 
 if [ -z "$1" ]; then
 	echo -e "\nPlease provide a ${BLUE}component-name${RESET_COLOUR} for the component."
-	echo -e "Usage: ${PURPLE}./support/scaffold-documentation.sh${RESET_COLOUR} ${BLUE}<component-name>${RESET_COLOUR} [--folder <folder-name>] [--props <prop1,prop2,...>] [--slots <slot1,slot2,...>] [--events <event1,event2,...>]"
+	echo -e "Usage: ${PURPLE}./support/scaffold-documentation.sh${RESET_COLOUR} ${BLUE}<component-name>${RESET_COLOUR} [--folder <folder-name>] [--props <prop1,prop2,...>] [--slots <slot1,slot2,...>] [--methods <method1,method2,...>] [--events <event1,event2,...>]"
 	exit 1
 fi
 
@@ -44,29 +52,14 @@ EVENTS=""
 
 while [[ "$#" -gt 0 ]]; do
 	case $1 in
-		--folder)
-			FOLDER_PATH="$2"
-			shift
-			;;
-		--props)
-			PROPS="$2"
-			shift
-			;;
-		--slots)
-			SLOTS="$2"
-			shift
-			;;
-		--methods)
-			METHODS="$2"
-			shift
-			;;
-		--events)
-			EVENTS="$2"
-			shift
-			;;
+		--folder) FOLDER_PATH="$2"; shift ;;
+		--props) PROPS="$2"; shift ;;
+		--slots) SLOTS="$2"; shift ;;
+		--methods) METHODS="$2"; shift ;;
+		--events) EVENTS="$2"; shift ;;
 		*)
 			echo -e "\nUnknown parameter passed: $1"
-			echo -e "Usage: ${PURPLE}./support/scaffold-documentation.sh${RESET_COLOUR} ${BLUE}<component-name>${RESET_COLOUR} [--folder <folder-name>] [--props <prop1,prop2,...>] [--slots <slot1,slot2,...>] [--events <event1,event2,...>]"
+			echo -e "Usage: ${PURPLE}./support/scaffold-documentation.sh${RESET_COLOUR} ${BLUE}<component-name>${RESET_COLOUR} [--folder <folder-name>] [--props <prop1,prop2,...>] [--slots <slot1,slot2,...>] [--methods <method1,method2,...>] [--events <event1,event2,...>]"
 			exit 1
 			;;
 	esac
@@ -112,21 +105,35 @@ done
 # Generate props section if props are provided
 COMPONENT_PROPS=""
 
-if [ -n "$PROPS" ]; then
+if [[ -n "$PROPS" ]]; then
 	PROP_TEMPLATE_FILE="$SCRIPT_DIR/templates/documentation-page/fragment-component-prop.txt"
 	PROP_TEMPLATE_CONTENT=$(cat "$PROP_TEMPLATE_FILE")
 
-	COMPONENT_PROPS+="\n\t\t<component-props>\n";
-
+	COMPONENT_PROPS+="\n\t\t<component-props>\n"
 	IFS=',' read -ra PROP_ARRAY <<< "$PROPS"
 
-	for PROP_NAME in "${PROP_ARRAY[@]}"; do
+	for PROP in "${PROP_ARRAY[@]}"; do
+		# Extract the pieces of our prop.
+		# This retrieves everything before the semicolon, i.e. the prop name.
+		PROP_NAME="${PROP%%:*}"
+		# This retrieves everything after it, i.e. the Type and default value.
+		PROP_TYPE_DEFAULT="${PROP#*:}"
+		# This splits the second half at an equals sign, retrieving everything
+		# before the equals, i.e. the Type.
+		PROP_TYPE="${PROP_TYPE_DEFAULT%%=*}"
+		# And this retrieves everything after the equals, i.e. the default value.
+		PROP_DEFAULT_VALUE="${PROP_TYPE_DEFAULT#*=}"
+
+		# If no type was provided, we reset the type and default value for
+		# safety.
+		[[ "$PROP_TYPE" == "$PROP_DEFAULT_VALUE" ]] && PROP_TYPE="" && PROP_DEFAULT_VALUE=""
+
 		KEBAB_CASE_PROP_NAME=$(echo "$PROP_NAME" | sed -E 's/([a-z0-9])([A-Z])/\1-\2/g' | tr '[:upper:]' '[:lower:]')
-		PROP_CONTENT=$(echo "$PROP_TEMPLATE_CONTENT" | sed "s/{{PROP_NAME}}/$PROP_NAME/g; s/{{KEBAB_CASE_PROP_NAME}}/$KEBAB_CASE_PROP_NAME/g")
+		PROP_CONTENT=$(echo "$PROP_TEMPLATE_CONTENT" | sed -E "s/{{PROP_NAME}}/$PROP_NAME/g; s/{{KEBAB_CASE_PROP_NAME}}/$KEBAB_CASE_PROP_NAME/g; s/{{PROP_TYPE}}/${PROP_TYPE:-String}/g; s/{{PROP_DEFAULT_VALUE}}/${PROP_DEFAULT_VALUE:-null}/g")
+
 		COMPONENT_PROPS+="$PROP_CONTENT"$'\n\n'
 	done
-
-	COMPONENT_PROPS+="\t\t</component-props>\n\n";
+	COMPONENT_PROPS+="\t\t</component-props>\n\n"
 fi
 
 # Generate slots section if slots are provided

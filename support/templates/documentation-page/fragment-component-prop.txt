@@ -4,11 +4,11 @@
 				</template>
 
 				<template #type>
-					String
+					{{PROP_TYPE}}
 				</template>
 
 				<template #default-value>
-					null
+					{{PROP_DEFAULT_VALUE}}
 				</template>
 
 				<p></p>
