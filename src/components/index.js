@@ -54,6 +54,7 @@ import IconArrowRight from "./icon/icon-arrow-right/icon-arrow-right.vue";
 import IconArrowUp from "./icon/icon-arrow-up/icon-arrow-up.vue";
 import IconBell from "./icon/icon-bell/icon-bell.vue";
 import IconBin from "./icon/icon-bin/icon-bin.vue";
+import IconCard from "./icon/icon-card/icon-card.vue";
 import IconCheck from "./icon/icon-check/icon-check.vue";
 import IconCheckCircled from "./icon/icon-check-circled/icon-check-circled.vue";
 import IconChevronDown from "./icon/icon-chevron-down/icon-chevron-down.vue";
@@ -72,6 +73,7 @@ import IconDanger from "./icon/icon-danger/icon-danger.vue";
 import IconDensityCompact from "./icon/icon-density-compact/icon-density-compact.vue";
 import IconDensityRelaxed from "./icon/icon-density-relaxed/icon-density-relaxed.vue";
 import IconDensityStandard from "./icon/icon-density-standard/icon-density-standard.vue";
+import IconDocument from "./icon/icon-document/icon-document.vue";
 import IconDownload from "./icon/icon-download/icon-download.vue";
 import IconEmail from "./icon/icon-email/icon-email.vue";
 import IconExternal from "./icon/icon-external/icon-external.vue";
@@ -86,11 +88,13 @@ import IconLoading from "./icon/icon-loading/icon-loading.vue";
 import IconMegaphone from "./icon/icon-megaphone/icon-megaphone.vue";
 import IconMoon from "./icon/icon-moon/icon-moon.vue";
 import IconObject from "./icon/icon-object/icon-object.vue";
+import IconPadlock from "./icon/icon-padlock/icon-padlock.vue";
 import IconPencil from "./icon/icon-pencil/icon-pencil.vue";
 import IconPin from "./icon/icon-pin/icon-pin.vue";
 import IconPlus from "./icon/icon-plus/icon-plus.vue";
 import IconReload from "./icon/icon-reload/icon-reload.vue";
 import IconSlot from "./icon/icon-slot/icon-slot.vue";
+import IconSpanner from "./icon/icon-spanner/icon-spanner.vue";
 import IconSun from "./icon/icon-sun/icon-sun.vue";
 import IconUser from "./icon/icon-user/icon-user.vue";
 import IconWarning from "./icon/icon-warning/icon-warning.vue";
@@ -135,6 +139,7 @@ export default {
 	IconArrowUp,
 	IconBell,
 	IconBin,
+	IconCard,
 	IconCheck,
 	IconCheckCircled,
 	IconChevronDown,
@@ -153,6 +158,7 @@ export default {
 	IconDensityCompact,
 	IconDensityRelaxed,
 	IconDensityStandard,
+	IconDocument,
 	IconDownload,
 	IconEmail,
 	IconExternal,
@@ -167,11 +173,13 @@ export default {
 	IconMegaphone,
 	IconMoon,
 	IconObject,
+	IconPadlock,
 	IconPencil,
 	IconPin,
 	IconPlus,
 	IconReload,
 	IconSlot,
+	IconSpanner,
 	IconSun,
 	IconUser,
 	IconWarning,

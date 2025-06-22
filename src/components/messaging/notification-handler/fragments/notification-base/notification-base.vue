@@ -27,7 +27,7 @@
 			</conditional-wrapper>
 		</conditional-wrapper>
 
-		<div v-if="showToolbar" class="mt-2 flex items-center gap-4 text-xs" :data-test="`${dataTest}-actions`">
+		<div v-if="showToolbar" class="mt-2 flex items-center gap-4 text-xs" :class="{ 'ps-14': hasImage || hasIcon }" :data-test="`${dataTest}-actions`">
 			<link-tag v-if="hasMoreInformationUrl" v-bind="{ href: notification.url, external: true }" :data-test="`${dataTest}-view-more`">
 				<slot name="view-more-label">
 					View more

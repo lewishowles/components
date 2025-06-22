@@ -8,27 +8,55 @@
 
 ### `notification-read-template`
 
-A general slot to allow custom designs for notifications marked as `{ read: true }` (where `hideNotificationsWhenRead` is `false`). The slot is provided with `{ notification, markNotificationRead }`, containing the details of the individual notification, and the ability to mark it as read (emit the appropriate event) through the standard procedure.
+A general slot to allow custom designs for notifications marked as `{ read: true }` (where `hideNotificationsWhenRead` is `false`).
+
+| Slot prop | Type | Description |
+|-|-|-|
+| `notification` | `object` | The notification details, as provided to the component |
 
 ### `notification-unread-template`
 
-A general slot to allow custom designs for notifications marked as `{ read: false }`. The slot is provided with `{ notification, markNotificationRead }`, containing the details of the individual notification, and the ability to mark it as read (emit the appropriate event) through the standard procedure.
+A general slot to allow custom designs for notifications marked as `{ read: false }`.
+
+| Slot prop | Type | Description |
+|-|-|-|
+| `notification` | `object` | The notification details, as provided to the component |
+| `markNotificationRead` | function | Mark the notification read, as if the user had pressed the "Mark read" button |
 
 ### `notification-<type>-template`
 
-A general slot to allow custom designs for notifications of a given `<type>` (one of `danger`, `warning`, and `info`). Takes precedence over the `notification-read` and `notification-unread` slots. The slot is provided with `{ notification, markNotificationRead }`, containing the details of the individual notification, and the ability to mark it as read (emit the appropriate event) through the standard procedure.
+A general slot to allow custom designs for notifications of a given `<type>` (one of `danger`, `warning`, and `info`). Takes precedence over the `notification-read` and `notification-unread` slots.
+
+| Slot prop | Type | Description |
+|-|-|-|
+| `notification` | `object` | The notification details, as provided to the component |
+| `markNotificationRead` | function | Mark the notification read, as if the user had pressed the "Mark read" button |
 
 ### `notification-pinned-template`
 
-A general slot to allow custom designs for notifications that are `{ pinned: true }` . Takes precedence over the `notification-read`, `notification-unread` and `notification-<type>` slots. The slot is provided with `{ notification, markNotificationRead }`, containing the details of the individual notification, and the ability to mark it as read (emit the appropriate event) through the standard procedure.
+A general slot to allow custom designs for notifications that are `{ pinned: true }` . Takes precedence over the `notification-read`, `notification-unread` and `notification-<type>` slots.
+
+| Slot prop | Type | Description |
+|-|-|-|
+| `notification` | `object` | The notification details, as provided to the component |
+| `markNotificationRead` | function | Mark the notification read, as if the user had pressed the "Mark read" button |
 
 ### `notification-<id>-template`
 
-A general slot to allow custom designs for notifications that are `{ pinned: true }` . Takes precedence over the `notification-read`, `notification-unread` and `notification-<type>` slots. The slot is provided with `{ notification, markNotificationRead }`, containing the details of the individual notification, and the ability to mark it as read (emit the appropriate event) through the standard procedure.
+A general slot to allow custom designs for notifications that are `{ pinned: true }` . Takes precedence over the `notification-read`, `notification-unread` and `notification-<type>` slots.
+
+| Slot prop | Type | Description |
+|-|-|-|
+| `notification` | `object` | The notification details, as provided to the component |
+| `markNotificationRead` | function | Mark the notification read, as if the user had pressed the "Mark read" button |
 
 ### `notification-actions`
 
-A slot intended to allow actions to be added to individual notifications as required. The contents of this slot appear _after_ any "Mark as read" and "View more" actions. The slot is provided with a `{ notification }` containing the details of the individual notification.
+A slot intended to allow actions to be added to individual notifications as required. The contents of this slot appear _after_ any "Mark as read" and "View more" actions.
+
+| Slot prop | Type | Description |
+|-|-|-|
+| `notification` | `object` | The notification details, as provided to the component |
 
 ### `show-notifications-label`
 
@@ -81,6 +109,19 @@ The label to use for the button the link to view more information, if a notifica
 
 The notifications to display to the user.
 
+| Field         | Type      | Required | Purpose                                                                                                                                                                                                 |
+|---------------|-----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `id`          | `string`  | Yes      | Used to identify individual notifications, which can be used when emitting events for a notification being marked as read, for example.                                                                 |
+| `title`       | `string`  | No       | A title to display with the notification.                                                                                                                                                               |
+| `message`     | `string`  | Yes      | The content of the notification. Any notification without a message will not be displayed.                                                                                                              |
+| `type`        | `string`  | No       | The type of notification, one of `danger`, `warning`, or `info`. Defaults to `info`.                                                                                                                    |
+| `date`        | `string`  | No       | The date the notification was issued (`YYYY-MM-DD`). If included, a formatted date is displayed to the user using [`display-date`](/src/components/content/display-date/display-date.md).               |
+| `url`         | `string`  | No       | Any URL at which the user can get more information about this notification. Clicking on the notification will open the URL in a new tab.                                                                |
+| `read`        | `boolean` | No       | Whether the message has been read. If not provided, we will assume the message has been read (as a safe fallback that doesn’t consistently re-introduce the same notifications).                        |
+| `pinned`      | `boolean` | No       | Whether this notification should be pinned to the top of the list. Pinned notifications cannot be marked as read, and will appear each time regardless of read status or `hideNotificationsWhenRead`.   |
+| `image_url`   | `string`  | No       | The URL to any image to display beside the notification. If both `image_url` and `icon` are defined, `image_url` takes precedence.                                                                      |
+| `icon`        | `string`  | No       | Any icon component to display beside the notification, e.g. `icon-help`. If both `image_url` and `icon` are defined, `image_url` takes precedence.                                                      |
+
 ### `locale`
 
 - type: `string`
@@ -102,35 +143,35 @@ The date format to use in the display of the date. To reset to the user's locale
 
 The alignment of the pop up notifications panel. Anything but `start` will be treated as `end`.
 
-### allowMarkAllRead
+### `allowMarkAllRead`
 
 - type: `Boolean`
 - default: `true`
 
 Whether to display the “Mark all read” button. Deactivating means the user will be required to mark notifications as read individually.
 
-### allowReload
+### `allowReload`
 
 - type: `Boolean`
 - default: `true`
 
 Whether to display the “Reload” button. Deactivating means new notifications will only be shown when something triggers a re-load in the parent component.
 
-### loading
+### `loading`
 
 - type: `Boolean`
 - default: `false`
 
 Whether the notifications are currently loading (or re-loading). This will show a loading indicator to the user to provide feedback.
 
-### hideNotificationsWhenRead
+### `hideNotificationsWhenRead`
 
 - type: `Boolean`
 - default: `false`
 
 Whether to hide notifications when they are marked as read. If false, notifications will remain, but will appear less prominent. If true, any notifications that are already read when initialised will not be shown.
 
-### readNotificationCount
+### `readNotificationCount`
 
 - type: `Number`
 - default: `null`
@@ -141,9 +182,11 @@ The number of read notifications to display at maximum. Unread notifications are
 
 ### @notifications:read
 
-- param: `notificationIds` _(string[])_
+Called when one (or all via "Mark all notifications read") notifications are marked as read.
 
-A list of one or more notification IDs which have been marked as read by the user.
+| Param | Type | Description |
+|-|-|-|
+| `notificationIds` | `string[]` | A list of one or more notification IDs which have been marked as read by the user. |
 
 ### @notifications:reload
 

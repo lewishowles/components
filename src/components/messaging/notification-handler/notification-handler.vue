@@ -57,6 +57,8 @@
 						</slot>
 					</template>
 
+					<hr v-if="havePinnedNotifications && haveUnpinnedNotifications" class="border-grey-200" />
+
 					<template v-for="notification in unpinnedNotifications" :key="notification.id">
 						<reuse-template v-bind="{ notification }" />
 					</template>
@@ -253,8 +255,12 @@ const haveUnreadNotifications = computed(() => unreadNotificationCount.value > 0
 const canMarkAllNotificationsRead = computed(() => props.allowMarkAllRead && haveUnreadNotifications.value);
 // Notifications that have been pinned, allowing us to display them separately.
 const pinnedNotifications = computed(() => internalNotifications.value.filter(notification => get(notification, "pinned") === true));
+// Whether any pinned notifications exist.
+const havePinnedNotifications = computed(() => isNonEmptyArray(pinnedNotifications.value));
 // Notifications that have not been pinned.
 const unpinnedNotifications = computed(() => internalNotifications.value.filter(notification => get(notification, "pinned") !== true));
+// Whether any unpinned notifications exist.
+const haveUnpinnedNotifications = computed(() => isNonEmptyArray(unpinnedNotifications.value));
 
 /**
  * Sort the given notifications by their `date` property, allowing one or both
