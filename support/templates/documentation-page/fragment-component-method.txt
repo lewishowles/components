@@ -3,7 +3,7 @@
 					<code>{{METHOD_NAME}}</code>
 				</template>
 
-				<p>...</p>
+				<p></p>
 
 				<table>
 					<thead>
@@ -15,9 +15,9 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><code>...</code></td>
-							<td><code>...</code></td>
-							<td>...</td>
+							<td><code></code></td>
+							<td><code></code></td>
+							<td></td>
 						</tr>
 					</tbody>
 				</table>

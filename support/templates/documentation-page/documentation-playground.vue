@@ -5,7 +5,7 @@
 		</template>
 
 		<template #introduction>
-			<p>...</p>
+			<p></p>
 		</template>
 
 		<{{COMPONENT_NAME}} v-bind="componentProps" v-model="componentModel">

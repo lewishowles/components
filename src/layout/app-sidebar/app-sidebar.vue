@@ -111,6 +111,16 @@
 
 			<app-menu-section>
 				<template #title>
+					Navigation
+				</template>
+
+				<app-menu-link to="/navigation/breadcrumb-list">
+					breadcrumb-list
+				</app-menu-link>
+			</app-menu-section>
+
+			<app-menu-section>
+				<template #title>
 					Display
 				</template>
 

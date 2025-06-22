@@ -13,15 +13,15 @@
 {{COMPONENT_METHODS}}
 		<component-provides>
 			<template #introduction>
-				<p>...</p>
+				<p></p>
 			</template>
 
 			<component-provide id="provide-">
 				<template #name>
-					<code>...</code>
+					<code></code>
 				</template>
 
-				<p>...</p>
+				<p></p>
 
 				<table>
 					<thead>
@@ -33,9 +33,9 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><code>...</code></td>
-							<td><code>...</code></td>
-							<td>...</td>
+							<td><code></code></td>
+							<td><code></code></td>
+							<td></td>
 						</tr>
 					</tbody>
 				</table>

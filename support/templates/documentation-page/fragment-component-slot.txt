@@ -3,5 +3,5 @@
 					{{SLOT_NAME}}
 				</template>
 
-				<p>...</p>
+				<p></p>
 			</component-slot>
