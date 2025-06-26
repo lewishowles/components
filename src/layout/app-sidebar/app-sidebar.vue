@@ -117,6 +117,9 @@
 				<app-menu-link to="/navigation/breadcrumb-list">
 					breadcrumb-list
 				</app-menu-link>
+				<app-menu-link to="/navigation/app-pagination">
+					app-pagination
+				</app-menu-link>
 			</app-menu-section>
 
 			<app-menu-section>

@@ -236,7 +236,7 @@ function selectNextPage() {
 watch(currentPage, () => {
 	emit("@update:page", currentPage.value);
 
-	if (currentPage.value > 1) {
+	if (currentPage.value >= 1) {
 		updateUrlParameter("page", currentPage.value);
 	}
 }, { immediate: true });
