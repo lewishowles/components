@@ -41,6 +41,13 @@ The label for the progress bar. This label is hidden by default, but is included
 
 Whether to show the label to the user.
 
+### `showValue`
+
+- type: `boolean`
+- default: `false`
+
+Whether to show the value to the user, formatted as a percentage.
+
 ### `trackClasses`
 
 - type: `string | array | object`
@@ -65,13 +72,9 @@ When the label is shown, the default slot can be used to provide a custom label 
 
 When the value is shown, override the default value display.
 
-#### Slot props
-
-##### `value`
-
-- type: `number`
-
-The current value of the progress bar.
+| Slot prop | Type | Description |
+| --- | --- | --- |
+| `value` | `number` | The current value of the progress bar. |
 
 ## Examples
 

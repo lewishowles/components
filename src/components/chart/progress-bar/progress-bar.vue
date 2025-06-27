@@ -95,7 +95,7 @@ const props = defineProps({
 	 * Classes to apply to the bar, which indicates the current value.
 	 */
 	barClasses: {
-		type: String,
+		type: [String, Array, Object],
 		default: "h-full rounded-full bg-purple-800 dark:bg-purple-300",
 	},
 

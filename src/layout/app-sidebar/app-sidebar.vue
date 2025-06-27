@@ -153,6 +153,19 @@
 					notification-handler
 				</app-menu-link>
 			</app-menu-section>
+
+			<app-menu-section>
+				<template #title>
+					Chart
+				</template>
+
+				<app-menu-link to="/chart/donut-chart">
+					donut-chart
+				</app-menu-link>
+				<app-menu-link to="/chart/progress-bar">
+					progress-bar
+				</app-menu-link>
+			</app-menu-section>
 		</ol>
 	</nav>
 </template>

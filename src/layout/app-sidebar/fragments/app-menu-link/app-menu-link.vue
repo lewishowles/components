@@ -1,8 +1,8 @@
 <template>
 	<li :class="{ 'relative': isActiveRoute }">
-		<div v-if="isActiveRoute" class="w-1 rounded bg-purple-800 absolute start-0 -ms-8 inset-y-0" />
+		<div v-if="isActiveRoute" class="w-1 rounded bg-purple-800 dark:bg-purple-300 absolute start-0 -ms-8 inset-y-0" />
 
-		<router-link v-bind="{ to }" class="font-mono no-underline hocus:underline py-1 block" :class="{ 'text-purple-800': isActiveRoute, 'text-current': !isActiveRoute }">
+		<router-link v-bind="{ to }" class="font-mono no-underline hocus:underline py-1 block" :class="{ 'text-purple-800 dark:text-purple-300': isActiveRoute, 'text-current': !isActiveRoute }">
 			<slot />
 		</router-link>
 	</li>

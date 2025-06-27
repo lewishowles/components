@@ -9,8 +9,6 @@
 		</h3>
 
 		<slot name="post-title" />
-
-		<a href="#content" class="text-sm opacity-0 group-hover/prop-title:opacity-100 transition-opacity">&uarr; Top</a>
 	</div>
 </template>
 
