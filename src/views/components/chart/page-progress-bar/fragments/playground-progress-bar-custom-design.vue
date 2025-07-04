@@ -27,30 +27,32 @@ const textSlots = ref({
 
 // Props both for the template and for the component example itself.
 const props = ref({
-	value: {
+	"value": {
 		label: "Value",
 		value: 45,
 		type: "number",
 	},
-	showLabel: {
+	"showLabel": {
 		label: "Show label",
 		value: true,
 		type: "boolean",
 	},
-	showValue: {
+	"showValue": {
 		label: "Show value",
 		value: true,
 		type: "boolean",
 	},
-	trackClasses: {
+	"track-classes": {
 		label: "Track classes",
 		value: "h-4 p-1 rounded-full border border-orange-600 dark:border-orange-300",
 		type: "string",
+		inline: true,
 	},
-	barClasses: {
+	"bar-classes": {
 		label: "Bar classes",
 		value: "h-full rounded-full bg-orange-600 dark:bg-orange-300",
 		type: "string",
+		inline: true,
 	},
 });
 
