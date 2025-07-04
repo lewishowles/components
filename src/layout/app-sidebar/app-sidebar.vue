@@ -166,6 +166,16 @@
 					progress-bar
 				</app-menu-link>
 			</app-menu-section>
+
+			<app-menu-section>
+				<template #title>
+					General
+				</template>
+
+				<app-menu-link to="/general/conditional-wrapper">
+					conditional-wrapper
+				</app-menu-link>
+			</app-menu-section>
 		</ol>
 	</nav>
 </template>
