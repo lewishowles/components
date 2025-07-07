@@ -1,6 +1,6 @@
 # `dropdown-menu`
 
-`dropdown-menu` is an extension of a floating `summary-details`, providing a quick and easy way to create dropdown or action menus. From actions in tables to bulk item management, dropdown menus provide an easy, accessible way to de-clutter an interface, but should not be used where very common actions would be hidden and more difficult to access for the sake of cleanliness.
+`dropdown-menu` is an extension of `floating-details`, providing a quick and easy way to create dropdown or action menus. From actions in tables to bulk item management, dropdown menus provide an easy, accessible way to de-clutter an interface, but should not be used where very common actions would be hidden and more difficult to access for the sake of cleanliness.
 
 To simplify the creation of a standardised menu, there are a number of companion components that can be used to build up a menu, including:
 

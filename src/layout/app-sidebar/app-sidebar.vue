@@ -89,6 +89,9 @@
 				<app-menu-link to="/content/summary-details">
 					summary-details
 				</app-menu-link>
+				<app-menu-link to="/content/floating-details">
+					floating-details
+				</app-menu-link>
 				<app-menu-link to="/content/dropdown-menu">
 					dropdown-menu
 				</app-menu-link>
