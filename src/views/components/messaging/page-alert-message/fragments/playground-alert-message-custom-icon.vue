@@ -43,7 +43,7 @@ const props = ref({
 		label: "Type",
 		value: "info",
 		type: "string",
-		inline: true,
+		isInline: true,
 	},
 });
 

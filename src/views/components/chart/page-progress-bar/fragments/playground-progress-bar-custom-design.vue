@@ -46,13 +46,13 @@ const props = ref({
 		label: "Track classes",
 		value: "h-4 p-1 rounded-full border border-orange-600 dark:border-orange-300",
 		type: "string",
-		inline: true,
+		isInline: true,
 	},
 	"bar-classes": {
 		label: "Bar classes",
 		value: "h-full rounded-full bg-orange-600 dark:bg-orange-300",
 		type: "string",
-		inline: true,
+		isInline: true,
 	},
 });
 

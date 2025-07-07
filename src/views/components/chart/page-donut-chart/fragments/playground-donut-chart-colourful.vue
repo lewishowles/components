@@ -32,7 +32,7 @@ const props = ref({
 		label: "Class",
 		value: "size-50",
 		type: "string",
-		inline: true,
+		isInline: true,
 	},
 });
 

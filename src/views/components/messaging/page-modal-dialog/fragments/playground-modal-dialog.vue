@@ -23,7 +23,7 @@
 		</modal-dialog>
 
 		<template #additional-code>
-			<code-block :code="useTemplateGenerator('ui-button', { props: { class: { value: 'button--primary', inline: true } }, slots: { default: { value: 'Delete user' } }, events: { click: { value: 'openDialog' } } })" />
+			<code-block :code="useTemplateGenerator('ui-button', { props: { class: { value: 'button--primary', isInline: true } }, slots: { default: { value: 'Delete user' } }, events: { click: { value: 'openDialog' } } })" />
 
 			<code-block code="const deleteUserDialog = useTemplateRef(&quot;delete-user-dialog&quot;);" />
 
@@ -45,7 +45,7 @@ import useTemplateGenerator from "@/views/components/composables/use-template-ge
 const props = ref({
 	ref: {
 		value: "delete-user-dialog",
-		inline: true,
+		isInline: true,
 	},
 });
 
@@ -57,7 +57,7 @@ const slots = {
 		value: useTemplateGenerator("p", { slots: { default: { value: "Are you sure you want to delete this user? This cannot be undone." } } }),
 	},
 	actions: {
-		value: useTemplateGenerator("ui-button", { props: { class: { value: "button--primary", inline: true } }, slots: { default: { value: "Delete user" } }, indent: 1 }),
+		value: useTemplateGenerator("ui-button", { props: { class: { value: "button--primary", isInline: true } }, slots: { default: { value: "Delete user" } }, indent: 1 }),
 	},
 };
 

@@ -43,7 +43,7 @@ function createTabItem(label, href) {
 		props: {
 			href: {
 				value: href,
-				inline: true,
+				isInline: true,
 			},
 		},
 		slots: {

@@ -101,7 +101,8 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 			}
 
 			const prop = stableProps[propKey];
-			const isPropInline = prop.inline === true;
+			const isPropInline = prop.isInline === true;
+			const isPropVariable = prop.isVariable === true;
 
 			let propContent = prop.value;
 
@@ -132,7 +133,7 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 					break;
 			}
 
-			if (propContent !== null) {
+			if (propContent !== null && !isPropVariable) {
 				if (isPropInline === true) {
 					inlineProps.push(`${propKey}="${propContent}"`);
 

@@ -50,7 +50,7 @@ const componentProps = computed(() => {
 });
 
 const additionalContent = useTemplateGenerator("div", {
-	props: { class: { value: "prose", inline: true } },
+	props: { class: { value: "prose", isInline: true } },
 	additionalContent: [
 		useTemplateGenerator("p", {
 			slots: { default: { value: "NASA's Voyager 1 spacecraft, launched in 1977, is the most distant human-made object from Earth. As of today, it is over 15 billion miles away and continues to transmit data from interstellar space." } },

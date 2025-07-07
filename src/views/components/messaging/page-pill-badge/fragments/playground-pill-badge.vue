@@ -28,7 +28,7 @@ const props = ref({
 		label: "Colour",
 		value: "green",
 		type: "text",
-		inline: true,
+		isInline: true,
 	},
 });
 

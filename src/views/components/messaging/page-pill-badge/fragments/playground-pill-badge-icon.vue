@@ -28,13 +28,13 @@ const props = ref({
 		label: "Colour",
 		value: "red",
 		type: "text",
-		inline: true,
+		isInline: true,
 	},
 	"icon-start": {
 		label: "Icon start",
 		value: "icon-arrow-down",
 		type: "text",
-		inline: true,
+		isInline: true,
 	},
 });
 

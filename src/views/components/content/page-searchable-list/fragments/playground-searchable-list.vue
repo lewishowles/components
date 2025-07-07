@@ -122,37 +122,37 @@ const props = ref({
 const additionalContent = [
 	useTemplateGenerator("template", {
 		props: {
-			"#default": { value: "{ items }", inline: true },
+			"#default": { value: "{ items }", isInline: true },
 		},
 		slots: {
 			default: {
 				value: useTemplateGenerator("ul", {
-					props: { class: { value: "flex flex-col gap-4", inline: true } },
+					props: { class: { value: "flex flex-col gap-4", isInline: true } },
 					slots: {
 						default: {
 							value: useTemplateGenerator("li", {
 								props: {
-									"v-for": { value: "person in items", inline: true },
-									":key": { value: "person.id", inline: true },
-									"class": { value: "flex items-center gap-4", inline: true },
+									"v-for": { value: "person in items", isInline: true },
+									":key": { value: "person.id", isInline: true },
+									"class": { value: "flex items-center gap-4", isInline: true },
 								},
 								additionalContent: [
 									useTemplateGenerator("image-tag", {
 										props: {
-											":src": { value: "person.image_url", inline: true },
-											"class": { value: "size-8 rounded", inline: true },
+											":src": { value: "person.image_url", isInline: true },
+											"class": { value: "size-8 rounded", isInline: true },
 										},
 										indent: 1,
 									}),
 									useTemplateGenerator("div", {
-										props: { class: { value: "flex flex-col", inline: true } },
+										props: { class: { value: "flex flex-col", isInline: true } },
 										additionalContent: [
 											"\t{{ person.name }}",
 
 											useTemplateGenerator("span", {
 												props: {
 													class: {
-														value: "text-xs text-grey-500", inline: true,
+														value: "text-xs text-grey-500", isInline: true,
 													},
 												},
 												slots: {

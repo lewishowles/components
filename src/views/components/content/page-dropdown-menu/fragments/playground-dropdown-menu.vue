@@ -43,18 +43,18 @@ const textSlots = ref({
 
 const additionalContent = [
 	useTemplateGenerator("dropdown-menu-button", {
-		props: { icon: { value: "icon-pencil", inline: true } },
+		props: { icon: { value: "icon-pencil", isInline: true } },
 		slots: { default: { value: "Edit" } },
 		indent: 1,
 	}),
 	useTemplateGenerator("dropdown-menu-button", {
-		props: { icon: { value: "icon-reload", inline: true } },
+		props: { icon: { value: "icon-reload", isInline: true } },
 		slots: { default: { value: "Refresh" } },
 		indent: 1,
 	}),
 	useTemplateGenerator("dropdown-menu-divider", { indent: 1 }),
 	useTemplateGenerator("dropdown-menu-button", {
-		props: { icon: { value: "icon-bin", inline: true } },
+		props: { icon: { value: "icon-bin", isInline: true } },
 		slots: { default: { value: "Delete" } },
 		indent: 1,
 	}),

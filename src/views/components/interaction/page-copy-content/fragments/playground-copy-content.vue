@@ -1,16 +1,12 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-ui-button-reactive" v-model="textSlots">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-copy-content" v-model="textSlots">
 		<template #title>
-			Reactive button
+			Copy content
 		</template>
 
-		<template #introduction>
-			<p>A button that reacts, giving user feedback, on activation.</p>
-		</template>
-
-		<ui-button v-bind="componentProps">
+		<copy-content v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}
-		</ui-button>
+		</copy-content>
 	</component-playground>
 </template>
 
@@ -18,33 +14,30 @@
 import { computed, ref } from "vue";
 import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
 
+// The current model value.
+const componentModel = ref(null);
+
 // Our base text slots, available for the user to update.
 const textSlots = ref({
 	default: {
-		label: "Button label",
-		value: "Create account",
+		label: "",
+		value: "Copy quote",
 	},
 });
 
 // Props both for the template and for the component example itself.
 const props = ref({
-	reactive: {
-		label: "Reactive",
-		value: true,
-		type: "boolean",
+	content: {
+		label: "Content to copy",
+		value: "That might sound boring, but I think the boring stuff is the stuff I remember the most",
+		type: "text",
+		isVariable: true,
 	},
 	class: {
-		label: "Button classes",
-		value: "button--primary",
+		label: "Class",
+		value: "button--muted",
+		type: "text",
 		isInline: true,
-	},
-});
-
-// Events to use in the template.
-const events = ref({
-	click: {
-		label: "Click handler",
-		value: "createAccount",
 	},
 });
 
@@ -55,5 +48,5 @@ const componentProps = computed(() => {
 	);
 });
 
-const template = useTemplateGenerator("ui-button", { slots: textSlots, props, events });
+const template = useTemplateGenerator("copy-content", { slots: textSlots, props });
 </script>

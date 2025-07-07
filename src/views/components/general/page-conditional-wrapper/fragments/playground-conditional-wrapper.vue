@@ -46,7 +46,7 @@ const props = ref({
 	class: {
 		label: "Class",
 		value: "bg-purple-50 px-4 py-2 rounded-lg text-purple-800",
-		inline: true,
+		isInline: true,
 	},
 });
 

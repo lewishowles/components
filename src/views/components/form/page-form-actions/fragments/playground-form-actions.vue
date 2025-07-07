@@ -25,11 +25,11 @@ const buttonTemplate = useTemplateGenerator("ui-button", {
 	props: {
 		type: {
 			value: "submit",
-			inline: true,
+			isInline: true,
 		},
 		class: {
 			value: "button--primary",
-			inline: true,
+			isInline: true,
 		},
 	},
 
@@ -46,7 +46,7 @@ const linkTemplate = useTemplateGenerator("link-tag", {
 	props: {
 		href: {
 			value: "#",
-			inline: true,
+			isInline: true,
 		},
 	},
 

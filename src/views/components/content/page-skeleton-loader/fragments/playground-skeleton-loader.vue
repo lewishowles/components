@@ -35,7 +35,7 @@ const userSkeleton = useTemplateGenerator("skeleton-indicator", {
 	props: {
 		class: {
 			value: "size-10 rounded-full",
-			inline: true,
+			isInline: true,
 		},
 	},
 	indent: 2,
@@ -45,7 +45,7 @@ const additionalContent = useTemplateGenerator("div", {
 	props: {
 		class: {
 			value: "flex flex-wrap gap-4",
-			inline: true,
+			isInline: true,
 		},
 	},
 	additionalContent: [

@@ -67,12 +67,12 @@ const props = ref({
 	"summary-classes": {
 		label: "Summary classes",
 		value: "button--muted",
-		inline: true,
+		isInline: true,
 	},
 	"details-classes": {
 		label: "Details classes",
 		value: "animate-fade-in-down animate-fast mt-2 min-w-3xs rounded-lg border border-grey-200 bg-white p-4 shadow-sm dark:border-white/20 dark:bg-grey-800",
-		inline: true,
+		isInline: true,
 	},
 });
 
@@ -84,29 +84,29 @@ const componentProps = computed(() => {
 });
 
 const additionalContent = useTemplateGenerator("div", {
-	props: { class: { value: "flex flex-col gap-4", inline: true } },
+	props: { class: { value: "flex flex-col gap-4", isInline: true } },
 	additionalContent: [
 		useTemplateGenerator("link-tag", {
 			slots: { default: { value: "Your orders" } },
 			props: {
-				"href": { value: "#", inline: true },
-				"icon-start": { value: "icon-clipboard", inline: true },
+				"href": { value: "#", isInline: true },
+				"icon-start": { value: "icon-clipboard", isInline: true },
 			},
 			indent: 1,
 		}),
 		useTemplateGenerator("link-tag", {
 			slots: { default: { value: "Your details" } },
 			props: {
-				"href": { value: "#", inline: true },
-				"icon-start": { value: "icon-user", inline: true },
+				"href": { value: "#", isInline: true },
+				"icon-start": { value: "icon-user", isInline: true },
 			},
 			indent: 1,
 		}),
 		useTemplateGenerator("link-tag", {
 			slots: { default: { value: "Communication preferences" } },
 			props: {
-				"href": { value: "#", inline: true },
-				"icon-start": { value: "icon-megaphone", inline: true },
+				"href": { value: "#", isInline: true },
+				"icon-start": { value: "icon-megaphone", isInline: true },
 			},
 			indent: 1,
 		}),

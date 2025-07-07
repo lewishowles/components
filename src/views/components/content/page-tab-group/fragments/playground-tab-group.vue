@@ -53,14 +53,14 @@ const additionalContent = [
 		props: {
 			icon: {
 				value: "icon-object",
-				inline: true,
+				isInline: true,
 			},
 		},
 		additionalContent: useTemplateGenerator("div", {
 			props: {
 				class: {
 					value: "prose",
-					inline: true,
+					isInline: true,
 				},
 			},
 			additionalContent: [
@@ -80,14 +80,14 @@ const additionalContent = [
 		props: {
 			icon: {
 				value: "icon-slot",
-				inline: true,
+				isInline: true,
 			},
 		},
 		additionalContent: useTemplateGenerator("div", {
 			props: {
 				class: {
 					value: "prose",
-					inline: true,
+					isInline: true,
 				},
 			},
 			additionalContent: [

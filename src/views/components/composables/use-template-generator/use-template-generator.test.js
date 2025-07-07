@@ -122,4 +122,72 @@ describe("useTemplateGenerator", () => {
 
 </foo-bar>`);
 	});
+
+	test("should generate a template with events", () => {
+		const events = ref({
+			click: { value: "handleClick()" },
+			input: { value: "handleInput($event)" },
+		});
+
+		const template = useTemplateGenerator("foo-bar", { events });
+
+		expect(template.value).toContain("@click=\"handleClick()\"");
+		expect(template.value).toContain("@input=\"handleInput($event)\"");
+	});
+
+	test("should not include events if empty", () => {
+		const events = ref({});
+		const template = useTemplateGenerator("foo-bar", { events });
+
+		expect(template.value).not.toContain("@");
+	});
+
+	test("should indent the output by the given number of tabs", () => {
+		const slots = ref({ default: { value: "Indented content" } });
+		const template = useTemplateGenerator("foo-bar", { slots, indent: 2 });
+		const lines = template.value.split("\n");
+
+		lines.forEach(line => {
+			if (line.trim()) expect(line.startsWith("\t\t")).toBe(true);
+		});
+	});
+
+	test("should render inline props with quotes", () => {
+		const props = ref({
+			foo: { value: "bar", type: "string", isInline: true },
+		});
+
+		const template = useTemplateGenerator("foo-bar", { props });
+
+		expect(template.value).toContain("foo=\"bar\"");
+	});
+
+	test("should render variable props without value", () => {
+		const props = ref({
+			foo: { value: "bar", type: "string", isVariable: true },
+		});
+
+		const template = useTemplateGenerator("foo-bar", { props });
+
+		expect(template.value).toContain("v-bind=\"{ foo }\"");
+	});
+
+	test("should handle null slots and props", () => {
+		const template = useTemplateGenerator("foo-bar", { slots: null, props: null });
+
+		expect(template.value).toMatch(/<foo-bar[\s\S]*\/>/);
+	});
+
+	test("should handle empty string as slot content", () => {
+		const slots = ref({ label: { value: "" } });
+		const template = useTemplateGenerator("foo-bar", { slots });
+
+		expect(template.value).not.toContain("<template #label>");
+	});
+
+	test("should handle empty array as additionalContent", () => {
+		const template = useTemplateGenerator("foo-bar", { additionalContent: [] });
+
+		expect(template.value).toBe("<foo-bar />");
+	});
 });

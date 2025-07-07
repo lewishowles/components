@@ -22,13 +22,13 @@ const props = ref({
 		label: "Source",
 		value: "#",
 		type: "text",
-		inline: true,
+		isInline: true,
 	},
 	class: {
 		label: "Class",
 		value: "size-25 rounded-lg",
 		type: "text",
-		inline: true,
+		isInline: true,
 	},
 });
 

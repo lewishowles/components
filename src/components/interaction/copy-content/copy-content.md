@@ -35,8 +35,10 @@ The content to copy to the user's clipboard when activated.
 
 ## Examples
 
-### Basic button
+### Copy content
 
 ```html
-...
+<copy-content v-bind="{ copy: template }">
+	Copy template
+</copy-content>
 ```

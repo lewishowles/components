@@ -22,13 +22,13 @@ const props = ref({
 		label: "Source",
 		value: "https://placehold.co/100x100/6A21A7/FFF.png",
 		type: "text",
-		inline: true,
+		isInline: true,
 	},
 	class: {
 		label: "Class",
 		value: "size-25 rounded-lg",
 		type: "text",
-		inline: true,
+		isInline: true,
 	},
 });
 

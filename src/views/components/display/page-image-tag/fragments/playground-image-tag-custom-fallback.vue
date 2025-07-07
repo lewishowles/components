@@ -28,13 +28,13 @@ const props = ref({
 		label: "Source",
 		value: "#",
 		type: "text",
-		inline: true,
+		isInline: true,
 	},
 	class: {
 		label: "Class",
 		value: "size-25",
 		type: "text",
-		inline: true,
+		isInline: true,
 	},
 });
 
@@ -42,13 +42,13 @@ const slots = {
 	fallback: {
 		value: useTemplateGenerator("div", {
 			props: {
-				class: { value: "border-s-4 border-red-700 p-2", inline: true },
+				class: { value: "border-s-4 border-red-700 p-2", isInline: true },
 			},
 			slots: {
 				default: {
 					value: useTemplateGenerator("icon-danger", {
 						props: {
-							class: { value: "text-red-700", inline: true },
+							class: { value: "text-red-700", isInline: true },
 						},
 					}),
 				},

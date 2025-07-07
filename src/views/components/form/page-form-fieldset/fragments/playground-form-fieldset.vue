@@ -61,7 +61,7 @@ const nameFieldTemplate = useTemplateGenerator("form-field", {
 	props: {
 		name: {
 			value: "name",
-			inline: true,
+			isInline: true,
 		},
 	},
 	slots: {
@@ -84,7 +84,7 @@ const emailFieldTemplate = useTemplateGenerator("form-field", {
 	props: {
 		name: {
 			value: "email",
-			inline: true,
+			isInline: true,
 		},
 	},
 	slots: {

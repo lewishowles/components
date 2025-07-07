@@ -39,7 +39,7 @@ const props = ref({
 		label: "Type",
 		value: "warning",
 		type: "string",
-		inline: true,
+		isInline: true,
 	},
 });
 

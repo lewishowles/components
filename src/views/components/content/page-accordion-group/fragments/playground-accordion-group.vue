@@ -91,7 +91,7 @@ const additionalContent = [
 		},
 		additionalContent: useTemplateGenerator("div", {
 			props: {
-				class: { value: "prose", inline: true },
+				class: { value: "prose", isInline: true },
 			},
 			additionalContent: [
 				useTemplateGenerator("p", {
@@ -122,7 +122,7 @@ const additionalContent = [
 		},
 		additionalContent: useTemplateGenerator("div", {
 			props: {
-				class: { value: "prose", inline: true },
+				class: { value: "prose", isInline: true },
 			},
 			additionalContent: [
 				useTemplateGenerator("p", {

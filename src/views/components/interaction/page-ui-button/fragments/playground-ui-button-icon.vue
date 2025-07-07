@@ -35,7 +35,7 @@ const props = ref({
 	class: {
 		label: "Button classes",
 		value: "button--primary",
-		inline: true,
+		isInline: true,
 	},
 });
 
