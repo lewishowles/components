@@ -117,6 +117,16 @@
 
 			<app-menu-section>
 				<template #title>
+					Icons
+				</template>
+
+				<app-menu-link to="/icon/icons">
+					icons
+				</app-menu-link>
+			</app-menu-section>
+
+			<app-menu-section>
+				<template #title>
 					Navigation
 				</template>
 

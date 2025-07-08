@@ -68,7 +68,7 @@ You can find more information about each component on its relevant docs page.
 
 ### Icons
 
-- [icons](/src/components/icon/icon.md)
+- [icons](/src/components/icon/icons.md)
 
 ### Navigation
 
