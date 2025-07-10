@@ -22,7 +22,7 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
-		"build:docs": "vite build --config vite.config.docs.js",
+		"build:docs": "vite build --config vite.config.docs.js && cp dist-docs/index.html dist-docs/404.html",
 		"preview": "vite preview",
 		"test:unit": "vitest",
 		"test:unit:run": "vitest run",
