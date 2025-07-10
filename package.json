@@ -22,11 +22,13 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
+		"build:docs": "vite build --config vite.config.docs.js",
 		"preview": "vite preview",
 		"test:unit": "vitest",
 		"test:unit:run": "vitest run",
 		"test:component": "cypress run --component",
-		"lint": "eslint . --fix"
+		"lint": "eslint . --fix",
+		"deploy": "bun run build:docs; gh-pages -d dist-docs --cname components.howles.dev"
 	},
 	"dependencies": {
 		"@lewishowles/helpers": "^0.19.0",
@@ -49,6 +51,7 @@
 		"eslint": "^9.26.0",
 		"eslint-plugin-cypress": "^4.3.0",
 		"eslint-plugin-vue": "^10.1.0",
+		"gh-pages": "^6.3.0",
 		"globals": "^16.1.0",
 		"happy-dom": "^17.4.6",
 		"postcss": "^8.5.3",

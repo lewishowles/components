@@ -7,7 +7,7 @@ import vue from "./config/eslint/vue.js";
 
 export default [
 	{
-		ignores: ["**/dist/*", "support/"],
+		ignores: ["**/dist/*", "**/dist-docs/*", "support/"],
 	},
 	{
 		files: ["**/*.{js,vue}"],
