@@ -172,6 +172,21 @@ describe("useTemplateGenerator", () => {
 		expect(template.value).toContain("v-bind=\"{ foo }\"");
 	});
 
+	test("should render variable props with a variable name if provided", () => {
+		const props = ref({
+			foo: {
+				value: "bar",
+				type: "string",
+				isVariable: true,
+				variableName: "fooVariable",
+			},
+		});
+
+		const template = useTemplateGenerator("foo-bar", { props });
+
+		expect(template.value).toContain("v-bind=\"{ foo: fooVariable }\"");
+	});
+
 	test("should handle null slots and props", () => {
 		const template = useTemplateGenerator("foo-bar", { slots: null, props: null });
 

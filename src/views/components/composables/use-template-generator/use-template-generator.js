@@ -141,6 +141,8 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 				}
 
 				boundProps.push(`${propKey}: ${propContent}`);
+			} else if (isNonEmptyString(prop.variableName)) {
+				boundProps.push(`${propKey}: ${prop.variableName}`);
 			} else {
 				boundProps.push(`${propKey}`);
 			}

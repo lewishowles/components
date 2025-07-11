@@ -5,7 +5,7 @@
 		</template>
 
 		<form-wrapper v-model="componentModel" v-bind="componentProps">
-			<form-field name="name">
+			<form-field name="name" v-bind="{ validation: validation.name }">
 				Your name
 
 				<template #introduction>
@@ -17,7 +17,7 @@
 				</template>
 			</form-field>
 
-			<form-field type="email" name="email">
+			<form-field type="email" name="email" v-bind="{ validation: validation.email }">
 				Email address
 
 				<template #introduction>
@@ -37,6 +37,10 @@
 				{{ textSlots["error-summary-title"]?.value }}
 			</template>
 		</form-wrapper>
+
+		<template #additional-code>
+			<code-block :code="`const validation = ${JSON.stringify(validation, null, '\t')};`" />
+		</template>
 	</component-playground>
 </template>
 
@@ -55,7 +59,7 @@ const textSlots = ref({
 	},
 	"error-summary-title": {
 		label: "Error summary title",
-		value: "",
+		value: "There is a problem",
 	},
 });
 
@@ -80,11 +84,21 @@ const componentProps = computed(() => {
 	);
 });
 
+const validation = {
+	name: [{ rule: "required", message: "Enter your name so we know what to call you." }],
+	email: [{ rule: "required", message: "Your email address is required to send your invoices." }],
+};
+
 const nameFieldTemplate = useTemplateGenerator("form-field", {
 	props: {
 		name: {
 			value: "name",
 			isInline: true,
+		},
+		validation: {
+			value: validation.name,
+			isVariable: true,
+			variableName: "validation.name",
 		},
 	},
 	slots: {
@@ -108,6 +122,11 @@ const emailFieldTemplate = useTemplateGenerator("form-field", {
 		name: {
 			value: "email",
 			isInline: true,
+		},
+		validation: {
+			value: validation.email,
+			isVariable: true,
+			variableName: "validation.email",
 		},
 	},
 	slots: {

@@ -1,6 +1,6 @@
 <template>
 	<form novalidate data-test="form-wrapper" @submit.prevent="handleFormSubmit">
-		<div v-show="haveErrorSummary" ref="errorSummaryElement" tabindex="0" class="mb-4 w-full rounded-sm border border-red-200 bg-red-50 p-4 text-red-800 dark:border-transparent dark:bg-red-500/50 dark:text-red-200" data-test="form-wrapper-error-summary">
+		<div v-show="haveErrorSummary" ref="errorSummaryElement" tabindex="0" class="mb-4 w-full rounded-sm border border-red-200 bg-red-50 px-5 py-3 text-red-800 dark:border-transparent dark:bg-red-500/50 dark:text-red-200" data-test="form-wrapper-error-summary">
 			<h2 class="mb-2 font-bold">
 				<slot name="error-summary-title">
 					There is a problem
