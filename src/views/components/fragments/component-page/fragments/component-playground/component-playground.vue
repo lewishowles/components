@@ -11,7 +11,7 @@
 		</div>
 
 		<div class="flex flex-col gap-8">
-			<div class="p-3 flex justify-end gap-3 border border-grey-400/40 rounded-md bg-grey-400/3 backdrop-blur-sm dark:bg-grey-950/20 dark:border-transparent text-sm" :class="{ 'z-10': isTextSlotsOpen }">
+			<div class="p-3 flex justify-end gap-3 border border-grey-400/40 rounded-md bg-grey-400/30 backdrop-blur-sm dark:bg-grey-950/20 dark:border-transparent text-sm" :class="{ 'z-10': isTextSlotsOpen }">
 				<copy-content v-bind="{ content: copy }" class="button--muted">
 					Copy code
 				</copy-content>
@@ -36,7 +36,7 @@
 			<div class="relative inset-shadow-sm p-24 rounded-md border border-grey-300 dark:border-white/20">
 				<slot />
 
-				<div v-if="haveComponentModel" class="relative mt-12 rounded-md bg-grey-50 border border-grey-200 text-grey-800 p-6">
+				<div v-if="haveComponentModel" class="relative mt-12 rounded-md bg-grey-50 dark:bg-grey-950/30 dark:text-grey-200 border border-grey-200 dark:border-transparent text-grey-800 p-6">
 					<pill-badge class="absolute top-0 start-0 ms-6 -translate-y-1/2">
 						Model value
 					</pill-badge>

@@ -17,7 +17,7 @@
 						<div class="flex flex-col">
 							{{ person.name }}
 
-							<span class="text-xs text-grey-500">
+							<span class="text-xs text-grey-500 dark:text-white/60">
 								{{ person.role }}
 							</span>
 						</div>
@@ -152,7 +152,7 @@ const additionalContent = [
 											useTemplateGenerator("span", {
 												props: {
 													class: {
-														value: "text-xs text-grey-500", isInline: true,
+														value: "text-xs text-grey-500 dark:text-white/60", isInline: true,
 													},
 												},
 												slots: {

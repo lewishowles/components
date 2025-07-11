@@ -44,7 +44,7 @@ defineProps({
 	 */
 	detailsColourClasses: {
 		type: [String, Array, Object],
-		default: "border-grey-200 bg-white dark:border-transparent dark:bg-grey-950/20 backdrop-blur-lg",
+		default: "border-grey-200 bg-white dark:border-transparent dark:bg-grey-950/60 backdrop-blur-lg",
 	},
 
 	/**

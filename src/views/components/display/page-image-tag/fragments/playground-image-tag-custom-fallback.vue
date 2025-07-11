@@ -10,8 +10,8 @@
 
 		<image-tag v-bind="componentProps">
 			<template #fallback>
-				<div class="border-s-4 border-red-700 p-2">
-					<icon-danger class="text-red-700" />
+				<div class="border-s-4 border-red-700 dark:border-red-300 p-2">
+					<icon-danger class="text-red-700 dark:text-red-300" />
 				</div>
 			</template>
 		</image-tag>

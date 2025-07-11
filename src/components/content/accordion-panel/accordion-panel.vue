@@ -2,7 +2,7 @@
 	<div data-test="accordion-panel">
 		<component :is="headingLevel" class="py-6" data-test="accordion-panel-title">
 			<button type="button" class="group flex flex-col items-start" v-bind="{ 'aria-controls': id, 'aria-expanded': isVisible }" data-test="accordion-panel-button" @click="toggle">
-				<span class="mb-1 text-2xl font-bold text-grey-950">
+				<span class="mb-1 text-2xl font-bold text-grey-950 dark:text-grey-50">
 					<slot name="title" />
 				</span>
 

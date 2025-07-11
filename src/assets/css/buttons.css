@@ -27,8 +27,11 @@
 @utility button--primary {
 	@apply button;
 	@apply font-semibold bg-purple-800 text-white;
+	@apply dark:bg-purple-500;
 	@apply hocus:bg-purple-900;
+	@apply dark:hocus:bg-purple-600;
 	@apply active:bg-purple-950;
+	@apply dark:active:bg-purple-700;
 }
 
 @utility button--muted {

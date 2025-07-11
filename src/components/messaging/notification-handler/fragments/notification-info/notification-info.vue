@@ -4,10 +4,10 @@
 			notification,
 			locale,
 			dateFormat,
-			stripeClasses: 'bg-purple-100',
-			iconBackgroundClasses: 'bg-purple-50',
-			iconClasses: 'text-purple-600',
-			badgeClasses: 'text-purple-600',
+			stripeClasses: 'bg-purple-100 dark:bg-purple-500/50',
+			iconBackgroundClasses: 'bg-purple-50 dark:bg-purple-500/50',
+			iconClasses: 'text-purple-600 dark:text-purple-200',
+			badgeClasses: 'text-purple-600 dark:text-purple-500/50',
 		}"
 		data-test="notification-info"
 	>

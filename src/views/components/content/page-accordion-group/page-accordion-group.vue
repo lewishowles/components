@@ -8,8 +8,20 @@
 			<p><code>accordion-group</code> represents an accordion and is used in conjunction with <code>accordion-panel</code>, which represents each panel in the group, to create a set of accessible content.</p>
 			<p>Accordions are very much like tabs, but display content vertically. Accordions provide a few benefits, one of which is that there isn't really a physical limit to the number of accordion panels, as they’re displayed vertically. To that point, accordion buttons can also have more text explaining their purpose—though this should be kept to an absolute minimum.</p>
 			<p>Another advantage is that multiple (or all) panels can be displayed at once.</p>
-			<p>Accordions should only really be used with content, however, and should not be used to hide panels of a form. If this is the case, it is likely that the form is too complex and should be split over multiple pages. If a user needs to compare two panels or change between them regularly, tabs are a better choice as content does’t move.</p>
-			<p>If only one panel is needed, to provide further context, for example, use the “Details” element instead.</p>
+			<p>
+				Accordions should only really be used with content, however, and should not be used to hide panels of a form. If this is the case, it is likely that the form is too complex and should be split over multiple pages. If a user needs to compare two panels or change between them regularly,
+				<router-link v-bind="{ to: '/content/tab-group' }">
+					<code>tab-group</code>
+				</router-link>
+				is a better choice as content does’t move.
+			</p>
+			<p>
+				If only one panel is needed, to provide further context, for example, use the
+				<router-link v-bind="{ to: '/content/summary-details' }">
+					<code>summary-details</code>
+				</router-link>
+				element instead.
+			</p>
 		</template>
 
 		<component-props>

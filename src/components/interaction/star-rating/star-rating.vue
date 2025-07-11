@@ -16,7 +16,7 @@
 								:class="{
 									'fill-transparent text-yellow-600': ratingIsHighlighted(option.value),
 									'fill-yellow-600 text-yellow-600 hover:fill-yellow-800 hover:text-yellow-800': ratingIsSelected(option.value),
-									'fill-transparent text-grey-300 hover:text-yellow-600': ratingIsInert(option.value),
+									'fill-transparent text-grey-300 hover:text-yellow-600 dark:text-white/30': ratingIsInert(option.value),
 								}"
 							>
 								<title>{{ option.value }}</title>

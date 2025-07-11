@@ -57,7 +57,7 @@
 						</slot>
 					</template>
 
-					<hr v-if="havePinnedNotifications && haveUnpinnedNotifications" class="border-grey-200" />
+					<hr v-if="havePinnedNotifications && haveUnpinnedNotifications" class="border-grey-200 dark:border-white/20" />
 
 					<template v-for="notification in unpinnedNotifications" :key="notification.id">
 						<reuse-template v-bind="{ notification }" />

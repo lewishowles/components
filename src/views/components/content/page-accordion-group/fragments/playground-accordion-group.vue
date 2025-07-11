@@ -30,7 +30,7 @@
 					The key to time travel.
 				</template>
 
-				<div class="prose">
+				<div class="prose dark:prose-invert">
 					<p>In the world of Back to the Future, the time circuits are the heart of the DeLorean's time-traveling capabilities. With a simple keypad interface, Doc Brown can input any date and time to travel to. The display shows the destination time, the present time, and the last departed time.</p>
 
 					<p>It's a marvel of 1980s science fiction, giving Marty the ability to journey to the past, present, or future at the press of a button. The time circuits add an element of urgency and excitement, as every second counts when avoiding time paradoxes and ensuring the timeline remains intact.</p>
@@ -45,7 +45,7 @@
 					The iconic time-travelling machine.
 				</template>
 
-				<div class="prose">
+				<div class="prose dark:prose-invert">
 					<p>...</p>
 				</div>
 			</accordion-panel>

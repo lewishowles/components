@@ -5,7 +5,7 @@
 		</template>
 
 		<template #post-title>
-			<dl v-if="haveType || haveDefault" class="flex not-prose text-sm border border-grey-200 rounded">
+			<dl v-if="haveType || haveDefault" class="flex not-prose text-sm border border-grey-200 rounded dark:border-transparent dark:bg-white/20">
 				<div v-if="haveType" class="flex flex-wrap items-center gap-2 px-2 py-1 items-start">
 					<dt class="font-bold">
 						Type
@@ -14,7 +14,7 @@
 						<slot name="type" />
 					</dd>
 				</div>
-				<div v-if="haveDefault" class="flex flex-wrap items-center gap-2 px-2 py-1 items-start" :class="{ 'border-s border-grey-200': haveType }">
+				<div v-if="haveDefault" class="flex flex-wrap items-center gap-2 px-2 py-1 items-start" :class="{ 'border-s border-grey-200 dark:border-transparent': haveType }">
 					<dt class="font-bold">
 						Default
 					</dt>

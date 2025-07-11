@@ -10,7 +10,7 @@
 					Props
 				</template>
 
-				<div class="prose">
+				<div class="prose dark:prose-invert">
 					<h2>Props</h2>
 					<p>…</p>
 				</div>
@@ -20,7 +20,7 @@
 					Slots
 				</template>
 
-				<div class="prose">
+				<div class="prose dark:prose-invert">
 					<h2>Slots</h2>
 					<p>…</p>
 				</div>

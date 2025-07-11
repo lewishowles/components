@@ -69,7 +69,7 @@ const alertColours = computed(() => {
 		case "info":
 			return "border-purple-200 bg-purple-50 text-purple-800 dark:border-transparent dark:bg-purple-500/50 dark:text-purple-200";
 		default:
-			return "border-grey-200 bg-grey-50 text-grey-800 dark:border-transparent dark:bg-grey-500/50 dark:text-grey-200";
+			return "border-grey-200 bg-grey-50 text-grey-800 dark:border-transparent dark:bg-white/10 dark:text-grey-200";
 	}
 });
 

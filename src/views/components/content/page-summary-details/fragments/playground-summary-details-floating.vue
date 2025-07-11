@@ -71,7 +71,7 @@ const props = ref({
 	},
 	"details-classes": {
 		label: "Details classes",
-		value: "animate-fade-in-down animate-fast mt-2 min-w-3xs rounded-lg border border-grey-200 bg-white p-4 shadow-sm dark:border-white/20 dark:bg-grey-800",
+		value: "absolute top-full animate-fade-in-down end-0 w-screen mt-3 rounded-md border p-4 shadow border-grey-200 bg-white dark:border-transparent dark:bg-grey-950/20 backdrop-blur-lg max-w-lg",
 		isInline: true,
 	},
 });

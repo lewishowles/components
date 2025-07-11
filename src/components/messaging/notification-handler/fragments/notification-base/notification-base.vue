@@ -20,7 +20,7 @@
 
 				<display-date
 					v-if="hasDate"
-					class="mt-2 block text-xs text-grey-500"
+					class="mt-2 block text-xs text-grey-500 dark:text-white/60"
 					v-bind="{ date: notification.date, locale, format: dateFormat }"
 					:data-test="`${dataTest}-date`"
 				/>
@@ -95,7 +95,7 @@ const props = defineProps({
 	 */
 	stripeClasses: {
 		type: String,
-		default: "bg-grey-100",
+		default: "bg-grey-100 dark:bg-white/20",
 	},
 
 	/**
@@ -104,7 +104,7 @@ const props = defineProps({
 	 */
 	iconBackgroundClasses: {
 		type: String,
-		default: "bg-grey-50",
+		default: "bg-grey-50 dark:bg-white/10",
 	},
 
 	/**
@@ -113,7 +113,7 @@ const props = defineProps({
 	 */
 	iconClasses: {
 		type: String,
-		default: "text-grey-500",
+		default: "text-grey-500 dark:text-white/80",
 	},
 
 	/**
@@ -121,7 +121,7 @@ const props = defineProps({
 	 */
 	titleClasses: {
 		type: String,
-		default: "text-grey-950",
+		default: "text-grey-950 dark:text-grey-50",
 	},
 
 	/**

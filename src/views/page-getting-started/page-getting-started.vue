@@ -28,7 +28,7 @@ app.mount("#app");</pre>
 		<p>
 			You can find more information about each component on its relevant documentation page. For example,
 			<router-link v-bind="{ to: 'forms/form-field' }">
-				form-field &rarr;
+				<code>form-field</code>
 			</router-link>
 		</p>
 	</div>

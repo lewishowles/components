@@ -13,7 +13,7 @@
 				{{ textSlots.summary?.value }}
 			</template>
 
-			<div class="prose">
+			<div class="prose dark:prose-invert">
 				<p>NASA's Voyager 1 spacecraft, launched in 1977, is the most distant human-made object from Earth. As of today, it is over 15 billion miles away and continues to transmit data from interstellar space.</p>
 
 				<p>One of its most profound contributions is the Pale Blue Dot image, captured in 1990 at the request of astronomer Carl Sagan. This photograph, taken from about 3.7 billion miles away, depicts Earth as a mere speck within the vastness of space. It serves as a reminder of humanity's place within the universe—both insignificant in scale yet uniquely capable of exploration and understanding.</p>

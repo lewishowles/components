@@ -75,7 +75,7 @@
 					</caption>
 
 					<thead>
-						<tr class="border-b border-grey-300">
+						<tr class="border-b border-grey-300 dark:border-white/20">
 							<th v-if="enableSelection" class="w-px px-4">
 								<form-checkbox v-bind="{ displayLabel: false }" v-model="selectAllRows" class="shrink" data-test="data-table-select-all-rows" @change="toggleAllRows">
 									<slot name="select-all-rows-label">
@@ -91,7 +91,7 @@
 								:class="[{ 'ps-3': !column.sortable && !column.first, 'pe-3': !column.sortable && !column.last, 'text-end': column.align === 'right', [headingClasses]: !column.sortable, [column.columnClasses]: !column.sortable, [column.headingClasses]: !column.sortable }]"
 								data-test="data-table-heading"
 							>
-								<conditional-wrapper v-bind="{ wrap: column.sortable, tag: 'ui-button', iconEnd: getSortIcon(columnKey) }" class="-mt-4 mb-[calc(-1rem-1px)] w-full border-b border-transparent py-4 hocus:border-purple-800 hocus:bg-grey-100" :class="[{ 'ps-3': !column.first, 'pe-3': !column.last, 'justify-end': column.align === 'right' }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-sort" @click="sortColumn(columnKey)">
+								<conditional-wrapper v-bind="{ wrap: column.sortable, tag: 'ui-button', iconEnd: getSortIcon(columnKey) }" class="-mt-4 mb-[calc(-1rem-1px)] w-full border-b border-transparent py-4 hocus:border-purple-800 hocus:bg-grey-100 dark:hocus:bg-grey-950/30 dark:hocus:border-purple-400" :class="[{ 'ps-3': !column.first, 'pe-3': !column.last, 'justify-end': column.align === 'right' }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-sort" @click="sortColumn(columnKey)">
 									<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
 										{{ column.label }}
 									</slot>
@@ -100,7 +100,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="row in paginatedRows" :key="row.configuration.id" class="border-b border-grey-200 transition-colors hover:bg-grey-50" data-test="data-table-row">
+						<tr v-for="row in paginatedRows" :key="row.configuration.id" class="border-b border-grey-200 dark:border-white/20 transition-colors hover:bg-grey-50 dark:hover:bg-grey-950/30" data-test="data-table-row">
 							<td v-if="enableSelection" class="px-4">
 								<form-checkbox v-bind="{ displayLabel: false, inputAttributes: { value: getRowId(row) } }" v-model="selectedRowIds" class="shrink" data-test="data-table-select-row">
 									<slot name="select-row-label" v-bind="{ row: getRawRow(row) }">
@@ -286,7 +286,7 @@ const props = defineProps({
 	 */
 	headingClasses: {
 		type: String,
-		default: "text-left font-bold text-grey-950",
+		default: "text-left font-bold text-grey-950 dark:text-grey-50",
 	},
 
 	/**
@@ -295,7 +295,7 @@ const props = defineProps({
 	 */
 	cellClasses: {
 		type: String,
-		default: "text-grey-500",
+		default: "text-grey-500 dark:text-white/60",
 	},
 });
 

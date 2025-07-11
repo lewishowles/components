@@ -10,7 +10,7 @@
 	<nav v-else-if="!haveSinglePage" :aria-label="label" class="flex flex-wrap items-center gap-4 text-center" data-test="app-pagination">
 		<button
 			class="button flex items-center gap-2"
-			:class="{ 'text-grey-500': showingFirstPage, 'underline hocus:bg-grey-200 hocus:text-grey-700': !showingFirstPage }"
+			:class="{ 'text-grey-500 dark:text-white/60': showingFirstPage, 'underline hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200': !showingFirstPage }"
 			v-bind="{ 'disabled': showingFirstPage ? 'disabled' : null, 'aria-hidden': showingFirstPage ? 'true' : null }"
 			data-test="app-pagination-previous"
 			@click="selectPreviousPage"
@@ -28,7 +28,7 @@
 					⋯
 				</li>
 				<li data-test="app-pagination-page" v-bind="{ 'aria-current': page === currentPage ? 'page' : null }">
-					<button class="button underline hocus:decoration-2" :class="{ 'hocus:bg-grey-200 hocus:text-grey-700': page !== currentPage, 'bg-purple-800 text-white': page === currentPage }" data-test="app-pagination-page-button" @click="currentPage = page">
+					<button class="button underline hocus:decoration-2" :class="{ 'hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200': page !== currentPage, 'bg-purple-800 text-white dark:bg-purple-500': page === currentPage }" data-test="app-pagination-page-button" @click="currentPage = page">
 						<span class="sr-only">
 							<slot name="page-number-label" v-bind="{ page }">
 								Page {{ page }}
@@ -46,7 +46,7 @@
 
 		<button
 			class="button flex items-center gap-2"
-			:class="{ 'text-grey-500': showingLastPage, 'underline hocus:bg-grey-200 hocus:text-grey-700': !showingLastPage }"
+			:class="{ 'text-grey-500 dark:text-white/60': showingLastPage, 'underline hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200': !showingLastPage }"
 			v-bind="{ 'disabled': showingLastPage ? 'disabled' : null, 'aria-hidden': showingLastPage ? 'true' : null }"
 			data-test="app-pagination-next"
 			@click="selectNextPage"
