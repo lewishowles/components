@@ -41,7 +41,7 @@
 
 <script setup>
 import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
-import { computed, ref, useTemplateRef } from "vue";
+import { computed, ref, unref, useTemplateRef } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { objectContains } from "@lewishowles/helpers/object";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
@@ -83,6 +83,9 @@ const props = defineProps({
 	},
 });
 
+// Our internal copy of data, which we unref so that the user doesn't have to,
+// just in case.
+const internalData = computed(() => unref(props.data));
 // A reference to the search field, so that we can trigger focus on it as
 // required.
 const searchField = useTemplateRef("search-field");
@@ -94,15 +97,15 @@ const performingSearch = computed(() => isNonEmptyString(searchQuery.value, { tr
 
 // The items to display, based on any current search query.
 const results = computed(() => {
-	if (!isNonEmptyArray(props.data)) {
+	if (!isNonEmptyArray(internalData.value)) {
 		return [];
 	}
 
 	if (!performingSearch.value) {
-		return props.data;
+		return internalData.value;
 	}
 
-	return props.data.filter(item => {
+	return internalData.value.filter(item => {
 		return objectContains(item, searchQuery.value, {
 			exclude: props.exclude,
 			include: props.include,
@@ -113,7 +116,7 @@ const results = computed(() => {
 });
 
 // The number of items provided.
-const itemCount = computed(() => arrayLength(props.data));
+const itemCount = computed(() => arrayLength(internalData.value));
 // The number of results currently found.
 const resultCount = computed(() => arrayLength(results.value));
 // Whether a search is being performed and results have been found.

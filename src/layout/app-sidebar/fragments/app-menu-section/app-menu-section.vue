@@ -11,3 +11,15 @@
 		</ol>
 	</li>
 </template>
+
+<script setup>
+import { computed, provide, useSlots } from "vue";
+import { getSlotText } from "@lewishowles/helpers/vue";
+
+const slots = useSlots();
+const titleText = computed(() => getSlotText(slots["title"]));
+
+provide("app-menu-section", {
+	sectionTitle: titleText,
+});
+</script>

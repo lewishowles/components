@@ -19,18 +19,18 @@
 		</p>
 	</div>
 
-	<div class="grid grid-cols-4 gap-4 mt-12">
-		<div class="bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-md animate-fade-in delay">
-			<img src="/icon/forms.svg" class="size-12 block mx-auto my-6" />
+	<div class="grid grid-cols-4 gap-8 mt-12">
+		<div v-for="section in internalSections" :key="section.label" class="px-4 py-3 rounded-md animate-fade-in delay dark:ring-0" :class="section.colours">
+			<component :is="section.icon" class="size-12 block mx-auto my-6" />
 
 			<h3 class="font-semibold">
-				Forms
+				{{ section.label }}
 			</h3>
 
 			<ol class="font-mono">
-				<li>
-					<router-link v-bind="{ to: '/forms/form-field' }" class="flex justify-between items-center group font-mono text-current no-underline hocus:underline py-1 block">
-						form-field
+				<li v-for="item in section.items" :key="item.label">
+					<router-link v-bind="{ to: item.to }" class="flex justify-between items-center group font-mono text-current no-underline hocus:underline py-1 block">
+						{{ item.label }}
 
 						<icon-arrow-right class="size-3 group-hocus:opacity-100 -translate-x-1 group-hocus:translate-x-0 opacity-0 transition-all" />
 					</router-link>
@@ -38,15 +38,88 @@
 			</ol>
 		</div>
 	</div>
-
-	<!-- /icon/chart.svg
-	/icon/content.svg
-	/icon/data.svg
-	/icon/display.svg
-	/icon/forms.svg
-	/icon/general.svg
-	/icon/icons.svg
-	/icon/interaction.svg
-	/icon/messaging.svg
-	/icon/navigation.svg -->
 </template>
+
+<script setup>
+import { computed } from "vue";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
+
+import useMenu from "@/views/composables/use-menu";
+
+import IconChart from "./fragments/icon/icon-chart.vue";
+import IconContent from "./fragments/icon/icon-content.vue";
+import IconDisplay from "./fragments/icon/icon-display.vue";
+import IconForm from "./fragments/icon/icon-form.vue";
+import IconGeneral from "./fragments/icon/icon-general.vue";
+import IconIcons from "./fragments/icon/icon-icons.vue";
+import IconInteraction from "./fragments/icon/icon-interaction.vue";
+import IconMessaging from "./fragments/icon/icon-messaging.vue";
+import IconNavigation from "./fragments/icon/icon-navigation.vue";
+
+const { menuItems } = useMenu();
+
+// Our section configuration allows the menu to be built dynamically in the
+// template, but still have unique features for each section.
+const sectionConfiguration = {
+	Chart: {
+		icon: IconChart,
+		colours: "bg-orange-50 ring-orange-200 text-orange-800 dark:bg-orange-500/20 dark:text-orange-200",
+	},
+	Content: {
+		icon: IconContent,
+		colours: "bg-purple-50 ring-purple-200 text-purple-800 dark:bg-purple-500/20 dark:text-purple-200",
+	},
+	Display: {
+		icon: IconDisplay,
+		colours: "bg-pink-50 ring-pink-200 text-pink-800 dark:bg-pink-500/20 dark:text-pink-200",
+	},
+	Form: {
+		icon: IconForm,
+		colours: "bg-blue-50 ring-blue-200 text-blue-800 dark:bg-blue-500/20 dark:text-blue-200",
+	},
+	General: {
+		icon: IconGeneral,
+		colours: "bg-grey-50 ring-grey-200 text-grey-800 dark:bg-grey-500/20 dark:text-grey-200",
+	},
+	Icons: {
+		icon: IconIcons,
+		colours: "bg-indigo-50 ring-indigo-200 text-indigo-800 dark:bg-indigo-500/20 dark:text-indigo-200",
+	},
+	Interaction: {
+		icon: IconInteraction,
+		colours: "bg-green-50 ring-green-200 text-green-800 dark:bg-green-500/20 dark:text-green-200",
+	},
+	Messaging: {
+		icon: IconMessaging,
+		colours: "bg-teal-50 ring-teal-200 text-teal-800 dark:bg-teal-500/20 dark:text-teal-200",
+	},
+	Navigation: {
+		icon: IconNavigation,
+		colours: "bg-red-50 ring-red-200 text-red-800 dark:bg-red-500/20 dark:text-red-200",
+	},
+};
+
+// Our internal copy of the menu, grouped by category, with the required
+// additional config, ready for use in our template.
+const internalSections = computed(() => {
+	if (!isNonEmptyArray(menuItems.value)) {
+		return [];
+	}
+
+	const sections = {};
+
+	menuItems.value.forEach(item => {
+		if (!Object.hasOwn(sections, item.section)) {
+			sections[item.section] = {
+				label: item.section,
+				items: [],
+				...sectionConfiguration[item.section] || {},
+			};
+		}
+
+		sections[item.section].items.push(item);
+	});
+
+	return sections;
+});
+</script>

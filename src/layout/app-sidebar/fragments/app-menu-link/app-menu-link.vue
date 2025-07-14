@@ -9,8 +9,10 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, inject, useSlots } from "vue";
+import { getSlotText } from "@lewishowles/helpers/vue";
 import { useRoute } from "vue-router";
+import useMenu from "@/views/composables/use-menu";
 
 const props = defineProps({
 	/**
@@ -22,7 +24,15 @@ const props = defineProps({
 	},
 });
 
+const { sectionTitle } = inject("app-menu-section");
+const { registerMenuItem } = useMenu();
+
 const route = useRoute();
+const slots = useSlots();
 // Whether the route that this menu link represents is the current page.
 const isActiveRoute = computed(() => props.to === route.path);
+// The default (label) text for this link.
+const labelText = computed(() => getSlotText(slots.default));
+
+registerMenuItem({ section: sectionTitle, label: labelText, to: props.to });
 </script>
