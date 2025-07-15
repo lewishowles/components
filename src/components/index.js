@@ -80,6 +80,7 @@ import IconExternal from "./icon/icon-external/icon-external.vue";
 import IconEye from "./icon/icon-eye/icon-eye.vue";
 import IconFilm from "./icon/icon-film/icon-film.vue";
 import IconFunction from "./icon/icon-function/icon-function.vue";
+import IconGithub from "./icon/icon-github/icon-github.vue";
 import IconImage from "./icon/icon-image/icon-image.vue";
 import IconInfo from "./icon/icon-info/icon-info.vue";
 import IconLaptop from "./icon/icon-laptop/icon-laptop.vue";
@@ -165,6 +166,7 @@ export default {
 	IconEye,
 	IconFilm,
 	IconFunction,
+	IconGithub,
 	IconImage,
 	IconInfo,
 	IconLaptop,

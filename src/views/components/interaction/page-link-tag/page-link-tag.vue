@@ -109,6 +109,22 @@
 
 				<p><em>Note that <code>start</code> and <code>end</code> depend on the current document direction.</em></p>
 			</component-prop>
+
+			<component-prop id="prop-icon-only">
+				<template #name>
+					iconOnly
+				</template>
+
+				<template #type>
+					Boolean
+				</template>
+
+				<template #default-value>
+					false
+				</template>
+
+				<p>Whether to only show an icon (and not the associated text). If true, the text is hidden via an <code>sr-only</code> class, so is still accessible to screen readers and therefore important. The displayed icon is also shown at <code>1em</code> size when alone, to better fill the link.</p>
+			</component-prop>
 		</component-props>
 
 		<component-slots>

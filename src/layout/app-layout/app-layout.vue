@@ -6,6 +6,12 @@
 			<div class="rounded-md border border-grey-200 bg-white p-16 min-h-full dark:border-transparent dark:bg-grey-950/20">
 				<div class="pt-[2px] px-[2px] -mt-16 -mx-16 mb-16 text-sm">
 					<div class="p-2 bg-grey-50 dark:bg-grey-950/20 rounded-sm flex gap-2 justify-end">
+						<link-tag href="https://github.com/lewishowles/components" v-bind="{ external: true, showExternalIcon: false }" class="px-2 text-current rounded-lg border border-transparent hocus:bg-grey-50z hocus:border-grey-400 hocus:text-grey-700 dark:hocus:bg-white/30 dark:hocus:border-white/20 dark:hocus:text-grey-100">
+							<icon-github class="size-5" />
+
+							<span class="sr-only">View project in GitHub</span>
+						</link-tag>
+
 						<floating-details>
 							<template #summary>
 								Language mode

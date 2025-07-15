@@ -14,6 +14,7 @@ This version introduces a new documentation site to demonstrate each component a
 - `icon-bin`
 - `icon-clipboard`
 - `icon-code`
+- `icon-github`
 - `icon-megaphone`
 - `icon-object`
 - `icon-pencil`
@@ -29,6 +30,7 @@ This version introduces a new documentation site to demonstrate each component a
 - `form-input`: Added new `introduction` slot.
 - `form-select`: Added new `introduction` slot.
 - `form-textarea`: Added new `introduction` slot.
+- `link-tag`: Added new `icon-only` prop, to match `ui-button`.
 
 # 0.22.0 - 2025-04-18
 
