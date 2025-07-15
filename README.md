@@ -2,6 +2,8 @@
 
 A library of beautiful components with a focus on accessibility, as well as ease of use for developers and for users.
 
+[View documentation](https://components.howles.dev)
+
 ## Why accessibility?
 
 Accessibility is one of the most important things we can spend time improving. The web is for everyone, and making steps to ensure content is as accessible as possible helps everyone, not just those who need it most.
