@@ -11,7 +11,7 @@
 		</div>
 
 		<div class="flex flex-col gap-8">
-			<div class="p-3 flex justify-end gap-3 border border-grey-400/40 rounded-md bg-grey-400/30 backdrop-blur-sm dark:bg-grey-950/20 dark:border-transparent text-sm" :class="{ 'z-10': isTextSlotsOpen }">
+			<div class="p-3 flex justify-end gap-3 border border-grey-200 rounded-md bg-grey-50 backdrop-blur-sm dark:bg-grey-950/20 dark:border-transparent text-sm" :class="{ 'z-10': isTextSlotsOpen }">
 				<copy-content v-bind="{ content: copy }" class="button--muted">
 					Copy code
 				</copy-content>

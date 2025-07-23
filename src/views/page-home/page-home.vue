@@ -43,8 +43,8 @@
 <script setup>
 import { computed } from "vue";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
-
-import useMenu from "@/views/composables/use-menu";
+import useMenu from "@/composables/use-menu/use-menu";
+import useTitle from "@/composables/use-title/use-title";
 
 import IconChart from "./fragments/icon/icon-chart.vue";
 import IconContent from "./fragments/icon/icon-content.vue";
@@ -55,6 +55,10 @@ import IconIcons from "./fragments/icon/icon-icons.vue";
 import IconInteraction from "./fragments/icon/icon-interaction.vue";
 import IconMessaging from "./fragments/icon/icon-messaging.vue";
 import IconNavigation from "./fragments/icon/icon-navigation.vue";
+
+const { setTitle } = useTitle();
+
+setTitle("");
 
 const { menuItems } = useMenu();
 

@@ -33,3 +33,11 @@ app.mount("#app");</pre>
 		</p>
 	</div>
 </template>
+
+<script setup>
+import useTitle from "@/composables/use-title/use-title";
+
+const { setTitle } = useTitle();
+
+setTitle("Getting started");
+</script>

@@ -209,8 +209,4 @@ import AppMenuLink from "./fragments/app-menu-link/app-menu-link.vue";
 import AppMenuItem from "./fragments/app-menu-item/app-menu-item.vue";
 import AppMenuSection from "./fragments/app-menu-section/app-menu-section.vue";
 import ComponentsLogo from "./fragments/components-logo/components-logo.vue";
-
-import useMenu from "@/views/composables/use-menu";
-
-const { menuItems } = useMenu();
 </script>

@@ -1,6 +1,6 @@
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vitest";
-import useMenu from "@/views/composables/use-menu";
+import useMenu from "@/composables/use-menu/use-menu";
 
 import PageHome from "./page-home.vue";
 

@@ -12,7 +12,7 @@
 import { computed, inject, useSlots } from "vue";
 import { getSlotText } from "@lewishowles/helpers/vue";
 import { useRoute } from "vue-router";
-import useMenu from "@/views/composables/use-menu";
+import useMenu from "@/composables/use-menu/use-menu";
 
 const props = defineProps({
 	/**
