@@ -1,13 +1,13 @@
-@import url('font.css') layer(base);
-@import url('buttons.css');
-@import url('form.css');
-@import url('animation.css');
+@import url("font.css") layer(base);
+@import url("buttons.css");
+@import url("form.css");
+@import url("animation.css");
 
-@import 'tailwindcss';
+@import "tailwindcss";
 
-@plugin '@tailwindcss/container-queries';
-@plugin 'tailwindcss-hocus';
-@plugin '@tailwindcss/typography';
+@plugin "@tailwindcss/container-queries";
+@plugin "tailwindcss-hocus";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -70,7 +70,7 @@
 	--color-neon-pink: #e61980;
 	--color-neon-blue: #19cbe6;
 
-	--font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif,
+	--font-sans: "Funnel Sans", ui-sans-serif, system-ui, sans-serif,
 		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 	--font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
 		Consolas, "Liberation Mono", "Courier New", monospace;
@@ -97,7 +97,7 @@
 
 /*
 	The default border color has changed to `currentColor` in Tailwind CSS v4,
-	so we've added these compatibility styles to make sure everything still
+	so we"ve added these compatibility styles to make sure everything still
 	looks the same as it did with Tailwind CSS v3.
 
 	If we ever want to remove these styles, we need to add an explicit border
