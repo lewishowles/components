@@ -2,13 +2,12 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { ref, unref, watchEffect } from "vue";
 
 const baseTitle = document.title || "Components | A library of beautiful components";
+const title = ref(baseTitle);
 
 /**
  * Interact with the current page title.
  */
 export default function useTitle() {
-	const title = ref(baseTitle);
-
 	/**
 	 * Set a new title, if the provided title is valid. The new title combines
 	 * the provided title with the base title.

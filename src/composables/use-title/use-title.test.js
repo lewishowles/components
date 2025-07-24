@@ -1,8 +1,16 @@
-import { describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
 import { nextTick } from "vue";
 import useTitle from "./use-title";
 
 describe("useTitle", () => {
+	const baseTitle = "Components | A library of beautiful components";
+
+	beforeEach(() => {
+		const { setTitle } = useTitle();
+
+		setTitle(baseTitle);
+	});
+
 	test("should initialise", () => {
 		const response = useTitle();
 
@@ -24,10 +32,8 @@ describe("useTitle", () => {
 	test("should not set title if input is empty", () => {
 		const { title, setTitle } = useTitle();
 
-		const originalTitle = title.value;
-
 		setTitle("");
 
-		expect(title.value).toBe(originalTitle);
+		expect(title.value).toBe(baseTitle);
 	});
 });

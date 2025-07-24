@@ -1,5 +1,9 @@
 <template>
 	<div class="flex min-h-screen">
+		<div class="sr-only" aria-live="polite">
+			{{ title }}
+		</div>
+
 		<app-sidebar class="shrink-0 min-w-80" />
 
 		<div class="grow py-2 pe-2">
@@ -64,10 +68,12 @@
  * base functionality for viewing each component.
  */
 import { useDark, useToggle } from "@vueuse/core";
+import useTitle from "@/composables/use-title/use-title";
 import useTranslationMode from "@/composables/use-translation-mode/use-translation-mode";
 
 import AppSidebar from "@/layout/app-sidebar/app-sidebar.vue";
 
+const { title } = useTitle();
 const { useTranslation, translationPathPrefix } = useTranslationMode();
 const isDark = useDark({ storageKey: "lh:dark" });
 const toggleDark = useToggle(isDark);
