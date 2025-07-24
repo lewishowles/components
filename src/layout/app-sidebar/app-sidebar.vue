@@ -9,9 +9,9 @@
 		<div class="my-8 bg-gradient-to-r from-grey-200 dark:from-white/20 h-px" />
 
 		<ol class="flex flex-col gap-6">
-			<app-menu-item name="getting-started">
+			<app-menu-link to="/getting-started">
 				Getting started
-			</app-menu-item>
+			</app-menu-link>
 
 			<app-menu-section>
 				<template #title>
@@ -206,7 +206,6 @@
  */
 
 import AppMenuLink from "./fragments/app-menu-link/app-menu-link.vue";
-import AppMenuItem from "./fragments/app-menu-item/app-menu-item.vue";
 import AppMenuSection from "./fragments/app-menu-section/app-menu-section.vue";
 import ComponentsLogo from "./fragments/components-logo/components-logo.vue";
 </script>

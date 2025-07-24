@@ -24,7 +24,7 @@ const props = defineProps({
 	},
 });
 
-const { sectionTitle } = inject("app-menu-section");
+const { sectionTitle } = inject("app-menu-section", {});
 const { registerMenuItem } = useMenu();
 
 const route = useRoute();
