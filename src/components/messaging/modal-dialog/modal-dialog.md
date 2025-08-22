@@ -18,6 +18,12 @@ The main content of the dialog.
 
 Any specific action buttons the user should be able to interact with.
 
+### `close-dialog-label`
+
+- default: `Close dialog`
+
+The label to use for the close dialog label for screen reader users.
+
 ## Props
 
 ### `initiallyOpen`

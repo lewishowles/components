@@ -4,17 +4,17 @@ const baseRoutes = [
 	{
 		path: "/",
 		name: "home",
-		component: () => import("@/views/page-home/page-home.vue"),
+		component: () => import("@/docs/views/page-home/page-home.vue"),
 	},
 	{
 		path: "/getting-started",
 		name: "getting-started",
-		component: () => import("@/views/page-getting-started/page-getting-started.vue"),
+		component: () => import("@/docs/views/page-getting-started/page-getting-started.vue"),
 	},
 ];
 
 // We want to auto-generate routes from our available views.
-const views = import.meta.glob("@/views/**/*.vue");
+const views = import.meta.glob("@/docs/views/**/*.vue");
 
 // For each view, if it's in a category folder, such as "information", we
 // include that in the route. Otherwise, we only include the name of the route.

@@ -68,8 +68,8 @@
  * base functionality for viewing each component.
  */
 import { useDark, useToggle } from "@vueuse/core";
-import useTitle from "@/composables/use-title/use-title";
-import useTranslationMode from "@/composables/use-translation-mode/use-translation-mode";
+import useTitle from "@/docs/composables/use-title/use-title";
+import useTranslationMode from "@/docs/composables/use-translation-mode/use-translation-mode";
 
 import AppSidebar from "@/layout/app-sidebar/app-sidebar.vue";
 

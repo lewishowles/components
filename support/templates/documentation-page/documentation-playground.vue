@@ -16,7 +16,7 @@
 
 <script setup>
 import { computed, ref } from "vue";
-import useTemplateGenerator from "@/views/components/composables/use-template-generator/use-template-generator";
+import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
 // The current model value.
 const componentModel = ref(null);
