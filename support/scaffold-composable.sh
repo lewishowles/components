@@ -83,7 +83,7 @@ mkdir -p "$BASE_PATH/$COMPOSABLE_NAME"
 cd "$BASE_PATH/$COMPOSABLE_NAME"
 
 # Generate a cameCase version of our name, used within templates.
-CAMEL_CASE_NAME=$(echo "use-translation-mode" | awk -F'-' '{for(i=2;i<=NF;i++)$i=toupper(substr($i,1,1)) substr($i,2)} 1' OFS='')
+CAMEL_CASE_NAME=$(echo $COMPOSABLE_NAME | awk -F'-' '{for(i=2;i<=NF;i++)$i=toupper(substr($i,1,1)) substr($i,2)} 1' OFS='')
 
 # Generate our scaffold files from templates.
 templates=(
