@@ -4,7 +4,6 @@
 		class="bg-grey-100"
 		data-test="image-tag"
 		v-bind="{ ...$attrs, src }"
-		@load="handleImageLoad"
 		@error="handleImageError"
 	/>
 
