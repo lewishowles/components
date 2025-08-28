@@ -4,7 +4,9 @@
 			<icon-cross />
 
 			<span class="sr-only">
-				<slot name="close-dialog-label" />
+				<slot name="close-dialog-label">
+					Close dialog
+				</slot>
 			</span>
 		</ui-button>
 
