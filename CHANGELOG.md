@@ -1,6 +1,12 @@
 # Changelog
 
-# 1.0.0
+## 1.1.0
+
+### New composable
+
+- `useModalDialog` - simplify the process of managing and displaying multiple modals. Used in conjunction with `ModalController`.
+
+## 1.0.0
 
 This version introduces a new documentation site to demonstrate each component and allow you to quickly copy the relevant code, as well as new components that especially support that site.
 
@@ -32,7 +38,7 @@ This version introduces a new documentation site to demonstrate each component a
 - `form-textarea`: Added new `introduction` slot.
 - `link-tag`: Added new `icon-only` prop, to match `ui-button`.
 
-# 0.22.0 - 2025-04-18
+## 0.22.0 - 2025-04-18
 
 ### New components
 
@@ -45,7 +51,7 @@ This version introduces a new documentation site to demonstrate each component a
 
 - `form-radio-group`: Renamed from `radio-group` to improve consistency with other form fields.
 
-# 0.21.0 2025-02-25
+## 0.21.0 2025-02-25
 
 ### New components
 
@@ -57,13 +63,13 @@ This version introduces a new documentation site to demonstrate each component a
 - `image-tag`: Now emits an `error` event when an image fails to load.
 - `field-wrapper`: Now has a new `tag` prop, which enables the primary tag to be changed.
 
-# 0.20.1 - 2025-02-04
+## 0.20.1 - 2025-02-04
 
 ### Fixes
 
 - `form-textarea` - Fix an issue where `inputAttributes` expected a string, not an object.
 
-# 0.20.0 - 2025-02-04
+## 0.20.0 - 2025-02-04
 
 ### Updates
 
@@ -74,7 +80,7 @@ This version introduces a new documentation site to demonstrate each component a
 - Better handle scenarios where a form-field is used without a form-wrapper, especially in testing.
 - Remove a warning that could be triggered when using `form-checkbox` in a loop.
 
-# 0.19.0 - 2025-01-29
+## 0.19.0 - 2025-01-29
 
 ### New components
 
@@ -91,13 +97,13 @@ This version introduces a new documentation site to demonstrate each component a
 
 - `icon-eye`
 
-# 0.18.0 - 2024-12-19
+## 0.18.0 - 2024-12-19
 
 ### New components
 
 - [`accordion-group`](/src/components/content/accordion-group/accordion-group.md)
 
-# 0.17.0 - 2024-12-13
+## 0.17.0 - 2024-12-13
 
 ### New components
 
@@ -105,13 +111,13 @@ This version introduces a new documentation site to demonstrate each component a
 - [`app-pagination`](/src/components/navigation/app-pagination/app-pagination.md)
 - [`modal-dialog`](/src/components/messaging/modal-dialog/modal-dialog.md)
 
-# 0.16.1 - 2024-11-15
+## 0.16.1 - 2024-11-15
 
 ### Updates
 
 - `form-label`: No longer automatically adds "(optional)" text, as it applied in too many circumstances by default.
 
-# 0.16.0 - 2024-11-15
+## 0.16.0 - 2024-11-15
 
 ### New components
 
@@ -122,14 +128,14 @@ This version introduces a new documentation site to demonstrate each component a
 - `summary-details`: Now provides `open` and `closed` events when its status updates.
 - `summary-details`: Now provides `openDetails` and `closeDetails` methods to programmatically control the details display.
 
-# 0.15.0 - 2024-11-13
+## 0.15.0 - 2024-11-13
 
 ### New components
 
 - [`form-wrapper`](/src/components/form/form-wrapper/form-wrapper.md): Create an accessible form with validation.
 - [`form-field`](/src/components/form/form-field/form-field.md): Display a form field for a form, with built-in communication with `form-wrapper`.
 
-# 0.14.0 - 2024-11-02
+## 0.14.0 - 2024-11-02
 
 ### New components
 
