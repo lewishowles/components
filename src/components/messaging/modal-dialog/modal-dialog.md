@@ -4,6 +4,8 @@ The `modal-dialog` component provides a base modal dialog. When opened, the user
 
 Dialogs should be used sparingly, ideally for confirmation actions.
 
+Using [`modal-controller`](/src/components/messaging/modal-controller/modal-controller.md) with `useModalDialog` is recommended, as opposed to creating individual modals within other components.
+
 ## Slots
 
 ### `title`

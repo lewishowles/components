@@ -1,4 +1,6 @@
 <template>
+	<modal-controller />
+
 	<app-layout>
 		<router-view />
 	</app-layout>

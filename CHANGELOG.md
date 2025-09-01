@@ -6,6 +6,10 @@
 
 - `useModalDialog` - simplify the process of managing and displaying multiple modals. Used in conjunction with `ModalController`.
 
+### New components
+
+- [`modal-controller`](/src/components/messaging/modal-controller/modal-controller.md) - used in conjunction with `useModalDialog`, displays the most recently added modal.
+
 ## 1.0.0
 
 This version introduces a new documentation site to demonstrate each component and allow you to quickly copy the relevant code, as well as new components that especially support that site.

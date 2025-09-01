@@ -7,6 +7,7 @@
 		<template #introduction>
 			<p>The <code>modal-dialog</code> component provides a base modal dialog. When opened, the user's focus is moved to the dialog, and the rest of the page is made inert.</p>
 			<p>Dialogs should be used sparingly, ideally for confirmation actions.</p>
+			<p>Using <a href="/src/components/messaging/modal-controller/modal-controller.md"><code>modal-controller</code></a> with <code>useModalDialog</code> is recommended, as opposed to creating individual modals within other components.</p>
 		</template>
 
 		<component-props>

@@ -90,6 +90,7 @@ You can find more information about each component on its relevant docs page.
 
 - [alert-message](/src/components/messaging/alert-message/alert-message.md)
 - [pill-badge](/src/components/messaging/pill-badge/pill-badge.md)
+- [modal-controller](/src/components/messaging/modal-controller/modal-controller.md)
 - [modal-dialog](/src/components/messaging/modal-dialog/modal-dialog.md)
 - [notification-handler](/src/components/messaging/notification-handler/notification-handler.md)
 
