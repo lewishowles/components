@@ -25,6 +25,8 @@ export default function registerDocComponents(app) {
 		const fileName = path.split("/").pop().replace(".vue", "");
 		const componentName = kebabCase(fileName);
 
+		console.log(componentName);
+
 		app.component(componentName, component);
 	}
 }

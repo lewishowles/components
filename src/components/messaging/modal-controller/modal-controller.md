@@ -45,6 +45,8 @@ import DeleteUserDialog from "./dialogs/delete-user-dialog";
 
 const { openModal } = useModalDialog();
 
+// ...
+
 const componentProps = { ... };
 
 openModal(DeleteUserDialog, componentProps);

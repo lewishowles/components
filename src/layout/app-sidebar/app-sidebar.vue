@@ -162,6 +162,9 @@
 				<app-menu-link to="/messaging/pill-badge">
 					pill-badge
 				</app-menu-link>
+				<app-menu-link to="/messaging/modal-controller">
+					modal-controller
+				</app-menu-link>
 				<app-menu-link to="/messaging/modal-dialog">
 					modal-dialog
 				</app-menu-link>
