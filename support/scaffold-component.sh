@@ -98,12 +98,12 @@ output_files=(
 )
 
 if [ "$IS_FRAGMENT" = false ]; then
-    templates+=("component-preview.vue" "component.md")
+    templates+=("component.md")
     output_files+=("${COMPONENT_NAME}.md")
 fi
 
 for i in "${!templates[@]}"; do
-	TEMPLATE_FILE="$SCRIPT_DIR/templates/${templates[$i]}"
+	TEMPLATE_FILE="$SCRIPT_DIR/templates/component/${templates[$i]}"
 	OUTPUT_FILE="${output_files[$i]}"
 
 	sed "s/{{COMPONENT_NAME}}/$COMPONENT_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"

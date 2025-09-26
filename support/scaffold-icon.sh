@@ -55,7 +55,7 @@ output_files=(
 )
 
 for i in "${!templates[@]}"; do
-	TEMPLATE_FILE="$SCRIPT_DIR/templates/${templates[$i]}"
+	TEMPLATE_FILE="$SCRIPT_DIR/templates/icon/${templates[$i]}"
 	OUTPUT_FILE="${output_files[$i]}"
 
 	sed "s/{{ICON_NAME}}/$ICON_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"

@@ -97,7 +97,7 @@ output_files=(
 )
 
 for i in "${!templates[@]}"; do
-	TEMPLATE_FILE="$SCRIPT_DIR/templates/${templates[$i]}"
+	TEMPLATE_FILE="$SCRIPT_DIR/templates/composable/${templates[$i]}"
 	OUTPUT_FILE="${output_files[$i]}"
 
 	sed "s/{{COMPOSABLE_NAME}}/$COMPOSABLE_NAME/g; s/{{CAMEL_CASE_NAME}}/$CAMEL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
