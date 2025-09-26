@@ -16,5 +16,5 @@
 </template>
 
 <script setup>
-// import PlaygroundModalController from "./fragments/playground-modal-controller.vue";
+import PlaygroundModalController from "./fragments/playground-modal-controller.vue";
 </script>

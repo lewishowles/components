@@ -1,15 +1,17 @@
 <template>
 	<Teleport to="body">
-		<base-modal
-			v-if="currentModal"
-			:key="currentModal.id"
-			@dialog:close="closeTopModal"
-		>
-			<component
-				:is="currentModal.component"
-				v-bind="currentModal.props"
-			/>
-		</base-modal>
+		<KeepAlive>
+			<base-modal
+				v-if="currentModal"
+				:key="currentModal.id"
+				@dialog:close="closeTopModal"
+			>
+				<component
+					:is="currentModal.component"
+					v-bind="currentModal.props"
+				/>
+			</base-modal>
+		</KeepAlive>
 	</Teleport>
 </template>
 

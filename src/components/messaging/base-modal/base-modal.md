@@ -1,6 +1,8 @@
 # `base-modal`
 
-The `base-modal` component provides a basic modal dialog wrapper, and is used by [`modal-dialog`](/src/components/messaging/modal-dialog/modal-dialog.md).
+The `base-modal` component provides the base functionality required to display a modal, and is intended to allow any component to be displayed within a modal easily, which is why it is used by [`modal-controller`](/src/components/messaging/modal-controller/modal-controller.md).
+
+For quick way to create consistent dialogs, including a title and actions, use [`modal-dialog`](/src/components/messaging/modal-dialog/modal-dialog.md).
 
 ## Slots
 

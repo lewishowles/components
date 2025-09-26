@@ -22,7 +22,7 @@ import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
-	 * Whether the dialog should be open when it loads.
+	 * Whether the dialog should open itself immediately.
 	 */
 	initiallyOpen: {
 		type: Boolean,

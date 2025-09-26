@@ -24,7 +24,7 @@
 					false
 				</template>
 
-				<p>Whether the dialog should open itself immediately.</p>
+				<p>Whether the dialog should open itself immediately. This is true by default for use with <code>modal-controller</code>, but will likely need to be set to false if used directly.</p>
 			</component-prop>
 
 			<component-prop id="prop-focus-dialog-on-open">

@@ -9,6 +9,7 @@
 ### New components
 
 - [`modal-controller`](/src/components/messaging/modal-controller/modal-controller.md) - used in conjunction with `useModalDialog`, displays the most recently added modal.
+- [`base-modal`](/src/components/messaging/base-modal/base-modal.md) - contains the basic functionality of showing a modal dialog.
 
 ## 1.0.0
 

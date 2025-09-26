@@ -10,29 +10,23 @@
 			</span>
 		</ui-button>
 
-		<h2 v-if="haveTitle" class="mb-6 text-2xl font-bold text-grey-950 dark:text-grey-50">
-			<slot name="title" />
-		</h2>
-
 		<slot />
-
-		<div v-if="haveActions" class="mt-12 flex items-center gap-6 border-t border-grey-200 dark:border-white/20 pt-6">
-			<slot name="actions" />
-		</div>
 	</dialog>
 </template>
 
 <script setup>
+import { onMounted, useTemplateRef } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
-import { useTemplateRef } from "vue";
 
 const props = defineProps({
 	/**
-	 * Whether the dialog should be open when it loads.
+	 * Whether the dialog should open itself immediately. This is true by
+	 * default for use with `modal-controller`, but will likely need to be set
+	 * to false if used directly.
 	 */
 	initiallyOpen: {
 		type: Boolean,
-		default: false,
+		default: true,
 	},
 
 	/**
@@ -45,12 +39,17 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits(["@dialog:close"]);
+const emit = defineEmits(["dialog:close"]);
 // A reference to the dialog itself.
 const dialog = useTemplateRef("dialog");
 
-initialiseDialog();
+onMounted(() => {
+	initialiseDialog();
+});
 
+/**
+ * Initialise our dialog, opening it if required.
+ */
 function initialiseDialog() {
 	if (props.initiallyOpen !== true) {
 		return;
@@ -86,7 +85,7 @@ function closeDialog() {
 
 	runComponentMethod(dialog.value, "close");
 
-	emit("@dialog:close");
+	emit("dialog:close");
 }
 
 defineExpose({

@@ -18,7 +18,9 @@
 			<p>Examples of both of these can be found in the playground code.</p>
 		</template>
 
-		<modal-controller />
+		<ui-button class="button--primary" @click="displayModal">
+			Open modal
+		</ui-button>
 
 		<template #additional-code>
 			<code-block :code="modalDialogTemplateCode" />
@@ -28,7 +30,16 @@
 </template>
 
 <script setup>
+import useModalDialog from "@/composables/use-modal-dialog/use-modal-dialog";
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
+
+import InceptionModal from "./inception-modal.vue";
+
+const { openModal } = useModalDialog();
+
+function displayModal() {
+	openModal(InceptionModal);
+}
 
 const template = useTemplateGenerator("modal-controller");
 

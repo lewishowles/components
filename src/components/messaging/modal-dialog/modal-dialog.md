@@ -31,9 +31,9 @@ The label to use for the close dialog label for screen reader users.
 ### `initiallyOpen`
 
 - type: `boolean`
-- default: `false`
+- default: `true`
 
-Whether the dialog should open itself immediately.
+Whether the dialog should open itself immediately. This is true by default for use with `modal-controller`, but will likely need to be set to false if used directly.
 
 ### `focusDialogOnOpen`
 
