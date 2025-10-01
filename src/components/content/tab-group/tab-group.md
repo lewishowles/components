@@ -39,6 +39,13 @@ The label for this tab, to be displayed in the tab bar.
 
 Whether to remember the selected tab, updating the URL and allowing the appropriate tab to be reinstated on load. Note that when using this feature, tabs must be given custom IDs, as opposed to the default IDs, which are randomly generated.
 
+### `wrap`
+
+- type: `boolean`
+- default: `false`
+
+Whether to wrap tabs, or display them in a single line with overflow indicators (default).
+
 ## Props (`tab-item`)
 
 ### `id`

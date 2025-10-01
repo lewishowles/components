@@ -1,7 +1,7 @@
 <template>
 	<div data-test="tab-group">
-		<nav ref="tabBarReference" class="mb-12 border-b border-grey-200 dark:border-white/20">
-			<ol class="-mb-px flex flex-wrap items-end" role="tablist">
+		<nav ref="tabBarReference" class="mb-12 border-b border-grey-200 dark:border-white/20" :class="{ 'wrap-tabs': wrap }" data-selector="tab-group-nav">
+			<ol class="-mb-px flex items-end" :class="{ 'overflow-x-auto': !wrap, 'flex-wrap': wrap }" role="tablist">
 				<li v-for="tab in tabs" :key="tab.tabId">
 					<link-tag
 						v-bind="{
@@ -13,7 +13,7 @@
 							'icon-start': tab.icon,
 						}"
 						ref="tabAnchors"
-						class="inline-block border-b-2 px-4 py-2 no-underline"
+						class="border-b-2 px-4 py-2 no-underline whitespace-nowrap"
 						:class="{
 							'border-purple-800 text-purple-800 dark:border-white dark:text-white': tab.active,
 							'border-transparent text-current hocus:border-grey-500 hocus:text-grey-950 dark:hocus:border-white/60 dark:hocus:text-white': !tab.active,
@@ -33,7 +33,7 @@
 
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
-import { computed, nextTick, provide, ref } from "vue";
+import { computed, nextTick, onMounted, provide, ref } from "vue";
 import { getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onKeyStroke, useFocusWithin } from "@vueuse/core";
@@ -47,6 +47,15 @@ const props = defineProps({
 	 * which are randomly generated.
 	 */
 	rememberSelection: {
+		type: Boolean,
+		default: false,
+	},
+
+	/**
+	 * Whether to wrap tabs, or display them in a single line with overflow
+	 * indicators (default).
+	 */
+	wrap: {
 		type: Boolean,
 		default: false,
 	},
@@ -127,6 +136,12 @@ onKeyStroke(["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"], e => {
 	}
 });
 
+// When mounting, apply a little Javascript to our tabs to conditionally show
+// the overflow indicators.
+onMounted(() => {
+	setUpScrollIndicators();
+});
+
 /**
  * Register an individual tab with the group.
  *
@@ -146,7 +161,10 @@ function registerTab(tab) {
 		return;
 	}
 
+	// Ensure we have an active tab.
 	ensureActiveTab();
+	// Ensure we update our indicators to accommodate this new tab.
+	updateIndicators();
 }
 
 /**
@@ -272,4 +290,95 @@ function isValidTabId(tabId) {
 function isActiveTab(tabId) {
 	return tabId === activeTabId.value;
 }
+
+/**
+ * Set up scroll indicators and monitor for changes in both the scroll position
+ * and the window size.
+ */
+async function setUpScrollIndicators() {
+	const nav = tabBarReference.value;
+
+	if (!nav) {
+		return;
+	}
+
+	const ol = nav.querySelector("ol");
+
+	ol.addEventListener("scroll", updateIndicators);
+
+	window.addEventListener("resize", updateIndicators);
+
+	await nextTick();
+
+	updateIndicators();
+}
+
+/**
+ * Update current scroll indicators.
+ */
+function updateIndicators() {
+	const nav = tabBarReference.value;
+
+	if (!nav) {
+		return;
+	}
+
+	const ol = nav.querySelector("ol");
+
+	const scrollLeft = ol.scrollLeft;
+	const maxScroll = ol.scrollWidth - ol.clientWidth;
+
+	nav.classList.toggle("show-left", scrollLeft > 0);
+	nav.classList.toggle("show-right", scrollLeft < maxScroll);
+}
 </script>
+
+<style>
+[data-selector="tab-group-nav"] {
+	position:relative;
+}
+
+[data-selector="tab-group-nav"] {
+	&::before, &::after {
+		content: "";
+		display: none;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 30px;
+		pointer-events: none;
+		z-index: 1;
+	}
+}
+
+[data-selector="tab-group-nav"] {
+	&.show-left::before, &.show-right::after {
+		display: block;
+	}
+}
+
+[data-selector="tab-group-nav"].wrap-tabs {
+	&::before, &::after {
+		display: none;
+	}
+}
+
+[data-selector="tab-group-nav"]::before {
+	background: linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+	left: 0;
+}
+
+[data-selector="tab-group-nav"]:where(.dark, .dark *)::before {
+	background: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+}
+
+[data-selector="tab-group-nav"]::after {
+	background: linear-gradient(to left, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+	right: 0;
+}
+
+[data-selector="tab-group-nav"]:where(.dark, .dark *)::after {
+	background: linear-gradient(to left, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+	right: 0;
+}
+</style>
