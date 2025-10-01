@@ -3,7 +3,9 @@
 		<summary ref="summaryElement" class="inline-flex cursor-pointer list-none items-center gap-1" :class="summaryClasses" v-bind="{ 'data-test': `${dataTest}-summary` }">
 			<component :is="currentIcon" v-if="iconAtStart && includeIcon" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-start` }" />
 
-			<slot name="summary" v-bind="{ isOpen, icon: currentIcon }" />
+			<conditional-wrapper v-bind="{ wrap: iconOnly, tag: 'span' }" class="sr-only">
+				<slot name="summary" v-bind="{ isOpen, icon: currentIcon }" />
+			</conditional-wrapper>
 
 			<component :is="currentIcon" v-if="includeIcon && !iconAtStart" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-end` }" />
 		</summary>
@@ -92,6 +94,15 @@ const props = defineProps({
 	includeIcon: {
 		type: Boolean,
 		default: true,
+	},
+
+	/**
+	 * Whether to only include a summary icon, hiding any provided text. When
+	 * used, text should still be provided to assist screen reader users.
+	 */
+	iconOnly: {
+		type: Boolean,
+		default: false,
 	},
 
 	/**

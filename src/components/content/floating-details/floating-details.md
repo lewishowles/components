@@ -80,10 +80,17 @@ Whether to display the icon at the start of the summary, as opposed to the end.
 
 Whether to include a summary icon at all. This allows more flexibility with the styling of the summary, but it is important to make it clear to the user what is happening.
 
+### `iconOnly`
+
+- type: `boolean`
+- default: `false`
+
+Whether to only include a summary icon, hiding any provided text. When used, text should still be provided to assist screen reader users.
+
 ### `align`
 
 - type: `string`
-- default: `end`
+- default: `start`
 
 Whether to align to the dropdown to the start or end of the summary. This is useful for menus that open to the end of the screen, for example. Anything but "start" will be treated as "end".
 
@@ -101,12 +108,26 @@ Any classes to add to the summary element, allowing styling to wrap both the sum
 
 Any classes to add to the details content wrapper.
 
+### detailsColourClasses
+
+- type: `string | array | object`
+- default: `mt-3 rounded-md border border-grey-200 bg-white p-4 shadow`
+
+Any colours to apply to the details. These are passed as additional classes, but are separate so that colours can be redefined without affecting remaining styling.
+
 ### `detailsSizeClasses`
 
 - type: `string | array | object`
 - default: `max-w-lg`
 
 Any classes to add to specify the details content's size. This is separate to details classes so that the appearance can be consistent even if the size is not.
+
+### detailsAdditionalClasses
+
+- type: `string | array | object`
+- default: `null`
+
+Any classes to add that don't fit into other categories. This is so that existing classes do not have to be reproduced.
 
 ### `iconClasses`
 

@@ -11,6 +11,11 @@
 - [`modal-controller`](/src/components/messaging/modal-controller/modal-controller.md) - used in conjunction with `useModalDialog`, displays the most recently added modal.
 - [`base-modal`](/src/components/messaging/base-modal/base-modal.md) - contains the basic functionality of showing a modal dialog.
 
+### Updates
+
+- `summary-details`: A new `iconOnly` prop has been added. Whether to only include a summary icon, hiding any provided text. When used, text should still be provided to assist screen reader users.the summary.
+- `floating-details`: A new `iconOnly` prop has been added. "Whether to only include a summary icon, hiding any provided text. When used, text should still be provided to assist screen reader users.the summary.""
+- `floating-details`: A new `detailsAdditionalClasses` prop has been added. "Any classes to add to specify the details content's size. This is separate to details classes so that the appearance can be consistent even if the size is not."
 ## 1.0.0
 
 This version introduces a new documentation site to demonstrate each component and allow you to quickly copy the relevant code, as well as new components that especially support that site.

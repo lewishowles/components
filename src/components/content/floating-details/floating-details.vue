@@ -1,5 +1,5 @@
 <template>
-	<summary-details v-bind="{ floating: true, closeWithClickOutside: true, align: 'end', summaryClasses, detailsClasses: ['w-screen', detailsClasses, detailsColourClasses, detailsSizeClasses] }" data-test="floating-menu">
+	<summary-details ref="summary-details" v-bind="{ floating: true, closeWithClickOutside: true, align: 'end', summaryClasses, detailsClasses: ['w-screen', detailsClasses, detailsColourClasses, detailsSizeClasses, detailsAdditionalClasses] }" data-test="floating-menu">
 		<template #summary>
 			<slot name="summary" />
 		</template>
@@ -56,5 +56,38 @@ defineProps({
 		type: [String, Array, Object],
 		default: "max-w-lg",
 	},
+
+	/**
+	 * Any classes to add that don't fit into other categories. This is so that
+	 * existing classes do not have to be reproduced.
+	 */
+	detailsAdditionalClasses: {
+		type: [String, Array, Object],
+		default: null,
+	},
+});
+
+import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { useTemplateRef } from "vue";
+
+const summaryDetailsReference = useTemplateRef("summary-details");
+
+/**
+ * Open the details element.
+ */
+function openDetails() {
+	runComponentMethod(summaryDetailsReference.value, "openDetails");
+}
+
+/**
+ * Close the details element.
+ */
+function closeDetails() {
+	runComponentMethod(summaryDetailsReference.value, "closeDetails");
+}
+
+defineExpose({
+	openDetails,
+	closeDetails,
 });
 </script>

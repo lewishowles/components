@@ -80,6 +80,13 @@ Whether to display the icon at the start of the summary, as opposed to the end.
 
 Whether to include a summary icon at all. This allows more flexibility with the styling of the summary, but it is important to make it clear to the user what is happening.
 
+### `iconOnly`
+
+- type: `boolean`
+- default: `false`
+
+Whether to only include a summary icon, hiding any provided text. When used, text should still be provided to assist screen reader users.
+
 ### `floating`
 
 - type: `boolean`
