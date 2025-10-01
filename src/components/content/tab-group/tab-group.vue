@@ -364,7 +364,7 @@ function updateIndicators() {
 }
 
 [data-selector="tab-group-nav"]::before {
-	background: linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+	background: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
 	left: 0;
 }
 
@@ -373,7 +373,7 @@ function updateIndicators() {
 }
 
 [data-selector="tab-group-nav"]::after {
-	background: linear-gradient(to left, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+	background: linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
 	right: 0;
 }
 
