@@ -1,6 +1,7 @@
 @utility link {
 	@apply text-purple-800 underline underline-offset-4;
 	@apply hocus:text-purple-900 hocus:no-underline;
+
 	@apply dark:text-purple-300;
 	@apply dark:hocus:text-purple-200;
 }
@@ -8,6 +9,7 @@
 @utility link--muted {
 	@apply text-grey-500 underline underline-offset-4;
 	@apply hocus:text-grey-700 hocus:no-underline;
+
 	@apply dark:text-white/60;
 	@apply dark:hocus:text-white/90;
 }
@@ -27,10 +29,11 @@
 @utility button--primary {
 	@apply button;
 	@apply font-semibold bg-purple-800 text-white;
-	@apply dark:bg-purple-500;
 	@apply hocus:bg-purple-900;
-	@apply dark:hocus:bg-purple-600;
 	@apply active:bg-purple-950;
+
+	@apply dark:bg-purple-500;
+	@apply dark:hocus:bg-purple-600;
 	@apply dark:active:bg-purple-700;
 }
 
@@ -39,9 +42,10 @@
 	@apply bg-white border border-grey-300;
 	@apply hocus:bg-grey-50 hocus:border-grey-400 hocus:text-grey-700;
 	@apply active:bg-grey-100 active:border-grey-500 active:text-grey-800;
+
 	@apply dark:bg-white/20 dark:border-white/20;
 	@apply dark:hocus:bg-white/30 dark:hocus:border-white/20 dark:hocus:text-grey-100;
-	@apply dark:active:bg-white/40 dark:hocus:border-transparent dark:active:text-grey-50;
+	@apply dark:active:bg-white/40 dark:active:border-transparent dark:active:text-grey-50;
 }
 
 @utility button--danger {

@@ -4,15 +4,7 @@
 
 		<p>At the moment, components in the library are registered globally, so there is no need to manually import any of the components. To use the library, set it up in your main file, for example:</p>
 
-		<pre>
-import { createApp } from "vue";
-import App from "./App.vue";
-import components from "@lewishowles/components";
-
-const app = createApp(App);
-
-app.use(components);
-app.mount("#app");</pre>
+		<code-block :code="pluginSetupCode" />
 
 		<h2>Using a component</h2>
 
@@ -40,4 +32,13 @@ import useTitle from "@/docs/composables/use-title/use-title";
 const { setTitle } = useTitle();
 
 setTitle("Getting started");
+
+const pluginSetupCode = `import { createApp } from "vue";
+import App from "./App.vue";
+import components from "@lewishowles/components";
+
+const app = createApp(App);
+
+app.use(components);
+app.mount("#app");`;
 </script>

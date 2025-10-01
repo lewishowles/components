@@ -1,13 +1,13 @@
 <template>
-	<a ref="anchorElement" class="inline-flex items-center gap-[0.5em]" v-bind="{ href, ...attributes }" data-test="link-tag">
-		<component :is="iconStart" v-if="haveIconStart" class="stroke-current" :class="{ 'size-[1em]': iconOnly && !showExternalIcon, 'size-[0.857em]': !iconOnly || showExternalIcon }" data-test="link-tag-icon-start" />
+	<a ref="anchorElement" class="inline-block" v-bind="{ href, ...attributes }" data-test="link-tag">
+		<component :is="iconStart" v-if="haveIconStart" class="inline-block align-[0] stroke-current" :class="{ 'size-[1em]': iconOnly && !showExternalIcon, 'size-[0.857em] me-1': !iconOnly || showExternalIcon }" data-test="link-tag-icon-start" />
 
 		<conditional-wrapper v-bind="{ wrap: iconOnly, tag: 'span' }" class="sr-only" data-test="link-tag-label">
 			<slot />
 		</conditional-wrapper>
 
-		<component :is="iconEnd" v-if="shouldShowIconEnd" class="stroke-current" :class="{ 'size-[1em]': iconOnly && !showExternalIcon, 'size-[0.857em]': !iconOnly || showExternalIcon }" data-test="link-tag-icon-end" />
-		<icon-external v-else-if="haveExternalIcon" class="size-[0.857em] stroke-current" data-test="link-tag-icon-external" />
+		<component :is="iconEnd" v-if="shouldShowIconEnd" class="inline-block align-[0] stroke-current" :class="{ 'size-[1em]': iconOnly && !showExternalIcon, 'size-[0.857em] ms-1': !iconOnly || showExternalIcon }" data-test="link-tag-icon-end" />
+		<icon-external v-else-if="haveExternalIcon" class="inline-block align-[0] ms-1 size-[0.857em] stroke-current" data-test="link-tag-icon-external" />
 	</a>
 </template>
 

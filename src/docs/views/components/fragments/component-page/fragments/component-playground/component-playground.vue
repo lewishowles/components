@@ -16,7 +16,11 @@
 					Copy code
 				</copy-content>
 
-				<floating-details v-show="!useTranslation && haveTextSlots" v-model="isTextSlotsOpen">
+				<floating-details
+					v-show="!useTranslation && haveTextSlots"
+					v-model="isTextSlotsOpen"
+					details-additional-classes="-me-11 lg:me-0"
+				>
 					<template #summary>
 						Text slots
 					</template>
@@ -33,7 +37,7 @@
 				</floating-details>
 			</div>
 
-			<div class="relative inset-shadow-sm p-24 rounded-md border border-grey-300 dark:border-white/20">
+			<div class="relative inset-shadow-sm p-4 lg:p-24 rounded-md border border-grey-300 dark:border-white/20">
 				<slot />
 
 				<div v-if="haveComponentModel" class="relative mt-12 rounded-md bg-grey-50 dark:bg-grey-950/30 dark:text-grey-200 border border-grey-200 dark:border-transparent text-grey-800 p-6">

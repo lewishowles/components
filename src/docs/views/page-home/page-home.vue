@@ -19,7 +19,7 @@
 		</p>
 	</div>
 
-	<div class="grid grid-cols-4 gap-8 mt-12">
+	<div class="grid lg:grid-cols-4 gap-8 mt-12">
 		<div v-for="section in internalSections" :key="section.label" class="px-4 py-3 rounded-md animate-fade-in delay dark:ring-0" :class="section.colours">
 			<component :is="section.icon" class="size-12 block mx-auto my-6" />
 
@@ -112,6 +112,8 @@ const internalSections = computed(() => {
 
 	const sections = {};
 
+	console.log(menuItems.value);
+
 	menuItems.value.forEach(item => {
 		if (!Object.hasOwn(sections, item.section)) {
 			sections[item.section] = {
@@ -123,6 +125,8 @@ const internalSections = computed(() => {
 
 		sections[item.section].items.push(item);
 	});
+
+	console.log(sections);
 
 	return sections;
 });
