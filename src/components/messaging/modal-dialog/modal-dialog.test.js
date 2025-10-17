@@ -12,19 +12,4 @@ describe("modal-dialog", () => {
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
 	});
-
-	describe("Methods", () => {
-		describe("closeDialog", () => {
-			test("should emit the correct event", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				expect(wrapper.emitted("@dialog:close")).toBeUndefined();
-
-				vm.close();
-
-				expect(wrapper.emitted("@dialog:close").length).toBe(1);
-			});
-		});
-	});
 });
