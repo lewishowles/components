@@ -1,7 +1,7 @@
 <template>
 	<button
 		type="button"
-		class="inline-flex items-center"
+		class="inline-flex items-center justify-center"
 		:class="{ 'relative': reactive }"
 		v-bind="attributes"
 		data-test="ui-button"
