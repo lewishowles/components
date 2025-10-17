@@ -156,6 +156,7 @@
 			<playground-ui-button />
 			<playground-ui-button-icon />
 			<playground-ui-button-reactive />
+			<playground-ui-button-full-width />
 		</component-playgrounds>
 	</component-page>
 </template>
@@ -164,4 +165,5 @@
 import PlaygroundUiButton from "./fragments/playground-ui-button.vue";
 import PlaygroundUiButtonIcon from "./fragments/playground-ui-button-icon.vue";
 import PlaygroundUiButtonReactive from "./fragments/playground-ui-button-reactive.vue";
+import PlaygroundUiButtonFullWidth from "./fragments/playground-ui-button-full-width.vue";
 </script>

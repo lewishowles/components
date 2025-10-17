@@ -23,6 +23,10 @@
 - `tab-group`: Tabs now overflow in a single line, with indicators to show the direction(s) of overflow. This is particularly useful on small screens where tabs often cannot fit on a single line. To remove this functionality and show wrapped tabs instead, there is a new `wrap` prop.
 - `tab-group`: Added a new `wrap` (default: `false`) prop to control where tabs overflow or wrap when they cannot fit on a single line.
 
+### Fixes
+
+- `ui-button`: Should now properly centre align its contents when the button is larger than that content.
+
 ## 1.0.0
 
 This version introduces a new documentation site to demonstrate each component and allow you to quickly copy the relevant code, as well as new components that especially support that site.
