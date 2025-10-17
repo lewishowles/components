@@ -112,8 +112,6 @@ const internalSections = computed(() => {
 
 	const sections = {};
 
-	console.log(menuItems.value);
-
 	menuItems.value.forEach(item => {
 		if (!Object.hasOwn(sections, item.section)) {
 			sections[item.section] = {
@@ -125,8 +123,6 @@ const internalSections = computed(() => {
 
 		sections[item.section].items.push(item);
 	});
-
-	console.log(sections);
 
 	return sections;
 });
