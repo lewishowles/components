@@ -62,6 +62,10 @@ const modalDialogTemplateCode = [
 	"",
 	"<script setup>",
 	"\t// ...",
+	// For some reason, excluding the escape here seems to cause a problem with
+	// one of the parses, but I'm unsure what's wrong with this template
+	// specifically!
+	/* eslint-disable-next-line no-useless-escape */
 	"<\/script>",
 ].join("\n");
 
