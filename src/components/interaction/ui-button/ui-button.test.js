@@ -55,7 +55,7 @@ describe("ui-button", () => {
 	describe("Methods", () => {
 		describe("react", () => {
 			test("should set the reactive state", () => {
-				const wrapper = mount();
+				const wrapper = mount({ reactive: true });
 				const vm = wrapper.vm;
 
 				vm.react();
@@ -66,7 +66,7 @@ describe("ui-button", () => {
 
 		describe("reset", () => {
 			test("should reset reactive state", () => {
-				const wrapper = mount();
+				const wrapper = mount({ reactive: true });
 				const vm = wrapper.vm;
 
 				vm.isReacting = true;
