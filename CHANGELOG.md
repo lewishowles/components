@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+### Updates
+
+- `ui-button`: Added new `react` exposed method to trigger the reactive state on a button, allowing the user to see working feedback if another action has triggered the button's usual workflow.
+
 ## 1.1.0
 
 ### New composable

@@ -150,5 +150,5 @@ const additionalContent = [
 	emailFieldTemplate,
 ];
 
-const template = useTemplateGenerator("form-field", { slots: textSlots, props, additionalContent });
+const template = useTemplateGenerator("form-wrapper", { slots: textSlots, props, additionalContent });
 </script>

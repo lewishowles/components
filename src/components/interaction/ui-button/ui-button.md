@@ -56,6 +56,10 @@ Emitted when the button is clicked or activated via keyboard.
 
 ## Methods
 
+### `react`
+
+Show the "reacting" state, as though someone had clicked the button. This is helpful if another element performs the same action as the button might, but you still want to show feedback to the user.
+
 ### `reset`
 
 Reset the reactive state of a reactive button.

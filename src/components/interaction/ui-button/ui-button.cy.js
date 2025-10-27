@@ -49,4 +49,22 @@ describe("ui-button", () => {
 		cy.getByData("ui-button-icon-end").shouldNotBeVisible();
 		cy.getByData("ui-button-loading").shouldBeVisible();
 	});
+
+	it("A reactive button can be reset", () => {
+		mount({ reactive: "true", iconEnd: "icon-chevron-right" });
+
+		cy.getByData("ui-button").click();
+
+		cy.getByData("ui-button-label").shouldNotBeVisible();
+		cy.getByData("ui-button-icon-end").shouldNotBeVisible();
+		cy.getByData("ui-button-loading").shouldBeVisible();
+
+		cy.getComponent().then(component => {
+			component.reset(); // Call the exposed method
+
+			cy.getByData("ui-button-label").shouldBeVisible();
+			cy.getByData("ui-button-icon-end").shouldBeVisible();
+			cy.getByData("ui-button-loading").shouldNotBeVisible();
+		});
+	});
 });

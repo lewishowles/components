@@ -143,6 +143,14 @@
 		</component-events>
 
 		<component-methods>
+			<component-method id="method-react">
+				<template #name>
+					<code>react</code>
+				</template>
+
+				<p>Show the "reacting" state, as though someone had clicked the button. This is helpful if another element performs the same action as the button might, but you still want to show feedback to the user.</p>
+			</component-method>
+
 			<component-method id="method-reset">
 				<template #name>
 					<code>reset</code>
@@ -156,6 +164,7 @@
 			<playground-ui-button />
 			<playground-ui-button-icon />
 			<playground-ui-button-reactive />
+			<playground-ui-button-trigger-reactive-state />
 			<playground-ui-button-full-width />
 		</component-playgrounds>
 	</component-page>
@@ -165,5 +174,6 @@
 import PlaygroundUiButton from "./fragments/playground-ui-button.vue";
 import PlaygroundUiButtonIcon from "./fragments/playground-ui-button-icon.vue";
 import PlaygroundUiButtonReactive from "./fragments/playground-ui-button-reactive.vue";
+import PlaygroundUiButtonTriggerReactiveState from "./fragments/playground-ui-button-trigger-reactive-state.vue";
 import PlaygroundUiButtonFullWidth from "./fragments/playground-ui-button-full-width.vue";
 </script>

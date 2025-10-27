@@ -53,6 +53,17 @@ describe("ui-button", () => {
 	});
 
 	describe("Methods", () => {
+		describe("react", () => {
+			test("should set the reactive state", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.react();
+
+				expect(vm.isReacting).toBe(true);
+			});
+		});
+
 		describe("reset", () => {
 			test("should reset reactive state", () => {
 				const wrapper = mount();

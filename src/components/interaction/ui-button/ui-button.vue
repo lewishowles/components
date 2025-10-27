@@ -142,11 +142,18 @@ const computedIconClasses = computed(() => {
  * Provide feedback to the user on the state of the button.
  */
 function react() {
+	displayReactiveState();
+
+	emit("click");
+}
+
+/**
+ * Display the button's reactive state, if available.
+ */
+function displayReactiveState() {
 	if (props.reactive) {
 		isReacting.value = true;
 	}
-
-	emit("click");
 }
 
 /**
@@ -157,6 +164,7 @@ function reset() {
 }
 
 defineExpose({
+	react: displayReactiveState,
 	reset,
 });
 </script>
