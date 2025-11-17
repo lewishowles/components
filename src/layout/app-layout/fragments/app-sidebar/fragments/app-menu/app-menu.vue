@@ -63,6 +63,9 @@
 					<app-menu-link to="/interaction/link-tag">
 						link-tag
 					</app-menu-link>
+					<app-menu-link to="/interaction/dropdown-menu">
+						dropdown-menu
+					</app-menu-link>
 					<app-menu-link to="/interaction/copy-content">
 						copy-content
 					</app-menu-link>
@@ -76,8 +79,17 @@
 						Content
 					</template>
 
+					<app-menu-link to="/content/data-table">
+						data-table
+					</app-menu-link>
 					<app-menu-link to="/content/tab-group">
 						tab-group
+					</app-menu-link>
+					<app-menu-link to="/content/accordion-group">
+						accordion-group
+					</app-menu-link>
+					<app-menu-link to="/content/searchable-list">
+						searchable-list
 					</app-menu-link>
 					<app-menu-link to="/content/summary-details">
 						summary-details
@@ -85,26 +97,14 @@
 					<app-menu-link to="/content/floating-details">
 						floating-details
 					</app-menu-link>
-					<app-menu-link to="/content/dropdown-menu">
-						dropdown-menu
+					<app-menu-link to="/content/display-date">
+						display-date
 					</app-menu-link>
 					<app-menu-link to="/content/loading-indicator">
 						loading-indicator
 					</app-menu-link>
 					<app-menu-link to="/content/skeleton-loader">
 						skeleton-loader
-					</app-menu-link>
-					<app-menu-link to="/content/data-table">
-						data-table
-					</app-menu-link>
-					<app-menu-link to="/content/searchable-list">
-						searchable-list
-					</app-menu-link>
-					<app-menu-link to="/content/accordion-group">
-						accordion-group
-					</app-menu-link>
-					<app-menu-link to="/content/display-date">
-						display-date
 					</app-menu-link>
 				</app-menu-section>
 
