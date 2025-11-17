@@ -41,32 +41,32 @@ You can find more information about each component on its relevant docs page.
 
 ### Forms
 
-- [form-field](/src/components/form/form-field/form-field.md)
+- [form-wrapper](/src/components/form/form-wrapper/form-wrapper.md)
 - [form-fieldset](/src/components/form/form-fieldset/form-fieldset.md)
 - [form-layout](/src/components/form/form-layout/form-layout.md)
-- [form-wrapper](/src/components/form/form-wrapper/form-wrapper.md)
+- [form-field](/src/components/form/form-field/form-field.md)
 - [form-actions](/src/components/form/form-actions/form-actions.md)
 
 ### Interaction
 
-- [copy-content](/src/components/interaction/copy-content/copy-content.md)
-- [dropdown-menu](/src/components/interaction/dropdown-menu/dropdown-menu.md)
-- [link-tag](/src/components/interaction/link-tag/link-tag.md)
-- [loading-indicator](/src/components/interaction/loading-indicator/loading-indicator.md)
-- [star-rating](/src/components/interaction/star-rating/star-rating.md)
 - [ui-button](/src/components/interaction/ui-button/ui-button.md)
+- [link-tag](/src/components/interaction/link-tag/link-tag.md)
+- [dropdown-menu](/src/components/content/dropdown-menu/dropdown-menu.md)
+- [copy-content](/src/components/interaction/copy-content/copy-content.md)
+- [star-rating](/src/components/interaction/star-rating/star-rating.md)
 
 ### Content
 
+- [data-table](/src/components/content/data-table/data-table.md)
+- [tab-group](/src/components/content/tab-group/tab-group.md)
 - [accordion-group](/src/components/content/accordion-group/accordion-group.md)
 - [accordion-section](/src/components/content/accordion-section/accordion-section.md)
-- [data-table](/src/components/content/data-table/data-table.md)
-- [display-date](/src/components/content/display-date/display-date.md)
-- [floating-details](/src/components/content/floating-details/floating-details.md)
-- [notification-handler](/src/components/content/notification-handler/notification-handler.md)
-- [skeleton-loader](/src/components/interaction/skeleton-loader/skeleton-loader.md)
+- [searchable-list](/src/components/content/searchable-list/searchable-list.md)
 - [summary-details](/src/components/content/summary-details/summary-details.md)
-- [tab-group](/src/components/content/tab-group/tab-group.md)
+- [floating-details](/src/components/content/floating-details/floating-details.md)
+- [display-date](/src/components/content/display-date/display-date.md)
+- [loading-indicator](/src/components/content/loading-indicator/loading-indicator.md)
+- [skeleton-loader](/src/components/interaction/skeleton-loader/skeleton-loader.md)
 
 ### Icons
 
@@ -76,10 +76,6 @@ You can find more information about each component on its relevant docs page.
 
 - [breadcrumb-list](/src/components/navigation/breadcrumb-list/breadcrumb-list.md)
 - [app-pagination](/src/components/navigation/app-pagination/app-pagination.md)
-
-### Data
-
-- [searchable-list](/src/components/data/searchable-list/searchable-list.md)
 
 ### Display
 
