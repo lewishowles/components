@@ -103,7 +103,8 @@ const props = defineProps({
 
 	/**
 	 * The label for the progress bar. This label is hidden by default, but is
-	 * included for accessibility purposes.
+	 * included for accessibility purposes. This is overridden by the default
+	 * slot.
 	 */
 	label: {
 		type: String,

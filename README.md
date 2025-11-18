@@ -89,6 +89,7 @@ You can find more information about each component on its relevant docs page.
 - [pill-badge](/src/components/messaging/pill-badge/pill-badge.md)
 - [modal-controller](/src/components/messaging/modal-controller/modal-controller.md)
 - [modal-dialog](/src/components/messaging/modal-dialog/modal-dialog.md)
+- [step-indicator](/src/components/messaging/step-indicator/step-indicator.md)
 - [notification-handler](/src/components/messaging/notification-handler/notification-handler.md)
 
 ### Chart

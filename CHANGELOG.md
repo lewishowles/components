@@ -5,6 +5,7 @@
 ### New components
 
 - [`none-found`](/src/components/content/none-found/none-found.md) - display a "none found" message, particularly useful when displaying lists of results that may be empty, or become empty after a user's search.
+- [`step-indicator`](/src/components/messaging/step-indicator/step-indicator.md) - display the user's current step name, along with their progress through a whole.
 
 ## 1.2.0
 

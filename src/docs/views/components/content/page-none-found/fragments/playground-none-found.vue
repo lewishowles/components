@@ -4,10 +4,6 @@
 			None found
 		</template>
 
-		<template #introduction>
-			<p />
-		</template>
-
 		<none-found>
 			<template #title>
 				{{ slots.title?.value }}

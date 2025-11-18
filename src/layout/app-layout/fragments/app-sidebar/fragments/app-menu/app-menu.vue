@@ -164,6 +164,9 @@
 					<app-menu-link to="/messaging/modal-dialog">
 						modal-dialog
 					</app-menu-link>
+					<app-menu-link to="/messaging/step-indicator">
+						step-indicator
+					</app-menu-link>
 					<app-menu-link to="/messaging/notification-handler">
 						notification-handler
 					</app-menu-link>

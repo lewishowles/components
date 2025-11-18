@@ -145,7 +145,7 @@
 					default
 				</template>
 
-				<p>When the label is shown, the default slot can be used to provide a custom label that cannot be provided via the <code>label</code> prop.</p>
+				<p>The label for this progress bar. This is also included when the label is hidden for accessibility purposes.</p>
 			</component-slot>
 
 			<component-slot id="slot-value">
