@@ -106,6 +106,9 @@
 					<app-menu-link to="/content/skeleton-loader">
 						skeleton-loader
 					</app-menu-link>
+					<app-menu-link to="/content/none-found">
+						none-found
+					</app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>

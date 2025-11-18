@@ -67,6 +67,7 @@ You can find more information about each component on its relevant docs page.
 - [display-date](/src/components/content/display-date/display-date.md)
 - [loading-indicator](/src/components/content/loading-indicator/loading-indicator.md)
 - [skeleton-loader](/src/components/interaction/skeleton-loader/skeleton-loader.md)
+- [none-found](/src/components/interaction/none-found/none-found.md)
 
 ### Icons
 

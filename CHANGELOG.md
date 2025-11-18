@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0
+
+### New components
+
+- [`none-found`](/src/components/content/none-found/none-found.md) - display a "none found" message, particularly useful when displaying lists of results that may be empty, or become empty after a user's search.
+
 ## 1.2.0
 
 ### Updates
