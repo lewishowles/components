@@ -67,7 +67,7 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # The base path is where the component will be created.
-BASE_PATH="src/views/components"
+BASE_PATH="src/docs/views/components"
 
 # If a folder path is provided, append it to the base path
 if [ -n "$FOLDER_PATH" ]; then
