@@ -38,8 +38,6 @@
 			</component-prop>
 		</component-props>
 
-
-
 		<component-slots>
 			<component-slot id="slot-default">
 				<template #name>
@@ -47,6 +45,18 @@
 				</template>
 
 				<p>The name of the current step.</p>
+			</component-slot>
+
+			<component-slot id="slot-current-step">
+				<template #name>
+					current-step
+				</template>
+
+				<template #default-value>
+					<span v-pre>Step {{ currentStep }} of {{ stepCount }}</span>
+				</template>
+
+				<p>The indicator for the current step.</p>
 			</component-slot>
 		</component-slots>
 

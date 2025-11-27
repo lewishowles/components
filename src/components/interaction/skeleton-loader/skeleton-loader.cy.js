@@ -1,5 +1,5 @@
 import SkeletonLoader from "./skeleton-loader.vue";
-import SkeletonIndicator from "@/components/content/skeleton-indicator/skeleton-indicator.vue";
+import SkeletonIndicator from "@/components/interaction/skeleton-indicator/skeleton-indicator.vue";
 import { createMount } from "@cypress/support/mount";
 import { h } from "vue";
 

@@ -1,11 +1,16 @@
 import StepIndicator from "./step-indicator.vue";
 import { createMount } from "@cypress/support/mount";
 
+const defaultProps = {
+	currentStep: 2,
+	stepCount: 5,
+};
+
 const defaultSlots = {
 	default: "Address details",
 };
 
-const mount = createMount(StepIndicator, { slots: defaultSlots });
+const mount = createMount(StepIndicator, { props: defaultProps, slots: defaultSlots });
 
 describe("step-indicator", () => {
 	it("A component is rendered", () => {
@@ -13,11 +18,13 @@ describe("step-indicator", () => {
 
 		cy.getByData("step-indicator").shouldBeVisible();
 		cy.getByData("step-indicator-label").shouldBeVisible();
-		cy.getByData("step-indicator-progress").shouldBeVisible();
+		cy.getByData("step-indicator-label").shouldHaveText("Address details");
+		cy.getByData("step-indicator-current-step").shouldBeVisible();
+		cy.getByData("step-indicator-current-step").shouldHaveText("Step 2 of 5");
 	});
 
 	it("The appropriate accessibility attributes are included", () => {
-		mount({ currentStep: 2, stepCount: 5 });
+		mount();
 
 		cy.getByData("step-indicator")
 			.shouldHaveAttribute("role", "progressbar")
@@ -29,8 +36,17 @@ describe("step-indicator", () => {
 	});
 
 	it("The current progress is displayed", () => {
-		mount({ currentStep: 2, stepCount: 5 });
+		mount();
 
-		cy.getByData("step-indicator-progress").shouldHaveText("Step 2 of 5");
+		cy.getByData("step-indicator-current-step").shouldHaveText("Step 2 of 5");
+	});
+
+	describe("Slots", () => {
+		it("Slots can be defined", () => {
+			mount({ slots: { "current-step": "40%" } });
+
+			cy.getByData("step-indicator-label").shouldHaveText("Address details");
+			cy.getByData("step-indicator-current-step").shouldHaveText("40%");
+		});
 	});
 });

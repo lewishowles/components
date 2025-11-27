@@ -8,6 +8,12 @@ Display the user's current progress through a discrete number of steps.
 
 The name of the current step.
 
+### `current-step`
+
+- default: `Step {{ currentStep }} of {{ stepCount }}`
+
+The indicator for the current step.
+
 ## Props
 
 ### `currentStep`
