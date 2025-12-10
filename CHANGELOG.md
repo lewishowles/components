@@ -8,6 +8,11 @@
 - `icon-share`
 - `icon-star`
 
+### Fixes
+
+- Composables can now be imported from the library, such as `import { useModalDialog } from "@lewishowles/components";`.
+- Fix an issue that stopped the option to mark `summary-details` and `dropdown-menu` as `open` by default from working.
+
 ## 1.3.0
 
 ### New components
