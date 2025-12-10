@@ -15,7 +15,6 @@ import { ref } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const emit = defineEmits(["open", "close"]);
-
 // A reference to the original summary-details element, allowing us to pass
 // data.
 const summaryDetailsComponent = ref(null);
