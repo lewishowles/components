@@ -1,4 +1,4 @@
-import components from "@/components";
+import { components } from "@/components";
 import { deepMerge } from "@lewishowles/helpers/object";
 import { mount } from "cypress/vue";
 

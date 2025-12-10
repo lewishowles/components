@@ -1,6 +1,4 @@
-import * as components from "@/components";
+import { components } from "@/components";
 import { config } from "@vue/test-utils";
 
-const componentsList = components?.default;
-
-config.global.components = componentsList;
+config.global.components = components;
