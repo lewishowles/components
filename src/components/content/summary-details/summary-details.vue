@@ -221,6 +221,8 @@ const floatingClasses = computed(() => {
  * itself.
  */
 onMounted(() => {
+	isOpen.value = props.open;
+
 	if (isOpen.value && detailsElement.value.open === false) {
 		detailsElement.value.open = true;
 	}
