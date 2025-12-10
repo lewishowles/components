@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.0
+
+### New icons
+
+- `icon-cog`
+- `icon-share`
+- `icon-star`
+
 ## 1.3.0
 
 ### New components
