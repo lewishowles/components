@@ -4,15 +4,15 @@
 			<slot name="close-dialog-label" />
 		</template>
 
-		<h2 v-if="haveTitle" class="mb-6 text-2xl font-bold text-grey-950 dark:text-grey-50">
+		<modal-dialog-title v-if="haveTitle">
 			<slot name="title" />
-		</h2>
+		</modal-dialog-title>
 
 		<slot />
 
-		<div v-if="haveActions" class="mt-12 flex items-center gap-6 border-t border-grey-200 dark:border-white/20 pt-6">
+		<modal-dialog-actions v-if="haveActions">
 			<slot name="actions" />
-		</div>
+		</modal-dialog-actions>
 	</base-modal>
 </template>
 

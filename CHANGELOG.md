@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.0
+
+### New companion components
+
+- [`modal-dialog-title`](/src/components/messaging/modal-dialog-title/modal-dialog-title.md) - used primarily with dialogs created for use with `useModalDialog`, displays a standardised dialog title.
+- [`modal-dialog-actions`](/src/components/messaging/modal-dialog-actions/modal-dialog-actions.md) - used primarily with dialogs created for use with `useModalDialog`, displays a standardised set of actions to be taken within a dialog.
+
 ## 1.4.0
 
 ### New icons

@@ -111,25 +111,6 @@ for i in "${!templates[@]}"; do
 	code -r $OUTPUT_FILE
 done
 
-if [ "$IS_FRAGMENT" = false ]; then
-	# Add the new component to src/components/index.js
-	# Relative to the script directory.
-	cd $SCRIPT_DIR;
-	INDEX_FILE="../src/components/index.js"
-
-	sed -i '' "/import ConditionalWrapper/a\\
-import $PASCAL_CASE_NAME from \"./$FOLDER_PATH/$COMPONENT_NAME/$COMPONENT_NAME.vue\";\\
-" "$INDEX_FILE"
-
-	sed -i '' "/AlertMessage,/a\\
-	$PASCAL_CASE_NAME,\\
-" "$INDEX_FILE"
-
-	# Development helpers
-
-	APP_FILE="../src/App.vue";
-fi
-
 # Print the success message
 echo -e "\nComponent ${PURPLE}$COMPONENT_NAME${RESET_COLOUR} scaffolded successfully in ${BLUE}$BASE_PATH/$COMPONENT_NAME${RESET_COLOUR}.\n"
 echo -e "${PURPLE}$COMPONENT_NAME${RESET_COLOUR}"
@@ -138,7 +119,5 @@ echo "  ↳ $COMPONENT_NAME.cy.js"
 echo "  ↳ $COMPONENT_NAME.test.js"
 
 if [ "$IS_FRAGMENT" = false ]; then
-	echo "  ↳ $COMPONENT_NAME.md"
-    echo "  ↳ [updated] /src/components/index.js"
-    echo "  ↳ [updated] /src/App.vue"
+echo "  ↳ $COMPONENT_NAME.md"
 fi
