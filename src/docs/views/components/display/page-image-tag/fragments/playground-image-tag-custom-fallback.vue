@@ -38,7 +38,7 @@ const props = ref({
 	},
 });
 
-const slots = {
+const slots = computed(() => ({
 	fallback: {
 		value: useTemplateGenerator("div", {
 			props: {
@@ -56,7 +56,7 @@ const slots = {
 			indent: 2,
 		}),
 	},
-};
+}));
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
@@ -65,5 +65,5 @@ const componentProps = computed(() => {
 	);
 });
 
-const template = useTemplateGenerator("image-tag", { props, slots });
+const template = useTemplateGenerator("image-tag", { props, slots: slots.value });
 </script>

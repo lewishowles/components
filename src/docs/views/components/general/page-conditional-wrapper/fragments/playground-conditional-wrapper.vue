@@ -30,11 +30,11 @@ import useTemplateGenerator from "@/docs/views/components/composables/use-templa
 // Whether the conditional wrapper should be active.
 const shouldWrap = ref(true);
 
-const slots = {
+const slots = computed(() => ({
 	default: {
 		value: [useTemplateGenerator("div", { slots: { default: { value: "Inner peace" } } })],
 	},
-};
+}));
 
 // Props both for the template and for the component example itself.
 const props = ref({
@@ -57,5 +57,5 @@ const componentProps = computed(() => {
 	);
 });
 
-const template = useTemplateGenerator("conditional-wrapper", { slots, props });
+const template = useTemplateGenerator("conditional-wrapper", { slots: slots.value, props });
 </script>

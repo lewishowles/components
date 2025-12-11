@@ -19,6 +19,7 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
 const buttonTemplate = useTemplateGenerator("ui-button", {
@@ -59,14 +60,14 @@ const linkTemplate = useTemplateGenerator("link-tag", {
 	indent: 2,
 });
 
-const slots = {
+const slots = computed(() => ({
 	"default": {
 		value: buttonTemplate.value,
 	},
 	"tertiary-actions": {
 		value: linkTemplate.value,
 	},
-};
+}));
 
-const template = useTemplateGenerator("form-actions", { slots });
+const template = useTemplateGenerator("form-actions", { slots: slots.value });
 </script>

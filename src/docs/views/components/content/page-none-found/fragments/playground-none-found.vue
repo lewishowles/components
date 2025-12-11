@@ -21,6 +21,7 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
 const buttonTemplate = useTemplateGenerator("ui-button", {
@@ -40,7 +41,7 @@ const buttonTemplate = useTemplateGenerator("ui-button", {
 	indent: 1,
 });
 
-const slots = {
+const slots = computed(() => ({
 	title: {
 		label: "Title",
 		value: "No users found",
@@ -52,7 +53,7 @@ const slots = {
 	actions: {
 		value: buttonTemplate.value,
 	},
-};
+}));
 
-const template = useTemplateGenerator("none-found", { slots });
+const template = useTemplateGenerator("none-found", { slots: slots.value });
 </script>

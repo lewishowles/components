@@ -28,7 +28,7 @@ const componentModel = ref(null);
 // Props both for the template and for the component example itself.
 const props = ref({});
 
-const slots = {
+const slots = computed(() => ({
 	default: {
 		value: [
 			createTabItem("Admin", "/"),
@@ -36,7 +36,7 @@ const slots = {
 			createTabItem("Sophie Wardhaugh", "/users/43e7f9be-0eea-4756-bb86-afe8fb3c08c4"),
 		],
 	},
-};
+}));
 
 function createTabItem(label, href) {
 	return useTemplateGenerator("breadcrumb-item", {
@@ -61,5 +61,5 @@ const componentProps = computed(() => {
 	);
 });
 
-const template = useTemplateGenerator("breadcrumb-list", { slots, props });
+const template = useTemplateGenerator("breadcrumb-list", { props, slots: slots.value });
 </script>

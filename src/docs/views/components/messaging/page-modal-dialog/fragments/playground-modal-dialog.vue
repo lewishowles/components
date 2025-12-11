@@ -49,7 +49,7 @@ const props = ref({
 	},
 });
 
-const slots = {
+const slots = computed(() => ({
 	title: {
 		value: "Delete \"Sophie Wardhaugh\"",
 	},
@@ -59,7 +59,7 @@ const slots = {
 	actions: {
 		value: useTemplateGenerator("ui-button", { props: { class: { value: "button--primary", isInline: true } }, slots: { default: { value: "Delete user" } }, indent: 1 }),
 	},
-};
+}));
 
 // Our dialog for the demonstration.
 const deleteUserDialog = useTemplateRef("delete-user-dialog");
@@ -71,7 +71,7 @@ const componentProps = computed(() => {
 	);
 });
 
-const template = useTemplateGenerator("modal-dialog", { slots, props });
+const template = useTemplateGenerator("modal-dialog", { slots: slots.value, props });
 
 /**
  * Open our demonstration dialog.
