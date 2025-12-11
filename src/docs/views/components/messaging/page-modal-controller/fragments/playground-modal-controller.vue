@@ -5,17 +5,19 @@
 		</template>
 
 		<template #introduction>
-			<p>Creating a modal for display comes in two parts.</p>
+			<p>Creating a modal for display comes in three parts.</p>
 
-			<h3>The modal itself</h3>
+			<h4>The modal content</h4>
 
-			<p>Create a modal dialog as its own component. This can be created as you choose, but using <code>modal-dialog</code> is a good starting point.</p>
+			<p>Each modal invoked using <code>useModalDialog</code> is wrapped in a <code>base-modal</code>, so only the content is necessary.</p>
 
-			<h3>Displaying the modal</h3>
+			<h4>Displaying the modal</h4>
 
-			<p>Displaying the modal involves adding it to the stack via <code>useModalDialog</code>.</p>
+			<p>Displaying the modal involves adding it to the stack via <code>openModal</code> from <code>useModalDialog</code>.</p>
 
-			<p>Examples of both of these can be found in the playground code.</p>
+			<h4>Closing the modal</h4>
+
+			<p>The top-most modal can be closed programmatically via the provided <code>closeTopModal</code> from <code>useModalDialog</code>.</p>
 		</template>
 
 		<ui-button class="button--primary" @click="displayModal">
@@ -72,7 +74,7 @@ const modalDialogTemplateCode = [
 const useModalDialogCode = [
 	"import { useModalDialog } from \"@lewishowles/components\";",
 	"import DeleteUserDialog from \"./dialogs/delete-user-dialog\";",
-	"const { openModal } = useModalDialog();",
+	"const { closeTopModal, openModal } = useModalDialog();",
 	"// ...",
 	"const componentProps = { ... };",
 	"openModal(DeleteUserDialog, componentProps);",
