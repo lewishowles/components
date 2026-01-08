@@ -2,7 +2,7 @@
 
 `notification-handler` displays and allows and end-user to manage notifications as provided by an app. Notifications are provided directly to the component, allowing the parent app to deal with what notifications to display and how notifications are marked as read depending on its requirements.
 
-[More information about the process behind planning this component can be found in Notion](https://www.notion.so/lewishowles/Specification-Notification-handler-1b92b9e312118050bb76d8d9200d50a8)
+[More information about the process behind planning this component can be found in Notion](https://lewishowles.notion.site/Notification-handler-1b92b9e312118050bb76d8d9200d50a8)
 
 ## Slots
 

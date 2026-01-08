@@ -7,7 +7,7 @@
 		<template #introduction>
 			<p><code>notification-handler</code> displays and allows and end-user to manage notifications as provided by an app. Notifications are provided directly to the component, allowing the parent app to deal with what notifications to display and how notifications are marked as read depending on its requirements.</p>
 			<p>
-				<link-tag href="https://www.notion.so/lewishowles/Specification-Notification-handler-1b92b9e312118050bb76d8d9200d50a8" :external="true">
+				<link-tag href="https://lewishowles.notion.site/Notification-handler-1b92b9e312118050bb76d8d9200d50a8" :external="true">
 					Learn more about the planning of this component
 				</link-tag>
 				and the decisions made in Notion.
