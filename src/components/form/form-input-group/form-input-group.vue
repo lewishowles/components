@@ -11,7 +11,7 @@
 		<slot name="options" v-bind="{ options: internalOptions, name: fieldName }">
 			<div class="flex flex-col mt-2" :class="{ '@xs:flex-row @xs:gap-10': inline, 'gap-2': !inline }">
 				<template v-for="option in internalOptions" :key="option.id">
-					<div class="flex items-center gap-3">
+					<div class="flex items-center">
 						<input
 							v-if="isRadio"
 							ref="inputReferences"
@@ -30,7 +30,7 @@
 							class="shrink-0 form-checkbox"
 						/>
 
-						<form-label v-bind="{ id: option.id, styled: false }" class="leading-6">
+						<form-label v-bind="{ id: option.id, styled: false }" class="px-3 leading-6">
 							{{ option.label }}
 						</form-label>
 					</div>
