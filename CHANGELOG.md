@@ -7,6 +7,7 @@
 - `dropdown-menu` - Fixes an issue where dropdown menu content wouldn't have an appropriate border in light mode.
 - `data-table` - Fixes an issue where headings weren't properly left-aligned by default.
 - `radio-button-group` and `checkbox-group` - Expand the clickable area for radio and checkbox labels.
+- `form-field`, `form-input`, `form-textarea`, `form-select`, `form-checkbox-group`, `form-radio-button-group` - Correctly include a provided introduction when building `aria-describedby`.
 
 ## 1.5.0
 

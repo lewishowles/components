@@ -31,7 +31,7 @@
 			</select>
 		</div>
 
-		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy">
+		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })">
 			<template #error>
 				<slot name="error" />
 			</template>
@@ -126,6 +126,8 @@ const { inputId } = useInputId(props.id);
 const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
 // Whether an introduction has been provided.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
+// Whether help text has been provided.
+const haveHelp = computed(() => isNonEmptySlot(slots.help));
 // Whether error text has been provided.
 const haveError = computed(() => isNonEmptySlot(slots.error));
 

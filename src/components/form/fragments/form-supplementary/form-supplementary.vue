@@ -38,6 +38,6 @@ const haveError = computed(() => isNonEmptySlot(slots.error));
 
 // Notify any listening form element to update its describedby value.
 watch([haveHelp, haveError], () => {
-	emit("update:describedby", { haveHelp: haveHelp.value, haveError: haveError.value });
+	emit("update:describedby");
 }, { immediate: true });
 </script>

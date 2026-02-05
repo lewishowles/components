@@ -38,7 +38,7 @@
 			</div>
 		</slot>
 
-		<form-supplementary v-bind="{ inputId }" class="mt-1" @update:describedby="updateDescribedBy">
+		<form-supplementary v-bind="{ inputId }" class="mt-1" @update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })">
 			<template #error>
 				<slot name="error" />
 			</template>
@@ -146,6 +146,10 @@ const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
 const inputReferences = ref([]);
 // Whether an introduction has been provided.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
+// Whether help text has been provided.
+const haveHelp = computed(() => isNonEmptySlot(slots.help));
+// Whether error text has been provided.
+const haveError = computed(() => isNonEmptySlot(slots.error));
 
 // Our standardised options, converting the range of allowed options formats
 // into an array of objects containing a label and a value.

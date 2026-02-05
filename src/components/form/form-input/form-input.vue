@@ -4,7 +4,7 @@
 			<slot />
 		</form-label>
 
-		<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }">
+		<conditional-wrapper v-bind="{ id: introductionId, wrap: haveIntroduction, tag: 'p' }">
 			<slot name="introduction" />
 		</conditional-wrapper>
 
@@ -35,7 +35,7 @@
 			</form-suffix>
 		</div>
 
-		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy">
+		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })">
 			<template #error>
 				<slot name="error" />
 			</template>
@@ -115,13 +115,15 @@ const inputElement = useTemplateRef("inputElement");
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
-const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
+const { introductionId, updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
 // Whether an introduction has been provided.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 // Whether a prefix is defined.
 const havePrefix = computed(() => isNonEmptySlot(slots.prefix));
 // Whether a suffix is defined.
 const haveSuffix = computed(() => isNonEmptySlot(slots.suffix));
+// Whether help text has been provided.
+const haveHelp = computed(() => isNonEmptySlot(slots.help));
 // Whether error text has been provided.
 const haveError = computed(() => isNonEmptySlot(slots.error));
 

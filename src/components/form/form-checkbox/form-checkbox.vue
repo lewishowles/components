@@ -19,7 +19,7 @@
 			</form-label>
 		</div>
 
-		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy">
+		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy({ haveHelp, haveError })">
 			<template #error>
 				<slot name="error" />
 			</template>
@@ -98,6 +98,8 @@ const inputElement = useTemplateRef("inputElement");
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
 const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
+// Whether help text has been provided.
+const haveHelp = computed(() => isNonEmptySlot(slots.help));
 // Whether error text has been provided.
 const haveError = computed(() => isNonEmptySlot(slots.error));
 

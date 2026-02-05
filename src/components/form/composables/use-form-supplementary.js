@@ -8,6 +8,8 @@ import { computed, ref } from "vue";
  *     The base ID of the input, from which we generate additional IDs.
  */
 export default function(baseId) {
+	// The ID for introduction text.
+	const introductionId = computed(() => `${baseId}-introduction`);
 	// The ID for the error text.
 	const errorId = computed(() => `${baseId}-error`);
 	// The ID for the help text.
@@ -25,14 +27,18 @@ export default function(baseId) {
 	 * @param  {boolean}  options.haveHelp
 	 *     Whether we have help to display.
 	 */
-	function updateDescribedBy({ haveHelp, haveError } = {}) {
-		if (!haveHelp && !haveError) {
+	function updateDescribedBy({ haveIntroduction, haveHelp, haveError } = {}) {
+		if (!haveIntroduction && !haveHelp && !haveError) {
 			describedBy.value = null;
 
 			return;
 		}
 
 		const ids = [];
+
+		if (haveIntroduction) {
+			ids.push(introductionId.value);
+		}
 
 		if (haveHelp) {
 			ids.push(helpId.value);
@@ -46,9 +52,10 @@ export default function(baseId) {
 	}
 
 	return {
+		describedBy,
 		errorId,
 		helpId,
-		describedBy,
+		introductionId,
 		updateDescribedBy,
 	};
 }
