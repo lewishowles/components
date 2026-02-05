@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.1
+
+### Fixes
+
+- `dropdown-menu` - Fixes an issue where dropdown menu content wouldn't have an appropriate border in light mode.
+
 ## 1.5.0
 
 ### New companion components

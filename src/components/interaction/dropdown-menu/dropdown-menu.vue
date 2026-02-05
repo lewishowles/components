@@ -23,7 +23,7 @@ const summaryDetailsComponent = ref(null);
 const summaryClasses = "button--muted";
 // Default styling for our dropdown. This is overridden if the user provides
 // their own detailsClasses prop.
-const detailsClasses = "animate-fade-in-down animate-fast mt-2 min-w-3xs rounded-lg border-grey-200 bg-white dark:border-transparent dark:bg-grey-950/20 backdrop-blur-lg";
+const detailsClasses = "animate-fade-in-down animate-fast mt-2 min-w-3xs py-2 rounded-lg border border-grey-300 bg-white dark:border-white/20 dark:bg-grey-950/20 backdrop-blur-lg";
 
 /**
  * Open the menu.
