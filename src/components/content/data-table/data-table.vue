@@ -88,10 +88,10 @@
 								:key="columnKey"
 								v-bind="{ 'aria-sort': getColumnSortDirection(columnKey) }"
 								class="py-4"
-								:class="[{ 'ps-3': !column.sortable && !column.first, 'pe-3': !column.sortable && !column.last, 'text-end': column.align === 'right', [headingClasses]: !column.sortable, [column.columnClasses]: !column.sortable, [column.headingClasses]: !column.sortable }]"
+								:class="[{ 'ps-3': !column.sortable && !column.first, 'pe-3': !column.sortable && !column.last, 'text-start': column.align !== 'right', 'text-end': column.align === 'right', [headingClasses]: !column.sortable, [column.columnClasses]: !column.sortable, [column.headingClasses]: !column.sortable }]"
 								data-test="data-table-heading"
 							>
-								<conditional-wrapper v-bind="{ wrap: column.sortable, tag: 'ui-button', iconEnd: getSortIcon(columnKey) }" class="-mt-4 mb-[calc(-1rem-1px)] w-full border-b border-transparent py-4 hocus:border-purple-800 hocus:bg-grey-100 dark:hocus:bg-grey-950/30 dark:hocus:border-purple-400" :class="[{ 'ps-3': !column.first, 'pe-3': !column.last, 'justify-end': column.align === 'right' }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-sort" @click="sortColumn(columnKey)">
+								<conditional-wrapper v-bind="{ wrap: column.sortable, tag: 'ui-button', iconEnd: getSortIcon(columnKey) }" class="-mt-4 mb-[calc(-1rem-1px)] w-full border-b border-transparent py-4 hocus:border-purple-800 hocus:bg-grey-100 dark:hocus:bg-grey-950/30 dark:hocus:border-purple-400" :class="[{ 'ps-3': !column.first, 'pe-3': !column.last, 'justify-start': column.align !== 'right', 'justify-end': column.align === 'right' }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-sort" @click="sortColumn(columnKey)">
 									<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
 										{{ column.label }}
 									</slot>
@@ -286,7 +286,7 @@ const props = defineProps({
 	 */
 	headingClasses: {
 		type: String,
-		default: "text-left font-bold text-grey-950 dark:text-grey-50",
+		default: "font-bold text-grey-950 dark:text-grey-50",
 	},
 
 	/**
