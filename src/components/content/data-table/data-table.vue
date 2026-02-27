@@ -151,13 +151,12 @@
 
 <script setup>
 import { arrayLength, isNonEmptyArray, sortObjectsByProperty } from "@lewishowles/helpers/array";
-import { computed, provide, ref, useSlots, watch } from "vue";
+import { computed, provide, ref, useId, useSlots, watch } from "vue";
 import { get, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber } from "@lewishowles/helpers/number";
-import { nanoid } from "nanoid";
 
 import DataTableColumns from "./fragments/data-table-columns/data-table-columns.vue";
 import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
@@ -444,7 +443,7 @@ const internalData = computed(() => {
 
 		data.push({
 			configuration: {
-				id: nanoid(),
+				id: useId(),
 			},
 			content: rowContent,
 			raw: row,

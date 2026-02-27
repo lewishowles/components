@@ -57,13 +57,12 @@
  * `form-input-group` allows options to be provided in a few different formats
  * for simplicity.
  */
-import { computed, ref, useSlots } from "vue";
+import { computed, ref, useId, useSlots } from "vue";
 import { deepCopy, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber } from "@lewishowles/helpers/number";
-import { nanoid } from "nanoid";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
 import useInputId from "@/components/form/composables/use-input-id";
 
@@ -205,7 +204,7 @@ const internalOptions = computed(() => {
 	return options.map((option, optionIndex) => {
 		option.first = optionIndex === 0;
 		option.last = optionIndex === lastOptionIndex;
-		option.id = nanoid();
+		option.id = useId();
 
 		return option;
 	});

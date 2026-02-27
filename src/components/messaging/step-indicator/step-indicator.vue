@@ -34,9 +34,8 @@
 
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
-import { computed, useSlots } from "vue";
+import { computed, useId, useSlots } from "vue";
 import { getSlotText } from "@lewishowles/helpers/vue";
-import { nanoid } from "nanoid";
 
 const props = defineProps({
 	/**
@@ -63,7 +62,7 @@ const label = computed(() => getSlotText(slots.default));
 // provided minimum and maximum.
 const internalCurrentStep = computed(() => clamp(props.currentStep, 1, props.stepCount));
 // The internal ID of this progress bar, used to link the bar to its label.
-const internalId = computed(() => `step-indicator-${nanoid()}`);
+const internalId = computed(() => `step-indicator-${useId()}`);
 
 // The relative width of the bar, representing the current step.
 const proportionalValue = computed(() => {

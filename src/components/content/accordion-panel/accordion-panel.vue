@@ -38,15 +38,14 @@
 </template>
 
 <script setup>
-import { computed, inject, ref, useSlots } from "vue";
+import { computed, inject, ref, useId, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
-import { nanoid } from "nanoid";
 
 const { registerPanel, headingLevel, showPanelLabel, hidePanelLabel } = inject("accordion-group");
 
 const slots = useSlots();
 // The internal ID for this accordion panel.
-const id = nanoid();
+const id = useId();
 // Whether this panel is visible.
 const isVisible = ref(false);
 // The icon to show depending on the visibility of this panel.

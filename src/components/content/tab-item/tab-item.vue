@@ -9,9 +9,8 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, useSlots } from "vue";
+import { computed, inject, onMounted, useId, useSlots } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { nanoid } from "nanoid";
 
 const props = defineProps({
 	/**
@@ -50,7 +49,7 @@ const active = computed(() => activeTabId.value === tabId.value);
 // `component`.
 const label = computed(() => slots.label);
 // The ID of this tab, used to link the panel and the tab together.
-const tabId = computed(() => (isNonEmptyString(props.id) ? props.id : `tab-${nanoid()}`));
+const tabId = computed(() => (isNonEmptyString(props.id) ? props.id : `tab-${useId()}`));
 // The ID of this tab, used to link the panel and the tab together.
 const panelId = computed(() => `${tabId.value}-panel`);
 

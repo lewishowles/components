@@ -15,11 +15,10 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, useId } from "vue";
 import { brightColours, chartColours, getNextColour } from "@lewishowles/helpers/chart";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNumber } from "@lewishowles/helpers/number";
-import { nanoid } from "nanoid";
 
 const props = defineProps({
 	/**
@@ -91,7 +90,7 @@ const slices = computed(() => {
 		const slice = {
 			commands: getDrawCommandsForValue(value),
 			rotation: cumulativePercentage * 3.6,
-			id: nanoid(),
+			id: useId(),
 		};
 
 		cumulativePercentage += (value / total.value) * 100;

@@ -37,8 +37,7 @@
 
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
-import { computed } from "vue";
-import { nanoid } from "nanoid";
+import { computed, useId } from "vue";
 
 const props = defineProps({
 	/**
@@ -116,7 +115,7 @@ const props = defineProps({
 // provided minimum and maximum.
 const internalValue = computed(() => clamp(props.value, props.min, props.max));
 // The internal ID of this progress bar, used to link the bar to its label.
-const internalId = computed(() => `progress-bar-${nanoid()}`);
+const internalId = computed(() => `progress-bar-${useId()}`);
 
 // The relative width of the bar, representing the current value.
 const proportionalValue = computed(() => {

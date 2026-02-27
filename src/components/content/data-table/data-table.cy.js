@@ -1,6 +1,5 @@
 import DataTable from "./data-table.vue";
 import { createMount } from "@cypress/support/mount";
-import { nanoid } from "nanoid";
 
 const columns = {
 	title: { label: "Title", primary: true },
@@ -450,7 +449,7 @@ describe("data-table", () => {
 
 		describe("Table density", () => {
 			it("Table density can be selected", () => {
-				mount({ name: nanoid() });
+				mount({ name: "table-name" });
 
 				cy.getByData("data-table-cell").eq(0).shouldHaveClass("py-4");
 
@@ -464,7 +463,7 @@ describe("data-table", () => {
 
 		describe("Column visibility", () => {
 			it("All columns are visible by default", () => {
-				mount({ name: nanoid() });
+				mount({ name: "table-name" });
 
 				cy.getByData("data-table-heading").shouldHaveCount(3);
 

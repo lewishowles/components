@@ -1,6 +1,5 @@
 import NotificationHandler from "./notification-handler.vue";
 import { createMount } from "@cypress/support/mount";
-import { nanoid } from "nanoid";
 
 const mount = createMount(NotificationHandler, { props: { align: "start" } });
 const notificationMessage = "Mollit esse mollit aute id adipisicing. Do reprehenderit consequat non amet eu aliqua consequat do labore cupidatat sit sint elit pariatur. Mollit reprehenderit non et excepteur. Excepteur aliqua culpa nulla sint ad.";
@@ -348,7 +347,7 @@ function generateNotifications(count, overrides) {
  */
 function generateNotification(overrides) {
 	return {
-		id: nanoid(),
+		id: Math.random().toString(36).slice(2),
 		message: notificationMessage,
 		...overrides,
 	};
