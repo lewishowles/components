@@ -1,12 +1,13 @@
 /**
- * Register each of our documentation view components, which each live inside
- * @/docs/views/components/../*.vue
+ * Globally register each of our documentation view components helper
+ * components, such as `component-page`, which form the structure of each
+ * documentation page.
  *
  * @param  {App}  app
  *     The instance of the Vue app.
  */
 export default function registerDocComponents(app) {
-	const modules = import.meta.glob("@/docs/views/components/**/*.vue", { eager: true });
+	const modules = import.meta.glob("@/docs/views/components/fragments/**/*.vue", { eager: true });
 
 	for (const path in modules) {
 		const component = modules[path].default;

@@ -14,17 +14,18 @@ const baseRoutes = [
 ];
 
 // We want to auto-generate routes from our available views.
-const views = import.meta.glob("@/docs/views/**/*.vue");
+const views = import.meta.glob("@/docs/views/**/page-*.vue");
 
 // For each view, if it's in a category folder, such as "information", we
 // include that in the route. Otherwise, we only include the name of the route.
-// Since "page" is a convention for components and unnecessary in routes, we
-// remove it from the paths and route names.
 const routes = Object.keys(views).reduce((routes, path) => {
-	if (baseRoutes.some(route => path.includes(`page-${route.name}`)) || path.includes("/fragments/")) {
+	// If this is one of our named routes above, skip adding it again.
+	if (baseRoutes.some(route => path.includes(`page-${route.name}`))) {
 		return routes;
 	}
 
+	// Since "page" is a convention for components and unnecessary in routes, we
+	// remove it from the paths and route names.
 	const parts = path.split("/");
 	const name = parts.pop().replace("page-", "").replace(".vue", "").toLowerCase();
 	const isInSubFolder = parts.length > 4;
