@@ -47,7 +47,7 @@ import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 import { validateField as validateFormField } from "@lewishowles/helpers/form";
-import useInputId from "@/components/form/composables/use-input-id";
+import useInputId from "@/components/form/composables/use-input-id/use-input-id";
 
 const props = defineProps({
 	/**

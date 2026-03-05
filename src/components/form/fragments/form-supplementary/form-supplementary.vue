@@ -13,7 +13,7 @@
 <script setup>
 import { computed, useSlots, watch } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
-import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
+import useFormSupplementary from "@/components/form/composables/use-form-supplementary/use-form-supplementary";
 
 import FormError from "@/components/form/fragments/form-error/form-error.vue";
 import FormHelp from "@/components/form/fragments/form-help/form-help.vue";

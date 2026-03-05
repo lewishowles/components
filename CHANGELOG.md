@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.6.0
+
+### Features
+
+- `form-select` - New `labelKey` and `valueKey` options have been added, allowing a label and value to be extracted from any list of objects provided to `options`.
+- `form-radio-button-group` - New `labelKey` and `valueKey` options have been added, allowing a label and value to be extracted from any list of objects provided to `options`.
+- `form-checkbox-group` - New `labelKey` and `valueKey` options have been added, allowing a label and value to be extracted from any list of objects provided to `options`.
+
 ## 1.5.1
 
 ### Fixes

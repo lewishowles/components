@@ -27,11 +27,42 @@
 				<ul>
 					<li>An array of strings <code>[&quot;option1&quot;, &quot;option2&quot;, &quot;option3&quot;]</code>, in which case both the label and value are the same.</li>
 					<li>An array of numbers <code>[1, 2, 3]</code>, in which case both the label and value are the same.</li>
-					<li>An object <code>{ value: &quot;label&quot; }</code> where each key is the value of oan option, and each value is the label.</li>
 					<li>An array of objects <code>[{ label: &quot;Label&quot;, value: &quot;value&quot; }]</code> where labels and values are explicitly defined.</li>
+					<li>An array of objects combined with the <code>labelKey</code> and <code>valueKey</code> properties.</li>
+					<li>An object <code>{ value: &quot;label&quot; }</code> where each key is the value of oan option, and each value is the label.</li>
 				</ul>
+			</component-prop>
 
-				<p>It is possible to combine both array options, but generally not recommended.</p>
+			<component-prop id="prop-label-key">
+				<template #name>
+					labelKey
+				</template>
+
+				<template #type>
+					String
+				</template>
+
+				<template #default-value>
+					label
+				</template>
+
+				The key needed to find each option's label within its object. If an individual option is a string or number, this is ignored.
+			</component-prop>
+
+			<component-prop id="prop-value-key">
+				<template #name>
+					valueKey
+				</template>
+
+				<template #type>
+					String
+				</template>
+
+				<template #default-value>
+					value
+				</template>
+
+				The key needed to find each option's value within its object. If an individual option is a string or number, this is ignored.
 			</component-prop>
 
 			<component-prop id="prop-allow-empty">

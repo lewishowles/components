@@ -51,8 +51,8 @@
  */
 import { computed, useSlots, useTemplateRef } from "vue";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
-import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
-import useInputId from "@/components/form/composables/use-input-id";
+import useFormSupplementary from "@/components/form/composables/use-form-supplementary/use-form-supplementary";
+import useInputId from "@/components/form/composables/use-input-id/use-input-id";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
 import FormLabel from "@/components/form/form-label/form-label.vue";

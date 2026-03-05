@@ -51,12 +51,12 @@
  * `error` and `help` slots exist for additional descriptive text.
  */
 import { computed, useSlots, useTemplateRef } from "vue";
-import { firstDefined, isNonEmptyArray } from "@lewishowles/helpers/array";
-import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { firstDefined } from "@lewishowles/helpers/array";
+import { get } from "@lewishowles/helpers/object";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
-import { isNonEmptyString } from "@lewishowles/helpers/string";
-import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
-import useInputId from "@/components/form/composables/use-input-id";
+import useFormSupplementary from "@/components/form/composables/use-form-supplementary/use-form-supplementary";
+import useInputId from "@/components/form/composables/use-input-id/use-input-id";
+import useOptions from "@/components/form/composables/use-options/use-options";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
 import FormLabel from "@/components/form/form-label/form-label.vue";
@@ -64,13 +64,31 @@ import FormSupplementary from "@/components/form/fragments/form-supplementary/fo
 
 const props = defineProps({
 	/**
-	 * The options for this select. Options can either be a string, which is
-	 * used for both the label and the value, or a `{ label, value }` object,
-	 * allowing them to differ.
+	 * The options for this select. Options can be a string, used for both the
+	 * label and value, an object containing a "label" and "value", or an object
+	 * in conjunction with the `labelKey` and `valueKey` props.
 	 */
 	options: {
-		type: Array,
+		type: [Array, Object],
 		default: () => [],
+	},
+
+	/**
+	 * The key needed to find each option's label within its object. If an
+	 * individual option is a string or number, this is ignored.
+	 */
+	labelKey: {
+		type: String,
+		default: "label",
+	},
+
+	/**
+	 * The key needed to find each option's value within its object. If an
+	 * individual option is a string or number, this is ignored.
+	 */
+	valueKey: {
+		type: String,
+		default: "value",
 	},
 
 	/**
@@ -120,6 +138,8 @@ const model = defineModel({
 
 // A reference to the input, which allows us to trigger focus on it.
 const selectElement = useTemplateRef("select-element");
+// Standardised options.
+const { options: internalOptions } = useOptions(props.options, { labelKey: props.labelKey, valueKey: props.valueKey });
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
@@ -130,25 +150,6 @@ const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 const haveHelp = computed(() => isNonEmptySlot(slots.help));
 // Whether error text has been provided.
 const haveError = computed(() => isNonEmptySlot(slots.error));
-
-// Standardise our input options into { label, value } objects.
-const internalOptions = computed(() => {
-	if (!isNonEmptyArray(props.options)) {
-		return [];
-	}
-
-	return props.options.reduce((options, option) => {
-		if (isNonEmptyString(option)) {
-			options.push({ label: option, value: option });
-		}
-
-		if (isNonEmptyObject(option) && Object.hasOwn(option, "label") && Object.hasOwn(option, "value")) {
-			options.push(option);
-		}
-
-		return options;
-	}, []);
-});
 
 // When initialising, if we are not allowed an empty option, select the first
 // option in the list.

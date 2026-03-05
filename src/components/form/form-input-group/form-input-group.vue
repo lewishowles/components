@@ -57,14 +57,12 @@
  * `form-input-group` allows options to be provided in a few different formats
  * for simplicity.
  */
-import { computed, ref, useId, useSlots } from "vue";
-import { deepCopy, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { computed, ref, useSlots } from "vue";
 import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
-import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { isNumber } from "@lewishowles/helpers/number";
-import useFormSupplementary from "@/components/form/composables/use-form-supplementary";
-import useInputId from "@/components/form/composables/use-input-id";
+import useFormSupplementary from "@/components/form/composables/use-form-supplementary/use-form-supplementary";
+import useInputId from "@/components/form/composables/use-input-id/use-input-id";
+import useOptions from "@/components/form/composables/use-options/use-options";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
 import FormLabel from "@/components/form/form-label/form-label.vue";
@@ -80,16 +78,31 @@ const props = defineProps({
 	},
 
 	/**
-	 * The input options. Options can be:
-	 *
-	 * string[] - ["option1", "option2", "option3"]
-	 * number[] - [1, 2, 3]
-	 * object   - { value: "label" }
-	 * object[] - [{ label: "Label", value: "value" }]
+	 * The options for this group. Options can be a string, used for both the
+	 * label and value, an object containing a "label" and "value", or an object
+	 * in conjunction with the `labelKey` and `valueKey` props.
 	 */
 	options: {
 		type: [Array, Object],
 		required: true,
+	},
+
+	/**
+	 * The key needed to find each option's label within its object. If an
+	 * individual option is a string or number, this is ignored.
+	 */
+	labelKey: {
+		type: String,
+		default: "label",
+	},
+
+	/**
+	 * The key needed to find each option's value within its object. If an
+	 * individual option is a string or number, this is ignored.
+	 */
+	valueKey: {
+		type: String,
+		default: "value",
 	},
 
 	/**
@@ -134,6 +147,8 @@ const slots = useSlots();
 const isRadio = computed(() => props.type === "radio");
 // Whether this is a checkbox variant
 const isCheckbox = computed(() => props.type === "checkbox");
+// Standardised options.
+const { options: internalOptions } = useOptions(props.options, { labelKey: props.labelKey, valueKey: props.valueKey });
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
 // The computed name of this field, either the one provided, or one generated
@@ -149,66 +164,6 @@ const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 const haveHelp = computed(() => isNonEmptySlot(slots.help));
 // Whether error text has been provided.
 const haveError = computed(() => isNonEmptySlot(slots.error));
-
-// Our standardised options, converting the range of allowed options formats
-// into an array of objects containing a label and a value.
-const internalOptions = computed(() => {
-	if (!isNonEmptyObject(props.options) && !isNonEmptyArray(props.options)) {
-		return [];
-	}
-
-	const providedOptions = deepCopy(props.options);
-	const options = [];
-
-	if (isNonEmptyObject(providedOptions)) {
-		for (const value in providedOptions) {
-			if (!Object.hasOwn(providedOptions, value)) {
-				continue;
-			}
-
-			const label = providedOptions[value];
-
-			options.push({ label, value });
-		}
-	}
-
-	if (isNonEmptyArray(providedOptions)) {
-		providedOptions.forEach(option => {
-			const isSimpleOption = isNumber(option) || isNonEmptyString(option);
-
-			if (!isSimpleOption && !isNonEmptyObject(option)) {
-				return;
-			}
-
-			if (isSimpleOption) {
-				options.push({ label: option, value: option });
-
-				return;
-			}
-
-			if (Object.hasOwn(option, "label") && Object.hasOwn(option, "value")) {
-				options.push(option);
-			}
-		});
-	}
-
-	if (!isNonEmptyArray(options)) {
-		return [];
-	}
-
-	// Before returning, we generate a random ID for each option, to allow us to
-	// properly link labels and inputs, as well as indicators as to the position
-	// of each option in the list.
-	const lastOptionIndex = options.length - 1;
-
-	return options.map((option, optionIndex) => {
-		option.first = optionIndex === 0;
-		option.last = optionIndex === lastOptionIndex;
-		option.id = useId();
-
-		return option;
-	});
-});
 
 /**
  * Trigger focus on the selected input, or the first if no selection has been

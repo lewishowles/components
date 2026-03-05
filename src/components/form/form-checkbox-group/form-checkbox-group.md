@@ -31,14 +31,27 @@ Any help text to display below the field.
 - type: `array|object`
 - **required**
 
-The options to display as checkboxes can be provided in a number of formats for ease.
+The options to be displayed as checkboxes can be provided in a number of formats for ease.
 
 - An array of strings `["option1", "option2", "option3"]`, in which case both the label and value are the same.
 - An array of numbers `[1, 2, 3]`, in which case both the label and value are the same.
-- An object `{ value: "label" }` where each key is the value of an option, and each value is the label.
 - An array of objects `[{ label: "Label", value: "value" }]` where labels and values are explicitly defined.
+- An array of objects combined with the `labelKey` and `valueKey` properties.
+- An object `{ value: "label" }` where each key is the value of oan option, and each value is the label.
 
-It is possible to combine both array options, but generally not recommended.
+### `labelKey`
+
+- type: `string`
+- default: `label`
+
+The key needed to find each option's label within its object. If an individual option is a string or number, this is ignored.
+
+### `valueKey`
+
+- type: `string`
+- default: `value`
+
+The key needed to find each option's value within its object. If an individual option is a string or number, this is ignored.
 
 ### `name`
 

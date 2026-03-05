@@ -77,7 +77,7 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber, isNumeric } from "@lewishowles/helpers/number";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { Temporal } from "temporal-polyfill";
-import useInputId from "@/components/form/composables/use-input-id";
+import useInputId from "@/components/form/composables/use-input-id/use-input-id";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
 import FormLabel from "@/components/form/form-label/form-label.vue";
