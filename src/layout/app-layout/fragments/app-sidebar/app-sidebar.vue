@@ -1,5 +1,5 @@
 <template>
-	<nav class="flex justify-between items-center gap-8 p-8 text-sm lg:flex-col lg:justify-start lg:items-start">
+	<nav class="flex justify-between items-center gap-8 p-8 text-sm lg:pt-[1.1875rem] lg:flex-col lg:justify-start lg:items-start">
 		<router-link v-bind="{ to: { name: 'home' } }">
 			<components-logo class="w-auto h-9 mr-auto" />
 
