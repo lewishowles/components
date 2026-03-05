@@ -2,6 +2,10 @@
 
 ## 1.6.0
 
+### New components
+
+- [`loading-spinner`](/src/components/content/loading-spinner/loading-spinner.md) - used primarily as part of `loading-indicator`, `loading-spinner` has been split off into an independent component.
+
 ### Features
 
 - `form-select` - New `labelKey` and `valueKey` options have been added, allowing a label and value to be extracted from any list of objects provided to `options`.
