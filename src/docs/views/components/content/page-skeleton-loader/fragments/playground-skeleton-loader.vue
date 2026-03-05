@@ -38,7 +38,7 @@ const userSkeleton = useTemplateGenerator("skeleton-indicator", {
 			isInline: true,
 		},
 	},
-	indent: 2,
+	indent: 1,
 });
 
 const additionalContent = useTemplateGenerator("div", {
