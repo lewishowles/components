@@ -1,6 +1,6 @@
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vitest";
-import {{PASCAL_CASE_NAME}} from "./{{COMPONENT_NAME}}.js";
+import {{PASCAL_CASE_NAME}} from "./{{COMPONENT_NAME}}.vue";
 
 const mount = createMount({{PASCAL_CASE_NAME}});
 

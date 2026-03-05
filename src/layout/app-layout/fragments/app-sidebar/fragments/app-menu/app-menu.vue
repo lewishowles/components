@@ -103,8 +103,11 @@
 					<app-menu-link to="/content/loading-indicator">
 						loading-indicator
 					</app-menu-link>
-					<app-menu-link to="/content/skeleton-loader">
-						skeleton-loader
+					<app-menu-link to="/content/loading-spinner">
+						loading-spinner
+					</app-menu-link>
+					<app-menu-link to="/content/loading-skeleton">
+						loading-skeleton
 					</app-menu-link>
 					<app-menu-link to="/content/none-found">
 						none-found

@@ -1,21 +1,21 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-skeleton-loader" v-model="textSlots">
+	<component-playground v-bind="{ copy: template }" id="playground-loading-skeleton" v-model="textSlots">
 		<template #title>
 			Skeleton loader
 		</template>
 
-		<skeleton-loader>
+		<loading-skeleton>
 			<template #label>
 				{{ textSlots.label?.value }}
 			</template>
 
-			<div class="flex flex-wrap gap-4">
-				<skeleton-indicator class="size-10 rounded-full" />
-				<skeleton-indicator class="size-10 rounded-full" />
-				<skeleton-indicator class="size-10 rounded-full" />
-				<skeleton-indicator class="size-10 rounded-full" />
+			<div class="flex flex-wrap gap-1">
+				<loading-skeleton-indicator class="size-10 rounded-full" />
+				<loading-skeleton-indicator class="size-10 rounded-full" />
+				<loading-skeleton-indicator class="size-10 rounded-full" />
+				<loading-skeleton-indicator class="size-10 rounded-full" />
 			</div>
-		</skeleton-loader>
+		</loading-skeleton>
 	</component-playground>
 </template>
 
@@ -31,7 +31,7 @@ const textSlots = ref({
 	},
 });
 
-const userSkeleton = useTemplateGenerator("skeleton-indicator", {
+const userSkeleton = useTemplateGenerator("loading-skeleton-indicator", {
 	props: {
 		class: {
 			value: "size-10 rounded-full",
@@ -44,7 +44,7 @@ const userSkeleton = useTemplateGenerator("skeleton-indicator", {
 const additionalContent = useTemplateGenerator("div", {
 	props: {
 		class: {
-			value: "flex flex-wrap gap-4",
+			value: "flex flex-wrap gap-1",
 			isInline: true,
 		},
 	},
@@ -57,5 +57,5 @@ const additionalContent = useTemplateGenerator("div", {
 	indent: 1,
 });
 
-const template = useTemplateGenerator("skeleton-loader", { slots: textSlots, additionalContent });
+const template = useTemplateGenerator("loading-skeleton", { slots: textSlots, additionalContent });
 </script>

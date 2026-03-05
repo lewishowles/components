@@ -1,10 +1,10 @@
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vitest";
-import SkeletonLoader from "./skeleton-loader.vue";
+import LoadingSkeleton from "./loading-skeleton.vue";
 
-const mount = createMount(SkeletonLoader);
+const mount = createMount(LoadingSkeleton);
 
-describe("skeleton-loader", () => {
+describe("loading-skeleton", () => {
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
 			const wrapper = mount();

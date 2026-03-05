@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="sr-only" aria-live="polite" data-test="skeleton-loader">
+		<div class="sr-only" aria-live="polite" data-test="loading-skeleton">
 			<slot name="label" />
 		</div>
 

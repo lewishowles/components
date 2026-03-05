@@ -12,6 +12,10 @@
 - `form-radio-button-group` - New `labelKey` and `valueKey` options have been added, allowing a label and value to be extracted from any list of objects provided to `options`.
 - `form-checkbox-group` - New `labelKey` and `valueKey` options have been added, allowing a label and value to be extracted from any list of objects provided to `options`.
 
+### Updates
+
+`skeleton-loader` - Renamed to `loading-skeleton` to better align with `loading-indicator`.
+
 ## 1.5.1
 
 ### Fixes
