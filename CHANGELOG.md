@@ -4,6 +4,7 @@
 
 ### New components
 
+- [`content-divider`](/src/components/content/content-divider/content-divider.md) - a standardised divider, with optional custom tag.
 - [`loading-spinner`](/src/components/content/loading-spinner/loading-spinner.md) - used primarily as part of `loading-indicator`, `loading-spinner` has been split off into an independent component.
 
 ### Features

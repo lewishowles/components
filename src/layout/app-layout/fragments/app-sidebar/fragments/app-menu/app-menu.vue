@@ -112,6 +112,9 @@
 					<app-menu-link to="/content/none-found">
 						none-found
 					</app-menu-link>
+					<app-menu-link to="/content/content-divider">
+						content-divider
+					</app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
