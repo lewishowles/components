@@ -60,7 +60,9 @@ for i in "${!templates[@]}"; do
 
 	sed "s/{{ICON_NAME}}/$ICON_NAME/g; s/{{PASCAL_CASE_NAME}}/$PASCAL_CASE_NAME/g" "$TEMPLATE_FILE" > "$OUTPUT_FILE"
 
-	code -r $OUTPUT_FILE
+	if [[ "$OUTPUT_FILE" == *.vue ]]; then
+		code -r "$OUTPUT_FILE"
+	fi
 done
 
 # Add the new icon to src/components/index.js
