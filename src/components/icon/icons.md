@@ -50,6 +50,7 @@ Each icon in the library is created using strokes, and can be coloured using the
 - icon-pin
 - icon-plus
 - icon-reload
+- icon-rss
 - icon-share
 - icon-slot
 - icon-spanner
@@ -58,6 +59,7 @@ Each icon in the library is created using strokes, and can be coloured using the
 - icon-test
 - icon-user
 - icon-warning
+- icon-wave
 
 ## Example
 
