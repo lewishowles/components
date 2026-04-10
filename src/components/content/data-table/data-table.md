@@ -161,9 +161,9 @@ Any additional configuration for columns. **Note:** Any column without configura
 |`searchable`|`boolean`|`true`|Whether this column is included in searches. If false, search will ignore this column entirely.|
 |`sortable`|`boolean`|`true`|Whether this column can be sorted.|
 |`align`|`string`|`left`|The alignment of the column. Anything but "right" will be treated as "left".|
-|`headingClasses`|`string`|`""`|Classes to apply only to this column's heading.|
-|`cellClasses`|`string`|`""`|Classes to apply only to this column's cells.|
-|`columnClasses`|`string`|`""`|Classes to apply to both this column's heading and cells.|
+|`headingClasses`|`Vue class binding`|`""`|Classes to apply only to this column's heading.|
+|`cellClasses`|`Vue class binding`|`""`|Classes to apply only to this column's cells.|
+|`columnClasses`|`Vue class binding`|`""`|Classes to apply to both this column's heading and cells.|
 
 ### `name`
 

@@ -95,21 +95,21 @@ When floating, whether to align to the dropdown to the start or end of the summa
 
 ### `summaryClasses`
 
-- type: `string`
+- type: `Vue class binding`
 - default: `null`
 
 Any classes to add to the summary element, allowing styling to wrap both the summary and icons.
 
 ### `detailsClasses`
 
-- type: `string`
+- type: `Vue class binding`
 - default: `null`
 
 Any classes to add to the details content wrapper.
 
 ### `iconClasses`
 
-- type: `string`
+- type: `Vue class binding`
 - default: `null`
 
 Any classes to add to the icon itself. Particularly useful if the icon is the only visible summary element.

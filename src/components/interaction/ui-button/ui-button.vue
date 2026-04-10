@@ -79,7 +79,7 @@ const props = defineProps({
 	 * (`size-`), the default size class will not be included.
 	 */
 	iconClasses: {
-		type: String,
+		type: [String, Array, Object],
 		default: null,
 	},
 });

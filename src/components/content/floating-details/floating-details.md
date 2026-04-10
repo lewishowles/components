@@ -96,42 +96,42 @@ Whether to align to the dropdown to the start or end of the summary. This is use
 
 ### `summaryClasses`
 
-- type: `string | array | object`
+- type: `Vue class binding`
 - default: `null`
 
 Any classes to add to the summary element, allowing styling to wrap both the summary and icons.
 
 ### `detailsClasses`
 
-- type: `string | array | object`
+- type: `Vue class binding`
 - default: `mt-3 rounded-md border border-grey-200 bg-white p-4 shadow`
 
 Any classes to add to the details content wrapper.
 
 ### detailsColourClasses
 
-- type: `string | array | object`
+- type: `Vue class binding`
 - default: `mt-3 rounded-md border border-grey-200 bg-white p-4 shadow`
 
 Any colours to apply to the details. These are passed as additional classes, but are separate so that colours can be redefined without affecting remaining styling.
 
 ### `detailsSizeClasses`
 
-- type: `string | array | object`
+- type: `Vue class binding`
 - default: `max-w-lg`
 
 Any classes to add to specify the details content's size. This is separate to details classes so that the appearance can be consistent even if the size is not.
 
 ### detailsAdditionalClasses
 
-- type: `string | array | object`
+- type: `Vue class binding`
 - default: `null`
 
 Any classes to add that don't fit into other categories. This is so that existing classes do not have to be reproduced.
 
 ### `iconClasses`
 
-- type: `string | array | object`
+- type: `Vue class binding`
 - default: `null`
 
 Any classes to add to the icon itself. Particularly useful if the icon is the only visible summary element.

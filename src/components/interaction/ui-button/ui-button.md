@@ -43,7 +43,7 @@ When a button is `reactive`, it will show a loading indicator when activated. Th
 
 ### `iconClasses`
 
-- type: `string`
+- type: `Vue class binding`
 - default: `null`
 
 Any classes to add to the icon itself. If a size class is added (`size-`), the default size class will not be included.

@@ -50,14 +50,14 @@ Whether to show the value to the user, formatted as a percentage.
 
 ### `trackClasses`
 
-- type: `string | array | object`
+- type: `Vue class binding`
 - default: `h-4 rounded-full bg-grey-200`
 
 Classes to apply to the track, which is the background behind the bar.
 
 ### `barClasses`
 
-- type: `string | array | object`
+- type: `Vue class binding`
 - default: `h-full rounded-full bg-purple-700`
 
 Classes to apply to the bar, which indicates the current value.

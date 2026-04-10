@@ -168,7 +168,7 @@
 				</template>
 
 				<template #type>
-					string | array | object
+					Vue class binding
 				</template>
 
 				<template #default-value>
@@ -184,7 +184,7 @@
 				</template>
 
 				<template #type>
-					string | array | object
+					Vue class binding
 				</template>
 
 				<template #default-value>
@@ -200,7 +200,7 @@
 				</template>
 
 				<template #type>
-					string | array | object
+					Vue class binding
 				</template>
 
 				<template #default-value>
@@ -216,7 +216,7 @@
 				</template>
 
 				<template #type>
-					string | array | object
+					Vue class binding
 				</template>
 
 				<template #default-value>

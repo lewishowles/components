@@ -91,7 +91,7 @@ const props = defineProps({
 	 * The colour classes to apply when displaying initials.
 	 */
 	initialsColourClasses: {
-		type: String,
+		type: [String, Array, Object],
 		default: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
 	},
 
@@ -99,7 +99,7 @@ const props = defineProps({
 	 * The colour classes to apply when displaying initials.
 	 */
 	initialsOutlineClasses: {
-		type: String,
+		type: [String, Array, Object],
 		default: "outline-white dark:outline-purple-200",
 	},
 });

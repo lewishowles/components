@@ -1,7 +1,7 @@
 <template>
 	<component-playground v-bind="{ copy: template, componentModel }" id="playground-progress-bar" v-model="textSlots">
 		<template #title>
-			Showing labels
+			Custom classes
 		</template>
 
 		<progress-bar v-bind="componentProps" v-model="componentModel">

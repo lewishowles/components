@@ -58,14 +58,14 @@ Overlap is true by default for "circle" avatars, and false by default for "squar
 
 ### `initialsColourClasses`
 
-- type: `string`
+- type: `Vue class binding`
 - default: `bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200`
 
 The colour classes to apply when displaying initials.
 
 ### `initialsOutlineClasses`
 
-- type: `string`
+- type: `Vue class binding`
 - default: `outline-white dark:outline-purple-200`
 
 The colour classes to apply when displaying initials.
