@@ -9,8 +9,12 @@
 
 ## New icons
 
-- `icon-wave`
+- `icon-location`
+- `icon-map`
 - `icon-rss`
+- `icon-wave`
+
+A number of other icons have also been updated to give them a more modern appearance.
 
 ### Features
 

@@ -1,18 +1,19 @@
 <template>
 	<base-icon>
 		<g fill="none">
-			<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.805,10.75 L9.787,15.397 C9.901,15.937 9.556,16.468 9.015,16.582 L8.037,16.789 C7.497,16.903 6.966,16.558 6.852,16.017 L5.75,10.75" />
-			<path fill="currentColor" d="M16.185,5.912 C16.068,6.007 16,6.149 16,6.3 L16,8.699 C16,8.85 16.068,8.992 16.185,9.087 C16.302,9.182 16.456,9.219 16.603,9.188 C17.425,9.015 18,8.32 18,7.499 C18,6.678 17.425,5.983 16.603,5.81 C16.456,5.779 16.302,5.816 16.185,5.911 L16.185,5.912 Z" />
-			<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.25,13.25 C14.25,13.25 12.313,10.75 10,10.75 C7.688,10.75 5,10.75 5,10.75 C3.205,10.75 1.75,9.295 1.75,7.5 C1.75,5.705 3.205,4.25 5,4.25 L10,4.25 C12.312,4.25 14.25,1.75 14.25,1.75 L14.25,13.25 Z" /><line
-				x1="5.75"
-				x2="5.75"
-				y1="4.25"
-				y2="10.75"
+			<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 11.457v2.704c0 .41.25.778.631.929l1.945.773c.4.159.856.044 1.134-.284L9.126 13.6" />
+			<ellipse
+				cx="13.5"
+				cy="9"
 				stroke="currentColor"
 				stroke-linecap="round"
 				stroke-linejoin="round"
 				stroke-width="1.5"
+				rx="2.75"
+				ry="6.25"
 			/>
+			<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12.954 15.125 2.61 11.002a1 1 0 0 1-.564-.549 3.73 3.73 0 0 1-.007-2.889 1.03 1.03 0 0 1 .573-.566C6.25 5.589 9.316 4.283 12.954 2.874" />
+			<path fill="currentColor" fill-rule="evenodd" d="M14.5 9A1.5 1.5 0 0 0 13 7.5c-.053 0-.103.01-.155.016a11.6 11.6 0 0 0 0 2.968c.052.005.102.016.155.016A1.5 1.5 0 0 0 14.5 9" />
 		</g>
 	</base-icon>
 </template>

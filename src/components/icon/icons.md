@@ -42,6 +42,8 @@ Each icon in the library is created using strokes, and can be coloured using the
 - icon-laptop
 - icon-lightbulb
 - icon-loading
+- icon-location
+- icon-map
 - icon-megaphone
 - icon-moon
 - icon-object
