@@ -1,8 +1,12 @@
 # Components
 
-A library of beautiful components with a focus on accessibility, as well as ease of use for developers and for users.
+A library of beautiful, heavily-tested components with a focus on accessibility, as well as ease of use for developers and users.
 
 [View documentation](https://components.howles.dev)
+
+## Heavily tested?
+
+The goal is to test the components as thoroughly as possible, from unit tests for more complex computed properties, to Cypress simulating user interactions. The library currently sits at >800 Vitest unit tests and >400 Cypress component tests.
 
 ## Why accessibility?
 
