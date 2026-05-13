@@ -73,6 +73,12 @@ describe("form-wrapper", () => {
 
 			cy.getByData("tertiary-actions-slot-test").shouldBeVisible();
 		});
+
+		it("The `error` slot can be utilised", () => {
+			mount({ slots: { error: h("div", { "data-test": "error-slot-test" }, "Slot test") } });
+
+			cy.getByData("error-slot-test").shouldBeVisible();
+		});
 	});
 
 	it("An error summary is shown on submit when a field is invalid", () => {

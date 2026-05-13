@@ -54,6 +54,13 @@
 
 				<p>Additional actions to appear below the primary and secondary actions, such as &quot;Cancel&quot;. Navigational actions, such as &quot;Back to …&quot; or &quot;Forgot password&quot; should appear above the form fields, such as in the <code>pre-form</code> slot.</p>
 			</component-slot>
+			<component-slot id="slot-error">
+				<template #name>
+					error
+				</template>
+
+				<p>A general error message to display to the user by the form's actions, useful for things like explaining an error message received after an API call failure.</p>
+			</component-slot>
 			<component-slot id="slot-error-summary-title">
 				<template #name>
 					error-summary-title

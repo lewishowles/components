@@ -34,6 +34,10 @@
 					<slot name="submit-button-label" />
 				</ui-button>
 
+				<alert-message v-if="haveErrorMessage" type="error">
+					<slot name="error" />
+				</alert-message>
+
 				<slot name="secondary-actions" />
 
 				<template #tertiary-actions>
@@ -57,6 +61,8 @@ const slots = useSlots();
 // Determine if we have a label. If not, show a warning to the user about
 // accessibility.
 const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button-label"]));
+// Determine if we have a general error message to show.
+const haveErrorMessage = computed(() => isNonEmptySlot(slots.error));
 
 // The current data for this form, as provided by the fields themselves.
 const formData = defineModel({

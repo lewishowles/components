@@ -20,6 +20,10 @@
 - `icon-sidebar`
 - `icon-users`
 
+### Features
+
+- `form-wrapper` - New `error` slot for general form errors, such as API responses.
+
 ## 1.6.0
 
 ### New components

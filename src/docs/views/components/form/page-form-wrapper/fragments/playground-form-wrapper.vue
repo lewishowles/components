@@ -33,6 +33,10 @@
 				{{ textSlots["submit-button-label"]?.value }}
 			</template>
 
+			<template #error>
+				{{ textSlots.error?.value }}
+			</template>
+
 			<template #error-summary-title>
 				{{ textSlots["error-summary-title"]?.value }}
 			</template>
@@ -56,6 +60,10 @@ const textSlots = ref({
 	"submit-button-label": {
 		label: "Submit button label",
 		value: "Create account",
+	},
+	"error": {
+		label: "Error message",
+		value: "General error message, explaining what the user can do next.",
 	},
 	"error-summary-title": {
 		label: "Error summary title",

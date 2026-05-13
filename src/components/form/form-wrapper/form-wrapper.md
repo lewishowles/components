@@ -28,6 +28,10 @@ Additional actions to appear beside the submit button—such as "Save and exit" 
 
 Additional actions to appear below the primary and secondary actions, such as "Cancel". Navigational actions, such as "Back to …" or "Forgot password" should appear above the form fields, such as in the `pre-form` slot.
 
+### `error`
+
+A general error message to display to the user by the form's actions, useful for things like explaining an error message received after an API call failure.
+
 ### `error-summary-title`
 
 - default: "There is a problem"
