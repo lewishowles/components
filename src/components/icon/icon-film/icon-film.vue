@@ -1,6 +1,6 @@
 <template>
 	<base-icon>
-		<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" stroke-width="1.5">
+		<g fill="none" stroke="currentColor">
 			<line x1="9" x2="9" y1="6.5" y2="11.5" />
 			<line x1="2" x2="16" y1="6.5" y2="6.5" />
 			<line x1="2" x2="16" y1="11.5" y2="11.5" />

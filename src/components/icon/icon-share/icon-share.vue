@@ -1,9 +1,7 @@
 <template>
 	<base-icon>
-		<g fill="none">
-			<path d="M1 1h15.872v15.872H1z" />
-			<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m11.912 10.424 2.976-2.976-2.976-2.976M12.904 14.392h-9.92V6.456" />
-			<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.464 11.912a5.95 5.95 0 0 1 5.766-4.464h3.658" />
+		<g fill="none" stroke="currentColor">
+			<path d="M11.75 7.25h1a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7.5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h1M6 4.25l3-3 3 3M9 1.25V12" />
 		</g>
 	</base-icon>
 </template>

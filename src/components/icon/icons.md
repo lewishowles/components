@@ -3,12 +3,17 @@
 Each icon in the library is created using strokes, and can be coloured using the `stroke` CSS property. The following icons are included in the library.
 
 - icon-arrow-down
+- icon-arrow-first
+- icon-arrow-last
 - icon-arrow-left
 - icon-arrow-right
 - icon-arrow-up
 - icon-bell
 - icon-bin
+- icon-car
 - icon-card
+- icon-cctv-camera
+- icon-chat
 - icon-check
 - icon-check-circled
 - icon-chevron-down
@@ -25,18 +30,22 @@ Each icon in the library is created using strokes, and can be coloured using the
 - icon-cog
 - icon-cross
 - icon-danger
+- icon-dashboard
 - icon-density-compact
 - icon-density-relaxed
 - icon-density-standard
 - icon-document
 - icon-download
 - icon-email
+- icon-exit
 - icon-external
 - icon-eye
 - icon-film
 - icon-function
 - icon-github
 - icon-hamburger
+- icon-help
+- icon-home
 - icon-image
 - icon-info
 - icon-laptop
@@ -48,18 +57,24 @@ Each icon in the library is created using strokes, and can be coloured using the
 - icon-moon
 - icon-object
 - icon-padlock
+- icon-padlock-unlocked
+- icon-parking
 - icon-pencil
+- icon-percent
 - icon-pin
 - icon-plus
 - icon-reload
 - icon-rss
+- icon-search
 - icon-share
+- icon-sidebar
 - icon-slot
 - icon-spanner
 - icon-star
 - icon-sun
 - icon-test
 - icon-user
+- icon-users
 - icon-warning
 - icon-wave
 

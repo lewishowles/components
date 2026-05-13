@@ -1,10 +1,8 @@
 <template>
 	<base-icon>
-		<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-			<circle cx="5.552" cy="6.5" r="2" />
-			<path d="M9.41 15.372c.524-.175.83-.744.637-1.259a4.802 4.802 0 0 0-8.988 0c-.194.516.113 1.085.636 1.259a12.183 12.183 0 0 0 7.717 0z" />
-			<circle cx="11.802" cy="4" r="2" />
-			<path d="M12.55 13.477a12.2 12.2 0 0 0 3.11-.605c.523-.175.83-.744.636-1.259a4.802 4.802 0 0 0-7.137-2.319" />
+		<g fill="none" stroke="currentColor">
+			<circle cx="9" cy="4.5" r="2.75" />
+			<path d="M13.762 15.516c.86-.271 1.312-1.221.947-2.045A6.24 6.24 0 0 0 9 9.75a6.24 6.24 0 0 0-5.709 3.721c-.365.825.087 1.774.947 2.045a15.84 15.84 0 0 0 9.524 0" />
 		</g>
 	</base-icon>
 </template>

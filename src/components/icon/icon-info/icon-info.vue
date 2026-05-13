@@ -1,6 +1,6 @@
 <template>
 	<base-icon>
-		<g fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+		<g fill="none">
 			<circle
 				cx="9.25"
 				cy="9.25"

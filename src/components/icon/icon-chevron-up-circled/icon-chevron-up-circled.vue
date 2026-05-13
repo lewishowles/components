@@ -1,8 +1,8 @@
 <template>
 	<base-icon>
-		<g fill="none" stroke="currentColor" stroke-width="1.5">
+		<g fill="none" stroke="currentColor">
 			<circle cx="9" cy="9" r="8.25" />
-			<path stroke-linecap="round" stroke-linejoin="round" d="M12 10 9 7l-3 3" />
+			<path d="M12 10 9 7l-3 3" />
 		</g>
 	</base-icon>
 </template>

@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.7.0
+
+### New icons
+
+- `icon-arrow-first`
+- `icon-arrow-last`
+- `icon-car`
+- `icon-cctv-camera`
+- `icon-chat`
+- `icon-dashboard`
+- `icon-exit`
+- `icon-help`
+- `icon-home`
+- `icon-padlock-unlocked`
+- `icon-parking`
+- `icon-percent`
+- `icon-search`
+- `icon-sidebar`
+- `icon-users`
+
 ## 1.6.0
 
 ### New components
@@ -7,7 +27,7 @@
 - [`content-divider`](/src/components/content/content-divider/content-divider.md) - a standardised divider, with optional custom tag.
 - [`loading-spinner`](/src/components/content/loading-spinner/loading-spinner.md) - used primarily as part of `loading-indicator`, `loading-spinner` has been split off into an independent component.
 
-## New icons
+### New icons
 
 - `icon-location`
 - `icon-map`

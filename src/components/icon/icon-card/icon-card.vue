@@ -1,6 +1,6 @@
 <template>
 	<base-icon>
-		<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+		<g fill="none" stroke="currentColor">
 			<path d="M1.75 7.25h14.5" />
 			<rect
 				width="14.5"
