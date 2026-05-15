@@ -4,7 +4,6 @@
 
 <script setup>
 import { computed } from "vue";
-import { isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { Temporal } from "temporal-polyfill";
 
@@ -61,10 +60,6 @@ const displayDate = computed(() => {
 
 	try {
 		const temporalDate = Temporal[temporalClass.value].from(props.date);
-
-		if (!isNonEmptyString(props.locale) && !isNonEmptyObject(props.format)) {
-			return temporalDate.toLocaleString();
-		}
 
 		return temporalDate.toLocaleString(props.locale, props.format);
 	} catch (error) {
