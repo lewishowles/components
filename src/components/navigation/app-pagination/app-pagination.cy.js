@@ -174,8 +174,11 @@ function goToLastPage() {
 	cy.getByData("app-pagination-page").last().click();
 }
 
-// Find the page that is highlighted (and thus the current page), and check that
-// it contains the correct number.
+// Find the page that is marked as current via aria-current, and check that
+// it displays the correct number.
 function assertCurrentPage(number) {
-	cy.get("button.bg-purple-800").shouldHaveText(number);
+	cy.getByData("app-pagination-page")
+		.filter("[aria-current=page]")
+		.find("[data-test=app-pagination-page-button]")
+		.shouldHaveText(String(number));
 }
