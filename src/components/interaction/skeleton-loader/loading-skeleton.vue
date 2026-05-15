@@ -4,7 +4,7 @@
 			&lt;loading-skeleton&gt;
 		</template>
 
-		A label is required for accessibility purposes.
+		A `label` is required for accessibility purposes.
 	</alert-message>
 
 	<div>
