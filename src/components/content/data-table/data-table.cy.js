@@ -194,7 +194,7 @@ describe("data-table", () => {
 			mount({
 				columns: {
 					...columns,
-					box_office: { label: "Box office", headingClasses: "text-right" },
+					box_office: { label: "Box office", sortable: false, headingClasses: "text-right" },
 				},
 			});
 
@@ -218,7 +218,7 @@ describe("data-table", () => {
 			mount({
 				columns: {
 					...columns,
-					box_office: { label: "Box office", columnClasses: "text-right" },
+					box_office: { label: "Box office", sortable: false, columnClasses: "text-right" },
 				},
 			});
 
@@ -232,6 +232,7 @@ describe("data-table", () => {
 					...columns,
 					box_office: {
 						label: "Box office",
+						sortable: false,
 						columnClasses: "text-right",
 						headingClasses: "text-purple-800",
 						cellClasses: "text-purple-600",
