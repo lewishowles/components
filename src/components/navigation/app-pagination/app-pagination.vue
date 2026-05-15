@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber } from "@lewishowles/helpers/number";
 import { getUrlParameter, updateUrlParameter } from "@lewishowles/helpers/url";
@@ -100,11 +100,24 @@ const haveLabel = computed(() => isNonEmptyString(props.label));
 // The number of items that will be displayed per page.
 const itemsPerPage = ref(10);
 
+// The page number from the URL parameter, read at setup time so that the
+// immediate watcher does not overwrite it before onMounted can read it.
+const urlPageParam = parseInt(getUrlParameter("page"));
+// The initial page, derived from the URL parameter when valid.
+const initialPage = isNumber(urlPageParam) && urlPageParam > 0 ? urlPageParam : 1;
+
 // The current page we're looking at.
 const currentPage = defineModel({
 	type: Number,
 	default: 1,
 });
+
+// Initialise currentPage from the URL parameter now, before the immediate
+// watcher fires — otherwise the watcher would call updateUrlParameter("page", 1)
+// and overwrite the URL before onMounted can read it.
+if (isNumber(initialPage) && initialPage > 0 && initialPage <= pageCount.value) {
+	currentPage.value = initialPage;
+}
 
 // The number of pages, based on the total number of items and the items
 // displayed per page.
@@ -202,18 +215,6 @@ const firstItem = computed(() => ((currentPage.value - 1) * itemsPerPage.value) 
 // settings. With the last item, we need to account for a single page that
 // contains fewer than the number of items per page.
 const lastItem = computed(() => Math.min(firstItem.value + itemsPerPage.value - 1, props.count));
-
-// When mounting, check if there is a "page" parameter in the URL, and
-// initialise our current page with that.
-onMounted(() => {
-	const pageParam = parseInt(getUrlParameter("page"));
-
-	if (!isNumber(pageParam) || pageParam <= 0 || pageParam > pageCount.value) {
-		return;
-	}
-
-	currentPage.value = pageParam;
-});
 
 /**
  * Select the next page, limited to 1.
