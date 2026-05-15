@@ -1,7 +1,7 @@
 <template>
 	<floating-details v-bind="{ includeIcon: false, align, summaryClasses: 'button--muted relative p-3' }" class="w-min text-sm" data-test="notification-handler">
 		<template #summary>
-			<icon-bell />
+			<icon-bell class="mx-[-0.25em] my-[0.25em]" />
 
 			<span class="sr-only">
 				<slot name="show-notifications-label">

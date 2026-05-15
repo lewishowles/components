@@ -1,11 +1,11 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-ui-button" v-model="textSlots">
+	<component-playground v-bind="{ copy: template }" id="playground-ui-button-icon-only" v-model="textSlots">
 		<template #title>
-			Simple button
+			Icon-only button
 		</template>
 
 		<template #introduction>
-			<p>A simple UI button</p>
+			<p>A button with an icon prefix</p>
 		</template>
 
 		<ui-button v-bind="componentProps">
@@ -28,6 +28,14 @@ const textSlots = ref({
 
 // Props both for the template and for the component example itself.
 const props = ref({
+	iconStart: {
+		label: "Prefix icon",
+		value: "icon-user",
+	},
+	iconOnly: {
+		label: "Icon only",
+		value: true,
+	},
 	class: {
 		label: "Button classes",
 		value: "button--primary",

@@ -163,6 +163,7 @@
 		<component-playgrounds>
 			<playground-ui-button />
 			<playground-ui-button-icon />
+			<playground-ui-button-icon-only />
 			<playground-ui-button-reactive />
 			<playground-ui-button-trigger-reactive-state />
 			<playground-ui-button-full-width />
@@ -173,6 +174,7 @@
 <script setup>
 import PlaygroundUiButton from "./fragments/playground-ui-button.vue";
 import PlaygroundUiButtonIcon from "./fragments/playground-ui-button-icon.vue";
+import PlaygroundUiButtonIconOnly from "./fragments/playground-ui-button-icon-only.vue";
 import PlaygroundUiButtonReactive from "./fragments/playground-ui-button-reactive.vue";
 import PlaygroundUiButtonTriggerReactiveState from "./fragments/playground-ui-button-trigger-reactive-state.vue";
 import PlaygroundUiButtonFullWidth from "./fragments/playground-ui-button-full-width.vue";
