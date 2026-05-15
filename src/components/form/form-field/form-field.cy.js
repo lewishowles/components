@@ -14,7 +14,7 @@ describe("form-field", () => {
 			[{ type: "textarea" }, "form-textarea"],
 			[{ type: "checkbox" }, "form-checkbox"],
 			[{ type: "radio-group", options: [] }, "form-radio-group"],
-			[{ type: "checkbox-group", options: [] }, "form-radio-group"],
+			[{ type: "checkbox-group", options: [] }, "form-checkbox-group"],
 			[{ type: "button-group", options: [] }, "button-group"],
 		].forEach(([props, component]) => {
 			mount({ props });
