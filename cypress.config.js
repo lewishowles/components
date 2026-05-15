@@ -1,5 +1,6 @@
 import { defineConfig } from "cypress";
 import viteConfig from "./vite.config";
+import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
@@ -18,7 +19,7 @@ export default defineConfig({
 			bundler: "vite",
 			viteConfig: {
 				...viteConfig,
-				plugins: [vue()],
+				plugins: [tailwindcss(), vue()],
 			},
 		},
 		viewportWidth: 1000,
