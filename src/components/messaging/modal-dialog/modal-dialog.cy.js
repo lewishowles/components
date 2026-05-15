@@ -1,4 +1,4 @@
-import ModalDialogInteractionTest from "./modal-dialog-interaction-test.vue";
+import ModalDialogInteractionTest from "./test-fixtures/interaction-test.vue";
 import { createMount } from "@cypress/support/mount";
 
 const mount = createMount(ModalDialogInteractionTest);
