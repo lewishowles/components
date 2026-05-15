@@ -7,6 +7,6 @@ describe("base-modal", () => {
 	it("A component is rendered", () => {
 		mount();
 
-		cy.getByData("base-modal").shouldBeVisible();
+		cy.getByData("modal-dialog").shouldBeVisible();
 	});
 });
