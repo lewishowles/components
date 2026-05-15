@@ -14,9 +14,18 @@ describe("loading-skeleton", () => {
 		cy.getByData("loading-skeleton-indicator").shouldBeVisible();
 	});
 
-	it("A label is included", () => {
-		mount();
+	describe("Validation", () => {
+		it("A warning is shown if no label slot is provided", () => {
+			mount();
 
-		cy.getByData("loading-skeleton").shouldHaveText("Loading…");
+			cy.getByData("loading-skeleton-no-label").shouldBeVisible();
+		});
+
+		it("A label is included when provided", () => {
+			mount({ slots: { label: "Loading user data" } });
+
+			cy.getByData("loading-skeleton-no-label").should("not.exist");
+			cy.getByData("loading-skeleton").shouldHaveText("Loading user data");
+		});
 	});
 });
