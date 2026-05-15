@@ -1,5 +1,5 @@
 <template>
-	<field-wrapper v-bind="{ tag: 'fieldset', 'aria-describedby': describedBy }" class="@container">
+	<field-wrapper v-bind="{ tag: 'fieldset', 'aria-describedby': describedBy }" class="@container" data-test="form-input-group">
 		<form-label v-bind="{ tag: 'legend' }">
 			<slot />
 		</form-label>
