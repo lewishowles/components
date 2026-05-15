@@ -5,7 +5,7 @@ const mount = createMount(ContentDivider);
 
 describe("content-divider", () => {
 	it("A component is rendered", () => {
-		mount();
+		mount({ tag: "hr" });
 
 		cy.getByData("content-divider").shouldBeVisible();
 	});
