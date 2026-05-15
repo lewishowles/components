@@ -49,8 +49,6 @@ const haveTitle = computed(() => isNonEmptySlot(slots.title));
 // if it is not needed.
 const haveActions = computed(() => isNonEmptySlot(slots.actions));
 
-runComponentMethod(dialog.value, "initialiseDialog");
-
 /**
  * Open the dialog.
  */

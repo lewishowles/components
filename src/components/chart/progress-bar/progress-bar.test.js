@@ -48,7 +48,18 @@ describe("progress-bar", () => {
 
 				await wrapper.setProps({ min: 40, max: 80, value: 50 });
 
-				expect(wrapper.vm.percentageValue).toBe(12.5);
+				expect(wrapper.vm.percentageValue).toBe(13);
+			});
+		});
+
+		describe("internalId", () => {
+			test("should be stable across re-renders", async() => {
+				const wrapper = mount({ value: 25 });
+				const id = wrapper.vm.internalId;
+
+				await wrapper.setProps({ value: 75 });
+
+				expect(wrapper.vm.internalId).toBe(id);
 			});
 		});
 	});

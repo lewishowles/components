@@ -115,7 +115,8 @@ const props = defineProps({
 // provided minimum and maximum.
 const internalValue = computed(() => clamp(props.value, props.min, props.max));
 // The internal ID of this progress bar, used to link the bar to its label.
-const internalId = computed(() => `progress-bar-${useId()}`);
+const uid = useId();
+const internalId = computed(() => `progress-bar-${uid}`);
 
 // The relative width of the bar, representing the current value.
 const proportionalValue = computed(() => {
@@ -126,6 +127,6 @@ const proportionalValue = computed(() => {
 	return (internalValue.value - props.min) / props.max;
 });
 
-// The percentage bar width - as a number between 0 and 100.
-const percentageValue = computed(() => proportionalValue.value * 100);
+// The percentage bar width - as a rounded number between 0 and 100.
+const percentageValue = computed(() => Math.round(proportionalValue.value * 100));
 </script>

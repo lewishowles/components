@@ -423,7 +423,7 @@ function markAllNotificationsRead() {
 		return;
 	}
 
-	emit("notifications:read", [notificationIDs]);
+	emit("notifications:read", notificationIDs);
 
 	notificationsMarkedAsRead.value.push(...notificationIDs);
 }

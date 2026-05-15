@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.0
+
+- A number of accessibility improvements have been made, particularly around announcing progress to screen readers.
+
 ## 1.7.0
 
 ### New icons

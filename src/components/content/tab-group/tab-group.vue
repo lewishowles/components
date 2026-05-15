@@ -1,15 +1,16 @@
 <template>
 	<div data-test="tab-group">
-		<nav ref="tabBarReference" class="mb-12 border-b border-grey-200 dark:border-white/20" :class="{ 'wrap-tabs': wrap }" data-selector="tab-group-nav">
+		<div ref="tabBarReference" class="mb-12 border-b border-grey-200 dark:border-white/20" :class="{ 'wrap-tabs': wrap }" data-selector="tab-group-nav">
 			<ol class="-mb-px flex items-end" :class="{ 'overflow-x-auto': !wrap, 'flex-wrap': wrap }" role="tablist">
 				<li v-for="tab in tabs" :key="tab.tabId">
 					<link-tag
 						v-bind="{
 							'id': tab.tabId,
 							'href': `#${tab.panelId}`,
+							'role': 'tab',
 							'aria-controls': tab.panelId,
 							'aria-selected': tab.active,
-							'tabindex': tab.active ? '1' : '-1',
+							'tabindex': tab.active ? 0 : -1,
 							'icon-start': tab.icon,
 						}"
 						ref="tabAnchors"
@@ -25,7 +26,7 @@
 					</link-tag>
 				</li>
 			</ol>
-		</nav>
+		</div>
 
 		<slot />
 	</div>

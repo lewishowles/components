@@ -631,7 +631,7 @@ describe("notification-handler", () => {
 
 				vm.markAllNotificationsRead();
 
-				expect(wrapper.emitted("notifications:read")).toEqual([[[["notification-1", "notification-3"]]]]);
+				expect(wrapper.emitted("notifications:read")).toEqual([[["notification-1", "notification-3"]]]);
 				expect(vm.notificationsMarkedAsRead).toEqual(["notification-1", "notification-3"]);
 			});
 
@@ -651,7 +651,7 @@ describe("notification-handler", () => {
 
 				vm.markAllNotificationsRead();
 
-				expect(wrapper.emitted("notifications:read")).toEqual([[[["notification-2"]]]]);
+				expect(wrapper.emitted("notifications:read")).toEqual([[["notification-2"]]]);
 				expect(vm.notificationsMarkedAsRead).toEqual(["notification-2"]);
 			});
 		});

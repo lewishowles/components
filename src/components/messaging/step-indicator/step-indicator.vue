@@ -1,7 +1,6 @@
 <template>
 	<div
 		v-bind="{
-			'aria-label': label,
 			'aria-valuenow': internalCurrentStep,
 			'aria-valuemin': 1,
 			'aria-valuemax': stepCount,
@@ -61,8 +60,9 @@ const label = computed(() => getSlotText(slots.default));
 // The internal current value, allowing us to bind the current value to the
 // provided minimum and maximum.
 const internalCurrentStep = computed(() => clamp(props.currentStep, 1, props.stepCount));
-// The internal ID of this progress bar, used to link the bar to its label.
-const internalId = computed(() => `step-indicator-${useId()}`);
+// The internal ID of this step indicator, used to link the bar to its label.
+const uid = useId();
+const internalId = computed(() => `step-indicator-${uid}`);
 
 // The relative width of the bar, representing the current step.
 const proportionalValue = computed(() => {

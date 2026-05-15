@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import SummaryDetails from "./summary-details.vue";
 
 const mount = createMount(SummaryDetails);
@@ -10,6 +10,19 @@ describe("summary-details", () => {
 			const wrapper = mount();
 
 			expect(wrapper.vm).toBeTypeOf("object");
+		});
+	});
+
+	describe("Escape key", () => {
+		test("should not call preventDefault when closed", () => {
+			mount({ closeWithEscape: true });
+
+			const event = new KeyboardEvent("keydown", { key: "Escape", bubbles: true });
+			const preventDefaultSpy = vi.spyOn(event, "preventDefault");
+
+			window.dispatchEvent(event);
+
+			expect(preventDefaultSpy).not.toHaveBeenCalled();
 		});
 	});
 

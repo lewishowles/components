@@ -166,7 +166,8 @@ const attrs = useAttrs();
 
 // Whether the details are currently open.
 const isOpen = defineModel({
-	type: String,
+	type: Boolean,
+	default: false,
 });
 
 // A reference to the details element, from which we can determine the current
@@ -234,11 +235,11 @@ onMounted(() => {
  * within the component, move focus to the summary.
  */
 onKeyStroke("Escape", e => {
-	e.preventDefault();
-
 	if (!isOpen.value || !props.closeWithEscape) {
 		return;
 	}
+
+	e.preventDefault();
 
 	closeDetails();
 
@@ -250,11 +251,11 @@ onKeyStroke("Escape", e => {
 });
 
 onClickOutside(detailsElement, e => {
-	e.preventDefault();
-
 	if (!isOpen.value || !props.closeWithClickOutside) {
 		return;
 	}
+
+	e.preventDefault();
 
 	closeDetails();
 });
