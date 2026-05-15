@@ -19,10 +19,10 @@ describe("floating-details", () => {
 
 			cy.getByData("floating-details-summary").click();
 			cy.getByData("floating-details").shouldHaveAttribute("open");
+			cy.getByData("floating-details-content").shouldBeVisible().shouldHaveClass("absolute");
 
 			cy.getByData("floating-details-summary").click();
 			cy.getByData("floating-details").shouldNotHaveAttribute("open");
-			cy.getByData("floating-details-content").shouldBeVisible().shouldHaveClass("absolute");
 		});
 
 		it("Details can be opened by default", () => {
@@ -124,6 +124,7 @@ function createSiblingElement(content, selector) {
 	cy.get("body").then(body => {
 		const siblingElement = document.createElement("div");
 
+		siblingElement.setAttribute("class", "mt-20");
 		siblingElement.setAttribute("data-test", selector);
 		siblingElement.innerText = content;
 
