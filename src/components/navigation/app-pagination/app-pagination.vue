@@ -115,7 +115,7 @@ const currentPage = defineModel({
 // Initialise currentPage from the URL parameter now, before the immediate
 // watcher fires — otherwise the watcher would call updateUrlParameter("page", 1)
 // and overwrite the URL before onMounted can read it.
-if (isNumber(initialPage) && initialPage > 0 && initialPage <= pageCount.value) {
+if (initialPage > 1 && initialPage <= pageCount.value) {
 	currentPage.value = initialPage;
 }
 

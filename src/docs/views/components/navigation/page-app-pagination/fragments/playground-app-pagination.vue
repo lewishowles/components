@@ -5,12 +5,10 @@
 		</template>
 
 		<template #introduction>
-			<p />
+			<p>A simple pagination example.</p>
 		</template>
 
-		<app-pagination v-bind="componentProps" v-model="componentModel">
-			{{ textSlots.default?.value }}
-		</app-pagination>
+		<app-pagination v-bind="componentProps" v-model="componentModel" />
 	</component-playground>
 </template>
 
