@@ -28,11 +28,12 @@ describe("step-indicator", () => {
 
 		cy.getByData("step-indicator")
 			.shouldHaveAttribute("role", "progressbar")
-			.shouldHaveAttribute("aria-label", "Address details")
 			.shouldHaveAttribute("aria-valuenow", "2")
 			.shouldHaveAttribute("aria-valuemin", "1")
 			.shouldHaveAttribute("aria-valuemax", "5")
 			.shouldHaveAttribute("aria-valuetext", "40%");
+
+		cy.getByData("step-indicator").shouldHaveAttribute("aria-labelledby");
 	});
 
 	it("The current progress is displayed", () => {
