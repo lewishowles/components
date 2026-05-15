@@ -4,7 +4,7 @@
 			<slot />
 		</form-label>
 
-		<conditional-wrapper v-bind="{ id: introductionId, wrap: haveIntroduction, tag: 'p' }">
+		<conditional-wrapper v-bind="{ id: introductionId, wrap: haveIntroduction, tag: 'p' }" data-test="form-input-introduction">
 			<slot name="introduction" />
 		</conditional-wrapper>
 
