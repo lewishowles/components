@@ -8,7 +8,9 @@
 			<p>A simple pagination example.</p>
 		</template>
 
-		<app-pagination v-bind="componentProps" v-model="componentModel" />
+		<app-pagination v-bind="componentProps" v-model="componentModel">
+			Sample pagination
+		</app-pagination>
 	</component-playground>
 </template>
 

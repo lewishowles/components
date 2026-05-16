@@ -1,26 +1,23 @@
 <template>
-	<alert-message v-if="!haveLabel" type="error">
-		<template #title>
-			&lt;app-pagination&gt;
-		</template>
+	<nav v-if="!haveSinglePage" v-bind="{ 'aria-labelledby': internalId }" class="flex flex-wrap items-center gap-4 text-center" data-test="app-pagination">
+		<span class="sr-only" v-bind="{ id: internalId }">
+			<slot>
+				Pagination
+			</slot>
+		</span>
 
-		A `label` is required for accessibility purposes.
-	</alert-message>
-
-	<nav v-else-if="!haveSinglePage" :aria-label="label" class="flex flex-wrap items-center gap-4 text-center" data-test="app-pagination">
-		<button
+		<ui-button
 			class="button flex items-center gap-2"
 			:class="{ 'text-grey-500 dark:text-white/60': showingFirstPage, 'underline hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200': !showingFirstPage }"
-			v-bind="{ 'disabled': showingFirstPage ? 'disabled' : null, 'aria-hidden': showingFirstPage ? 'true' : null }"
+			v-bind="{ disabled: showingFirstPage }"
+			icon-start="icon-arrow-left"
 			data-test="app-pagination-previous"
 			@click="selectPreviousPage"
 		>
-			<icon-arrow-left />
-
 			<slot name="previous-page-label">
 				Previous
 			</slot>
-		</button>
+		</ui-button>
 
 		<ul class="flex items-center">
 			<template v-for="page in pagesToDisplay" :key="page">
@@ -44,19 +41,18 @@
 			</template>
 		</ul>
 
-		<button
+		<ui-button
 			class="button flex items-center gap-2"
 			:class="{ 'text-grey-500 dark:text-white/60': showingLastPage, 'underline hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200': !showingLastPage }"
-			v-bind="{ 'disabled': showingLastPage ? 'disabled' : null, 'aria-hidden': showingLastPage ? 'true' : null }"
+			v-bind="{ disabled: showingLastPage }"
+			icon-end="icon-arrow-right"
 			data-test="app-pagination-next"
 			@click="selectNextPage"
 		>
 			<slot name="next-page-label">
 				Next
 			</slot>
-
-			<icon-arrow-right />
-		</button>
+		</ui-button>
 
 		<span class="ms-auto" data-test="app-pagination-showing-items-label">
 			<slot name="showing-items-label" v-bind="{ first: firstItem, last: lastItem, total: count }">
@@ -67,10 +63,9 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
-import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { isNumber } from "@lewishowles/helpers/number";
+import { computed, ref, useId, watch } from "vue";
 import { getUrlParameter, updateUrlParameter } from "@lewishowles/helpers/url";
+import { isNumber } from "@lewishowles/helpers/number";
 
 const props = defineProps({
 	/**
@@ -80,23 +75,12 @@ const props = defineProps({
 		type: Number,
 		default: 0,
 	},
-
-	// i18n
-
-	/**
-	 * The label for the pagination, intended to explain to screen reader users
-	 * the purpose of the navigation.
-	 */
-	label: {
-		type: String,
-		default: "Pagination",
-	},
 });
 
 const emit = defineEmits(["@update:page"]);
 
-// Whether a label for the pagination has been provided.
-const haveLabel = computed(() => isNonEmptyString(props.label));
+// An internal ID to link the pagination to its label.
+const internalId = useId();
 // The number of items that will be displayed per page.
 const itemsPerPage = ref(10);
 
@@ -112,13 +96,6 @@ const currentPage = defineModel({
 	default: 1,
 });
 
-// Initialise currentPage from the URL parameter now, before the immediate
-// watcher fires — otherwise the watcher would call updateUrlParameter("page", 1)
-// and overwrite the URL before onMounted can read it.
-if (initialPage > 1 && initialPage <= pageCount.value) {
-	currentPage.value = initialPage;
-}
-
 // The number of pages, based on the total number of items and the items
 // displayed per page.
 const pageCount = computed(() => {
@@ -128,6 +105,13 @@ const pageCount = computed(() => {
 
 	return Math.ceil(props.count / itemsPerPage.value);
 });
+
+// Initialise currentPage from the URL parameter now, before the immediate
+// watcher fires — otherwise the watcher would call updateUrlParameter("page", 1)
+// and overwrite the URL before onMounted can read it.
+if (initialPage > 1 && initialPage <= pageCount.value) {
+	currentPage.value = initialPage;
+}
 
 // Whether all items fit onto a single page.
 const haveSinglePage = computed(() => pageCount.value === 1);

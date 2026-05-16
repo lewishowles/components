@@ -26,25 +26,21 @@
 
 				<p>The number of items in the paginated collection.</p>
 			</component-prop>
-
-			<component-prop id="prop-label">
-				<template #name>
-					label
-				</template>
-
-				<template #type>
-					String
-				</template>
-
-				<template #default-value>
-					Pagination
-				</template>
-
-				<p>The label for the pagination, intended to explain to screen reader users the purpose of the navigation.</p>
-			</component-prop>
 		</component-props>
 
 		<component-slots>
+			<component-slot id="slot-default">
+				<template #name>
+					default
+				</template>
+
+				<template #default-value>
+					Label
+				</template>
+
+				<p>The label for the pagination, intended to explain to screen reader users the purpose of the navigation.</p>
+			</component-slot>
+
 			<component-slot id="slot-previous-page-label">
 				<template #name>
 					previous-page-label

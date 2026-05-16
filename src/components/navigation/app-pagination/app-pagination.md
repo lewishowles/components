@@ -8,6 +8,12 @@ Pagination will automatically be hidden if there are no items, or if the number 
 
 ## Slots
 
+### `default`
+
+- default: `Pagination`
+
+The label for the pagination, intended to explain to screen reader users the purpose of the navigation.
+
 ### `previous-page-label`
 
 - default: `Previous page`
@@ -50,13 +56,6 @@ A display of the current items being shown, giving the user an indication of whe
 - default: `0`
 
 The number of items in the paginated collection.
-
-### `label`
-
-- type: `string`
-- default: `Pagination`
-
-The label for the pagination, intended to explain to screen reader users the purpose of the navigation.
 
 ## Events
 

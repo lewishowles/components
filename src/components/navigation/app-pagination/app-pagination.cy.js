@@ -2,7 +2,8 @@ import AppPagination from "./app-pagination.vue";
 import { createMount } from "@cypress/support/mount";
 
 const defaultProps = { count: 100 };
-const mount = createMount(AppPagination, { props: defaultProps });
+const defaultSlots = { label: "App pagination test" };
+const mount = createMount(AppPagination, { props: defaultProps, slots: defaultSlots });
 
 describe("app-pagination", () => {
 	afterEach(() => {
