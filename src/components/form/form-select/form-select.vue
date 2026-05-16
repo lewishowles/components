@@ -16,6 +16,7 @@
 				v-bind="{
 					id: inputId,
 					'aria-describedby': describedBy,
+					'aria-invalid': haveError ? 'true' : undefined,
 					required,
 					...inputAttributes,
 				}"

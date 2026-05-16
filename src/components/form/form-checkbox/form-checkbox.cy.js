@@ -43,6 +43,20 @@ describe("form-checkbox", () => {
 		cy.getFormField("form-checkbox").shouldHaveAttribute("required");
 	});
 
+	describe("aria-invalid", () => {
+		it("is set when an error is provided", () => {
+			mount({ slots: { error: "Error text" } });
+
+			cy.getFormField("form-checkbox").shouldHaveAttribute("aria-invalid", "true");
+		});
+
+		it("is not set without an error", () => {
+			mount();
+
+			cy.getFormField("form-checkbox").shouldNotHaveAttribute("aria-invalid");
+		});
+	});
+
 	describe("Supplementary information", () => {
 		it("Help can be supplied", () => {
 			mount({ slots: { help: "Help text" } });

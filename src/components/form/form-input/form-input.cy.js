@@ -83,6 +83,20 @@ describe("form-input", () => {
 		});
 	});
 
+	describe("aria-invalid", () => {
+		it("is set when an error is provided", () => {
+			mount({ slots: { error: "Error text" } });
+
+			cy.getFormField("form-input").shouldHaveAttribute("aria-invalid", "true");
+		});
+
+		it("is not set without an error", () => {
+			mount();
+
+			cy.getFormField("form-input").shouldNotHaveAttribute("aria-invalid");
+		});
+	});
+
 	describe("Decoration", () => {
 		it("An icon can be added to the start", () => {
 			mount({ slots: { prefix: h(IconChevronLeft) } });

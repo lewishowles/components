@@ -21,6 +21,7 @@
 					id: inputId,
 					placeholder,
 					'aria-describedby': describedBy,
+					'aria-invalid': haveError ? 'true' : undefined,
 					required,
 					...inputAttributes,
 				}"

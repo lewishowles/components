@@ -26,6 +26,20 @@ describe("form-textarea", () => {
 		cy.getFormField("form-textarea").shouldHaveAttribute("autocomplete", "given-name");
 	});
 
+	describe("aria-invalid", () => {
+		it("is set when an error is provided", () => {
+			mount({ slots: { error: "Error text" } });
+
+			cy.getFormField("form-textarea").shouldHaveAttribute("aria-invalid", "true");
+		});
+
+		it("is not set without an error", () => {
+			mount();
+
+			cy.getFormField("form-textarea").shouldNotHaveAttribute("aria-invalid");
+		});
+	});
+
 	describe("Supplementary information", () => {
 		it("Help can be supplied", () => {
 			mount({ slots: { help: "Help text" } });

@@ -1,5 +1,15 @@
 <template>
-	<field-wrapper v-bind="{ tag: 'fieldset', 'aria-describedby': describedBy }" class="@container" data-test="form-input-group">
+	<field-wrapper
+		v-bind="{
+			tag: 'fieldset',
+			haveError,
+			'aria-describedby': describedBy,
+			'aria-invalid': haveError ? 'true' : undefined,
+			'aria-required': required ? 'true' : undefined,
+		}"
+		class="@container"
+		data-test="form-input-group"
+	>
 		<form-label v-bind="{ tag: 'legend' }">
 			<slot />
 		</form-label>
@@ -129,6 +139,14 @@ const props = defineProps({
 	 * vertical display is more clear for the user.
 	 */
 	inline: {
+		type: Boolean,
+		default: false,
+	},
+
+	/**
+	 * Whether this field group is required.
+	 */
+	required: {
 		type: Boolean,
 		default: false,
 	},

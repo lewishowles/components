@@ -32,6 +32,20 @@ describe("form-date", () => {
 		cy.getFormField("form-date-year").shouldHaveValue("2025");
 	});
 
+	describe("aria-invalid", () => {
+		it("is set on the fieldset when an error is provided", () => {
+			mount({ slots: { error: "Error text" } });
+
+			cy.getByData("form-date").shouldHaveAttribute("aria-invalid", "true");
+		});
+
+		it("is not set without an error", () => {
+			mount();
+
+			cy.getByData("form-date").shouldNotHaveAttribute("aria-invalid");
+		});
+	});
+
 	describe("Supplementary information", () => {
 		it("Help can be supplied", () => {
 			mount({ slots: { help: "Help text" } });

@@ -1,5 +1,5 @@
 <template>
-	<field-wrapper v-bind="{ tag: 'fieldset', haveError }" data-test="form-date">
+	<field-wrapper v-bind="{ tag: 'fieldset', haveError, 'aria-invalid': haveError ? 'true' : undefined }" data-test="form-date">
 		<form-label tag="legend">
 			<slot />
 		</form-label>
@@ -115,6 +115,8 @@ const dayInput = useTemplateRef("dayInput");
 const { inputId } = useInputId(props.id);
 // Whether an introduction has been provided.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
+// Whether error text has been provided.
+const haveError = computed(() => isNonEmptySlot(slots.error));
 
 initialise();
 
