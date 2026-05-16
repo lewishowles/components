@@ -47,8 +47,8 @@ describe("app-pagination", () => {
 		it("The user should not be able to navigate to previous pages", () => {
 			mount();
 
-			cy.getByData("app-pagination-previous").shouldHaveAttribute("disabled");
-			cy.getByData("app-pagination-next").shouldNotHaveAttribute("disabled");
+			cy.getByData("app-pagination-previous").shouldHaveAttribute("aria-disabled");
+			cy.getByData("app-pagination-next").shouldNotHaveAttribute("aria-disabled");
 			cy.getByData("app-pagination-summary").shouldHaveCount(1);
 
 			assertCurrentPage("1");
@@ -74,8 +74,8 @@ describe("app-pagination", () => {
 
 			goToMiddlePage();
 
-			cy.getByData("app-pagination-previous").shouldNotHaveAttribute("disabled");
-			cy.getByData("app-pagination-next").shouldNotHaveAttribute("disabled");
+			cy.getByData("app-pagination-previous").shouldNotHaveAttribute("aria-disabled");
+			cy.getByData("app-pagination-next").shouldNotHaveAttribute("aria-disabled");
 			cy.getByData("app-pagination-summary").shouldHaveCount(2);
 			cy.getByData("app-pagination-page").shouldHaveCount(5);
 
@@ -89,8 +89,8 @@ describe("app-pagination", () => {
 
 			goToLastPage();
 
-			cy.getByData("app-pagination-previous").shouldNotHaveAttribute("disabled");
-			cy.getByData("app-pagination-next").shouldHaveAttribute("disabled");
+			cy.getByData("app-pagination-previous").shouldNotHaveAttribute("aria-disabled");
+			cy.getByData("app-pagination-next").shouldHaveAttribute("aria-disabled");
 			cy.getByData("app-pagination-summary").shouldHaveCount(1);
 
 			assertCurrentPage("10");
@@ -127,7 +127,7 @@ describe("app-pagination", () => {
 
 			assertCurrentPage("1");
 
-			cy.getByData("app-pagination-previous").shouldHaveAttribute("disabled");
+			cy.getByData("app-pagination-previous").shouldHaveAttribute("aria-disabled");
 		});
 	});
 

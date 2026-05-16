@@ -2,7 +2,7 @@
 	<button
 		type="button"
 		class="inline-flex items-center justify-center"
-		:class="{ 'relative': reactive }"
+		:class="{ 'relative': reactive, 'button--disabled': disabled }"
 		v-bind="attributes"
 		data-test="ui-button"
 		@click="react"
@@ -75,6 +75,16 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether this button is disabled. Uses aria-disabled rather than the
+	 * native disabled attribute so the button remains in the tab order and
+	 * screen reader users can still encounter and understand it.
+	 */
+	disabled: {
+		type: Boolean,
+		default: false,
+	},
+
+	/**
 	 * Any classes to add to the icon itself. If a size class is added
 	 * (`size-`), the default size class will not be included.
 	 */
@@ -92,13 +102,16 @@ const haveIconStart = computed(() => isNonEmptyString(props.iconStart));
 // Whether an end icon is defined.
 const haveIconEnd = computed(() => isNonEmptyString(props.iconEnd));
 
-// Any additional attributes to apply to the button. For example, aria-live if
-// the button is reactive.
+// Any additional attributes to apply to the button.
 const attributes = computed(() => {
 	const attributes = {};
 
 	if (props.reactive) {
 		attributes["aria-live"] = "polite";
+	}
+
+	if (props.disabled) {
+		attributes["aria-disabled"] = "true";
 	}
 
 	return attributes;
@@ -142,6 +155,10 @@ const computedIconClasses = computed(() => {
  * Provide feedback to the user on the state of the button.
  */
 function react() {
+	if (props.disabled) {
+		return;
+	}
+
 	displayReactiveState();
 
 	emit("click");

@@ -130,6 +130,31 @@
 	}
 }
 
+.button--disabled {
+	background-color: var(--color-grey-100);
+	border-color: var(--color-grey-100);
+	color: var(--color-grey-600);
+	cursor: not-allowed;
+
+	&:is(:hover, :focus) {
+		background-color: var(--color-grey-100);
+		border-color: var(--color-grey-100);
+		color: var(--color-grey-600);
+	}
+
+	&:where(.dark, .dark *) {
+		background-color: rgb(255 255 255 / 10%);
+		border-color: rgb(255 255 255 / 10%);
+		color: rgb(255 255 255 / 40%);
+
+		&:is(:hover, :focus) {
+			background-color: rgb(255 255 255 / 10%);
+			border-color: rgb(255 255 255 / 10%);
+			color: rgb(255 255 255 / 40%);
+		}
+	}
+}
+
 .button--danger {
 	background-color: var(--color-red-700);
 	border-radius: var(--radius-md);

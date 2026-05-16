@@ -108,6 +108,22 @@
 
 				<p>Any classes to add to the icon itself. If a size class is added (<code>size-</code>), the default size class will not be included.</p>
 			</component-prop>
+
+			<component-prop id="prop-disabled">
+				<template #name>
+					disabled
+				</template>
+
+				<template #type>
+					Boolean
+				</template>
+
+				<template #default-value>
+					false
+				</template>
+
+				<p>Whether this button is disabled. Rather than using the native <code>disabled</code> attribute, which removes the button from the tab order entirely, this prop sets <code>aria-disabled="true"</code> and swallows click events. The button remains focusable, so keyboard and screen reader users can still encounter it and understand that the action is currently unavailable.</p>
+			</component-prop>
 		</component-props>
 
 		<component-slots>
@@ -167,15 +183,17 @@
 			<playground-ui-button-reactive />
 			<playground-ui-button-trigger-reactive-state />
 			<playground-ui-button-full-width />
+			<playground-ui-button-disabled />
 		</component-playgrounds>
 	</component-page>
 </template>
 
 <script setup>
 import PlaygroundUiButton from "./fragments/playground-ui-button.vue";
+import PlaygroundUiButtonDisabled from "./fragments/playground-ui-button-disabled.vue";
+import PlaygroundUiButtonFullWidth from "./fragments/playground-ui-button-full-width.vue";
 import PlaygroundUiButtonIcon from "./fragments/playground-ui-button-icon.vue";
 import PlaygroundUiButtonIconOnly from "./fragments/playground-ui-button-icon-only.vue";
 import PlaygroundUiButtonReactive from "./fragments/playground-ui-button-reactive.vue";
 import PlaygroundUiButtonTriggerReactiveState from "./fragments/playground-ui-button-trigger-reactive-state.vue";
-import PlaygroundUiButtonFullWidth from "./fragments/playground-ui-button-full-width.vue";
 </script>

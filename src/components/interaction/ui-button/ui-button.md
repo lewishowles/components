@@ -48,6 +48,13 @@ When a button is `reactive`, it will show a loading indicator when activated. Th
 
 Any classes to add to the icon itself. If a size class is added (`size-`), the default size class will not be included.
 
+### `disabled`
+
+- type: `boolean`
+- default: `false`
+
+Whether this button is disabled. Rather than using the native `disabled` attribute, which removes the button from the tab order entirely, this prop sets `aria-disabled="true"` and swallows click events. The button remains focusable so keyboard and screen reader users can still encounter it and understand the action is currently unavailable.
+
 ## Events
 
 ### `click`

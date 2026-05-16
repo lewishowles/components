@@ -4,6 +4,10 @@
 
 - A number of accessibility improvements have been made, particularly around announcing progress to screen readers.
 
+### Features
+
+- `ui-button` - New `disabled` prop for disabled (but still accessible) buttons.
+
 ## 1.7.0
 
 ### New icons

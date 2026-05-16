@@ -8,7 +8,7 @@
 
 		<ui-button
 			class="button flex items-center gap-2"
-			:class="{ 'text-grey-500 dark:text-white/60': showingFirstPage, 'underline hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200': !showingFirstPage }"
+			:class="{ 'underline hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200': !showingFirstPage }"
 			v-bind="{ disabled: showingFirstPage }"
 			icon-start="icon-arrow-left"
 			data-test="app-pagination-previous"
@@ -43,7 +43,7 @@
 
 		<ui-button
 			class="button flex items-center gap-2"
-			:class="{ 'text-grey-500 dark:text-white/60': showingLastPage, 'underline hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200': !showingLastPage }"
+			:class="{ 'underline hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200': !showingLastPage }"
 			v-bind="{ disabled: showingLastPage }"
 			icon-end="icon-arrow-right"
 			data-test="app-pagination-next"
