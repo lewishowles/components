@@ -22,7 +22,7 @@
 			<slot />
 
 			<form-actions>
-				<alert-message v-if="!haveSubmitButtonLabel" type="error" data-test="form-wrapper-submit-button-label-error">
+				<alert-message v-if="!haveSubmitButtonLabel" type="error" v-bind="{ live: false }" data-test="form-wrapper-submit-button-label-error">
 					<template #title>
 						&lt;form-wrapper&gt;
 					</template>

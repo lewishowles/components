@@ -1,5 +1,5 @@
 <template>
-	<alert-message v-if="!haveLabel" type="error" data-test="form-label-no-label">
+	<alert-message v-if="!haveLabel" type="error" v-bind="{ live: false }" data-test="form-label-no-label">
 		<template #title>
 			&lt;form-label&gt;
 		</template>
@@ -7,7 +7,7 @@
 		A label is required for accessibility purposes.
 	</alert-message>
 
-	<alert-message v-if="missingId" type="error" data-test="form-label-no-id">
+	<alert-message v-if="missingId" type="error" v-bind="{ live: false }" data-test="form-label-no-id">
 		<template #title>
 			&lt;form-label&gt;
 		</template>

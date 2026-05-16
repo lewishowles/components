@@ -1,5 +1,5 @@
 <template>
-	<alert-message v-if="!haveLabel" type="error">
+	<alert-message v-if="!haveLabel" type="error" v-bind="{ live: false }">
 		<template #title>
 			&lt;breadcrumb-list&gt;
 		</template>

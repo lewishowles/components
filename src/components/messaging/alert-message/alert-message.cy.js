@@ -34,4 +34,16 @@ describe("alert-message", () => {
 		cy.getByData("alert-message-icon").should("not.exist");
 		cy.getByData("alert-message").find("svg").shouldBeVisible();
 	});
+
+	it("A type prefix is shown for typed alerts", () => {
+		mount({ props: { type: "error" } });
+
+		cy.getByData("alert-message-type-prefix").should("exist");
+	});
+
+	it("No type prefix is shown for muted alerts", () => {
+		mount({ props: { type: "muted" } });
+
+		cy.getByData("alert-message-type-prefix").should("not.exist");
+	});
 });
