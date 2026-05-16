@@ -61,7 +61,7 @@ const displayDate = computed(() => {
 	try {
 		const temporalDate = Temporal[temporalClass.value].from(props.date);
 
-		return temporalDate.toLocaleString(props.locale, props.format);
+		return temporalDate.toLocaleString(props.locale, props.format ?? undefined);
 	} catch (error) {
 		console.error("date-display[displayDate]", error);
 

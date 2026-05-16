@@ -8,6 +8,10 @@
 
 - `ui-button` - New `disabled` prop for disabled (but still accessible) buttons.
 
+### Fixes
+
+- `notification-*` - Fixes an issue that prevented dates from showing correctly.
+
 ## 1.7.0
 
 ### New icons

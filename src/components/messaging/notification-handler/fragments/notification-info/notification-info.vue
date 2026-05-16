@@ -47,7 +47,7 @@ defineProps({
 	 */
 	dateFormat: {
 		type: Object,
-		default: null,
+		default: undefined,
 	},
 });
 </script>

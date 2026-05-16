@@ -86,6 +86,13 @@ describe("display-date", () => {
 				});
 			});
 
+			test("should not throw when format is null", () => {
+				const wrapper = mount({ format: null });
+				const vm = wrapper.vm;
+
+				expect(vm.displayDate).not.toBeNull();
+			});
+
 			test("should return null if `Temporal.PlainDate` throws an error", () => {
 				const wrapper = mount({ date: "invalid-date" });
 				const vm = wrapper.vm;
