@@ -160,14 +160,17 @@ const columns = {
 	box_office: {
 		label: "Box office",
 		align: "right",
+		tabularNums: true,
 	},
 	runtime: {
 		label: "Runtime",
 		align: "right",
+		tabularNums: true,
 	},
 	imdb_rating: {
 		label: "IMDB rating",
 		align: "right",
+		tabularNums: true,
 	},
 	bbfc_classification: {
 		label: "BBFC classification",
