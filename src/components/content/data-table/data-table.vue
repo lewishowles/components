@@ -77,7 +77,7 @@
 					<thead>
 						<tr class="border-b border-grey-300 dark:border-white/20">
 							<th v-if="enableSelection" class="w-px px-4">
-								<form-checkbox v-bind="{ displayLabel: false }" v-model="selectAllRows" class="shrink" data-test="data-table-select-all-rows" @change="toggleAllRows">
+								<form-checkbox v-bind="{ displayLabel: false, indeterminate: selectAllIndeterminate }" v-model="selectAllRows" class="shrink" data-test="data-table-select-all-rows" @change="toggleAllRows">
 									<slot name="select-all-rows-label">
 										Select all rows
 									</slot>
@@ -100,11 +100,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="row in paginatedRows" :key="row.configuration.id" class="border-b border-grey-200 dark:border-white/20 transition-colors hover:bg-grey-50 dark:hover:bg-grey-950/30" data-test="data-table-row">
+						<tr v-for="(row, rowIndex) in paginatedRows" :key="row.configuration.id" class="border-b border-grey-200 dark:border-white/20 transition-colors hover:bg-grey-50 dark:hover:bg-grey-950/30" data-test="data-table-row">
 							<td v-if="enableSelection" class="px-4">
 								<form-checkbox v-bind="{ displayLabel: false, inputAttributes: { value: getRowId(row) } }" v-model="selectedRowIds" class="shrink" data-test="data-table-select-row">
-									<slot name="select-row-label" v-bind="{ row: getRawRow(row) }">
-										Select row
+									<slot name="select-row-label" v-bind="{ row: getRawRow(row), rowNumber: rowIndex + 1 }">
+										Select row {{ rowIndex + 1 }}
 									</slot>
 								</form-checkbox>
 							</td>
@@ -548,6 +548,8 @@ const selectAllRows = ref(false);
 const selectedRowCount = computed(() => arrayLength(selectedRowIds.value));
 // Whether all rows are selected.
 const areAllRowsSelected = computed(() => selectedRowCount.value === rowCount.value);
+// Whether the select-all checkbox should be in an indeterminate state (some but not all rows selected).
+const selectAllIndeterminate = computed(() => selectedRowCount.value > 0 && !areAllRowsSelected.value);
 
 // Reset to the first page when our filtered rows or sort change.
 watch([filteredRows, sortedColumn, sortDirection], () => {

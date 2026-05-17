@@ -581,6 +581,38 @@ describe("data-table", () => {
 
 			cy.getByData("data-table-select-all-rows").shouldBeChecked();
 		});
+
+		it("The select-all checkbox shows indeterminate state when some rows are selected", () => {
+			mount({ enableSelection: true });
+
+			cy.getFormField("data-table-select-row").eq(0).click();
+
+			cy.getFormField("data-table-select-all-rows").should("have.prop", "indeterminate", true);
+		});
+
+		it("The select-all checkbox is not indeterminate when no rows are selected", () => {
+			mount({ enableSelection: true });
+
+			cy.getFormField("data-table-select-all-rows").should("have.prop", "indeterminate", false);
+		});
+
+		it("The select-all checkbox is not indeterminate when all rows are selected", () => {
+			mount({ enableSelection: true });
+
+			cy.getFormField("data-table-select-all-rows").click();
+
+			cy.getFormField("data-table-select-all-rows").should("have.prop", "indeterminate", false);
+		});
+
+		it("Each row checkbox has a distinct accessible label", () => {
+			mount({ enableSelection: true });
+
+			cy.getByData("data-table-select-row").each(($checkbox, index) => {
+				cy.wrap($checkbox).within(() => {
+					cy.getByData("form-label").shouldHaveText(`Select row ${index + 1}`);
+				});
+			});
+		});
 	});
 });
 

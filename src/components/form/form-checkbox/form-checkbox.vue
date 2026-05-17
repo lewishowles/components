@@ -116,15 +116,11 @@ const haveHelp = computed(() => isNonEmptySlot(slots.help));
 const haveError = computed(() => isNonEmptySlot(slots.error));
 
 // Set the indeterminate DOM property when the prop changes.
-watch(
-	[() => props.indeterminate, inputElement],
-	([isIndeterminate]) => {
-		if (inputElement.value) {
-			inputElement.value.indeterminate = isIndeterminate;
-		}
-	},
-	{ immediate: true },
-);
+watch([() => props.indeterminate, inputElement], ([isIndeterminate]) => {
+	if (inputElement.value) {
+		inputElement.value.indeterminate = isIndeterminate;
+	}
+}, { immediate: true });
 
 /**
  * Focus on our input.
