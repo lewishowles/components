@@ -1,5 +1,38 @@
 <template>
 	<div data-test="data-table">
+		<span role="status" aria-live="polite" class="sr-only" data-test="data-table-status">
+			<template v-if="statusType === statusTypes.SORT">
+				<slot name="sort-status" v-bind="{ column: getColumnLabel(sortedColumn), ascending: sortDirection === 1 }">
+					Sorted by {{ getColumnLabel(sortedColumn) }} {{ sortDirection === 1 ? "ascending" : "descending" }}
+				</slot>
+			</template>
+
+			<template v-else-if="statusType === statusTypes.SEARCH">
+				<slot name="search-status" v-bind="{ count: filteredRows.length, query: searchQuery }">
+					<template v-if="filteredRows.length === 0">
+						No results for "{{ searchQuery }}"
+					</template>
+					<template v-else>
+						Showing {{ filteredRows.length }} result{{ filteredRows.length === 1 ? "" : "s" }} for "{{ searchQuery }}"
+					</template>
+				</slot>
+			</template>
+
+			<template v-else-if="statusType === statusTypes.SELECTION">
+				<slot name="selection-status" v-bind="{ selectedCount: selectedRowCount, total: rowCount, allSelected: areAllRowsSelected }">
+					<template v-if="selectedRowCount === 0">
+						All rows deselected
+					</template>
+					<template v-else-if="areAllRowsSelected">
+						All {{ rowCount }} rows selected
+					</template>
+					<template v-else>
+						{{ selectedRowCount }} of {{ rowCount }} rows selected
+					</template>
+				</slot>
+			</template>
+		</span>
+
 		<div v-if="haveTitle || haveIntroduction" class="mb-6 flex flex-col gap-4 border-b border-grey-200 pb-6">
 			<component :is="headingLevel" v-if="haveTitle" class="text-3xl font-bold text-grey-950">
 				<slot name="table-title" />
@@ -345,6 +378,10 @@ const tableDensity = ref(null);
 const tableDensityOptions = ref([]);
 // Our user-selected column visibility from the fragment component.
 const columnVisibility = ref({});
+// The available status announcement types for the live region.
+const statusTypes = { SORT: "sort", SEARCH: "search", SELECTION: "selection" };
+// Which type of announcement is currently active in the status live region.
+const statusType = ref(null);
 
 // Our table spacing, based on our current density.
 const tableSpacingClasses = computed(() => {
@@ -606,6 +643,33 @@ watch(selectedRowIds, () => {
 	} else if (!areAllRowsSelected.value && selectAllRows.value) {
 		selectAllRows.value = false;
 	}
+});
+
+// Trigger a sort announcement when the sorted column or direction changes.
+watch([sortedColumn, sortDirection], () => {
+	if (!isNonEmptyString(sortedColumn.value)) {
+		return;
+	}
+
+	statusType.value = statusTypes.SORT;
+});
+
+// Trigger a search announcement when the filtered rows or search term changes.
+watch([filteredRows, haveSearchQuery], () => {
+	if (!haveSearchQuery.value) {
+		return;
+	}
+
+	statusType.value = statusTypes.SEARCH;
+});
+
+// Trigger a selection announcement when the selected row count changes.
+watch(selectedRowCount, () => {
+	if (!props.enableSelection) {
+		return;
+	}
+
+	statusType.value = statusTypes.SELECTION;
 });
 
 /**

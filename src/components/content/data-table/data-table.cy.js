@@ -342,6 +342,22 @@ describe("data-table", () => {
 
 			cy.getFormField("data-table-search-input").shouldHaveFocus();
 		});
+
+		it("The status region announces the result count when a search matches rows", () => {
+			mount();
+
+			cy.getByData("data-table-search-input").type("Aladdin");
+
+			cy.getByData("data-table-status").shouldHaveText("Showing 1 result for \"Aladdin\"");
+		});
+
+		it("The status region announces when no results are found", () => {
+			mount();
+
+			cy.getByData("data-table-search-input").type("Not found");
+
+			cy.getByData("data-table-status").shouldHaveText("No results for \"Not found\"");
+		});
 	});
 
 	describe("Sort", () => {
@@ -369,6 +385,18 @@ describe("data-table", () => {
 			sortByColumn("Title");
 
 			cy.getByData("data-table-heading").eq(0).shouldHaveAttribute("aria-sort", "descending");
+		});
+
+		it("The status region announces the sort state", () => {
+			mount();
+
+			sortByColumn("Title");
+
+			cy.getByData("data-table-status").shouldHaveText("Sorted by Title ascending");
+
+			sortByColumn("Title");
+
+			cy.getByData("data-table-status").shouldHaveText("Sorted by Title descending");
 		});
 	});
 
@@ -628,6 +656,31 @@ describe("data-table", () => {
 					cy.getByData("form-label").shouldHaveText(`Select row ${index + 1}`);
 				});
 			});
+		});
+
+		it("The status region announces partial row selection", () => {
+			mount({ enableSelection: true });
+
+			cy.getFormField("data-table-select-row").eq(0).click();
+
+			cy.getByData("data-table-status").shouldHaveText("1 of 5 rows selected");
+		});
+
+		it("The status region announces when all rows are selected", () => {
+			mount({ enableSelection: true });
+
+			cy.getFormField("data-table-select-all-rows").click();
+
+			cy.getByData("data-table-status").shouldHaveText("All 5 rows selected");
+		});
+
+		it("The status region announces when all rows are deselected", () => {
+			mount({ enableSelection: true });
+
+			cy.getFormField("data-table-select-all-rows").click();
+			cy.getFormField("data-table-select-all-rows").click();
+
+			cy.getByData("data-table-status").shouldHaveText("All rows deselected");
 		});
 	});
 });

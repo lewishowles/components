@@ -559,6 +559,113 @@
 				<p>The label for the "Columns" options in the configure dropdown.</p>
 			</component-slot>
 
+			<component-slot id="slot-sort-status">
+				<template #name>
+					sort-status
+				</template>
+
+				<template #default-value>
+					`Sorted by {column} ascending/descending`
+				</template>
+
+				<p>The screen-reader-only announcement made when the table is sorted. Rendered inside a <code>role="status"</code> live region.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Slot prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>column</code></td>
+							<td>string</td>
+							<td>The label of the column currently being sorted.</td>
+						</tr>
+						<tr>
+							<td><code>ascending</code></td>
+							<td>boolean</td>
+							<td>Whether the column is sorted ascending.</td>
+						</tr>
+					</tbody>
+				</table>
+			</component-slot>
+
+			<component-slot id="slot-search-status">
+				<template #name>
+					search-status
+				</template>
+
+				<template #default-value>
+					`Showing {count} result(s) for "{query}"` / `No results for "{query}"`
+				</template>
+
+				<p>The screen-reader-only announcement made when the search results change. Rendered inside a <code>role="status"</code> live region.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Slot prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>count</code></td>
+							<td>number</td>
+							<td>The number of results found.</td>
+						</tr>
+						<tr>
+							<td><code>query</code></td>
+							<td>string</td>
+							<td>The current search query.</td>
+						</tr>
+					</tbody>
+				</table>
+			</component-slot>
+
+			<component-slot id="slot-selection-status">
+				<template #name>
+					selection-status
+				</template>
+
+				<template #default-value>
+					`{selectedCount} of {total} rows selected` / `All {total} rows selected` / `All rows deselected`
+				</template>
+
+				<p>The screen-reader-only announcement made when the row selection changes. Only active when <code>enableSelection</code> is enabled. Rendered inside a <code>role="status"</code> live region.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Slot prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>selectedCount</code></td>
+							<td>number</td>
+							<td>The number of rows currently selected.</td>
+						</tr>
+						<tr>
+							<td><code>total</code></td>
+							<td>number</td>
+							<td>The total number of rows available for selection.</td>
+						</tr>
+						<tr>
+							<td><code>allSelected</code></td>
+							<td>boolean</td>
+							<td>Whether all available rows are currently selected.</td>
+						</tr>
+					</tbody>
+				</table>
+			</component-slot>
+
 			<component-slot id="slot-selected-row-count-label">
 				<template #name>
 					selected-row-count-label

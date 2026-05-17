@@ -114,6 +114,40 @@ The label for the "Relaxed" display option.
 
 The label for the "Columns" options in the configure dropdown.
 
+### `sort-status`
+
+- default: "Sorted by {column} ascending/descending"
+
+The screen-reader-only announcement made when the table is sorted. Rendered inside a `role="status"` live region.
+
+| Slot prop   | Type    | Description                                     |
+|-------------|---------|-------------------------------------------------|
+| `column`    | string  | The label of the column currently being sorted. |
+| `ascending` | boolean | Whether the column is sorted ascending.         |
+
+### `search-status`
+
+- default: "Showing {count} result(s) for "{query}"" / "No results for "{query}""
+
+The screen-reader-only announcement made when the search results change. Rendered inside a `role="status"` live region.
+
+| Slot prop | Type   | Description                        |
+|-----------|--------|------------------------------------|
+| `count`   | number | The number of results found.       |
+| `query`   | string | The current search query.          |
+
+### `selection-status`
+
+- default: "{selectedCount} of {total} rows selected" / "All {total} rows selected" / "All rows deselected"
+
+The screen-reader-only announcement made when the row selection changes. Only active when `enableSelection` is enabled. Rendered inside a `role="status"` live region.
+
+| Slot prop       | Type    | Description                                        |
+|-----------------|---------|----------------------------------------------------|
+| `selectedCount` | number  | The number of rows currently selected.             |
+| `total`         | number  | The total number of rows available for selection.  |
+| `allSelected`   | boolean | Whether all available rows are currently selected. |
+
 ### `selected-row-count-label`
 
 - default: "${selectedCount} rows selected"
