@@ -41,6 +41,13 @@ Whether to display the label. A label is still required for accessibility purpos
 
 Any additional attributes to pass to the input itself, such as `required`.
 
+### `indeterminate`
+
+- type: `boolean`
+- default: `false`
+
+Whether to display the checkbox in an indeterminate state. This is useful when representing a selection state that is neither fully checked nor fully unchecked, such as a "select all" checkbox when only some items are selected.
+
 ## Methods
 
 ### `triggerFocus`

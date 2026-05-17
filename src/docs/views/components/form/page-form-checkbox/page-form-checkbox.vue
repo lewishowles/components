@@ -55,6 +55,21 @@
 
 				<p>Any additional attributes to pass to the input itself, such as <code>required</code>.</p>
 			</component-prop>
+			<component-prop id="prop-indeterminate">
+				<template #name>
+					indeterminate
+				</template>
+
+				<template #type>
+					Boolean
+				</template>
+
+				<template #default-value>
+					false
+				</template>
+
+				<p>Whether to display the checkbox in an indeterminate state. This is useful when representing a selection state that is neither fully checked nor fully unchecked, such as a "select all" checkbox when only some items are selected.</p>
+			</component-prop>
 		</component-props>
 
 		<component-slots>

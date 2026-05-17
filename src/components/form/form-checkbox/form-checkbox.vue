@@ -40,7 +40,7 @@
  * The `default` slot contains the label for the checkbox. `error` and `help`
  * slots exist for additional descriptive text.
  */
-import { computed, useSlots, useTemplateRef } from "vue";
+import { computed, useSlots, useTemplateRef, watch } from "vue";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary/use-form-supplementary";
 import useInputId from "@/components/form/composables/use-input-id/use-input-id";
@@ -85,6 +85,17 @@ const props = defineProps({
 		type: Object,
 		default: null,
 	},
+
+	/**
+	 * Whether to display the checkbox in an indeterminate state. This is useful
+	 * when representing a selection state that is neither fully checked nor
+	 * fully unchecked, such as a "select all" checkbox when only some items are
+	 * selected.
+	 */
+	indeterminate: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 const slots = useSlots();
@@ -103,6 +114,17 @@ const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
 const haveHelp = computed(() => isNonEmptySlot(slots.help));
 // Whether error text has been provided.
 const haveError = computed(() => isNonEmptySlot(slots.error));
+
+// Set the indeterminate DOM property when the prop changes.
+watch(
+	[() => props.indeterminate, inputElement],
+	([isIndeterminate]) => {
+		if (inputElement.value) {
+			inputElement.value.indeterminate = isIndeterminate;
+		}
+	},
+	{ immediate: true },
+);
 
 /**
  * Focus on our input.
