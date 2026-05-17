@@ -267,6 +267,18 @@ describe("data-table", () => {
 				.shouldNotHaveClass("text-purple-800");
 		});
 
+		it("A tabularNums column applies tabular-nums to its cells", () => {
+			mount({
+				columns: {
+					...columns,
+					box_office: { label: "Box office ($m)", tabularNums: true },
+				},
+			});
+
+			cy.getByData("data-table-cell").eq(2).shouldHaveClass("tabular-nums");
+			cy.getByData("data-table-cell").eq(0).shouldNotHaveClass("tabular-nums");
+		});
+
 		it("Column order is determined by configuration", () => {
 			// We create a fresh mount here because options are deep merged, and
 			// we're not _changing_ the options, we're simply re-arranging them,

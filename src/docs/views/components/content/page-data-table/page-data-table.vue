@@ -103,6 +103,12 @@
 							<td><code>&quot;&quot;</code></td>
 							<td>Classes to apply to both this column's heading and cells.</td>
 						</tr>
+						<tr>
+							<td><code>tabularNums</code></td>
+							<td><code>boolean</code></td>
+							<td><code>false</code></td>
+							<td>Whether to apply tabular number formatting to cells in this column. Useful for numeric columns to ensure digits align vertically.</td>
+						</tr>
 					</tbody>
 				</table>
 			</component-prop>

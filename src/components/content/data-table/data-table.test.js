@@ -40,6 +40,7 @@ describe("data-table", () => {
 		first: false,
 		last: false,
 		sortable: true,
+		tabularNums: false,
 		visible: true,
 	};
 

@@ -155,7 +155,7 @@
 									v-for="(column, columnKey) in visibleColumnDefinitions"
 									:key="columnKey"
 									:scope="column.primary ? 'row' : null"
-									:class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary, 'text-end': column.align === 'right' }, cellClasses, column.columnClasses, column.cellClasses]"
+									:class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary, 'text-end': column.align === 'right', 'tabular-nums': column.tabularNums }, cellClasses, column.columnClasses, column.cellClasses]"
 									data-test="data-table-cell"
 								>
 									<slot :name="columnKey" v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }">
@@ -445,6 +445,7 @@ const columnDefinitions = computed(() => {
 			first: false,
 			last: false,
 			sortable: true,
+			tabularNums: false,
 			visible: !hiddenByPreference,
 			...userConfiguration,
 		};

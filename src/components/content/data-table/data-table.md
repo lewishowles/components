@@ -198,6 +198,7 @@ Any additional configuration for columns. **Note:** Any column without configura
 |`headingClasses`|`Vue class binding`|`""`|Classes to apply only to this column's heading.|
 |`cellClasses`|`Vue class binding`|`""`|Classes to apply only to this column's cells.|
 |`columnClasses`|`Vue class binding`|`""`|Classes to apply to both this column's heading and cells.|
+|`tabularNums`|`boolean`|`false`|Whether to apply tabular number formatting (`tabular-nums`) to cells in this column. Useful for numeric columns to ensure digits align vertically.|
 
 ### `name`
 
