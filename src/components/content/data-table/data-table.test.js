@@ -804,6 +804,37 @@ describe("data-table", () => {
 				expect(vm.getSortIcon("unknown")).toBe(null);
 			});
 		});
+
+		describe("getSortAriaLabel", () => {
+			const columns = { title: { label: "Title" }, release_year: { label: "Release year" } };
+
+			test("should return an ascending prompt for an unsorted column", () => {
+				const wrapper = mount({ columns });
+				const vm = wrapper.vm;
+
+				expect(vm.getSortAriaLabel("title")).toBe("Sort by Title ascending");
+			});
+
+			test("should describe the current ascending state and offer descending", () => {
+				const wrapper = mount({ columns });
+				const vm = wrapper.vm;
+
+				vm.sortedColumn = "title";
+				vm.sortDirection = 1;
+
+				expect(vm.getSortAriaLabel("title")).toBe("Sort by Title — currently ascending, click to sort descending");
+			});
+
+			test("should describe the current descending state and offer ascending", () => {
+				const wrapper = mount({ columns });
+				const vm = wrapper.vm;
+
+				vm.sortedColumn = "title";
+				vm.sortDirection = -1;
+
+				expect(vm.getSortAriaLabel("title")).toBe("Sort by Title — currently descending, click to sort ascending");
+			});
+		});
 	});
 });
 

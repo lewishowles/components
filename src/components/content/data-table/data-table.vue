@@ -92,7 +92,7 @@
 								:class="[{ 'ps-3': !column.sortable && !column.first, 'pe-3': !column.sortable && !column.last, 'text-start': column.align !== 'right', 'text-end': column.align === 'right', [headingClasses]: !column.sortable, [column.columnClasses]: !column.sortable, [column.headingClasses]: !column.sortable }]"
 								data-test="data-table-heading"
 							>
-								<conditional-wrapper v-bind="{ wrap: column.sortable, tag: 'ui-button', iconEnd: getSortIcon(columnKey) }" class="-mt-4 -mb-4.25 w-full border-b border-transparent py-4 hocus:border-purple-800 hocus:bg-grey-100 dark:hocus:bg-grey-950/30 dark:hocus:border-purple-400" :class="[{ 'ps-3': !column.first, 'pe-3': !column.last, 'justify-start': column.align !== 'right', 'justify-end': column.align === 'right' }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-sort" @click="sortColumn(columnKey)">
+								<conditional-wrapper v-bind="{ wrap: column.sortable, tag: 'ui-button', iconEnd: getSortIcon(columnKey), ariaLabel: column.sortable ? getSortAriaLabel(columnKey) : null }" class="-mt-4 -mb-4.25 w-full border-b border-transparent py-4 hocus:border-purple-800 hocus:bg-grey-100 dark:hocus:bg-grey-950/30 dark:hocus:border-purple-400" :class="[{ 'ps-3': !column.first, 'pe-3': !column.last, 'justify-start': column.align !== 'right', 'justify-end': column.align === 'right' }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-sort" @click="sortColumn(columnKey)">
 									<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
 										{{ column.label }}
 									</slot>
@@ -799,6 +799,27 @@ function getSortIcon(columnKey) {
 	}
 
 	return "icon-arrow-down";
+}
+
+/**
+ * Return a descriptive aria-label for the sort button of the given column,
+ * communicating the current sort state and the action that will occur on click.
+ *
+ * @param  {string}  columnKey
+ *     The key of the column to generate the label for.
+ */
+function getSortAriaLabel(columnKey) {
+	const label = getColumnLabel(columnKey);
+
+	if (sortedColumn.value !== columnKey) {
+		return `Sort by ${label} ascending`;
+	}
+
+	if (sortDirection.value === 1) {
+		return `Sort by ${label} — currently ascending, click to sort descending`;
+	}
+
+	return `Sort by ${label} — currently descending, click to sort ascending`;
 }
 
 /**
