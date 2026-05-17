@@ -86,6 +86,12 @@
 							<td>The alignment of the column. Anything but &quot;right&quot; will be treated as &quot;left&quot;.</td>
 						</tr>
 						<tr>
+							<td><code>primary</code></td>
+							<td><code>boolean</code></td>
+							<td><code>false</code></td>
+							<td>Whether this is the primary column. Primary cells render as <code>&lt;th scope="row"&gt;</code> rather than <code>&lt;td&gt;</code>, which helps screen readers associate row headers with their data.</td>
+						</tr>
+						<tr>
 							<td><code>headingClasses</code></td>
 							<td><code>string</code></td>
 							<td><code>&quot;&quot;</code></td>
@@ -321,6 +327,48 @@
 				<p>Any introduction to display with this table.</p>
 			</component-slot>
 
+			<component-slot id="slot-caption">
+				<template #name>
+					caption
+				</template>
+
+				<p>An optional visible caption to display above the table. When the table overflows its container, this caption is also used to label the scrollable region for assistive technology.</p>
+			</component-slot>
+
+			<component-slot id="slot-sorted-hint">
+				<template #name>
+					sorted-hint
+				</template>
+
+				<template #default-value>
+					`Sorted by {sortedColumn} ascending/descending`
+				</template>
+
+				<p>A screen-reader-only hint rendered inside the caption area, announcing which column the table is currently sorted by. Only rendered when a column is sorted.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Slot prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>sortedColumn</code></td>
+							<td>string</td>
+							<td>The label of the column currently being sorted.</td>
+						</tr>
+						<tr>
+							<td><code>ascending</code></td>
+							<td>boolean</td>
+							<td>Whether the column is sorted ascending.</td>
+						</tr>
+					</tbody>
+				</table>
+			</component-slot>
+
 			<component-slot id="slot-search-label">
 				<template #name>
 					search-label
@@ -488,6 +536,11 @@
 							<td><code>row</code></td>
 							<td>object</td>
 							<td>The data for the current row.</td>
+						</tr>
+						<tr>
+							<td><code>rowNumber</code></td>
+							<td>number</td>
+							<td>The 1-based position of the row in the list.</td>
 						</tr>
 					</tbody>
 				</table>
@@ -699,6 +752,39 @@
 						</tr>
 					</tbody>
 				</table>
+			</component-slot>
+
+			<component-slot id="slot-page-number-label">
+				<template #name>
+					page-number-label
+				</template>
+
+				<p>The label for each individual page number button in the pagination controls.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Slot prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>page</code></td>
+							<td>number</td>
+							<td>The page number.</td>
+						</tr>
+					</tbody>
+				</table>
+			</component-slot>
+
+			<component-slot id="slot-next-page-label">
+				<template #name>
+					next-page-label
+				</template>
+
+				<p>The label for the "next page" button in the pagination controls.</p>
 			</component-slot>
 
 			<component-slot id="slot-showing-items-label">

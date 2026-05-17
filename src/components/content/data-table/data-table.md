@@ -14,6 +14,21 @@ Any title to display with this table.
 
 Any introduction to display with this table.
 
+### `caption`
+
+An optional visible caption to display above the table. When the table overflows its container, this caption is also used to label the scrollable region for assistive technology.
+
+### `sorted-hint`
+
+- default: "Sorted by {sortedColumn} ascending/descending"
+
+A screen-reader-only hint rendered inside the caption area, announcing which column the table is currently sorted by. Only rendered when a column is sorted.
+
+| Slot prop      | Type    | Description                                      |
+|----------------|---------|--------------------------------------------------|
+| `sortedColumn` | string  | The label of the column currently being sorted.  |
+| `ascending`    | boolean | Whether the column is sorted ascending.          |
+
 ### `search-label`
 
 The label to use for the search box.
@@ -74,9 +89,10 @@ The hidden label for the "select" checkbox that represents all rows.
 
 The hidden label for each "select" checkbox, used when `enableSelection` is true.
 
-| Slot prop | Type   | Description                      |
-|-----------|--------|----------------------------------|
-| `row`     | object | The data for the current row.    |
+| Slot prop   | Type   | Description                               |
+|-------------|--------|-------------------------------------------|
+| `row`       | object | The data for the current row.             |
+| `rowNumber` | number | The 1-based position of the row in the list. |
 
 ### `configure-label`
 
@@ -158,6 +174,18 @@ The label for the number of rows currently selected. This is only shown if `enab
 |----------------|--------|------------------------------------|
 | `selectedCount`| string | The count of rows currently selected.|
 
+### `page-number-label`
+
+The label for each individual page number button in the pagination controls.
+
+| Slot prop | Type   | Description              |
+|-----------|--------|--------------------------|
+| `page`    | number | The page number.         |
+
+### `next-page-label`
+
+The label for the "next page" button in the pagination controls.
+
 ### `showing-items-label`
 
 - default: `Showing {{ first }}&ndash;{{ last }} of {{ total }} items`
@@ -195,6 +223,7 @@ Any additional configuration for columns. **Note:** Any column without configura
 |`searchable`|`boolean`|`true`|Whether this column is included in searches. If false, search will ignore this column entirely.|
 |`sortable`|`boolean`|`true`|Whether this column can be sorted.|
 |`align`|`string`|`left`|The alignment of the column. Anything but "right" will be treated as "left".|
+|`primary`|`boolean`|`false`|Whether this is the primary column. Primary cells render as `<th scope="row">` rather than `<td>`, which helps screen readers associate row headers with their data.|
 |`headingClasses`|`Vue class binding`|`""`|Classes to apply only to this column's heading.|
 |`cellClasses`|`Vue class binding`|`""`|Classes to apply only to this column's cells.|
 |`columnClasses`|`Vue class binding`|`""`|Classes to apply to both this column's heading and cells.|
