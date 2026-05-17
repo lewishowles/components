@@ -137,6 +137,22 @@ describe("data-table", () => {
 			cy.getByData("data-table-cell").eq(0).shouldHaveClass("font-semibold");
 		});
 
+		it("Column headings have scope='col'", () => {
+			mount();
+
+			cy.getByData("data-table-heading").each($th => {
+				cy.wrap($th).shouldHaveAttribute("scope", "col");
+			});
+		});
+
+		it("Primary column cells render as th elements with scope='row'", () => {
+			mount();
+
+			cy.getByData("data-table-cell").eq(0).should("have.prop", "tagName", "TH");
+			cy.getByData("data-table-cell").eq(0).shouldHaveAttribute("scope", "row");
+			cy.getByData("data-table-cell").eq(1).should("have.prop", "tagName", "TD");
+		});
+
 		it("A label can be provided to the search input", () => {
 			const label = "Find a character";
 

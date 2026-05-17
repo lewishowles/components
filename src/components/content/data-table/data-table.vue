@@ -76,7 +76,7 @@
 
 					<thead>
 						<tr class="border-b border-grey-300 dark:border-white/20">
-							<th v-if="enableSelection" class="w-px px-4">
+							<th v-if="enableSelection" scope="col" class="w-px px-4">
 								<form-checkbox v-bind="{ displayLabel: false, indeterminate: selectAllIndeterminate }" v-model="selectAllRows" class="shrink" data-test="data-table-select-all-rows" @change="toggleAllRows">
 									<slot name="select-all-rows-label">
 										Select all rows
@@ -87,6 +87,7 @@
 								v-for="(column, columnKey) in visibleColumnDefinitions"
 								:key="columnKey"
 								v-bind="{ 'aria-sort': getColumnSortDirection(columnKey) }"
+								scope="col"
 								class="py-4"
 								:class="[{ 'ps-3': !column.sortable && !column.first, 'pe-3': !column.sortable && !column.last, 'text-start': column.align !== 'right', 'text-end': column.align === 'right', [headingClasses]: !column.sortable, [column.columnClasses]: !column.sortable, [column.headingClasses]: !column.sortable }]"
 								data-test="data-table-heading"
@@ -108,11 +109,18 @@
 									</slot>
 								</form-checkbox>
 							</td>
-							<td v-for="(column, columnKey) in visibleColumnDefinitions" :key="columnKey" :class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary, 'text-end': column.align === 'right' }, cellClasses, column.columnClasses, column.cellClasses]" data-test="data-table-cell">
+							<component
+								:is="column.primary ? 'th' : 'td'"
+								v-for="(column, columnKey) in visibleColumnDefinitions"
+								:key="columnKey"
+								:scope="column.primary ? 'row' : null"
+								:class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary, 'text-end': column.align === 'right' }, cellClasses, column.columnClasses, column.cellClasses]"
+								data-test="data-table-cell"
+							>
 								<slot :name="columnKey" v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }">
 									{{ getRowContent(row, columnKey) }}
 								</slot>
-							</td>
+							</component>
 						</tr>
 					</tbody>
 				</table>
