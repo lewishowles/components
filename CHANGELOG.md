@@ -2,14 +2,13 @@
 
 ## 1.8.0
 
-- A number of accessibility improvements have been made, particularly around announcing progress to screen readers.
-
 ### Features
 
 - `ui-button` - New `disabled` prop for disabled (but still accessible) buttons.
 
 ### Fixes
 
+- A number of accessibility improvements have been made, particularly around announcing progress to screen readers.
 - `notification-*` - Fixes an issue that prevented dates from showing correctly.
 
 ## 1.7.0
