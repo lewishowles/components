@@ -39,7 +39,7 @@
  * A special `reactive` mode allows for the button to show a loading indicator
  * when activated, which can be reset via an exposed `reset` method.
  */
-import { computed, ref } from "vue";
+import { computed, getCurrentInstance, ref } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 const props = defineProps({
@@ -74,6 +74,17 @@ const props = defineProps({
 	reactive: {
 		type: Boolean,
 		default: false,
+	},
+
+	/**
+	 * When true, the button detects a Promise returned by the click listener
+	 * and automatically enters its loading state, resetting when the Promise
+	 * settles. Async functions return a Promise implicitly, so
+	 * `@click="asyncFn"` works without any wrapping.
+	 */
+	loadingAuto: {
+		type: Boolean,
+		default: true,
 	},
 
 	/**
@@ -116,6 +127,8 @@ const props = defineProps({
 const emit = defineEmits(["click"]);
 // Whether the button is currently reacting.
 const isReacting = ref(false);
+// The component instance, captured during setup so it is available in handlers.
+const instance = getCurrentInstance();
 // Whether a start icon is defined.
 const haveIconStart = computed(() => isNonEmptyString(props.iconStart));
 // Whether an end icon is defined.
@@ -175,7 +188,9 @@ const computedIconClasses = computed(() => {
 });
 
 /**
- * Provide feedback to the user on the state of the button.
+ * Respond to a button click, showing the loading state if reactive and
+ * auto-resetting if loadingAuto detects a Promise returned by the click
+ * listener.
  */
 function react() {
 	if (props.disabled) {
@@ -183,6 +198,23 @@ function react() {
 	}
 
 	displayReactiveState();
+
+	// If we want to automatically reset when the Promise attached to click
+	// ends, work through the click handler(s) to see if we can find that
+	// promise to watch. If we can't, the user will have to call `reset`
+	// manually.
+	if (props.loadingAuto) {
+		const onClick = instance?.vnode.props?.onClick;
+		const handlers = Array.isArray(onClick) ? onClick : [onClick].filter(Boolean);
+		const results = handlers.map(handler => handler());
+		const promise = results.find(result => result instanceof Promise);
+
+		if (promise) {
+			promise.finally(reset);
+		}
+
+		return;
+	}
 
 	emit("click");
 }

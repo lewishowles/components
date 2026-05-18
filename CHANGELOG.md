@@ -6,6 +6,7 @@
 
 - `ui-button` - New `disabled` prop for disabled (but still accessible) buttons.
 - `ui-button` - New `pressed` prop allows for toggle buttons.
+- `ui-button` - New `loadingAuto` prop allows a `reactive` button to automatically detect a promise on its click handler, and react accordingly.
 
 ### Fixes
 

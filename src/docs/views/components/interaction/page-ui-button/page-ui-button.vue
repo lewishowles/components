@@ -93,6 +93,22 @@
 				<p>When a button is <code>reactive</code>, it will show a loading indicator when activated. This can be deactivated via the exposed <code>reset</code> method.</p>
 			</component-prop>
 
+			<component-prop id="prop-loading-auto">
+				<template #name>
+					loadingAuto
+				</template>
+
+				<template #type>
+					Boolean
+				</template>
+
+				<template #default-value>
+					true
+				</template>
+
+				<p>When true, the button detects a Promise returned by the click listener and automatically enters its loading state, resetting when the Promise settles. Async functions return a Promise implicitly, so <code>@click="asyncFn"</code> works without any wrapping.</p>
+			</component-prop>
+
 			<component-prop id="prop-pressed">
 				<template #name>
 					pressed
@@ -201,6 +217,7 @@
 			<playground-ui-button-icon />
 			<playground-ui-button-icon-only />
 			<playground-ui-button-reactive />
+			<playground-ui-button-loading-auto />
 			<playground-ui-button-trigger-reactive-state />
 			<playground-ui-button-pressed />
 			<playground-ui-button-full-width />
@@ -213,6 +230,7 @@
 import PlaygroundUiButton from "./fragments/playground-ui-button.vue";
 import PlaygroundUiButtonDisabled from "./fragments/playground-ui-button-disabled.vue";
 import PlaygroundUiButtonFullWidth from "./fragments/playground-ui-button-full-width.vue";
+import PlaygroundUiButtonLoadingAuto from "./fragments/playground-ui-button-loading-auto.vue";
 import PlaygroundUiButtonPressed from "./fragments/playground-ui-button-pressed.vue";
 import PlaygroundUiButtonIcon from "./fragments/playground-ui-button-icon.vue";
 import PlaygroundUiButtonIconOnly from "./fragments/playground-ui-button-icon-only.vue";

@@ -41,6 +41,13 @@ Whether to only show an icon (and not the associated text). If true, the text is
 
 When a button is `reactive`, it will show a loading indicator when activated. This can be deactivated via the exposed `reset` method.
 
+### `loadingAuto`
+
+- type: `boolean`
+- default: `true`
+
+When true, the button detects a Promise returned by the click listener and automatically enters its loading state, resetting when the Promise settles. Async functions return a Promise implicitly, so `@click="asyncFn"` works without any wrapping.
+
 ### `iconClasses`
 
 - type: `Vue class binding`

@@ -1,5 +1,6 @@
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vitest";
+import { nextTick } from "vue";
 import UiButton from "./ui-button.vue";
 
 const mount = createMount(UiButton);
@@ -132,6 +133,50 @@ describe("ui-button", () => {
 				vm.reset();
 
 				expect(vm.isReacting).toBe(false);
+			});
+		});
+
+		describe("loadingAuto", () => {
+			test("Should enter loading state when the click handler returns a Promise", async () => {
+				let resolve;
+
+				const promise = new Promise(r => { resolve = r; });
+				const wrapper = mount({ loadingAuto: true, reactive: true, onClick: () => promise });
+
+				await wrapper.trigger("click");
+
+				expect(wrapper.vm.isReacting).toBe(true);
+
+				resolve();
+				await promise;
+				await nextTick();
+
+				expect(wrapper.vm.isReacting).toBe(false);
+			});
+
+			test("Should auto-reset when the Promise rejects", async () => {
+				let reject;
+
+				const promise = new Promise((_, r) => { reject = r; });
+				const wrapper = mount({ loadingAuto: true, reactive: true, onClick: () => promise });
+
+				await wrapper.trigger("click");
+
+				expect(wrapper.vm.isReacting).toBe(true);
+
+				reject(new Error("failed"));
+				await promise.catch(() => {});
+				await nextTick();
+
+				expect(wrapper.vm.isReacting).toBe(false);
+			});
+
+			test("Should remain in loading state when the click handler does not return a Promise", async () => {
+				const wrapper = mount({ loadingAuto: true, reactive: true, onClick: () => "sync result" });
+
+				await wrapper.trigger("click");
+
+				expect(wrapper.vm.isReacting).toBe(true);
 			});
 		});
 	});
