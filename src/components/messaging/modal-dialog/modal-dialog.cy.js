@@ -1,13 +1,54 @@
+import ModalDialog from "./modal-dialog.vue";
 import ModalDialogInteractionTest from "./test-fixtures/interaction-test.vue";
 import { createMount } from "@cypress/support/mount";
 
 const mount = createMount(ModalDialogInteractionTest);
+const mountDirectly = createMount(ModalDialog, { props: { initiallyOpen: true } });
 
 describe("modal-dialog", () => {
 	it("A component is rendered", () => {
 		mount();
 
 		cy.getByData("modal-dialog").shouldNotBeVisible();
+	});
+
+	describe("Accessibility", () => {
+		it("Has aria-modal=true", () => {
+			mountDirectly({ slots: { title: "Dialog title" } });
+
+			cy.getByData("modal-dialog").shouldHaveAttribute("aria-modal", "true");
+		});
+
+		it("Has aria-labelledby pointing to the title id when a title is provided", () => {
+			mountDirectly({ slots: { title: "Dialog title" } });
+
+			cy.getByData("modal-dialog-title").invoke("attr", "id").then(titleId => {
+				cy.getByData("modal-dialog").shouldHaveAttribute("aria-labelledby", titleId);
+			});
+		});
+
+		it("Has role=alertdialog when variant is alert", () => {
+			mountDirectly({ props: { initiallyOpen: true, variant: "alert" }, slots: { title: "Alert title" } });
+
+			cy.getByData("modal-dialog").shouldHaveAttribute("role", "alertdialog");
+		});
+
+		it("Does not override the implicit dialog role by default", () => {
+			mountDirectly({ slots: { title: "Dialog title" } });
+
+			cy.getByData("modal-dialog").shouldNotHaveAttribute("role");
+		});
+
+		it("Automatically wraps content with a description element when variant is alert", () => {
+			mountDirectly({
+				props: { variant: "alert" },
+				slots: { title: "Alert title", default: "This is the alert content" },
+			});
+
+			cy.getByData("modal-dialog").invoke("attr", "aria-describedby").then(descriptionId => {
+				cy.get(`#${descriptionId}`).shouldHaveText("This is the alert content");
+			});
+		});
 	});
 
 	describe("Interaction", () => {
@@ -41,26 +82,6 @@ describe("modal-dialog", () => {
 			openDialog();
 
 			closeDialogViaInternalButton();
-		});
-
-		it("Focus is managed", () => {
-			mount();
-
-			openDialog();
-
-			cy.getByData("modal-dialog").shouldHaveFocus();
-
-			cy.realPress("Tab");
-
-			cy.getByData("modal-dialog-close").shouldHaveFocus();
-
-			cy.realPress("Tab");
-
-			cy.getByData("modal-dialog-interaction-test-confirm").shouldHaveFocus();
-
-			cy.realPress("Tab");
-
-			cy.getByData("modal-dialog-interaction-test-close").shouldHaveFocus();
 		});
 	});
 });

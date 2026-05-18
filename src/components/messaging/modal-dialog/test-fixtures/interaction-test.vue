@@ -5,6 +5,10 @@
 		</ui-button>
 
 		<modal-dialog ref="dialogComponent">
+			<template #title>
+				Confirm action
+			</template>
+
 			<ui-button data-test="modal-dialog-interaction-test-confirm">
 				Confirm
 			</ui-button>
@@ -26,7 +30,6 @@ import { useTemplateRef } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 import ModalDialog from "../modal-dialog.vue";
-import UiButton from "@/components/interaction/ui-button/ui-button.vue";
 
 // A reference to the modal-dialog component, used to open and close it
 // programmatically.
