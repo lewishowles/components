@@ -15,6 +15,22 @@ describe("ui-button", () => {
 
 	describe("Computed", () => {
 		describe("attributes", () => {
+			describe("aria-busy", () => {
+				test("Should set aria-busy to 'true' when reacting", () => {
+					const wrapper = mount({ reactive: true });
+
+					wrapper.vm.isReacting = true;
+
+					expect(wrapper.vm.attributes["aria-busy"]).toBe("true");
+				});
+
+				test("Should not set aria-busy when not reacting", () => {
+					const wrapper = mount({ reactive: true });
+
+					expect(wrapper.vm.attributes["aria-busy"]).toBeUndefined();
+				});
+			});
+
 			describe("aria-disabled", () => {
 				test("Should set aria-disabled to 'true' when disabled", () => {
 					const wrapper = mount({ disabled: true });

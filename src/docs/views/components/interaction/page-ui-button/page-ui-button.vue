@@ -164,7 +164,7 @@
 					Loading
 				</template>
 
-				<p>The text to show to screen-reader users when this button is in its <code>reactive</code> state.</p>
+				<p>The text announced to screen readers when the button is in its loading state. Populates a live region inside the button, so it is read aloud when the button becomes busy.</p>
 			</component-slot>
 		</component-slots>
 

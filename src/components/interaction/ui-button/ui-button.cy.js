@@ -36,6 +36,26 @@ describe("ui-button", () => {
 		cy.getByData("ui-button-label").shouldHaveClass("sr-only");
 	});
 
+	it("A reactive button populates the status region when activated", () => {
+		mount({ reactive: "true" });
+
+		cy.getByData("ui-button").click();
+
+		cy.getByData("ui-button-status").shouldHaveText("Loading");
+	});
+
+	it("A reactive button clears the status region when reset", () => {
+		mount({ reactive: "true" });
+
+		cy.getByData("ui-button").click();
+
+		cy.getComponent().then(component => {
+			component.reset();
+
+			cy.getByData("ui-button-status").shouldHaveText("");
+		});
+	});
+
 	it("Reactive buttons show a loading indicator when activated", () => {
 		mount({ reactive: "true", iconEnd: "icon-chevron-right" });
 

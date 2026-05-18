@@ -12,7 +12,7 @@ The default slot contains the content to display in the button.
 
 - default: "Loading"
 
-The text to show to screen-reader users when this button is in its `reactive` state.
+The text announced to screen readers when the button is in its loading state. Populates a live region inside the button, so it is read aloud when the button becomes busy.
 
 ## Props
 

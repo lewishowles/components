@@ -15,12 +15,14 @@
 
 		<span v-if="reactive" v-show="isReacting" class="absolute inset-0 flex items-center justify-center" data-test="ui-button-loading">
 			<icon-loading class="stroke-current animate-spin" />
+		</span>
 
-			<span class="sr-only">
+		<span v-if="reactive" role="status" class="sr-only" data-test="ui-button-status">
+			<template v-if="isReacting">
 				<slot name="loading-label">
 					Loading
 				</slot>
-			</span>
+			</template>
 		</span>
 
 		<component :is="iconEnd" v-if="haveIconEnd" :class="[computedIconClasses, { 'ms-2': !iconOnly }]" data-test="ui-button-icon-end" />
@@ -123,8 +125,8 @@ const haveIconEnd = computed(() => isNonEmptyString(props.iconEnd));
 const attributes = computed(() => {
 	const attributes = {};
 
-	if (props.reactive) {
-		attributes["aria-live"] = "polite";
+	if (isReacting.value) {
+		attributes["aria-busy"] = "true";
 	}
 
 	if (props.pressed !== null) {
