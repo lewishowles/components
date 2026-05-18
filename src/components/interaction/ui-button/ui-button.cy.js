@@ -50,6 +50,24 @@ describe("ui-button", () => {
 		cy.getByData("ui-button-loading").shouldBeVisible();
 	});
 
+	it("A toggle button has aria-pressed when pressed is true", () => {
+		mount({ pressed: true });
+
+		cy.getByData("ui-button").shouldHaveAttribute("aria-pressed", "true");
+	});
+
+	it("A toggle button has aria-pressed when pressed is false", () => {
+		mount({ pressed: false });
+
+		cy.getByData("ui-button").shouldHaveAttribute("aria-pressed", "false");
+	});
+
+	it("A button without pressed does not have aria-pressed", () => {
+		mount();
+
+		cy.getByData("ui-button").shouldNotHaveAttribute("aria-pressed");
+	});
+
 	it("A reactive button can be reset", () => {
 		mount({ reactive: "true", iconEnd: "icon-chevron-right" });
 

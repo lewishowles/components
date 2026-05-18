@@ -5,6 +5,7 @@
 ### Features
 
 - `ui-button` - New `disabled` prop for disabled (but still accessible) buttons.
+- `ui-button` - New `pressed` prop allows for toggle buttons.
 
 ### Fixes
 

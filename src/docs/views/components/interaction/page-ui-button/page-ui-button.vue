@@ -93,6 +93,26 @@
 				<p>When a button is <code>reactive</code>, it will show a loading indicator when activated. This can be deactivated via the exposed <code>reset</code> method.</p>
 			</component-prop>
 
+			<component-prop id="prop-pressed">
+				<template #name>
+					pressed
+				</template>
+
+				<template #type>
+					Boolean | null
+				</template>
+
+				<template #default-value>
+					null
+				</template>
+
+				<p>The pressed state of this button, for toggle buttons. When <code>true</code> or <code>false</code>, <code>aria-pressed</code> is set accordingly. When <code>null</code> (default), <code>aria-pressed</code> is not set and the button behaves as a normal action button.</p>
+
+				<p>This is a controlled prop — the consumer owns the state and passes it in. That matters because toggle actions are often async (a mute request might fail), and <code>aria-pressed</code> must reflect actual truth, not an optimistic flip.</p>
+
+				<p>The visible label must remain stable across pressed and unpressed states; <code>aria-pressed</code> alone conveys the state change to screen reader users.</p>
+			</component-prop>
+
 			<component-prop id="prop-icon-classes">
 				<template #name>
 					iconClasses
@@ -182,6 +202,7 @@
 			<playground-ui-button-icon-only />
 			<playground-ui-button-reactive />
 			<playground-ui-button-trigger-reactive-state />
+			<playground-ui-button-pressed />
 			<playground-ui-button-full-width />
 			<playground-ui-button-disabled />
 		</component-playgrounds>
@@ -192,6 +213,7 @@
 import PlaygroundUiButton from "./fragments/playground-ui-button.vue";
 import PlaygroundUiButtonDisabled from "./fragments/playground-ui-button-disabled.vue";
 import PlaygroundUiButtonFullWidth from "./fragments/playground-ui-button-full-width.vue";
+import PlaygroundUiButtonPressed from "./fragments/playground-ui-button-pressed.vue";
 import PlaygroundUiButtonIcon from "./fragments/playground-ui-button-icon.vue";
 import PlaygroundUiButtonIconOnly from "./fragments/playground-ui-button-icon-only.vue";
 import PlaygroundUiButtonReactive from "./fragments/playground-ui-button-reactive.vue";

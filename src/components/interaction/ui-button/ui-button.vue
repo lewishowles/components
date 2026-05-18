@@ -75,6 +75,23 @@ const props = defineProps({
 	},
 
 	/**
+	 * The pressed state of this button, for use as a toggle button. When `true`
+	 * or `false`, `aria-pressed` is set accordingly. When `null` (default),
+	 * `aria-pressed` is not set and the button behaves as a normal action button.
+	 *
+	 * This is a controlled prop — the consumer owns the state and passes it in.
+	 * That matters because toggle actions are often async (a mute request might
+	 * fail), and `aria-pressed` must reflect actual truth, not an optimistic flip.
+	 *
+	 * The visible label must remain stable across pressed and unpressed states;
+	 * `aria-pressed` alone conveys the state change to screen reader users.
+	 */
+	pressed: {
+		type: Boolean,
+		default: null,
+	},
+
+	/**
 	 * Whether this button is disabled. Uses aria-disabled rather than the
 	 * native disabled attribute so the button remains in the tab order and
 	 * screen reader users can still encounter and understand it.
@@ -108,6 +125,10 @@ const attributes = computed(() => {
 
 	if (props.reactive) {
 		attributes["aria-live"] = "polite";
+	}
+
+	if (props.pressed !== null) {
+		attributes["aria-pressed"] = String(props.pressed);
 	}
 
 	if (props.disabled) {

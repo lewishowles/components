@@ -14,6 +14,28 @@ describe("ui-button", () => {
 	});
 
 	describe("Computed", () => {
+		describe("attributes", () => {
+			describe("aria-pressed", () => {
+				test("Should set aria-pressed to 'true' when pressed is true", () => {
+					const wrapper = mount({ pressed: true });
+
+					expect(wrapper.vm.attributes["aria-pressed"]).toBe("true");
+				});
+
+				test("Should set aria-pressed to 'false' when pressed is false", () => {
+					const wrapper = mount({ pressed: false });
+
+					expect(wrapper.vm.attributes["aria-pressed"]).toBe("false");
+				});
+
+				test("Should not set aria-pressed when pressed is null", () => {
+					const wrapper = mount();
+
+					expect(wrapper.vm.attributes["aria-pressed"]).toBeUndefined();
+				});
+			});
+		});
+
 		describe("computedIconClasses", () => {
 			test("should return undefined without an icon", () => {
 				const wrapper = mount();

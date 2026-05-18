@@ -48,6 +48,17 @@ When a button is `reactive`, it will show a loading indicator when activated. Th
 
 Any classes to add to the icon itself. If a size class is added (`size-`), the default size class will not be included.
 
+### `pressed`
+
+- type: `boolean | null`
+- default: `null`
+
+The pressed state of this button, for toggle buttons. When `true` or `false`, `aria-pressed` is set accordingly. When `null` (default), `aria-pressed` is not set and the button behaves as a normal action button.
+
+This is a controlled prop — the consumer owns the state and passes it in. That matters because toggle actions are often async (a mute request might fail), and `aria-pressed` must reflect actual truth, not an optimistic flip.
+
+The visible label must remain stable across pressed and unpressed states; `aria-pressed` alone conveys the state change to screen reader users.
+
 ### `disabled`
 
 - type: `boolean`
@@ -90,6 +101,14 @@ Reset the reactive state of a reactive button.
 
 <ui-button v-bind="{ iconEnd: 'icon-arrow-right' }" @click="toInfinityAndBeyond">
 	Next step
+</ui-button>
+```
+
+### Toggle button
+
+```html
+<ui-button v-bind="{ pressed: isMuted }" @click="toggleMute">
+	Mute
 </ui-button>
 ```
 
