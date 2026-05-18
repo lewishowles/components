@@ -50,6 +50,32 @@ describe("ui-button", () => {
 		cy.getByData("ui-button-loading").shouldBeVisible();
 	});
 
+	it("A disabled button has aria-disabled", () => {
+		mount({ disabled: true });
+
+		cy.getByData("ui-button").shouldHaveAttribute("aria-disabled", "true");
+	});
+
+	it("A disabled button does not have the native disabled attribute", () => {
+		mount({ disabled: true });
+
+		cy.getByData("ui-button").shouldNotHaveAttribute("disabled");
+	});
+
+	it("A non-disabled button does not have aria-disabled", () => {
+		mount();
+
+		cy.getByData("ui-button").shouldNotHaveAttribute("aria-disabled");
+	});
+
+	it("A disabled button swallows click events", () => {
+		mount({ reactive: "true", disabled: true });
+
+		cy.getByData("ui-button").click();
+
+		cy.getByData("ui-button-loading").shouldNotBeVisible();
+	});
+
 	it("A toggle button has aria-pressed when pressed is true", () => {
 		mount({ pressed: true });
 

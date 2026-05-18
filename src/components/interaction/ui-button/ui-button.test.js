@@ -15,6 +15,26 @@ describe("ui-button", () => {
 
 	describe("Computed", () => {
 		describe("attributes", () => {
+			describe("aria-disabled", () => {
+				test("Should set aria-disabled to 'true' when disabled", () => {
+					const wrapper = mount({ disabled: true });
+
+					expect(wrapper.vm.attributes["aria-disabled"]).toBe("true");
+				});
+
+				test("Should not set aria-disabled when not disabled", () => {
+					const wrapper = mount();
+
+					expect(wrapper.vm.attributes["aria-disabled"]).toBeUndefined();
+				});
+
+				test("Should not set the native disabled attribute when disabled", () => {
+					const wrapper = mount({ disabled: true });
+
+					expect(wrapper.vm.attributes["disabled"]).toBeUndefined();
+				});
+			});
+
 			describe("aria-pressed", () => {
 				test("Should set aria-pressed to 'true' when pressed is true", () => {
 					const wrapper = mount({ pressed: true });

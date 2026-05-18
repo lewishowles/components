@@ -58,7 +58,7 @@
 	background-color: var(--color-purple-800);
 	border-radius: var(--radius-md);
 	color: white;
-	font-weight: 600;
+	font-weight: 500;
 	padding-block: 0.5em;
 	padding-inline: 1em;
 
@@ -246,7 +246,7 @@
 	background-color: var(--color-red-700);
 	border-radius: var(--radius-md);
 	color: white;
-	font-weight: 600;
+	font-weight: 500;
 	padding-block: 0.5em;
 	padding-inline: 1em;
 
