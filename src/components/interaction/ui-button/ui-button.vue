@@ -210,7 +210,9 @@ function react() {
 		const promise = results.find(result => result instanceof Promise);
 
 		if (promise) {
-			promise.finally(reset);
+			// Use .then(reset, reset) rather than .finally(reset) so that
+			// rejections are handled here and don't propagate as unhandled.
+			promise.then(reset, reset);
 		}
 
 		return;
