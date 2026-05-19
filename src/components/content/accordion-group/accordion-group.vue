@@ -34,7 +34,7 @@
 import { computed, isRef, provide, ref, useSlots } from "vue";
 import { getSlotText, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isFunction } from "@lewishowles/helpers/general";
-import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
 
 const props = defineProps({
 	/**
@@ -107,9 +107,10 @@ function hideAllPanels() {
 }
 
 provide("accordion-group", {
-	registerPanel,
 	headingLevel: props.headingLevel,
-	showPanelLabel: showPanelLabel,
 	hidePanelLabel: hidePanelLabel,
+	panelCount: computed(() => arrayLength(panels.value)),
+	registerPanel,
+	showPanelLabel: showPanelLabel,
 });
 </script>

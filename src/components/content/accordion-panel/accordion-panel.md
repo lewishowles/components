@@ -2,6 +2,8 @@
 
 `accordion-panel` is a single panel within an [`accordion-group`](/src/components/content/accordion-group/accordion-group.md)
 
+When 6 or fewer panels are present, the panel content is wrapped in `role="region"` with `aria-labelledby` pointing to the panel title. This makes each panel a named landmark, allowing screen reader users to jump directly to panel content. When more than 6 panels are present the region role is omitted to avoid cluttering the landmark list.
+
 ## Slots
 
 ### `title`

@@ -22,6 +22,7 @@
 				</router-link>
 				element instead.
 			</p>
+			<p>When 6 or fewer panels are present, each panel's content is wrapped in <code>role="region"</code> with <code>aria-labelledby</code> pointing to the panel title, making each panel a named landmark for screen reader navigation. Above 6 panels the region role is omitted to avoid cluttering the landmark list.</p>
 		</template>
 
 		<component-props>

@@ -21,6 +21,36 @@ describe("accordion-group", () => {
 		cy.getByData("accordion-panel").shouldBeVisible().shouldHaveCount(3);
 	});
 
+	describe("accordion-panel accessibility", () => {
+		it("Panel content has role=region when fewer than 7 panels are present", () => {
+			mount();
+
+			cy.getByData("accordion-panel").eq(0).within(() => {
+				cy.getByData("accordion-panel-content").shouldHaveAttribute("role", "region");
+			});
+		});
+
+		it("Panel content aria-labelledby matches the title span id", () => {
+			mount();
+
+			cy.getByData("accordion-panel").eq(0).within(() => {
+				cy.get("span[id]").invoke("attr", "id").then(titleId => {
+					cy.getByData("accordion-panel-content").shouldHaveAttribute("aria-labelledby", titleId);
+				});
+			});
+		});
+
+		it("Trigger button aria-labelledby matches the title span id", () => {
+			mount();
+
+			cy.getByData("accordion-panel").eq(0).within(() => {
+				cy.get("span[id]").invoke("attr", "id").then(titleId => {
+					cy.getByData("accordion-panel-button").shouldHaveAttribute("aria-labelledby", titleId);
+				});
+			});
+		});
+	});
+
 	describe("accordion-panel", () => {
 		it("A panel can be opened", () => {
 			mount();

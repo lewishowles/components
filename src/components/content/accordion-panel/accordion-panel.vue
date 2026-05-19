@@ -1,18 +1,10 @@
 <template>
 	<div data-test="accordion-panel">
 		<component :is="headingLevel" class="py-6" data-test="accordion-panel-title">
-			<button type="button" class="group flex flex-col items-start" v-bind="{ 'aria-controls': id, 'aria-expanded': isVisible }" data-test="accordion-panel-button" @click="toggle">
-				<span class="mb-1 text-2xl font-bold text-grey-950 dark:text-grey-50">
+			<button type="button" class="group flex flex-col items-start" v-bind="{ 'aria-controls': id, 'aria-expanded': isVisible, 'aria-labelledby': titleId }" data-test="accordion-panel-button" @click="toggle">
+				<span :id="titleId" class="mb-1 text-2xl font-bold text-grey-950 dark:text-grey-50">
 					<slot name="title" />
 				</span>
-
-				<span class="sr-only">, </span>
-
-				<span class="mb-2">
-					<slot name="introduction" />
-				</span>
-
-				<span v-if="haveIntroduction" class="sr-only">, </span>
 
 				<div class="inline-flex items-center gap-2 text-purple-800 group-hocus:underline dark:text-purple-300">
 					<component :is="statusIcon" class="size-text" />
@@ -29,9 +21,17 @@
 					</span>
 				</div>
 			</button>
+
+			<span v-if="haveIntroduction" class="mb-2 block">
+				<slot name="introduction" />
+			</span>
 		</component>
 
-		<div v-bind="{ id, hidden: isVisible ? null : 'until-found' }" :class="{ 'pb-6': isVisible }" data-test="accordion-panel-content">
+		<div
+			v-bind="contentRegionProps"
+			:class="{ 'pb-6': isVisible }"
+			data-test="accordion-panel-content"
+		>
 			<slot />
 		</div>
 	</div>
@@ -41,18 +41,30 @@
 import { computed, inject, ref, useId, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 
-const { registerPanel, headingLevel, showPanelLabel, hidePanelLabel } = inject("accordion-group");
+const { headingLevel, hidePanelLabel, panelCount = ref(0), registerPanel, showPanelLabel } = inject("accordion-group", {});
 
 const slots = useSlots();
 // The internal ID for this accordion panel.
 const id = useId();
+// A stable ID for the title span, referenced by the button and the region.
+const titleId = useId();
 // Whether this panel is visible.
 const isVisible = ref(false);
 // The icon to show depending on the visibility of this panel.
 const statusIcon = computed(() => (isVisible.value ? "icon-chevron-up-circled" : "icon-chevron-down-circled"));
-// Whether we have an introduction, which helps us determine how best to format
-// the content for screen readers.
+// Whether this panel should use role="region". Skipped above 6 panels to avoid
+// cluttering the landmark list.
+const useRegion = computed(() => panelCount.value <= 6);
+// Whether we have an introduction to show below the trigger button.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
+
+// Accessibility attributes for the panel content region.
+const contentRegionProps = computed(() => ({
+	id,
+	"role": useRegion.value ? "region" : null,
+	"aria-labelledby": useRegion.value ? titleId : null,
+	"hidden": isVisible.value ? null : "until-found",
+}));
 
 // Register this panel with the accordion, allowing it insight into the
 // current state, and how to show and hide this panel.
