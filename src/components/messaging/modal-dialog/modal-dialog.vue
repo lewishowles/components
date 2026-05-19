@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { computed, provide, useAttrs, useId, useSlots, useTemplateRef } from "vue";
+import { computed, onMounted, provide, useAttrs, useId, useSlots, useTemplateRef } from "vue";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 
 import ConditionalWrapper from "@/components/general/conditional-wrapper/conditional-wrapper.vue";
@@ -92,9 +92,12 @@ const baseModalProps = computed(() => ({
 // its own id, completing the aria-labelledby link.
 provide("modal-dialog-title-id", titleId);
 
-if (import.meta.env.DEV && !haveTitle.value && !attrs["aria-label"] && !attrs["aria-labelledby"]) {
-	console.warn("[modal-dialog] No accessible label found. Provide a `title` slot, or pass `aria-label` / `aria-labelledby`.");
-}
+// Validate that the dialog has an accessible label.
+onMounted(() => {
+	if (import.meta.env.DEV && !haveTitle.value && !attrs["aria-label"] && !attrs["aria-labelledby"]) {
+		console.warn("[modal-dialog] No accessible label found. Provide a `title` slot, or pass `aria-label` / `aria-labelledby`.");
+	}
+});
 
 /**
  * Open the dialog.
