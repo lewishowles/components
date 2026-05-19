@@ -1,42 +1,268 @@
 <template>
-	<summary-details ref="summaryDetailsComponent" v-bind="{ floating: true, closeWithClickOutside: true, summaryClasses, detailsClasses }" @open="emit('open')" @close="emit('close')">
-		<template #summary="{ open, icon }">
-			<slot name="summary" v-bind="{ open, icon }" />
-		</template>
+	<div ref="menuContainerElement" class="relative" data-test="dropdown-menu">
+		<button
+			ref="triggerElement"
+			type="button"
+			:class="summaryClasses"
+			aria-haspopup="menu"
+			:aria-expanded="isOpen"
+			:aria-controls="menuId"
+			data-test="dropdown-menu-trigger"
+			@click="toggleMenu"
+			@keydown="onTriggerKeydown"
+		>
+			<slot name="summary" v-bind="{ open: isOpen }" />
+		</button>
 
-		<template #default="{ open, icon }">
-			<slot name="default" v-bind="{ open, icon }" />
-		</template>
-	</summary-details>
+		<div
+			v-if="isOpen"
+			:id="menuId"
+			ref="menuElement"
+			role="menu"
+			:class="detailsClasses"
+			class="absolute inset-s-0 top-full"
+			data-test="dropdown-menu-panel"
+			@keydown="onMenuKeydown"
+		>
+			<slot v-bind="{ open: isOpen }" />
+		</div>
+	</div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { nextTick, ref, useId, useTemplateRef } from "vue";
+import { getNextIndex } from "@lewishowles/helpers/array";
+import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
+
+defineProps({
+	/**
+	 * Any classes to add to the dropdown content.
+	 */
+	detailsClasses: {
+		type: [String, Array, Object],
+		default: "animate-fade-in-down animate-fast mt-2 min-w-3xs py-2 rounded-lg border border-grey-300 bg-white dark:border-white/20 dark:bg-grey-950/20 backdrop-blur-lg z-50",
+	},
+});
 
 const emit = defineEmits(["open", "close"]);
-// A reference to the original summary-details element, allowing us to pass
-// data.
-const summaryDetailsComponent = ref(null);
-// Default styling for our summary. This is overridden if the user provides
-// their own summaryClasses prop.
+
+// A unique ID for the menu panel, referenced by aria-controls on the trigger.
+const menuId = useId();
+// Whether the menu panel is currently open.
+const isOpen = ref(false);
+// A reference to the outermost container, used for click-outside detection.
+const menuContainerElement = useTemplateRef("menuContainerElement");
+// A reference to the trigger button, used to restore focus on close.
+const triggerElement = useTemplateRef("triggerElement");
+// A reference to the menu panel, used to query items and handle keyboard events.
+const menuElement = useTemplateRef("menuElement");
+// Whether focus is currently within our details component. If it isn't, we will
+// close our details element, but don't change the user's focus.
+const { focused: hasFocus } = useFocusWithin(menuElement);
+// Default styling for the trigger button.
 const summaryClasses = "button--muted";
-// Default styling for our dropdown. This is overridden if the user provides
-// their own detailsClasses prop.
-const detailsClasses = "animate-fade-in-down animate-fast mt-2 min-w-3xs py-2 rounded-lg border border-grey-300 bg-white dark:border-white/20 dark:bg-grey-950/20 backdrop-blur-lg";
+
+// Our type-ahead buffer keeps track of the user's typing while the menu is
+// open, enabling us to focus an element whose label matches.
+let typeaheadBuffer = "";
+let typeaheadTimeout = null;
+
+// Close the menu when clicking outside of the container.
+onClickOutside(menuContainerElement, () => {
+	if (!isOpen.value) {
+		return;
+	}
+
+	closeMenu();
+});
+
+// Close the menu and return focus to the trigger when Escape is pressed.
+onKeyStroke("Escape", event => {
+	if (!isOpen.value) {
+		return;
+	}
+
+	event.preventDefault();
+
+	closeMenu();
+
+	if (!hasFocus.value) {
+		return;
+	}
+
+	triggerElement.value.focus();
+});
 
 /**
- * Open the menu.
+ * Get all focusable menu items within the panel.
+ *
+ * @returns  {HTMLElement[]}
  */
-function openMenu() {
-	runComponentMethod(summaryDetailsComponent.value, "openDetails");
+function getMenuItems() {
+	if (!menuElement.value) {
+		return [];
+	}
+
+	return Array.from(
+		menuElement.value.querySelectorAll(":is(button, a, summary):not([disabled])"),
+	);
+}
+
+/**
+ * Move focus to a menu item at the given index, updating the roving tabindex so
+ * that only the active item is reachable via Tab.
+ *
+ * @param  {HTMLElement[]}  items
+ *     The full list of menu items.
+ * @param  {number}  index
+ *     The index to focus.
+ */
+function focusItem(items, index) {
+	items.forEach(item => item.setAttribute("tabindex", "-1"));
+	items[index].setAttribute("tabindex", "0");
+	items[index].focus();
+}
+
+/**
+ * Handle type-ahead navigation. Characters typed within 500ms are accumulated
+ * into a buffer; the first item whose label starts with the buffer text
+ * receives focus.
+ *
+ * @param  {string}  character
+ *     The character just typed.
+ * @param  {HTMLElement[]}  items
+ *     The full list of menu items.
+ */
+function handleTypeahead(character, items) {
+	clearTimeout(typeaheadTimeout);
+
+	typeaheadBuffer += character.toLowerCase();
+
+	// Find the item that matches
+	const match = items.find(item =>
+		item.textContent?.trim().toLowerCase().startsWith(typeaheadBuffer),
+	);
+
+	if (match) {
+		focusItem(items, items.indexOf(match));
+	}
+
+	typeaheadTimeout = setTimeout(() => {
+		typeaheadBuffer = "";
+	}, 500);
+}
+
+/**
+ * Handle keydown events on the trigger button. ArrowDown and ArrowUp open the
+ * menu and place focus on the first item, matching the ARIA authoring pattern.
+ *
+ * @param  {KeyboardEvent}  event
+ */
+function onTriggerKeydown(event) {
+	if (event.key !== "ArrowDown" && event.key !== "ArrowUp") {
+		return;
+	}
+
+	event.preventDefault();
+
+	openMenu();
+}
+
+/**
+ * Handle keydown events within the menu panel for keyboard navigation.
+ * ArrowDown/ArrowUp move focus; Home/End jump to the ends; printable characters
+ * trigger type-ahead; Tab closes the menu so focus flows naturally outward.
+ *
+ * @param  {KeyboardEvent}  event
+ */
+function onMenuKeydown(event) {
+	const items = getMenuItems();
+
+	if (items.length === 0) {
+		return;
+	}
+
+	const currentIndex = items.findIndex(item => item === document.activeElement);
+
+	switch (event.key) {
+		case "ArrowDown":
+			event.preventDefault();
+
+			focusItem(items, getNextIndex(currentIndex, items, { reverse: false, wrap: true }));
+
+			break;
+		case "ArrowUp":
+			event.preventDefault();
+
+			focusItem(items, getNextIndex(currentIndex, items, { reverse: true, wrap: true }));
+
+			break;
+		case "Home":
+			event.preventDefault();
+
+			focusItem(items, 0);
+
+			break;
+		case "End":
+			event.preventDefault();
+
+			focusItem(items, items.length - 1);
+
+			break;
+		case "Tab":
+			// Allow Tab to close the menu and move focus outside.
+			closeMenu();
+
+			break;
+		default:
+			if (event.key.length === 1) {
+				handleTypeahead(event.key, items);
+			}
+	}
+}
+
+/**
+ * Toggle the menu open or closed.
+ */
+function toggleMenu() {
+	if (isOpen.value) {
+		closeMenu();
+
+		return;
+	}
+
+	openMenu();
+}
+
+/**
+ * Open the menu and focus the first item once the panel is in the DOM.
+ */
+async function openMenu() {
+	isOpen.value = true;
+
+	emit("open");
+
+	await nextTick();
+
+	const items = getMenuItems();
+
+	if (items.length === 0) {
+		return;
+	}
+
+	// Focus the first item, and ensure that other items can't be focused.
+	items.forEach(item => item.setAttribute("tabindex", "-1"));
+	items[0].setAttribute("tabindex", "0");
+	items[0].focus();
 }
 
 /**
  * Close the menu.
  */
 function closeMenu() {
-	runComponentMethod(summaryDetailsComponent.value, "closeDetails");
+	isOpen.value = false;
+
+	emit("close");
 }
 
 defineExpose({

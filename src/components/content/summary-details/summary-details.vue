@@ -175,7 +175,8 @@ const isOpen = defineModel({
 const detailsElement = useTemplateRef("detailsElement");
 // A reference to the summary element, with which we can manage focus.
 const summaryElement = useTemplateRef("summaryElement");
-// Whether focus is currently within our details component. If it isn't, we will close our
+// Whether focus is currently within our details component. If it isn't, we will
+// close our details element, but don't change the user's focus.
 const { focused: hasFocus } = useFocusWithin(detailsElement);
 
 // The current icon to display. If an override icon is chosen, we always return
@@ -234,12 +235,12 @@ onMounted(() => {
  * When pressing escape, if requested, close the details element. If focus is
  * within the component, move focus to the summary.
  */
-onKeyStroke("Escape", e => {
+onKeyStroke("Escape", event => {
 	if (!isOpen.value || !props.closeWithEscape) {
 		return;
 	}
 
-	e.preventDefault();
+	event.preventDefault();
 
 	closeDetails();
 
@@ -250,12 +251,12 @@ onKeyStroke("Escape", e => {
 	summaryElement.value.focus();
 });
 
-onClickOutside(detailsElement, e => {
+onClickOutside(detailsElement, event => {
 	if (!isOpen.value || !props.closeWithClickOutside) {
 		return;
 	}
 
-	e.preventDefault();
+	event.preventDefault();
 
 	closeDetails();
 });
