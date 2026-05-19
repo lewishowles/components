@@ -43,6 +43,22 @@
 				<p>Whether to focus the first focusable element in the content area when the details are opened. Useful when the content contains a form or an action the user is expected to interact with immediately.</p>
 			</component-prop>
 
+			<component-prop id="prop-toggletip">
+				<template #name>
+					toggletip
+				</template>
+
+				<template #type>
+					Boolean
+				</template>
+
+				<template #default-value>
+					false
+				</template>
+
+				<p>Whether to treat the content as a toggletip, content which is announced immediately when opened. This is good for information tooltips, for example.</p>
+			</component-prop>
+
 			<component-prop id="prop-close-with-escape">
 				<template #name>
 					closeWithEscape
@@ -256,7 +272,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><code>open</code></td>
+							<td><code>isOpen</code></td>
 							<td><code>boolean</code></td>
 							<td>Whether the details are currently visible.</td>
 						</tr>
@@ -264,6 +280,21 @@
 							<td><code>icon</code></td>
 							<td><code>string</code></td>
 							<td>The computed icon to display for the current state.</td>
+						</tr>
+						<tr>
+							<td><code>open</code></td>
+							<td><code>function</code></td>
+							<td>Opens the details.</td>
+						</tr>
+						<tr>
+							<td><code>close</code></td>
+							<td><code>function</code></td>
+							<td>Closes the details.</td>
+						</tr>
+						<tr>
+							<td><code>toggle</code></td>
+							<td><code>function</code></td>
+							<td>Toggles the details between open and closed.</td>
 						</tr>
 					</tbody>
 				</table>
@@ -288,7 +319,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><code>open</code></td>
+							<td><code>isOpen</code></td>
 							<td><code>boolean</code></td>
 							<td>Whether the details are currently visible.</td>
 						</tr>
@@ -296,6 +327,21 @@
 							<td><code>icon</code></td>
 							<td><code>string</code></td>
 							<td>The computed icon to display for the current state.</td>
+						</tr>
+						<tr>
+							<td><code>open</code></td>
+							<td><code>function</code></td>
+							<td>Opens the details.</td>
+						</tr>
+						<tr>
+							<td><code>close</code></td>
+							<td><code>function</code></td>
+							<td>Closes the details.</td>
+						</tr>
+						<tr>
+							<td><code>toggle</code></td>
+							<td><code>function</code></td>
+							<td>Toggles the details between open and closed.</td>
 						</tr>
 					</tbody>
 				</table>
@@ -343,6 +389,14 @@
 				</template>
 
 				<p>Close the details.</p>
+			</component-method>
+
+			<component-method id="method-toggle-details">
+				<template #name>
+					<code>toggleDetails</code>
+				</template>
+
+				<p>Toggle the details between open and closed.</p>
 			</component-method>
 		</component-methods>
 

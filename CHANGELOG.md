@@ -9,6 +9,8 @@
 - `ui-button` - New `loadingAuto` prop allows a `reactive` button to automatically detect a promise on its click handler, and react accordingly.
 - `dropdown-menu` - Greatly improved accessibility, now supporting full keyboard navigation.
 - `summary-details` - Add new `autofocus` option to allow the first focusable element inside to receive focus automatically.
+- `summary-details` - Now automatically opens if the browser's search function finds matching content within.
+- `summary-details` - New `toggletip` option announces content automatically; useful for "info" tooltips, for example.
 
 ### Fixes
 

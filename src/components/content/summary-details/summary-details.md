@@ -12,8 +12,11 @@ The content to be displayed in the summary.
 
 | Slot prop | Type | Description |
 | --- | --- | --- |
-| `open` | `boolean` | Whether the details are currently visible. |
+| `isOpen` | `boolean` | Whether the details are currently visible. |
 | `icon` | `string` | The computed icon to display for the current state. |
+| `open` | `function` | Opens the details. |
+| `close` | `function` | Closes the details. |
+| `toggle` | `function` | Toggles the details between open and closed. |
 
 ### `default`
 
@@ -21,8 +24,11 @@ The content to be displayed in the details element when open.
 
 | Slot prop | Type | Description |
 | --- | --- | --- |
-| `open` | `boolean` | Whether the details are currently visible. |
+| `isOpen` | `boolean` | Whether the details are currently visible. |
 | `icon` | `string` | The computed icon to display for the current state. |
+| `open` | `function` | Opens the details. |
+| `close` | `function` | Closes the details. |
+| `toggle` | `function` | Toggles the details between open and closed. |
 
 ## Props
 
@@ -39,6 +45,13 @@ Whether the details element should initially be open.
 - default: `false`
 
 Whether to focus the first focusable element in the content area when the details are opened. Useful when the content contains a form or an action the user is expected to interact with immediately.
+
+### `toggletip`
+
+- type: `boolean`
+- default: `false`
+
+Whether to treat the content as a toggletip, content which is announced immediately when opened. This is good for information tooltips, for example.
 
 ### `closeWithEscape`
 
@@ -150,6 +163,10 @@ Open the details.
 ### `closeDetails`
 
 Close the details.
+
+### `toggleDetails`
+
+Toggle the details between open and closed.
 
 ## Examples
 

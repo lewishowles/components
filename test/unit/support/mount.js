@@ -1,6 +1,10 @@
 import { deepMerge } from "@lewishowles/helpers/object";
 import { mount, shallowMount, RouterLinkStub } from "@vue/test-utils";
 
+// Track all mounted wrappers for cleanup after each test to prevent global
+// listener pollution from @vueuse/core handlers.
+const mountedWrappers = [];
+
 const globalOptions = {
 	global: {
 		components: {
@@ -16,6 +20,9 @@ const globalOptions = {
  *
  * Any default options passed to this function are merged with any provided
  * options when mounting a component.
+ *
+ * Mounted wrappers are automatically tracked for cleanup after each test to
+ * prevent global listener pollution from @vueuse/core handlers.
  *
  * @param  {object}  component
  *     The component to mount.
@@ -37,10 +44,14 @@ export function createMount(component, defaultOptions = {}, mountFunction = shal
 		const isDirectProps = !Object.hasOwn(options, "props") && !Object.hasOwn(options, "slots") && !Object.hasOwn(options, "global");
 		const providedOptions = isDirectProps ? { props: options } : options;
 
-		return mountFunction(
+		const wrapper = mountFunction(
 			component,
 			deepMerge(defaultOptions, globalOptions, providedOptions),
 		);
+
+		mountedWrappers.push(wrapper);
+
+		return wrapper;
 	};
 };
 
@@ -49,4 +60,20 @@ export function createMount(component, defaultOptions = {}, mountFunction = shal
  */
 export function createDeepMount(component, defaultOptions = {}) {
 	return createMount(component, defaultOptions, mount);
+}
+
+/**
+ * Clean up all mounted wrappers. Called automatically by the test setup but
+ * exported for manual use if needed.
+ */
+export function cleanupMountedWrappers() {
+	mountedWrappers.forEach(wrapper => {
+		try {
+			wrapper.unmount();
+		} catch {
+			// Ignore unmount errors
+		}
+	});
+
+	mountedWrappers.length = 0;
 }

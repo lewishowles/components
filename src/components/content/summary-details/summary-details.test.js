@@ -13,6 +13,26 @@ describe("summary-details", () => {
 		});
 	});
 
+	describe("Methods", () => {
+		describe("toggleDetails", () => {
+			test("should open the details when closed", () => {
+				const wrapper = mount();
+
+				wrapper.vm.toggleDetails();
+
+				expect(wrapper.vm.isOpen).toBe(true);
+			});
+
+			test("should close the details when open", () => {
+				const wrapper = mount({ open: true });
+
+				wrapper.vm.toggleDetails();
+
+				expect(wrapper.vm.isOpen).toBe(false);
+			});
+		});
+	});
+
 	describe("Escape key", () => {
 		test("should not call preventDefault when closed", () => {
 			mount({ closeWithEscape: true });
@@ -27,6 +47,34 @@ describe("summary-details", () => {
 	});
 
 	describe("Computed", () => {
+		describe("contentRole", () => {
+			test("should return 'status' when toggletip is true", () => {
+				const wrapper = mount({ toggletip: true });
+
+				expect(wrapper.vm.contentRole).toBe("status");
+			});
+
+			test("should return null when toggletip is false", () => {
+				const wrapper = mount({ toggletip: false });
+
+				expect(wrapper.vm.contentRole).toBeNull();
+			});
+		});
+
+		describe("contentLive", () => {
+			test("should return 'polite' when toggletip is true", () => {
+				const wrapper = mount({ toggletip: true });
+
+				expect(wrapper.vm.contentLive).toBe("polite");
+			});
+
+			test("should return null when toggletip is false", () => {
+				const wrapper = mount({ toggletip: false });
+
+				expect(wrapper.vm.contentLive).toBeNull();
+			});
+		});
+
 		describe("currentIcon", () => {
 			test("should show the appropriate default icons", () => {
 				const wrapper = mount();

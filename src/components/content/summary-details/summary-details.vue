@@ -4,14 +4,23 @@
 			<component :is="currentIcon" v-if="iconAtStart && includeIcon" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-start` }" />
 
 			<conditional-wrapper v-bind="{ wrap: iconOnly, tag: 'span' }" class="sr-only">
-				<slot name="summary" v-bind="{ isOpen, icon: currentIcon }" />
+				<slot name="summary" v-bind="{ isOpen, icon: currentIcon, open: openDetails, close: closeDetails, toggle: toggleDetails }" />
 			</conditional-wrapper>
 
 			<component :is="currentIcon" v-if="includeIcon && !iconAtStart" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-end` }" />
 		</summary>
 
-		<div ref="contentElement" :class="[{ 'absolute top-full animate-fade-in-down': floating, 'inset-s-0': alignStart, 'inset-e-0': !alignStart }, detailsClasses]" v-bind="{ hidden: isOpen ? undefined : 'until-found', 'data-test': `${dataTest}-content` }">
-			<slot v-bind="{ isOpen, icon: currentIcon }" />
+		<div
+			ref="contentElement"
+			:class="[{ 'absolute top-full animate-fade-in-down': floating, 'inset-s-0': alignStart, 'inset-e-0': !alignStart }, detailsClasses]"
+			v-bind="{
+				hidden: isOpen ? undefined : 'until-found',
+				role: contentRole,
+				'aria-live': contentLive,
+				'data-test': `${dataTest}-content`
+			}"
+		>
+			<slot v-if="!toggletip || shouldAnnounce" v-bind="{ isOpen, icon: currentIcon, open: openDetails, close: closeDetails, toggle: toggleDetails }" />
 		</div>
 	</details>
 </template>
@@ -22,7 +31,7 @@
  * such as custom icons, and allows a simple way of having content that can be
  * toggled. Suitable for items such as FAQs or even dropdown menus.
  */
-import { computed, nextTick, onMounted, useAttrs, useTemplateRef, watch } from "vue";
+import { computed, nextTick, onMounted, ref, useAttrs, useTemplateRef, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
 
@@ -161,6 +170,16 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether to treat the content as a toggletip, content which is announced
+	 * immediately when opened. This is good for information tooltips, for
+	 * example.
+	 */
+	toggletip: {
+		type: Boolean,
+		default: false,
+	},
+
+	/**
 	 * The data-test attribute for this element. This allows us to re-use the
 	 * provided data-test attribute for sub-components..
 	 */
@@ -191,6 +210,13 @@ const contentElement = useTemplateRef("contentElement");
 // Whether focus is currently within our details component. If it isn't, we will
 // close our details element, but don't change the user's focus.
 const { focused: hasFocus } = useFocusWithin(detailsElement);
+// Whether the toggletip slot content should currently be rendered. Briefly set
+// to false on each open to clear the live region so repeat opens re-announce.
+const shouldAnnounce = ref(true);
+// The ARIA role to apply to the content element in toggletip mode.
+const contentRole = computed(() => (props.toggletip ? "status" : null));
+// The ARIA live region type to apply in toggletip mode.
+const contentLive = computed(() => (props.toggletip ? "polite" : null));
 
 // The current icon to display. If an override icon is chosen, we always return
 // that, otherwise we return the appropriate icon for the current state.
@@ -261,6 +287,8 @@ onKeyStroke("Escape", event => {
 		return;
 	}
 
+	console.log({ isOpen: isOpen.value, props: props.closeWithEscape });
+
 	event.preventDefault();
 
 	if (hasFocus.value) {
@@ -305,31 +333,57 @@ function closeDetails() {
 	updateState();
 }
 
-// Emit open/close events and, when autofocus is enabled, move focus to the
-// first focusable descendant after the DOM has updated. The watch covers both
-// native summary clicks and programmatic openDetails() calls.
-watch(isOpen, async () => {
+/**
+ * Toggle the details element between open and closed.
+ */
+function toggleDetails() {
 	if (isOpen.value) {
-		emit("open");
+		closeDetails();
+	} else {
+		openDetails();
+	}
+}
 
-		if (props.autofocus && contentElement.value) {
-			await nextTick();
+// Emit open/close events, handle toggletip re-announcement, and move focus to
+// the first focusable descendant when autofocus is enabled. The watch covers
+// both native summary clicks and programmatic openDetails() calls.
+watch(isOpen, async () => {
+	if (!isOpen.value) {
+		emit("close");
 
+		return;
+	}
+
+	emit("open");
+
+	if (props.toggletip) {
+		// Briefly clear the live region content so that repeated opens
+		// re-trigger the announcement even when the text hasn't changed.
+		shouldAnnounce.value = false;
+
+		await new Promise(resolve => setTimeout(resolve, 100));
+
+		shouldAnnounce.value = true;
+	}
+
+	if (props.autofocus) {
+		await nextTick();
+
+		if (contentElement.value) {
 			const focusable = contentElement.value.querySelector(
 				":is(button, input, select, textarea):not([disabled]), a[href], [tabindex]:not([tabindex='-1'])",
 			);
 
 			focusable?.focus();
 		}
-
-		return;
 	}
 
-	emit("close");
+	return;
 });
 
 defineExpose({
-	openDetails,
 	closeDetails,
+	openDetails,
+	toggleDetails,
 });
 </script>
