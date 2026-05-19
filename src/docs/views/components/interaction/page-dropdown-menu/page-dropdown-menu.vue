@@ -21,6 +21,7 @@
 
 			<ul>
 				<li><code>dropdown-menu-button</code>, a styled action button</li>
+				<li><code>dropdown-menu-checkbox</code>, a styled checkbox for selection</li>
 				<li><code>dropdown-menu-link</code>, a styled link</li>
 				<li><code>dropdown-menu-divider</code>, a visual divider between sections</li>
 			</ul>
