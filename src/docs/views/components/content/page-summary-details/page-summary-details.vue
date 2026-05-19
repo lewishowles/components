@@ -25,6 +25,22 @@
 				<p>Whether the details element should initially be open.</p>
 			</component-prop>
 
+			<component-prop id="prop-autofocus">
+				<template #name>
+					autofocus
+				</template>
+
+				<template #type>
+					Boolean
+				</template>
+
+				<template #default-value>
+					false
+				</template>
+
+				<p>Whether to focus the first focusable element in the content area when the details are opened. Useful when the content contains a form or an action the user is expected to interact with immediately.</p>
+			</component-prop>
+
 			<component-prop id="prop-close-with-escape">
 				<template #name>
 					closeWithEscape

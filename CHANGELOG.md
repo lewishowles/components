@@ -8,6 +8,7 @@
 - `ui-button` - New `pressed` prop allows for toggle buttons.
 - `ui-button` - New `loadingAuto` prop allows a `reactive` button to automatically detect a promise on its click handler, and react accordingly.
 - `dropdown-menu` - Greatly improved accessibility, now supporting full keyboard navigation.
+- `summary-details` - Add new `autofocus` option to allow the first focusable element inside to receive focus automatically.
 
 ### Fixes
 

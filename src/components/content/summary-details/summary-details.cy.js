@@ -65,6 +65,24 @@ describe("summary-details", () => {
 		});
 	});
 
+	describe("Autofocus", () => {
+		it("Focuses the first focusable element when opened with autofocus enabled", () => {
+			mount({ props: { autofocus: true }, slots: { default: h("button", { "data-test": "first-focusable" }, "Action") } });
+
+			cy.getByData("summary-details-summary").click();
+
+			cy.focused().shouldHaveAttribute("data-test", "first-focusable");
+		});
+
+		it("Does not move focus when opened without autofocus", () => {
+			mount({ props: { autofocus: false }, slots: { default: h("button", { "data-test": "first-focusable" }, "Action") } });
+
+			cy.getByData("summary-details-summary").click();
+
+			cy.getByData("first-focusable").should("not.be.focused");
+		});
+	});
+
 	describe("Interaction", () => {
 		describe("closeWithEscape", () => {
 			it("true", () => {

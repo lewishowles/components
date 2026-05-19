@@ -31,6 +31,13 @@ The content to be displayed in the details element when open.
 
 Whether the details element should initially be open.
 
+### `autofocus`
+
+- type: `boolean`
+- default: `false`
+
+Whether to focus the first focusable element in the content area when the details are opened. Useful when the content contains a form or an action the user is expected to interact with immediately.
+
 ### `closeWithEscape`
 
 - type: `boolean`

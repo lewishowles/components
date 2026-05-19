@@ -117,6 +117,26 @@
 							<td><code>boolean</code></td>
 							<td>Whether the menu is currently open.</td>
 						</tr>
+						<tr>
+							<td><code>openMenu</code></td>
+							<td><code>function</code></td>
+							<td>Open the menu programmatically.</td>
+						</tr>
+						<tr>
+							<td><code>closeMenu</code></td>
+							<td><code>function</code></td>
+							<td>Close the menu programmatically.</td>
+						</tr>
+						<tr>
+							<td><code>toggleMenu</code></td>
+							<td><code>function</code></td>
+							<td>Toggle the menu open or closed.</td>
+						</tr>
+						<tr>
+							<td><code>triggerProps</code></td>
+							<td><code>object</code></td>
+							<td>ARIA attributes (<code>aria-haspopup</code>, <code>aria-expanded</code>, <code>aria-controls</code>) to spread onto a custom trigger element.</td>
+						</tr>
 					</tbody>
 				</table>
 			</component-slot>

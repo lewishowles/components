@@ -11,7 +11,7 @@
 			@click="toggleMenu"
 			@keydown="onTriggerKeydown"
 		>
-			<slot name="summary" v-bind="{ open: isOpen }" />
+			<slot name="summary" v-bind="{ open: isOpen, openMenu, closeMenu, toggleMenu, triggerProps }" />
 		</button>
 
 		<div
@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { nextTick, provide, ref, useId, useTemplateRef } from "vue";
+import { computed, nextTick, provide, ref, useId, useTemplateRef } from "vue";
 import { getNextIndex } from "@lewishowles/helpers/array";
 import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
 
@@ -67,6 +67,14 @@ const menuElement = useTemplateRef("menuElement");
 // Whether focus is currently within the menu panel. Used to decide whether to
 // return focus to the trigger when the menu closes.
 const { focused: hasFocus } = useFocusWithin(menuElement);
+
+// The ARIA attributes that belong on the trigger element, exposed as a slot
+// prop so users building a custom trigger can spread them onto their own element.
+const triggerProps = computed(() => ({
+	"aria-haspopup": "menu",
+	"aria-expanded": isOpen.value,
+	"aria-controls": menuId,
+}));
 
 // Provide child menu item components with a way to close the menu on selection.
 provide("dropdown-menu", { selectMenuItem });
@@ -286,7 +294,8 @@ function selectMenuItem() {
 }
 
 defineExpose({
-	openMenu,
 	closeMenu,
+	openMenu,
+	triggerProps,
 });
 </script>

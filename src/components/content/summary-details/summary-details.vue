@@ -10,7 +10,7 @@
 			<component :is="currentIcon" v-if="includeIcon && !iconAtStart" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-end` }" />
 		</summary>
 
-		<div v-show="isOpen" :class="[{ 'absolute top-full animate-fade-in-down': floating, 'inset-s-0': alignStart, 'inset-e-0': !alignStart }, detailsClasses]" v-bind="{ 'data-test': `${dataTest}-content` }">
+		<div v-show="isOpen" ref="contentElement" :class="[{ 'absolute top-full animate-fade-in-down': floating, 'inset-s-0': alignStart, 'inset-e-0': !alignStart }, detailsClasses]" v-bind="{ 'data-test': `${dataTest}-content` }">
 			<slot v-bind="{ isOpen, icon: currentIcon }" />
 		</div>
 	</details>
@@ -22,7 +22,7 @@
  * such as custom icons, and allows a simple way of having content that can be
  * toggled. Suitable for items such as FAQs or even dropdown menus.
  */
-import { computed, onMounted, useAttrs, useTemplateRef, watch } from "vue";
+import { computed, nextTick, onMounted, useAttrs, useTemplateRef, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
 
@@ -151,6 +151,16 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether to focus the first focusable element in the content area when
+	 * the details are opened. Useful when the content contains a form or an
+	 * action the user is expected to interact with immediately.
+	 */
+	autofocus: {
+		type: Boolean,
+		default: false,
+	},
+
+	/**
 	 * The data-test attribute for this element. This allows us to re-use the
 	 * provided data-test attribute for sub-components..
 	 */
@@ -175,6 +185,9 @@ const isOpen = defineModel({
 const detailsElement = useTemplateRef("detailsElement");
 // A reference to the summary element, with which we can manage focus.
 const summaryElement = useTemplateRef("summaryElement");
+// A reference to the content div, used to find the first focusable element
+// when autofocus is enabled.
+const contentElement = useTemplateRef("contentElement");
 // Whether focus is currently within our details component. If it isn't, we will
 // close our details element, but don't change the user's focus.
 const { focused: hasFocus } = useFocusWithin(detailsElement);
@@ -284,9 +297,22 @@ function closeDetails() {
 	updateState();
 }
 
-watch(isOpen, () => {
+// Emit open/close events and, when autofocus is enabled, move focus to the
+// first focusable descendant after the DOM has updated. The watch covers both
+// native summary clicks and programmatic openDetails() calls.
+watch(isOpen, async () => {
 	if (isOpen.value) {
 		emit("open");
+
+		if (props.autofocus && contentElement.value) {
+			await nextTick();
+
+			const focusable = contentElement.value.querySelector(
+				":is(button, input, select, textarea):not([disabled]), a[href], [tabindex]:not([tabindex='-1'])",
+			);
+
+			focusable?.focus();
+		}
 
 		return;
 	}

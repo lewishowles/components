@@ -26,6 +26,10 @@ The trigger button content.
 | Slot prop | Type | Description |
 | --- | --- | --- |
 | `open` | `boolean` | Whether the menu is currently open. |
+| `openMenu` | `function` | Open the menu programmatically. |
+| `closeMenu` | `function` | Close the menu programmatically. |
+| `toggleMenu` | `function` | Toggle the menu open or closed. |
+| `triggerProps` | `object` | ARIA attributes (`aria-haspopup`, `aria-expanded`, `aria-controls`) to spread onto a custom trigger element. |
 
 ### `default`
 
