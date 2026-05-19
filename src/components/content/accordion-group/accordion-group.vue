@@ -1,32 +1,22 @@
 <template>
 	<div data-test="accordion-group">
-		<button type="button" class="inline-flex items-center gap-2 text-purple-800 hocus:underline dark:text-purple-300" v-bind="{ 'aria-expanded': areAllPanelsVisible }" data-test="accordion-group-button" @click="toggleAllPanels">
-			<component :is="statusIcon" class="size-text" />
-
-			<span v-show="!areAllPanelsVisible">
+		<div class="flex items-center gap-4">
+			<ui-button icon-start="icon-chevron-down-circled" class="text-purple-800 hocus:underline dark:text-purple-300" :disabled="areAllPanelsVisible" data-test="accordion-group-expand-button" @click="showAllPanels">
 				<slot name="show-all-panels-label">
-					Show all panels
+					Expand all
 				</slot>
-			</span>
+			</ui-button>
 
-			<span v-show="areAllPanelsVisible" class="inline-flex items-center gap-2">
+			<ui-button icon-start="icon-chevron-up-circled" class="text-purple-800 hocus:underline dark:text-purple-300" :disabled="areNoPanelsVisible" data-test="accordion-group-collapse-button" @click="hideAllPanels">
 				<slot name="hide-all-panels-label">
-					Hide all panels
+					Collapse all
 				</slot>
-			</span>
-		</button>
+			</ui-button>
+		</div>
 
 		<div class="divide-y divide-grey-200">
 			<slot />
 		</div>
-
-		<slot v-if="0" name="show-panel-label">
-			Show panel
-		</slot>
-
-		<slot v-if="0" name="hide-panel-label">
-			Hide panel
-		</slot>
 	</div>
 </template>
 
@@ -55,8 +45,8 @@ const showPanelLabel = computed(() => getSlotText(slots["show-panel-label"]));
 const hidePanelLabel = computed(() => getSlotText(slots["hide-panel-label"]));
 // Whether all of the panels are currently visible.
 const areAllPanelsVisible = computed(() => panels.value.every(panel => panel.isVisible === true));
-// The icon to show depending on the visibility of each panel.
-const statusIcon = computed(() => (areAllPanelsVisible.value ? "icon-chevron-up-circled" : "icon-chevron-down-circled"));
+// Whether no panels are currently visible.
+const areNoPanelsVisible = computed(() => panels.value.every(panel => panel.isVisible === false));
 
 function registerPanel({ isVisible, show, hide }) {
 	if (!isRef(isVisible) || !isFunction(show) || !isFunction(hide)) {
@@ -64,20 +54,6 @@ function registerPanel({ isVisible, show, hide }) {
 	}
 
 	panels.value.push({ isVisible, show, hide });
-}
-
-/**
- * Toggle all panels depending on their current state. If all panels are
- * visible, hide them. Otherwise, show all panels.
- */
-function toggleAllPanels() {
-	if (areAllPanelsVisible.value) {
-		hideAllPanels();
-
-		return;
-	}
-
-	showAllPanels();
 }
 
 /**

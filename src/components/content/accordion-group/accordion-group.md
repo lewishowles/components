@@ -28,18 +28,6 @@ The label for the button which shows all accordion panels.
 
 The label for the button which hides all accordion panels.
 
-### `show-panel-label`
-
-- default: "Show panel"
-
-The label for the individual panel buttons to show that panel.
-
-### `hide-panel-label`
-
-- default: "Hide panel"
-
-The label for the individual panel buttons to hide that panel.
-
 ## Props
 
 ### `headingLevel`

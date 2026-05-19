@@ -28,6 +28,7 @@
 		</component>
 
 		<div
+			ref="contentRef"
 			v-bind="contentRegionProps"
 			:class="{ 'pb-6': isVisible }"
 			data-test="accordion-panel-content"
@@ -38,12 +39,14 @@
 </template>
 
 <script setup>
-import { computed, inject, ref, useId, useSlots } from "vue";
+import { computed, inject, onBeforeUnmount, onMounted, ref, useId, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 
 const { headingLevel, hidePanelLabel, panelCount = ref(0), registerPanel, showPanelLabel } = inject("accordion-group", {});
 
 const slots = useSlots();
+// A ref to the panel content element, used to listen for find-in-page reveals.
+const contentRef = ref(null);
 // The internal ID for this accordion panel.
 const id = useId();
 // A stable ID for the title span, referenced by the button and the region.
@@ -74,6 +77,14 @@ registerPanel({
 	hide,
 });
 
+onMounted(() => {
+	contentRef.value?.addEventListener("beforematch", show);
+});
+
+onBeforeUnmount(() => {
+	contentRef.value?.removeEventListener("beforematch", show);
+});
+
 /**
  * Open this panel.
  */
@@ -102,6 +113,4 @@ function toggle() {
 	show();
 }
 
-// Use intersection-observer to monitor when the div is found by search
-// Save visible state in session storage
 </script>

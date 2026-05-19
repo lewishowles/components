@@ -39,6 +39,28 @@ describe("accordion-group", () => {
 				expect(vm.areAllPanelsVisible).toBe(false);
 			});
 		});
+
+		describe("areNoPanelsVisible", () => {
+			test("should recognise when no panels are visible", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.registerPanel({ isVisible: ref(false), show, hide });
+				vm.registerPanel({ isVisible: ref(false), show, hide });
+
+				expect(vm.areNoPanelsVisible).toBe(true);
+			});
+
+			test("should recognise when at least one panel is visible", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.registerPanel({ isVisible: ref(false), show, hide });
+				vm.registerPanel({ isVisible: ref(true), show, hide });
+
+				expect(vm.areNoPanelsVisible).toBe(false);
+			});
+		});
 	});
 
 	describe("Methods", () => {

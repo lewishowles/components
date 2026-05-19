@@ -49,6 +49,18 @@ describe("accordion-group", () => {
 				});
 			});
 		});
+
+		it("Panel syncs aria-expanded when beforematch fires on panel content", () => {
+			mount();
+
+			cy.getByData("accordion-panel").eq(0).within(() => {
+				cy.getByData("accordion-panel-button").shouldHaveAttribute("aria-expanded", "false");
+
+				cy.getByData("accordion-panel-content").trigger("beforematch", { force: true });
+
+				cy.getByData("accordion-panel-button").shouldHaveAttribute("aria-expanded", "true");
+			});
+		});
 	});
 
 	describe("accordion-panel", () => {
@@ -71,34 +83,75 @@ describe("accordion-group", () => {
 	});
 
 	describe("accordion-group", () => {
-		it("All sections can be opened", () => {
+		it("Expand all and Collapse all buttons are rendered", () => {
 			mount();
 
-			cy.getByData("accordion-group-button").shouldHaveAttribute("aria-expanded", "false");
+			cy.getByData("accordion-group-expand-button").shouldBeVisible();
+			cy.getByData("accordion-group-collapse-button").shouldBeVisible();
+		});
+
+		it("Expand all is aria-disabled when all panels are open", () => {
+			mount();
+
+			cy.getByData("accordion-group-expand-button").click();
+
+			confirmSectionOpen(0);
+			confirmSectionOpen(1);
+			confirmSectionOpen(2);
+
+			cy.getByData("accordion-group-expand-button").shouldHaveAttribute("aria-disabled", "true");
+		});
+
+		it("Collapse all is aria-disabled when all panels are closed", () => {
+			mount();
+
+			cy.getByData("accordion-group-collapse-button").shouldHaveAttribute("aria-disabled", "true");
+		});
+
+		it("Expand all opens all panels", () => {
+			mount();
 
 			confirmSectionClosed(0);
 			confirmSectionClosed(1);
 			confirmSectionClosed(2);
 
-			cy.getByData("accordion-group-button").click();
-
-			cy.getByData("accordion-group-button").shouldHaveAttribute("aria-expanded", "true");
+			cy.getByData("accordion-group-expand-button").click();
 
 			confirmSectionOpen(0);
 			confirmSectionOpen(1);
 			confirmSectionOpen(2);
 		});
 
-		it("Closing one panel appropriately updates the all sections button", () => {
+		it("Collapse all closes all panels", () => {
 			mount();
 
-			cy.getByData("accordion-group-button").click();
+			cy.getByData("accordion-group-expand-button").click();
 
-			cy.getByData("accordion-group-button").shouldHaveAttribute("aria-expanded", "true");
+			confirmSectionOpen(0);
+			confirmSectionOpen(1);
+			confirmSectionOpen(2);
+
+			cy.getByData("accordion-group-collapse-button").click();
+
+			confirmSectionClosed(0);
+			confirmSectionClosed(1);
+			confirmSectionClosed(2);
+		});
+
+		it("Closing one panel re-enables Expand all", () => {
+			mount();
+
+			cy.getByData("accordion-group-expand-button").click();
+
+			confirmSectionOpen(0);
+			confirmSectionOpen(1);
+			confirmSectionOpen(2);
+
+			cy.getByData("accordion-group-expand-button").shouldHaveAttribute("aria-disabled", "true");
 
 			closeSection(1);
 
-			cy.getByData("accordion-group-button").shouldHaveAttribute("aria-expanded", "false");
+			cy.getByData("accordion-group-expand-button").shouldNotHaveAttribute("aria-disabled");
 		});
 	});
 });
