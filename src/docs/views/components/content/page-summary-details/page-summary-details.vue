@@ -6,6 +6,8 @@
 
 		<template #introduction>
 			<p>Provides an implementation of the <code>details</code> element with optional extras, such as custom icons, and allows a simple way of having content that can be toggled. Suitable for items such as FAQs or even dropdown menus.</p>
+
+			<p>When closed, the content is hidden using <code>hidden=&quot;until-found&quot;</code>, making it discoverable by find-in-page searches. When the user finds text within a closed <code>summary-details</code>, the component is automatically kept in sync.</p>
 		</template>
 
 		<component-props>

@@ -2,6 +2,8 @@
 
 Provides an implementation of the `details` element with optional extras, such as custom icons, and allows a simple way of having content that can be toggled. Suitable for items such as FAQs or even dropdown menus.
 
+When closed, the content is hidden using `hidden="until-found"`, making it discoverable by find-in-page searches. When the user finds text within a closed `summary-details`, the component is automatically kept in sync.
+
 ## Slots
 
 ### `summary`

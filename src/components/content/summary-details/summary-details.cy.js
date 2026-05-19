@@ -154,6 +154,44 @@ describe("summary-details", () => {
 			});
 		});
 	});
+
+	describe("Find-in-page support", () => {
+		it("Content has hidden=until-found when closed", () => {
+			mount();
+
+			cy.getByData("summary-details-content").then(element => {
+				expect(element[0].getAttribute("hidden")).to.equal("until-found");
+			});
+		});
+
+		it("Content does not have hidden attribute when open", () => {
+			mount({ open: true });
+
+			cy.getByData("summary-details-content").then(element => {
+				expect(element[0].getAttribute("hidden")).to.be.null;
+			});
+		});
+
+		it("Opening details removes the hidden attribute", () => {
+			mount();
+
+			cy.getByData("summary-details-summary").click();
+
+			cy.getByData("summary-details-content").then(element => {
+				expect(element[0].getAttribute("hidden")).to.be.null;
+			});
+		});
+
+		it("beforematch event opens the details", () => {
+			mount();
+
+			cy.getByData("summary-details-content").then(element => {
+				element[0].dispatchEvent(new Event("beforematch", { bubbles: true }));
+
+				cy.getByData("summary-details").shouldHaveAttribute("open");
+			});
+		});
+	});
 });
 
 /**

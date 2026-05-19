@@ -10,7 +10,7 @@
 			<component :is="currentIcon" v-if="includeIcon && !iconAtStart" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-end` }" />
 		</summary>
 
-		<div v-show="isOpen" ref="contentElement" :class="[{ 'absolute top-full animate-fade-in-down': floating, 'inset-s-0': alignStart, 'inset-e-0': !alignStart }, detailsClasses]" v-bind="{ 'data-test': `${dataTest}-content` }">
+		<div ref="contentElement" :class="[{ 'absolute top-full animate-fade-in-down': floating, 'inset-s-0': alignStart, 'inset-e-0': !alignStart }, detailsClasses]" v-bind="{ hidden: isOpen ? undefined : 'until-found', 'data-test': `${dataTest}-content` }">
 			<slot v-bind="{ isOpen, icon: currentIcon }" />
 		</div>
 	</details>
@@ -241,6 +241,14 @@ onMounted(() => {
 	if (isOpen.value && detailsElement.value.open === false) {
 		detailsElement.value.open = true;
 	}
+
+	// When the user finds text within the content via find-in-page (Ctrl+F),
+	// the browser fires beforematch on the hidden="until-found" element. Open
+	// the details to keep state, content visibility, and the summary icon in
+	// sync.
+	contentElement.value?.addEventListener("beforematch", () => {
+		openDetails();
+	});
 });
 
 
