@@ -173,10 +173,12 @@
 
 		<component-playgrounds>
 			<playground-form-radio-group />
+			<playground-form-radio-group-inline />
 		</component-playgrounds>
 	</component-page>
 </template>
 
 <script setup>
 import PlaygroundFormRadioGroup from "./fragments/playground-form-radio-group.vue";
+import PlaygroundFormRadioGroupInline from "./fragments/playground-form-radio-group-inline.vue";
 </script>

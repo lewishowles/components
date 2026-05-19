@@ -4,7 +4,7 @@
 			<input
 				ref="inputElement"
 				v-model="model"
-				class="form-checkbox mt-1"
+				class="form-checkbox"
 				:class="{ 'form-field--error': haveError }"
 				v-bind="{
 					id: inputId,

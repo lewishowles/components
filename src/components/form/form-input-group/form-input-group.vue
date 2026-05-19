@@ -21,7 +21,7 @@
 		<slot name="options" v-bind="{ options: internalOptions, name: fieldName }">
 			<div class="flex flex-col mt-2" :class="{ '@xs:flex-row @xs:gap-10': inline, 'gap-2': !inline }">
 				<template v-for="option in internalOptions" :key="option.id">
-					<div class="flex items-center">
+					<div class="flex">
 						<input
 							v-if="isRadio"
 							ref="inputReferences"
