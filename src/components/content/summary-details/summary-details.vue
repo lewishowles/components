@@ -242,13 +242,11 @@ onKeyStroke("Escape", event => {
 
 	event.preventDefault();
 
-	closeDetails();
-
-	if (!hasFocus.value) {
-		return;
+	if (hasFocus.value) {
+		summaryElement.value?.focus();
 	}
 
-	summaryElement.value.focus();
+	closeDetails();
 });
 
 onClickOutside(detailsElement, event => {

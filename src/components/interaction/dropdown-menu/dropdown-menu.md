@@ -10,6 +10,13 @@ To build up a standardised menu, use the companion components:
 - `dropdown-menu-link`, a styled link
 - `dropdown-menu-divider`, a visual divider between sections
 
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `summaryClasses` | `string \| array \| object` | — | Additional classes applied to the trigger button. Defaults to the standard muted button styling. |
+| `detailsClasses` | `string \| array \| object` | — | Additional classes applied to the menu panel. Defaults to the standard panel styling. |
+
 ## Slots
 
 ### `summary`

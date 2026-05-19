@@ -6,12 +6,17 @@
 			'border-transparent': !selected,
 		}"
 		v-bind="{ iconStart: icon }"
+		role="menuitem"
+		data-test="dropdown-menu-button"
+		@click="handleSelect"
 	>
 		<slot />
 	</ui-button>
 </template>
 
 <script setup>
+import { inject } from "vue";
+
 defineProps({
 	/**
 	 * An icon to show with this button, which will appear at its start.
@@ -29,4 +34,15 @@ defineProps({
 		default: false,
 	},
 });
+
+// Functions provided by the parent dropdown-menu, keyed by component name.
+const { selectMenuItem } = inject("dropdown-menu", {});
+
+/**
+ * Handle selection of this menu item, notifying the parent dropdown-menu so
+ * it can close and restore focus to the trigger.
+ */
+function handleSelect() {
+	selectMenuItem?.();
+}
 </script>

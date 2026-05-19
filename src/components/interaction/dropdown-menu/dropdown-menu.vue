@@ -30,13 +30,21 @@
 </template>
 
 <script setup>
-import { nextTick, ref, useId, useTemplateRef } from "vue";
+import { nextTick, provide, ref, useId, useTemplateRef } from "vue";
 import { getNextIndex } from "@lewishowles/helpers/array";
 import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
 
 defineProps({
 	/**
-	 * Any classes to add to the dropdown content.
+	 * Any classes to add to the trigger button.
+	 */
+	summaryClasses: {
+		type: [String, Array, Object],
+		default: "button--muted",
+	},
+
+	/**
+	 * Any classes to add to the dropdown panel.
 	 */
 	detailsClasses: {
 		type: [String, Array, Object],
@@ -56,11 +64,12 @@ const menuContainerElement = useTemplateRef("menuContainerElement");
 const triggerElement = useTemplateRef("triggerElement");
 // A reference to the menu panel, used to query items and handle keyboard events.
 const menuElement = useTemplateRef("menuElement");
-// Whether focus is currently within our details component. If it isn't, we will
-// close our details element, but don't change the user's focus.
+// Whether focus is currently within the menu panel. Used to decide whether to
+// return focus to the trigger when the menu closes.
 const { focused: hasFocus } = useFocusWithin(menuElement);
-// Default styling for the trigger button.
-const summaryClasses = "button--muted";
+
+// Provide child menu item components with a way to close the menu on selection.
+provide("dropdown-menu", { selectMenuItem });
 
 // Our type-ahead buffer keeps track of the user's typing while the menu is
 // open, enabling us to focus an element whose label matches.
@@ -83,14 +92,7 @@ onKeyStroke("Escape", event => {
 	}
 
 	event.preventDefault();
-
-	closeMenu();
-
-	if (!hasFocus.value) {
-		return;
-	}
-
-	triggerElement.value.focus();
+	closeAndRestoreFocus();
 });
 
 /**
@@ -263,6 +265,24 @@ function closeMenu() {
 	isOpen.value = false;
 
 	emit("close");
+}
+
+/**
+ * Close the menu and return focus to the trigger if focus was within the panel.
+ */
+function closeAndRestoreFocus() {
+	if (hasFocus.value) {
+		triggerElement.value?.focus();
+	}
+
+	closeMenu();
+}
+
+/**
+ * Handle selection of a menu item, closing the menu and restoring focus.
+ */
+function selectMenuItem() {
+	closeAndRestoreFocus();
 }
 
 defineExpose({

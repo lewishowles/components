@@ -67,6 +67,32 @@
 			</table>
 		</template>
 
+		<component-props>
+			<component-prop id="prop-summary-classes">
+				<template #name>
+					summaryClasses
+				</template>
+
+				<template #type>
+					string, array, object
+				</template>
+
+				<p>Additional classes applied to the trigger button. Defaults to the standard muted button styling.</p>
+			</component-prop>
+
+			<component-prop id="prop-details-classes">
+				<template #name>
+					detailsClasses
+				</template>
+
+				<template #type>
+					string, array, object
+				</template>
+
+				<p>Additional classes applied to the menu panel. Defaults to the standard panel styling.</p>
+			</component-prop>
+		</component-props>
+
 		<component-slots>
 			<component-slot id="slot-summary">
 				<template #name>

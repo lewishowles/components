@@ -105,6 +105,28 @@ describe("dropdown-menu", () => {
 		});
 	});
 
+	describe("Menu item behaviour", () => {
+		it("Clicking a menu item closes the menu", () => {
+			mount();
+
+			cy.getByData("dropdown-menu-trigger").click();
+
+			cy.getByData("dropdown-menu-button").first().click();
+
+			cy.getByData("dropdown-menu-panel").should("not.exist");
+		});
+
+		it("Clicking a menu item returns focus to the trigger", () => {
+			mount();
+
+			cy.getByData("dropdown-menu-trigger").click();
+
+			cy.getByData("dropdown-menu-button").first().click();
+
+			cy.getByData("dropdown-menu-trigger").shouldHaveFocus();
+		});
+	});
+
 	describe("Keyboard navigation", () => {
 		it("ArrowDown opens the menu and focuses the first item", () => {
 			mount();
