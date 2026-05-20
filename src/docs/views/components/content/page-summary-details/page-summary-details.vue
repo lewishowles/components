@@ -171,38 +171,6 @@
 				<p>Whether to include a summary icon at all. This allows more flexibility with the styling of the summary, but it is important to make it clear to the user what is happening.</p>
 			</component-prop>
 
-			<component-prop id="prop-floating">
-				<template #name>
-					floating
-				</template>
-
-				<template #type>
-					Boolean
-				</template>
-
-				<template #default-value>
-					false
-				</template>
-
-				<p>Whether the details should float when opened, perfect for drop down menus.</p>
-			</component-prop>
-
-			<component-prop id="prop-align">
-				<template #name>
-					align
-				</template>
-
-				<template #type>
-					String
-				</template>
-
-				<template #default-value>
-					start
-				</template>
-
-				<p>When floating, whether to align to the dropdown to the start or end of the summary. This is useful for menus that open to the end of the screen, for example. Anything but <code>start</code> will be treated as <code>end</code>.</p>
-			</component-prop>
-
 			<component-prop id="prop-summary-classes">
 				<template #name>
 					summaryClasses
@@ -402,12 +370,10 @@
 
 		<component-playgrounds>
 			<playground-summary-details />
-			<playground-summary-details-floating />
 		</component-playgrounds>
 	</component-page>
 </template>
 
 <script setup>
 import PlaygroundSummaryDetails from "./fragments/playground-summary-details.vue";
-import PlaygroundSummaryDetailsFloating from "./fragments/playground-summary-details-floating.vue";
 </script>
