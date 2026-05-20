@@ -40,6 +40,14 @@ describe("accordion-group", () => {
 			});
 		});
 
+		it("Trigger button has data-part=\"accordion-trigger\"", () => {
+			mount();
+
+			cy.getByData("accordion-panel").eq(0).within(() => {
+				cy.getByData("accordion-panel-button").shouldHaveAttribute("data-part", "accordion-trigger");
+			});
+		});
+
 		it("Trigger button aria-labelledby matches the title span id", () => {
 			mount();
 
@@ -152,6 +160,53 @@ describe("accordion-group", () => {
 			closeSection(1);
 
 			cy.getByData("accordion-group-expand-button").shouldNotHaveAttribute("aria-disabled");
+		});
+	});
+
+	describe("keyboard navigation", () => {
+		it("ArrowDown moves focus to the next trigger", () => {
+			mount();
+
+			cy.getByData("accordion-panel-button").eq(0).focus();
+			cy.realPress("ArrowDown");
+
+			cy.getByData("accordion-panel-button").eq(1).should("have.focus");
+		});
+
+		it("ArrowDown wraps from the last trigger to the first", () => {
+			mount();
+
+			cy.getByData("accordion-panel-button").eq(2).focus();
+			cy.realPress("ArrowDown");
+
+			cy.getByData("accordion-panel-button").eq(0).should("have.focus");
+		});
+
+		it("ArrowUp moves focus to the previous trigger", () => {
+			mount();
+
+			cy.getByData("accordion-panel-button").eq(1).focus();
+			cy.realPress("ArrowUp");
+
+			cy.getByData("accordion-panel-button").eq(0).should("have.focus");
+		});
+
+		it("Home moves focus to the first trigger", () => {
+			mount();
+
+			cy.getByData("accordion-panel-button").eq(2).focus();
+			cy.realPress("Home");
+
+			cy.getByData("accordion-panel-button").eq(0).should("have.focus");
+		});
+
+		it("End moves focus to the last trigger", () => {
+			mount();
+
+			cy.getByData("accordion-panel-button").eq(0).focus();
+			cy.realPress("End");
+
+			cy.getByData("accordion-panel-button").eq(2).should("have.focus");
 		});
 	});
 });

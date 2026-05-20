@@ -1,5 +1,5 @@
 <template>
-	<div data-test="accordion-group">
+	<div ref="groupRef" data-test="accordion-group" @keydown="handleKeydown">
 		<div class="flex items-center gap-4">
 			<ui-button icon-start="icon-chevron-down-circled" class="text-purple-800 hocus:underline dark:text-purple-300" :disabled="areAllPanelsVisible" data-test="accordion-group-expand-button" @click="showAllPanels">
 				<slot name="show-all-panels-label">
@@ -24,7 +24,7 @@
 import { computed, isRef, provide, ref, useSlots } from "vue";
 import { getSlotText, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isFunction } from "@lewishowles/helpers/general";
-import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
+import { arrayLength, getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 
 const props = defineProps({
 	/**
@@ -37,6 +37,8 @@ const props = defineProps({
 });
 
 const slots = useSlots();
+// A reference to the root element, used for arrow key navigation between triggers.
+const groupRef = ref(null);
 // A reference to each of the panels belonging to this accordion.
 const panels = ref([]);
 // An overall label for each panel's "Show panel" action.
@@ -80,6 +82,52 @@ function hideAllPanels() {
 	for (const panel of panels.value) {
 		runComponentMethod(panel, "hide");
 	}
+}
+
+/**
+ * Handle arrow key navigation between panel trigger buttons. Focus moves
+ * without activating panels (ArrowDown / ArrowUp wrap; Home / End jump).
+ *
+ * @param  {KeyboardEvent}  event
+ */
+function handleKeydown(event) {
+	if (panels.value.length < 2) {
+		return;
+	}
+
+	const navigationKeys = ["ArrowDown", "ArrowUp", "Home", "End"];
+
+	if (!navigationKeys.includes(event.key)) {
+		return;
+	}
+
+	const buttons = Array.from(groupRef.value?.querySelectorAll("[data-part='accordion-trigger']") ?? []);
+
+	if (buttons.length === 0) {
+		return;
+	}
+
+	const currentIndex = buttons.indexOf(event.target);
+
+	if (currentIndex === -1) {
+		return;
+	}
+
+	event.preventDefault();
+
+	let nextIndex;
+
+	if (event.key === "ArrowDown") {
+		nextIndex = getNextIndex(currentIndex, buttons, { wrap: true });
+	} else if (event.key === "ArrowUp") {
+		nextIndex = getNextIndex(currentIndex, buttons, { reverse: true, wrap: true });
+	} else if (event.key === "Home") {
+		nextIndex = 0;
+	} else {
+		nextIndex = buttons.length - 1;
+	}
+
+	buttons[nextIndex]?.focus();
 }
 
 provide("accordion-group", {

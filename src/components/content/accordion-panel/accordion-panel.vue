@@ -1,7 +1,14 @@
 <template>
 	<div data-test="accordion-panel">
 		<component :is="headingLevel" class="py-6" data-test="accordion-panel-title">
-			<button type="button" class="group flex flex-col items-start" v-bind="{ 'aria-controls': id, 'aria-expanded': isVisible, 'aria-labelledby': titleId }" data-test="accordion-panel-button" @click="toggle">
+			<button
+				type="button"
+				class="group flex flex-col items-start"
+				v-bind="{ 'aria-controls': id, 'aria-expanded': isVisible, 'aria-labelledby': titleId }"
+				data-part="accordion-trigger"
+				data-test="accordion-panel-button"
+				@click="toggle"
+			>
 				<span :id="titleId" class="mb-1 text-2xl font-bold text-grey-950 dark:text-grey-50">
 					<slot name="title" />
 				</span>
