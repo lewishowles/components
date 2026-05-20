@@ -216,10 +216,26 @@
 }
 
 .button--disabled {
+	color: var(--color-grey-500);
+	cursor: not-allowed;
+
+	&:is(:hover, :focus) {
+		color: var(--color-grey-500);
+	}
+
+	&:where(.dark, .dark *) {
+		color: rgb(255 255 255 / 40%);
+
+		&:is(:hover, :focus) {
+			color: rgb(255 255 255 / 40%);
+		}
+	}
+}
+
+:is(.button--primary, .button--muted, .button--toggle, .button--danger).button--disabled {
 	background-color: var(--color-grey-100);
 	border-color: var(--color-grey-100);
 	color: var(--color-grey-600);
-	cursor: not-allowed;
 
 	&:is(:hover, :focus) {
 		background-color: var(--color-grey-100);
