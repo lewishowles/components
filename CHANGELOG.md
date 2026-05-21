@@ -14,6 +14,8 @@
 - `accordion-group` - Now has a "close all panels" button, as well as an "open all panels".
 - `accordion-group` - Will now open panels if the browser's search function finds matching content within.
 - `floating-details` - New `placement` option allows floating the details above or below the trigger.
+- `tab-item` - Now provides `isActive` slot prop to the `label` and `default` slots.
+- `tab-item` - Can now be activated via the exposed `select` function.
 
 ### Fixes
 

@@ -1,10 +1,6 @@
 <template>
 	<div v-show="active" v-bind="{ id: panelId, 'aria-labelledby': tabId }" tabindex="0" role="tabpanel">
-		<div class="hidden" aria-hidden="true">
-			<slot name="label" />
-		</div>
-
-		<slot />
+		<slot v-bind="{ isActive: active }" />
 	</div>
 </template>
 
@@ -45,16 +41,14 @@ const { registerTab, activeTabId } = inject("tab-group");
 const slots = useSlots();
 // Whether this tab is active.
 const active = computed(() => activeTabId.value === tabId.value);
-// The content of the label slot. This is rendered by `tab-group` using
-// `component`.
+// The content of the label slot. This is rendered by `tab-group` using `component`.
 const label = computed(() => slots.label);
 // The ID of this tab, used to link the panel and the tab together.
 const tabId = computed(() => (isNonEmptyString(props.id) ? props.id : `tab-${useId()}`));
-// The ID of this tab, used to link the panel and the tab together.
+// The ID of the panel associated with this tab.
 const panelId = computed(() => `${tabId.value}-panel`);
 
 onMounted(() => {
-	// Register our tab with the parent group.
 	registerTab({
 		initiallyActive: props.initiallyActive,
 		label,
@@ -63,8 +57,6 @@ onMounted(() => {
 		icon: props.icon,
 	}, active);
 
-	// If there is a hash in the URL, check if it matches a tab, or the contents
-	// of this tab. If so, activate this tab.
 	const hash = window.location.hash.slice(1);
 
 	if (!isNonEmptyString(hash)) {
@@ -75,4 +67,13 @@ onMounted(() => {
 		activeTabId.value = tabId.value;
 	}
 });
+
+/**
+ * Activate this tab programmatically.
+ */
+function select() {
+	activeTabId.value = tabId.value;
+}
+
+defineExpose({ select });
 </script>

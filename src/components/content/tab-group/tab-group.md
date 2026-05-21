@@ -30,9 +30,17 @@ An optional, strongly recommended, accessible label for the tab list.
 
 The `default` slot for `tab-item` contains the content of the tab.
 
+| Prop | Type | Description |
+| --- | --- | --- |
+| `isActive` | `boolean` | Whether this tab is currently active. |
+
 ### `label`
 
 The label for this tab, to be displayed in the tab bar.
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `isActive` | `boolean` | Whether this tab is currently active. |
 
 ## Props
 
@@ -80,6 +88,12 @@ Whether this tab is initially active.
 - default: `null`
 
 An icon to display with the tab button.
+
+## Methods (`tab-item`)
+
+### `select`
+
+Activate this tab programmatically. Useful when external code needs to change which tab is active.
 
 ## Examples
 

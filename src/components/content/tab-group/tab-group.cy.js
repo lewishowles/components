@@ -13,6 +13,13 @@ const defaultSlots = {
 
 const mount = createMount(TabGroup, { slots: defaultSlots });
 
+const slotPropSlots = {
+	default: [
+		createTabWithSlotProps({ label: "First tab", content: "First tab content" }),
+		createTabWithSlotProps({ label: "Second tab", content: "Second tab content" }),
+	],
+};
+
 describe("tab-group", () => {
 	it("A component is rendered", () => {
 		mount();
@@ -132,6 +139,23 @@ describe("tab-group", () => {
 	});
 });
 
+describe("Slot props", () => {
+	it("Label slot receives isActive prop", () => {
+		mount({ slots: slotPropSlots });
+
+		cy.get("[data-test=\"tab-label\"]").eq(0).shouldHaveAttribute("data-active", "true");
+		cy.get("[data-test=\"tab-label\"]").eq(1).shouldHaveAttribute("data-active", "false");
+	});
+
+
+	it("Panel slot receives isActive prop", () => {
+		mount({ slots: slotPropSlots });
+
+		cy.get("[data-test=\"panel-content\"]").eq(0).shouldHaveAttribute("data-active", "true");
+		cy.get("[data-test=\"panel-content\"]").eq(1).shouldHaveAttribute("data-active", "false");
+	});
+});
+
 /**
  * Simplify the process of creating a new tab to test with.
  *
@@ -144,6 +168,22 @@ function createTab({ label, content }) {
 	return h(TabItem, {}, {
 		default: () => h("p", content),
 		label: () => label,
+	});
+}
+
+/**
+ * Create a tab whose label and panel slots use the exposed slot props, so
+ * tests can verify that `isActive` and `select` are passed correctly.
+ *
+ * @param  {string}  options.label
+ *     The label of the tab.
+ * @param  {string}  options.content
+ *     The content of the tab panel.
+ */
+function createTabWithSlotProps({ label, content }) {
+	return h(TabItem, {}, {
+		default: ({ isActive }) => h("p", { "data-test": "panel-content", "data-active": String(isActive) }, content),
+		label: ({ isActive }) => h("span", { "data-test": "tab-label", "data-active": String(isActive) }, label),
 	});
 }
 

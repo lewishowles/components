@@ -26,7 +26,7 @@
 						data-test="tab-group-tab"
 						@click.prevent="setActiveTabById(tab.tabId)"
 					>
-						<component :is="tab.label" />
+						<component :is="tab.label" v-bind="{ isActive: tab.active }" />
 					</link-tag>
 				</li>
 			</ol>

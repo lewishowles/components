@@ -119,6 +119,23 @@
 				</template>
 
 				<p>The <code>default</code> slot for <code>tab-item</code> contains the content of the tab.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>isActive</code></td>
+							<td><code>boolean</code></td>
+							<td>Whether this tab is currently active.</td>
+						</tr>
+					</tbody>
+				</table>
 			</component-slot>
 
 			<component-slot id="slot-tab-item-label">
@@ -127,8 +144,35 @@
 				</template>
 
 				<p>The label for this tab, to be displayed in the tab bar.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>isActive</code></td>
+							<td><code>boolean</code></td>
+							<td>Whether this tab is currently active.</td>
+						</tr>
+					</tbody>
+				</table>
 			</component-slot>
 		</component-slots>
+
+		<component-methods>
+			<component-method id="method-select">
+				<template #name>
+					<code>select</code> (<code>tab-item</code>)
+				</template>
+
+				<p>Activate this tab programmatically. Useful when external code needs to change which tab is active.</p>
+			</component-method>
+		</component-methods>
 
 		<component-provides>
 			<template #introduction>
