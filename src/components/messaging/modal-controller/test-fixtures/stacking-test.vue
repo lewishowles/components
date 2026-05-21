@@ -29,6 +29,7 @@ const SecondModal = markRaw(defineComponent({
 	props: {
 		onClose: {
 			type: Function,
+			default: null,
 		},
 	},
 	setup(props) {

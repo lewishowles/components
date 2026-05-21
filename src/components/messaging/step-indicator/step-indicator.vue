@@ -33,8 +33,7 @@
 
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
-import { computed, useId, useSlots } from "vue";
-import { getSlotText } from "@lewishowles/helpers/vue";
+import { computed, useId } from "vue";
 
 const props = defineProps({
 	/**
@@ -54,9 +53,6 @@ const props = defineProps({
 	},
 });
 
-const slots = useSlots();
-// The name of the current step.
-const label = computed(() => getSlotText(slots.default));
 // The internal current value, allowing us to bind the current value to the
 // provided minimum and maximum.
 const internalCurrentStep = computed(() => clamp(props.currentStep, 1, props.stepCount));
