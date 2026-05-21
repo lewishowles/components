@@ -20,6 +20,10 @@ If tabs only contain content, an Accordion may be a better choice.
 
 The `default` slot contains the `tab-item` components that represent the tabs.
 
+### `label`
+
+An optional, strongly recommended, accessible label for the tab list.
+
 ## Slots (`tab-item`)
 
 ### `default`

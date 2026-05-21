@@ -21,6 +21,26 @@ describe("tab-group", () => {
 		cy.getByData("tab-group-tab").shouldHaveCount(3);
 	});
 
+	it("Renders aria-labelledby when label slot is provided", () => {
+		mount({ slots: { label: "Browse documentation sections" } });
+
+		cy.get("[role=\"tablist\"]").shouldHaveAttribute("aria-labelledby");
+	});
+
+	it("Does not render aria-labelledby when label slot is not provided", () => {
+		mount();
+
+		cy.get("[role=\"tablist\"]").shouldNotHaveAttribute("aria-labelledby");
+	});
+
+	it("Panel root is focusable with tabindex=0", () => {
+		mount();
+
+		cy.getByData("tab-group").within(() => {
+			cy.get("[role=\"tabpanel\"]").first().shouldHaveAttribute("tabindex", "0");
+		});
+	});
+
 	describe("Interaction", () => {
 		it("The active tab should be highlighted", () => {
 			mount();

@@ -1,5 +1,5 @@
 <template>
-	<div v-show="active" v-bind="{ id: panelId, 'aria-labelledby': tabId }" role="tabpanel">
+	<div v-show="active" v-bind="{ id: panelId, 'aria-labelledby': tabId }" tabindex="0" role="tabpanel">
 		<div class="hidden" aria-hidden="true">
 			<slot name="label" />
 		</div>

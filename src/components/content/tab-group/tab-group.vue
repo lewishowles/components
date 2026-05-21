@@ -1,7 +1,11 @@
 <template>
 	<div data-test="tab-group">
+		<span v-if="haveLabel" :id="labelId" class="sr-only">
+			<slot name="label" />
+		</span>
+
 		<div ref="tabBarReference" class="mb-12 border-b border-grey-200 dark:border-white/20" :class="{ 'wrap-tabs': wrap }" data-selector="tab-group-nav">
-			<ol class="-mb-px flex items-end" :class="{ 'overflow-x-auto': !wrap, 'flex-wrap': wrap }" role="tablist">
+			<ol class="-mb-px flex items-end" :class="{ 'overflow-x-auto': !wrap, 'flex-wrap': wrap }" v-bind="{ 'aria-labelledby': labelId }" role="tablist">
 				<li v-for="tab in tabs" :key="tab.tabId">
 					<link-tag
 						v-bind="{
@@ -34,11 +38,11 @@
 
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
-import { computed, nextTick, onMounted, provide, ref } from "vue";
+import { computed, nextTick, onMounted, provide, ref, useId, useSlots } from "vue";
 import { getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onKeyStroke, useFocusWithin } from "@vueuse/core";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -61,6 +65,13 @@ const props = defineProps({
 		default: false,
 	},
 });
+
+const slots = useSlots();
+
+// Whether a label slot has been provided.
+const haveLabel = computed(() => isNonEmptySlot(slots.label));
+// Stable ID for the label slot content, used for aria-labelledby.
+const labelId = computed(() => (haveLabel.value ? `tab-group-label-${useId()}` : undefined));
 
 // The list of available tabs, as registered by `tab-item` components.
 const tabData = ref([]);

@@ -89,6 +89,14 @@
 				<p>The <code>default</code> slot contains the <code>tab-item</code> components that represent the tabs.</p>
 			</component-slot>
 
+			<component-slot id="slot-label">
+				<template #name>
+					label
+				</template>
+
+				<p>An optional, strongly recommended, accessible label for the tab list.</p>
+			</component-slot>
+
 			<component-slot id="slot-tab-item-default">
 				<template #name>
 					default (<code>tab-item</code>)
