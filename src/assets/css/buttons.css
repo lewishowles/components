@@ -215,6 +215,49 @@
 	}
 }
 
+.button--ghost {
+	border-radius: var(--radius-md);
+	border: 1px solid transparent;
+	color: currentColor;
+	padding-block: 0.5em;
+	padding-inline: 1em;
+	text-decoration: none;
+
+	&:has([data-test="ui-button-label"].sr-only) {
+		padding-block: 0.75em;
+		padding-inline: 0.75em;
+	}
+
+	&:is(:hover, :focus) {
+		background-color: var(--color-grey-50);
+		border-color: var(--color-grey-400);
+		color: var(--color-grey-700);
+	}
+
+	&:active {
+		background-color: var(--color-grey-100);
+		border-color: var(--color-grey-500);
+		color: var(--color-grey-800);
+	}
+
+	&:where(.dark, .dark *) {
+		background-color: rgb(255 255 255 / 20%);
+		border-color: rgb(255 255 255 / 20%);
+
+		&:is(:hover, :focus) {
+			background-color: rgb(255 255 255 / 30%);
+			border-color: rgb(255 255 255 / 20%);
+			color: var(--color-grey-100);
+		}
+
+		&:active {
+			background-color: rgb(255 255 255 / 40%);
+			border-color: transparent;
+			color: var(--color-grey-50);
+		}
+	}
+}
+
 .button--disabled {
 	color: var(--color-grey-500);
 	cursor: not-allowed;
