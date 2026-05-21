@@ -94,6 +94,13 @@ Whether to only include a summary icon, hiding any provided text. When used, tex
 
 Whether to align to the dropdown to the start or end of the summary. This is useful for menus that open to the end of the screen, for example. Anything but "start" will be treated as "end".
 
+### `placement`
+
+- type: `string`
+- default: `below`
+
+Whether to open above or below the trigger. Use "above" for triggers near the bottom of the viewport, such as a footer user menu. Anything but "above" will be treated as "below".
+
 ### `summaryClasses`
 
 - type: `Vue class binding`

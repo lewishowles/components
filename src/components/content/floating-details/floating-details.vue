@@ -1,5 +1,5 @@
 <template>
-	<summary-details ref="summary-details" v-bind="{ floating: true, align, closeWithClickOutside: true, summaryClasses, detailsClasses: ['w-screen', detailsClasses, detailsColourClasses, detailsSizeClasses, detailsAdditionalClasses] }" data-test="floating-details">
+	<summary-details ref="summary-details" v-bind="{ floating: true, align, placement, closeWithClickOutside: true, summaryClasses, detailsClasses: ['w-screen', detailsPlacementClasses, detailsClasses, detailsColourClasses, detailsSizeClasses, detailsAdditionalClasses] }" data-test="floating-details">
 		<template #summary>
 			<slot name="summary" />
 		</template>
@@ -9,7 +9,10 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed, useTemplateRef } from "vue";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
+
+const props = defineProps({
 	/**
 	 * Whether to align to the dropdown to the start or end of the summary. This
 	 * is useful for menus that open to the end of the screen, for example.
@@ -18,6 +21,16 @@ defineProps({
 	align: {
 		type: String,
 		default: "start",
+	},
+
+	/**
+	 * Whether to open above or below the trigger. Use "above" for triggers near
+	 * the bottom of the viewport, such as a footer user menu. Anything but
+	 * "above" will be treated as "below".
+	 */
+	placement: {
+		type: String,
+		default: "below",
 	},
 
 	/**
@@ -34,7 +47,7 @@ defineProps({
 	 */
 	detailsClasses: {
 		type: [String, Array, Object],
-		default: "mt-3 rounded-md border p-4 shadow",
+		default: "rounded-md border p-4 shadow",
 	},
 
 	/**
@@ -67,10 +80,10 @@ defineProps({
 	},
 });
 
-import { runComponentMethod } from "@lewishowles/helpers/vue";
-import { useTemplateRef } from "vue";
-
 const summaryDetailsReference = useTemplateRef("summary-details");
+
+// Spacing between the trigger and the panel, flipped to match placement direction.
+const detailsPlacementClasses = computed(() => (props.placement === "above" ? "mb-3" : "mt-3"));
 
 /**
  * Open the details element.

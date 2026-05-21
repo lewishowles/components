@@ -12,7 +12,7 @@
 
 		<div
 			ref="contentElement"
-			:class="[{ 'absolute top-full animate-fade-in-down': floating, 'inset-s-0': alignStart, 'inset-e-0': !alignStart }, detailsClasses]"
+			:class="[floatingPositionClasses, { 'inset-s-0': alignStart, 'inset-e-0': !alignStart }, detailsClasses]"
 			v-bind="{
 				hidden: isOpen ? undefined : 'until-found',
 				role: contentRole,
@@ -134,6 +134,16 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether to open above or below the trigger. Use "above" for triggers near
+	 * the bottom of the viewport, such as a footer user menu. Anything but
+	 * "above" will be treated as "below".
+	 */
+	placement: {
+		type: String,
+		default: "below",
+	},
+
+	/**
 	 * Any classes to add to the summary element, allowing styling to wrap both
 	 * the summary and icons.
 	 */
@@ -235,6 +245,19 @@ const currentIcon = computed(() => {
 // Whether to align a floating dropdown to the start of the summary.
 const alignStart = computed(() => props.align === "start");
 
+// Position and entrance animation classes for the floating content panel.
+const floatingPositionClasses = computed(() => {
+	if (!props.floating) {
+		return null;
+	}
+
+	if (props.placement === "above") {
+		return "absolute bottom-full animate-fade-in-up";
+	}
+
+	return "absolute top-full animate-fade-in-down";
+});
+
 // Classes to apply to the details element when floating is enabled. For this,
 // we check whether the user has provided their own "absolute" class - such as
 // if they want to position the menu. If so, we don't need to apply the
@@ -286,8 +309,6 @@ onKeyStroke("Escape", event => {
 	if (!isOpen.value || !props.closeWithEscape) {
 		return;
 	}
-
-	console.log({ isOpen: isOpen.value, props: props.closeWithEscape });
 
 	event.preventDefault();
 

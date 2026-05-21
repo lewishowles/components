@@ -13,6 +13,7 @@
 - `summary-details` - New `toggletip` option announces content automatically; useful for "info" tooltips, for example.
 - `accordion-group` - Now has a "close all panels" button, as well as an "open all panels".
 - `accordion-group` - Will now open panels if the browser's search function finds matching content within.
+- `floating-details` - New `placement` option allows floating the details above or below the trigger.
 
 ### Fixes
 
