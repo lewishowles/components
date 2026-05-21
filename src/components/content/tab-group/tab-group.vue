@@ -38,13 +38,23 @@
 
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
-import { computed, nextTick, onMounted, provide, ref, useId, useSlots } from "vue";
+import { computed, nextTick, onMounted, provide, ref, useId, useSlots, watch } from "vue";
 import { getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onKeyStroke, useFocusWithin } from "@vueuse/core";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
+	/**
+	 * Whether tab activation follows focus automatically or requires a
+	 * deliberate keypress. Use "manual" when activating a tab triggers a data
+	 * fetch, for example, so the user can browse tabs without firing requests.
+	 */
+	activation: {
+		type: String,
+		default: "auto",
+	},
+
 	/**
 	 * Whether to remember the selected tab, updating the URL and allowing the
 	 * appropriate tab to be reinstated on load. Note that when using this
@@ -123,6 +133,19 @@ const activeTabId = ref(null);
 // The index of the currently active tab in the list of tabs.
 const activeTabIndex = computed(() => Math.max(0, tabs.value.findIndex(tab => tab.tabId === activeTabId.value)));
 
+// The index of the currently focused tab. In auto mode this always matches
+// activeTabIndex; in manual mode it tracks keyboard focus independently so
+// arrow keys can move focus without activating.
+const focusedTabIndex = ref(0);
+
+// When focus re-enters the tablist, reset the focused position to the active
+// tab so keyboard navigation always starts from a predictable position.
+watch(tabHasFocus, hasFocus => {
+	if (hasFocus) {
+		focusedTabIndex.value = activeTabIndex.value;
+	}
+});
+
 provide("tab-group", {
 	registerTab,
 	activeTabId,
@@ -132,20 +155,39 @@ provide("tab-group", {
  * When using the arrow keys, if a tab is currently focused, navigate forward or
  * backwards through tabs based on the arrow direction.
  */
-onKeyStroke(["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"], e => {
+onKeyStroke(["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"], event => {
 	if (!tabHasFocus.value) {
 		return;
 	}
 
-	e.preventDefault();
+	event.preventDefault();
 
-	if (["ArrowUp", "ArrowLeft"].includes(e.key)) {
+	const isReverse = ["ArrowUp", "ArrowLeft"].includes(event.key);
+
+	if (props.activation === "manual") {
+		const nextIndex = getNextIndex(focusedTabIndex.value, tabs.value, { reverse: isReverse, wrap: true });
+
+		focusedTabIndex.value = nextIndex;
+		focusTabByIndex(nextIndex);
+	} else if (isReverse) {
 		selectPreviousTab();
-	}
-
-	if (["ArrowDown", "ArrowRight"].includes(e.key)) {
+	} else {
 		selectNextTab();
 	}
+});
+
+/**
+ * In manual activation mode, activate the currently focused tab when the user
+ * presses Enter or Space.
+ */
+onKeyStroke(["Enter", " "], event => {
+	if (!tabHasFocus.value || props.activation !== "manual") {
+		return;
+	}
+
+	event.preventDefault();
+
+	setActiveTabByIndex(focusedTabIndex.value);
 });
 
 // When mounting, apply a little Javascript to our tabs to conditionally show

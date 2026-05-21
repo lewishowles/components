@@ -36,6 +36,14 @@ The label for this tab, to be displayed in the tab bar.
 
 ## Props
 
+### `activation`
+
+- type: `string`
+- default: `"auto"`
+- options: `"auto"` | `"manual"`
+
+Controls whether tab activation follows focus. In `"auto"` mode (default), arrow keys both move focus and activate the tab. In `"manual"` mode, arrow keys move focus only — press Enter or Space to activate. Use `"manual"` when activating a tab triggers a data fetch, for example.
+
 ### `rememberSelection`
 
 - type: `boolean`

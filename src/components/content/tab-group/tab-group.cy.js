@@ -41,6 +41,40 @@ describe("tab-group", () => {
 		});
 	});
 
+	describe("Manual activation", () => {
+		it("Arrow keys move focus without activating in manual mode", () => {
+			mount({ props: { activation: "manual" } });
+
+			assertActiveTab(0);
+
+			cy.getByData("tab-group-tab").eq(0).click();
+			cy.realPress("ArrowRight");
+
+			assertFocusedTab(1);
+			assertActiveTab(0);
+		});
+
+		it("Enter activates the focused tab in manual mode", () => {
+			mount({ props: { activation: "manual" } });
+
+			cy.getByData("tab-group-tab").eq(0).click();
+			cy.realPress("ArrowRight");
+			cy.realPress("Enter");
+
+			assertActiveTab(1);
+		});
+
+		it("Space activates the focused tab in manual mode", () => {
+			mount({ props: { activation: "manual" } });
+
+			cy.getByData("tab-group-tab").eq(0).click();
+			cy.realPress("ArrowRight");
+			cy.realPress("Space");
+
+			assertActiveTab(1);
+		});
+	});
+
 	describe("Interaction", () => {
 		it("The active tab should be highlighted", () => {
 			mount();
