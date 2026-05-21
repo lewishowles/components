@@ -30,7 +30,14 @@
 					<p>The slot <code>`submit-button-label`</code> is required to provide a meaningful call to action for the form.</p>
 				</alert-message>
 
-				<ui-button v-if="haveSubmitButtonLabel" type="submit" class="button--primary" data-test="form-wrapper-submit-button">
+				<ui-button
+					v-if="haveSubmitButtonLabel"
+					ref="submitButtonRef"
+					type="submit"
+					v-bind="{ reactive: true }"
+					class="button--primary"
+					data-test="form-wrapper-submit-button"
+				>
 					<slot name="submit-button-label" />
 				</ui-button>
 
@@ -49,15 +56,19 @@
 </template>
 
 <script setup>
-import { computed, nextTick, provide, reactive, ref, useSlots } from "vue";
+import { computed, getCurrentInstance, nextTick, provide, reactive, ref, useSlots } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 
-const emit = defineEmits(["submit"]);
+defineEmits(["submit"]);
 
 const slots = useSlots();
+// The component instance, used to access the parent's submit handler for Promise tracking.
+const instance = getCurrentInstance();
+// A ref to the submit button, allowing us to control its loading state.
+const submitButtonRef = ref(null);
 // Determine if we have a label. If not, show a warning to the user about
 // accessibility.
 const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button-label"]));
@@ -135,7 +146,7 @@ provide("form-wrapper", {
  */
 async function handleFormSubmit() {
 	if (!haveFormFields.value) {
-		emitSubmit();
+		doSubmit();
 
 		return;
 	}
@@ -145,13 +156,13 @@ async function handleFormSubmit() {
 	if (haveErrorSummary.value) {
 		await nextTick();
 
+		resetSubmitButton();
 		runComponentMethod(errorSummaryElement.value, "focus");
-
 
 		return;
 	}
 
-	emitSubmit();
+	doSubmit();
 }
 
 /**
@@ -185,11 +196,28 @@ function validateFields() {
 }
 
 /**
- * Emit a submit event for the parent to handle as necessary. We pass the
- * current form data here just in case its useful in this form.
+ * Call the parent's submit handlers directly, tracking any returned Promise to
+ * auto-reset the submit button when the async work settles. Mirrors the
+ * loadingAuto pattern from ui-button.
  */
-function emitSubmit() {
-	emit("submit", formData.value);
+function doSubmit() {
+	const onSubmit = instance?.vnode.props?.onSubmit;
+	const handlers = Array.isArray(onSubmit) ? onSubmit : [onSubmit].filter(Boolean);
+	const results = handlers.map(handler => handler(formData.value));
+	const promise = results.find(result => result instanceof Promise);
+
+	if (promise) {
+		promise.then(resetSubmitButton, resetSubmitButton);
+	}
+}
+
+/**
+ * Reset the submit button's loading state. Called automatically when the
+ * parent's submit handler Promise settles, or can be called manually as a
+ * fallback.
+ */
+function resetSubmitButton() {
+	runComponentMethod(submitButtonRef.value, "reset");
 }
 
 /**
@@ -205,4 +233,6 @@ function focusField(fieldName) {
 
 	runComponentMethod(formFields[fieldName], "triggerFocus");
 }
+
+defineExpose({ resetSubmitButton });
 </script>

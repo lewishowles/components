@@ -81,6 +81,42 @@ describe("form-wrapper", () => {
 		});
 	});
 
+	describe("Submit button loading state", () => {
+		it("Resets when validation fails", () => {
+			const validation = [{ rule: "required", message: "Enter your username" }];
+
+			mount({ slots: { default: createField({ label: "Username", props: { name: "username", validation } }) } });
+
+			cy.getByData("form-wrapper-submit-button").click();
+
+			cy.getByData("form-wrapper-submit-button").shouldNotHaveAttribute("aria-busy");
+		});
+
+		it("Auto-resets when the submit handler returns a resolved Promise", () => {
+			mount({ props: { onSubmit: () => Promise.resolve() } });
+
+			cy.getByData("form-wrapper-submit-button").click();
+
+			cy.getByData("form-wrapper-submit-button").shouldNotHaveAttribute("aria-busy");
+		});
+
+		it("Auto-resets when the submit handler returns a rejected Promise", () => {
+			mount({ props: { onSubmit: () => Promise.reject(new Error("failed")).catch(() => {}) } });
+
+			cy.getByData("form-wrapper-submit-button").click();
+
+			cy.getByData("form-wrapper-submit-button").shouldNotHaveAttribute("aria-busy");
+		});
+
+		it("Stays in loading state when no Promise is returned", () => {
+			mount({ props: { onSubmit: () => {} } });
+
+			cy.getByData("form-wrapper-submit-button").click();
+
+			cy.getByData("form-wrapper-submit-button").shouldHaveAttribute("aria-busy", "true");
+		});
+	});
+
 	it("An error summary is shown on submit when a field is invalid", () => {
 		const validation = [{ rule: "required", message: "Enter your username" }];
 

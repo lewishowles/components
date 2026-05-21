@@ -48,6 +48,12 @@ Fired when the user submits the form and validation succeeds, containing the cur
 
 The current values of each of the `form-field` elements contained within the form will be available as an object through `v-model`.
 
+## Methods
+
+### `resetSubmitButton`
+
+Resets the submit button's loading state. Call this after your `@submit` handler completes if it does not return a Promise — for example, when the async work is deferred or the result comes back via a separate channel.
+
 ## Provide
 
 Two methods are provided by `form-wrapper` under the "form-wrapper" namespace to allow a field to communicate and update its value.

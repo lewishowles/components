@@ -7,6 +7,8 @@
 - `ui-button` - New `disabled` prop for disabled (but still accessible) buttons.
 - `ui-button` - New `pressed` prop allows for toggle buttons.
 - `ui-button` - New `loadingAuto` prop allows a `reactive` button to automatically detect a promise on its click handler, and react accordingly.
+- `form-wrapper` - The form's submit button should now automatically react and reset based on the `async` submit handler on the form.
+- `form-wrapper` - A new `resetSubmitButton` method has been added to manually reset the submit button.
 - `dropdown-menu` - Greatly improved accessibility, now supporting full keyboard navigation.
 - `summary-details` - Add new `autofocus` option to allow the first focusable element inside to receive focus automatically.
 - `summary-details` - Now automatically opens if the browser's search function finds matching content within.

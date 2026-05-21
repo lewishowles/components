@@ -168,6 +168,16 @@
 			</component-provide>
 		</component-provides>
 
+		<component-methods>
+			<component-method id="method-set-search-query">
+				<template #name>
+					<code>resetSubmitButton</code>
+				</template>
+
+				<p>Resets the submit button's loading state. Call this after your <code>@submit</code> handler completes if it does not return a Promise — for example, when the async work is deferred or the result comes back via a separate channel.</p>
+			</component-method>
+		</component-methods>
+
 		<component-playgrounds>
 			<playground-form-wrapper />
 		</component-playgrounds>

@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import FormWrapper from "./form-wrapper.vue";
 
 const mount = createMount(FormWrapper);
@@ -41,36 +41,36 @@ describe("form-wrapper", () => {
 		});
 
 		describe("handleFormSubmit", () => {
-			test("should emit if no form fields are present", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
+			test("Calls the submit handler if no form fields are present", async () => {
+				const onSubmit = vi.fn();
+				const wrapper = mount({ props: { onSubmit } });
 
-				vm.handleFormSubmit();
+				await wrapper.vm.handleFormSubmit();
 
-				expect(wrapper.emitted("submit")[0]).toEqual([{}]);
+				expect(onSubmit).toHaveBeenCalledWith({});
 			});
 
-			test("should emit if no validation is present", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
+			test("Calls the submit handler if no validation is present", async () => {
+				const onSubmit = vi.fn();
+				const wrapper = mount({ props: { onSubmit } });
 
-				vm.registerField({ name: "name", validateField: () => true });
+				wrapper.vm.registerField({ name: "name", validateField: () => true });
 
-				vm.handleFormSubmit();
+				await wrapper.vm.handleFormSubmit();
 
-				expect(wrapper.emitted("submit")[0]).toEqual([{ name: null }]);
+				expect(onSubmit).toHaveBeenCalledWith({ name: null });
 			});
 
-			test("should not emit if validation fails for a field", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
+			test("Does not call the submit handler if validation fails", async () => {
+				const onSubmit = vi.fn();
+				const wrapper = mount({ props: { onSubmit } });
 
-				vm.registerField({ name: "name", validateField: () => true });
-				vm.registerField({ name: "email", validateField: () => ["Error message"] });
+				wrapper.vm.registerField({ name: "name", validateField: () => true });
+				wrapper.vm.registerField({ name: "email", validateField: () => ["Error message"] });
 
-				vm.handleFormSubmit();
+				await wrapper.vm.handleFormSubmit();
 
-				expect(wrapper.emitted("submit")).toBeUndefined();
+				expect(onSubmit).not.toHaveBeenCalled();
 			});
 		});
 
@@ -100,24 +100,24 @@ describe("form-wrapper", () => {
 			});
 		});
 
-		describe("emitSubmit", () => {
-			test("should emit the current form value", () => {
+		describe("doSubmit", () => {
+			test("Calls the submit handler with current form data", async () => {
+				const onSubmit = vi.fn();
+				const wrapper = mount({ props: { onSubmit } });
+
+				wrapper.vm.updateFieldValue("name", "wall-e");
+
+				await wrapper.vm.handleFormSubmit();
+
+				expect(onSubmit).toHaveBeenCalledWith({ name: "wall-e" });
+			});
+		});
+
+		describe("resetSubmitButton", () => {
+			test("Is exposed", () => {
 				const wrapper = mount();
-				const vm = wrapper.vm;
 
-				vm.emitSubmit();
-
-				expect(wrapper.emitted("submit")[0]).toEqual([{}]);
-
-				vm.updateFieldValue("name", "my_name");
-				vm.updateFieldValue("email", "my_email");
-
-				expect(wrapper.emitted("submit")[0]).toEqual([
-					{
-						name: "my_name",
-						email: "my_email",
-					},
-				]);
+				expect(wrapper.vm.resetSubmitButton).toBeTypeOf("function");
 			});
 		});
 	});
