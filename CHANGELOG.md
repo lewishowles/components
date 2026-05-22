@@ -6,6 +6,10 @@
 
 - [`spark-bar`](/src/components/chart/spark-bar/spark-bar.md) Display an accessible spark bar based on a given `min`, `max`, and `current`, with options to show a label or the current value.
 
+### Features
+
+- `none-found` - New `titleClasses` prop gives better customisation of the display of `none-found`.
+
 ## 1.8.0
 
 ### Features
@@ -445,7 +449,7 @@ Fix an issue with mismatching export names.
 
 ### New components
 
-- [`ui-button`](/src/components/interaction/ui-button/ui-button.md)` - create buttons with optional icons, and optional `reactive` mode.
+- [`ui-button`](/src/components/interaction/ui-button/ui-button.md)`- create buttons with optional icons, and optional`reactive` mode.
 
 ### New icons
 

@@ -1,7 +1,7 @@
 import DisplayDate from "./display-date.vue";
 import { createMount } from "@cypress/support/mount";
 
-const defaultProps = { date: "2025-03-29" };
+const defaultProps = { date: "2025-03-29", locale: "en-GB" };
 const mount = createMount(DisplayDate, { props: defaultProps });
 
 describe("display-date", () => {

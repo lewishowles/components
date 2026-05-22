@@ -11,30 +11,9 @@ export default [
 					defineExposeLast: true,
 				},
 			],
-			"vue/html-indent": ["error", "tab"],
-			"vue/html-self-closing": [
-				"error",
-				{
-					html: {
-						void: "always",
-						normal: "always",
-						component: "always",
-					},
-					svg: "always",
-					math: "always",
-				},
-			],
-			"vue/max-attributes-per-line": [
-				"error",
-				{
-					singleline: {
-						max: 5,
-					},
-					multiline: {
-						max: 1,
-					},
-				},
-			],
+			"vue/html-indent": "off",
+			"vue/html-self-closing": "off",
+			"vue/max-attributes-per-line": "off",
 			"vue/singleline-html-element-content-newline": "off",
 		},
 	},

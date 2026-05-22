@@ -25,15 +25,20 @@ Any actions to provide to the user, such as a create button, or a reload button.
 
 The heading level to use for the title.
 
+### `titleClasses`
+
+- type: `string`
+- default: `text-2xl font-bold`
+
+Classes to apply to the title.
+
 ## Examples
 
 ### Basic message
 
 ```html
 <none-found>
-	<template #title>
-		No users found
-	</template>
+	<template #title> No users found </template>
 
 	There are no users pending deletion.
 </none-found>
@@ -43,16 +48,12 @@ The heading level to use for the title.
 
 ```html
 <none-found>
-	<template #title>
-		No users found
-	</template>
+	<template #title> No users found </template>
 
 	No users could be found matching "{{ searchQuery }}".
 
 	<template #actions>
-		<ui-button class="button--muted" @click="resetSearch">
-			Reset search
-		</ui-button>
+		<ui-button class="button--muted" @click="resetSearch"> Reset search </ui-button>
 	</template>
 </none-found>
 ```
