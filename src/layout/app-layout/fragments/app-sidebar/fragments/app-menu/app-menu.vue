@@ -100,6 +100,9 @@
 					<app-menu-link to="/content/display-date">
 						display-date
 					</app-menu-link>
+					<app-menu-link to="/content/relative-date">
+						relative-date
+					</app-menu-link>
 					<app-menu-link to="/content/loading-indicator">
 						loading-indicator
 					</app-menu-link>

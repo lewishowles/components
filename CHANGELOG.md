@@ -5,6 +5,7 @@
 ### New components
 
 - [`spark-bar`](/src/components/chart/spark-bar/spark-bar.md) Display an accessible spark bar based on a given `min`, `max`, and `current`, with options to show a label or the current value.
+- [`relative-date`](/src/components/content/relative-date/relative-date.md)
 
 ### Features
 
