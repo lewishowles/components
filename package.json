@@ -4,8 +4,8 @@
 	"description": "A library of beautiful components, promoting rapid development, while ensuring that usability and accessibility are at the fore.",
 	"type": "module",
 	"files": ["dist"],
-	"main": "dist/components.es.js",
-	"module": "dist/components.es.js",
+	"main": "dist/components.js",
+	"module": "dist/components.js",
 	"exports": {
 		".": {
 			"import": "./dist/components.js",
@@ -54,6 +54,7 @@
 		"gh-pages": "^6.3.0",
 		"globals": "^17.6.0",
 		"happy-dom": "^20.9.0",
+		"oxfmt": "^0.51.0",
 		"simple-git-hooks": "^2.13.1",
 		"tailwindcss": "^4.3.0",
 		"tailwindcss-hocus": "^1.0.0",

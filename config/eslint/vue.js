@@ -35,6 +35,7 @@ export default [
 					},
 				},
 			],
+			"vue/singleline-html-element-content-newline": "off",
 		},
 	},
 ];
