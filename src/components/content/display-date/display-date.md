@@ -1,17 +1,17 @@
 # `display-date`
 
-`display-date` displays a given ISO-formatted date in a human-readable form. The component makes use of the [Temporal API's PlainDateTime](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDateTime) to parse a date, and either formats the date to the user's current locale by default, or provides options for customising the format of the date using [the options provided by `toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDateTime/toLocaleString#options).
+`display-date` displays a given date in a human-readable form. The component accepts strings, epoch millisecond timestamps, Date instances, and Temporal date objects, then formats the date to the user's current locale by default. Custom formatting can be provided using [the options provided by `toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDateTime/toLocaleString#options).
 
-**Note** if the provided date contains `[` to indicate a time zone component, we use `ZonedDateTime`. If it does not, but contains `T` for a time component, we use a `PlainDateTime`, otherwise a `PlainDate` is used. Note that these different options produce different outputs via `toLocaleString` by default.
+**Note** string dates are parsed into the closest Temporal type. A string containing `[` is treated as a `ZonedDateTime`; an instant string ending in `Z` or an offset such as `+01:00` is converted to a local `PlainDateTime`; a string containing `T` is treated as a `PlainDateTime`; otherwise a `PlainDate` is used. Timestamps, Date instances, and Temporal instants are also converted to local `PlainDateTime` values.
 
 ## Props
 
 ### `date`
 
-- type: `string`
+- type: `string` | `number` | `Date` | `Temporal.PlainDate` | `Temporal.PlainDateTime` | `Temporal.ZonedDateTime` | `Temporal.Instant`
 - default: `null`
 
-The date to be converted and displayed. This should be in a format that can be parsed by the [Temporal API's PlainDateTime](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDateTime).
+The date to convert and display. Supports epoch millisecond timestamps, Date objects, Temporal date objects, or string dates in [RFC 9557 format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/PlainDateTime#rfc_9557_format).
 
 ### `locale`
 
@@ -23,7 +23,7 @@ The locale to use when formatting dates. By default, the user's locale is used.
 ### `format`
 
 - type: `object`
-- default: `null`
+- default: `undefined`
 
 The formatting options to apply to the displayed date, as defined by [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat#using_options).
 
@@ -35,10 +35,23 @@ The formatting options to apply to the displayed date, as defined by [Intl.DateT
 <display-date date="2025-03-29" /> // 29/03/2025
 ```
 
+### Date instance
+
+```html
+<display-date v-bind="{ date: new Date(2025, 2, 29, 13, 15, 20) }" /> // 29/03/2025, 13:15:20
+```
+
+### Timestamp
+
+```html
+<display-date v-bind="{ date: 1743254120000 }" /> // 29/03/2025, 13:15:20
+```
+
 ### Custom formatting
 
 ```html
-<display-date v-bind="{ date: '2025-03-29T13:15:20', locale: 'de-DE', format }" /> // Samstag, 29. März 2025 um 13:15
+<!-- Samstag, 29. März 2025 um 13:15 -->
+<display-date v-bind="{ date: '2025-03-29T13:15:20', locale: 'de-DE', format }" />
 ```
 
 ```javascript

@@ -1,8 +1,10 @@
 import { createMount } from "@unit/support/mount";
+import { Temporal } from "temporal-polyfill";
 import { describe, expect, test, vi } from "vitest";
+
 import DisplayDate from "./display-date.vue";
 
-const defaultProps = { date: "2025-03-29" };
+const defaultProps = { date: "2025-03-29", locale: "en-GB" };
 const mount = createMount(DisplayDate, { props: defaultProps });
 
 describe("display-date", () => {
@@ -18,13 +20,19 @@ describe("display-date", () => {
 	});
 
 	describe("Computed", () => {
-		describe("temporalClass", () => {
-			describe("should return null if `date` is not a non-empty string", () => {
+		describe("temporalDate", () => {
+			test("should convert a Date instance to a PlainDateTime", () => {
+				const wrapper = mount({ date: new Date(2025, 2, 29, 13, 15, 20) });
+				const vm = wrapper.vm;
+
+				expect(vm.temporalDate).toBeInstanceOf(Temporal.PlainDateTime);
+				expect(vm.temporalDate.toString()).toBe("2025-03-29T13:15:20");
+			});
+
+			describe("should return null for unsupported values", () => {
 				test.for([
 					["boolean (true)", true],
 					["boolean (false)", false],
-					["number (positive)", 1],
-					["number (negative)", -1],
 					["number (NaN)", NaN],
 					["string (empty)", ""],
 					["object (non-empty)", { property: "value" }],
@@ -37,39 +45,61 @@ describe("display-date", () => {
 					const wrapper = mount({ date });
 					const vm = wrapper.vm;
 
-					expect(vm.temporalClass).toBeNull();
+					expect(vm.temporalDate).toBeNull();
 				});
 			});
 
-			test("should return `ZonedDateTime` for a string that appears to have a time zone component", () => {
+			test("should return a ZonedDateTime for a string that appears to have a time zone component", () => {
 				const wrapper = mount({ date: "2025-03-29[America/New_York]" });
 				const vm = wrapper.vm;
 
-				expect(vm.temporalClass).toBe("ZonedDateTime");
+				expect(vm.temporalDate).toBeInstanceOf(Temporal.ZonedDateTime);
 			});
 
-			test("should return `PlainDateTime` for a string that appears to have a time component", () => {
+			test("should return a PlainDateTime for a string that appears to have a time component", () => {
 				const wrapper = mount({ date: "2025-03-29T13:15:20" });
 				const vm = wrapper.vm;
 
-				expect(vm.temporalClass).toBe("PlainDateTime");
+				expect(vm.temporalDate).toBeInstanceOf(Temporal.PlainDateTime);
 			});
 
-			test("should return `PlainDate` for a basic date", () => {
+			test("should return a PlainDate for a basic date", () => {
 				const wrapper = mount({ date: "2025-03-29" });
 				const vm = wrapper.vm;
 
-				expect(vm.temporalClass).toBe("PlainDate");
+				expect(vm.temporalDate).toBeInstanceOf(Temporal.PlainDate);
+			});
+
+			test("should return a Temporal object unchanged", () => {
+				const date = Temporal.PlainDate.from("2025-03-29");
+				const wrapper = mount({ date });
+				const vm = wrapper.vm;
+
+				expect(vm.temporalDate).toBe(date);
+			});
+
+			test("should convert a Temporal instant to a PlainDateTime", () => {
+				const wrapper = mount({ date: Temporal.Instant.from("2025-03-29T13:15:20.000Z") });
+				const vm = wrapper.vm;
+
+				expect(vm.temporalDate).toBeInstanceOf(Temporal.PlainDateTime);
+				expect(vm.temporalDate.toString()).toBe("2025-03-29T13:15:20");
+			});
+
+			test("should convert a timestamp to a PlainDateTime", () => {
+				const wrapper = mount({ date: 1743254120000 });
+				const vm = wrapper.vm;
+
+				expect(vm.temporalDate).toBeInstanceOf(Temporal.PlainDateTime);
+				expect(vm.temporalDate.toString()).toBe("2025-03-29T13:15:20");
 			});
 		});
 
 		describe("displayDate", () => {
-			describe("should return null if `date` is not a non-empty string", () => {
+			describe("should return null for unsupported values", () => {
 				test.for([
 					["boolean (true)", true],
 					["boolean (false)", false],
-					["number (positive)", 1],
-					["number (negative)", -1],
 					["number (NaN)", NaN],
 					["string (empty)", ""],
 					["object (non-empty)", { property: "value" }],
@@ -116,6 +146,41 @@ describe("display-date", () => {
 
 			test("should format a date time", () => {
 				const wrapper = mount({ date: "2025-03-29T13:15:20" });
+				const vm = wrapper.vm;
+
+				expect(vm.displayDate).toBe("29/03/2025, 13:15:20");
+			});
+
+			test("should format a Date instance", () => {
+				const wrapper = mount({ date: new Date(2025, 2, 29, 13, 15, 20) });
+				const vm = wrapper.vm;
+
+				expect(vm.displayDate).toBe("29/03/2025, 13:15:20");
+			});
+
+			test("should format a timestamp", () => {
+				const wrapper = mount({ date: 1743254120000 });
+				const vm = wrapper.vm;
+
+				expect(vm.displayDate).toBe("29/03/2025, 13:15:20");
+			});
+
+			test("should format an ISO instant string", () => {
+				const wrapper = mount({ date: "2025-03-29T13:15:20.000Z" });
+				const vm = wrapper.vm;
+
+				expect(vm.displayDate).toBe("29/03/2025, 13:15:20");
+			});
+
+			test("should format a Temporal date object", () => {
+				const wrapper = mount({ date: Temporal.PlainDate.from("2025-03-29") });
+				const vm = wrapper.vm;
+
+				expect(vm.displayDate).toBe("29/03/2025");
+			});
+
+			test("should format a Temporal instant object", () => {
+				const wrapper = mount({ date: Temporal.Instant.from("2025-03-29T13:15:20.000Z") });
 				const vm = wrapper.vm;
 
 				expect(vm.displayDate).toBe("29/03/2025, 13:15:20");
