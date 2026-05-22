@@ -1,6 +1,6 @@
 <template>
 	<details ref="detailsElement" v-bind="{ 'data-test': dataTest }" :class="floatingClasses" @toggle="updateState">
-		<summary ref="summaryElement" class="inline-flex cursor-pointer list-none items-center gap-1" :class="summaryClasses" v-bind="{ 'data-test': `${dataTest}-summary` }">
+		<summary ref="summaryElement" class="inline-flex cursor-pointer list-none items-center gap-2" :class="summaryClasses" v-bind="{ 'data-test': `${dataTest}-summary` }">
 			<component :is="currentIcon" v-if="iconAtStart && includeIcon" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-start` }" />
 
 			<conditional-wrapper v-bind="{ wrap: iconOnly, tag: 'span' }" class="sr-only">
@@ -166,7 +166,7 @@ const props = defineProps({
 	 */
 	iconClasses: {
 		type: [String, Array, Object],
-		default: null,
+		default: "size-[0.857em]",
 	},
 
 	/**
