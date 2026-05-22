@@ -1,12 +1,14 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-progress-bar" v-model="textSlots">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-spark-bar-custom-design">
 		<template #title>
-			Custom classes
+			Custom design
 		</template>
 
-		<progress-bar v-bind="componentProps" v-model="componentModel">
-			{{ textSlots.default?.value }}
-		</progress-bar>
+		<spark-bar v-bind="componentProps" v-model="componentModel">
+			<template #default="{ percentage }">
+				{{ percentage }}%
+			</template>
+		</spark-bar>
 	</component-playground>
 </template>
 
@@ -17,40 +19,28 @@ import useTemplateGenerator from "@/docs/views/components/composables/use-templa
 // The current model value.
 const componentModel = ref(null);
 
-// Our base text slots, available for the user to update.
-const textSlots = ref({
-	default: {
-		label: "Default",
-		value: "Orange tanker levels",
-	},
-});
-
 // Props both for the template and for the component example itself.
 const props = ref({
 	"current": {
 		label: "Current",
-		value: 45,
+		value: 65,
 		type: "number",
-	},
-	"showLabel": {
-		label: "Show label",
-		value: true,
-		type: "boolean",
-	},
-	"showValue": {
-		label: "Show value",
-		value: true,
-		type: "boolean",
 	},
 	"track-classes": {
 		label: "Track classes",
-		value: "h-4 p-1 rounded-full border border-orange-600 dark:border-orange-300",
+		value: "h-2 rounded border border-orange-600 dark:border-orange-300 p-px",
 		type: "string",
 		isInline: true,
 	},
 	"bar-classes": {
 		label: "Bar classes",
-		value: "h-full rounded-full bg-orange-600 dark:bg-orange-300",
+		value: "h-full rounded bg-orange-600 dark:bg-orange-300",
+		type: "string",
+		isInline: true,
+	},
+	"value-classes": {
+		label: "Value classes",
+		value: "text-xs font-semibold text-orange-700 dark:text-orange-300",
 		type: "string",
 		isInline: true,
 	},
@@ -63,5 +53,5 @@ const componentProps = computed(() => {
 	);
 });
 
-const template = useTemplateGenerator("progress-bar", { slots: textSlots, props });
+const template = useTemplateGenerator("spark-bar", { props });
 </script>

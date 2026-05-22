@@ -1,12 +1,14 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-progress-bar" v-model="textSlots">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-spark-bar-custom-range">
 		<template #title>
-			Showing labels
+			Custom range
 		</template>
 
-		<progress-bar v-bind="componentProps" v-model="componentModel">
-			{{ textSlots.default?.value }}
-		</progress-bar>
+		<spark-bar v-bind="componentProps" v-model="componentModel">
+			<template #default="{ percentage }">
+				{{ percentage }}%
+			</template>
+		</spark-bar>
 	</component-playground>
 </template>
 
@@ -17,30 +19,22 @@ import useTemplateGenerator from "@/docs/views/components/composables/use-templa
 // The current model value.
 const componentModel = ref(null);
 
-// Our base text slots, available for the user to update.
-const textSlots = ref({
-	default: {
-		label: "Label",
-		value: "Setting up your account",
-	},
-});
-
 // Props both for the template and for the component example itself.
 const props = ref({
 	current: {
 		label: "Current",
-		value: 45,
+		value: 35,
 		type: "number",
 	},
-	showLabel: {
-		label: "Show label",
-		value: true,
-		type: "boolean",
+	min: {
+		label: "Min",
+		value: 20,
+		type: "number",
 	},
-	showValue: {
-		label: "Show value",
-		value: true,
-		type: "boolean",
+	max: {
+		label: "Max",
+		value: 40,
+		type: "number",
 	},
 });
 
@@ -51,5 +45,5 @@ const componentProps = computed(() => {
 	);
 });
 
-const template = useTemplateGenerator("progress-bar", { slots: textSlots, props });
+const template = useTemplateGenerator("spark-bar", { props });
 </script>

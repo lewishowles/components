@@ -189,6 +189,9 @@
 					<app-menu-link to="/chart/progress-bar">
 						progress-bar
 					</app-menu-link>
+					<app-menu-link to="/chart/spark-bar">
+						spark-bar
+					</app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>

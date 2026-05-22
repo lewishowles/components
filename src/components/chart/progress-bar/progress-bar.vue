@@ -19,7 +19,7 @@
 			</div>
 
 			<div v-if="showValue" class="ms-auto" data-test="progress-bar-value">
-				<slot name="value" v-bind="{ value: internalValue }">
+				<slot name="value" v-bind="{ current: internalValue, percentage: percentageValue }">
 					{{ percentageValue }}%
 				</slot>
 			</div>
@@ -43,7 +43,7 @@ const props = defineProps({
 	/**
 	 * The current value represented by the progress bar.
 	 */
-	value: {
+	current: {
 		type: Number,
 		default: 0,
 	},
@@ -111,22 +111,19 @@ const props = defineProps({
 	},
 });
 
-// The internal current value, allowing us to bind the current value to the
-// provided minimum and maximum.
-const internalValue = computed(() => clamp(props.value, props.min, props.max));
+// The internal current value, clamped between min and max.
+const internalValue = computed(() => clamp(props.current, props.min, props.max));
+
 // The internal ID of this progress bar, used to link the bar to its label.
 const uid = useId();
 const internalId = computed(() => `progress-bar-${uid}`);
 
-// The relative width of the bar, representing the current value.
-const proportionalValue = computed(() => {
-	if (props.max <= 0) {
+// The percentage bar width - as a whole number between 0 and 100.
+const percentageValue = computed(() => {
+	if (props.max <= props.min) {
 		return 0;
 	}
 
-	return (internalValue.value - props.min) / props.max;
+	return Math.round(((internalValue.value - props.min) / (props.max - props.min)) * 100);
 });
-
-// The percentage bar width - as a rounded number between 0 and 100.
-const percentageValue = computed(() => Math.round(proportionalValue.value * 100));
 </script>

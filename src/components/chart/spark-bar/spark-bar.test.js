@@ -1,10 +1,10 @@
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vitest";
-import ProgressBar from "./progress-bar.vue";
+import SparkBar from "./spark-bar.vue";
 
-const mount = createMount(ProgressBar);
+const mount = createMount(SparkBar);
 
-describe("progress-bar", () => {
+describe("spark-bar", () => {
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
 			const wrapper = mount();
@@ -26,6 +26,12 @@ describe("progress-bar", () => {
 
 				expect(wrapper.vm.internalValue).toBe(0);
 			});
+
+			test("should clamp a value above maximum", () => {
+				const wrapper = mount({ current: 150, max: 100 });
+
+				expect(wrapper.vm.internalValue).toBe(100);
+			});
 		});
 
 		describe("percentageValue", () => {
@@ -35,7 +41,7 @@ describe("progress-bar", () => {
 				expect(wrapper.vm.percentageValue).toBe(40);
 			});
 
-			test("should calculate percentage for custom range", async() => {
+			test("should calculate percentage for custom range", () => {
 				const wrapper = mount({ min: 40, max: 80, current: 50 });
 
 				expect(wrapper.vm.percentageValue).toBe(25);
@@ -46,16 +52,11 @@ describe("progress-bar", () => {
 
 				expect(wrapper.vm.percentageValue).toBe(0);
 			});
-		});
 
-		describe("internalId", () => {
-			test("should be stable across re-renders", async() => {
-				const wrapper = mount({ current: 25 });
-				const id = wrapper.vm.internalId;
+			test("should round percentage to whole number", () => {
+				const wrapper = mount({ min: 0, max: 3, current: 1 });
 
-				await wrapper.setProps({ current: 75 });
-
-				expect(wrapper.vm.internalId).toBe(id);
+				expect(wrapper.vm.percentageValue).toBe(33);
 			});
 		});
 	});

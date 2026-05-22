@@ -1,7 +1,7 @@
 import ProgressBar from "./progress-bar.vue";
 import { createMount } from "@cypress/support/mount";
 
-const defaultProps = { value: 30 };
+const defaultProps = { current: 30 };
 const mount = createMount(ProgressBar, { props: defaultProps });
 
 describe("progress-bar", () => {
@@ -13,7 +13,7 @@ describe("progress-bar", () => {
 	});
 
 	it("The appropriate accessibility attributes are included", () => {
-		mount({ min: 10, max: 90, value: 28 });
+		mount({ min: 10, max: 90, current: 28 });
 
 		cy.getByData("progress-bar")
 			.shouldHaveAttribute("role", "progressbar")
@@ -21,7 +21,7 @@ describe("progress-bar", () => {
 			.shouldHaveAttribute("aria-valuenow", "28")
 			.shouldHaveAttribute("aria-valuemin", "10")
 			.shouldHaveAttribute("aria-valuemax", "90")
-			.shouldHaveAttribute("aria-valuetext", "20%");
+			.shouldHaveAttribute("aria-valuetext", "23%");
 	});
 
 	it("A label can be shown", () => {

@@ -5,14 +5,13 @@
 		</template>
 
 		<template #introduction>
-			<p>Display the progress of an action, with appropriate accessible labelling.</p>
-			<p>Currently, progress is assumed to be a percentage, based on the minimum, maximum and current values.</p>
+			<p>Display the progress of an action. Progress is calculated as a percentage based on the current, minimum, and maximum values.</p>
 		</template>
 
 		<component-props>
-			<component-prop id="prop-value">
+			<component-prop id="prop-current">
 				<template #name>
-					value
+					current
 				</template>
 
 				<template #type>
@@ -165,9 +164,14 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><code>value</code></td>
+							<td><code>current</code></td>
 							<td><code>number</code></td>
 							<td>The current value of the progress bar.</td>
+						</tr>
+						<tr>
+							<td><code>percentage</code></td>
+							<td><code>number</code></td>
+							<td>The calculated percentage (0–100).</td>
 						</tr>
 					</tbody>
 				</table>

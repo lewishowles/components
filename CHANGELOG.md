@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.0
+
+### New components
+
+- [`spark-bar`](/src/components/chart/spark-bar/spark-bar.md) Display an accessible spark bar based on a given `min`, `max`, and `current`, with options to show a label or the current value.
+
 ## 1.8.0
 
 ### Features
@@ -309,7 +315,7 @@ This version introduces a new documentation site to demonstrate each component a
 
 ### New components
 
-- [`progress-bar`](/src/components/chart/progress-bar/progress-bar.md) Display an accessible progress bar based on a given `min`, `max`, and `value`, with options to show a label or the current value.
+- [`progress-bar`](/src/components/chart/progress-bar/progress-bar.md) Display an accessible progress bar based on a given `min`, `max`, and `current`, with options to show a label or the current value.
 
 ## 0.9.2 - 2024-10-06
 

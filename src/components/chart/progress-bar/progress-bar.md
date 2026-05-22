@@ -1,12 +1,10 @@
 # `progress-bar`
 
-Display the progress of an action, with appropriate accessible labelling.
-
-Currently, progress is assumed to be a percentage, based on the minimum, maximum and current values.
+Display the progress of an action. Progress is calculated as a percentage based on `current`, `min`, and `max` values.
 
 ## Props
 
-### `value`
+### `current`
 
 - type: `number`
 - default: `0`
@@ -18,74 +16,88 @@ The current value represented by the progress bar.
 - type: `number`
 - default: `0`
 
-The minimum value of the progress bar, used to determine how much of the bar is filled based on the current value.
+The minimum value, used to determine bar fill.
 
 ### `max`
 
 - type: `number`
 - default: `100`
 
-The maximum value of the progress bar, used to determine how much of the bar is filled based on the current value.
+The maximum value, used to determine bar fill.
 
 ### `label`
 
 - type: `string`
 - default: `Loading…`
 
-The label for the progress bar. This label is hidden by default, but is included for accessibility purposes.
+The progress label. Hidden by default but available for accessibility.
 
 ### `showLabel`
 
 - type: `boolean`
 - default: `false`
 
-Whether to show the label to the user.
+Show the label to the user.
 
 ### `showValue`
 
 - type: `boolean`
 - default: `false`
 
-Whether to show the value to the user, formatted as a percentage.
+Show the value to the user, formatted as a percentage.
 
 ### `trackClasses`
 
 - type: `Vue class binding`
 - default: `h-4 rounded-full bg-grey-200`
 
-Classes to apply to the track, which is the background behind the bar.
+Classes to apply to the track (background).
 
 ### `barClasses`
 
 - type: `Vue class binding`
 - default: `h-full rounded-full bg-purple-700`
 
-Classes to apply to the bar, which indicates the current value.
+Classes to apply to the bar (fill).
 
 ## Slots
 
 ### `default`
 
-When the label is shown, the default slot can be used to provide a custom label that cannot be provided via the `label` prop.
+Provide a custom label. Only rendered when `showLabel` is true.
 
 ### `value`
 
-When the value is shown, override the default value display.
+Override the default percentage display. Only rendered when `showValue` is true.
 
 | Slot prop | Type | Description |
 | --- | --- | --- |
-| `value` | `number` | The current value of the progress bar. |
+| `current` | `number` | The current value. |
+| `percentage` | `number` | The calculated percentage (0–100). |
 
 ## Examples
 
-### Using the default range
+### Default range
 
 ```html
-<progress-bar v-bind="{ value: 30 }" />
+<progress-bar v-bind="{ current: 30 }" />
 ```
 
-### Using a custom range
+### Custom range
 
 ```html
-<progress-bar v-bind="{ value: 30, min: 20, max: 40 }" />
+<progress-bar v-bind="{ current: 30, min: 20, max: 40 }" />
+```
+
+### With label and value
+
+```html
+<progress-bar v-bind="{ current: 75, showLabel: true, showValue: true }">
+	<template #default>
+		Processing…
+	</template>
+	<template #value="{ percentage }">
+		{{ percentage }}% done
+	</template>
+</progress-bar>
 ```

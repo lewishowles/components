@@ -17,8 +17,8 @@ const componentModel = ref(null);
 
 // Props both for the template and for the component example itself.
 const props = ref({
-	value: {
-		label: "Value",
+	current: {
+		label: "Current",
 		value: 45,
 		type: "number",
 	},
