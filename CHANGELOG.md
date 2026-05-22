@@ -5,7 +5,8 @@
 ### New components
 
 - [`spark-bar`](/src/components/chart/spark-bar/spark-bar.md) Display an accessible spark bar based on a given `min`, `max`, and `current`, with options to show a label or the current value.
-- [`relative-date`](/src/components/content/relative-date/relative-date.md)
+- [`relative-date`](/src/components/content/relative-date/relative-date.md) Display a date relative to now or an optional comparison date (e.g. 30 seconds ago).
+- [`content-card`](/src/components/content/content-card/content-card.md) Display content in a standardised bordered card layout.
 
 ### Features
 

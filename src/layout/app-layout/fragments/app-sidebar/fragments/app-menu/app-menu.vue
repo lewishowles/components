@@ -97,6 +97,9 @@
 					<app-menu-link to="/content/floating-details">
 						floating-details
 					</app-menu-link>
+					<app-menu-link to="/content/content-card">
+						content-card
+					</app-menu-link>
 					<app-menu-link to="/content/display-date">
 						display-date
 					</app-menu-link>

@@ -1,0 +1,94 @@
+# `content-card`
+
+`content-card` groups related content in a bordered card with optional header and footer areas.
+
+## Slots
+
+### `title`
+
+The card title. Rendered inside the heading level set by `headingLevel`.
+
+### `icon`
+
+Optional icon content shown before the title in the default header layout.
+
+### `header-additional`
+
+Optional content shown at the end of the default header layout.
+
+### `header`
+
+Optional custom header content. This replaces the default header layout, but remains inside the styled header wrapper.
+
+### `default`
+
+The main card content.
+
+### `footer`
+
+Optional footer content.
+
+## Props
+
+### `headingLevel`
+
+- type: `string`
+- default: `h2`
+
+The heading level to use for the title.
+
+### `footerVariant`
+
+- type: `string`
+- default: `well`
+
+The footer style to use. Supports `well` and `plain`.
+
+### `iconClasses`
+
+- type: `string` | `array` | `object`
+- default: `text-purple-800`
+
+Classes to apply around the icon slot.
+
+## Examples
+
+### Basic card
+
+```html
+<content-card>
+	<template #title>
+		Card title
+	</template>
+
+	Card content
+</content-card>
+```
+
+### Card with footer
+
+```html
+<content-card footer-variant="plain">
+	<template #title>
+		Card title
+	</template>
+
+	Card content
+
+	<template #footer>
+		Card footer
+	</template>
+</content-card>
+```
+
+### Custom header
+
+```html
+<content-card>
+	<template #header>
+		Custom header
+	</template>
+
+	Card content
+</content-card>
+```
