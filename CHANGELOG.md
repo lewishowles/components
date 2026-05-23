@@ -11,6 +11,8 @@
 ### Features
 
 - `none-found` - New `titleClasses` prop gives better customisation of the display of `none-found`.
+- `copy-content` - Now properly announces its status to screen readers
+- `accordion-panel` - Now exposes more slot props to triggers and content areas.
 
 ## 1.8.0
 
