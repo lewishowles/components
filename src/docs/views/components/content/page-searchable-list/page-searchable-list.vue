@@ -5,9 +5,10 @@
 		</template>
 
 		<template #introduction>
-			<p>Provided an array of objects, <code>searchable-list</code> provides a search box to filter those objects. The list of results is provided to the default slot, meaning they can be displayed however best suits the implementation.</p>
+			<p>Provided an array, <code>searchable-list</code> provides a search box to filter those items. The list of results is provided to the default slot, meaning they can be displayed however best suits the implementation.</p>
 			<p>If no search is being performed, the whole list is returned.</p>
-			<p>Each property of an object is recursively, case-insensitively searched, and individual properties can be excluded via the <code>exclude</code> prop. Alternatively, only certain properties can be included via the <code>include</code> prop.</p>
+			<p>By default, each item is searched directly. Each property of an object is recursively, case-insensitively searched, and individual properties can be excluded via the <code>exclude</code> prop. Alternatively, only certain properties can be included via the <code>include</code> prop. If the displayed item and searchable content should differ, use the <code>search</code> prop to map each item to the value that should be searched.</p>
+			<p>The current search query will be available via <code>v-model</code>.</p>
 		</template>
 
 		<component-props>
@@ -24,7 +25,23 @@
 					null
 				</template>
 
-				<p>The list of items to search, or display if no search is being performed. This should be an array of objects. Any non-object entries will be ignored.</p>
+				<p>The list of items to search, or display if no search is being performed.</p>
+			</component-prop>
+
+			<component-prop id="prop-search">
+				<template #name>
+					search
+				</template>
+
+				<template #type>
+					Function
+				</template>
+
+				<template #default-value>
+					item =&gt; item
+				</template>
+
+				<p>A function used to map each item to the content that should be searched. This allows the displayed item and the searchable content to differ.</p>
 			</component-prop>
 
 			<component-prop id="prop-placeholder">
@@ -105,6 +122,26 @@
 							<td><code>string</code></td>
 							<td>The current search query.</td>
 						</tr>
+						<tr>
+							<td><code>performingSearch</code></td>
+							<td><code>boolean</code></td>
+							<td>Whether a search is currently being performed.</td>
+						</tr>
+						<tr>
+							<td><code>haveResults</code></td>
+							<td><code>boolean</code></td>
+							<td>Whether the current query has results.</td>
+						</tr>
+						<tr>
+							<td><code>resultCount</code></td>
+							<td><code>number</code></td>
+							<td>The number of results found.</td>
+						</tr>
+						<tr>
+							<td><code>itemCount</code></td>
+							<td><code>number</code></td>
+							<td>The total number of items provided.</td>
+						</tr>
 					</tbody>
 				</table>
 			</component-slot>
@@ -149,6 +186,38 @@
 							<td><code>itemCount</code></td>
 							<td><code>number</code></td>
 							<td>The total number of items provided.</td>
+						</tr>
+						<tr>
+							<td><code>query</code></td>
+							<td><code>string</code></td>
+							<td>The current search query.</td>
+						</tr>
+					</tbody>
+				</table>
+			</component-slot>
+
+			<component-slot id="slot-no-results">
+				<template #name>
+					no-results
+				</template>
+
+				<p>A slot to override the default no-results display.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th class="whitespace-nowrap">
+								Slot prop
+							</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>query</code></td>
+							<td><code>string</code></td>
+							<td>The current search query.</td>
 						</tr>
 					</tbody>
 				</table>

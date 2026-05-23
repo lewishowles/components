@@ -20,7 +20,7 @@ describe("searchable-list", () => {
 		cy.getByData("searchable-list-search").shouldBeVisible();
 		cy.getByData("searchable-list-results").shouldBeVisible();
 		cy.getByData("searchable-list-toolbar").shouldBeVisible();
-		cy.getByData("searchable-list-no-results").shouldNotBeVisible();
+		cy.getByData("searchable-list-no-results").should("not.exist");
 
 		cy.get("ul").shouldBeVisible();
 		cy.get("li").shouldHaveCount(9);
@@ -37,6 +37,40 @@ describe("searchable-list", () => {
 
 			cy.getByData("searchable-list-toolbar").shouldHaveText("Showing 1 of 9");
 			cy.getByData("searchable-list-demo-item").shouldHaveCount(1);
+		});
+
+		it("Search can be controlled with v-model", () => {
+			mount({ modelValue: "Dasher" });
+
+			cy.getByData("searchable-list-toolbar").shouldHaveText("Showing 1 of 9");
+			cy.getByData("searchable-list-demo-item").shouldHaveCount(1);
+			cy.getByData("searchable-list-demo-item").shouldHaveText("Dasher");
+		});
+
+		it("Search ignores surrounding whitespace", () => {
+			mount();
+
+			cy.fillFormField("searchable-list-search", " Dasher ");
+
+			cy.getByData("searchable-list-toolbar").shouldHaveText("Showing 1 of 9");
+			cy.getByData("searchable-list-demo-item").shouldHaveCount(1);
+			cy.getByData("searchable-list-demo-item").shouldHaveText("Dasher");
+		});
+
+		it("Searchable content can be mapped separately from displayed items", () => {
+			mount({
+				data: [
+					{ name: "Jean-Luc Picard", searchable: ["captain", "enterprise"] },
+					{ name: "Beverly Crusher", searchable: ["doctor", "medical"] },
+				],
+				search: item => item.searchable,
+			});
+
+			cy.fillFormField("searchable-list-search", "medical");
+
+			cy.getByData("searchable-list-toolbar").shouldHaveText("Showing 1 of 2");
+			cy.getByData("searchable-list-demo-item").shouldHaveCount(1);
+			cy.getByData("searchable-list-demo-item").shouldHaveText("Beverly Crusher");
 		});
 
 		it("Search can be reset", () => {
@@ -62,6 +96,7 @@ describe("searchable-list", () => {
 			cy.fillFormField("searchable-list-search", "reindeer");
 			cy.getByData("searchable-list-demo-item").should("not.exist");
 			cy.getByData("searchable-list-no-results").shouldBeVisible();
+			cy.get("ul").should("exist");
 		});
 
 		it("Object properties can be searched exclusively", () => {
@@ -73,6 +108,7 @@ describe("searchable-list", () => {
 			cy.fillFormField("searchable-list-search", "reindeer");
 			cy.getByData("searchable-list-demo-item").should("not.exist");
 			cy.getByData("searchable-list-no-results").shouldBeVisible();
+			cy.get("ul").should("exist");
 		});
 	});
 });

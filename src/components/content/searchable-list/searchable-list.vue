@@ -1,47 +1,68 @@
 <template>
 	<div data-test="searchable-list">
 		<div class="flex items-end gap-4">
-			<form-input ref="search-field" v-bind="{ placeholder }" v-model="searchQuery" class="w-full max-w-lg" data-test="searchable-list-search">
+			<form-input
+				ref="search-field"
+				v-bind="{ placeholder }"
+				v-model="searchQuery"
+				class="w-full max-w-lg"
+				data-test="searchable-list-search"
+			>
 				<slot name="label" />
 			</form-input>
 
-			<ui-button v-show="performingSearch" class="button--muted" data-test="searchable-list-reset-search-button" @click="resetSearch">
-				<slot name="reset-search-label">
-					Reset search
-				</slot>
+			<ui-button
+				v-show="performingSearch"
+				class="button--muted"
+				data-test="searchable-list-reset-search-button"
+				@click="resetSearch"
+			>
+				<slot name="reset-search-label"> Reset search </slot>
 			</ui-button>
 		</div>
 
-		<div v-show="!haveResults" class="mt-2" data-test="searchable-list-no-results">
-			<slot name="no-results" v-bind="{ query: searchQuery }">
-				<pill-badge class="text-sm">
-					Sorry, no results could be found for <span class="font-bold">"{{ searchQuery }}"</span>
-				</pill-badge>
-			</slot>
+		<div role="status" aria-live="polite" class="mt-2 mb-6" data-test="searchable-list-toolbar">
+			<div v-if="!haveResults" data-test="searchable-list-no-results">
+				<slot name="no-results" v-bind="{ query: searchQuery }">
+					<pill-badge class="text-sm">
+						Sorry, no results could be found for <span class="font-bold">"{{ searchQuery }}"</span>
+					</pill-badge>
+				</slot>
+			</div>
+
+			<template v-else>
+				<slot
+					v-bind="{ performingSearch, resultCount, itemCount, query: searchQuery }"
+					name="results-count"
+				>
+					<pill-badge>
+						<template v-if="performingSearch">
+							Showing {{ resultCount }} of {{ itemCount }}
+						</template>
+						<template v-else> Showing {{ resultCount }} </template>
+					</pill-badge>
+				</slot>
+			</template>
 		</div>
 
-		<div v-show="haveResults" role="status" aria-live="polite" class="mb-6 mt-2" data-test="searchable-list-toolbar">
-			<slot name="results-count" v-bind="{ performingSearch, resultCount, itemCount }">
-				<pill-badge>
-					<template v-if="performingSearch">
-						Showing {{ resultCount }} of {{ itemCount }}
-					</template>
-					<template v-else>
-						Showing {{ resultCount }}
-					</template>
-				</pill-badge>
-			</slot>
-		</div>
-
-		<div v-show="haveResults" data-test="searchable-list-results">
-			<slot v-bind="{ items: results, query: searchQuery }" />
+		<div data-test="searchable-list-results">
+			<slot
+				v-bind="{
+					performingSearch,
+					haveResults,
+					itemCount,
+					items: results,
+					query: searchQuery,
+					resultCount,
+				}"
+			/>
 		</div>
 	</div>
 </template>
 
 <script setup>
 import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
-import { computed, ref, unref, useTemplateRef } from "vue";
+import { computed, unref, useTemplateRef } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { objectContains } from "@lewishowles/helpers/object";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
@@ -49,12 +70,19 @@ import { runComponentMethod } from "@lewishowles/helpers/vue";
 const props = defineProps({
 	/**
 	 * The list of items to search, or display if no search is being performed.
-	 * This should be an array of objects. Any non-object entries will be
-	 * ignored.
 	 */
 	data: {
 		type: Array,
 		required: true,
+	},
+
+	/**
+	 * Map each item to the content that should be searched. This allows the
+	 * displayed item and the searchable content to differ.
+	 */
+	search: {
+		type: Function,
+		default: (item) => item,
 	},
 
 	/**
@@ -83,17 +111,22 @@ const props = defineProps({
 	},
 });
 
+const searchQuery = defineModel({
+	type: String,
+	default: "",
+});
+
 // Our internal copy of data, which we unref so that the user doesn't have to,
 // just in case.
 const internalData = computed(() => unref(props.data));
 // A reference to the search field, so that we can trigger focus on it as
 // required.
 const searchField = useTemplateRef("search-field");
-// The current search query.
-const searchQuery = ref("");
+// The trimmed query to use when searching items.
+const normalisedQuery = computed(() => String(searchQuery.value ?? "").trim());
 // Whether a search query has been provided and a search can be performed. This
 // excludes whitespace at each end of the query.
-const performingSearch = computed(() => isNonEmptyString(searchQuery.value, { trim: true }));
+const performingSearch = computed(() => isNonEmptyString(normalisedQuery.value));
 
 // The items to display, based on any current search query.
 const results = computed(() => {
@@ -105,13 +138,8 @@ const results = computed(() => {
 		return internalData.value;
 	}
 
-	return internalData.value.filter(item => {
-		return objectContains(item, searchQuery.value, {
-			exclude: props.exclude,
-			include: props.include,
-			caseInsensitive: true,
-			allowPartial: true,
-		});
+	return internalData.value.filter((item) => {
+		return searchableContentContains(props.search(item), normalisedQuery.value);
 	});
 });
 
@@ -121,6 +149,31 @@ const itemCount = computed(() => arrayLength(internalData.value));
 const resultCount = computed(() => arrayLength(results.value));
 // Whether a search is being performed and results have been found.
 const haveResults = computed(() => !performingSearch.value || resultCount.value > 0);
+
+/**
+ * Determine whether an item's searchable content matches the query.
+ *
+ * @param  {*}  content
+ *     The content to search.
+ * @param  {string}  query
+ *     The normalised query to search for.
+ */
+function searchableContentContains(content, query) {
+	if (Array.isArray(content) || (content !== null && typeof content === "object")) {
+		return objectContains(content, query, {
+			exclude: props.exclude,
+			include: props.include,
+			caseInsensitive: true,
+			allowPartial: true,
+		});
+	}
+
+	if ([undefined, null].includes(content)) {
+		return false;
+	}
+
+	return String(content).toLowerCase().includes(query.toLowerCase());
+}
 
 /**
  * Reset any current search and show all items, focusing the search input.

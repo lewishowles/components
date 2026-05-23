@@ -13,6 +13,8 @@
 - `none-found` - New `titleClasses` prop gives better customisation of the display of `none-found`.
 - `copy-content` - Now properly announces its status to screen readers
 - `accordion-panel` - Now exposes more slot props to triggers and content areas.
+- `searchable-list` - A new `search` prop allows searching custom content for each item.
+- `searchable-list` - Now provides the current search term via `v-model`, allowing the parent to control search terms.
 
 ## 1.8.0
 
