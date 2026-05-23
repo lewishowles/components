@@ -18,17 +18,31 @@ Any introduction to further explain the panel's content. If used, this should be
 
 The content of the accordion panel, which is shown when the panel is visible.
 
+| Prop | Type | Description |
+|------|------|-------------|
+| `isOpen` | `boolean` | Whether this panel is currently open. |
+
 ### `show-panel-label`
 
 - default: The content of the `show-panel-label` slot in the parent `accordion-group` ("Show panel").
 
 The label to show this panel. Overrides the `show-panel-label` slot in the parent `accordion-group`.
 
+| Prop | Type | Description |
+|------|------|-------------|
+| `isOpen` | `boolean` | Whether this panel is currently open. |
+| `toggle` | `function` | Toggle the open state of this panel. |
+
 ### `hide-panel-label`
 
 - default: The content of the `hide-panel-label` slot in the parent `accordion-group` ("Hide panel").
 
 The label to hide this panel. Overrides the `hide-panel-label` slot in the parent `accordion-group`.
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `isOpen` | `boolean` | Whether this panel is currently open. |
+| `toggle` | `function` | Toggle the open state of this panel. |
 
 ## Examples
 

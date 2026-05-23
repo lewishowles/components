@@ -44,6 +44,49 @@ describe("accordion-panel", () => {
 		});
 	});
 
+	describe("Slots", () => {
+		describe("show-panel-label", () => {
+			test("Exposes isOpen and toggle slot props", () => {
+				let receivedProps = null;
+
+				mount({
+					slots: {
+						"show-panel-label": (slotProps) => {
+							receivedProps = slotProps;
+
+							return "label";
+						},
+					},
+				});
+
+				expect(receivedProps).toMatchObject({
+					isOpen: false,
+					toggle: expect.any(Function),
+				});
+			});
+		});
+
+		describe("default", () => {
+			test("Exposes isOpen slot prop", () => {
+				let receivedProps = null;
+
+				mount({
+					slots: {
+						default: (slotProps) => {
+							receivedProps = slotProps;
+
+							return "content";
+						},
+					},
+				});
+
+				expect(receivedProps).toMatchObject({
+					isOpen: false,
+				});
+			});
+		});
+	});
+
 	describe("Methods", () => {
 		describe("show", () => {
 			test("should mark the panel as visible", () => {

@@ -122,6 +122,23 @@
 				</template>
 
 				<p>The content of the accordion panel, which is shown when the panel is visible.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>isOpen</code></td>
+							<td><code>boolean</code></td>
+							<td>Whether this panel is currently open.</td>
+						</tr>
+					</tbody>
+				</table>
 			</component-slot>
 
 			<component-slot id="slot-accordion-panel-show-panel-label">
@@ -134,6 +151,28 @@
 				</template>
 
 				<p>The label to show this panel. Overrides the <code>show-panel-label</code> slot in the parent <code>accordion-group</code>.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>isOpen</code></td>
+							<td><code>boolean</code></td>
+							<td>Whether this panel is currently open.</td>
+						</tr>
+						<tr>
+							<td><code>toggle</code></td>
+							<td><code>function</code></td>
+							<td>Toggle the open state of this panel.</td>
+						</tr>
+					</tbody>
+				</table>
 			</component-slot>
 
 			<component-slot id="slot-accordion-panel-hide-panel-label">
@@ -146,6 +185,28 @@
 				</template>
 
 				<p>The label to hide this panel. Overrides the <code>hide-panel-label</code> slot in the parent <code>accordion-group</code>.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>isOpen</code></td>
+							<td><code>boolean</code></td>
+							<td>Whether this panel is currently open.</td>
+						</tr>
+						<tr>
+							<td><code>toggle</code></td>
+							<td><code>function</code></td>
+							<td>Toggle the open state of this panel.</td>
+						</tr>
+					</tbody>
+				</table>
 			</component-slot>
 		</component-slots>
 

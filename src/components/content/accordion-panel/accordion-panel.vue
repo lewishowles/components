@@ -17,12 +17,12 @@
 					<component :is="statusIcon" class="size-text" />
 
 					<span v-show="!isVisible" class="inline-flex items-center gap-2">
-						<slot name="show-panel-label">
+						<slot name="show-panel-label" v-bind="{ isOpen: isVisible, toggle }">
 							{{ showPanelLabel }}
 						</slot>
 					</span>
 					<span v-show="isVisible" class="inline-flex items-center gap-2">
-						<slot name="hide-panel-label">
+						<slot name="hide-panel-label" v-bind="{ isOpen: isVisible, toggle }">
 							{{ hidePanelLabel }}
 						</slot>
 					</span>
@@ -40,7 +40,7 @@
 			:class="{ 'pb-6': isVisible }"
 			data-test="accordion-panel-content"
 		>
-			<slot />
+			<slot v-bind="{ isOpen: isVisible }" />
 		</div>
 	</div>
 </template>
