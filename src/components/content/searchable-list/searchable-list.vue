@@ -20,7 +20,7 @@
 			</slot>
 		</div>
 
-		<div v-show="haveResults" class="mb-6 mt-2" data-test="searchable-list-toolbar">
+		<div v-show="haveResults" role="status" aria-live="polite" class="mb-6 mt-2" data-test="searchable-list-toolbar">
 			<slot name="results-count" v-bind="{ performingSearch, resultCount, itemCount }">
 				<pill-badge>
 					<template v-if="performingSearch">
