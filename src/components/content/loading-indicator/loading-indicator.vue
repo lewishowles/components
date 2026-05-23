@@ -1,5 +1,11 @@
 <template>
-	<div class="flex items-center gap-2" :class="{ 'flex-col': large }" aria-live="polite" data-test="loading-indicator">
+	<div
+		class="flex items-center gap-2"
+		:class="{ 'flex-col': large }"
+		role="status"
+		aria-live="polite"
+		data-test="loading-indicator"
+	>
 		<loading-spinner :class="{ 'size-7': large }" />
 
 		<slot />
