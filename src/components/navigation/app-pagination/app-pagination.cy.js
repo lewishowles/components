@@ -8,7 +8,7 @@ const mount = createMount(AppPagination, { props: defaultProps, slots: defaultSl
 describe("app-pagination", () => {
 	afterEach(() => {
 		// Reset the history after each test
-		cy.window().then(window => {
+		cy.window().then((window) => {
 			window.history.pushState({}, "", "/");
 		});
 	});
@@ -33,8 +33,8 @@ describe("app-pagination", () => {
 		cy.getByData("app-pagination").should("not.exist");
 	});
 
-	it("The initial page can be set by a \"page\" URL parameter", () => {
-		cy.window().then(window => {
+	it('The initial page can be set by a "page" URL parameter', () => {
+		cy.window().then((window) => {
 			window.history.pushState({}, "", "/app-pagination?page=2");
 		});
 
@@ -135,7 +135,11 @@ describe("app-pagination", () => {
 		it("The correct items indicator is shown for the first page", () => {
 			mount();
 
-			cy.getByData("app-pagination-showing-items-label").shouldHaveText("Showing 1–10 of 100 items");
+			cy.getByData("app-pagination-showing-items-label").shouldHaveText(
+				"Showing 1–10 of 100 items",
+			);
+			cy.getByData("app-pagination-showing-items-label").shouldHaveAttribute("role", "status");
+			cy.getByData("app-pagination-showing-items-label").shouldHaveAttribute("aria-live", "polite");
 		});
 
 		it("The correct items indicator is shown for a central page", () => {
@@ -143,7 +147,9 @@ describe("app-pagination", () => {
 
 			goToMiddlePage();
 
-			cy.getByData("app-pagination-showing-items-label").shouldHaveText("Showing 41–50 of 100 items");
+			cy.getByData("app-pagination-showing-items-label").shouldHaveText(
+				"Showing 41–50 of 100 items",
+			);
 		});
 
 		it("The correct items indicator is shown for the last page", () => {
@@ -151,11 +157,17 @@ describe("app-pagination", () => {
 
 			goToLastPage();
 
-			cy.getByData("app-pagination-showing-items-label").shouldHaveText("Showing 91–100 of 100 items");
+			cy.getByData("app-pagination-showing-items-label").shouldHaveText(
+				"Showing 91–100 of 100 items",
+			);
 		});
 
 		it("The showing items indicator can be overridden", () => {
-			mount({ slots: { "showing-items-label": ({ first, last, total }) => `${first} to ${last} of ${total}` } });
+			mount({
+				slots: {
+					"showing-items-label": ({ first, last, total }) => `${first} to ${last} of ${total}`,
+				},
+			});
 
 			cy.getByData("app-pagination-showing-items-label").shouldHaveText("1 to 10 of 100");
 		});

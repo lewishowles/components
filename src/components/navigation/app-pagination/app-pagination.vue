@@ -54,7 +54,7 @@
 			</slot>
 		</ui-button>
 
-		<span class="ms-auto" data-test="app-pagination-showing-items-label">
+		<span role="status" aria-live="polite" class="ms-auto" data-test="app-pagination-showing-items-label">
 			<slot name="showing-items-label" v-bind="{ first: firstItem, last: lastItem, total: count }">
 				Showing {{ firstItem }}&ndash;{{ lastItem }} of {{ count }} items
 			</slot>
