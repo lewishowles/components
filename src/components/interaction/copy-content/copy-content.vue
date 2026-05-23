@@ -1,5 +1,5 @@
 <template>
-	<ui-button :class="{ 'relative': !$attrs.class?.includes('absolute') }" data-test="copy-content" @click="copyContent">
+	<ui-button v-bind="$attrs" :class="{ 'relative': !$attrs.class?.includes('absolute') }" data-test="copy-content" @click="copyContent">
 		<span class="flex gap-2 items-center transition-opacity" :class="{ 'opacity-0': showCopySuccess || showCopyError }" data-test="copy-content-label">
 			<icon-clipboard />
 
@@ -24,11 +24,14 @@
 			</slot>
 		</span>
 	</ui-button>
+
+	<span role="status" aria-live="polite" class="sr-only" data-test="copy-content-status">{{ statusMessage }}</span>
 </template>
 
 <script setup>
+import { getSlotText } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { ref } from "vue";
+import { computed, ref, useSlots } from "vue";
 
 const props = defineProps({
 	/**
@@ -40,10 +43,19 @@ const props = defineProps({
 	},
 });
 
+defineOptions({ inheritAttrs: false });
+
+const slots = useSlots();
 // Whether to show the copy success message.
 const showCopySuccess = ref(false);
 // Whether to show the copy error message.
 const showCopyError = ref(false);
+// The current live region announcement.
+const statusMessage = ref("");
+// The text to announce to screen readers on copy success.
+const successLabel = computed(() => getSlotText(slots["copy-success-label"]) || "Copied");
+// The text to announce to screen readers on copy error.
+const errorLabel = computed(() => getSlotText(slots["copy-error-label"]) || "Error");
 
 /**
  * Copy the provided content to the clipboard. Note that this only works in
@@ -74,6 +86,7 @@ async function copyContent() {
  */
 function displayCopySuccess() {
 	displayMessage(showCopySuccess);
+	announceStatus(successLabel.value);
 }
 
 /**
@@ -81,6 +94,7 @@ function displayCopySuccess() {
  */
 function displayCopyError() {
 	displayMessage(showCopyError);
+	announceStatus(errorLabel.value);
 }
 
 /**
@@ -95,5 +109,21 @@ function displayMessage(variable) {
 	setTimeout(() => {
 		variable.value = false;
 	}, 2000);
+}
+
+/**
+ * Announce a status message to screen reader users via the live region. Uses
+ * a clear-then-set pattern so repeated actions always trigger a fresh
+ * announcement.
+ *
+ * @param  {string}  message
+ *     The text to announce.
+ */
+function announceStatus(message) {
+	statusMessage.value = "";
+
+	setTimeout(() => {
+		statusMessage.value = message;
+	}, 100);
 }
 </script>
