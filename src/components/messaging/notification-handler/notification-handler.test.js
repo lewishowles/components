@@ -293,6 +293,36 @@ describe("notification-handler", () => {
 				expect(vm.unreadNotificationCount).toBe(0);
 			});
 		});
+
+		describe("triggerLabel", () => {
+			test("should return the default label when there are no unread notifications", () => {
+				const wrapper = mount({ notifications: [] });
+
+				expect(wrapper.vm.triggerLabel).toBe("Show notifications");
+			});
+
+			test("should include the unread count when there is one unread notification", () => {
+				const wrapper = mount({ notifications: [notification] });
+
+				expect(wrapper.vm.triggerLabel).toBe("Show notifications, 1 unread");
+			});
+
+			test("should include the unread count when there are multiple unread notifications", () => {
+				const wrapper = mount({ notifications: [
+					{ id: "notification-1", message: "First" },
+					{ id: "notification-2", message: "Second" },
+					{ id: "notification-3", message: "Third" },
+				] });
+
+				expect(wrapper.vm.triggerLabel).toBe("Show notifications, 3 unread");
+			});
+
+			test("should return the default label when all notifications are read", () => {
+				const wrapper = mount({ notifications: [{ id: "notification-1", message: "First", read: true }] });
+
+				expect(wrapper.vm.triggerLabel).toBe("Show notifications");
+			});
+		});
 	});
 
 	describe("Methods", () => {

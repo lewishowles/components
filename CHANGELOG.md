@@ -2,6 +2,8 @@
 
 ## 1.9.0
 
+Further components have been updated with better accessibility, especially around text announcements.
+
 ### New components
 
 - [`spark-bar`](/src/components/chart/spark-bar/spark-bar.md) Display an accessible spark bar based on a given `min`, `max`, and `current`, with options to show a label or the current value.

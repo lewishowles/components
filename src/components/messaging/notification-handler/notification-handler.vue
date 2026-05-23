@@ -1,15 +1,15 @@
 <template>
-	<floating-details v-bind="{ align, includeIcon: false }" summary-classes="button--muted relative p-3" class="w-min text-sm" data-test="notification-handler">
+	<floating-details v-bind="{ ...$attrs, align, includeIcon: false }" summary-classes="button--muted relative p-3" class="w-min text-sm" data-test="notification-handler">
 		<template #summary>
 			<icon-bell class="mx-[-0.25em] my-[0.25em]" />
 
 			<span class="sr-only">
-				<slot name="show-notifications-label">
-					Show notifications
+				<slot name="show-notifications-label" v-bind="{ unreadCount: unreadNotificationCount }">
+					{{ triggerLabel }}
 				</slot>
 			</span>
 
-			<div v-if="haveUnreadNotifications" class="absolute inset-e-0 top-0 -me-2 -mt-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-800 p-1 text-xs leading-none text-white" data-test="notification-handler-badge">
+			<div v-if="haveUnreadNotifications" aria-hidden="true" class="absolute inset-e-0 top-0 -me-2 -mt-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-800 p-1 text-xs leading-none text-white" data-test="notification-handler-badge">
 				{{ unreadNotificationCount }}
 			</div>
 		</template>
@@ -76,11 +76,13 @@
 			</div>
 		</div>
 	</floating-details>
+
+	<span role="status" aria-live="polite" aria-relevant="additions" class="sr-only" data-test="notification-handler-live-region">{{ announcement }}</span>
 </template>
 
 <script setup>
 import { arrayLength, isNonEmptyArray, pluck } from "@lewishowles/helpers/array";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { createReusableTemplate } from "@vueuse/core";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
@@ -176,6 +178,8 @@ const props = defineProps({
 
 const emit = defineEmits(["notifications:read", "notifications:reload"]);
 
+defineOptions({ inheritAttrs: false });
+
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 
 import NotificationDanger from "./fragments/notification-danger/notification-danger.vue";
@@ -183,6 +187,19 @@ import NotificationInfo from "./fragments/notification-info/notification-info.vu
 import NotificationPinned from "./fragments/notification-pinned/notification-pinned.vue";
 import NotificationRead from "./fragments/notification-read/notification-read.vue";
 import NotificationWarning from "./fragments/notification-warning/notification-warning.vue";
+
+// The current screen reader announcement for the live region.
+const announcement = ref("");
+
+// The sr-only label for the trigger button, including the unread count when
+// there are unread notifications.
+const triggerLabel = computed(() => {
+	if (unreadNotificationCount.value > 0) {
+		return `Show notifications, ${unreadNotificationCount.value} unread`;
+	}
+
+	return "Show notifications";
+});
 
 // Keep track of notifications that have been marked as read internally. This
 // allows us to determine their style, and whether they should be visible, aside
@@ -262,6 +279,13 @@ const unpinnedNotifications = computed(() => internalNotifications.value.filter(
 // Whether any unpinned notifications exist.
 const haveUnpinnedNotifications = computed(() => isNonEmptyArray(unpinnedNotifications.value));
 
+// Announce new unread notifications to screen readers when the count increases.
+watch(unreadNotificationCount, (newCount, oldCount) => {
+	if (newCount > oldCount) {
+		announce(`${newCount} unread notification${newCount === 1 ? "" : "s"}`);
+	}
+});
+
 /**
  * Sort the given notifications by their `date` property, allowing one or both
  * notifications to be missing a date property. Notifications with dates appear
@@ -322,6 +346,20 @@ function limitReadNotifications(notifications) {
 
 		return false;
 	});
+}
+
+/**
+ * Set the live region announcement, using a clear-then-set pattern so the same
+ * message can be re-announced if needed.
+ *
+ * @param  {string}  message
+ */
+function announce(message) {
+	announcement.value = "";
+
+	setTimeout(() => {
+		announcement.value = message;
+	}, 100);
 }
 
 /**
@@ -426,6 +464,8 @@ function markAllNotificationsRead() {
 	emit("notifications:read", notificationIDs);
 
 	notificationsMarkedAsRead.value.push(...notificationIDs);
+
+	announce("All notifications marked as read");
 }
 
 /**
