@@ -11,7 +11,7 @@
 			<breadcrumb-item href="/users">
 				Users
 			</breadcrumb-item>
-			<breadcrumb-item href="/users/43e7f9be-0eea-4756-bb86-afe8fb3c08c4">
+			<breadcrumb-item current>
 				Sophie Wardhaugh
 			</breadcrumb-item>
 		</breadcrumb-list>
@@ -31,18 +31,34 @@ const props = ref({});
 const slots = computed(() => ({
 	default: {
 		value: [
-			createTabItem("Admin", "/"),
-			createTabItem("Users", "/users"),
-			createTabItem("Sophie Wardhaugh", "/users/43e7f9be-0eea-4756-bb86-afe8fb3c08c4"),
+			createLinkItem("Admin", "/"),
+			createLinkItem("Users", "/users"),
+			createCurrentItem("Sophie Wardhaugh"),
 		],
 	},
 }));
 
-function createTabItem(label, href) {
+function createLinkItem(label, href) {
 	return useTemplateGenerator("breadcrumb-item", {
 		props: {
 			href: {
 				value: href,
+				isInline: true,
+			},
+		},
+		slots: {
+			default: {
+				value: label,
+			},
+		},
+	});
+}
+
+function createCurrentItem(label) {
+	return useTemplateGenerator("breadcrumb-item", {
+		props: {
+			current: {
+				value: true,
 				isInline: true,
 			},
 		},

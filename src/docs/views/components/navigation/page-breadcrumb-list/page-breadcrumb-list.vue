@@ -5,9 +5,9 @@
 		</template>
 
 		<template #introduction>
-			<p><code>breadcrumb-list</code> and its related <code>breadcrumb-item</code> allow you to provide a breadcrumb navigation trail to users. A breadcrumb trail should start from the &quot;home&quot; page, and end on the page above the current page, and all items should link to their relevant section.</p>
+			<p><code>breadcrumb-list</code> and its related <code>breadcrumb-item</code> allow you to provide a breadcrumb navigation trail to users. A breadcrumb trail should start from the &quot;home&quot; page, and end on the current page. All items except the current page should link to their relevant section.</p>
 
-			<p><code>breadcrumb-item</code> represents the individual breadcrumbs in a <code>breadcrumb-list</code>, and each should be a link to its relevant section.</p>
+			<p><code>breadcrumb-item</code> represents the individual breadcrumbs in a <code>breadcrumb-list</code>, and each should be a link to its relevant section, except for the current page. Use the <code>current</code> prop on the final item to mark it as the active page.</p>
 		</template>
 
 		<component-props>
@@ -40,7 +40,23 @@
 					null
 				</template>
 
-				<p>The link to the breadcrumb item's section.</p>
+				<p>The link to the breadcrumb item's section. Required when <code>current</code> is false.</p>
+			</component-prop>
+
+			<component-prop id="prop-current">
+				<template #name>
+					current (<code>breadcrumb-item</code>)
+				</template>
+
+				<template #type>
+					Boolean
+				</template>
+
+				<template #default-value>
+					false
+				</template>
+
+				<p>Whether this item represents the current page. When true, renders as a non-interactive <code>span</code> with <code>aria-current="page"</code> rather than a link.</p>
 			</component-prop>
 		</component-props>
 

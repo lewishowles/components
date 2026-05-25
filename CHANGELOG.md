@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.0
+
+### Features
+
+- `breadcrumb-item` - New `current` prop marks the current page.
+
 ## 1.9.0
 
 Further components have been updated with better accessibility, especially around text announcements.

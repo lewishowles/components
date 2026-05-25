@@ -1,6 +1,6 @@
 # `breadcrumb-item`
 
-`breadcrumb-item` represents the individual breadcrumbs in a `breadcrumb-list`, and each should be a link to its relevant section.
+`breadcrumb-item` represents the individual breadcrumbs in a `breadcrumb-list`. Each item should link to its relevant section, except for the current page which should not link to itself.
 
 ## Slots
 
@@ -13,21 +13,25 @@ The text content of the breadcrumb.
 ### `href`
 
 - type: `string`
-- **required**
+- default: `undefined`
 
-The link to the breadcrumb item's section.
+The link to the breadcrumb item's section. Required when `current` is false.
+
+### `current`
+
+- type: `boolean`
+- default: `false`
+
+Whether this item represents the current page. When true, renders as a non-interactive `<span aria-current="page">` rather than a link. The current page should not link to itself.
 
 ## Examples
 
-### Basic button
+### Basic breadcrumb trail
 
 ```html
 <breadcrumb-list>
-	<breadcrumb-item href="/">
-		Admin
-	</breadcrumb-item>
-	<breadcrumb-item href="/users">
-		Users
-	</breadcrumb-item>
+	<breadcrumb-item href="/"> Admin </breadcrumb-item>
+	<breadcrumb-item href="/users"> Users </breadcrumb-item>
+	<breadcrumb-item :current="true"> Lewis Howles </breadcrumb-item>
 </breadcrumb-list>
 ```
