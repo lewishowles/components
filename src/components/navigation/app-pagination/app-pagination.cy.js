@@ -191,7 +191,6 @@ function goToLastPage() {
 // it displays the correct number.
 function assertCurrentPage(number) {
 	cy.getByData("app-pagination-page")
-		.filter("[aria-current=page]")
-		.find("[data-test=app-pagination-page-button]")
+		.find("[aria-current=page]")
 		.shouldHaveText(String(number));
 }

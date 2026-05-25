@@ -1,41 +1,69 @@
 <template>
-	<nav v-if="!haveSinglePage" v-bind="{ 'aria-labelledby': internalId }" class="flex flex-wrap items-center gap-4 text-center" data-test="app-pagination">
+	<nav
+		v-if="!haveSinglePage"
+		v-bind="{ 'aria-labelledby': internalId }"
+		class="flex flex-wrap items-center gap-4 text-center"
+		data-test="app-pagination"
+	>
 		<span class="sr-only" v-bind="{ id: internalId }">
-			<slot>
-				Pagination
-			</slot>
+			<slot> Pagination </slot>
 		</span>
 
 		<ui-button
 			class="button flex items-center gap-2"
-			:class="{ 'underline hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200': !showingFirstPage }"
+			:class="{
+				'hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200 underline':
+					!showingFirstPage,
+			}"
 			v-bind="{ disabled: showingFirstPage }"
 			icon-start="icon-arrow-left"
 			data-test="app-pagination-previous"
 			@click="selectPreviousPage"
 		>
-			<slot name="previous-page-label">
-				Previous
-			</slot>
+			<slot name="previous-page-label"> Previous </slot>
 		</ui-button>
 
 		<ul class="flex items-center">
 			<template v-for="page in pagesToDisplay" :key="page">
-				<li v-if="page === pageCount && displayAfterSummary" class="button" data-test="app-pagination-summary">
+				<li
+					v-if="page === pageCount && displayAfterSummary"
+					class="button"
+					data-test="app-pagination-summary"
+				>
 					⋯
 				</li>
-				<li data-test="app-pagination-page" v-bind="{ 'aria-current': page === currentPage ? 'page' : null }">
-					<button class="button underline hocus:decoration-2" :class="{ 'hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200': page !== currentPage, 'bg-purple-800 text-white dark:bg-purple-500': page === currentPage }" data-test="app-pagination-page-button" @click="currentPage = page">
+				<li data-test="app-pagination-page">
+					<span
+						v-if="page === currentPage"
+						aria-current="page"
+						class="button bg-purple-800 text-white underline dark:bg-purple-500"
+						data-test="app-pagination-page-button"
+					>
 						<span class="sr-only">
-							<slot name="page-number-label" v-bind="{ page }">
-								Page {{ page }}
-							</slot>
+							<slot name="page-number-label" v-bind="{ page }"> Page {{ page }} </slot>
+						</span>
+
+						<span aria-hidden="true">{{ page }}</span>
+					</span>
+
+					<button
+						v-else
+						class="button hocus:decoration-2 hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200 underline"
+						data-test="app-pagination-page-button"
+						@click="currentPage = page"
+					>
+						<span class="sr-only">
+							<slot name="page-number-label" v-bind="{ page }"> Page {{ page }} </slot>
 						</span>
 
 						<span aria-hidden="true">{{ page }}</span>
 					</button>
 				</li>
-				<li v-if="page === 1 && displayBeforeSummary" class="button" data-test="app-pagination-summary">
+				<li
+					v-if="page === 1 && displayBeforeSummary"
+					class="button"
+					data-test="app-pagination-summary"
+				>
 					⋯
 				</li>
 			</template>
@@ -43,18 +71,24 @@
 
 		<ui-button
 			class="button flex items-center gap-2"
-			:class="{ 'underline hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200': !showingLastPage }"
+			:class="{
+				'hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200 underline':
+					!showingLastPage,
+			}"
 			v-bind="{ disabled: showingLastPage }"
 			icon-end="icon-arrow-right"
 			data-test="app-pagination-next"
 			@click="selectNextPage"
 		>
-			<slot name="next-page-label">
-				Next
-			</slot>
+			<slot name="next-page-label"> Next </slot>
 		</ui-button>
 
-		<span role="status" aria-live="polite" class="ms-auto" data-test="app-pagination-showing-items-label">
+		<span
+			role="status"
+			aria-live="polite"
+			class="ms-auto"
+			data-test="app-pagination-showing-items-label"
+		>
 			<slot name="showing-items-label" v-bind="{ first: firstItem, last: lastItem, total: count }">
 				Showing {{ firstItem }}&ndash;{{ lastItem }} of {{ count }} items
 			</slot>
@@ -118,7 +152,9 @@ const haveSinglePage = computed(() => pageCount.value === 1);
 // Whether we need to summarise pages before the current page. e.g. 1 ... 5 6 7.
 const displayBeforeSummary = computed(() => currentPage.value > 3 && pageCount.value > 4);
 // Whether we need to summarise pages after the current page. e.g. 3 4 5 ... 10
-const displayAfterSummary = computed(() => currentPage.value < pageCount.value - 2 && pageCount.value > 4);
+const displayAfterSummary = computed(
+	() => currentPage.value < pageCount.value - 2 && pageCount.value > 4,
+);
 // Whether we are currently looking at the first page, which determines whether
 // we need to display the "previous" button.
 const showingFirstPage = computed(() => currentPage.value == 1);
@@ -194,7 +230,7 @@ const pagesToDisplay = computed(() => {
 
 // The number of the first item being displayed based on the current pagination
 // settings.
-const firstItem = computed(() => ((currentPage.value - 1) * itemsPerPage.value) + 1);
+const firstItem = computed(() => (currentPage.value - 1) * itemsPerPage.value + 1);
 // The number of the last item being displayed based on the current pagination
 // settings. With the last item, we need to account for a single page that
 // contains fewer than the number of items per page.
@@ -218,19 +254,26 @@ function selectNextPage() {
 // not using v-model), and update the URL. We only want to update the URL when
 // the page is not the first page, as that is the default anyway and there is no
 // need to add unnecessary parameters.
-watch(currentPage, () => {
-	emit("@update:page", currentPage.value);
+watch(
+	currentPage,
+	() => {
+		emit("@update:page", currentPage.value);
 
-	if (currentPage.value >= 1) {
-		updateUrlParameter("page", currentPage.value);
-	}
-}, { immediate: true });
+		if (currentPage.value >= 1) {
+			updateUrlParameter("page", currentPage.value);
+		}
+	},
+	{ immediate: true },
+);
 
 // When the number of items changes, assume we're looking at a new view, and
 // reset the current page.
-watch(() => props.count, () => {
-	currentPage.value = 1;
-});
+watch(
+	() => props.count,
+	() => {
+		currentPage.value = 1;
+	},
+);
 
 // TODO: Add per-page options
 </script>
