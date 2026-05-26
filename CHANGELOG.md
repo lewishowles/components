@@ -5,6 +5,8 @@
 ### Features
 
 - `breadcrumb-item` - New `current` prop marks the current page.
+- `form-actions` - A new `label` slot allows a set of actions to have a unique accessible label.
+- `form-wrapper` - A new `actions-label` slot allows a set of actions to have a unique accessible label.
 
 ## 1.9.0
 

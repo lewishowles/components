@@ -1,100 +1,137 @@
 <template>
 	<component-page>
-		<template #title>
-			Form wrapper
-		</template>
+		<template #title> Form wrapper </template>
 
 		<template #introduction>
-			<p><code>form-wrapper</code> is intended as a complete form, wrapped around individual fields. The wrapper automatically adds actions and, when fields are provided validation information, handles field validation and the generation of an error summary to maximise the accessibility of the form.</p>
+			<p>
+				<code>form-wrapper</code> is intended as a complete form, wrapped around individual fields.
+				The wrapper automatically adds actions and, when fields are provided validation information,
+				handles field validation and the generation of an error summary to maximise the
+				accessibility of the form.
+			</p>
 
 			<p>
 				We recommend a
-				<link-tag href="https://adamsilver.io/blog/how-to-highlight-required-and-optional-form-fields/" v-bind="{ external: true }">
+				<link-tag
+					href="https://adamsilver.io/blog/how-to-highlight-required-and-optional-form-fields/"
+					v-bind="{ external: true }"
+				>
 					required by default, marked if optional technique
 				</link-tag>
 				for form fields, meaning that optional fields should be marked as such.
 			</p>
 
-			<p><code>form-wrapper</code> automatically includes <code>form-layout</code> around its <code>default</code> content.</p>
+			<p>
+				<code>form-wrapper</code> automatically includes <code>form-layout</code> around its
+				<code>default</code> content.
+			</p>
 		</template>
 
 		<component-slots>
 			<component-slot id="slot-pre-form">
-				<template #name>
-					pre-form
-				</template>
+				<template #name> pre-form </template>
 
-				<p>Any elements to place before the form elements, and outside of the <code>form-layout</code> wrapper. For example, navigational items such as &quot;Back to …&quot; or &quot;Forgot password&quot;.</p>
+				<p>
+					Any elements to place before the form elements, and outside of the
+					<code>form-layout</code> wrapper. For example, navigational items such as &quot;Back to
+					…&quot; or &quot;Forgot password&quot;.
+				</p>
 			</component-slot>
 			<component-slot id="slot-default">
-				<template #name>
-					default
-				</template>
+				<template #name> default </template>
 
-				<p>The <code>default</code> slot contains the content of the form itself, including any fields, layout elements, or information as necessary.</p>
+				<p>
+					The <code>default</code> slot contains the content of the form itself, including any
+					fields, layout elements, or information as necessary.
+				</p>
 			</component-slot>
 			<component-slot id="slot-submit-button-label">
-				<template #name>
-					submit-button-label
-				</template>
+				<template #name> submit-button-label </template>
 
-				<p>The label to use on the submit button. This should be representative of what is about to happen—such as &quot;Create account&quot; or &quot;Update settings&quot;, not something generic, and as such <strong>no default label is provided</strong>.</p>
+				<p>
+					The label to use on the submit button. This should be representative of what is about to
+					happen—such as &quot;Create account&quot; or &quot;Update settings&quot;, not something
+					generic, and as such <strong>no default label is provided</strong>.
+				</p>
 			</component-slot>
 			<component-slot id="slot-secondary-actions">
-				<template #name>
-					secondary-actions
-				</template>
+				<template #name> secondary-actions </template>
 
-				<p>Additional actions to appear beside the submit button—such as &quot;Save and exit&quot; to come back to the form later. Any actions that relate to a particular field—such as &quot;Add another&quot;—should appear with that field or group of fields, not in the actions of the form.</p>
+				<p>
+					Additional actions to appear beside the submit button—such as &quot;Save and exit&quot; to
+					come back to the form later. Any actions that relate to a particular field—such as
+					&quot;Add another&quot;—should appear with that field or group of fields, not in the
+					actions of the form.
+				</p>
 			</component-slot>
 			<component-slot id="slot-tertiary-actions">
-				<template #name>
-					tertiary-actions
-				</template>
+				<template #name> tertiary-actions </template>
 
-				<p>Additional actions to appear below the primary and secondary actions, such as &quot;Cancel&quot;. Navigational actions, such as &quot;Back to …&quot; or &quot;Forgot password&quot; should appear above the form fields, such as in the <code>pre-form</code> slot.</p>
+				<p>
+					Additional actions to appear below the primary and secondary actions, such as
+					&quot;Cancel&quot;. Navigational actions, such as &quot;Back to …&quot; or &quot;Forgot
+					password&quot; should appear above the form fields, such as in the
+					<code>pre-form</code> slot.
+				</p>
 			</component-slot>
 			<component-slot id="slot-error">
-				<template #name>
-					error
-				</template>
+				<template #name> error </template>
 
-				<p>A general error message to display to the user by the form's actions, useful for things like explaining an error message received after an API call failure.</p>
+				<p>
+					A general error message to display to the user by the form's actions, useful for things
+					like explaining an error message received after an API call failure.
+				</p>
 			</component-slot>
 			<component-slot id="slot-error-summary-title">
-				<template #name>
-					error-summary-title
-				</template>
+				<template #name> error-summary-title </template>
 
-				<template #default-value>
-					There is a problem
-				</template>
+				<template #default-value> There is a problem </template>
 
 				<p>The title of the error summary that appears if any errors are found in the form.</p>
+			</component-slot>
+
+			<component-slot id="slot-actions-label">
+				<template #name> actions-label </template>
+
+				<p>
+					An optional visually hidden label for the action group, used by screen readers to identify
+					the group's purpose.
+				</p>
+
+				<p>
+					Provide a label when the form has multiple action groups that need to be distinguished
+					(e.g. primary actions and a "danger zone"), or when actions appear far from the form
+					fields.
+				</p>
 			</component-slot>
 		</component-slots>
 
 		<component-events>
 			<component-event id="event-submit">
-				<template #name>
-					submit
-				</template>
+				<template #name> submit </template>
 
-				<p>Fired when the user submits the form and validation succeeds, containing the current values of each of the <code>form-field</code> elements contained within the form.</p>
+				<p>
+					Fired when the user submits the form and validation succeeds, containing the current
+					values of each of the <code>form-field</code> elements contained within the form.
+				</p>
 			</component-event>
 
 			<component-event id="event-v-model">
-				<template #name>
-					v-model
-				</template>
+				<template #name> v-model </template>
 
-				<p>The current value of the included form fields, in a flat objected, keyed by the <code>name</code> value for each field.</p>
+				<p>
+					The current value of the included form fields, in a flat objected, keyed by the
+					<code>name</code> value for each field.
+				</p>
 			</component-event>
 		</component-events>
 
 		<component-provides>
 			<template #introduction>
-				<p>Two methods are provided by <code>form-wrapper</code> under the <code>form-wrapper</code> namespace to allow a field to communicate and update its value.</p>
+				<p>
+					Two methods are provided by <code>form-wrapper</code> under the
+					<code>form-wrapper</code> namespace to allow a field to communicate and update its value.
+				</p>
 			</template>
 
 			<component-provide id="provide-register-field">
@@ -174,7 +211,11 @@
 					<code>resetSubmitButton</code>
 				</template>
 
-				<p>Resets the submit button's loading state. Call this after your <code>@submit</code> handler completes if it does not return a Promise — for example, when the async work is deferred or the result comes back via a separate channel.</p>
+				<p>
+					Resets the submit button's loading state. Call this after your
+					<code>@submit</code> handler completes if it does not return a Promise — for example, when
+					the async work is deferred or the result comes back via a separate channel.
+				</p>
 			</component-method>
 		</component-methods>
 

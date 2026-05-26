@@ -38,6 +38,10 @@ A general error message to display to the user by the form's actions, useful for
 
 The title of the error summary that appears if any errors are found in the form.
 
+### `actions-label`
+
+An optional visually hidden label for the form's action group, threaded into `form-actions` via `aria-labelledby`. Omit it for most forms — a single action group doesn't need a label. Provide one when the form has multiple action groups that need to be distinguished (e.g. primary actions alongside a "danger zone"), or in complex layouts where the group's purpose may not be obvious from context.
+
 ## Events
 
 ### `submit`

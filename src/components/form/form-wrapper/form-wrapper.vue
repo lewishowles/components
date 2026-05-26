@@ -22,6 +22,10 @@
 			<slot />
 
 			<form-actions>
+				<template v-if="haveActionsLabel" #label>
+					<slot name="actions-label" />
+				</template>
+
 				<alert-message v-if="!haveSubmitButtonLabel" type="error" v-bind="{ live: false }" data-test="form-wrapper-submit-button-label-error">
 					<template #title>
 						&lt;form-wrapper&gt;
@@ -74,6 +78,8 @@ const submitButtonRef = ref(null);
 const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button-label"]));
 // Determine if we have a general error message to show.
 const haveErrorMessage = computed(() => isNonEmptySlot(slots.error));
+// Whether a label has been provided for the actions group.
+const haveActionsLabel = computed(() => isNonEmptySlot(slots["actions-label"]));
 
 // The current data for this form, as provided by the fields themselves.
 const formData = defineModel({
