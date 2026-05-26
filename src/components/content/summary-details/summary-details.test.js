@@ -33,6 +33,20 @@ describe("summary-details", () => {
 		});
 	});
 
+	describe("Exposed", () => {
+		test("should expose summaryElement as a DOM element", () => {
+			const wrapper = mount();
+
+			expect(wrapper.vm.summaryElement).toBeInstanceOf(Element);
+		});
+
+		test("should expose contentElement as a DOM element", () => {
+			const wrapper = mount();
+
+			expect(wrapper.vm.contentElement).toBeInstanceOf(Element);
+		});
+	});
+
 	describe("Escape key", () => {
 		test("should not call preventDefault when closed", () => {
 			mount({ closeWithEscape: true });

@@ -58,6 +58,40 @@ describe("floating-details", () => {
 		});
 	});
 
+	describe("Slot props", () => {
+		it("The close slot prop dismisses the panel", () => {
+			mount({
+				slots: {
+					summary: "Summary label",
+					default: ({ close }) => h("button", { "data-test": "close-button", onClick: close }, "Close"),
+				},
+			});
+
+			cy.getByData("floating-details-summary").click();
+			cy.getByData("floating-details").shouldHaveAttribute("open");
+
+			cy.getByData("close-button").click();
+			cy.getByData("floating-details").shouldNotHaveAttribute("open");
+		});
+	});
+
+	describe("Positioning", () => {
+		it("Opens below the trigger by default", () => {
+			mount();
+
+			cy.getByData("floating-details-summary").click();
+			cy.getByData("floating-details-content").should("have.class", "top-full");
+		});
+
+		it("Flips above when the trigger is near the bottom of the viewport", () => {
+			mount();
+
+			cy.getByData("floating-details").invoke("attr", "style", "position:fixed;bottom:0;left:0;");
+			cy.getByData("floating-details-summary").click();
+			cy.getByData("floating-details-content").should("have.class", "bottom-full");
+		});
+	});
+
 	describe("Interaction", () => {
 		describe("closeWithEscape", () => {
 			it("true", () => {

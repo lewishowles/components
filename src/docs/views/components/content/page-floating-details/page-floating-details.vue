@@ -156,10 +156,26 @@
 				</template>
 
 				<template #default-value>
-					end
+					start
 				</template>
 
-				<p>Whether to align to the dropdown to the start or end of the summary. This is useful for menus that open to the end of the screen, for example. Anything but "start" will be treated as "end".</p>
+				<p>The preferred panel alignment: <code>start</code> aligns the panel's leading edge with the trigger's, <code>end</code> aligns the trailing edges. The panel flips to the opposite side if it would clip the viewport edge.</p>
+			</component-prop>
+
+			<component-prop id="prop-placement">
+				<template #name>
+					placement
+				</template>
+
+				<template #type>
+					string
+				</template>
+
+				<template #default-value>
+					below
+				</template>
+
+				<p>The preferred panel placement: <code>below</code> opens beneath the trigger, <code>above</code> opens above it. The panel flips to the opposite side if it would clip the viewport edge.</p>
 			</component-prop>
 
 			<component-prop id="prop-summary-classes">
@@ -245,14 +261,29 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><code>open</code></td>
+							<td><code>isOpen</code></td>
 							<td><code>boolean</code></td>
-							<td>Whether the details are currently visible.</td>
+							<td>Whether the panel is currently visible.</td>
 						</tr>
 						<tr>
 							<td><code>icon</code></td>
 							<td><code>string</code></td>
-							<td>The computed icon to display for the current state.</td>
+							<td>The computed icon for the current state.</td>
+						</tr>
+						<tr>
+							<td><code>open</code></td>
+							<td><code>function</code></td>
+							<td>Opens the panel.</td>
+						</tr>
+						<tr>
+							<td><code>close</code></td>
+							<td><code>function</code></td>
+							<td>Closes the panel.</td>
+						</tr>
+						<tr>
+							<td><code>toggle</code></td>
+							<td><code>function</code></td>
+							<td>Toggles the panel open or closed.</td>
 						</tr>
 					</tbody>
 				</table>
@@ -263,7 +294,7 @@
 					default
 				</template>
 
-				<p>The content to be displayed in the details element when open.</p>
+				<p>The content to be displayed when the panel is open.</p>
 
 				<table>
 					<thead>
@@ -275,14 +306,29 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><code>open</code></td>
+							<td><code>isOpen</code></td>
 							<td><code>boolean</code></td>
-							<td>Whether the details are currently visible.</td>
+							<td>Whether the panel is currently visible.</td>
 						</tr>
 						<tr>
 							<td><code>icon</code></td>
 							<td><code>string</code></td>
-							<td>The computed icon to display for the current state.</td>
+							<td>The computed icon for the current state.</td>
+						</tr>
+						<tr>
+							<td><code>open</code></td>
+							<td><code>function</code></td>
+							<td>Opens the panel.</td>
+						</tr>
+						<tr>
+							<td><code>close</code></td>
+							<td><code>function</code></td>
+							<td>Closes the panel.</td>
+						</tr>
+						<tr>
+							<td><code>toggle</code></td>
+							<td><code>function</code></td>
+							<td>Toggles the panel open or closed.</td>
 						</tr>
 					</tbody>
 				</table>

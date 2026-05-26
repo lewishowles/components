@@ -404,7 +404,9 @@ watch(isOpen, async () => {
 
 defineExpose({
 	closeDetails,
+	contentElement,
 	openDetails,
+	summaryElement,
 	toggleDetails,
 });
 </script>

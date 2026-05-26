@@ -10,17 +10,23 @@ The content to be displayed in the summary.
 
 | Slot prop | Type | Description |
 | --- | --- | --- |
-| `open` | `boolean` | Whether the details are currently visible. |
-| `icon` | `string` | The computed icon to display for the current state. |
+| `isOpen` | `boolean` | Whether the panel is currently visible. |
+| `icon` | `string` | The computed icon for the current state. |
+| `open` | `function` | Opens the panel. |
+| `close` | `function` | Closes the panel. |
+| `toggle` | `function` | Toggles the panel open or closed. |
 
 ### `default`
 
-The content to be displayed in the details element when open.
+The content to be displayed when the panel is open.
 
 | Slot prop | Type | Description |
 | --- | --- | --- |
-| `open` | `boolean` | Whether the details are currently visible. |
-| `icon` | `string` | The computed icon to display for the current state. |
+| `isOpen` | `boolean` | Whether the panel is currently visible. |
+| `icon` | `string` | The computed icon for the current state. |
+| `open` | `function` | Opens the panel. |
+| `close` | `function` | Closes the panel. |
+| `toggle` | `function` | Toggles the panel open or closed. |
 
 ## Props
 
@@ -92,14 +98,14 @@ Whether to only include a summary icon, hiding any provided text. When used, tex
 - type: `string`
 - default: `start`
 
-Whether to align to the dropdown to the start or end of the summary. This is useful for menus that open to the end of the screen, for example. Anything but "start" will be treated as "end".
+The preferred panel alignment: `start` aligns the panel's leading edge with the trigger's, `end` aligns the trailing edges. The panel flips to the opposite side if it would clip the viewport edge.
 
 ### `placement`
 
 - type: `string`
 - default: `below`
 
-Whether to open above or below the trigger. Use "above" for triggers near the bottom of the viewport, such as a footer user menu. Anything but "above" will be treated as "below".
+The preferred panel placement: `below` opens beneath the trigger, `above` opens above it. The panel flips to the opposite side if it would clip the viewport edge.
 
 ### `summaryClasses`
 
