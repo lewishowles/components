@@ -8,6 +8,12 @@
 
 The default slot contains the content to display in the link.
 
+### `external-suffix`
+
+When `external` is true, a visually hidden suffix is appended inside the link to inform screen reader users the link opens in a new tab.
+
+- default: `(opens in new tab)`
+
 ## Props
 
 ### `href`
@@ -22,7 +28,7 @@ The destination for this link.
 - type: `boolean`
 - default: `false`
 
-Whether this is an external link. If so, `target="_blank"` is added and an appropriate external icon is shown at the end of the link.
+Whether this is an external link. If so, `target="_blank"`, `rel="noopener noreferrer"`, an external icon, and a visually hidden "(opens in new tab)" suffix are all added automatically.
 
 ### `showExternalIcon`
 
@@ -31,7 +37,7 @@ Whether this is an external link. If so, `target="_blank"` is added and an appro
 
 When `external` is true, but an external icon is not desired, `showExternalIcon` can be set to false.
 
-_Note that if a link is `external`, `showExternalIcon` is true and, `iconEnd` is defined, the external icon takes precedence._
+_Note that if a link is `external`, `showExternalIcon` is true and `iconEnd` is defined, the external icon takes precedence._
 
 ### `iconStart` and `iconEnd`
 
@@ -56,23 +62,25 @@ Whether to only show an icon (and not the associated text). If true, the text is
 ### Basic links
 
 ```html
-<link-tag href="/">
-	Visit the homepage
-</link-tag>
+<link-tag href="/"> Visit the homepage </link-tag>
 
-<link-tag href="https://howles.dev" v-bind={ external: true }>
+<link-tag href="https://howles.dev" v-bind="{ external: true }"> See some cool projects </link-tag>
+```
+
+### External link with custom suffix
+
+```html
+<link-tag href="https://howles.dev" v-bind="{ external: true }">
 	See some cool projects
+
+	<template #external-suffix> (new tab) </template>
 </link-tag>
 ```
 
 ### With an icon
 
 ```html
-<link-tag href="/user/create" v-bind="{ iconStart: 'icon-plus' }">
-	Add new user
-</link-tag>
+<link-tag href="/user/create" v-bind="{ iconStart: 'icon-plus' }"> Add new user </link-tag>
 
-<link-tag href="/next" v-bind="{ iconEnd: 'icon-arrow-right' }">
-	Next step
-</link-tag>
+<link-tag href="/next" v-bind="{ iconEnd: 'icon-arrow-right' }"> Next step </link-tag>
 ```

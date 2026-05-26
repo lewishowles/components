@@ -7,6 +7,7 @@
 - `breadcrumb-item` - New `current` prop marks the current page.
 - `form-actions` - A new `label` slot allows a set of actions to have a unique accessible label.
 - `form-wrapper` - A new `actions-label` slot allows a set of actions to have a unique accessible label.
+- `link-tag` - A new `external-suffix` slot allows for custom external text when a link is `external`.
 
 ## 1.9.0
 

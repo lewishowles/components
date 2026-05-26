@@ -151,10 +151,12 @@ if (initialPage > 1 && initialPage <= pageCount.value) {
 const haveSinglePage = computed(() => pageCount.value === 1);
 // Whether we need to summarise pages before the current page. e.g. 1 ... 5 6 7.
 const displayBeforeSummary = computed(() => currentPage.value > 3 && pageCount.value > 4);
+
 // Whether we need to summarise pages after the current page. e.g. 3 4 5 ... 10
 const displayAfterSummary = computed(
 	() => currentPage.value < pageCount.value - 2 && pageCount.value > 4,
 );
+
 // Whether we are currently looking at the first page, which determines whether
 // we need to display the "previous" button.
 const showingFirstPage = computed(() => currentPage.value == 1);

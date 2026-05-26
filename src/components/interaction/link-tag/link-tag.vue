@@ -8,6 +8,12 @@
 
 		<component :is="iconEnd" v-if="shouldShowIconEnd" class="inline-block stroke-current" :class="{ 'size-text': iconOnly && !showExternalIcon, 'size-[0.857em] ms-1': !iconOnly || showExternalIcon }" data-test="link-tag-icon-end" />
 		<icon-external v-else-if="haveExternalIcon" class="inline-block ms-1 size-[0.857em] stroke-current" data-test="link-tag-icon-external" />
+
+		<span v-if="external" class="sr-only" data-test="link-tag-external-suffix">
+			<slot name="external-suffix">
+				(opens in new tab)
+			</slot>
+		</span>
 	</a>
 </template>
 
@@ -89,13 +95,13 @@ const haveExternalIcon = computed(() => props.external && props.showExternalIcon
 // this would override any icon-end.
 const shouldShowIconEnd = computed(() => haveIconEnd.value && !haveExternalIcon.value);
 
-// Any additional attributes to apply to the button. For example, aria-live if
-// the button is reactive.
+// Any additional attributes to apply to the link.
 const attributes = computed(() => {
 	const attributes = {};
 
 	if (props.external) {
 		attributes.target = "_blank";
+		attributes.rel = "noopener noreferrer";
 	}
 
 	return attributes;
