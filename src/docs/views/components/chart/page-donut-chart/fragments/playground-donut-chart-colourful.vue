@@ -1,5 +1,5 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-donut-chart" v-model="textSlots">
+	<component-playground v-bind="{ copy: template }" id="playground-donut-chart-colourful" v-model="textSlots">
 		<template #title>
 			Colourful chart
 		</template>
@@ -8,13 +8,25 @@
 			A more colourful donut chart. Use with caution, as depending on the number of slices, adjacent slices may not be sufficiently distinct.
 		</template>
 
-		<donut-chart v-bind="componentProps" />
+		<donut-chart v-bind="componentProps">
+			<template #label>
+				{{ textSlots.label?.value }}
+			</template>
+		</donut-chart>
 	</component-playground>
 </template>
 
 <script setup>
 import { computed, ref } from "vue";
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
+
+// Our base text slots, available for the user to update.
+const textSlots = ref({
+	label: {
+		label: "Label",
+		value: "Product category breakdown",
+	},
+});
 
 // Props both for the template and for the component example itself.
 const props = ref({
@@ -43,5 +55,5 @@ const componentProps = computed(() => {
 	);
 });
 
-const template = useTemplateGenerator("donut-chart", { props });
+const template = useTemplateGenerator("donut-chart", { props, slots: textSlots });
 </script>

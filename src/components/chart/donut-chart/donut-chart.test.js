@@ -3,7 +3,8 @@ import { describe, expect, test, vi } from "vitest";
 import DonutChart from "./donut-chart.vue";
 
 const defaultProps = { values: [50, 25, 25] };
-const mount = createMount(DonutChart, { props: defaultProps });
+const defaultSlots = { label: "Sales by region" };
+const mount = createMount(DonutChart, { props: defaultProps, slots: defaultSlots });
 
 describe("donut-chart", () => {
 	console.warn = vi.fn();
@@ -52,6 +53,38 @@ describe("donut-chart", () => {
 				const wrapper = mount({ values: [5, 4, 3, -1] });
 
 				expect(wrapper.vm.total).toBe(0);
+			});
+		});
+
+		describe("haveLabel", () => {
+			test("Is false when no label slot is provided", () => {
+				const wrapper = mount({ slots: { label: null } });
+
+				expect(wrapper.vm.haveLabel).toBe(false);
+			});
+
+			test("Is true when a label slot is provided", () => {
+				const wrapper = mount();
+
+				expect(wrapper.vm.haveLabel).toBe(true);
+			});
+		});
+
+		describe("haveDescription", () => {
+			test("Is false when no description slot is provided", () => {
+				const wrapper = mount();
+
+				expect(wrapper.vm.haveDescription).toBe(false);
+			});
+
+			test("Is true when a description slot is provided", () => {
+				const wrapper = mount({
+					slots: {
+						description: "Breakdown of sales by region for Q1.",
+					},
+				});
+
+				expect(wrapper.vm.haveDescription).toBe(true);
 			});
 		});
 

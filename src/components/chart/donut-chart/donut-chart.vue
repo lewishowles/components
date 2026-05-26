@@ -1,5 +1,23 @@
 <template>
-	<svg v-if="haveSlices" :viewBox="`0 0 ${svgSize} ${svgSize}`" data-test="donut-chart">
+	<span v-if="haveLabel" :id="labelId" class="sr-only">
+		<slot name="label" />
+	</span>
+
+	<svg
+		v-if="haveSlices"
+		v-bind="{
+			...$attrs,
+			role: 'img',
+			'aria-labelledby': haveLabel ? labelId : undefined,
+			'aria-describedby': haveDescription ? descId : undefined,
+			viewBox: `0 0 ${svgSize} ${svgSize}`,
+		}"
+		data-test="donut-chart"
+	>
+		<desc v-if="haveDescription" :id="descId">
+			<slot name="description" />
+		</desc>
+
 		<path
 			v-for="(slice, index) in slices"
 			:key="slice.id"
@@ -12,12 +30,26 @@
 			data-test="donut-chart-segment"
 		/>
 	</svg>
+
+	<table v-if="haveSlices" class="sr-only" data-test="donut-chart-data">
+		<caption>
+			<slot name="label" />
+		</caption>
+
+		<tbody>
+			<tr v-for="(value, index) in props.values" :key="index">
+				<th scope="row">Segment {{ index + 1 }}</th>
+				<td>{{ value }}</td>
+			</tr>
+		</tbody>
+	</table>
 </template>
 
 <script setup>
-import { computed, useId } from "vue";
+import { computed, useId, useSlots } from "vue";
 import { brightColours, chartColours, getNextColour } from "@lewishowles/helpers/chart";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNumber } from "@lewishowles/helpers/number";
 
 const props = defineProps({
@@ -44,6 +76,16 @@ const props = defineProps({
 	},
 });
 
+defineOptions({ inheritAttrs: false });
+
+const slots = useSlots();
+
+// Stable IDs for linking aria attributes to their labelling elements.
+const labelId = useId();
+const descId = useId();
+
+// Whether a label slot has been provided.
+const haveLabel = computed(() => isNonEmptySlot(slots.label));
 // The size of the SVG viewbox.
 const svgSize = 100;
 // The centre point of the SVG based on its size.
@@ -56,6 +98,8 @@ const borderSize = 20;
 const innerRadius = radius - borderSize;
 // Whether any slices exist to render.
 const haveSlices = computed(() => isNonEmptyArray(slices.value));
+// Whether a description slot has been provided for the SVG <desc> element.
+const haveDescription = computed(() => isNonEmptySlot(slots["description"]));
 
 // The total value, from which we determine the slice proportions. If any of the
 // provided values isn't a number, or is negative, we back out of creating the
@@ -65,7 +109,7 @@ const total = computed(() => {
 		return 0;
 	}
 
-	if (!props.values.every(value => isNumber(value) && value >= 0)) {
+	if (!props.values.every((value) => isNumber(value) && value >= 0)) {
 		return 0;
 	}
 
@@ -86,7 +130,7 @@ const slices = computed(() => {
 	// because CSS rotation acts clockwise, but degrees move anti-clockwise.
 	let cumulativePercentage = 0;
 
-	return props.values.map(value => {
+	return props.values.map((value) => {
 		const slice = {
 			commands: getDrawCommandsForValue(value),
 			rotation: cumulativePercentage * 3.6,
@@ -134,14 +178,10 @@ function getDrawCommandsForValue(value) {
 	);
 
 	// Draw a line back towards the centre, based on our donut size.
-	commands.push(
-		`L ${getCircleCoordinateForAngle(angle, innerRadius)}`,
-	);
+	commands.push(`L ${getCircleCoordinateForAngle(angle, innerRadius)}`);
 
 	// Arc back to the equivalent point in relation to our starting point.
-	commands.push(
-		`A ${innerRadius} ${innerRadius} 0 ${longPathFlag} 0 ${svgCentre} ${borderSize}`,
-	);
+	commands.push(`A ${innerRadius} ${innerRadius} 0 ${longPathFlag} 0 ${svgCentre} ${borderSize}`);
 
 	return commands.join(" ");
 }
@@ -160,8 +200,8 @@ function getCircleCoordinateForAngle(angle, radius) {
 		return "0 0";
 	}
 
-	const coordinateX = radius * Math.sin(angle * Math.PI / 180) + 50;
-	const coordinateY = -radius * Math.cos(angle * Math.PI / 180) + 50;
+	const coordinateX = radius * Math.sin((angle * Math.PI) / 180) + 50;
+	const coordinateY = -radius * Math.cos((angle * Math.PI) / 180) + 50;
 
 	return `${coordinateX} ${coordinateY}`;
 }
