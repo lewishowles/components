@@ -57,7 +57,6 @@
 		"globals": "^17.6.0",
 		"happy-dom": "^20.9.0",
 		"oxfmt": "^0.51.0",
-		"simple-git-hooks": "^2.13.1",
 		"tailwindcss": "^4.3.0",
 		"tailwindcss-hocus": "^1.0.0",
 		"temporal-polyfill": "^0.3.2",
