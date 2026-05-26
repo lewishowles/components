@@ -14,6 +14,20 @@ describe("progress-bar", () => {
 	});
 
 	describe("Computed", () => {
+		describe("isIndeterminate", () => {
+			test("should be false when current is a number", () => {
+				const wrapper = mount({ current: 50 });
+
+				expect(wrapper.vm.isIndeterminate).toBe(false);
+			});
+
+			test("should be true when current is null", () => {
+				const wrapper = mount({ current: null });
+
+				expect(wrapper.vm.isIndeterminate).toBe(true);
+			});
+		});
+
 		describe("internalValue", () => {
 			test("should reflect a valid value", () => {
 				const wrapper = mount({ current: 10 });
@@ -25,6 +39,12 @@ describe("progress-bar", () => {
 				const wrapper = mount({ current: -1 });
 
 				expect(wrapper.vm.internalValue).toBe(0);
+			});
+
+			test("should return null when indeterminate", () => {
+				const wrapper = mount({ current: null });
+
+				expect(wrapper.vm.internalValue).toBeNull();
 			});
 		});
 
@@ -45,6 +65,44 @@ describe("progress-bar", () => {
 				const wrapper = mount({ min: 100, max: 100, current: 50 });
 
 				expect(wrapper.vm.percentageValue).toBe(0);
+			});
+
+			test("should return 0 when indeterminate", () => {
+				const wrapper = mount({ current: null });
+
+				expect(wrapper.vm.percentageValue).toBe(0);
+			});
+		});
+
+		describe("variantRole", () => {
+			test("should return progressbar for the progress variant", () => {
+				const wrapper = mount({ variant: "progress" });
+
+				expect(wrapper.vm.variantRole).toBe("progressbar");
+			});
+
+			test("should return meter for the meter variant", () => {
+				const wrapper = mount({ variant: "meter" });
+
+				expect(wrapper.vm.variantRole).toBe("meter");
+			});
+		});
+
+		describe("valueText", () => {
+			test("should return a percentage string by default", () => {
+				const wrapper = mount({ current: 40 });
+
+				expect(wrapper.vm.valueText).toBe("40%");
+			});
+
+			test("should use getValueLabel when provided", () => {
+				const wrapper = mount({
+					current: 3,
+					max: 10,
+					getValueLabel: value => `${value} of 10 files uploaded`,
+				});
+
+				expect(wrapper.vm.valueText).toBe("3 of 10 files uploaded");
 			});
 		});
 

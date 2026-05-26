@@ -19,7 +19,8 @@
 				<floating-details
 					v-show="!useTranslation && haveTextSlots"
 					v-model="isTextSlotsOpen"
-					details-additional-classes="-me-11 lg:me-0"
+					details-size-classes="max-w-xs"
+					v-bind="{ align: 'right' }"
 				>
 					<template #summary>
 						Text slots

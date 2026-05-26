@@ -1,7 +1,7 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-progress-bar">
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-progress-bar-indeterminate">
 		<template #title>
-			Progress bar
+			Indeterminate
 		</template>
 
 		<progress-bar v-bind="componentProps" v-model="componentModel" />
@@ -19,8 +19,8 @@ const componentModel = ref(null);
 const props = ref({
 	current: {
 		label: "Current",
-		value: 45,
-		type: "number",
+		value: null,
+		type: "null",
 	},
 });
 
