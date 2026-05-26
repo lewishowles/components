@@ -1,5 +1,14 @@
 <template>
-	<component :is="tag" class="border border-t border-grey-200" :aria-hidden="screenReaderHidden" data-test="content-separator" />
+	<component
+		:is="tag"
+		class="border-grey-200"
+		:class="{
+			'border-t': isHorizontal,
+			'border-l': isVertical,
+		}"
+		v-bind="{ 'aria-hidden': !isSemantic, 'aria-orientation': explicitOrientation }"
+		data-test="content-separator"
+	/>
 </template>
 
 <script setup>
@@ -15,9 +24,23 @@ const props = defineProps({
 		type: String,
 		default: "div",
 	},
+
+	/**
+	 * The orientation of the separator. Use `horizontal` for a line that
+	 * separates content above and below, and `vertical` for one that separates
+	 * content side by side.
+	 */
+	orientation: {
+		type: String,
+		default: "horizontal",
+	},
 });
 
-// Visual-only separators are hidden from screen readers; <hr> carries its own
-// semantic meaning and is left visible to assistive technology.
-const screenReaderHidden = computed(() => props.tag !== "hr");
+// Whether the separator is horizontal or vertical.
+const isHorizontal = computed(() => props.orientation !== "vertical");
+const isVertical = computed(() => props.orientation === "vertical");
+// Whether this separator is a break in content, or just decorative.
+const isSemantic = computed(() => props.tag === "hr");
+// Or orientation, only when it makes sense.
+const explicitOrientation = computed(() => (isSemantic.value ? props.orientation : undefined));
 </script>

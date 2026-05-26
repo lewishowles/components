@@ -23,6 +23,19 @@
 					<code>hr</code> for a separator that marks a break in content.
 				</p>
 			</component-prop>
+
+			<component-prop id="prop-orientation">
+				<template #name> orientation </template>
+
+				<template #type> String </template>
+
+				<template #default-value> horizontal </template>
+
+				<p>
+					One of <code>horizontal</code> or <code>vertical</code>. Controls the visual direction of
+					the separator and, for <code>tag="hr"</code>, the value of <code>aria-orientation</code>.
+				</p>
+			</component-prop>
 		</component-props>
 
 		<component-playgrounds>

@@ -13,6 +13,13 @@ Use `tag="hr"` when the separator marks a break in content. The default `div` is
 
 The HTML element to render. Use `div` for a decorative visual rule, and `hr` for a separator that marks a break in content.
 
+### `orientation`
+
+- type: `string`
+- default: `horizontal`
+
+One of `horizontal` or `vertical`. Controls the visual direction of the separator and, for `tag="hr"`, the value of `aria-orientation`.
+
 ## Examples
 
 ### Decorative separator
@@ -25,4 +32,10 @@ The HTML element to render. Use `div` for a decorative visual rule, and `hr` for
 
 ```html
 <content-separator tag="hr" />
+```
+
+### Vertical separator
+
+```html
+<content-separator orientation="vertical" />
 ```
