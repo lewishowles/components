@@ -1,19 +1,19 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-content-divider" v-model="textSlots">
+	<component-playground v-bind="{ copy: template }" id="playground-content-separator">
 		<template #title>
-			Content divider
+			Content separator
 		</template>
 
 		<template #introduction>
-			<p>A simple divider</p>
+			<p>A decorative visual rule, hidden from screen readers.</p>
 		</template>
 
-		<content-divider />
+		<content-separator />
 	</component-playground>
 </template>
 
 <script setup>
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
-const template = useTemplateGenerator("content-divider");
+const template = useTemplateGenerator("content-separator");
 </script>
