@@ -130,7 +130,7 @@ const props = defineProps({
 	 */
 	trackClasses: {
 		type: [String, Array, Object],
-		default: "h-4 rounded-full bg-grey-200 dark:bg-white/20",
+		default: "h-4 p-1 rounded-full bg-grey-200 dark:bg-white/20",
 	},
 
 	/**
