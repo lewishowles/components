@@ -16,6 +16,44 @@ describe("star-rating", () => {
 	});
 
 	describe("Computed", () => {
+		describe("readOnlyLabel", () => {
+			test("Returns a generic label when no model value is set", () => {
+				const wrapper = mount();
+
+				expect(wrapper.vm.readOnlyLabel).toBe("Star rating");
+			});
+
+			test("Uses singular unit for a value of 1", () => {
+				const wrapper = mount();
+
+				wrapper.vm.model = 1;
+
+				expect(wrapper.vm.readOnlyLabel).toBe("Rating: 1 of 5 stars");
+			});
+
+			test("Uses plural unit for values above 1", () => {
+				const wrapper = mount();
+
+				wrapper.vm.model = 3;
+
+				expect(wrapper.vm.readOnlyLabel).toBe("Rating: 3 of 5 stars");
+			});
+
+			test("Uses 'heart' unit when shape is heart", () => {
+				const wrapper = mount({ shape: "heart" });
+
+				wrapper.vm.model = 2;
+
+				expect(wrapper.vm.readOnlyLabel).toBe("Rating: 2 of 5 hearts");
+			});
+
+			test("Returns a generic label for heart shape when no value is set", () => {
+				const wrapper = mount({ shape: "heart" });
+
+				expect(wrapper.vm.readOnlyLabel).toBe("Heart rating");
+			});
+		});
+
 		describe("isStar", () => {
 			describe("should default to star when receiving an invalid shape", () => {
 				test.for([
@@ -57,6 +95,28 @@ describe("star-rating", () => {
 	});
 
 	describe("Methods", () => {
+		describe("iconLabel", () => {
+			test("Returns singular for a value of 1", () => {
+				const wrapper = mount();
+
+				expect(wrapper.vm.iconLabel(1)).toBe("1 star");
+			});
+
+			test("Returns plural for values above 1", () => {
+				const wrapper = mount();
+
+				expect(wrapper.vm.iconLabel(2)).toBe("2 stars");
+				expect(wrapper.vm.iconLabel(5)).toBe("5 stars");
+			});
+
+			test("Uses heart unit when shape is heart", () => {
+				const wrapper = mount({ shape: "heart" });
+
+				expect(wrapper.vm.iconLabel(1)).toBe("1 heart");
+				expect(wrapper.vm.iconLabel(3)).toBe("3 hearts");
+			});
+		});
+
 		describe("ratingIsHighlighted", () => {
 			test("should return true if the value is less than or equal to the highlighted value", () => {
 				const wrapper = mount();

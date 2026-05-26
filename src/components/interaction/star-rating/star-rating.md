@@ -6,17 +6,31 @@
 
 ### `default`
 
-The default slot contains the label of the field.
+The label of the field. A label is always required — this component will show an error if none is provided.
 
-_Note that a label is always required, even if a label is not shown to the user, as it will be critical for screen readers. This component will show an error if no label is provided._
+### `option-label`
+
+The label for each selectable option. Receives `{ value }` as a slot prop. Defaults to unit-aware English ("1 star", "2 stars", "1 heart", etc.).
+
+| Slot prop | Type     | Description               |
+| --------- | -------- | ------------------------- |
+| `value`   | `number` | The current rating value. |
+
+### `read-only-label`
+
+The label for the `readOnly` display. Defaults to "Star rating" when no value is set, or "Rating: N of 5 stars" when one is.
+
+| Slot prop | Type     | Description               |
+| --------- | -------- | ------------------------- |
+| `value`   | `number` | The current rating value. |
 
 ### `current-rating`
 
-A space to place additional text to display the current average rating, for example "4.5/5 based on 300 reviews".
+Additional text displaying the current aggregate rating, for example "4.5/5 based on 300 reviews".
 
 ### `introduction`
 
-Any additional text to introduce the options, which appears between the label and options.
+Additional text introducing the options, appearing between the label and options.
 
 ### `error`
 
@@ -61,9 +75,7 @@ One of `star` or `heart`. Defaults to `star` if the shape is unrecognised.
 ### Basic usage
 
 ```html
-<star-rating v-model="rating">
-	Rate your experience
-</star-rating>
+<star-rating v-model="rating"> Rate your experience </star-rating>
 ```
 
 ### With help
@@ -72,8 +84,6 @@ One of `star` or `heart`. Defaults to `star` if the shape is unrecognised.
 <star-rating v-model="rating">
 	Rate your experience
 
-	<template #help>
-		From 1 to 5, with 1 being unacceptable, and 5 being excellent
-	</template>
+	<template #help> From 1 to 5, with 1 being unacceptable, and 5 being excellent </template>
 </star-rating>
 ```

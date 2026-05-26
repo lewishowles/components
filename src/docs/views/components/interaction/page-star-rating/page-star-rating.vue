@@ -80,8 +80,23 @@
 					default
 				</template>
 
-				<p>The default slot contains the label of the field.</p>
-				<p><em>Note that a label is always required, even if a label is not shown to the user, as it will be critical for screen readers. This component will show an error if no label is provided.</em></p>
+				<p>The label of the field. A label is always required — this component will show an error if none is provided.</p>
+			</component-slot>
+
+			<component-slot id="slot-option-label">
+				<template #name>
+					option-label
+				</template>
+
+				<p>The label for each selectable option. Receives <code>{ value }</code> as a slot prop. Defaults to unit-aware English ("1 star", "2 stars", "1 heart", etc.).</p>
+			</component-slot>
+
+			<component-slot id="slot-read-only-label">
+				<template #name>
+					read-only-label
+				</template>
+
+				<p>The label for the <code>readOnly</code> display. Receives <code>{ value }</code> as a slot prop (the current model value). Defaults to "Star rating" when no value is set, or "Rating: N of 5 stars" when one is.</p>
 			</component-slot>
 
 			<component-slot id="slot-current-rating">
@@ -89,7 +104,7 @@
 					current-rating
 				</template>
 
-				<p>A space to place additional text to display the current average rating, for example "4.5/5 based on 300 reviews".</p>
+				<p>Additional text displaying the current aggregate rating, for example "4.5/5 based on 300 reviews".</p>
 			</component-slot>
 
 			<component-slot id="slot-introduction">
@@ -97,7 +112,7 @@
 					introduction
 				</template>
 
-				<p>Any additional text to introduce the options, which appears between the label and options.</p>
+				<p>Additional text introducing the options, appearing between the label and options.</p>
 			</component-slot>
 
 			<component-slot id="slot-error">
