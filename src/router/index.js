@@ -11,6 +11,11 @@ const baseRoutes = [
 		name: "getting-started",
 		component: () => import("@/docs/views/page-getting-started/page-getting-started.vue"),
 	},
+	{
+		path: "/styling-hooks",
+		name: "styling-hooks",
+		component: () => import("@/docs/views/page-styling-hooks/page-styling-hooks.vue"),
+	},
 ];
 
 // We want to auto-generate routes from our available views.
@@ -20,7 +25,7 @@ const views = import.meta.glob("@/docs/views/**/page-*.vue");
 // include that in the route. Otherwise, we only include the name of the route.
 const routes = Object.keys(views).reduce((routes, path) => {
 	// If this is one of our named routes above, skip adding it again.
-	if (baseRoutes.some(route => path.includes(`page-${route.name}`))) {
+	if (baseRoutes.some((route) => path.includes(`page-${route.name}`))) {
 		return routes;
 	}
 
@@ -42,10 +47,7 @@ const routes = Object.keys(views).reduce((routes, path) => {
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
-	routes: [
-		...baseRoutes,
-		...routes,
-	],
+	routes: [...baseRoutes, ...routes],
 	scrollBehavior(to, from, savedPosition) {
 		if (to.hash) {
 			return { el: to.hash };

@@ -2,212 +2,103 @@
 	<define-template>
 		<nav>
 			<ol class="flex flex-col gap-6">
-				<app-menu-link to="/getting-started">
-					Getting started
-				</app-menu-link>
-
 				<app-menu-section>
-					<template #title>
-						Form
-					</template>
+					<template #title> Introduction </template>
 
-					<app-menu-link to="/form/form-wrapper">
-						form-wrapper
-					</app-menu-link>
-					<app-menu-link to="/form/form-fieldset">
-						form-fieldset
-					</app-menu-link>
-					<app-menu-link to="/form/form-layout">
-						form-layout
-					</app-menu-link>
-					<app-menu-link to="/form/form-field">
-						form-field
-					</app-menu-link>
-					<app-menu-link to="/form/form-actions">
-						form-actions
-					</app-menu-link>
-					<app-menu-link to="/form/form-input">
-						form-input
-					</app-menu-link>
-					<app-menu-link to="/form/form-textarea">
-						form-textarea
-					</app-menu-link>
-					<app-menu-link to="/form/form-checkbox">
-						form-checkbox
-					</app-menu-link>
-					<app-menu-link to="/form/form-checkbox-group">
-						form-checkbox-group
-					</app-menu-link>
-					<app-menu-link to="/form/form-radio-group">
-						form-radio-group
-					</app-menu-link>
-					<app-menu-link to="/form/button-group">
-						button-group
-					</app-menu-link>
-					<app-menu-link to="/form/form-date">
-						form-date
-					</app-menu-link>
-					<app-menu-link to="/form/form-select">
-						form-select
-					</app-menu-link>
+					<app-menu-link to="/getting-started"> Getting started </app-menu-link>
+					<app-menu-link to="/styling-hooks"> Styling hooks </app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
-					<template #title>
-						Interaction
-					</template>
+					<template #title> Form </template>
 
-					<app-menu-link to="/interaction/ui-button">
-						ui-button
-					</app-menu-link>
-					<app-menu-link to="/interaction/link-tag">
-						link-tag
-					</app-menu-link>
-					<app-menu-link to="/interaction/dropdown-menu">
-						dropdown-menu
-					</app-menu-link>
-					<app-menu-link to="/interaction/copy-content">
-						copy-content
-					</app-menu-link>
-					<app-menu-link to="/interaction/star-rating">
-						star-rating
-					</app-menu-link>
+					<app-menu-link to="/form/form-wrapper"> form-wrapper </app-menu-link>
+					<app-menu-link to="/form/form-fieldset"> form-fieldset </app-menu-link>
+					<app-menu-link to="/form/form-layout"> form-layout </app-menu-link>
+					<app-menu-link to="/form/form-field"> form-field </app-menu-link>
+					<app-menu-link to="/form/form-actions"> form-actions </app-menu-link>
+					<app-menu-link to="/form/form-input"> form-input </app-menu-link>
+					<app-menu-link to="/form/form-textarea"> form-textarea </app-menu-link>
+					<app-menu-link to="/form/form-checkbox"> form-checkbox </app-menu-link>
+					<app-menu-link to="/form/form-checkbox-group"> form-checkbox-group </app-menu-link>
+					<app-menu-link to="/form/form-radio-group"> form-radio-group </app-menu-link>
+					<app-menu-link to="/form/button-group"> button-group </app-menu-link>
+					<app-menu-link to="/form/form-date"> form-date </app-menu-link>
+					<app-menu-link to="/form/form-select"> form-select </app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
-					<template #title>
-						Content
-					</template>
+					<template #title> Interaction </template>
 
-					<app-menu-link to="/content/data-table">
-						data-table
-					</app-menu-link>
-					<app-menu-link to="/content/tab-group">
-						tab-group
-					</app-menu-link>
-					<app-menu-link to="/content/accordion-group">
-						accordion-group
-					</app-menu-link>
-					<app-menu-link to="/content/searchable-list">
-						searchable-list
-					</app-menu-link>
-					<app-menu-link to="/content/summary-details">
-						summary-details
-					</app-menu-link>
-					<app-menu-link to="/content/floating-details">
-						floating-details
-					</app-menu-link>
-					<app-menu-link to="/content/content-card">
-						content-card
-					</app-menu-link>
-					<app-menu-link to="/content/display-date">
-						display-date
-					</app-menu-link>
-					<app-menu-link to="/content/relative-date">
-						relative-date
-					</app-menu-link>
-					<app-menu-link to="/content/loading-indicator">
-						loading-indicator
-					</app-menu-link>
-					<app-menu-link to="/content/loading-spinner">
-						loading-spinner
-					</app-menu-link>
-					<app-menu-link to="/content/loading-skeleton">
-						loading-skeleton
-					</app-menu-link>
-					<app-menu-link to="/content/none-found">
-						none-found
-					</app-menu-link>
-					<app-menu-link to="/content/content-separator">
-						content-separator
-					</app-menu-link>
+					<app-menu-link to="/interaction/ui-button"> ui-button </app-menu-link>
+					<app-menu-link to="/interaction/link-tag"> link-tag </app-menu-link>
+					<app-menu-link to="/interaction/dropdown-menu"> dropdown-menu </app-menu-link>
+					<app-menu-link to="/interaction/copy-content"> copy-content </app-menu-link>
+					<app-menu-link to="/interaction/star-rating"> star-rating </app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
-					<template #title>
-						Icons
-					</template>
+					<template #title> Content </template>
 
-					<app-menu-link to="/icon/icons">
-						icons
-					</app-menu-link>
+					<app-menu-link to="/content/data-table"> data-table </app-menu-link>
+					<app-menu-link to="/content/tab-group"> tab-group </app-menu-link>
+					<app-menu-link to="/content/accordion-group"> accordion-group </app-menu-link>
+					<app-menu-link to="/content/searchable-list"> searchable-list </app-menu-link>
+					<app-menu-link to="/content/summary-details"> summary-details </app-menu-link>
+					<app-menu-link to="/content/floating-details"> floating-details </app-menu-link>
+					<app-menu-link to="/content/content-card"> content-card </app-menu-link>
+					<app-menu-link to="/content/display-date"> display-date </app-menu-link>
+					<app-menu-link to="/content/relative-date"> relative-date </app-menu-link>
+					<app-menu-link to="/content/loading-indicator"> loading-indicator </app-menu-link>
+					<app-menu-link to="/content/loading-spinner"> loading-spinner </app-menu-link>
+					<app-menu-link to="/content/loading-skeleton"> loading-skeleton </app-menu-link>
+					<app-menu-link to="/content/none-found"> none-found </app-menu-link>
+					<app-menu-link to="/content/content-separator"> content-separator </app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
-					<template #title>
-						Navigation
-					</template>
+					<template #title> Icons </template>
 
-					<app-menu-link to="/navigation/breadcrumb-list">
-						breadcrumb-list
-					</app-menu-link>
-					<app-menu-link to="/navigation/app-pagination">
-						app-pagination
-					</app-menu-link>
+					<app-menu-link to="/icon/icons"> icons </app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
-					<template #title>
-						Display
-					</template>
+					<template #title> Navigation </template>
 
-					<app-menu-link to="/display/image-tag">
-						image-tag
-					</app-menu-link>
-					<app-menu-link to="/display/user-avatars">
-						user-avatars
-					</app-menu-link>
+					<app-menu-link to="/navigation/breadcrumb-list"> breadcrumb-list </app-menu-link>
+					<app-menu-link to="/navigation/app-pagination"> app-pagination </app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
-					<template #title>
-						Messaging
-					</template>
+					<template #title> Display </template>
 
-					<app-menu-link to="/messaging/alert-message">
-						alert-message
-					</app-menu-link>
-					<app-menu-link to="/messaging/pill-badge">
-						pill-badge
-					</app-menu-link>
-					<app-menu-link to="/messaging/modal-controller">
-						modal-controller
-					</app-menu-link>
-					<app-menu-link to="/messaging/modal-dialog">
-						modal-dialog
-					</app-menu-link>
-					<app-menu-link to="/messaging/step-indicator">
-						step-indicator
-					</app-menu-link>
-					<app-menu-link to="/messaging/notification-handler">
-						notification-handler
-					</app-menu-link>
+					<app-menu-link to="/display/image-tag"> image-tag </app-menu-link>
+					<app-menu-link to="/display/user-avatars"> user-avatars </app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
-					<template #title>
-						Chart
-					</template>
+					<template #title> Messaging </template>
 
-					<app-menu-link to="/chart/donut-chart">
-						donut-chart
-					</app-menu-link>
-					<app-menu-link to="/chart/progress-bar">
-						progress-bar
-					</app-menu-link>
-					<app-menu-link to="/chart/spark-bar">
-						spark-bar
-					</app-menu-link>
+					<app-menu-link to="/messaging/alert-message"> alert-message </app-menu-link>
+					<app-menu-link to="/messaging/pill-badge"> pill-badge </app-menu-link>
+					<app-menu-link to="/messaging/modal-controller"> modal-controller </app-menu-link>
+					<app-menu-link to="/messaging/modal-dialog"> modal-dialog </app-menu-link>
+					<app-menu-link to="/messaging/step-indicator"> step-indicator </app-menu-link>
+					<app-menu-link to="/messaging/notification-handler"> notification-handler </app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
-					<template #title>
-						General
-					</template>
+					<template #title> Chart </template>
 
-					<app-menu-link to="/general/conditional-wrapper">
-						conditional-wrapper
-					</app-menu-link>
+					<app-menu-link to="/chart/donut-chart"> donut-chart </app-menu-link>
+					<app-menu-link to="/chart/progress-bar"> progress-bar </app-menu-link>
+					<app-menu-link to="/chart/spark-bar"> spark-bar </app-menu-link>
+				</app-menu-section>
+
+				<app-menu-section>
+					<template #title> General </template>
+
+					<app-menu-link to="/general/conditional-wrapper"> conditional-wrapper </app-menu-link>
 				</app-menu-section>
 			</ol>
 		</nav>
@@ -221,9 +112,7 @@
 		details-additional-classes="-me-6"
 		v-bind="{ iconOnly: true, iconClosed: 'icon-hamburger', iconOpen: 'icon-cross', align: 'end' }"
 	>
-		<template #summary>
-			Menu
-		</template>
+		<template #summary> Menu </template>
 
 		<reuse-template />
 	</floating-details>
@@ -260,7 +149,10 @@ const breakpoints = useBreakpoints(breakpointsTailwind);
 // breakpoint.
 const showFullMenu = breakpoints.greaterOrEqual("lg");
 
-watch(() => route.fullPath, () => {
-	runComponentMethod(floatingDetailsComponent.value, "closeDetails");
-});
+watch(
+	() => route.fullPath,
+	() => {
+		runComponentMethod(floatingDetailsComponent.value, "closeDetails");
+	},
+);
 </script>
