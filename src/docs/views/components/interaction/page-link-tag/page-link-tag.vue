@@ -125,6 +125,20 @@
 			</component-slot>
 		</component-slots>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="link-tag"</template>
+				<p>
+					Present on the root <code>&lt;a&gt;</code> element. Use to scope styles to this component.
+				</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-external">
+				<template #attribute>data-external</template>
+				<p>Present on the root element when the link is marked as external.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-link-tag />
 			<playground-link-tag-external />

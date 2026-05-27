@@ -89,6 +89,18 @@ Show the "reacting" state, as though someone had clicked the button. This is hel
 
 Reset the reactive state of a reactive button.
 
+## Styling hooks
+
+| Attribute                    | Element                 | Notes                                   |
+| ---------------------------- | ----------------------- | --------------------------------------- |
+| `data-component="ui-button"` | Root `<button>`         | Scope styles to this component          |
+| `data-part="icon-start"`     | Start icon              | When `iconStart` is set                 |
+| `data-part="label"`          | Label wrapper           | Hidden visually while reacting          |
+| `data-part="loading"`        | Loading spinner overlay | Visible while reacting                  |
+| `data-part="icon-end"`       | End icon                | When `iconEnd` is set                   |
+| `data-disabled`              | Root                    | Present when disabled                   |
+| `data-reacting`              | Root                    | Present while showing the loading state |
+
 ## Examples
 
 ### Basic button

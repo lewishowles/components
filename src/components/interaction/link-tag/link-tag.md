@@ -57,6 +57,13 @@ _Note that `start` and `end` depend on the current document direction._
 
 Whether to only show an icon (and not the associated text). If true, the text is hidden via an `sr-only` class, so is still accessible to screen readers and therefore important. The displayed icon is also shown at `1em` size when alone, to better fill the link.
 
+## Styling hooks
+
+| Attribute                   | Element    | Notes                             |
+| --------------------------- | ---------- | --------------------------------- |
+| `data-component="link-tag"` | Root `<a>` | Scope styles to this component    |
+| `data-external`             | Root       | Present when `external` is `true` |
+
 ## Examples
 
 ### Basic links

@@ -65,6 +65,33 @@
 			</component-slot>
 		</component-slots>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="copy-content"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-label">
+				<template #attribute>data-part="label"</template>
+				<p>The default label and clipboard icon, visible when no copy operation is in progress.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-success">
+				<template #attribute>data-part="success"</template>
+				<p>The success feedback element, shown briefly after a successful copy.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-error">
+				<template #attribute>data-part="error"</template>
+				<p>The error feedback element, shown briefly when copying fails.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-copied">
+				<template #attribute>data-copied</template>
+				<p>Present on the root element while the success state is displayed.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-copy-content />
 		</component-playgrounds>

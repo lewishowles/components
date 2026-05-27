@@ -231,6 +231,40 @@ describe("dropdown-menu", () => {
 			cy.getByData("dropdown-menu-panel").find("button").contains("Duplicate").shouldHaveFocus();
 		});
 	});
+
+	describe("Styling hooks", () => {
+		it("Has data-component on the root element", () => {
+			mount();
+
+			cy.getByData("dropdown-menu").shouldHaveAttribute("data-component", "dropdown-menu");
+		});
+
+		it("Has data-part on the trigger", () => {
+			mount();
+
+			cy.getByData("dropdown-menu-trigger").shouldHaveAttribute("data-part", "trigger");
+		});
+
+		it("Has data-state=closed when the menu is closed", () => {
+			mount();
+
+			cy.getByData("dropdown-menu").shouldHaveAttribute("data-state", "closed");
+		});
+
+		it("Has data-state=open when the menu is open", () => {
+			mount();
+
+			cy.getByData("dropdown-menu-trigger").click();
+			cy.getByData("dropdown-menu").shouldHaveAttribute("data-state", "open");
+		});
+
+		it("Has data-part on the panel when open", () => {
+			mount();
+
+			cy.getByData("dropdown-menu-trigger").click();
+			cy.getByData("dropdown-menu-panel").shouldHaveAttribute("data-part", "panel");
+		});
+	});
 });
 
 /**

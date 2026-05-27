@@ -51,4 +51,24 @@ describe("link-tag", () => {
 			cy.getByData("link-tag-icon-external").should("not.exist");
 		});
 	});
+
+	describe("Styling hooks", () => {
+		it("Has data-component on the root element", () => {
+			mount();
+
+			cy.getByData("link-tag").shouldHaveAttribute("data-component", "link-tag");
+		});
+
+		it("Has data-external when external is true", () => {
+			mount({ external: true });
+
+			cy.getByData("link-tag").shouldHaveAttribute("data-external");
+		});
+
+		it("Does not have data-external for a standard link", () => {
+			mount();
+
+			cy.getByData("link-tag").shouldNotHaveAttribute("data-external");
+		});
+	});
 });

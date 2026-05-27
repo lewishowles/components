@@ -35,4 +35,33 @@ describe("copy-content", () => {
 			cy.getByData("copy-content-error").shouldBeVisible();
 		});
 	});
+
+	describe("Styling hooks", () => {
+		it("Has data-component on the root element", () => {
+			mount();
+
+			cy.getByData("copy-content").shouldHaveAttribute("data-component", "copy-content");
+		});
+
+		it("Has data-part on the label", () => {
+			mount();
+
+			cy.getByData("copy-content-label").shouldHaveAttribute("data-part", "label");
+		});
+
+		it("Has data-copied when the copy succeeds", () => {
+			const content = "Test content";
+
+			mount({ props: { content } });
+
+			cy.getByData("copy-content").click();
+			cy.getByData("copy-content").shouldHaveAttribute("data-copied");
+		});
+
+		it("Does not have data-copied by default", () => {
+			mount();
+
+			cy.getByData("copy-content").shouldNotHaveAttribute("data-copied");
+		});
+	});
 });

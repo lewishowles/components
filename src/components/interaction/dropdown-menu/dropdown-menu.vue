@@ -1,5 +1,11 @@
 <template>
-	<div ref="menuContainerElement" class="relative" data-test="dropdown-menu">
+	<div
+		ref="menuContainerElement"
+		class="relative"
+		data-component="dropdown-menu"
+		:data-state="isOpen ? 'open' : 'closed'"
+		data-test="dropdown-menu"
+	>
 		<button
 			ref="triggerElement"
 			type="button"
@@ -7,6 +13,7 @@
 			aria-haspopup="menu"
 			:aria-expanded="isOpen"
 			:aria-controls="menuId"
+			data-part="trigger"
 			data-test="dropdown-menu-trigger"
 			@click="toggleMenu"
 			@keydown="onTriggerKeydown"
@@ -24,6 +31,7 @@
 			role="menu"
 			:class="detailsClasses"
 			class="absolute inset-s-0 top-full"
+			data-part="panel"
 			data-test="dropdown-menu-panel"
 			@keydown="onMenuKeydown"
 		>

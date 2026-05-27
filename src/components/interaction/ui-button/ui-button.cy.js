@@ -161,4 +161,42 @@ describe("ui-button", () => {
 			cy.getByData("ui-button").shouldNotHaveAttribute("aria-pressed");
 		});
 	});
+
+	describe("Styling hooks", () => {
+		it("Has data-component on the root element", () => {
+			mount();
+
+			cy.getByData("ui-button").shouldHaveAttribute("data-component", "ui-button");
+		});
+
+		it("Has data-part on the label", () => {
+			mount();
+
+			cy.getByData("ui-button-label").shouldHaveAttribute("data-part", "label");
+		});
+
+		it("Has data-part on the start icon when set", () => {
+			mount({ iconStart: "icon-chevron-left" });
+
+			cy.getByData("ui-button-icon-start").shouldHaveAttribute("data-part", "icon-start");
+		});
+
+		it("Has data-part on the end icon when set", () => {
+			mount({ iconEnd: "icon-chevron-right" });
+
+			cy.getByData("ui-button-icon-end").shouldHaveAttribute("data-part", "icon-end");
+		});
+
+		it("Has data-disabled when disabled", () => {
+			mount({ disabled: true });
+
+			cy.getByData("ui-button").shouldHaveAttribute("data-disabled");
+		});
+
+		it("Does not have data-disabled when not disabled", () => {
+			mount();
+
+			cy.getByData("ui-button").shouldNotHaveAttribute("data-disabled");
+		});
+	});
 });

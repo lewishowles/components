@@ -206,6 +206,46 @@
 			</component-method>
 		</component-methods>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="ui-button"</template>
+				<p>
+					Present on the root <code>&lt;button&gt;</code> element. Use to scope styles to this
+					component.
+				</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-icon-start">
+				<template #attribute>data-part="icon-start"</template>
+				<p>The icon rendered before the label, when <code>iconStart</code> is set.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-label">
+				<template #attribute>data-part="label"</template>
+				<p>The label wrapper. Hidden visually when the button is reacting.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-loading">
+				<template #attribute>data-part="loading"</template>
+				<p>The loading spinner overlay, shown when the button is in its reacting state.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-icon-end">
+				<template #attribute>data-part="icon-end"</template>
+				<p>The icon rendered after the label, when <code>iconEnd</code> is set.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-disabled">
+				<template #attribute>data-disabled</template>
+				<p>Present on the root element when the button is disabled.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-reacting">
+				<template #attribute>data-reacting</template>
+				<p>Present on the root element while the button is showing its loading state.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-ui-button />
 			<playground-ui-button-icon />

@@ -1,6 +1,8 @@
 <template>
 	<form-radio-group
 		v-bind="{ options: ratingOptions }"
+		data-component="star-rating"
+		:data-readonly="readOnly || null"
 		data-test="star-rating"
 		@mouseleave="highlightedValue = null"
 	>
@@ -18,9 +20,10 @@
 					role: readOnly ? 'img' : undefined,
 					'aria-labelledby': readOnly ? readOnlyLabelId : undefined,
 				}"
+				data-part="options"
 			>
 				<template v-if="!readOnly">
-					<div v-for="option in options" :key="option.id">
+					<div v-for="option in options" :key="option.id" data-part="option">
 						<input
 							ref="inputReferences"
 							v-model="model"

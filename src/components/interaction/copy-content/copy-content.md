@@ -33,6 +33,16 @@ The text to display briefly when content couldn't be copied, either because ther
 
 The content to copy to the user's clipboard when activated.
 
+## Styling hooks
+
+| Attribute                       | Element                | Notes                                         |
+| ------------------------------- | ---------------------- | --------------------------------------------- |
+| `data-component="copy-content"` | Root element           | Scope styles to this component                |
+| `data-part="label"`             | Default label and icon | Visible when no copy operation is in progress |
+| `data-part="success"`           | Success feedback       | Shown briefly after a successful copy         |
+| `data-part="error"`             | Error feedback         | Shown briefly when copying fails              |
+| `data-copied`                   | Root                   | Present while the success state is displayed  |
+
 ## Examples
 
 ### Copy content

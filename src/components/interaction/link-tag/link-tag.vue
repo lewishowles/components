@@ -1,5 +1,12 @@
 <template>
-	<a ref="anchorElement" class="inline-block" v-bind="{ href, ...attributes }" data-test="link-tag">
+	<a
+		ref="anchorElement"
+		class="inline-block"
+		v-bind="{ href, ...attributes }"
+		data-component="link-tag"
+		:data-external="external || null"
+		data-test="link-tag"
+	>
 		<component
 			:is="iconStart"
 			v-if="haveIconStart"

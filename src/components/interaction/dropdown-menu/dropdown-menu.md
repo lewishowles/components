@@ -72,6 +72,15 @@ Close the menu programmatically.
 | `Escape`                | Close menu, return focus to trigger                                           |
 | `Tab`                   | Close menu, move focus to next element                                        |
 
+## Styling hooks
+
+| Attribute                        | Element        | Notes                          |
+| -------------------------------- | -------------- | ------------------------------ |
+| `data-component="dropdown-menu"` | Root element   | Scope styles to this component |
+| `data-part="trigger"`            | Trigger button | —                              |
+| `data-part="panel"`              | Floating panel | Only in DOM when open          |
+| `data-state`                     | Root           | `"open"` or `"closed"`         |
+
 ## Examples
 
 ### Simple menu

@@ -70,6 +70,15 @@ Whether to allow the user to choose a rating. If false, this component can just 
 
 One of `star` or `heart`. Defaults to `star` if the shape is unrecognised.
 
+## Styling hooks
+
+| Attribute                      | Element             | Notes                                         |
+| ------------------------------ | ------------------- | --------------------------------------------- |
+| `data-component="star-rating"` | Root element        | Scope styles to this component                |
+| `data-part="options"`          | Options wrapper     | Contains all star/heart options               |
+| `data-part="option"`           | Each option wrapper | Only present when interactive (not read-only) |
+| `data-readonly`                | Root                | Present when in read-only mode                |
+
 ## Examples
 
 ### Basic usage

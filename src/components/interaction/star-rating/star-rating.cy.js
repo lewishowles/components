@@ -92,4 +92,36 @@ describe("star-rating", () => {
 			);
 		});
 	});
+
+	describe("Styling hooks", () => {
+		it("Has data-component on the root element", () => {
+			mount();
+
+			cy.getByData("star-rating").shouldHaveAttribute("data-component", "star-rating");
+		});
+
+		it("Has data-part on the options wrapper", () => {
+			mount();
+
+			cy.getByData("star-rating").find("[data-part='options']").should("exist");
+		});
+
+		it("Has data-part on each option", () => {
+			mount();
+
+			cy.getByData("star-rating").find("[data-part='option']").should("have.length", 5);
+		});
+
+		it("Has data-readonly when in read-only mode", () => {
+			mount({ readOnly: true });
+
+			cy.getByData("star-rating").shouldHaveAttribute("data-readonly");
+		});
+
+		it("Does not have data-readonly in interactive mode", () => {
+			mount();
+
+			cy.getByData("star-rating").shouldNotHaveAttribute("data-readonly");
+		});
+	});
 });

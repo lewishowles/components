@@ -4,6 +4,9 @@
 		class="inline-flex items-center justify-center"
 		:class="{ relative: reactive, 'button--disabled': disabled }"
 		v-bind="attributes"
+		data-component="ui-button"
+		:data-disabled="disabled || null"
+		:data-reacting="isReacting || null"
 		data-test="ui-button"
 		@click="react"
 	>
@@ -11,12 +14,14 @@
 			:is="iconStart"
 			v-if="haveIconStart"
 			:class="[computedIconClasses, { 'me-2': !iconOnly }]"
+			data-part="icon-start"
 			data-test="ui-button-icon-start"
 		/>
 
 		<conditional-wrapper
 			v-bind="{ wrap: reactive || iconOnly, tag: 'span' }"
 			:class="{ invisible: isReacting, 'sr-only': iconOnly }"
+			data-part="label"
 			data-test="ui-button-label"
 		>
 			<slot />
@@ -26,6 +31,7 @@
 			v-if="reactive"
 			v-show="isReacting"
 			class="absolute inset-0 flex items-center justify-center"
+			data-part="loading"
 			data-test="ui-button-loading"
 		>
 			<icon-loading class="animate-spin stroke-current" />
@@ -41,6 +47,7 @@
 			:is="iconEnd"
 			v-if="haveIconEnd"
 			:class="[computedIconClasses, { 'ms-2': !iconOnly }]"
+			data-part="icon-end"
 			data-test="ui-button-icon-end"
 		/>
 	</button>

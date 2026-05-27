@@ -120,6 +120,31 @@
 			</component-slot>
 		</component-slots>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="star-rating"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-options">
+				<template #attribute>data-part="options"</template>
+				<p>The wrapper element containing all star or heart options.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-option">
+				<template #attribute>data-part="option"</template>
+				<p>
+					Each individual option wrapper. Only present when the rating is interactive (not
+					read-only).
+				</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-readonly">
+				<template #attribute>data-readonly</template>
+				<p>Present on the root element when the rating is in read-only mode.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-star-rating />
 			<playground-star-rating-current-rating />

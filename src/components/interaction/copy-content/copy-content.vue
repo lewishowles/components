@@ -2,12 +2,15 @@
 	<ui-button
 		v-bind="$attrs"
 		:class="{ relative: !$attrs.class?.includes('absolute') }"
+		data-component="copy-content"
+		:data-copied="showCopySuccess || null"
 		data-test="copy-content"
 		@click="copyContent"
 	>
 		<span
 			class="flex items-center gap-2 transition-opacity"
 			:class="{ 'opacity-0': showCopySuccess || showCopyError }"
+			data-part="label"
 			data-test="copy-content-label"
 		>
 			<icon-clipboard />
@@ -18,6 +21,7 @@
 		<span
 			v-if="showCopySuccess"
 			class="animate-fade-in absolute inset-0 flex items-center justify-center gap-1"
+			data-part="success"
 			data-test="copy-content-success"
 		>
 			<icon-check-circled />
@@ -28,6 +32,7 @@
 		<span
 			v-if="showCopyError"
 			class="animate-fade-in absolute inset-0 flex items-center justify-center gap-1"
+			data-part="error"
 			data-test="copy-content-error"
 		>
 			<icon-danger />

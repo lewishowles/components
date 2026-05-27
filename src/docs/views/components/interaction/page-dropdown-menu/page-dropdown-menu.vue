@@ -193,6 +193,34 @@
 			</component-method>
 		</component-methods>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="dropdown-menu"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-trigger">
+				<template #attribute>data-part="trigger"</template>
+				<p>The button that opens and closes the menu.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-panel">
+				<template #attribute>data-part="panel"</template>
+				<p>
+					The floating panel containing the menu items. Only present in the DOM when the menu is
+					open.
+				</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-state">
+				<template #attribute>data-state</template>
+				<p>
+					Set to <code>"open"</code> when the menu is open, <code>"closed"</code> when it is not.
+					Present on the root element.
+				</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-dropdown-menu />
 		</component-playgrounds>
