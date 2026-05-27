@@ -1,13 +1,12 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-spark-bar-custom-range">
-		<template #title>
-			Custom range
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-spark-bar-custom-range"
+	>
+		<template #title> Custom range </template>
 
 		<spark-bar v-bind="componentProps" v-model="componentModel">
-			<template #default="{ percentage }">
-				{{ percentage }}%
-			</template>
+			<template #default="{ percentage }"> {{ percentage }}% </template>
 		</spark-bar>
 	</component-playground>
 </template>
@@ -40,9 +39,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("spark-bar", { props });

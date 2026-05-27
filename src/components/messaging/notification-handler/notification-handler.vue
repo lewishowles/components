@@ -1,5 +1,10 @@
 <template>
-	<floating-details v-bind="{ ...$attrs, align, includeIcon: false }" summary-classes="button--muted relative p-3" class="w-min text-sm" data-test="notification-handler">
+	<floating-details
+		v-bind="{ ...$attrs, align, includeIcon: false }"
+		summary-classes="button--muted relative p-3"
+		class="w-min text-sm"
+		data-test="notification-handler"
+	>
 		<template #summary>
 			<icon-bell class="mx-[-0.25em] my-[0.25em]" />
 
@@ -9,14 +14,27 @@
 				</slot>
 			</span>
 
-			<div v-if="haveUnreadNotifications" aria-hidden="true" class="absolute inset-e-0 top-0 -me-2 -mt-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-800 p-1 text-xs leading-none text-white" data-test="notification-handler-badge">
+			<div
+				v-if="haveUnreadNotifications"
+				aria-hidden="true"
+				class="absolute inset-e-0 top-0 -me-2 -mt-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-800 p-1 text-xs leading-none text-white"
+				data-test="notification-handler-badge"
+			>
 				{{ unreadNotificationCount }}
 			</div>
 		</template>
 
 		<define-template v-slot="{ notification }">
-			<slot :name="getNotificationSlotName(notification)" v-bind="{ notification, markNotificationRead: () => markNotificationRead(notification.id) }">
-				<component :is="getNotificationComponent(notification)" v-bind="{ notification, locale, dateFormat }" class="animate-fade-in delay" @notification:read="markNotificationRead">
+			<slot
+				:name="getNotificationSlotName(notification)"
+				v-bind="{ notification, markNotificationRead: () => markNotificationRead(notification.id) }"
+			>
+				<component
+					:is="getNotificationComponent(notification)"
+					v-bind="{ notification, locale, dateFormat }"
+					class="animate-fade-in delay"
+					@notification:read="markNotificationRead"
+				>
 					<template #view-more-label>
 						<slot name="view-more-label" />
 					</template>
@@ -29,35 +47,48 @@
 		</define-template>
 
 		<loading-indicator v-if="props.loading" v-bind="{ large: true }">
-			<slot name="loading-label">
-				Loading notifications
-			</slot>
+			<slot name="loading-label"> Loading notifications </slot>
 		</loading-indicator>
 
 		<div v-if="!props.loading">
 			<div v-if="haveNotificationsToDisplay" class="flex flex-col gap-4">
-				<div v-if="canMarkAllNotificationsRead || allowReload" class="flex items-center justify-between text-xs" data-test="notification-handler-toolbar">
-					<ui-button v-if="allowReload" class="button--muted" icon-start="icon-reload" data-test="notification-handler-reload" @click="reloadNotifications">
-						<slot name="reload-label">
-							Reload notifications
-						</slot>
+				<div
+					v-if="canMarkAllNotificationsRead || allowReload"
+					class="flex items-center justify-between text-xs"
+					data-test="notification-handler-toolbar"
+				>
+					<ui-button
+						v-if="allowReload"
+						class="button--muted"
+						icon-start="icon-reload"
+						data-test="notification-handler-reload"
+						@click="reloadNotifications"
+					>
+						<slot name="reload-label"> Reload notifications </slot>
 					</ui-button>
 
-					<ui-button v-if="canMarkAllNotificationsRead" class="button--muted" icon-start="icon-check" data-test="notification-handler-mark-all-read" @click="markAllNotificationsRead">
-						<slot name="mark-all-read-label">
-							Mark all notifications read
-						</slot>
+					<ui-button
+						v-if="canMarkAllNotificationsRead"
+						class="button--muted"
+						icon-start="icon-check"
+						data-test="notification-handler-mark-all-read"
+						@click="markAllNotificationsRead"
+					>
+						<slot name="mark-all-read-label"> Mark all notifications read </slot>
 					</ui-button>
 				</div>
 
 				<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
 					<template v-for="notification in pinnedNotifications" :key="notification.id">
-						<slot name="notification-pinned-template" v-bind="{ notification}">
+						<slot name="notification-pinned-template" v-bind="{ notification }">
 							<reuse-template v-bind="{ notification }" />
 						</slot>
 					</template>
 
-					<hr v-if="havePinnedNotifications && haveUnpinnedNotifications" class="border-grey-200 dark:border-white/20" />
+					<hr
+						v-if="havePinnedNotifications && haveUnpinnedNotifications"
+						class="border-grey-200 dark:border-white/20"
+					/>
 
 					<template v-for="notification in unpinnedNotifications" :key="notification.id">
 						<reuse-template v-bind="{ notification }" />
@@ -66,18 +97,25 @@
 			</div>
 
 			<div v-else class="flex flex-col items-center gap-2 py-4">
-				<icon-bell class="animate-fade-in delay size-10 rounded-full bg-purple-100 p-3 text-purple-800" />
+				<icon-bell
+					class="animate-fade-in delay size-10 rounded-full bg-purple-100 p-3 text-purple-800"
+				/>
 
 				<span class="animate-fade-in delay">
-					<slot name="no-notifications-label">
-						No new notifications
-					</slot>
+					<slot name="no-notifications-label"> No new notifications </slot>
 				</span>
 			</div>
 		</div>
 	</floating-details>
 
-	<span role="status" aria-live="polite" aria-relevant="additions" class="sr-only" data-test="notification-handler-live-region">{{ announcement }}</span>
+	<span
+		role="status"
+		aria-live="polite"
+		aria-relevant="additions"
+		class="sr-only"
+		data-test="notification-handler-live-region"
+		>{{ announcement }}</span
+	>
 </template>
 
 <script setup>
@@ -217,26 +255,28 @@ const internalNotifications = computed(() => {
 		return [];
 	}
 
-	let notifications = props.notifications
-		.reduce((notifications, notification) => {
-			if (!isNonEmptyObject(notification)) {
-				return notifications;
-			}
-
-			// A notification must contain at least a message.
-			if (!Object.hasOwn(notification, "message")) {
-				return notifications;
-			}
-
-			// If set, hide any notifications that are marked as read.
-			if (props.hideNotificationsWhenRead && (get(notification, "read") === true || hasNotificationBeenMarkedAsRead(notification.id))) {
-				return notifications;
-			}
-
-			notifications.push(notification);
-
+	let notifications = props.notifications.reduce((notifications, notification) => {
+		if (!isNonEmptyObject(notification)) {
 			return notifications;
-		}, []);
+		}
+
+		// A notification must contain at least a message.
+		if (!Object.hasOwn(notification, "message")) {
+			return notifications;
+		}
+
+		// If set, hide any notifications that are marked as read.
+		if (
+			props.hideNotificationsWhenRead &&
+			(get(notification, "read") === true || hasNotificationBeenMarkedAsRead(notification.id))
+		) {
+			return notifications;
+		}
+
+		notifications.push(notification);
+
+		return notifications;
+	}, []);
 
 	notifications = sortNotificationsByDate(notifications);
 	notifications = limitReadNotifications(notifications);
@@ -253,7 +293,7 @@ const unreadNotifications = computed(() => {
 		return [];
 	}
 
-	return internalNotifications.value.filter(notification => get(notification, "read") !== true);
+	return internalNotifications.value.filter((notification) => get(notification, "read") !== true);
 });
 
 // How many unread notifications are present.
@@ -267,15 +307,26 @@ const unreadNotificationCount = computed(() => {
 
 // Whether there are any unread notifications to display.
 const haveUnreadNotifications = computed(() => unreadNotificationCount.value > 0);
+
 // Whether we're able to mark all notifications read, based on whether the
 // option is enabled, and whether there are any notifications to mark.
-const canMarkAllNotificationsRead = computed(() => props.allowMarkAllRead && haveUnreadNotifications.value);
+const canMarkAllNotificationsRead = computed(
+	() => props.allowMarkAllRead && haveUnreadNotifications.value,
+);
+
 // Notifications that have been pinned, allowing us to display them separately.
-const pinnedNotifications = computed(() => internalNotifications.value.filter(notification => get(notification, "pinned") === true));
+const pinnedNotifications = computed(() =>
+	internalNotifications.value.filter((notification) => get(notification, "pinned") === true),
+);
+
 // Whether any pinned notifications exist.
 const havePinnedNotifications = computed(() => isNonEmptyArray(pinnedNotifications.value));
+
 // Notifications that have not been pinned.
-const unpinnedNotifications = computed(() => internalNotifications.value.filter(notification => get(notification, "pinned") !== true));
+const unpinnedNotifications = computed(() =>
+	internalNotifications.value.filter((notification) => get(notification, "pinned") !== true),
+);
+
 // Whether any unpinned notifications exist.
 const haveUnpinnedNotifications = computed(() => isNonEmptyArray(unpinnedNotifications.value));
 
@@ -374,7 +425,10 @@ function announce(message) {
  *     The details of the notification to display.
  */
 function getNotificationSlotName(notification) {
-	if (get(notification, "read") === true || hasNotificationBeenMarkedAsRead(get(notification, "id"))) {
+	if (
+		get(notification, "read") === true ||
+		hasNotificationBeenMarkedAsRead(get(notification, "id"))
+	) {
 		return "notification-read-template";
 	}
 
@@ -401,7 +455,10 @@ function getNotificationComponent(notification) {
 		return NotificationPinned;
 	}
 
-	if (get(notification, "read") === true || hasNotificationBeenMarkedAsRead(get(notification, "id"))) {
+	if (
+		get(notification, "read") === true ||
+		hasNotificationBeenMarkedAsRead(get(notification, "id"))
+	) {
 		return NotificationRead;
 	}
 
@@ -454,7 +511,10 @@ function markAllNotificationsRead() {
 		return;
 	}
 
-	const relevantNotifications = unreadNotifications.value.filter(notification => get(notification, "pinned") !== true);
+	const relevantNotifications = unreadNotifications.value.filter(
+		(notification) => get(notification, "pinned") !== true,
+	);
+
 	const notificationIDs = pluck(relevantNotifications, "id");
 
 	if (!isNonEmptyArray(notificationIDs)) {

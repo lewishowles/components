@@ -94,17 +94,13 @@ Reset the reactive state of a reactive button.
 ### Basic button
 
 ```html
-<ui-button @click="doMagic">
-	🪄 Bibbidi-Bobbidi-Boo
-</ui-button>
+<ui-button @click="doMagic"> 🪄 Bibbidi-Bobbidi-Boo </ui-button>
 ```
 
 ### With an icon
 
 ```html
-<ui-button v-bind="{ iconStart: 'icon-reload' }" @click="reload">
-	Reload
-</ui-button>
+<ui-button v-bind="{ iconStart: 'icon-reload' }" @click="reload"> Reload </ui-button>
 
 <ui-button v-bind="{ iconEnd: 'icon-arrow-right' }" @click="toInfinityAndBeyond">
 	Next step
@@ -114,9 +110,7 @@ Reset the reactive state of a reactive button.
 ### Toggle button
 
 ```html
-<ui-button v-bind="{ pressed: isMuted }" @click="toggleMute">
-	Mute
-</ui-button>
+<ui-button v-bind="{ pressed: isMuted }" @click="toggleMute"> Mute </ui-button>
 ```
 
 ### Reactive

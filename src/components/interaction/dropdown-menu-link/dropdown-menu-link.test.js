@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import DropdownMenuLink from "./dropdown-menu-link.vue";
 
 const defaultProps = { href: "#" };

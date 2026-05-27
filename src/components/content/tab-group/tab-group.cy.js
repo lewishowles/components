@@ -31,20 +31,20 @@ describe("tab-group", () => {
 	it("Renders aria-labelledby when label slot is provided", () => {
 		mount({ slots: { label: "Browse documentation sections" } });
 
-		cy.get("[role=\"tablist\"]").shouldHaveAttribute("aria-labelledby");
+		cy.get('[role="tablist"]').shouldHaveAttribute("aria-labelledby");
 	});
 
 	it("Does not render aria-labelledby when label slot is not provided", () => {
 		mount();
 
-		cy.get("[role=\"tablist\"]").shouldNotHaveAttribute("aria-labelledby");
+		cy.get('[role="tablist"]').shouldNotHaveAttribute("aria-labelledby");
 	});
 
 	it("Panel root is focusable with tabindex=0", () => {
 		mount();
 
 		cy.getByData("tab-group").within(() => {
-			cy.get("[role=\"tabpanel\"]").first().shouldHaveAttribute("tabindex", "0");
+			cy.get('[role="tabpanel"]').first().shouldHaveAttribute("tabindex", "0");
 		});
 	});
 
@@ -143,16 +143,15 @@ describe("Slot props", () => {
 	it("Label slot receives isActive prop", () => {
 		mount({ slots: slotPropSlots });
 
-		cy.get("[data-test=\"tab-label\"]").eq(0).shouldHaveAttribute("data-active", "true");
-		cy.get("[data-test=\"tab-label\"]").eq(1).shouldHaveAttribute("data-active", "false");
+		cy.get('[data-test="tab-label"]').eq(0).shouldHaveAttribute("data-active", "true");
+		cy.get('[data-test="tab-label"]').eq(1).shouldHaveAttribute("data-active", "false");
 	});
-
 
 	it("Panel slot receives isActive prop", () => {
 		mount({ slots: slotPropSlots });
 
-		cy.get("[data-test=\"panel-content\"]").eq(0).shouldHaveAttribute("data-active", "true");
-		cy.get("[data-test=\"panel-content\"]").eq(1).shouldHaveAttribute("data-active", "false");
+		cy.get('[data-test="panel-content"]').eq(0).shouldHaveAttribute("data-active", "true");
+		cy.get('[data-test="panel-content"]').eq(1).shouldHaveAttribute("data-active", "false");
 	});
 });
 
@@ -165,10 +164,14 @@ describe("Slot props", () => {
  *     The content of the tab panel.
  */
 function createTab({ label, content }) {
-	return h(TabItem, {}, {
-		default: () => h("p", content),
-		label: () => label,
-	});
+	return h(
+		TabItem,
+		{},
+		{
+			default: () => h("p", content),
+			label: () => label,
+		},
+	);
 }
 
 /**
@@ -181,10 +184,16 @@ function createTab({ label, content }) {
  *     The content of the tab panel.
  */
 function createTabWithSlotProps({ label, content }) {
-	return h(TabItem, {}, {
-		default: ({ isActive }) => h("p", { "data-test": "panel-content", "data-active": String(isActive) }, content),
-		label: ({ isActive }) => h("span", { "data-test": "tab-label", "data-active": String(isActive) }, label),
-	});
+	return h(
+		TabItem,
+		{},
+		{
+			default: ({ isActive }) =>
+				h("p", { "data-test": "panel-content", "data-active": String(isActive) }, content),
+			label: ({ isActive }) =>
+				h("span", { "data-test": "tab-label", "data-active": String(isActive) }, label),
+		},
+	);
 }
 
 /**

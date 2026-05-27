@@ -1,8 +1,6 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-pill-badge" v-model="textSlots">
-		<template #title>
-			Simple pill badge
-		</template>
+		<template #title> Simple pill badge </template>
 
 		<pill-badge v-bind="componentProps">
 			{{ textSlots.default?.value }}
@@ -34,9 +32,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("pill-badge", { slots: textSlots, props });

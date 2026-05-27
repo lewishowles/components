@@ -8,7 +8,12 @@
 			<slot name="introduction" />
 		</conditional-wrapper>
 
-		<div class="flex transition-shadow" :class="{ 'form-field--error': haveError }" data-selector="form-field-wrapper" data-test="form-input-wrapper">
+		<div
+			class="flex transition-shadow"
+			:class="{ 'form-field--error': haveError }"
+			data-selector="form-field-wrapper"
+			data-test="form-input-wrapper"
+		>
 			<textarea
 				ref="inputElement"
 				v-model="model"
@@ -24,7 +29,10 @@
 			/>
 		</div>
 
-		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })">
+		<form-supplementary
+			v-bind="{ inputId }"
+			@update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })"
+		>
 			<template #error>
 				<slot name="error" />
 			</template>

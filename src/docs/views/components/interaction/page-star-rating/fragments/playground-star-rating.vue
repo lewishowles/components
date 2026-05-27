@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-star-rating" v-model="textSlots">
-		<template #title>
-			Star rating
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-star-rating"
+		v-model="textSlots"
+	>
+		<template #title> Star rating </template>
 
 		<template #introduction>
 			<p>A basic star rating allows the user to provide a value from one to five.</p>

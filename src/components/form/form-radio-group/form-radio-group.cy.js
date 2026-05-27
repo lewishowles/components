@@ -11,9 +11,7 @@ describe("form-radio-group", () => {
 
 		cy.getByData("form-radio-group").shouldBeVisible();
 
-		cy.getByData("form-radio-group")
-			.getByData("form-label")
-			.shouldHaveCount(4);
+		cy.getByData("form-radio-group").getByData("form-label").shouldHaveCount(4);
 
 		cy.getByData("form-label").eq(0).shouldHaveText("Best smoothie");
 		cy.getByData("form-label").eq(1).shouldHaveText("Pineapple");
@@ -38,8 +36,7 @@ describe("form-radio-group", () => {
 				.shouldHaveText("Help text")
 				.shouldHaveAttribute("id", "id-abc-help");
 
-			cy.getByData("form-radio-group")
-				.shouldHaveAttribute("aria-describedby", "id-abc-help");
+			cy.getByData("form-radio-group").shouldHaveAttribute("aria-describedby", "id-abc-help");
 		});
 
 		it("An error can be supplied", () => {
@@ -50,8 +47,7 @@ describe("form-radio-group", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getByData("form-radio-group")
-				.shouldHaveAttribute("aria-describedby", "id-abc-error");
+			cy.getByData("form-radio-group").shouldHaveAttribute("aria-describedby", "id-abc-error");
 		});
 
 		it("Both help and an error can be supplied", () => {
@@ -67,8 +63,10 @@ describe("form-radio-group", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getByData("form-radio-group")
-				.shouldHaveAttribute("aria-describedby", "id-abc-help id-abc-error");
+			cy.getByData("form-radio-group").shouldHaveAttribute(
+				"aria-describedby",
+				"id-abc-help id-abc-error",
+			);
 		});
 	});
 });

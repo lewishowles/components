@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-alert-message" v-model="textSlots">
-		<template #title>
-			Warning message
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-alert-message"
+		v-model="textSlots"
+	>
+		<template #title> Warning message </template>
 
 		<alert-message v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}
@@ -29,7 +31,8 @@ const textSlots = ref({
 	},
 	default: {
 		label: "Message",
-		value: "The system will be undergoing essential maintenance on June 16th from 01:00GMT to 03:00GMT. You will not be able to log in or perform any actions during this time.",
+		value:
+			"The system will be undergoing essential maintenance on June 16th from 01:00GMT to 03:00GMT. You will not be able to log in or perform any actions during this time.",
 	},
 });
 
@@ -45,9 +48,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("alert-message", { slots: textSlots, props });

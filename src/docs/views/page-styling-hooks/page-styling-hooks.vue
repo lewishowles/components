@@ -11,8 +11,8 @@
 			Three attributes work together. <code>data-component</code> identifies the component on its
 			root element. <code>data-part</code> identifies named internal elements like a trigger, panel,
 			or track. <code>data-state</code> and boolean presence attributes like
-			<code>data-checked</code> and <code>data-invalid</code> reflect reactive state directly on
-			the element, so your CSS can respond without needing to know the underlying class logic.
+			<code>data-checked</code> and <code>data-invalid</code> reflect reactive state directly on the
+			element, so your CSS can respond without needing to know the underlying class logic.
 		</p>
 
 		<p>
@@ -49,16 +49,16 @@
 		</p>
 
 		<p>
-			<code>data-state</code> is used when both states are valid CSS targets — for example, when
-			a panel transitions differently on close than on open, or when expanded and collapsed
+			<code>data-state</code> is used when both states are valid CSS targets — for example, when a
+			panel transitions differently on close than on open, or when expanded and collapsed
 			appearances both need explicit styling:
 		</p>
 
 		<code-block :code="dataStateExample" />
 
 		<p>
-			Boolean presence attributes are used for unidirectional states, where only the "on" case
-			needs dedicated CSS. The attribute is present when the state is active and absent otherwise:
+			Boolean presence attributes are used for unidirectional states, where only the "on" case needs
+			dedicated CSS. The attribute is present when the state is active and absent otherwise:
 		</p>
 
 		<code-block :code="dataScopedExample" />

@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import FormPrefix from "./form-prefix.vue";
 
 const mount = createMount(FormPrefix);

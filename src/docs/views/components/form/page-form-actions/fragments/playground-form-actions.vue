@@ -1,18 +1,12 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-form-actions">
-		<template #title>
-			Form actions
-		</template>
+		<template #title> Form actions </template>
 
 		<form-actions>
-			<ui-button type="submit" class="button--primary">
-				Create account
-			</ui-button>
+			<ui-button type="submit" class="button--primary"> Create account </ui-button>
 
 			<template #tertiary-actions>
-				<link-tag href="#">
-					Cancel
-				</link-tag>
+				<link-tag href="#"> Cancel </link-tag>
 			</template>
 		</form-actions>
 	</component-playground>
@@ -61,7 +55,7 @@ const linkTemplate = useTemplateGenerator("link-tag", {
 });
 
 const slots = computed(() => ({
-	"default": {
+	default: {
 		value: buttonTemplate.value,
 	},
 	"tertiary-actions": {

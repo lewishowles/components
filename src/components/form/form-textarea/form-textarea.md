@@ -58,9 +58,7 @@ Focus this textarea.
 ### Basic usage
 
 ```html
-<form-textarea v-model="biography">
-	Biography
-</form-textarea>
+<form-textarea v-model="biography"> Biography </form-textarea>
 ```
 
 ### With help
@@ -69,8 +67,6 @@ Focus this textarea.
 <form-textarea v-model="biography">
 	Biography
 
-	<template #help>
-		Your biography will be displayed on your public profile.
-	</template>
+	<template #help> Your biography will be displayed on your public profile. </template>
 </form-textarea>
 ```

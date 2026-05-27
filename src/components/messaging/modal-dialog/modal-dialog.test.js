@@ -1,5 +1,5 @@
 import { createDeepMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import ModalDialog from "./modal-dialog.vue";
 
 const mount = createDeepMount(ModalDialog);

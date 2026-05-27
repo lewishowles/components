@@ -1,12 +1,13 @@
 <template>
 	<component-page>
-		<template #title>
-			Dropdown menu
-		</template>
+		<template #title> Dropdown menu </template>
 
 		<template #introduction>
 			<p>
-				<code>dropdown-menu</code> provides an accessible action menu with a button trigger, <code>role="menu"</code> semantics, and full keyboard navigation. It's well suited to bulk action buttons, row-level controls in data tables, and any situation where a small set of actions needs to be de-cluttered from the interface.
+				<code>dropdown-menu</code> provides an accessible action menu with a button trigger,
+				<code>role="menu"</code> semantics, and full keyboard navigation. It's well suited to bulk
+				action buttons, row-level controls in data tables, and any situation where a small set of
+				actions needs to be de-cluttered from the interface.
 			</p>
 
 			<p>
@@ -70,25 +71,20 @@
 
 		<component-props>
 			<component-prop id="prop-summary-classes">
-				<template #name>
-					summaryClasses
-				</template>
+				<template #name> summaryClasses </template>
 
-				<template #type>
-					string, array, object
-				</template>
+				<template #type> string, array, object </template>
 
-				<p>Additional classes applied to the trigger button. Defaults to the standard muted button styling.</p>
+				<p>
+					Additional classes applied to the trigger button. Defaults to the standard muted button
+					styling.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-details-classes">
-				<template #name>
-					detailsClasses
-				</template>
+				<template #name> detailsClasses </template>
 
-				<template #type>
-					string, array, object
-				</template>
+				<template #type> string, array, object </template>
 
 				<p>Additional classes applied to the menu panel. Defaults to the standard panel styling.</p>
 			</component-prop>
@@ -96,18 +92,14 @@
 
 		<component-slots>
 			<component-slot id="slot-summary">
-				<template #name>
-					summary
-				</template>
+				<template #name> summary </template>
 
 				<p>The trigger button content.</p>
 
 				<table>
 					<thead>
 						<tr>
-							<th class="whitespace-nowrap">
-								Slot prop
-							</th>
+							<th class="whitespace-nowrap">Slot prop</th>
 							<th>Type</th>
 							<th>Description</th>
 						</tr>
@@ -136,25 +128,24 @@
 						<tr>
 							<td><code>triggerProps</code></td>
 							<td><code>object</code></td>
-							<td>ARIA attributes (<code>aria-haspopup</code>, <code>aria-expanded</code>, <code>aria-controls</code>) to spread onto a custom trigger element.</td>
+							<td>
+								ARIA attributes (<code>aria-haspopup</code>, <code>aria-expanded</code>,
+								<code>aria-controls</code>) to spread onto a custom trigger element.
+							</td>
 						</tr>
 					</tbody>
 				</table>
 			</component-slot>
 
 			<component-slot id="slot-default">
-				<template #name>
-					default
-				</template>
+				<template #name> default </template>
 
 				<p>The menu items, shown when the menu is open.</p>
 
 				<table>
 					<thead>
 						<tr>
-							<th class="whitespace-nowrap">
-								Slot prop
-							</th>
+							<th class="whitespace-nowrap">Slot prop</th>
 							<th>Type</th>
 							<th>Description</th>
 						</tr>
@@ -172,17 +163,13 @@
 
 		<component-events>
 			<component-event id="event-open">
-				<template #name>
-					open
-				</template>
+				<template #name> open </template>
 
 				<p>Fired when the menu opens.</p>
 			</component-event>
 
 			<component-event id="event-close">
-				<template #name>
-					close
-				</template>
+				<template #name> close </template>
 
 				<p>Fired when the menu closes.</p>
 			</component-event>

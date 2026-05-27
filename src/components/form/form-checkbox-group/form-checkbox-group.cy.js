@@ -11,9 +11,7 @@ describe("form-checkbox-group", () => {
 
 		cy.getByData("form-checkbox-group").shouldBeVisible();
 
-		cy.getByData("form-checkbox-group")
-			.getByData("form-label")
-			.shouldHaveCount(4);
+		cy.getByData("form-checkbox-group").getByData("form-label").shouldHaveCount(4);
 
 		cy.getByData("form-label").eq(0).shouldHaveText("Best smoothie");
 		cy.getByData("form-label").eq(1).shouldHaveText("Pineapple");
@@ -30,8 +28,7 @@ describe("form-checkbox-group", () => {
 				.shouldHaveText("Help text")
 				.shouldHaveAttribute("id", "id-abc-help");
 
-			cy.getByData("form-checkbox-group")
-				.shouldHaveAttribute("aria-describedby", "id-abc-help");
+			cy.getByData("form-checkbox-group").shouldHaveAttribute("aria-describedby", "id-abc-help");
 		});
 
 		it("An error can be supplied", () => {
@@ -42,8 +39,7 @@ describe("form-checkbox-group", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getByData("form-checkbox-group")
-				.shouldHaveAttribute("aria-describedby", "id-abc-error");
+			cy.getByData("form-checkbox-group").shouldHaveAttribute("aria-describedby", "id-abc-error");
 		});
 
 		it("Both help and an error can be supplied", () => {
@@ -59,8 +55,10 @@ describe("form-checkbox-group", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getByData("form-checkbox-group")
-				.shouldHaveAttribute("aria-describedby", "id-abc-help id-abc-error");
+			cy.getByData("form-checkbox-group").shouldHaveAttribute(
+				"aria-describedby",
+				"id-abc-help id-abc-error",
+			);
 		});
 	});
 });

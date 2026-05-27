@@ -24,7 +24,5 @@ Whether to display a larger, vertical version of the indicator.
 ### Basic indicator
 
 ```html
-<loading-indicator>
-	Loading data…
-</loading-indicator>
+<loading-indicator> Loading data… </loading-indicator>
 ```

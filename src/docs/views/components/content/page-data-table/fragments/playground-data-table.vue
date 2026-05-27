@@ -1,16 +1,22 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-data-table" v-model="textSlots">
-		<template #title>
-			Data table
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-data-table"
+		v-model="textSlots"
+	>
+		<template #title> Data table </template>
 
 		<data-table v-bind="componentProps" v-model="componentModel">
 			<template #box_office="{ cell }">
-				{{ new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(cell) }}
+				{{
+					new Intl.NumberFormat("en-US", {
+						style: "currency",
+						currency: "USD",
+						maximumFractionDigits: 0,
+					}).format(cell)
+				}}
 			</template>
-			<template #runtime="{ cell }">
-				{{ cell }} min
-			</template>
+			<template #runtime="{ cell }"> {{ cell }} min </template>
 		</data-table>
 
 		<template #additional-code>
@@ -193,9 +199,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("data-table", { props });

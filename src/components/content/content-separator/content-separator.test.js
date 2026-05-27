@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import ContentSeparator from "./content-separator.vue";
 
 const mount = createMount(ContentSeparator);

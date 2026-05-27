@@ -2,9 +2,29 @@ import SearchableList from "./searchable-list.vue";
 import { createMount } from "@cypress/support/mount";
 import { h } from "vue";
 
-const data = [{ name: "Dasher" }, { name: "Dancer" }, { name: "Prancer" }, { name: "Vixen" }, { name: "Comet" }, { name: "Cupid" }, { name: "Donner" }, { name: "Blitzen" }, { name: "Rudolph" }];
+const data = [
+	{ name: "Dasher" },
+	{ name: "Dancer" },
+	{ name: "Prancer" },
+	{ name: "Vixen" },
+	{ name: "Comet" },
+	{ name: "Cupid" },
+	{ name: "Donner" },
+	{ name: "Blitzen" },
+	{ name: "Rudolph" },
+];
+
 const defaultProps = { data, placeholder: "e.g. Dasher" };
-const defaultSlots = { label: "Find your favourite reindeer", default: ({ items }) => h("ul", items.map(item => h("li", { "data-test": "searchable-list-demo-item" }, item.name)))  };
+
+const defaultSlots = {
+	label: "Find your favourite reindeer",
+	default: ({ items }) =>
+		h(
+			"ul",
+			items.map((item) => h("li", { "data-test": "searchable-list-demo-item" }, item.name)),
+		),
+};
+
 const mount = createMount(SearchableList, { slots: defaultSlots, props: defaultProps });
 
 describe("searchable-list", () => {
@@ -63,7 +83,7 @@ describe("searchable-list", () => {
 					{ name: "Jean-Luc Picard", searchable: ["captain", "enterprise"] },
 					{ name: "Beverly Crusher", searchable: ["doctor", "medical"] },
 				],
-				search: item => item.searchable,
+				search: (item) => item.searchable,
 			});
 
 			cy.fillFormField("searchable-list-search", "medical");
@@ -89,7 +109,10 @@ describe("searchable-list", () => {
 
 		it("Object properties can be excluded", () => {
 			mount({
-				data: [{ name: "Dasher", role: "Reindeer" }, { name: "Dancer", role: "Reindeer" }],
+				data: [
+					{ name: "Dasher", role: "Reindeer" },
+					{ name: "Dancer", role: "Reindeer" },
+				],
 				exclude: ["role"],
 			});
 
@@ -101,7 +124,10 @@ describe("searchable-list", () => {
 
 		it("Object properties can be searched exclusively", () => {
 			mount({
-				data: [{ name: "Dasher", role: "Reindeer" }, { name: "Dancer", role: "Reindeer" }],
+				data: [
+					{ name: "Dasher", role: "Reindeer" },
+					{ name: "Dancer", role: "Reindeer" },
+				],
 				include: ["name"],
 			});
 

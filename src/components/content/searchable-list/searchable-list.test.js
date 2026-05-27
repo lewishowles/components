@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import SearchableList from "./searchable-list.vue";
 
 const defaultProps = { data: [{ name: "Wall-E" }] };

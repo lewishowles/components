@@ -1,6 +1,6 @@
 <template>
 	<notification-base
-		class="bg-orange-50/50 dark:bg-orange-500/10 rounded-e-lg"
+		class="rounded-e-lg bg-orange-50/50 dark:bg-orange-500/10"
 		v-bind="{
 			notification,
 			locale,
@@ -9,7 +9,7 @@
 			iconBackgroundClasses: 'bg-orange-50 dark:bg-orange-500/50',
 			iconClasses: 'text-orange-600 dark:text-orange-200',
 			badgeClasses: 'text-orange-600 dark:text-orange-500/50',
-			titleClasses: 'text-orange-800 dark:text-orange-400'
+			titleClasses: 'text-orange-800 dark:text-orange-400',
 		}"
 		data-test="notification-warning"
 	>

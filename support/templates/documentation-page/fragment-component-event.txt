@@ -1,7 +1,0 @@
-			<component-event id="event-{{EVENT_NAME}}">
-				<template #name>
-					{{EVENT_NAME}}
-				</template>
-
-				<p></p>
-			</component-event>

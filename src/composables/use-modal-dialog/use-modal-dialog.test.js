@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test } from "vitest";
+import { afterEach, describe, expect, test } from "vite-plus/test";
 import useModalDialog from "./use-modal-dialog.js";
 
 describe("useModalDialog", () => {
@@ -16,7 +16,7 @@ describe("useModalDialog", () => {
 
 	describe("Methods", () => {
 		describe("openModal", () => {
-			test("should allow a modal to be \"opened\"", () => {
+			test('should allow a modal to be "opened"', () => {
 				const { modals, openModal } = useModalDialog();
 
 				expect(modals.value.length).toBe(0);

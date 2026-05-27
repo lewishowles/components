@@ -20,7 +20,10 @@ describe("modal-dialog-title", () => {
 	it("Has a non-empty id attribute", () => {
 		mount();
 
-		cy.getByData("modal-dialog-title").invoke("attr", "id").should("be.a", "string").and("not.be.empty");
+		cy.getByData("modal-dialog-title")
+			.invoke("attr", "id")
+			.should("be.a", "string")
+			.and("not.be.empty");
 	});
 
 	it("Uses the provided titleId as its id", () => {

@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-ui-button-reactive" v-model="textSlots">
-		<template #title>
-			Wide button
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-ui-button-reactive"
+		v-model="textSlots"
+	>
+		<template #title> Wide button </template>
 
 		<template #introduction>
 			<p>A button that is wider than its contents should centre those contents.</p>
@@ -54,9 +56,7 @@ const events = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("ui-button", { slots: textSlots, props, events });

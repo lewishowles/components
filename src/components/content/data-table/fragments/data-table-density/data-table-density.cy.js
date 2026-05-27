@@ -4,7 +4,11 @@ import { ref } from "vue";
 
 const tableName = ref("sample-table");
 const haveTableName = ref(true);
-const global = { provide: { "data-table": { tableName, haveTableName, updateTableDensityOptions: () => {} } } };
+
+const global = {
+	provide: { "data-table": { tableName, haveTableName, updateTableDensityOptions: () => {} } },
+};
+
 const mount = createMount(DataTableDensity, { global });
 
 describe("data-table-density", () => {

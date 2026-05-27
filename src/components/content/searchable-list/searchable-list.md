@@ -16,14 +16,14 @@ The current search query will be available via `v-model`.
 
 The main "results" display.
 
-| Slot prop | Type | Description |
-|-|-|-|
-| `items` | `array` | The list of items matching any current search options, or all items if no search is being performed. |
-| `query` | `string` | The current search query. |
-| `performingSearch` | `boolean` | Whether a search is currently being performed. |
-| `haveResults` | `boolean` | Whether the current query has results. |
-| `resultCount` | `number` | The number of results found. |
-| `itemCount` | `number` | The total number of items provided. |
+| Slot prop          | Type      | Description                                                                                          |
+| ------------------ | --------- | ---------------------------------------------------------------------------------------------------- |
+| `items`            | `array`   | The list of items matching any current search options, or all items if no search is being performed. |
+| `query`            | `string`  | The current search query.                                                                            |
+| `performingSearch` | `boolean` | Whether a search is currently being performed.                                                       |
+| `haveResults`      | `boolean` | Whether the current query has results.                                                               |
+| `resultCount`      | `number`  | The number of results found.                                                                         |
+| `itemCount`        | `number`  | The total number of items provided.                                                                  |
 
 ### `label`
 
@@ -33,20 +33,20 @@ The search input label, giving the user an idea of what they are searching.
 
 A slot to override the default results count display, appearing beneath the search box.
 
-| Slot prop | Type | Description |
-|-|-|-|
+| Slot prop          | Type      | Description                                    |
+| ------------------ | --------- | ---------------------------------------------- |
 | `performingSearch` | `boolean` | Whether a search is currently being performed. |
-| `resultCount` | `number` | The number of results found. |
-| `itemCount` | `number` | The total number of items provided. |
-| `query` | `string` | The current search query. |
+| `resultCount`      | `number`  | The number of results found.                   |
+| `itemCount`        | `number`  | The total number of items provided.            |
+| `query`            | `string`  | The current search query.                      |
 
 ### `no-results`
 
 A slot to override the default no-results display.
 
-| Slot prop | Type | Description |
-|-|-|-|
-| `query` | `string` | The current search query. |
+| Slot prop | Type     | Description               |
+| --------- | -------- | ------------------------- |
+| `query`   | `string` | The current search query. |
 
 ### `reset-search-label`
 
@@ -109,15 +109,11 @@ const data = [{ id: "123", name: "Lewis" }];
 
 ```html
 <searchable-list v-bind="{ data }">
-	<template #label>
-		Search users by name
-	</template>
+	<template #label> Search users by name </template>
 
 	<template #default="{ items }">
 		<ul>
-			<li v-for="item in items" :key="item.id">
-				{{ item.name }}
-			</li>
+			<li v-for="item in items" :key="item.id">{{ item.name }}</li>
 		</ul>
 	</template>
 </searchable-list>

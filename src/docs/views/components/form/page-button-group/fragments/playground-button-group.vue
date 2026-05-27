@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-button-group" v-model="textSlots">
-		<template #title>
-			Button group
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-button-group"
+		v-model="textSlots"
+	>
+		<template #title> Button group </template>
 
 		<button-group v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}
@@ -42,7 +44,7 @@ const textSlots = ref({
 	},
 	help: {
 		label: "Help text",
-		value: "\"System\" will match your operating system or browser settings.",
+		value: '"System" will match your operating system or browser settings.',
 		type: "textarea",
 	},
 	error: {
@@ -63,9 +65,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("button-group", { slots: textSlots, props });

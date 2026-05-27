@@ -1,11 +1,18 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-field-select" v-model="textSlots">
-		<template #title>
-			Select
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-form-field-select"
+		v-model="textSlots"
+	>
+		<template #title> Select </template>
 
 		<template #introduction>
-			<p>Allow a user to select one option from a list of possible options. When wanting to use a select, consider whether it is the most appropriate option. Often, radio buttons or checkboxes are more user-friendly, both because selects can be harder to activate for some, and you cannot add explanations to each option if necessary.</p>
+			<p>
+				Allow a user to select one option from a list of possible options. When wanting to use a
+				select, consider whether it is the most appropriate option. Often, radio buttons or
+				checkboxes are more user-friendly, both because selects can be harder to activate for some,
+				and you cannot add explanations to each option if necessary.
+			</p>
 		</template>
 
 		<form-field v-model="componentModel" v-bind="componentProps">
@@ -46,7 +53,8 @@ const textSlots = ref({
 	},
 	help: {
 		label: "Help text",
-		value: "We're sorry if your favourite isn't listed, but please pick from one of the options provided.",
+		value:
+			"We're sorry if your favourite isn't listed, but please pick from one of the options provided.",
 		type: "textarea",
 	},
 	error: {
@@ -72,9 +80,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("form-field", { slots: textSlots, props });

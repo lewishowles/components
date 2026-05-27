@@ -1,7 +1,9 @@
 import NotificationBase from "./notification-base.vue";
 import { createMount } from "@cypress/support/mount";
 
-const notificationMessage = "Ullamco eu amet labore elit quis eiusmod ea consectetur fugiat do commodo esse dolore consequat ipsum.";
+const notificationMessage =
+	"Ullamco eu amet labore elit quis eiusmod ea consectetur fugiat do commodo esse dolore consequat ipsum.";
+
 const notification = { id: "notification-1", message: notificationMessage };
 const defaultProps = { notification };
 const mount = createMount(NotificationBase, { props: defaultProps });
@@ -107,7 +109,13 @@ describe("notification-base", () => {
 			});
 
 			it("A notification image takes precedence if both an image and an icon are defined", () => {
-				mount({ notification: { ...notification, icon: "icon-user", image_url: "https://placehold.co/100x100" } });
+				mount({
+					notification: {
+						...notification,
+						icon: "icon-user",
+						image_url: "https://placehold.co/100x100",
+					},
+				});
 
 				cy.getByData("notification-base-image").shouldBeVisible();
 				cy.getByData("notification-base-icon").should("not.exist");
@@ -129,7 +137,7 @@ describe("notification-base", () => {
 
 			it("The `view-more-label` slot can be implemented", () => {
 				mount({
-					props: {  notification: { ...notification, url: "https://example.com" } },
+					props: { notification: { ...notification, url: "https://example.com" } },
 					slots: { "view-more-label": "View something" },
 				});
 
@@ -150,14 +158,14 @@ describe("notification-base", () => {
 				cy.getByData("notification-base-mark-read").shouldBeVisible().click();
 
 				cy.get("@vue").should((wrapper) => {
-					expect(wrapper.emitted("notification:read")).to.have.length;
+					expect(wrapper.emitted("notification:read")).to.have.length(1);
 					expect(wrapper.emitted("notification:read")[0][0]).to.equal("notification-1");
 				});
 			});
 
 			it("The `mark-read-label` slot can be implemented", () => {
 				mount({
-					props: {  notification: { ...notification } },
+					props: { notification: { ...notification } },
 					slots: { "mark-read-label": "Read something" },
 				});
 

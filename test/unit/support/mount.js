@@ -41,7 +41,10 @@ export function createMount(component, defaultOptions = {}, mountFunction = shal
 	 *     The options to pass to Vitest for this individual mount.
 	 */
 	return function (options = {}) {
-		const isDirectProps = !Object.hasOwn(options, "props") && !Object.hasOwn(options, "slots") && !Object.hasOwn(options, "global");
+		const isDirectProps =
+			!Object.hasOwn(options, "props") &&
+			!Object.hasOwn(options, "slots") &&
+			!Object.hasOwn(options, "global");
 		const providedOptions = isDirectProps ? { props: options } : options;
 
 		const wrapper = mountFunction(
@@ -53,7 +56,7 @@ export function createMount(component, defaultOptions = {}, mountFunction = shal
 
 		return wrapper;
 	};
-};
+}
 
 /**
  * Use mount instead of shallowMount to create a mount.
@@ -67,7 +70,7 @@ export function createDeepMount(component, defaultOptions = {}) {
  * exported for manual use if needed.
  */
 export function cleanupMountedWrappers() {
-	mountedWrappers.forEach(wrapper => {
+	mountedWrappers.forEach((wrapper) => {
 		try {
 			wrapper.unmount();
 		} catch {

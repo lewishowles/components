@@ -71,7 +71,8 @@ Focus this input.
 	Use advanced setup
 
 	<template #help>
-		Advanced setup lets you customise the behaviour of your store right away. These options are always available later in the Preferences menu.
+		Advanced setup lets you customise the behaviour of your store right away. These options are
+		always available later in the Preferences menu.
 	</template>
 </form-checkbox>
 ```

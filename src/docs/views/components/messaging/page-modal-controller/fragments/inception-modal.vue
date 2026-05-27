@@ -1,10 +1,10 @@
 <template>
 	<div class="flex flex-col gap-4">
-		<p class="text-4xl font-bold">
-			#{{ modalId }}
-		</p>
+		<p class="text-4xl font-bold">#{{ modalId }}</p>
 
-		<p>Multiple copies of this modal dialog can be opened to display the last-in first-out system.</p>
+		<p>
+			Multiple copies of this modal dialog can be opened to display the last-in first-out system.
+		</p>
 
 		<form-field type="text">
 			Text input
@@ -14,9 +14,7 @@
 			</template>
 		</form-field>
 
-		<ui-button class="button--primary self-start" @click="displayModal">
-			Open another
-		</ui-button>
+		<ui-button class="button--primary self-start" @click="displayModal"> Open another </ui-button>
 	</div>
 </template>
 
@@ -44,5 +42,4 @@ function displayModal() {
 
 	openModal(InceptionModal, { modalId: localModalId });
 }
-
 </script>

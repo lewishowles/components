@@ -6,8 +6,12 @@ import { useStorage } from "@vueuse/core";
 export default function useTranslationMode() {
 	// Whether to use translation mode.
 	const useTranslation = useStorage("lh:use-translation-mode", false);
+
 	// Any prefix to add to the translation path prefix when using translation mode.
-	const translationPathPrefix = useStorage("lh:translation-path-prefix", "path.to.your.translation");
+	const translationPathPrefix = useStorage(
+		"lh:translation-path-prefix",
+		"path.to.your.translation",
+	);
 
 	return {
 		useTranslation,

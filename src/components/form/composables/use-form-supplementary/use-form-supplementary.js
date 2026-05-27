@@ -7,7 +7,7 @@ import { computed, ref } from "vue";
  * @param  {string}  baseId
  *     The base ID of the input, from which we generate additional IDs.
  */
-export default function(baseId) {
+export default function (baseId) {
 	// The ID for introduction text.
 	const introductionId = computed(() => `${baseId}-introduction`);
 	// The ID for the error text.

@@ -4,7 +4,7 @@ import { createMount } from "@cypress/support/mount";
 import { h } from "vue";
 
 const defaultSlots = {
-	"default": [createField({ label: "Username", props: { name: "username" } })],
+	default: [createField({ label: "Username", props: { name: "username" } })],
 	"submit-button-label": "Create user",
 };
 
@@ -22,7 +22,7 @@ describe("form-wrapper", () => {
 	it("`formData` is updated correctly", () => {
 		mount();
 
-		cy.get("@vue").then(wrapper => {
+		cy.get("@vue").then((wrapper) => {
 			// Assert initial model value
 			expect(wrapper.vm.formData.username).to.eq(null);
 
@@ -57,19 +57,33 @@ describe("form-wrapper", () => {
 		});
 
 		it("The `pre-form` slot can be utilised", () => {
-			mount({ slots: { "pre-form": h("div", { "data-test": "pre-form-slot-test" }, "Slot test") } });
+			mount({
+				slots: { "pre-form": h("div", { "data-test": "pre-form-slot-test" }, "Slot test") },
+			});
 
 			cy.getByData("pre-form-slot-test").shouldBeVisible();
 		});
 
 		it("The `secondary-actions` slot can be utilised", () => {
-			mount({ slots: { "secondary-actions": h("div", { "data-test": "secondary-actions-slot-test" }, "Slot test") } });
+			mount({
+				slots: {
+					"secondary-actions": h(
+						"div",
+						{ "data-test": "secondary-actions-slot-test" },
+						"Slot test",
+					),
+				},
+			});
 
 			cy.getByData("secondary-actions-slot-test").shouldBeVisible();
 		});
 
 		it("The `tertiary-actions` slot can be utilised", () => {
-			mount({ slots: { "tertiary-actions": h("div", { "data-test": "tertiary-actions-slot-test" }, "Slot test") } });
+			mount({
+				slots: {
+					"tertiary-actions": h("div", { "data-test": "tertiary-actions-slot-test" }, "Slot test"),
+				},
+			});
 
 			cy.getByData("tertiary-actions-slot-test").shouldBeVisible();
 		});
@@ -85,7 +99,11 @@ describe("form-wrapper", () => {
 		it("Resets when validation fails", () => {
 			const validation = [{ rule: "required", message: "Enter your username" }];
 
-			mount({ slots: { default: createField({ label: "Username", props: { name: "username", validation } }) } });
+			mount({
+				slots: {
+					default: createField({ label: "Username", props: { name: "username", validation } }),
+				},
+			});
 
 			cy.getByData("form-wrapper-submit-button").click();
 
@@ -120,7 +138,11 @@ describe("form-wrapper", () => {
 	it("An error summary is shown on submit when a field is invalid", () => {
 		const validation = [{ rule: "required", message: "Enter your username" }];
 
-		mount({ slots: { default: createField({ label: "Username", props: { name: "username", validation } }) } });
+		mount({
+			slots: {
+				default: createField({ label: "Username", props: { name: "username", validation } }),
+			},
+		});
 
 		cy.getByData("form-wrapper-submit-button").click();
 

@@ -2,7 +2,10 @@ import ConditionalWrapper from "./conditional-wrapper.vue";
 import { createMount } from "@cypress/support/mount";
 import { h } from "vue";
 
-const defaultSlots = { default: () => h("div", { "data-test": "wrapped-content" }, "Wrapped content") };
+const defaultSlots = {
+	default: () => h("div", { "data-test": "wrapped-content" }, "Wrapped content"),
+};
+
 const mount = createMount(ConditionalWrapper, { slots: defaultSlots });
 
 describe("conditional-wrapper", () => {

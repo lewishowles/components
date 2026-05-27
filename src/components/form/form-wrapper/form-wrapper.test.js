@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test, vi } from "vitest";
+import { describe, expect, test, vi } from "vite-plus/test";
 import FormWrapper from "./form-wrapper.vue";
 
 const mount = createMount(FormWrapper);
@@ -96,7 +96,9 @@ describe("form-wrapper", () => {
 
 				vm.validateFields();
 
-				expect(vm.errorSummary).toEqual([{ fieldName: "email", id: "email-id", message: "Error message" }]);
+				expect(vm.errorSummary).toEqual([
+					{ fieldName: "email", id: "email-id", message: "Error message" },
+				]);
 			});
 		});
 

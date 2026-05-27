@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import NotificationDanger from "./notification-danger.vue";
 
 const mount = createMount(NotificationDanger);

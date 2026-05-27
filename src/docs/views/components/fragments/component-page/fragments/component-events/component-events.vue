@@ -1,8 +1,6 @@
 <template>
 	<component-tab v-bind="{ id: 'tab-events', icon: 'icon-megaphone' }">
-		<template #title>
-			Events
-		</template>
+		<template #title> Events </template>
 
 		<slot />
 	</component-tab>

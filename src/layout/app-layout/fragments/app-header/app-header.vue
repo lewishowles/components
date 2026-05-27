@@ -1,26 +1,31 @@
 <template>
-	<div class="pt-[2px] px-[2px] -mt-16 -mx-16 mb-16 text-sm">
-		<div class="p-2 bg-grey-50 dark:bg-grey-950/20 rounded-sm flex gap-2 justify-end">
-			<link-tag href="https://github.com/lewishowles/components" v-bind="{ external: true, showExternalIcon: false }" class="button text-current border border-transparent hocus:bg-grey-50z hocus:border-grey-400 hocus:text-grey-700 dark:hocus:bg-white/30 dark:hocus:border-white/20 dark:hocus:text-grey-100">
+	<div class="-mx-16 -mt-16 mb-16 px-[2px] pt-[2px] text-sm">
+		<div class="bg-grey-50 dark:bg-grey-950/20 flex justify-end gap-2 rounded-sm p-2">
+			<link-tag
+				href="https://github.com/lewishowles/components"
+				v-bind="{ external: true, showExternalIcon: false }"
+				class="button hocus:bg-grey-50z hocus:border-grey-400 hocus:text-grey-700 dark:hocus:bg-white/30 dark:hocus:border-white/20 dark:hocus:text-grey-100 border border-transparent text-current"
+			>
 				<icon-github class="size-5" />
 
 				<span class="sr-only">View project in GitHub</span>
 			</link-tag>
 
 			<floating-details>
-				<template #summary>
-					Language mode
-				</template>
+				<template #summary> Language mode </template>
 
 				<div class="prose prose-sm dark:prose-invert">
 					<h3>Language mode</h3>
 
 					<p>
-						There are two language modes available to use in the playground. The default is "direct", which means text is added as-is, and the second is "translation", where translation strings are used. When using translation, add the prefix to add to any examples below, and each will come with a sensible key baked in.
+						There are two language modes available to use in the playground. The default is
+						"direct", which means text is added as-is, and the second is "translation", where
+						translation strings are used. When using translation, add the prefix to add to any
+						examples below, and each will come with a sensible key baked in.
 					</p>
 				</div>
 
-				<div class="flex flex-col gap-4 mt-4">
+				<div class="mt-4 flex flex-col gap-4">
 					<form-field v-model="useTranslation" type="checkbox" name="language_mode">
 						Use "translation" mode.
 					</form-field>

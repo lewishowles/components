@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import { nextTick } from "vue";
 
 import FormCheckbox from "./form-checkbox.vue";
@@ -21,7 +21,7 @@ describe("form-checkbox", () => {
 
 			await nextTick();
 
-			const input = wrapper.find("input[type=\"checkbox\"]").element;
+			const input = wrapper.find('input[type="checkbox"]').element;
 
 			expect(input.indeterminate).toBe(true);
 		});
@@ -31,7 +31,7 @@ describe("form-checkbox", () => {
 
 			await nextTick();
 
-			const input = wrapper.find("input[type=\"checkbox\"]").element;
+			const input = wrapper.find('input[type="checkbox"]').element;
 
 			expect(input.indeterminate).toBe(false);
 		});

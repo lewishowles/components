@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { afterEach, describe, expect, test } from "vitest";
+import { afterEach, describe, expect, test } from "vite-plus/test";
 import { ref } from "vue";
 import DataTableColumns from "./data-table-columns.vue";
 

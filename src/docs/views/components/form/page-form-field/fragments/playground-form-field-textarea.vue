@@ -1,11 +1,19 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-field-textarea" v-model="textSlots">
-		<template #title>
-			Textarea
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-form-field-textarea"
+		v-model="textSlots"
+	>
+		<template #title> Textarea </template>
 
 		<template #introduction>
-			<p>A larger input that invites the user to enter longer strings of text. As with a text input, when using a textarea, it is strongly recommended that a visible label is used, and that the placeholder is not used for meaningful information, as this can cause some users to lose context. Use the label to describe the information required of the user, and help text for any additional explanation that would be useful.</p>
+			<p>
+				A larger input that invites the user to enter longer strings of text. As with a text input,
+				when using a textarea, it is strongly recommended that a visible label is used, and that the
+				placeholder is not used for meaningful information, as this can cause some users to lose
+				context. Use the label to describe the information required of the user, and help text for
+				any additional explanation that would be useful.
+			</p>
 		</template>
 
 		<form-field v-model="componentModel" v-bind="componentProps">
@@ -41,7 +49,8 @@ const textSlots = ref({
 	},
 	introduction: {
 		label: "Introduction",
-		value: "This will be displayed on your profile and will be visible to other users of the website.",
+		value:
+			"This will be displayed on your profile and will be visible to other users of the website.",
 		type: "textarea",
 	},
 	help: {
@@ -67,9 +76,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("form-field", { slots: textSlots, props });

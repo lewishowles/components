@@ -1,27 +1,23 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-dropdown-menu" v-model="textSlots">
-		<template #title>
-			Dropdown menu
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-dropdown-menu"
+		v-model="textSlots"
+	>
+		<template #title> Dropdown menu </template>
 
 		<dropdown-menu v-bind="componentProps" v-model="componentModel">
 			<template #summary>
 				{{ textSlots.summary?.value }}
 			</template>
 
-			<dropdown-menu-button icon="icon-pencil">
-				Edit
-			</dropdown-menu-button>
+			<dropdown-menu-button icon="icon-pencil"> Edit </dropdown-menu-button>
 
-			<dropdown-menu-button icon="icon-reload">
-				Refresh
-			</dropdown-menu-button>
+			<dropdown-menu-button icon="icon-reload"> Refresh </dropdown-menu-button>
 
 			<dropdown-menu-divider />
 
-			<dropdown-menu-button icon="icon-bin">
-				Delete
-			</dropdown-menu-button>
+			<dropdown-menu-button icon="icon-bin"> Delete </dropdown-menu-button>
 		</dropdown-menu>
 	</component-playground>
 </template>
@@ -65,10 +61,12 @@ const props = ref({});
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
-const template = useTemplateGenerator("dropdown-menu", { slots: textSlots, props, additionalContent });
+const template = useTemplateGenerator("dropdown-menu", {
+	slots: textSlots,
+	props,
+	additionalContent,
+});
 </script>

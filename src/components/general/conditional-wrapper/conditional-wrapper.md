@@ -15,7 +15,7 @@ The default slot contains the content to be wrapped.
 - type: `boolean`
 - default: `true`
 
-Whether to apply the wrapper. If  `false`, the contents are unwrapped and display as if `conditional-wrapper` was not used.
+Whether to apply the wrapper. If `false`, the contents are unwrapped and display as if `conditional-wrapper` was not used.
 
 _Note that this component does not inherit attributes when `wrap` is set to false, as there may be multiple root nodes._
 

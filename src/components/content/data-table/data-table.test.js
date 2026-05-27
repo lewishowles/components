@@ -1,6 +1,6 @@
 import DataTable from "./data-table.vue";
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import { get } from "@lewishowles/helpers/object";
 import { nextTick } from "vue";
 
@@ -62,7 +62,12 @@ describe("data-table", () => {
 			});
 
 			test("should determine which column is first, and which is last", () => {
-				const columns = { id: { label: "ID" }, title: { label: "Title" }, release_year: { label: "Release year" } };
+				const columns = {
+					id: { label: "ID" },
+					title: { label: "Title" },
+					release_year: { label: "Release year" },
+				};
+
 				const wrapper = mount({ columns });
 				const vm = wrapper.vm;
 
@@ -85,7 +90,11 @@ describe("data-table", () => {
 			});
 
 			test("should retrieve column configuration where found", () => {
-				const columns = { title: { label: "Title" }, release_year: { label: "Release year", columnClasses: "text-right" } };
+				const columns = {
+					title: { label: "Title" },
+					release_year: { label: "Release year", columnClasses: "text-right" },
+				};
+
 				const wrapper = mount({ columns });
 				const vm = wrapper.vm;
 
@@ -163,7 +172,12 @@ describe("data-table", () => {
 
 		describe("visibleColumnDefinitions", () => {
 			test("should only include visible columns", () => {
-				const columns = { id: { title: "ID" }, title: { label: "Title" }, release_year: { label: "Release year" } };
+				const columns = {
+					id: { title: "ID" },
+					title: { label: "Title" },
+					release_year: { label: "Release year" },
+				};
+
 				const wrapper = mount({ columns });
 				const vm = wrapper.vm;
 
@@ -290,7 +304,7 @@ describe("data-table", () => {
 			});
 
 			test("should defer to searchableContentCallback if defined", () => {
-				const searchableContentCallback = columnKey => {
+				const searchableContentCallback = (columnKey) => {
 					if (columnKey === "title") {
 						return "abcdef";
 					}
@@ -316,10 +330,7 @@ describe("data-table", () => {
 		describe("sortedRows", () => {
 			test("should sort rows by their content", () => {
 				const wrapper = mount({
-					data: [
-						sampleRow,
-						{ id: "234", title: "Big Hero 6", release_year: "2014" },
-					],
+					data: [sampleRow, { id: "234", title: "Big Hero 6", release_year: "2014" }],
 					columns: {
 						title: { label: "Title" },
 					},
@@ -340,7 +351,7 @@ describe("data-table", () => {
 		});
 
 		describe("paginatedRows", () => {
-			test("should display a single page of items when more than a single page are available", async() => {
+			test("should display a single page of items when more than a single page are available", async () => {
 				const data = Array.from({ length: 15 }, (_, i) => ({
 					id: i + 1,
 					title: `Title ${i + 1}`,
@@ -374,7 +385,7 @@ describe("data-table", () => {
 				expect(vm.paginatedRows.length).toBe(15);
 			});
 
-			test("should re-calculate if sortedColumn is changed", async() => {
+			test("should re-calculate if sortedColumn is changed", async () => {
 				const data = Array.from({ length: 15 }, (_, i) => ({
 					id: i + 1,
 					title: `Title ${i + 1}`,
@@ -397,7 +408,7 @@ describe("data-table", () => {
 				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 15 }));
 			});
 
-			test("should re-calculate if sortDirection is changed", async() => {
+			test("should re-calculate if sortDirection is changed", async () => {
 				const data = Array.from({ length: 15 }, (_, i) => ({
 					id: i + 1,
 					title: `Title ${i + 1}`,
@@ -420,7 +431,7 @@ describe("data-table", () => {
 				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 15 }));
 			});
 
-			test("should re-calculate if currentPage is changed", async() => {
+			test("should re-calculate if currentPage is changed", async () => {
 				const data = Array.from({ length: 15 }, (_, i) => ({
 					id: i + 1,
 					title: `Title ${i + 1}`,
@@ -492,22 +503,22 @@ describe("data-table", () => {
 				expect(vm.selectedRows).toEqual([]);
 			});
 
-			test("should update `selectAllRows` if all rows are selected", async() => {
+			test("should update `selectAllRows` if all rows are selected", async () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.selectedRowIds = vm.internalData.map(row => row.configuration.id);
+				vm.selectedRowIds = vm.internalData.map((row) => row.configuration.id);
 
 				await nextTick();
 
 				expect(vm.selectAllRows).toBe(true);
 			});
 
-			test("should update `selectAllRows` if a single row is deselected", async() => {
+			test("should update `selectAllRows` if a single row is deselected", async () => {
 				const wrapper = mount({ data: [sampleRow, sampleRow] });
 				const vm = wrapper.vm;
 
-				vm.selectedRowIds = vm.internalData.map(row => row.configuration.id);
+				vm.selectedRowIds = vm.internalData.map((row) => row.configuration.id);
 
 				await nextTick();
 
@@ -616,7 +627,7 @@ describe("data-table", () => {
 			});
 
 			test("should defer to searchableContentCallback if defined", () => {
-				const searchableContentCallback = columnKey => {
+				const searchableContentCallback = (columnKey) => {
 					if (columnKey === "title") {
 						return "abcdef";
 					}
@@ -644,7 +655,7 @@ describe("data-table", () => {
 			});
 
 			test("should defer to sortableContentCallback if defined", () => {
-				const sortableContentCallback = columnKey => {
+				const sortableContentCallback = (columnKey) => {
 					if (columnKey === "title") {
 						return "abcdef";
 					}
@@ -823,7 +834,9 @@ describe("data-table", () => {
 				vm.sortedColumn = "title";
 				vm.sortDirection = 1;
 
-				expect(vm.getSortAriaLabel("title")).toBe("Sort by Title — currently ascending, click to sort descending");
+				expect(vm.getSortAriaLabel("title")).toBe(
+					"Sort by Title — currently ascending, click to sort descending",
+				);
 			});
 
 			test("should describe the current descending state and offer ascending", () => {
@@ -833,7 +846,9 @@ describe("data-table", () => {
 				vm.sortedColumn = "title";
 				vm.sortDirection = -1;
 
-				expect(vm.getSortAriaLabel("title")).toBe("Sort by Title — currently descending, click to sort ascending");
+				expect(vm.getSortAriaLabel("title")).toBe(
+					"Sort by Title — currently descending, click to sort ascending",
+				);
 			});
 		});
 	});
@@ -844,7 +859,7 @@ describe("data-table", () => {
  * value.
  */
 function expectToHaveRowWith(vm, key, value) {
-	const row = vm.internalData.find(row => get(row, `content.${key}.content`) === value);
+	const row = vm.internalData.find((row) => get(row, `content.${key}.content`) === value);
 
 	return expect(row).toBeDefined();
 }

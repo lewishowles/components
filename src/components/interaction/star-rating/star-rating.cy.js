@@ -11,9 +11,7 @@ describe("star-rating", () => {
 
 		cy.getByData("star-rating").shouldBeVisible();
 
-		cy.getByData("star-rating")
-			.getByData("form-label")
-			.shouldHaveCount(6);
+		cy.getByData("star-rating").getByData("form-label").shouldHaveCount(6);
 
 		cy.getByData("form-label").eq(0).shouldHaveText("Rate your experience");
 		cy.getByData("form-label").eq(1).shouldHaveText("1");
@@ -32,9 +30,7 @@ describe("star-rating", () => {
 		it("Read-only mode can be activated", () => {
 			mount({ readOnly: true });
 
-			cy.getByData("star-rating")
-				.getByData("form-label")
-				.shouldHaveCount(1);
+			cy.getByData("star-rating").getByData("form-label").shouldHaveCount(1);
 		});
 	});
 
@@ -63,8 +59,7 @@ describe("star-rating", () => {
 				.shouldHaveText("Help text")
 				.shouldHaveAttribute("id", "id-abc-help");
 
-			cy.getByData("star-rating")
-				.shouldHaveAttribute("aria-describedby", "id-abc-help");
+			cy.getByData("star-rating").shouldHaveAttribute("aria-describedby", "id-abc-help");
 		});
 
 		it("An error can be supplied", () => {
@@ -75,8 +70,7 @@ describe("star-rating", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getByData("star-rating")
-				.shouldHaveAttribute("aria-describedby", "id-abc-error");
+			cy.getByData("star-rating").shouldHaveAttribute("aria-describedby", "id-abc-error");
 		});
 
 		it("Both help and an error can be supplied", () => {
@@ -92,8 +86,10 @@ describe("star-rating", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getByData("star-rating")
-				.shouldHaveAttribute("aria-describedby", "id-abc-help id-abc-error");
+			cy.getByData("star-rating").shouldHaveAttribute(
+				"aria-describedby",
+				"id-abc-help id-abc-error",
+			);
 		});
 	});
 });

@@ -1,21 +1,32 @@
 <template>
-	<alert-message v-if="!haveLabel" type="error" v-bind="{ live: false }" data-test="form-label-no-label">
-		<template #title>
-			&lt;form-label&gt;
-		</template>
+	<alert-message
+		v-if="!haveLabel"
+		type="error"
+		v-bind="{ live: false }"
+		data-test="form-label-no-label"
+	>
+		<template #title> &lt;form-label&gt; </template>
 
 		A label is required for accessibility purposes.
 	</alert-message>
 
-	<alert-message v-if="missingId" type="error" v-bind="{ live: false }" data-test="form-label-no-id">
-		<template #title>
-			&lt;form-label&gt;
-		</template>
+	<alert-message
+		v-if="missingId"
+		type="error"
+		v-bind="{ live: false }"
+		data-test="form-label-no-id"
+	>
+		<template #title> &lt;form-label&gt; </template>
 
 		An ID for the corresponding input is required when using the tag `label`.
 	</alert-message>
 
-	<component :is="tag" v-bind="{ for: id, ...$attrs }" :class="{ 'sr-only': hidden, 'font-semibold text-grey-950 dark:text-grey-50': styled }" data-test="form-label">
+	<component
+		:is="tag"
+		v-bind="{ for: id, ...$attrs }"
+		:class="{ 'sr-only': hidden, 'text-grey-950 dark:text-grey-50 font-semibold': styled }"
+		data-test="form-label"
+	>
 		<slot />
 	</component>
 </template>

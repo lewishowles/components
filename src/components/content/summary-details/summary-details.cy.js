@@ -67,7 +67,10 @@ describe("summary-details", () => {
 
 	describe("Autofocus", () => {
 		it("Focuses the first focusable element when opened with autofocus enabled", () => {
-			mount({ props: { autofocus: true }, slots: { default: h("button", { "data-test": "first-focusable" }, "Action") } });
+			mount({
+				props: { autofocus: true },
+				slots: { default: h("button", { "data-test": "first-focusable" }, "Action") },
+			});
 
 			cy.getByData("summary-details-summary").click();
 
@@ -75,7 +78,10 @@ describe("summary-details", () => {
 		});
 
 		it("Does not move focus when opened without autofocus", () => {
-			mount({ props: { autofocus: false }, slots: { default: h("button", { "data-test": "first-focusable" }, "Action") } });
+			mount({
+				props: { autofocus: false },
+				slots: { default: h("button", { "data-test": "first-focusable" }, "Action") },
+			});
 
 			cy.getByData("summary-details-summary").click();
 
@@ -86,7 +92,11 @@ describe("summary-details", () => {
 	describe("Interaction", () => {
 		describe("closeWithEscape", () => {
 			it("true", () => {
-				mount({ slots: { default: h("a", { "href": "#", "data-test": "focusable-content" }, "Focusable content") } });
+				mount({
+					slots: {
+						default: h("a", { href: "#", "data-test": "focusable-content" }, "Focusable content"),
+					},
+				});
 
 				cy.getByData("summary-details-summary").click();
 
@@ -101,7 +111,12 @@ describe("summary-details", () => {
 			});
 
 			it("false", () => {
-				mount({ props: { closeWithEscape: false }, slots: { default: h("a", { "href": "#", "data-test": "focusable-content" }, "Focusable content") } });
+				mount({
+					props: { closeWithEscape: false },
+					slots: {
+						default: h("a", { href: "#", "data-test": "focusable-content" }, "Focusable content"),
+					},
+				});
 
 				cy.getByData("summary-details-summary").click();
 
@@ -130,7 +145,7 @@ describe("summary-details", () => {
 
 				cy.getByData("summary-details").shouldNotHaveAttribute("open");
 
-				cy.getByData("click-target").then(element => {
+				cy.getByData("click-target").then((element) => {
 					element.remove();
 				});
 			});
@@ -148,7 +163,7 @@ describe("summary-details", () => {
 
 				cy.getByData("summary-details").shouldHaveAttribute("open");
 
-				cy.getByData("click-target").then(element => {
+				cy.getByData("click-target").then((element) => {
 					element.remove();
 				});
 			});
@@ -159,7 +174,7 @@ describe("summary-details", () => {
 		it("Content has hidden=until-found when closed", () => {
 			mount();
 
-			cy.getByData("summary-details-content").then(element => {
+			cy.getByData("summary-details-content").then((element) => {
 				expect(element[0].getAttribute("hidden")).to.equal("until-found");
 			});
 		});
@@ -167,8 +182,8 @@ describe("summary-details", () => {
 		it("Content does not have hidden attribute when open", () => {
 			mount({ open: true });
 
-			cy.getByData("summary-details-content").then(element => {
-				expect(element[0].getAttribute("hidden")).to.be.null;
+			cy.getByData("summary-details-content").then((element) => {
+				expect(element[0].getAttribute("hidden")).to.equal(null);
 			});
 		});
 
@@ -177,15 +192,15 @@ describe("summary-details", () => {
 
 			cy.getByData("summary-details-summary").click();
 
-			cy.getByData("summary-details-content").then(element => {
-				expect(element[0].getAttribute("hidden")).to.be.null;
+			cy.getByData("summary-details-content").then((element) => {
+				expect(element[0].getAttribute("hidden")).to.equal(null);
 			});
 		});
 
 		it("beforematch event opens the details", () => {
 			mount();
 
-			cy.getByData("summary-details-content").then(element => {
+			cy.getByData("summary-details-content").then((element) => {
 				element[0].dispatchEvent(new Event("beforematch", { bubbles: true }));
 
 				cy.getByData("summary-details").shouldHaveAttribute("open");
@@ -204,7 +219,7 @@ describe("summary-details", () => {
  *     The `data-test` selector for the element
  */
 function createSiblingElement(content, selector) {
-	cy.get("body").then(body => {
+	cy.get("body").then((body) => {
 		const siblingElement = document.createElement("div");
 
 		siblingElement.setAttribute("data-test", selector);

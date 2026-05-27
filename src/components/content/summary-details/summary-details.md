@@ -10,25 +10,25 @@ When closed, the content is hidden using `hidden="until-found"`, making it disco
 
 The content to be displayed in the summary.
 
-| Slot prop | Type | Description |
-| --- | --- | --- |
-| `isOpen` | `boolean` | Whether the details are currently visible. |
-| `icon` | `string` | The computed icon to display for the current state. |
-| `open` | `function` | Opens the details. |
-| `close` | `function` | Closes the details. |
-| `toggle` | `function` | Toggles the details between open and closed. |
+| Slot prop | Type       | Description                                         |
+| --------- | ---------- | --------------------------------------------------- |
+| `isOpen`  | `boolean`  | Whether the details are currently visible.          |
+| `icon`    | `string`   | The computed icon to display for the current state. |
+| `open`    | `function` | Opens the details.                                  |
+| `close`   | `function` | Closes the details.                                 |
+| `toggle`  | `function` | Toggles the details between open and closed.        |
 
 ### `default`
 
 The content to be displayed in the details element when open.
 
-| Slot prop | Type | Description |
-| --- | --- | --- |
-| `isOpen` | `boolean` | Whether the details are currently visible. |
-| `icon` | `string` | The computed icon to display for the current state. |
-| `open` | `function` | Opens the details. |
-| `close` | `function` | Closes the details. |
-| `toggle` | `function` | Toggles the details between open and closed. |
+| Slot prop | Type       | Description                                         |
+| --------- | ---------- | --------------------------------------------------- |
+| `isOpen`  | `boolean`  | Whether the details are currently visible.          |
+| `icon`    | `string`   | The computed icon to display for the current state. |
+| `open`    | `function` | Opens the details.                                  |
+| `close`   | `function` | Closes the details.                                 |
+| `toggle`  | `function` | Toggles the details between open and closed.        |
 
 ## Props
 
@@ -174,9 +174,7 @@ Toggle the details between open and closed.
 
 ```html
 <summary-details>
-	<template #summary>
-		Summary content
-	</template>
+	<template #summary> Summary content </template>
 
 	Details content
 </summary-details>
@@ -186,9 +184,7 @@ Toggle the details between open and closed.
 
 ```html
 <summary-details v-bind="{ icon: 'icon-user' }">
-	<template #summary>
-		Summary content
-	</template>
+	<template #summary> Summary content </template>
 
 	Details content
 </summary-details>

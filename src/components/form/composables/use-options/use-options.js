@@ -16,7 +16,10 @@ import { nanoid } from "nanoid";
  * - An array containing any combination of the above, or
  * - An object where each key-value pair will be turned into a single option.
  */
-export default function useOptions(providedOptions, { labelKey = "label", valueKey = "value" } = {}) {
+export default function useOptions(
+	providedOptions,
+	{ labelKey = "label", valueKey = "value" } = {},
+) {
 	// Our standardised options, converting the range of allowed options formats
 	// into an array of objects containing a label and a value.
 	const options = computed(() => {
@@ -43,7 +46,7 @@ export default function useOptions(providedOptions, { labelKey = "label", valueK
 
 		// An array of options
 		if (isNonEmptyArray(originalOptions)) {
-			originalOptions.forEach(option => {
+			originalOptions.forEach((option) => {
 				const isSimpleOption = isNumber(option) || isNonEmptyString(option);
 
 				if (!isSimpleOption && !isNonEmptyObject(option)) {

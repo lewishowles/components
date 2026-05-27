@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import DropdownMenuTitle from "./dropdown-menu-title.vue";
 
 const mount = createMount(DropdownMenuTitle);

@@ -47,7 +47,7 @@ describe("link-tag", () => {
 			mount({ iconEnd: "icon-chevron-right", external: true, showExternalIcon: false });
 
 			cy.getByData("link-tag-icon-start").should("not.exist");
-			cy.getByData("link-tag-icon-end").shouldBeVisible;
+			cy.getByData("link-tag-icon-end").shouldBeVisible();
 			cy.getByData("link-tag-icon-external").should("not.exist");
 		});
 	});

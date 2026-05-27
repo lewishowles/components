@@ -1,11 +1,18 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-field-radio-group" v-model="textSlots">
-		<template #title>
-			Radio group
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-form-field-radio-group"
+		v-model="textSlots"
+	>
+		<template #title> Radio group </template>
 
 		<template #introduction>
-			<p>Much like a select, a radio group allows a user to select one option from a list of those available. The main difference, however, is that it is (generally) possible to see all of the options of a radio group without interacting with it, and additional help text can be added to each option.</p>
+			<p>
+				Much like a select, a radio group allows a user to select one option from a list of those
+				available. The main difference, however, is that it is (generally) possible to see all of
+				the options of a radio group without interacting with it, and additional help text can be
+				added to each option.
+			</p>
 		</template>
 
 		<form-field v-model="componentModel" v-bind="componentProps">
@@ -72,9 +79,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("form-field", { slots: textSlots, props });

@@ -30,16 +30,16 @@ An optional, strongly recommended, accessible label for the tab list.
 
 The `default` slot for `tab-item` contains the content of the tab.
 
-| Prop | Type | Description |
-| --- | --- | --- |
+| Prop       | Type      | Description                           |
+| ---------- | --------- | ------------------------------------- |
 | `isActive` | `boolean` | Whether this tab is currently active. |
 
 ### `label`
 
 The label for this tab, to be displayed in the tab bar.
 
-| Prop | Type | Description |
-| --- | --- | --- |
+| Prop       | Type      | Description                           |
+| ---------- | --------- | ------------------------------------- |
 | `isActive` | `boolean` | Whether this tab is currently active. |
 
 ## Props
@@ -102,16 +102,12 @@ Activate this tab programmatically. Useful when external code needs to change wh
 ```html
 <tab-group>
 	<tab-item>
-		<template #label>
-			Log in
-		</template>
+		<template #label> Log in </template>
 
 		<user-log-in />
 	</tab-item>
 	<tab-item>
-		<template #label>
-			Register
-		</template>
+		<template #label> Register </template>
 
 		<user-register />
 	</tab-item>

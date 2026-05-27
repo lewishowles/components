@@ -1,8 +1,6 @@
 <template>
 	<alert-message v-if="!haveNameIfRequired" type="error">
-		<template #title>
-			&lt;form-field&gt; &mdash; <slot />
-		</template>
+		<template #title> &lt;form-field&gt; &mdash; <slot /> </template>
 
 		A parent `form-wrapper` was detected, but no `name` was provided for this field.
 	</alert-message>
@@ -118,16 +116,16 @@ const defaultComponent = "form-input";
 
 // The available field types, including any additional props to pass by default.
 const fieldTypes = {
-	"text": {},
-	"email": { inputAttributes: { type: "email" } },
-	"password": { inputAttributes: { type: "password" } },
-	"date": {},
-	"textarea": {},
-	"checkbox": {},
+	text: {},
+	email: { inputAttributes: { type: "email" } },
+	password: { inputAttributes: { type: "password" } },
+	date: {},
+	textarea: {},
+	checkbox: {},
 	"checkbox-group": {},
 	"radio-group": {},
 	"button-group": {},
-	"select": {},
+	select: {},
 };
 
 // The field type to use, falling back to the default if an unknown type is
@@ -142,7 +140,7 @@ const fieldType = computed(() => {
 
 // The appropriate component to use, based on the determined field type.
 const fieldComponent = computed(() => {
-	switch(fieldType.value) {
+	switch (fieldType.value) {
 		case "textarea":
 		case "checkbox":
 		case "date":
@@ -178,7 +176,7 @@ const propsForValidation = computed(() => {
 
 	const additionalProps = {};
 
-	props.validation.forEach(rule => {
+	props.validation.forEach((rule) => {
 		switch (rule.rule) {
 			case "required":
 				additionalProps.required = true;

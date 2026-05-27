@@ -1,19 +1,23 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-wrapper" v-model="textSlots">
-		<template #title>
-			Form wrapper
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-form-wrapper"
+		v-model="textSlots"
+	>
+		<template #title> Form wrapper </template>
 
 		<form-wrapper v-model="componentModel" v-bind="componentProps">
 			<form-field name="name" v-bind="{ validation: validation.name }">
 				Your name
 
 				<template #introduction>
-					We will only use your name to address you in your account and communications, and will not pass it on to third parties.
+					We will only use your name to address you in your account and communications, and will not
+					pass it on to third parties.
 				</template>
 
 				<template #help>
-					Please use the name you wish to be addressed by, even if this is different to your legal name.
+					Please use the name you wish to be addressed by, even if this is different to your legal
+					name.
 				</template>
 			</form-field>
 
@@ -61,7 +65,7 @@ const textSlots = ref({
 		label: "Submit button label",
 		value: "Create account",
 	},
-	"error": {
+	error: {
 		label: "Error message",
 		value: "General error message, explaining what the user can do next.",
 	},
@@ -87,9 +91,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const validation = {
@@ -115,11 +117,13 @@ const nameFieldTemplate = useTemplateGenerator("form-field", {
 		},
 
 		introduction: {
-			value: "We will only use your name to address you in your account and communications, and will not pass it on to third parties.",
+			value:
+				"We will only use your name to address you in your account and communications, and will not pass it on to third parties.",
 		},
 
 		help: {
-			value: "Please use the name you wish to be addressed by, even if this is different to your legal name.",
+			value:
+				"Please use the name you wish to be addressed by, even if this is different to your legal name.",
 		},
 	},
 	indent: 1,
@@ -153,10 +157,11 @@ const emailFieldTemplate = useTemplateGenerator("form-field", {
 	indent: 1,
 });
 
-const additionalContent = [
-	nameFieldTemplate,
-	emailFieldTemplate,
-];
+const additionalContent = [nameFieldTemplate, emailFieldTemplate];
 
-const template = useTemplateGenerator("form-wrapper", { slots: textSlots, props, additionalContent });
+const template = useTemplateGenerator("form-wrapper", {
+	slots: textSlots,
+	props,
+	additionalContent,
+});
 </script>

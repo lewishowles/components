@@ -1,8 +1,6 @@
 <template>
 	<component-tab v-bind="{ id: 'tab-provides', icon: 'icon-arrow-down' }">
-		<template #title>
-			Provides
-		</template>
+		<template #title> Provides </template>
 
 		<template #post-title>
 			<slot name="introduction" />

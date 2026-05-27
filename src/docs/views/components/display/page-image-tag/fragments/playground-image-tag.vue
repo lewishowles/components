@@ -1,12 +1,8 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-image-tag" v-model="textSlots">
-		<template #title>
-			Image tag
-		</template>
+		<template #title> Image tag </template>
 
-		<template #introduction>
-			A simple image tag.
-		</template>
+		<template #introduction> A simple image tag. </template>
 
 		<image-tag v-bind="componentProps" />
 	</component-playground>
@@ -34,9 +30,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("image-tag", { props });

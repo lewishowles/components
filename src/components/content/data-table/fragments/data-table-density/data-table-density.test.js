@@ -1,9 +1,18 @@
-import { afterEach, describe, expect, test, vi } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import { createMount } from "@unit/support/mount";
 import { ref } from "vue";
 import DataTableDensity from "./data-table-density.vue";
 
-const global = { provide: { "data-table": { tableName: ref("sample-table"), haveTableName: ref(true), updateTableDensityOptions: vi.fn() } } };
+const global = {
+	provide: {
+		"data-table": {
+			tableName: ref("sample-table"),
+			haveTableName: ref(true),
+			updateTableDensityOptions: vi.fn(),
+		},
+	},
+};
+
 const mount = createMount(DataTableDensity, { global });
 
 describe("data-table-density", () => {

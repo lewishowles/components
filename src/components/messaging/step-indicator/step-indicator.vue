@@ -15,17 +15,18 @@
 		</div>
 
 		<div class="flex items-center gap-2" data-test="step-indicator-progress">
-			<div class="h-1 rounded-full bg-grey-200 dark:bg-white/20 w-full max-w-16">
+			<div class="bg-grey-200 h-1 w-full max-w-16 rounded-full dark:bg-white/20">
 				<div
-					class="h-full rounded-full bg-purple-800 dark:bg-purple-300 transition-all ease-out"
+					class="h-full rounded-full bg-purple-800 transition-all ease-out dark:bg-purple-300"
 					:style="{ width: `${percentageValue}%` }"
 				/>
 			</div>
 
-			<span class="text-sm text-grey-500 dark:text-white/60" data-test="step-indicator-current-step">
-				<slot name="current-step">
-					Step {{ currentStep }} of {{ stepCount }}
-				</slot>
+			<span
+				class="text-grey-500 text-sm dark:text-white/60"
+				data-test="step-indicator-current-step"
+			>
+				<slot name="current-step"> Step {{ currentStep }} of {{ stepCount }} </slot>
 			</span>
 		</div>
 	</div>

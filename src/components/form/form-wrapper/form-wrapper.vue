@@ -1,15 +1,24 @@
 <template>
 	<form novalidate data-test="form-wrapper" @submit.prevent="handleFormSubmit">
-		<div v-show="haveErrorSummary" ref="errorSummaryElement" tabindex="0" class="mb-4 w-full rounded-sm border border-red-200 bg-red-50 px-5 py-3 text-red-800 dark:border-transparent dark:bg-red-500/50 dark:text-red-200" data-test="form-wrapper-error-summary">
+		<div
+			v-show="haveErrorSummary"
+			ref="errorSummaryElement"
+			tabindex="0"
+			class="mb-4 w-full rounded-sm border border-red-200 bg-red-50 px-5 py-3 text-red-800 dark:border-transparent dark:bg-red-500/50 dark:text-red-200"
+			data-test="form-wrapper-error-summary"
+		>
 			<h2 class="mb-2 font-bold">
-				<slot name="error-summary-title">
-					There is a problem
-				</slot>
+				<slot name="error-summary-title"> There is a problem </slot>
 			</h2>
 
 			<ul class="list-disc ps-4">
 				<li v-for="error in errorSummary" :key="error.id">
-					<a :href="`#${error.id}`" class="text-current" data-test="form-wrapper-error-summary-message" @click.prevent="focusField(error.fieldName)">
+					<a
+						:href="`#${error.id}`"
+						class="text-current"
+						data-test="form-wrapper-error-summary-message"
+						@click.prevent="focusField(error.fieldName)"
+					>
 						{{ error.message }}
 					</a>
 				</li>
@@ -26,12 +35,18 @@
 					<slot name="actions-label" />
 				</template>
 
-				<alert-message v-if="!haveSubmitButtonLabel" type="error" v-bind="{ live: false }" data-test="form-wrapper-submit-button-label-error">
-					<template #title>
-						&lt;form-wrapper&gt;
-					</template>
+				<alert-message
+					v-if="!haveSubmitButtonLabel"
+					type="error"
+					v-bind="{ live: false }"
+					data-test="form-wrapper-submit-button-label-error"
+				>
+					<template #title> &lt;form-wrapper&gt; </template>
 
-					<p>The slot <code>`submit-button-label`</code> is required to provide a meaningful call to action for the form.</p>
+					<p>
+						The slot <code>`submit-button-label`</code> is required to provide a meaningful call to
+						action for the form.
+					</p>
 				</alert-message>
 
 				<ui-button
@@ -122,7 +137,10 @@ async function registerField(field) {
 	}
 
 	if (Object.hasOwn(formData.value, field.name)) {
-		console.error("<form-wrapper>", `Duplicate field name <${field.name}> detected. This only one field with a given name will be represented in form data.`);
+		console.error(
+			"<form-wrapper>",
+			`Duplicate field name <${field.name}> detected. This only one field with a given name will be represented in form data.`,
+		);
 	}
 
 	formFields[field.name] = field;
@@ -195,7 +213,7 @@ function validateFields() {
 			continue;
 		}
 
-		validationResult.forEach(message => {
+		validationResult.forEach((message) => {
 			errorSummary.value.push({ fieldName, id: field.id, message });
 		});
 	}
@@ -209,8 +227,8 @@ function validateFields() {
 function doSubmit() {
 	const onSubmit = instance?.vnode.props?.onSubmit;
 	const handlers = Array.isArray(onSubmit) ? onSubmit : [onSubmit].filter(Boolean);
-	const results = handlers.map(handler => handler(formData.value));
-	const promise = results.find(result => result instanceof Promise);
+	const results = handlers.map((handler) => handler(formData.value));
+	const promise = results.find((result) => result instanceof Promise);
 
 	if (promise) {
 		promise.then(resetSubmitButton, resetSubmitButton);

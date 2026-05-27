@@ -1,7 +1,0 @@
-			<component-slot id="slot-{{SLOT_NAME}}">
-				<template #name>
-					{{SLOT_NAME}}
-				</template>
-
-				<p></p>
-			</component-slot>

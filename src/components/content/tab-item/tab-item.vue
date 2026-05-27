@@ -1,5 +1,10 @@
 <template>
-	<div v-show="active" v-bind="{ id: panelId, 'aria-labelledby': tabId }" tabindex="0" role="tabpanel">
+	<div
+		v-show="active"
+		v-bind="{ id: panelId, 'aria-labelledby': tabId }"
+		tabindex="0"
+		role="tabpanel"
+	>
 		<slot v-bind="{ isActive: active }" />
 	</div>
 </template>
@@ -49,13 +54,16 @@ const tabId = computed(() => (isNonEmptyString(props.id) ? props.id : `tab-${use
 const panelId = computed(() => `${tabId.value}-panel`);
 
 onMounted(() => {
-	registerTab({
-		initiallyActive: props.initiallyActive,
-		label,
-		tabId,
-		panelId,
-		icon: props.icon,
-	}, active);
+	registerTab(
+		{
+			initiallyActive: props.initiallyActive,
+			label,
+			tabId,
+			panelId,
+			icon: props.icon,
+		},
+		active,
+	);
 
 	const hash = window.location.hash.slice(1);
 

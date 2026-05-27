@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-copy-content" v-model="textSlots">
-		<template #title>
-			Copy content
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-copy-content"
+		v-model="textSlots"
+	>
+		<template #title> Copy content </template>
 
 		<copy-content v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}
@@ -43,9 +45,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("copy-content", { slots: textSlots, props });

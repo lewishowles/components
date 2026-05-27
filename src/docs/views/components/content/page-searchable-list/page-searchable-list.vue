@@ -1,93 +1,77 @@
 <template>
 	<component-page>
-		<template #title>
-			Searchable list
-		</template>
+		<template #title> Searchable list </template>
 
 		<template #introduction>
-			<p>Provided an array, <code>searchable-list</code> provides a search box to filter those items. The list of results is provided to the default slot, meaning they can be displayed however best suits the implementation.</p>
+			<p>
+				Provided an array, <code>searchable-list</code> provides a search box to filter those items.
+				The list of results is provided to the default slot, meaning they can be displayed however
+				best suits the implementation.
+			</p>
 			<p>If no search is being performed, the whole list is returned.</p>
-			<p>By default, each item is searched directly. Each property of an object is recursively, case-insensitively searched, and individual properties can be excluded via the <code>exclude</code> prop. Alternatively, only certain properties can be included via the <code>include</code> prop. If the displayed item and searchable content should differ, use the <code>search</code> prop to map each item to the value that should be searched.</p>
+			<p>
+				By default, each item is searched directly. Each property of an object is recursively,
+				case-insensitively searched, and individual properties can be excluded via the
+				<code>exclude</code> prop. Alternatively, only certain properties can be included via the
+				<code>include</code> prop. If the displayed item and searchable content should differ, use
+				the <code>search</code> prop to map each item to the value that should be searched.
+			</p>
 			<p>The current search query will be available via <code>v-model</code>.</p>
 		</template>
 
 		<component-props>
 			<component-prop id="prop-data">
-				<template #name>
-					data
-				</template>
+				<template #name> data </template>
 
-				<template #type>
-					array
-				</template>
+				<template #type> array </template>
 
-				<template #default-value>
-					null
-				</template>
+				<template #default-value> null </template>
 
 				<p>The list of items to search, or display if no search is being performed.</p>
 			</component-prop>
 
 			<component-prop id="prop-search">
-				<template #name>
-					search
-				</template>
+				<template #name> search </template>
 
-				<template #type>
-					Function
-				</template>
+				<template #type> Function </template>
 
-				<template #default-value>
-					item =&gt; item
-				</template>
+				<template #default-value> item =&gt; item </template>
 
-				<p>A function used to map each item to the content that should be searched. This allows the displayed item and the searchable content to differ.</p>
+				<p>
+					A function used to map each item to the content that should be searched. This allows the
+					displayed item and the searchable content to differ.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-placeholder">
-				<template #name>
-					placeholder
-				</template>
+				<template #name> placeholder </template>
 
-				<template #type>
-					String
-				</template>
+				<template #type> String </template>
 
-				<template #default-value>
-					null
-				</template>
+				<template #default-value> null </template>
 
-				<p>Any placeholder to provide to the search input. This can be used to indicate the kinds of data the user can search for.</p>
+				<p>
+					Any placeholder to provide to the search input. This can be used to indicate the kinds of
+					data the user can search for.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-exclude">
-				<template #name>
-					exclude
-				</template>
+				<template #name> exclude </template>
 
-				<template #type>
-					Array
-				</template>
+				<template #type> Array </template>
 
-				<template #default-value>
-					null
-				</template>
+				<template #default-value> null </template>
 
 				<p>The list of object properties that should not be included in the search.</p>
 			</component-prop>
 
 			<component-prop id="prop-include">
-				<template #name>
-					include
-				</template>
+				<template #name> include </template>
 
-				<template #type>
-					Array
-				</template>
+				<template #type> Array </template>
 
-				<template #default-value>
-					null
-				</template>
+				<template #default-value> null </template>
 
 				<p>The list of object properties that should be searched exclusively.</p>
 			</component-prop>
@@ -95,18 +79,14 @@
 
 		<component-slots>
 			<component-slot id="slot-default">
-				<template #name>
-					default
-				</template>
+				<template #name> default </template>
 
 				<p>The main &quot;results&quot; display.</p>
 
 				<table>
 					<thead>
 						<tr>
-							<th class="whitespace-nowrap">
-								Slot prop
-							</th>
+							<th class="whitespace-nowrap">Slot prop</th>
 							<th>Type</th>
 							<th>Description</th>
 						</tr>
@@ -115,7 +95,10 @@
 						<tr>
 							<td><code>items</code></td>
 							<td><code>array</code></td>
-							<td>The list of items matching any current search options, or all items if no search is being performed.</td>
+							<td>
+								The list of items matching any current search options, or all items if no search is
+								being performed.
+							</td>
 						</tr>
 						<tr>
 							<td><code>query</code></td>
@@ -147,26 +130,22 @@
 			</component-slot>
 
 			<component-slot id="slot-label">
-				<template #name>
-					label
-				</template>
+				<template #name> label </template>
 
 				<p>The search input label, giving the user an idea of what they are searching.</p>
 			</component-slot>
 
 			<component-slot id="slot-results-count">
-				<template #name>
-					results-count
-				</template>
+				<template #name> results-count </template>
 
-				<p>A slot to override the default results count display, appearing beneath the search box.</p>
+				<p>
+					A slot to override the default results count display, appearing beneath the search box.
+				</p>
 
 				<table>
 					<thead>
 						<tr>
-							<th class="whitespace-nowrap">
-								Slot prop
-							</th>
+							<th class="whitespace-nowrap">Slot prop</th>
 							<th>Type</th>
 							<th>Description</th>
 						</tr>
@@ -197,18 +176,14 @@
 			</component-slot>
 
 			<component-slot id="slot-no-results">
-				<template #name>
-					no-results
-				</template>
+				<template #name> no-results </template>
 
 				<p>A slot to override the default no-results display.</p>
 
 				<table>
 					<thead>
 						<tr>
-							<th class="whitespace-nowrap">
-								Slot prop
-							</th>
+							<th class="whitespace-nowrap">Slot prop</th>
 							<th>Type</th>
 							<th>Description</th>
 						</tr>
@@ -224,9 +199,7 @@
 			</component-slot>
 
 			<component-slot id="slot-reset-search-label">
-				<template #name>
-					reset-search-label
-				</template>
+				<template #name> reset-search-label </template>
 
 				<p>The label for the reset search button.</p>
 			</component-slot>

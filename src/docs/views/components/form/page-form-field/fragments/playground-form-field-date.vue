@@ -1,11 +1,16 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-field-date" v-model="textSlots">
-		<template #title>
-			Date
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-form-field-date"
+		v-model="textSlots"
+	>
+		<template #title> Date </template>
 
 		<template #introduction>
-			<p>Allow the user to enter a date. The date input comprises three different inputs, which helps to avoid any confusion, and makes parsing the date simpler.</p>
+			<p>
+				Allow the user to enter a date. The date input comprises three different inputs, which helps
+				to avoid any confusion, and makes parsing the date simpler.
+			</p>
 		</template>
 
 		<form-field v-model="componentModel" v-bind="componentProps">
@@ -67,9 +72,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("form-field", { slots: textSlots, props });

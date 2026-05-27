@@ -21,19 +21,19 @@ describe("dropdown-menu", () => {
 	});
 
 	describe("ARIA", () => {
-		it("The trigger has aria-haspopup=\"menu\"", () => {
+		it('The trigger has aria-haspopup="menu"', () => {
 			mount();
 
 			cy.getByData("dropdown-menu-trigger").shouldHaveAttribute("aria-haspopup", "menu");
 		});
 
-		it("The trigger has aria-expanded=\"false\" when closed", () => {
+		it('The trigger has aria-expanded="false" when closed', () => {
 			mount();
 
 			cy.getByData("dropdown-menu-trigger").shouldHaveAttribute("aria-expanded", "false");
 		});
 
-		it("The trigger has aria-expanded=\"true\" when open", () => {
+		it('The trigger has aria-expanded="true" when open', () => {
 			mount();
 
 			cy.getByData("dropdown-menu-trigger").click();
@@ -41,7 +41,7 @@ describe("dropdown-menu", () => {
 			cy.getByData("dropdown-menu-trigger").shouldHaveAttribute("aria-expanded", "true");
 		});
 
-		it("The panel has role=\"menu\"", () => {
+		it('The panel has role="menu"', () => {
 			mount();
 
 			cy.getByData("dropdown-menu-trigger").click();
@@ -54,9 +54,11 @@ describe("dropdown-menu", () => {
 
 			cy.getByData("dropdown-menu-trigger").click();
 
-			cy.getByData("dropdown-menu-trigger").invoke("attr", "aria-controls").then(controls => {
-				cy.getByData("dropdown-menu-panel").shouldHaveAttribute("id", controls);
-			});
+			cy.getByData("dropdown-menu-trigger")
+				.invoke("attr", "aria-controls")
+				.then((controls) => {
+					cy.getByData("dropdown-menu-panel").shouldHaveAttribute("id", controls);
+				});
 		});
 	});
 
@@ -90,7 +92,7 @@ describe("dropdown-menu", () => {
 
 			cy.getByData("dropdown-menu-panel").should("not.exist");
 
-			cy.getByData("click-target").then(element => element.remove());
+			cy.getByData("click-target").then((element) => element.remove());
 		});
 
 		it("Escape closes the menu and returns focus to the trigger", () => {
@@ -241,7 +243,7 @@ describe("dropdown-menu", () => {
  *     The `data-test` selector for the element
  */
 function createSiblingElement(content, selector) {
-	cy.get("body").then(body => {
+	cy.get("body").then((body) => {
 		const siblingElement = document.createElement("div");
 
 		siblingElement.setAttribute("data-test", selector);

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-/**
+ /**
  * `form-layout` is a functional component that adds consistent spacing between
  * elements in a form.
  */

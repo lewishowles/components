@@ -18,8 +18,8 @@ describe("copy-content", () => {
 
 			cy.getByData("copy-content").click();
 
-			cy.window().then(window => {
-				window.navigator.clipboard.readText().then((clipboardText) => {
+			cy.window().then((window) => {
+				return window.navigator.clipboard.readText().then((clipboardText) => {
 					expect(clipboardText).to.equal(content);
 				});
 			});

@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test, vi } from "vitest";
+import { describe, expect, test, vi } from "vite-plus/test";
 import { ref } from "vue";
 import AccordionItem from "./accordion-panel.vue";
 
@@ -29,14 +29,28 @@ describe("accordion-panel", () => {
 	describe("Computed", () => {
 		describe("useRegion", () => {
 			test("should be true when the panel count is 6 or fewer", () => {
-				const mountWithCount = createMount(AccordionItem, { global: { provide: { "accordion-group": { ...defaultProvide["accordion-group"], panelCount: ref(6) } } } });
+				const mountWithCount = createMount(AccordionItem, {
+					global: {
+						provide: {
+							"accordion-group": { ...defaultProvide["accordion-group"], panelCount: ref(6) },
+						},
+					},
+				});
+
 				const wrapper = mountWithCount();
 
 				expect(wrapper.vm.useRegion).toBe(true);
 			});
 
 			test("should be false when the panel count exceeds 6", () => {
-				const mountWithCount = createMount(AccordionItem, { global: { provide: { "accordion-group": { ...defaultProvide["accordion-group"], panelCount: ref(7) } } } });
+				const mountWithCount = createMount(AccordionItem, {
+					global: {
+						provide: {
+							"accordion-group": { ...defaultProvide["accordion-group"], panelCount: ref(7) },
+						},
+					},
+				});
+
 				const wrapper = mountWithCount();
 
 				expect(wrapper.vm.useRegion).toBe(false);

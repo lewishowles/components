@@ -1,5 +1,8 @@
 <template>
-	<field-wrapper v-bind="{ tag: 'fieldset', haveError, 'aria-invalid': haveError ? 'true' : undefined }" data-test="form-date">
+	<field-wrapper
+		v-bind="{ tag: 'fieldset', haveError, 'aria-invalid': haveError ? 'true' : undefined }"
+		data-test="form-date"
+	>
 		<form-label tag="legend">
 			<slot />
 		</form-label>
@@ -8,7 +11,7 @@
 			<slot name="introduction" />
 		</conditional-wrapper>
 
-		<div class="flex gap-8 mt-1">
+		<div class="mt-1 flex gap-8">
 			<form-input
 				v-if="haveValidDate"
 				ref="dayInput"
@@ -21,9 +24,7 @@
 				class="w-20"
 				data-test="form-date-day"
 			>
-				<slot name="day-label">
-					Day
-				</slot>
+				<slot name="day-label"> Day </slot>
 			</form-input>
 
 			<form-input
@@ -37,9 +38,7 @@
 				class="w-20"
 				data-test="form-date-month"
 			>
-				<slot name="month-label">
-					Month
-				</slot>
+				<slot name="month-label"> Month </slot>
 			</form-input>
 
 			<form-input
@@ -53,9 +52,7 @@
 				class="w-40"
 				data-test="form-date-year"
 			>
-				<slot name="year-label">
-					Year
-				</slot>
+				<slot name="year-label"> Year </slot>
 			</form-input>
 		</div>
 
@@ -128,7 +125,7 @@ const haveValidDate = computed(() => {
 		return false;
 	}
 
-	return ["day", "month", "year"].every(part => {
+	return ["day", "month", "year"].every((part) => {
 		const partValue = date.value[part];
 		const isStringPart = typeof partValue === "string";
 		const isNumberPart = isNumber(partValue);

@@ -11,10 +11,11 @@
 		</div>
 
 		<div class="flex flex-col gap-8">
-			<div class="p-3 flex justify-end gap-3 border border-grey-200 rounded-md bg-grey-50 backdrop-blur-sm dark:bg-grey-950/20 dark:border-transparent text-sm" :class="{ 'z-10': isTextSlotsOpen }">
-				<copy-content v-bind="{ content: copy }" class="button--muted">
-					Copy code
-				</copy-content>
+			<div
+				class="border-grey-200 bg-grey-50 dark:bg-grey-950/20 flex justify-end gap-3 rounded-md border p-3 text-sm backdrop-blur-sm dark:border-transparent"
+				:class="{ 'z-10': isTextSlotsOpen }"
+			>
+				<copy-content v-bind="{ content: copy }" class="button--muted"> Copy code </copy-content>
 
 				<floating-details
 					v-show="!useTranslation && haveTextSlots"
@@ -22,27 +23,39 @@
 					details-size-classes="max-w-xs"
 					v-bind="{ align: 'right' }"
 				>
-					<template #summary>
-						Text slots
-					</template>
+					<template #summary> Text slots </template>
 
 					<form-layout>
-						<form-field v-for="(slot, key) in textSlots" :key="key" v-bind="{ type: slot.type }" v-model="textSlots[key].value">
+						<form-field
+							v-for="(slot, key) in textSlots"
+							:key="key"
+							v-bind="{ type: slot.type }"
+							v-model="textSlots[key].value"
+						>
 							{{ slot.label }}
 						</form-field>
 
-						<ui-button class="button--muted self-start" icon-start="icon-reload" @click="resetTextSlots">
+						<ui-button
+							class="button--muted self-start"
+							icon-start="icon-reload"
+							@click="resetTextSlots"
+						>
 							Reset content
 						</ui-button>
 					</form-layout>
 				</floating-details>
 			</div>
 
-			<div class="relative inset-shadow-sm p-4 lg:p-24 rounded-md border border-grey-300 dark:border-white/20">
+			<div
+				class="border-grey-300 relative rounded-md border p-4 inset-shadow-sm lg:p-24 dark:border-white/20"
+			>
 				<slot />
 
-				<div v-if="haveComponentModel" class="relative mt-12 rounded-md bg-grey-50 dark:bg-grey-950/30 dark:text-grey-200 border border-grey-200 dark:border-transparent text-grey-800 p-6">
-					<pill-badge class="absolute top-0 start-0 ms-6 -translate-y-1/2">
+				<div
+					v-if="haveComponentModel"
+					class="bg-grey-50 dark:bg-grey-950/30 dark:text-grey-200 border-grey-200 text-grey-800 relative mt-12 rounded-md border p-6 dark:border-transparent"
+				>
+					<pill-badge class="absolute start-0 top-0 ms-6 -translate-y-1/2">
 						Model value
 					</pill-badge>
 
@@ -208,11 +221,15 @@ function resetTextSlots() {
 
 // When the text slots change (modelValue under the hood), update our stored
 // slot values.
-watch(() => props.modelValue, () => {
-	// Before we store our slots, we remove any extraneous information for
-	// brevity.
-	storedTextSlots.value = Object.fromEntries(
-		Object.entries(textSlots.value).map(([key, slot]) => [key, slot.value]),
-	);
-}, { deep: true });
+watch(
+	() => props.modelValue,
+	() => {
+		// Before we store our slots, we remove any extraneous information for
+		// brevity.
+		storedTextSlots.value = Object.fromEntries(
+			Object.entries(textSlots.value).map(([key, slot]) => [key, slot.value]),
+		);
+	},
+	{ deep: true },
+);
 </script>

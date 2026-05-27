@@ -1,7 +1,9 @@
 import NotificationPinned from "./notification-pinned.vue";
 import { createMount } from "@cypress/support/mount";
 
-const notificationMessage = "Ullamco eu amet labore elit quis eiusmod ea consectetur fugiat do commodo esse dolore consequat ipsum.";
+const notificationMessage =
+	"Ullamco eu amet labore elit quis eiusmod ea consectetur fugiat do commodo esse dolore consequat ipsum.";
+
 const notification = { id: "notification-1", message: notificationMessage };
 const defaultProps = { notification };
 const mount = createMount(NotificationPinned, { props: defaultProps });
@@ -107,7 +109,13 @@ describe("notification-pinned", () => {
 			});
 
 			it("A notification image takes precedence if both an image and an icon are defined", () => {
-				mount({ notification: { ...notification, icon: "icon-user", image_url: "https://placehold.co/100x100" } });
+				mount({
+					notification: {
+						...notification,
+						icon: "icon-user",
+						image_url: "https://placehold.co/100x100",
+					},
+				});
 
 				cy.getByData("notification-pinned-image").shouldBeVisible();
 				cy.getByData("notification-pinned-icon").should("not.exist");
@@ -129,7 +137,7 @@ describe("notification-pinned", () => {
 
 			it("The `view-more-label` slot can be implemented", () => {
 				mount({
-					props: {  notification: { ...notification, url: "https://example.com" } },
+					props: { notification: { ...notification, url: "https://example.com" } },
 					slots: { "view-more-label": "View something" },
 				});
 

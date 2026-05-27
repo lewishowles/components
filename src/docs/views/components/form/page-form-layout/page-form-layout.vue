@@ -1,18 +1,17 @@
 <template>
 	<component-page>
-		<template #title>
-			Form layout
-		</template>
+		<template #title> Form layout </template>
 
 		<template #introduction>
-			<p><code>form-layout</code> is a functional component that adds consistent spacing between elements in a form.</p>
+			<p>
+				<code>form-layout</code> is a functional component that adds consistent spacing between
+				elements in a form.
+			</p>
 		</template>
 
 		<component-slots>
 			<component-slot id="slot-default">
-				<template #name>
-					default
-				</template>
+				<template #name> default </template>
 
 				<p>The default slot contains the content to wrap.</p>
 			</component-slot>

@@ -12,8 +12,6 @@ The actions to display.
 
 ```html
 <modal-dialog-actions>
-	<ui-button class="button--primary">
-		Delete user {{ username }}
-	</ui-button>
+	<ui-button class="button--primary"> Delete user {{ username }} </ui-button>
 </modal-dialog-actions>
 ```

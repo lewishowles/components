@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test } from "vitest";
+import { afterEach, describe, expect, test } from "vite-plus/test";
 import useMenu from "./use-menu";
 
 describe("useMenu", () => {
@@ -33,7 +33,11 @@ describe("useMenu", () => {
 
 		expect(menu.menuItems.value.length).toBe(2);
 		expect(menu.menuItems.value[0]).toEqual({ section: "main", label: "Home", to: "/" });
-		expect(menu.menuItems.value[1]).toEqual({ section: "main", label: "About", to: { name: "about" } });
+		expect(menu.menuItems.value[1]).toEqual({
+			section: "main",
+			label: "About",
+			to: { name: "about" },
+		});
 	});
 
 	test("should not add invalid menu items", () => {

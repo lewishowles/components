@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-loading-indicator" v-model="textSlots">
-		<template #title>
-			Large indicator
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-loading-indicator"
+		v-model="textSlots"
+	>
+		<template #title> Large indicator </template>
 
 		<template #introduction>
 			A larger loading indicator, more suited to when a whole section of content is pending.
@@ -37,9 +39,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("loading-indicator", { slots: textSlots, props });

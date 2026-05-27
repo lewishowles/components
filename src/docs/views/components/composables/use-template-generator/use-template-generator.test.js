@@ -1,4 +1,4 @@
-import { describe, expect, test, vi, beforeEach } from "vitest";
+import { describe, expect, test, vi, beforeEach } from "vite-plus/test";
 import { ref } from "vue";
 import useTemplateGenerator from "./use-template-generator";
 
@@ -111,8 +111,8 @@ describe("useTemplateGenerator", () => {
 
 		const template = useTemplateGenerator("foo-bar", { slots });
 
-		expect(template.value).toContain("{{ t(\"prefix.label\") }}");
-		expect(template.value).toContain("{{ t(\"prefix.footer\") }}");
+		expect(template.value).toContain('{{ t("prefix.label") }}');
+		expect(template.value).toContain('{{ t("prefix.footer") }}');
 	});
 
 	test("should return an empty template when missing slots/props", () => {
@@ -131,8 +131,8 @@ describe("useTemplateGenerator", () => {
 
 		const template = useTemplateGenerator("foo-bar", { events });
 
-		expect(template.value).toContain("@click=\"handleClick()\"");
-		expect(template.value).toContain("@input=\"handleInput($event)\"");
+		expect(template.value).toContain('@click="handleClick()"');
+		expect(template.value).toContain('@input="handleInput($event)"');
 	});
 
 	test("should not include events if empty", () => {
@@ -147,7 +147,7 @@ describe("useTemplateGenerator", () => {
 		const template = useTemplateGenerator("foo-bar", { slots, indent: 2 });
 		const lines = template.value.split("\n");
 
-		lines.forEach(line => {
+		lines.forEach((line) => {
 			if (line.trim()) expect(line.startsWith("\t\t")).toBe(true);
 		});
 	});
@@ -159,7 +159,7 @@ describe("useTemplateGenerator", () => {
 
 		const template = useTemplateGenerator("foo-bar", { props });
 
-		expect(template.value).toContain("foo=\"bar\"");
+		expect(template.value).toContain('foo="bar"');
 	});
 
 	test("should render variable props without value", () => {
@@ -169,7 +169,7 @@ describe("useTemplateGenerator", () => {
 
 		const template = useTemplateGenerator("foo-bar", { props });
 
-		expect(template.value).toContain("v-bind=\"{ foo }\"");
+		expect(template.value).toContain('v-bind="{ foo }"');
 	});
 
 	test("should render variable props with a variable name if provided", () => {
@@ -184,7 +184,7 @@ describe("useTemplateGenerator", () => {
 
 		const template = useTemplateGenerator("foo-bar", { props });
 
-		expect(template.value).toContain("v-bind=\"{ foo: fooVariable }\"");
+		expect(template.value).toContain('v-bind="{ foo: fooVariable }"');
 	});
 
 	test("should handle null slots and props", () => {

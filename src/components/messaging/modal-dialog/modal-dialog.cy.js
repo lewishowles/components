@@ -22,13 +22,18 @@ describe("modal-dialog", () => {
 		it("Has aria-labelledby pointing to the title id when a title is provided", () => {
 			mountDirectly({ slots: { title: "Dialog title" } });
 
-			cy.getByData("modal-dialog-title").invoke("attr", "id").then(titleId => {
-				cy.getByData("modal-dialog").shouldHaveAttribute("aria-labelledby", titleId);
-			});
+			cy.getByData("modal-dialog-title")
+				.invoke("attr", "id")
+				.then((titleId) => {
+					cy.getByData("modal-dialog").shouldHaveAttribute("aria-labelledby", titleId);
+				});
 		});
 
 		it("Has role=alertdialog when variant is alert", () => {
-			mountDirectly({ props: { initiallyOpen: true, variant: "alert" }, slots: { title: "Alert title" } });
+			mountDirectly({
+				props: { initiallyOpen: true, variant: "alert" },
+				slots: { title: "Alert title" },
+			});
 
 			cy.getByData("modal-dialog").shouldHaveAttribute("role", "alertdialog");
 		});
@@ -45,9 +50,11 @@ describe("modal-dialog", () => {
 				slots: { title: "Alert title", default: "This is the alert content" },
 			});
 
-			cy.getByData("modal-dialog").invoke("attr", "aria-describedby").then(descriptionId => {
-				cy.get(`#${descriptionId}`).shouldHaveText("This is the alert content");
-			});
+			cy.getByData("modal-dialog")
+				.invoke("attr", "aria-describedby")
+				.then((descriptionId) => {
+					cy.get(`#${descriptionId}`).shouldHaveText("This is the alert content");
+				});
 		});
 	});
 

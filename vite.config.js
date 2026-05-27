@@ -1,15 +1,18 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vite-plus";
 import { fileURLToPath, URL } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
+import fmt from "./oxfmt.config.js";
+import lint from "./oxlint.config.js";
 
 export default defineConfig({
-	plugins: [
-		vue(),
-		vueDevTools(),
-		tailwindcss(),
-	],
+	staged: {
+		"*": "vp check --fix",
+	},
+	fmt,
+	lint,
+	plugins: [vue(), vueDevTools(), tailwindcss()],
 	resolve: {
 		alias: {
 			"@": fileURLToPath(new URL("./src", import.meta.url)),

@@ -1,20 +1,18 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-conditional-wrapper" v-model="textSlots">
-		<template #title>
-			Conditional wrapper
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-conditional-wrapper"
+		v-model="textSlots"
+	>
+		<template #title> Conditional wrapper </template>
 
 		<template #introduction>
 			<p />
 		</template>
 
 		<ui-button class="button--muted mb-4" @click="shouldWrap = !shouldWrap">
-			<template v-if="!shouldWrap">
-				Wrap
-			</template>
-			<template v-else>
-				Unwrap
-			</template>
+			<template v-if="!shouldWrap"> Wrap </template>
+			<template v-else> Unwrap </template>
 		</ui-button>
 
 		<conditional-wrapper v-bind="componentProps">
@@ -52,9 +50,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("conditional-wrapper", { slots: slots.value, props });

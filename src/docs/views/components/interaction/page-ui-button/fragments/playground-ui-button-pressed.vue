@@ -1,11 +1,17 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-ui-button-pressed" v-model="textSlots">
-		<template #title>
-			Toggle button
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-ui-button-pressed"
+		v-model="textSlots"
+	>
+		<template #title> Toggle button </template>
 
 		<template #introduction>
-			<p>Toggle buttons have two stable states — pressed and unpressed. The <code>pressed</code> prop adds <code>aria-pressed</code> so screen readers announce the current state without needing a label change. Click the button below to toggle it.</p>
+			<p>
+				Toggle buttons have two stable states — pressed and unpressed. The <code>pressed</code> prop
+				adds <code>aria-pressed</code> so screen readers announce the current state without needing
+				a label change. Click the button below to toggle it.
+			</p>
 		</template>
 
 		<ui-button v-bind="{ ...componentProps, pressed: isPressed }" @click="isPressed = !isPressed">
@@ -48,9 +54,7 @@ const events = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("ui-button", { slots: textSlots, props, events });

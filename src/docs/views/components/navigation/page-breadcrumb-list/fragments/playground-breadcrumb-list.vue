@@ -1,19 +1,15 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-breadcrumb-list" v-model="textSlots">
-		<template #title>
-			Breadcrumb list
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-breadcrumb-list"
+		v-model="textSlots"
+	>
+		<template #title> Breadcrumb list </template>
 
 		<breadcrumb-list v-bind="componentProps" v-model="componentModel">
-			<breadcrumb-item href="/">
-				Admin
-			</breadcrumb-item>
-			<breadcrumb-item href="/users">
-				Users
-			</breadcrumb-item>
-			<breadcrumb-item current>
-				Sophie Wardhaugh
-			</breadcrumb-item>
+			<breadcrumb-item href="/"> Admin </breadcrumb-item>
+			<breadcrumb-item href="/users"> Users </breadcrumb-item>
+			<breadcrumb-item current> Sophie Wardhaugh </breadcrumb-item>
 		</breadcrumb-list>
 	</component-playground>
 </template>
@@ -72,9 +68,7 @@ function createCurrentItem(label) {
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("breadcrumb-list", { props, slots: slots.value });

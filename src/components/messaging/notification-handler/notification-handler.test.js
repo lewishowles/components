@@ -1,12 +1,14 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test, vi } from "vitest";
+import { describe, expect, test, vi } from "vite-plus/test";
 import NotificationHandler from "./notification-handler.vue";
 import NotificationDanger from "./fragments/notification-danger/notification-danger.vue";
 import NotificationInfo from "./fragments/notification-info/notification-info.vue";
 import NotificationRead from "./fragments/notification-read/notification-read.vue";
 import NotificationWarning from "./fragments/notification-warning/notification-warning.vue";
 
-const notificationMessage = "Ullamco eu amet labore elit quis eiusmod ea consectetur fugiat do commodo esse dolore consequat ipsum.";
+const notificationMessage =
+	"Ullamco eu amet labore elit quis eiusmod ea consectetur fugiat do commodo esse dolore consequat ipsum.";
+
 const notification = { id: "notification-1", message: notificationMessage };
 const defaultProps = { notifications: [notification] };
 const mount = createMount(NotificationHandler, { props: defaultProps });
@@ -148,7 +150,7 @@ describe("notification-handler", () => {
 				});
 			});
 
-			describe("Limit the number of \"read\" notifications", () => {
+			describe('Limit the number of "read" notifications', () => {
 				test("should return all notifications if `readNotificationCount` is not a number", () => {
 					const wrapper = mount({
 						readNotificationCount: "not-a-number",
@@ -239,7 +241,9 @@ describe("notification-handler", () => {
 
 					const vm = wrapper.vm;
 
-					expect(vm.internalNotifications).toEqual([{ id: "id-2", message: "Notification 2", read: false }]);
+					expect(vm.internalNotifications).toEqual([
+						{ id: "id-2", message: "Notification 2", read: false },
+					]);
 				});
 			});
 		});
@@ -308,17 +312,21 @@ describe("notification-handler", () => {
 			});
 
 			test("should include the unread count when there are multiple unread notifications", () => {
-				const wrapper = mount({ notifications: [
-					{ id: "notification-1", message: "First" },
-					{ id: "notification-2", message: "Second" },
-					{ id: "notification-3", message: "Third" },
-				] });
+				const wrapper = mount({
+					notifications: [
+						{ id: "notification-1", message: "First" },
+						{ id: "notification-2", message: "Second" },
+						{ id: "notification-3", message: "Third" },
+					],
+				});
 
 				expect(wrapper.vm.triggerLabel).toBe("Show notifications, 3 unread");
 			});
 
 			test("should return the default label when all notifications are read", () => {
-				const wrapper = mount({ notifications: [{ id: "notification-1", message: "First", read: true }] });
+				const wrapper = mount({
+					notifications: [{ id: "notification-1", message: "First", read: true }],
+				});
 
 				expect(wrapper.vm.triggerLabel).toBe("Show notifications");
 			});
@@ -457,12 +465,14 @@ describe("notification-handler", () => {
 					{ id: "id-2", message: "Notification 2", read: false },
 				];
 
-				expect(vm.limitReadNotifications(notifications)).toEqual([{ id: "id-2", message: "Notification 2", read: false }]);
+				expect(vm.limitReadNotifications(notifications)).toEqual([
+					{ id: "id-2", message: "Notification 2", read: false },
+				]);
 			});
 		});
 
 		describe("getNotificationSlotName", () => {
-			test("should return \"notification-danger-template\" if the notification has type \"danger\"", () => {
+			test('should return "notification-danger-template" if the notification has type "danger"', () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
@@ -471,7 +481,7 @@ describe("notification-handler", () => {
 				expect(vm.getNotificationSlotName(notification)).toEqual("notification-danger-template");
 			});
 
-			test("should return \"notification-warning-template\" if the notification has type \"warning\"", () => {
+			test('should return "notification-warning-template" if the notification has type "warning"', () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
@@ -529,7 +539,7 @@ describe("notification-handler", () => {
 		});
 
 		describe("getNotificationComponent", () => {
-			test("should return NotificationDanger if the notification has type \"danger\"", () => {
+			test('should return NotificationDanger if the notification has type "danger"', () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
@@ -538,7 +548,7 @@ describe("notification-handler", () => {
 				expect(vm.getNotificationComponent(notification)).toEqual(NotificationDanger);
 			});
 
-			test("should return NotificationWarning if the notification has type \"warning\"", () => {
+			test('should return NotificationWarning if the notification has type "warning"', () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
@@ -646,13 +656,22 @@ describe("notification-handler", () => {
 				const wrapper = mount({
 					notifications: [
 						{
-							id: "notification-1", message: "Notification", pinned: false, read: false,
+							id: "notification-1",
+							message: "Notification",
+							pinned: false,
+							read: false,
 						},
 						{
-							id: "notification-2", message: "Notification", pinned: true, read: false,
+							id: "notification-2",
+							message: "Notification",
+							pinned: true,
+							read: false,
 						},
 						{
-							id: "notification-3", message: "Notification", pinned: false, read: false,
+							id: "notification-3",
+							message: "Notification",
+							pinned: false,
+							read: false,
 						},
 					],
 				});
@@ -661,7 +680,9 @@ describe("notification-handler", () => {
 
 				vm.markAllNotificationsRead();
 
-				expect(wrapper.emitted("notifications:read")).toEqual([[["notification-1", "notification-3"]]]);
+				expect(wrapper.emitted("notifications:read")).toEqual([
+					[["notification-1", "notification-3"]],
+				]);
 				expect(vm.notificationsMarkedAsRead).toEqual(["notification-1", "notification-3"]);
 			});
 
@@ -669,10 +690,16 @@ describe("notification-handler", () => {
 				const wrapper = mount({
 					notifications: [
 						{
-							id: "notification-1", message: "Notification", pinned: false, read: true,
+							id: "notification-1",
+							message: "Notification",
+							pinned: false,
+							read: true,
 						},
 						{
-							id: "notification-2", message: "Notification", pinned: false, read: false,
+							id: "notification-2",
+							message: "Notification",
+							pinned: false,
+							read: false,
 						},
 					],
 				});

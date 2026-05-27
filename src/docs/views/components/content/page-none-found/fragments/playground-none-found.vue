@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-none-found" v-model="textSlots">
-		<template #title>
-			None found
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-none-found"
+		v-model="textSlots"
+	>
+		<template #title> None found </template>
 
 		<none-found>
 			<template #title>
@@ -12,9 +14,7 @@
 			{{ slots.default?.value }}
 
 			<template #actions>
-				<ui-button class="button--muted">
-					Reload users
-				</ui-button>
+				<ui-button class="button--muted"> Reload users </ui-button>
 			</template>
 		</none-found>
 	</component-playground>

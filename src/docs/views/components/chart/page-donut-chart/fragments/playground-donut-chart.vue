@@ -1,12 +1,8 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-donut-chart" v-model="textSlots">
-		<template #title>
-			Donut chart
-		</template>
+		<template #title> Donut chart </template>
 
-		<template #introduction>
-			The default donut chart.
-		</template>
+		<template #introduction> The default donut chart. </template>
 
 		<donut-chart v-bind="componentProps">
 			<template #label>
@@ -45,9 +41,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("donut-chart", { props, slots: textSlots });

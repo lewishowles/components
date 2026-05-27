@@ -68,10 +68,12 @@
 	--color-neon-pink: #e61980;
 	--color-neon-blue: #19cbe6;
 
-	--font-sans: "Funnel Sans", ui-sans-serif, system-ui, sans-serif,
-		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-	--font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
-		Consolas, "Liberation Mono", "Courier New", monospace;
+	--font-sans:
+		"Funnel Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+		"Segoe UI Symbol", "Noto Color Emoji";
+	--font-mono:
+		"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+		"Courier New", monospace;
 
 	--container-3xs: 12rem;
 	--container-2xs: 16rem;
@@ -111,7 +113,9 @@
 
 		&:focus-visible {
 			box-shadow: 0 0 0 2px var(--color-purple-800);
-			box-shadow: 0 0 0 2px var(--color-purple-800), 0 0 0 4px rgb(120 81 169 / 0.1);
+			box-shadow:
+				0 0 0 2px var(--color-purple-800),
+				0 0 0 4px rgb(120 81 169 / 0.1);
 		}
 
 		&:where(.dark, .dark *):focus-visible {
@@ -126,7 +130,8 @@
 		text-decoration-skip-ink: auto;
 		text-underline-offset: 4px;
 
-		&:hover, &:focus {
+		&:hover,
+		&:focus {
 			color: var(--color-purple-900);
 			text-decoration: none;
 		}
@@ -134,7 +139,8 @@
 		&:where(.dark, .dark *) {
 			color: var(--color-purple-300);
 
-			&:hover, &:focus {
+			&:hover,
+			&:focus {
 				color: var(--color-purple-200);
 			}
 		}

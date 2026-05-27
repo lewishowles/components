@@ -8,8 +8,12 @@
 	/>
 
 	<slot v-else name="fallback">
-		<div class="flex items-center justify-center bg-grey-100 p-3" v-bind="$attrs" data-test="image-tag-fallback">
-			<icon-image class="aspect-square h-auto w-8 max-w-full text-grey-500" />
+		<div
+			class="bg-grey-100 flex items-center justify-center p-3"
+			v-bind="$attrs"
+			data-test="image-tag-fallback"
+		>
+			<icon-image class="text-grey-500 aspect-square h-auto w-8 max-w-full" />
 		</div>
 	</slot>
 </template>

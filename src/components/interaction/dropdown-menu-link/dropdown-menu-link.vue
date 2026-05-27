@@ -1,8 +1,8 @@
 <template>
 	<link-tag
-		class="w-full border-s-2 px-4 py-2 hocus:border-current hocus:bg-grey-50 dark:hocus:bg-white/10"
+		class="hocus:border-current hocus:bg-grey-50 dark:hocus:bg-white/10 w-full border-s-2 px-4 py-2"
 		:class="{
-			'border-current bg-grey-50 dark:bg-white/10': selected,
+			'bg-grey-50 border-current dark:bg-white/10': selected,
 			'border-transparent': !selected,
 		}"
 		role="menuitem"

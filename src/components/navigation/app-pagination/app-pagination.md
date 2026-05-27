@@ -32,9 +32,9 @@ The label for the next page button.
 
 The accessible label for each page.
 
-| Slot prop | Type | Description |
-| --- | --- | --- |
-| `page` | `number` | The page number for the given page. |
+| Slot prop | Type     | Description                         |
+| --------- | -------- | ----------------------------------- |
+| `page`    | `number` | The page number for the given page. |
 
 ### `showing-items-label`
 
@@ -42,11 +42,11 @@ The accessible label for each page.
 
 A display of the current items being shown, giving the user an indication of where they are in the list.
 
-| Slot prop | Type | Description |
-| --- | --- | --- |
-| `first` | `number` | The first item being displayed. |
-| `last` | `number` | The last item being displayed. |
-| `total` | `number` | The total number of items in the list. |
+| Slot prop | Type     | Description                            |
+| --------- | -------- | -------------------------------------- |
+| `first`   | `number` | The first item being displayed.        |
+| `last`    | `number` | The last item being displayed.         |
+| `total`   | `number` | The total number of items in the list. |
 
 ## Props
 
@@ -63,9 +63,9 @@ The number of items in the paginated collection.
 
 Updated when the user selects a different page to display, containing a `page` parameter with that selected page.
 
-| Slot prop | Type | Description |
-| --- | --- | --- |
-| `page` | `number` | The number of the new page. |
+| Slot prop | Type     | Description                 |
+| --------- | -------- | --------------------------- |
+| `page`    | `number` | The number of the new page. |
 
 ## Examples
 

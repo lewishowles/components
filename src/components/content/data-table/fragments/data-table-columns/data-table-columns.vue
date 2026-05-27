@@ -1,6 +1,11 @@
 <template>
 	<div class="py-1" data-test="data-table-columns">
-		<dropdown-menu-checkbox v-for="column in columns" :key="column.key" v-model="columnVisibility[column.key]" data-test="data-table-columns-checkbox">
+		<dropdown-menu-checkbox
+			v-for="column in columns"
+			:key="column.key"
+			v-model="columnVisibility[column.key]"
+			data-test="data-table-columns-checkbox"
+		>
 			{{ column.label }}
 		</dropdown-menu-checkbox>
 	</div>
@@ -17,7 +22,8 @@ const { tableName, haveTableName, columnDefinitions } = inject("data-table");
 // The user selected column visibility. We know we will have a table name
 // because this component isn't activated without it, but we check it just in
 // case.
-const userColumnVisibility = haveTableName.value && useStorage(`data-table:${tableName.value}:columns`, {});
+const userColumnVisibility =
+	haveTableName.value && useStorage(`data-table:${tableName.value}:columns`, {});
 
 // Our user-selected table density.
 const columnVisibility = defineModel({
@@ -30,7 +36,7 @@ const columns = computed(() => {
 
 	for (const columnKey in columnDefinitions.value) {
 		if (!Object.prototype.hasOwnProperty.call(columnDefinitions.value, columnKey)) {
-			return;
+			continue;
 		}
 
 		const definition = columnDefinitions.value[columnKey];
@@ -68,13 +74,17 @@ function initialiseColumnVisibility() {
 
 	// Remove any columns no longer found.
 	for (const columnKey in columnVisibility.value) {
-		if (!columns.value.find(column => column.key === columnKey)) {
+		if (!columns.value.find((column) => column.key === columnKey)) {
 			delete columnVisibility.value[columnKey];
 		}
 	}
 }
 
-watch(columnVisibility, () => {
-	userColumnVisibility.value = columnVisibility.value;
-}, { deep: true });
+watch(
+	columnVisibility,
+	() => {
+		userColumnVisibility.value = columnVisibility.value;
+	},
+	{ deep: true },
+);
 </script>

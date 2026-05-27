@@ -4,24 +4,35 @@
 			<slot name="label" />
 		</span>
 
-		<div ref="tabBarReference" class="mb-12 border-b border-grey-200 dark:border-white/20" :class="{ 'wrap-tabs': wrap }" data-selector="tab-group-nav">
-			<ol class="-mb-px flex items-end" :class="{ 'overflow-x-auto': !wrap, 'flex-wrap': wrap }" v-bind="{ 'aria-labelledby': labelId }" role="tablist">
+		<div
+			ref="tabBarReference"
+			class="border-grey-200 mb-12 border-b dark:border-white/20"
+			:class="{ 'wrap-tabs': wrap }"
+			data-selector="tab-group-nav"
+		>
+			<ol
+				class="-mb-px flex items-end"
+				:class="{ 'overflow-x-auto': !wrap, 'flex-wrap': wrap }"
+				v-bind="{ 'aria-labelledby': labelId }"
+				role="tablist"
+			>
 				<li v-for="tab in tabs" :key="tab.tabId">
 					<link-tag
 						v-bind="{
-							'id': tab.tabId,
-							'href': `#${tab.panelId}`,
-							'role': 'tab',
+							id: tab.tabId,
+							href: `#${tab.panelId}`,
+							role: 'tab',
 							'aria-controls': tab.panelId,
 							'aria-selected': tab.active,
-							'tabindex': tab.active ? 0 : -1,
+							tabindex: tab.active ? 0 : -1,
 							'icon-start': tab.icon,
 						}"
 						ref="tabAnchors"
-						class="border-b-2 px-4 py-2 no-underline whitespace-nowrap"
+						class="border-b-2 px-4 py-2 whitespace-nowrap no-underline"
 						:class="{
 							'border-purple-800 text-purple-800 dark:border-white dark:text-white': tab.active,
-							'border-transparent text-current hocus:border-grey-500 hocus:text-grey-950 dark:hocus:border-white/60 dark:hocus:text-white': !tab.active,
+							'hocus:border-grey-500 hocus:text-grey-950 dark:hocus:border-white/60 dark:hocus:text-white border-transparent text-current':
+								!tab.active,
 						}"
 						data-test="tab-group-tab"
 						@click.prevent="setActiveTabById(tab.tabId)"
@@ -93,7 +104,7 @@ const tabs = computed(() => {
 		return [];
 	}
 
-	return tabData.value.map(tab => {
+	return tabData.value.map((tab) => {
 		return {
 			active: isActiveTab(tab.tabId),
 			...tab,
@@ -130,8 +141,14 @@ const tabIds = computed(() => {
 
 // The currently active tab by its ID.
 const activeTabId = ref(null);
+
 // The index of the currently active tab in the list of tabs.
-const activeTabIndex = computed(() => Math.max(0, tabs.value.findIndex(tab => tab.tabId === activeTabId.value)));
+const activeTabIndex = computed(() =>
+	Math.max(
+		0,
+		tabs.value.findIndex((tab) => tab.tabId === activeTabId.value),
+	),
+);
 
 // The index of the currently focused tab. In auto mode this always matches
 // activeTabIndex; in manual mode it tracks keyboard focus independently so
@@ -140,7 +157,7 @@ const focusedTabIndex = ref(0);
 
 // When focus re-enters the tablist, reset the focused position to the active
 // tab so keyboard navigation always starts from a predictable position.
-watch(tabHasFocus, hasFocus => {
+watch(tabHasFocus, (hasFocus) => {
 	if (hasFocus) {
 		focusedTabIndex.value = activeTabIndex.value;
 	}
@@ -155,7 +172,7 @@ provide("tab-group", {
  * When using the arrow keys, if a tab is currently focused, navigate forward or
  * backwards through tabs based on the arrow direction.
  */
-onKeyStroke(["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"], event => {
+onKeyStroke(["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"], (event) => {
 	if (!tabHasFocus.value) {
 		return;
 	}
@@ -165,7 +182,10 @@ onKeyStroke(["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"], event => {
 	const isReverse = ["ArrowUp", "ArrowLeft"].includes(event.key);
 
 	if (props.activation === "manual") {
-		const nextIndex = getNextIndex(focusedTabIndex.value, tabs.value, { reverse: isReverse, wrap: true });
+		const nextIndex = getNextIndex(focusedTabIndex.value, tabs.value, {
+			reverse: isReverse,
+			wrap: true,
+		});
 
 		focusedTabIndex.value = nextIndex;
 		focusTabByIndex(nextIndex);
@@ -180,7 +200,7 @@ onKeyStroke(["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"], event => {
  * In manual activation mode, activate the currently focused tab when the user
  * presses Enter or Space.
  */
-onKeyStroke(["Enter", " "], event => {
+onKeyStroke(["Enter", " "], (event) => {
 	if (!tabHasFocus.value || props.activation !== "manual") {
 		return;
 	}
@@ -203,7 +223,7 @@ onMounted(() => {
  *     The details of the tab to be registered.
  */
 function registerTab(tab) {
-	if (tabData.value.find(existingTab => existingTab.tabId === tab.tabId) !== undefined) {
+	if (tabData.value.find((existingTab) => existingTab.tabId === tab.tabId) !== undefined) {
 		return;
 	}
 
@@ -275,7 +295,11 @@ function setActiveTabById(tabId, { rememberSelection = true } = {}) {
 
 	activeTabId.value = tabId;
 
-	if (rememberSelection === true && props.rememberSelection === true && window.location.hash.slice(1) !== tabId) {
+	if (
+		rememberSelection === true &&
+		props.rememberSelection === true &&
+		window.location.hash.slice(1) !== tabId
+	) {
 		window.history.pushState(null, null, `#${tabId}`);
 	}
 }
@@ -286,7 +310,10 @@ function setActiveTabById(tabId, { rememberSelection = true } = {}) {
  * When selecting a tab, we focus the relevant anchor.
  */
 function selectPreviousTab() {
-	const previousIndex = getNextIndex(activeTabIndex.value, tabs.value, { reverse: true, wrap: true });
+	const previousIndex = getNextIndex(activeTabIndex.value, tabs.value, {
+		reverse: true,
+		wrap: true,
+	});
 
 	setActiveTabByIndex(previousIndex);
 	focusTabByIndex(previousIndex);
@@ -389,11 +416,12 @@ function updateIndicators() {
 
 <style>
 [data-selector="tab-group-nav"] {
-	position:relative;
+	position: relative;
 }
 
 [data-selector="tab-group-nav"] {
-	&::before, &::after {
+	&::before,
+	&::after {
 		content: "";
 		display: none;
 		position: absolute;
@@ -406,13 +434,15 @@ function updateIndicators() {
 }
 
 [data-selector="tab-group-nav"] {
-	&.show-left::before, &.show-right::after {
+	&.show-left::before,
+	&.show-right::after {
 		display: block;
 	}
 }
 
 [data-selector="tab-group-nav"].wrap-tabs {
-	&::before, &::after {
+	&::before,
+	&::after {
 		display: none;
 	}
 }

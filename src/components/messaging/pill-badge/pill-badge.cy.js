@@ -2,7 +2,7 @@ import PillBadge from "./pill-badge.vue";
 import { createMount } from "@cypress/support/mount";
 
 const defaultSlots = { default: "Pill label" };
-const mount = createMount(PillBadge, { slots: defaultSlots } );
+const mount = createMount(PillBadge, { slots: defaultSlots });
 
 describe("pill-badge", () => {
 	it("Renders a pill badge", () => {
@@ -24,11 +24,11 @@ describe("pill-badge", () => {
 		{ name: "pink", classes: ["bg-pink-50"] },
 	];
 
-	colors.forEach(colour => {
+	colors.forEach((colour) => {
 		it(`Supports colour: ${colour.name}`, () => {
 			mount({ colour: colour.name });
 
-			colour.classes.forEach(className => {
+			colour.classes.forEach((className) => {
 				cy.getByData("pill-badge").shouldHaveClass(className);
 			});
 		});

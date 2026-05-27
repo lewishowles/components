@@ -1,6 +1,16 @@
 <template>
-	<ul v-if="haveUsers" class="flex items-center gap-1" :class="{ 'ms-2': shouldOverlap }" data-test="user-avatars">
-		<li v-for="(user, userIndex) in internalUsers" :key="userIndex" :class="[shapeClasses, overlapClasses]" data-test="user-avatars-user">
+	<ul
+		v-if="haveUsers"
+		class="flex items-center gap-1"
+		:class="{ 'ms-2': shouldOverlap }"
+		data-test="user-avatars"
+	>
+		<li
+			v-for="(user, userIndex) in internalUsers"
+			:key="userIndex"
+			:class="[shapeClasses, overlapClasses]"
+			data-test="user-avatars-user"
+		>
 			<image-tag
 				v-if="user.showAvatar"
 				v-bind="{ src: user.avatar, alt: user.tooltip, title: user.tooltip }"
@@ -10,12 +20,20 @@
 				@error="handleImageError(user.avatar)"
 			/>
 
-			<div v-else-if="user.hasInitials" v-bind="{ title: user.tooltip }" class="flex items-center justify-center text-sm font-bold" :class="[size, shapeClasses, initialsColourClasses]">
+			<div
+				v-else-if="user.hasInitials"
+				v-bind="{ title: user.tooltip }"
+				class="flex items-center justify-center text-sm font-bold"
+				:class="[size, shapeClasses, initialsColourClasses]"
+			>
 				{{ user.initials }}
 			</div>
 		</li>
 		<li v-if="haveOverflowUsers" :class="[shapeClasses, overlapClasses]">
-			<div class="flex items-center justify-center text-sm font-bold" :class="[size, shapeClasses, initialsColourClasses]">
+			<div
+				class="flex items-center justify-center text-sm font-bold"
+				:class="[size, shapeClasses, initialsColourClasses]"
+			>
 				+{{ overflowUserCount }}
 			</div>
 		</li>
@@ -119,7 +137,8 @@ const internalUsers = computed(() => {
 		const internalUser = standardiseUser(user);
 
 		if (internalUser) {
-			internalUser.showAvatar = internalUser.hasAvatar && !failedAvatars.value.includes(user.avatar);
+			internalUser.showAvatar =
+				internalUser.hasAvatar && !failedAvatars.value.includes(user.avatar);
 
 			users.push(internalUser);
 		}
@@ -142,8 +161,13 @@ const overflowUserCount = computed(() => {
 
 // Whether we have overflow users.
 const haveOverflowUsers = computed(() => overflowUserCount.value > 0);
+
 // Whether the avatars should overlap.
-const shouldOverlap = computed(() => props.overlap === true || (!["square", "squircle"].includes(props.shape) && props.overlap === null));
+const shouldOverlap = computed(
+	() =>
+		props.overlap === true ||
+		(!["square", "squircle"].includes(props.shape) && props.overlap === null),
+);
 
 // The classes to apply our selected shape, defaulting to round if we don't
 // recognise the shape provided.
@@ -203,7 +227,11 @@ function standardiseUser(user) {
 	};
 
 	if (hasName && !hasInitials) {
-		internalUser.initials = user.name.split(" ").map(word => word[0]).join("").toUpperCase();
+		internalUser.initials = user.name
+			.split(" ")
+			.map((word) => word[0])
+			.join("")
+			.toUpperCase();
 	}
 
 	// Set our tooltip, so that users can see who each image represents

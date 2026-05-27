@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-checkbox" v-model="textSlots">
-		<template #title>
-			Form checkbox
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-form-checkbox"
+		v-model="textSlots"
+	>
+		<template #title> Form checkbox </template>
 
 		<form-checkbox v-model="componentModel">
 			{{ textSlots.default?.value }}
@@ -33,7 +35,8 @@ const textSlots = ref({
 	},
 	help: {
 		label: "Help text",
-		value: "When you confirm your newsletter subscription, we'll send you an email with your exclusive discount code.",
+		value:
+			"When you confirm your newsletter subscription, we'll send you an email with your exclusive discount code.",
 		type: "textarea",
 	},
 	error: {

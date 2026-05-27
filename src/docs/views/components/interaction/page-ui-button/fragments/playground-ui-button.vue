@@ -1,8 +1,6 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-ui-button" v-model="textSlots">
-		<template #title>
-			Simple button
-		</template>
+		<template #title> Simple button </template>
 
 		<template #introduction>
 			<p>A simple UI button</p>
@@ -45,9 +43,7 @@ const events = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("ui-button", { slots: textSlots, props, events });

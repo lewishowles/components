@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-notification-handler" v-model="textSlots">
-		<template #title>
-			Notification handler
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-notification-handler"
+		v-model="textSlots"
+	>
+		<template #title> Notification handler </template>
 
 		<template #introduction>
 			<p>Displaying a sample set of notifications.</p>
@@ -61,7 +63,8 @@ const notifications = [
 		id: "f78e6fd5-a84a-49fa-8b6c-e30279ff805a",
 		type: "info",
 		title: "Scheduled maintenance",
-		message: "Our system will undergo maintenance on March 15th from 2 AM to 5 AM. Please save your work and log out before this time.",
+		message:
+			"Our system will undergo maintenance on March 15th from 2 AM to 5 AM. Please save your work and log out before this time.",
 		date: "2025-03-22",
 		icon: "icon-spanner",
 		pinned: true,
@@ -78,7 +81,8 @@ const notifications = [
 		id: "eed20d2b-3f2c-4c85-bc4f-b7f99ef19efa",
 		type: "warning",
 		title: "Your subscription is due to expire",
-		message: "Your subscription is due to expire in 3 days (24 Mar). Renew now to avoid interruptions.",
+		message:
+			"Your subscription is due to expire in 3 days (24 Mar). Renew now to avoid interruptions.",
 		date: "2025-03-21",
 		icon: "icon-card",
 	},
@@ -112,9 +116,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("notification-handler", { slots: textSlots, props });

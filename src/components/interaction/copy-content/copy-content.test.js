@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 import { nextTick } from "vue";
 import CopyContent from "./copy-content.vue";
 

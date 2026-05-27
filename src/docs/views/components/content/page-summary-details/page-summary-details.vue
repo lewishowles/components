@@ -1,239 +1,185 @@
 <template>
 	<component-page>
-		<template #title>
-			Summary details
-		</template>
+		<template #title> Summary details </template>
 
 		<template #introduction>
-			<p>Provides an implementation of the <code>details</code> element with optional extras, such as custom icons, and allows a simple way of having content that can be toggled. Suitable for items such as FAQs or even dropdown menus.</p>
+			<p>
+				Provides an implementation of the <code>details</code> element with optional extras, such as
+				custom icons, and allows a simple way of having content that can be toggled. Suitable for
+				items such as FAQs or even dropdown menus.
+			</p>
 
-			<p>When closed, the content is hidden using <code>hidden=&quot;until-found&quot;</code>, making it discoverable by find-in-page searches. When the user finds text within a closed <code>summary-details</code>, the component is automatically kept in sync.</p>
+			<p>
+				When closed, the content is hidden using <code>hidden=&quot;until-found&quot;</code>, making
+				it discoverable by find-in-page searches. When the user finds text within a closed
+				<code>summary-details</code>, the component is automatically kept in sync.
+			</p>
 		</template>
 
 		<component-props>
 			<component-prop id="prop-open">
-				<template #name>
-					open
-				</template>
+				<template #name> open </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					false
-				</template>
+				<template #default-value> false </template>
 
 				<p>Whether the details element should initially be open.</p>
 			</component-prop>
 
 			<component-prop id="prop-autofocus">
-				<template #name>
-					autofocus
-				</template>
+				<template #name> autofocus </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					false
-				</template>
+				<template #default-value> false </template>
 
-				<p>Whether to focus the first focusable element in the content area when the details are opened. Useful when the content contains a form or an action the user is expected to interact with immediately.</p>
+				<p>
+					Whether to focus the first focusable element in the content area when the details are
+					opened. Useful when the content contains a form or an action the user is expected to
+					interact with immediately.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-toggletip">
-				<template #name>
-					toggletip
-				</template>
+				<template #name> toggletip </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					false
-				</template>
+				<template #default-value> false </template>
 
-				<p>Whether to treat the content as a toggletip, content which is announced immediately when opened. This is good for information tooltips, for example.</p>
+				<p>
+					Whether to treat the content as a toggletip, content which is announced immediately when
+					opened. This is good for information tooltips, for example.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-close-with-escape">
-				<template #name>
-					closeWithEscape
-				</template>
+				<template #name> closeWithEscape </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					true
-				</template>
+				<template #default-value> true </template>
 
-				<p>Whether to close the details element when pressing escape. If focus is within this component, focus is moved to the summary element.</p>
+				<p>
+					Whether to close the details element when pressing escape. If focus is within this
+					component, focus is moved to the summary element.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-close-with-click-outside">
-				<template #name>
-					closeWithClickOutside
-				</template>
+				<template #name> closeWithClickOutside </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					false
-				</template>
+				<template #default-value> false </template>
 
-				<p>Whether to close the details element when clicking outside of the component. This is best combined with <code>floating</code> for menus.</p>
+				<p>
+					Whether to close the details element when clicking outside of the component. This is best
+					combined with <code>floating</code> for menus.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-icon-open">
-				<template #name>
-					iconOpen
-				</template>
+				<template #name> iconOpen </template>
 
-				<template #type>
-					String
-				</template>
+				<template #type> String </template>
 
-				<template #default-value>
-					icon-chevron-up
-				</template>
+				<template #default-value> icon-chevron-up </template>
 
 				<p>The icon to display when the details are open.</p>
 			</component-prop>
 
 			<component-prop id="prop-icon-closed">
-				<template #name>
-					iconClosed
-				</template>
+				<template #name> iconClosed </template>
 
-				<template #type>
-					String
-				</template>
+				<template #type> String </template>
 
-				<template #default-value>
-					icon-chevron-down
-				</template>
+				<template #default-value> icon-chevron-down </template>
 
 				<p>The icon to display when the details are closed.</p>
 			</component-prop>
 
 			<component-prop id="prop-icon">
-				<template #name>
-					icon
-				</template>
+				<template #name> icon </template>
 
-				<template #type>
-					String
-				</template>
+				<template #type> String </template>
 
-				<template #default-value>
-					null
-				</template>
+				<template #default-value> null </template>
 
 				<p>An override icon, shown both when details are open and closed.</p>
 			</component-prop>
 
 			<component-prop id="prop-icon-at-start">
-				<template #name>
-					iconAtStart
-				</template>
+				<template #name> iconAtStart </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					false
-				</template>
+				<template #default-value> false </template>
 
 				<p>Whether to display the icon at the start of the summary, as opposed to the end.</p>
 			</component-prop>
 
 			<component-prop id="prop-include-icon">
-				<template #name>
-					includeIcon
-				</template>
+				<template #name> includeIcon </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					true
-				</template>
+				<template #default-value> true </template>
 
-				<p>Whether to include a summary icon at all. This allows more flexibility with the styling of the summary, but it is important to make it clear to the user what is happening.</p>
+				<p>
+					Whether to include a summary icon at all. This allows more flexibility with the styling of
+					the summary, but it is important to make it clear to the user what is happening.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-summary-classes">
-				<template #name>
-					summaryClasses
-				</template>
+				<template #name> summaryClasses </template>
 
-				<template #type>
-					String
-				</template>
+				<template #type> String </template>
 
-				<template #default-value>
-					null
-				</template>
+				<template #default-value> null </template>
 
-				<p>Any classes to add to the summary element, allowing styling to wrap both the summary and icons.</p>
+				<p>
+					Any classes to add to the summary element, allowing styling to wrap both the summary and
+					icons.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-details-classes">
-				<template #name>
-					detailsClasses
-				</template>
+				<template #name> detailsClasses </template>
 
-				<template #type>
-					String
-				</template>
+				<template #type> String </template>
 
-				<template #default-value>
-					null
-				</template>
+				<template #default-value> null </template>
 
 				<p>Any classes to add to the details content wrapper.</p>
 			</component-prop>
 
 			<component-prop id="prop-icon-classes">
-				<template #name>
-					iconClasses
-				</template>
+				<template #name> iconClasses </template>
 
-				<template #type>
-					String
-				</template>
+				<template #type> String </template>
 
-				<template #default-value>
-					null
-				</template>
+				<template #default-value> null </template>
 
-				<p>Any classes to add to the icon itself. Particularly useful if the icon is the only visible summary element.</p>
+				<p>
+					Any classes to add to the icon itself. Particularly useful if the icon is the only visible
+					summary element.
+				</p>
 			</component-prop>
 		</component-props>
 
 		<component-slots>
 			<component-slot id="slot-summary">
-				<template #name>
-					summary
-				</template>
+				<template #name> summary </template>
 
 				<p>The content to be displayed in the summary.</p>
 
 				<table>
 					<thead>
 						<tr>
-							<th class="whitespace-nowrap">
-								Slot prop
-							</th>
+							<th class="whitespace-nowrap">Slot prop</th>
 							<th>Type</th>
 							<th>Description</th>
 						</tr>
@@ -269,18 +215,14 @@
 			</component-slot>
 
 			<component-slot id="slot-default">
-				<template #name>
-					default
-				</template>
+				<template #name> default </template>
 
 				<p>The content to be displayed in the details element when open.</p>
 
 				<table>
 					<thead>
 						<tr>
-							<th class="whitespace-nowrap">
-								Slot prop
-							</th>
+							<th class="whitespace-nowrap">Slot prop</th>
 							<th>Type</th>
 							<th>Description</th>
 						</tr>
@@ -318,25 +260,19 @@
 
 		<component-events>
 			<component-event id="event-v-model">
-				<template #name>
-					v-model
-				</template>
+				<template #name> v-model </template>
 
 				<p>The current status of the component, and whether it is open.</p>
 			</component-event>
 
 			<component-event id="event-open">
-				<template #name>
-					open
-				</template>
+				<template #name> open </template>
 
 				<p>Fired when the details element is opened.</p>
 			</component-event>
 
 			<component-event id="event-close">
-				<template #name>
-					close
-				</template>
+				<template #name> close </template>
 
 				<p>Fired when the details element is closed.</p>
 			</component-event>

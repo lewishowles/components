@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import IconArrowLast from "./icon-arrow-last.vue";
 
 const mount = createMount(IconArrowLast);

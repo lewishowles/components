@@ -50,7 +50,7 @@ describe("ui-button", () => {
 
 			cy.getByData("ui-button").click();
 
-			cy.getComponent().then(component => {
+			cy.getComponent().then((component) => {
 				component.reset();
 
 				cy.getByData("ui-button-status").shouldHaveText("");
@@ -72,7 +72,11 @@ describe("ui-button", () => {
 		});
 
 		it("A `loadingAuto` button enters loading state when the handler returns a Promise", () => {
-			mount({ reactive: "true", loadingAuto: true, onClick: () => new Promise(resolve => setTimeout(resolve, 100)) });
+			mount({
+				reactive: "true",
+				loadingAuto: true,
+				onClick: () => new Promise((resolve) => setTimeout(resolve, 100)),
+			});
 
 			cy.getByData("ui-button").click();
 
@@ -80,7 +84,11 @@ describe("ui-button", () => {
 		});
 
 		it("A `loadingAuto` button auto-resets when the Promise resolves", () => {
-			mount({ reactive: "true", loadingAuto: true, onClick: () => new Promise(resolve => setTimeout(resolve, 100)) });
+			mount({
+				reactive: "true",
+				loadingAuto: true,
+				onClick: () => new Promise((resolve) => setTimeout(resolve, 100)),
+			});
 
 			cy.getByData("ui-button").click();
 
@@ -96,7 +104,7 @@ describe("ui-button", () => {
 			cy.getByData("ui-button-icon-end").shouldNotBeVisible();
 			cy.getByData("ui-button-loading").shouldBeVisible();
 
-			cy.getComponent().then(component => {
+			cy.getComponent().then((component) => {
 				component.reset(); // Call the exposed method
 
 				cy.getByData("ui-button-label").shouldBeVisible();

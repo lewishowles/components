@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "vite-plus/test";
 import { nextTick } from "vue";
 import useTitle from "./use-title";
 
@@ -17,7 +17,7 @@ describe("useTitle", () => {
 		expect(response).toBeTypeOf("object");
 	});
 
-	test("should set a new title with setTitle", async() => {
+	test("should set a new title with setTitle", async () => {
 		const { title, setTitle } = useTitle();
 
 		setTitle("New page");

@@ -8,25 +8,25 @@
 
 The content to be displayed in the summary.
 
-| Slot prop | Type | Description |
-| --- | --- | --- |
-| `isOpen` | `boolean` | Whether the panel is currently visible. |
-| `icon` | `string` | The computed icon for the current state. |
-| `open` | `function` | Opens the panel. |
-| `close` | `function` | Closes the panel. |
-| `toggle` | `function` | Toggles the panel open or closed. |
+| Slot prop | Type       | Description                              |
+| --------- | ---------- | ---------------------------------------- |
+| `isOpen`  | `boolean`  | Whether the panel is currently visible.  |
+| `icon`    | `string`   | The computed icon for the current state. |
+| `open`    | `function` | Opens the panel.                         |
+| `close`   | `function` | Closes the panel.                        |
+| `toggle`  | `function` | Toggles the panel open or closed.        |
 
 ### `default`
 
 The content to be displayed when the panel is open.
 
-| Slot prop | Type | Description |
-| --- | --- | --- |
-| `isOpen` | `boolean` | Whether the panel is currently visible. |
-| `icon` | `string` | The computed icon for the current state. |
-| `open` | `function` | Opens the panel. |
-| `close` | `function` | Closes the panel. |
-| `toggle` | `function` | Toggles the panel open or closed. |
+| Slot prop | Type       | Description                              |
+| --------- | ---------- | ---------------------------------------- |
+| `isOpen`  | `boolean`  | Whether the panel is currently visible.  |
+| `icon`    | `string`   | The computed icon for the current state. |
+| `open`    | `function` | Opens the panel.                         |
+| `close`   | `function` | Closes the panel.                        |
+| `toggle`  | `function` | Toggles the panel open or closed.        |
 
 ## Props
 
@@ -175,9 +175,7 @@ Close the details.
 
 ```html
 <floating-details>
-	<template #summary>
-		Summary content
-	</template>
+	<template #summary> Summary content </template>
 
 	Details content
 </floating-details>
@@ -187,9 +185,7 @@ Close the details.
 
 ```html
 <floating-details v-bind="{ icon: 'icon-user' }">
-	<template #summary>
-		Summary content
-	</template>
+	<template #summary> Summary content </template>
 
 	Details content
 </floating-details>

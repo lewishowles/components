@@ -1,12 +1,12 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-display-date-locale" v-model="textSlots">
-		<template #title>
-			Custom locale
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-display-date-locale"
+		v-model="textSlots"
+	>
+		<template #title> Custom locale </template>
 
-		<template #introduction>
-			Display a date with the default format and a custom locale.
-		</template>
+		<template #introduction> Display a date with the default format and a custom locale. </template>
 
 		<display-date v-bind="componentProps" />
 	</component-playground>
@@ -32,9 +32,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("display-date", { props });

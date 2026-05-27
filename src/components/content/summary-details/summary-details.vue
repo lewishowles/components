@@ -1,26 +1,68 @@
 <template>
-	<details ref="detailsElement" v-bind="{ 'data-test': dataTest }" :class="floatingClasses" @toggle="updateState">
-		<summary ref="summaryElement" class="inline-flex cursor-pointer list-none items-center gap-2" :class="summaryClasses" v-bind="{ 'data-test': `${dataTest}-summary` }">
-			<component :is="currentIcon" v-if="iconAtStart && includeIcon" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-start` }" />
+	<details
+		ref="detailsElement"
+		v-bind="{ 'data-test': dataTest }"
+		:class="floatingClasses"
+		@toggle="updateState"
+	>
+		<summary
+			ref="summaryElement"
+			class="inline-flex cursor-pointer list-none items-center gap-2"
+			:class="summaryClasses"
+			v-bind="{ 'data-test': `${dataTest}-summary` }"
+		>
+			<component
+				:is="currentIcon"
+				v-if="iconAtStart && includeIcon"
+				:class="iconClasses"
+				v-bind="{ 'data-test': `${dataTest}-icon-start` }"
+			/>
 
 			<conditional-wrapper v-bind="{ wrap: iconOnly, tag: 'span' }" class="sr-only">
-				<slot name="summary" v-bind="{ isOpen, icon: currentIcon, open: openDetails, close: closeDetails, toggle: toggleDetails }" />
+				<slot
+					name="summary"
+					v-bind="{
+						isOpen,
+						icon: currentIcon,
+						open: openDetails,
+						close: closeDetails,
+						toggle: toggleDetails,
+					}"
+				/>
 			</conditional-wrapper>
 
-			<component :is="currentIcon" v-if="includeIcon && !iconAtStart" :class="iconClasses" v-bind="{ 'data-test': `${dataTest}-icon-end` }" />
+			<component
+				:is="currentIcon"
+				v-if="includeIcon && !iconAtStart"
+				:class="iconClasses"
+				v-bind="{ 'data-test': `${dataTest}-icon-end` }"
+			/>
 		</summary>
 
 		<div
 			ref="contentElement"
-			:class="[floatingPositionClasses, { 'inset-s-0': alignStart, 'inset-e-0': !alignStart }, detailsClasses]"
+			:class="[
+				floatingPositionClasses,
+				{ 'inset-s-0': alignStart, 'inset-e-0': !alignStart },
+				detailsClasses,
+			]"
 			v-bind="{
 				hidden: isOpen ? undefined : 'until-found',
 				role: contentRole,
 				'aria-live': contentLive,
-				'data-test': `${dataTest}-content`
+				'data-test': `${dataTest}-content`,
 			}"
 		>
-			<slot v-if="!toggletip || shouldAnnounce" v-bind="{ isOpen, icon: currentIcon, open: openDetails, close: closeDetails, toggle: toggleDetails }" />
+			<slot
+				v-if="!toggletip || shouldAnnounce"
+				v-bind="{
+					isOpen,
+					icon: currentIcon,
+					open: openDetails,
+					close: closeDetails,
+					toggle: toggleDetails,
+				}"
+			/>
 		</div>
 	</details>
 </template>
@@ -264,7 +306,7 @@ const floatingPositionClasses = computed(() => {
 // "relative" class that would otherwise be necessary.
 const floatingClasses = computed(() => {
 	if (!props.floating) {
-		return;
+		return null;
 	}
 
 	const classes = attrs.class ? attrs.class.split(" ") : [];
@@ -300,12 +342,11 @@ onMounted(() => {
 	});
 });
 
-
 /**
  * When pressing escape, if requested, close the details element. If focus is
  * within the component, move focus to the summary.
  */
-onKeyStroke("Escape", event => {
+onKeyStroke("Escape", (event) => {
 	if (!isOpen.value || !props.closeWithEscape) {
 		return;
 	}
@@ -319,7 +360,7 @@ onKeyStroke("Escape", event => {
 	closeDetails();
 });
 
-onClickOutside(detailsElement, event => {
+onClickOutside(detailsElement, (event) => {
 	if (!isOpen.value || !props.closeWithClickOutside) {
 		return;
 	}
@@ -382,7 +423,7 @@ watch(isOpen, async () => {
 		// re-trigger the announcement even when the text hasn't changed.
 		shouldAnnounce.value = false;
 
-		await new Promise(resolve => setTimeout(resolve, 100));
+		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		shouldAnnounce.value = true;
 	}

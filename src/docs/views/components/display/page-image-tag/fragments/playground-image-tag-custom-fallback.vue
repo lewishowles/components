@@ -1,16 +1,12 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-image-tag" v-model="textSlots">
-		<template #title>
-			Custom fallback
-		</template>
+		<template #title> Custom fallback </template>
 
-		<template #introduction>
-			Displaying a custom fallback if an image fails to load.
-		</template>
+		<template #introduction> Displaying a custom fallback if an image fails to load. </template>
 
 		<image-tag v-bind="componentProps">
 			<template #fallback>
-				<div class="border-s-4 border-red-700 dark:border-red-300 p-2">
+				<div class="border-s-4 border-red-700 p-2 dark:border-red-300">
 					<icon-danger class="text-red-700 dark:text-red-300" />
 				</div>
 			</template>
@@ -60,9 +56,7 @@ const slots = computed(() => ({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("image-tag", { props, slots: slots.value });

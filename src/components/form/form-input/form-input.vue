@@ -4,11 +4,19 @@
 			<slot />
 		</form-label>
 
-		<conditional-wrapper v-bind="{ id: introductionId, wrap: haveIntroduction, tag: 'p' }" data-test="form-input-introduction">
+		<conditional-wrapper
+			v-bind="{ id: introductionId, wrap: haveIntroduction, tag: 'p' }"
+			data-test="form-input-introduction"
+		>
 			<slot name="introduction" />
 		</conditional-wrapper>
 
-		<div class="flex transition-shadow" :class="{ 'form-field--error': haveError }" data-selector="form-field-wrapper" data-test="form-input-wrapper">
+		<div
+			class="flex transition-shadow"
+			:class="{ 'form-field--error': haveError }"
+			data-selector="form-field-wrapper"
+			data-test="form-input-wrapper"
+		>
 			<input
 				ref="inputElement"
 				v-model="model"
@@ -36,7 +44,10 @@
 			</form-suffix>
 		</div>
 
-		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })">
+		<form-supplementary
+			v-bind="{ inputId }"
+			@update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })"
+		>
 			<template #error>
 				<slot name="error" />
 			</template>

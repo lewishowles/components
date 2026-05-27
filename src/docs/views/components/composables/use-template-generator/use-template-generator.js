@@ -29,7 +29,10 @@ import useTranslationMode from "@/docs/composables/use-translation-mode/use-tran
  *     Whether to indent the output, useful when using the output of this
  *     composable in the content of another component.
  */
-export default function useTemplateGenerator(componentTag, { slots = null, props = null, events = null, additionalContent = null, indent = 0 } = {}) {
+export default function useTemplateGenerator(
+	componentTag,
+	{ slots = null, props = null, events = null, additionalContent = null, indent } = {},
+) {
 	const { useTranslation, translationPathPrefix } = useTranslationMode();
 
 	const template = computed(() => {
@@ -42,7 +45,10 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 
 		// If this is an empty component, render it as self-closing.
 		if (!haveDefaultContent && !haveSlots && !haveAdditionalContent) {
-			return applyIndent(`<${componentTag}${propsTemplate.value}${eventsTemplate.value} />`, indent);
+			return applyIndent(
+				`<${componentTag}${propsTemplate.value}${eventsTemplate.value} />`,
+				indent,
+			);
 		}
 
 		let template = `<${componentTag}${propsTemplate.value}${eventsTemplate.value}>`;
@@ -63,7 +69,7 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 
 		// Add any existing slot templates.
 		if (isNonEmptyArray(slotTemplateSegments.value)) {
-			templateSections.push(...slotTemplateSegments.value.map(content => `\t${content}`));
+			templateSections.push(...slotTemplateSegments.value.map((content) => `\t${content}`));
 		}
 
 		// Add any existing additional content.
@@ -231,7 +237,9 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 					slotContent = `\t${slotContent}`;
 				}
 
-				templateSegments.push(`<template #${slotKey}>\n${applyIndent(slotContent, 1)}\n\t</template>`);
+				templateSegments.push(
+					`<template #${slotKey}>\n${applyIndent(slotContent, 1)}\n\t</template>`,
+				);
 			}
 		}
 
@@ -256,7 +264,9 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 		// translation, combining any translationPathPrefix with the key for
 		// the slot.
 		if (useTranslation.value) {
-			let slotContent = [translationPathPrefix.value, slotKey].filter(pathPart => pathPart).join(".");
+			let slotContent = [translationPathPrefix.value, slotKey]
+				.filter((pathPart) => pathPart)
+				.join(".");
 
 			slotContent = `{{ t("${slotContent}") }}`;
 
@@ -270,14 +280,14 @@ export default function useTemplateGenerator(componentTag, { slots = null, props
 	 * Get a standardised form of the given content, converting refs or arrays
 	 * as necessary.
 	 *
-	 * @param  {array|string|ref}  content
+	 * @param  {Array|string|object}  content
 	 *     The provided content to standardise.
 	 */
 	function getStandardisedContentString(content) {
 		const stableContent = unref(content);
 
 		if (isNonEmptyArray(stableContent)) {
-			return stableContent.map(section => unref(section)).join("\n\n");
+			return stableContent.map((section) => unref(section)).join("\n\n");
 		}
 
 		if (isNonEmptyString(stableContent)) {

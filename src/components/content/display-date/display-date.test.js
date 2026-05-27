@@ -1,6 +1,6 @@
 import { createMount } from "@unit/support/mount";
 import { Temporal } from "temporal-polyfill";
-import { describe, expect, test, vi } from "vitest";
+import { describe, expect, test, vi } from "vite-plus/test";
 
 import DisplayDate from "./display-date.vue";
 

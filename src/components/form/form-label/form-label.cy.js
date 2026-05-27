@@ -9,8 +9,6 @@ describe("form-label", () => {
 	it("A label is rendered", () => {
 		mount();
 
-		cy.getByData("form-label")
-			.shouldBeVisible()
-			.shouldHaveAttribute("for", "id-abc");
+		cy.getByData("form-label").shouldBeVisible().shouldHaveAttribute("for", "id-abc");
 	});
 });

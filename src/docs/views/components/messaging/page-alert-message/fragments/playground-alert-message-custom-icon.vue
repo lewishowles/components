@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-alert-message" v-model="textSlots">
-		<template #title>
-			Custom icon
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-alert-message"
+		v-model="textSlots"
+	>
+		<template #title> Custom icon </template>
 
 		<alert-message v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}
@@ -49,9 +51,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("alert-message", {

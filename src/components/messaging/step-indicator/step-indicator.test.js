@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import StepIndicator from "./step-indicator.vue";
 
 const mount = createMount(StepIndicator);
@@ -21,7 +21,7 @@ describe("step-indicator", () => {
 				expect(wrapper.vm.internalCurrentStep).toBe(10);
 			});
 
-			test("Clamps an invalid currentStep", async() => {
+			test("Clamps an invalid currentStep", async () => {
 				const wrapper = mount({ currentStep: -1, stepCount: 10 });
 
 				expect(wrapper.vm.internalCurrentStep).toBe(1);
@@ -33,7 +33,7 @@ describe("step-indicator", () => {
 		});
 
 		describe("proportionalValue", () => {
-			test("Reflects the current step", async() => {
+			test("Reflects the current step", async () => {
 				const wrapper = mount({ currentStep: 4, stepCount: 10 });
 
 				expect(wrapper.vm.proportionalValue).toBe(0.4);
@@ -45,7 +45,7 @@ describe("step-indicator", () => {
 		});
 
 		describe("percentageValue", () => {
-			test("Reflects the current step", async() => {
+			test("Reflects the current step", async () => {
 				const wrapper = mount({ currentStep: 4, stepCount: 10 });
 
 				expect(wrapper.vm.percentageValue).toBe(40);

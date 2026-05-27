@@ -7,15 +7,16 @@
 			class="w-full max-w-sm"
 			data-test="data-table-search-input"
 		>
-			<slot name="search-label">
-				Search
-			</slot>
+			<slot name="search-label"> Search </slot>
 		</form-input>
 
-		<ui-button v-show="haveSearchQuery" class="button--muted" data-test="data-table-search-reset-button" @click="resetSearchQuery">
-			<slot name="reset-search-label">
-				Reset search
-			</slot>
+		<ui-button
+			v-show="haveSearchQuery"
+			class="button--muted"
+			data-test="data-table-search-reset-button"
+			@click="resetSearchQuery"
+		>
+			<slot name="reset-search-label"> Reset search </slot>
 		</ui-button>
 	</div>
 </template>

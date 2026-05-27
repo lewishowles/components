@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-star-rating" v-model="textSlots">
-		<template #title>
-			Star rating (read only)
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-star-rating"
+		v-model="textSlots"
+	>
+		<template #title> Star rating (read only) </template>
 
 		<template #introduction>
 			<p>A basic star rating allows the user to provide a value from one to five.</p>
@@ -31,11 +33,11 @@ const componentModel = ref(null);
 
 // Our base text slots, available for the user to update.
 const textSlots = ref({
-	"default": {
+	default: {
 		label: "Rating label",
 		value: "Rating",
 	},
-	"introduction": {
+	introduction: {
 		label: "Introduction",
 		value: "Based on customer feedback received through the app.",
 	},
@@ -56,9 +58,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("star-rating", { slots: textSlots, props });

@@ -14,12 +14,18 @@
 			<slot />
 		</form-label>
 
-		<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }" data-test="form-input-group-introduction">
+		<conditional-wrapper
+			v-bind="{ wrap: haveIntroduction, tag: 'p' }"
+			data-test="form-input-group-introduction"
+		>
 			<slot name="introduction" />
 		</conditional-wrapper>
 
 		<slot name="options" v-bind="{ options: internalOptions, name: fieldName }">
-			<div class="flex flex-col mt-2" :class="{ '@xs:flex-row @xs:gap-10': inline, 'gap-2': !inline }">
+			<div
+				class="mt-2 flex flex-col"
+				:class="{ '@xs:flex-row @xs:gap-10': inline, 'gap-2': !inline }"
+			>
 				<template v-for="option in internalOptions" :key="option.id">
 					<div class="flex">
 						<input
@@ -28,7 +34,7 @@
 							v-model="model[fieldName]"
 							type="radio"
 							v-bind="{ id: option.id, value: option.value, name: fieldName }"
-							class="shrink-0 form-radio"
+							class="form-radio shrink-0"
 						/>
 
 						<input
@@ -37,7 +43,7 @@
 							v-model="model[option.value]"
 							type="checkbox"
 							v-bind="{ id: option.id, value: option.value, name: fieldName }"
-							class="shrink-0 form-checkbox"
+							class="form-checkbox shrink-0"
 						/>
 
 						<form-label v-bind="{ id: option.id, styled: false }" class="px-3 leading-6">
@@ -48,7 +54,11 @@
 			</div>
 		</slot>
 
-		<form-supplementary v-bind="{ inputId }" class="mt-1" @update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })">
+		<form-supplementary
+			v-bind="{ inputId }"
+			class="mt-1"
+			@update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })"
+		>
 			<template #error>
 				<slot name="error" />
 			</template>
@@ -165,8 +175,13 @@ const slots = useSlots();
 const isRadio = computed(() => props.type === "radio");
 // Whether this is a checkbox variant
 const isCheckbox = computed(() => props.type === "checkbox");
+
 // Standardised options.
-const { options: internalOptions } = useOptions(props.options, { labelKey: props.labelKey, valueKey: props.valueKey });
+const { options: internalOptions } = useOptions(props.options, {
+	labelKey: props.labelKey,
+	valueKey: props.valueKey,
+});
+
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
 // The computed name of this field, either the one provided, or one generated
@@ -199,7 +214,7 @@ function triggerFocus() {
 		return;
 	}
 
-	const selectedIndex = internalOptions.value.findIndex(option => option.value === model.value);
+	const selectedIndex = internalOptions.value.findIndex((option) => option.value === model.value);
 
 	if (selectedIndex !== -1) {
 		runComponentMethod(inputReferences.value[selectedIndex], "focus");

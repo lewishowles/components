@@ -11,4 +11,3 @@ describe("icon-plus", () => {
 		cy.get("svg").shouldBeVisible();
 	});
 });
-

@@ -1,8 +1,6 @@
 <template>
 	<component-page>
-		<template #title>
-			UI button
-		</template>
+		<template #title> UI button </template>
 
 		<template #introduction>
 			<p><code>ui-button</code> is an extension of the standard <code>button</code> element.</p>
@@ -10,185 +8,177 @@
 
 		<component-props>
 			<component-prop id="prop-icon-start">
-				<template #name>
-					iconStart
-				</template>
+				<template #name> iconStart </template>
 
-				<template #type>
-					String
-				</template>
+				<template #type> String </template>
 
-				<template #default-value>
-					null
-				</template>
+				<template #default-value> null </template>
 
 				<p>An icon to display at the start of a button.</p>
 
 				<p>
-					The icon is implemented using <code>&lt;component :is=&quot;...&quot;&gt;</code>, allowing the button to use icons it doesn't explicitly import. To be used in this way, the icon must be globally registered. You can find
+					The icon is implemented using <code>&lt;component :is=&quot;...&quot;&gt;</code>, allowing
+					the button to use icons it doesn't explicitly import. To be used in this way, the icon
+					must be globally registered. You can find
 					<router-link v-bind="{ to: 'icons' }">
-						the list of available icons in this project
-					</router-link>,
-					or you can use one that is globally registered in your project.
+						the list of available icons in this project </router-link
+					>, or you can use one that is globally registered in your project.
 				</p>
 
-				<p><em>Note that <code>start</code> and <code>end</code> depend on the current document direction.</em></p>
+				<p>
+					<em
+						>Note that <code>start</code> and <code>end</code> depend on the current document
+						direction.</em
+					>
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-icon-end">
-				<template #name>
-					iconEnd
-				</template>
+				<template #name> iconEnd </template>
 
-				<template #type>
-					String
-				</template>
+				<template #type> String </template>
 
-				<template #default-value>
-					null
-				</template>
+				<template #default-value> null </template>
 
 				<p>An icon to display at the start of a button.</p>
 
 				<p>
-					The icon is implemented using <code>&lt;component :is=&quot;...&quot;&gt;</code>, allowing the button to use icons it doesn't explicitly import. To be used in this way, the icon must be globally registered. You can find
+					The icon is implemented using <code>&lt;component :is=&quot;...&quot;&gt;</code>, allowing
+					the button to use icons it doesn't explicitly import. To be used in this way, the icon
+					must be globally registered. You can find
 					<router-link v-bind="{ to: 'icons' }">
-						the list of available icons in this project
-					</router-link>,
-					or you can use one that is globally registered in your project.
+						the list of available icons in this project </router-link
+					>, or you can use one that is globally registered in your project.
 				</p>
 
-				<p><em>Note that <code>start</code> and <code>end</code> depend on the current document direction.</em></p>
+				<p>
+					<em
+						>Note that <code>start</code> and <code>end</code> depend on the current document
+						direction.</em
+					>
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-icon-only">
-				<template #name>
-					iconOnly
-				</template>
+				<template #name> iconOnly </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					false
-				</template>
+				<template #default-value> false </template>
 
-				<p>Whether to only show an icon (and not the associated text). If true, the text is hidden via an <code>sr-only</code> class, so is still accessible to screen readers and therefore important. The displayed icon is also shown at <code>1em</code> size when alone, to better fill the button.</p>
+				<p>
+					Whether to only show an icon (and not the associated text). If true, the text is hidden
+					via an <code>sr-only</code> class, so is still accessible to screen readers and therefore
+					important. The displayed icon is also shown at <code>1em</code> size when alone, to better
+					fill the button.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-reactive">
-				<template #name>
-					reactive
-				</template>
+				<template #name> reactive </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					false
-				</template>
+				<template #default-value> false </template>
 
-				<p>When a button is <code>reactive</code>, it will show a loading indicator when activated. This can be deactivated via the exposed <code>reset</code> method.</p>
+				<p>
+					When a button is <code>reactive</code>, it will show a loading indicator when activated.
+					This can be deactivated via the exposed <code>reset</code> method.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-loading-auto">
-				<template #name>
-					loadingAuto
-				</template>
+				<template #name> loadingAuto </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					true
-				</template>
+				<template #default-value> true </template>
 
-				<p>When true, the button detects a Promise returned by the click listener and automatically enters its loading state, resetting when the Promise settles. Async functions return a Promise implicitly, so <code>@click="asyncFn"</code> works without any wrapping.</p>
+				<p>
+					When true, the button detects a Promise returned by the click listener and automatically
+					enters its loading state, resetting when the Promise settles. Async functions return a
+					Promise implicitly, so <code>@click="asyncFn"</code> works without any wrapping.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-pressed">
-				<template #name>
-					pressed
-				</template>
+				<template #name> pressed </template>
 
-				<template #type>
-					Boolean | null
-				</template>
+				<template #type> Boolean | null </template>
 
-				<template #default-value>
-					null
-				</template>
+				<template #default-value> null </template>
 
-				<p>The pressed state of this button, for toggle buttons. When <code>true</code> or <code>false</code>, <code>aria-pressed</code> is set accordingly. When <code>null</code> (default), <code>aria-pressed</code> is not set and the button behaves as a normal action button.</p>
+				<p>
+					The pressed state of this button, for toggle buttons. When <code>true</code> or
+					<code>false</code>, <code>aria-pressed</code> is set accordingly. When
+					<code>null</code> (default), <code>aria-pressed</code> is not set and the button behaves
+					as a normal action button.
+				</p>
 
-				<p>This is a controlled prop — the consumer owns the state and passes it in. That matters because toggle actions are often async (a mute request might fail), and <code>aria-pressed</code> must reflect actual truth, not an optimistic flip.</p>
+				<p>
+					This is a controlled prop — the consumer owns the state and passes it in. That matters
+					because toggle actions are often async (a mute request might fail), and
+					<code>aria-pressed</code> must reflect actual truth, not an optimistic flip.
+				</p>
 
-				<p>The visible label must remain stable across pressed and unpressed states; <code>aria-pressed</code> alone conveys the state change to screen reader users.</p>
+				<p>
+					The visible label must remain stable across pressed and unpressed states;
+					<code>aria-pressed</code> alone conveys the state change to screen reader users.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-icon-classes">
-				<template #name>
-					iconClasses
-				</template>
+				<template #name> iconClasses </template>
 
-				<template #type>
-					String
-				</template>
+				<template #type> String </template>
 
-				<template #default-value>
-					null
-				</template>
+				<template #default-value> null </template>
 
-				<p>Any classes to add to the icon itself. If a size class is added (<code>size-</code>), the default size class will not be included.</p>
+				<p>
+					Any classes to add to the icon itself. If a size class is added (<code>size-</code>), the
+					default size class will not be included.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-disabled">
-				<template #name>
-					disabled
-				</template>
+				<template #name> disabled </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					false
-				</template>
+				<template #default-value> false </template>
 
-				<p>Whether this button is disabled. Rather than using the native <code>disabled</code> attribute, which removes the button from the tab order entirely, this prop sets <code>aria-disabled="true"</code> and swallows click events. The button remains focusable, so keyboard and screen reader users can still encounter it and understand that the action is currently unavailable.</p>
+				<p>
+					Whether this button is disabled. Rather than using the native
+					<code>disabled</code> attribute, which removes the button from the tab order entirely,
+					this prop sets <code>aria-disabled="true"</code> and swallows click events. The button
+					remains focusable, so keyboard and screen reader users can still encounter it and
+					understand that the action is currently unavailable.
+				</p>
 			</component-prop>
 		</component-props>
 
 		<component-slots>
 			<component-slot id="slot-default">
-				<template #name>
-					default
-				</template>
+				<template #name> default </template>
 
 				<p>The default slot contains the content to display in the button.</p>
 			</component-slot>
 
 			<component-slot id="slot-loading-label">
-				<template #name>
-					loading-label
-				</template>
+				<template #name> loading-label </template>
 
-				<template #default-value>
-					Loading
-				</template>
+				<template #default-value> Loading </template>
 
-				<p>The text announced to screen readers when the button is in its loading state. Populates a live region inside the button, so it is read aloud when the button becomes busy.</p>
+				<p>
+					The text announced to screen readers when the button is in its loading state. Populates a
+					live region inside the button, so it is read aloud when the button becomes busy.
+				</p>
 			</component-slot>
 		</component-slots>
 
 		<component-events>
 			<component-event id="event-click">
-				<template #name>
-					click
-				</template>
+				<template #name> click </template>
 
 				<p>Emitted when the button is clicked or activated via keyboard.</p>
 			</component-event>
@@ -200,7 +190,11 @@
 					<code>react</code>
 				</template>
 
-				<p>Show the "reacting" state, as though someone had clicked the button. This is helpful if another element performs the same action as the button might, but you still want to show feedback to the user.</p>
+				<p>
+					Show the "reacting" state, as though someone had clicked the button. This is helpful if
+					another element performs the same action as the button might, but you still want to show
+					feedback to the user.
+				</p>
 			</component-method>
 
 			<component-method id="method-reset">

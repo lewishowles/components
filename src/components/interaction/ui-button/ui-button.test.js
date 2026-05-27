@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import { nextTick } from "vue";
 import UiButton from "./ui-button.vue";
 
@@ -85,14 +85,22 @@ describe("ui-button", () => {
 				const wrapper = mount({ iconStart: "icon-arrow-left" });
 				const vm = wrapper.vm;
 
-				expect(vm.computedIconClasses).toEqual(["stroke-current", "inline-block align-[0]", "size-[0.857em]"]);
+				expect(vm.computedIconClasses).toEqual([
+					"stroke-current",
+					"inline-block align-[0]",
+					"size-[0.857em]",
+				]);
 			});
 
 			test("should return base classes combined with provided classes if no size is defined", () => {
 				const wrapper = mount({ iconStart: "icon-arrow-left", iconClasses: "rounded-full" });
 				const vm = wrapper.vm;
 
-				expect(vm.computedIconClasses).toEqual(["rounded-full", "stroke-current", "size-[0.857em]"]);
+				expect(vm.computedIconClasses).toEqual([
+					"rounded-full",
+					"stroke-current",
+					"size-[0.857em]",
+				]);
 			});
 
 			test("should return the correct combined classes if a size is defined", () => {
@@ -140,7 +148,10 @@ describe("ui-button", () => {
 			test("Should enter loading state when the click handler returns a Promise", async () => {
 				let resolve;
 
-				const promise = new Promise(r => { resolve = r; });
+				const promise = new Promise((r) => {
+					resolve = r;
+				});
+
 				const wrapper = mount({ loadingAuto: true, reactive: true, onClick: () => promise });
 
 				await wrapper.trigger("click");
@@ -157,7 +168,10 @@ describe("ui-button", () => {
 			test("Should auto-reset when the Promise rejects", async () => {
 				let reject;
 
-				const promise = new Promise((_, r) => { reject = r; });
+				const promise = new Promise((_, r) => {
+					reject = r;
+				});
+
 				const wrapper = mount({ loadingAuto: true, reactive: true, onClick: () => promise });
 
 				await wrapper.trigger("click");

@@ -10,14 +10,7 @@
 			<line x1="12.621" x2="12.621" y1="3" y2="6.5" />
 			<line x1="5.379" x2="5.379" y1="11.5" y2="15" />
 			<line x1="12.621" x2="12.621" y1="11.5" y2="15" />
-			<rect
-				width="14"
-				height="12"
-				x="2"
-				y="3"
-				rx="2"
-				transform="rotate(180 9 9)"
-			/>
+			<rect width="14" height="12" x="2" y="3" rx="2" transform="rotate(180 9 9)" />
 		</g>
 	</base-icon>
 </template>

@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import IconClipboard from "./icon-clipboard.vue";
 
 const mount = createMount(IconClipboard);

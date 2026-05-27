@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import useOptions from "./use-options";
 
 describe("use-options", () => {
@@ -114,7 +114,7 @@ describe("use-options", () => {
 				]);
 			});
 
-			test("An array of objects with a \"label\" and a \"value\" is converted", () => {
+			test('An array of objects with a "label" and a "value" is converted', () => {
 				const { options } = useOptions([
 					{ label: "one", value: 1 },
 					{ label: "two", value: 2 },
@@ -146,12 +146,15 @@ describe("use-options", () => {
 				]);
 			});
 
-			test("An array of objects with defined \"labelKey\" and a \"valueKey\" is converted", () => {
-				const { options } = useOptions([
-					{ sport: "Tennis", score: 1 },
-					{ sport: "Curling", score: 2 },
-					{ sport: "Ice Hockey", score: 3 },
-				], { labelKey: "sport", valueKey: "score" });
+			test('An array of objects with defined "labelKey" and a "valueKey" is converted', () => {
+				const { options } = useOptions(
+					[
+						{ sport: "Tennis", score: 1 },
+						{ sport: "Curling", score: 2 },
+						{ sport: "Ice Hockey", score: 3 },
+					],
+					{ labelKey: "sport", valueKey: "score" },
+				);
 
 				expect(options.value).toEqual([
 					{
@@ -179,11 +182,7 @@ describe("use-options", () => {
 			});
 
 			test("Multiple option types can be combined", () => {
-				const { options } = useOptions([
-					{ label: "one", value: 1 },
-					"two",
-					3,
-				]);
+				const { options } = useOptions([{ label: "one", value: 1 }, "two", 3]);
 
 				expect(options.value).toEqual([
 					{
@@ -230,22 +229,28 @@ describe("use-options", () => {
 				expect(options.value).toEqual([]);
 			});
 
-			test("An object not containing a defined \"labelKey\" property is ignored", () => {
-				const { options } = useOptions([
-					{ label: "one", score: 1 },
-					{ label: "two", score: 2 },
-					{ label: "three", score: 3 },
-				], { labelKey: "sport" });
+			test('An object not containing a defined "labelKey" property is ignored', () => {
+				const { options } = useOptions(
+					[
+						{ label: "one", score: 1 },
+						{ label: "two", score: 2 },
+						{ label: "three", score: 3 },
+					],
+					{ labelKey: "sport" },
+				);
 
 				expect(options.value).toEqual([]);
 			});
 
-			test("An object not containing a defined \"valueKey\" property is ignored", () => {
-				const { options } = useOptions([
-					{ label: "one", value: 1 },
-					{ label: "two", value: 2 },
-					{ label: "three", value: 3 },
-				], { valueKey: "score" });
+			test('An object not containing a defined "valueKey" property is ignored', () => {
+				const { options } = useOptions(
+					[
+						{ label: "one", value: 1 },
+						{ label: "two", value: 2 },
+						{ label: "three", value: 3 },
+					],
+					{ valueKey: "score" },
+				);
 
 				expect(options.value).toEqual([]);
 			});

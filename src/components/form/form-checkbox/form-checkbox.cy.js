@@ -66,8 +66,7 @@ describe("form-checkbox", () => {
 				.shouldHaveText("Help text")
 				.shouldHaveAttribute("id", "id-abc-help");
 
-			cy.getFormField("form-checkbox")
-				.shouldHaveAttribute("aria-describedby", "id-abc-help");
+			cy.getFormField("form-checkbox").shouldHaveAttribute("aria-describedby", "id-abc-help");
 		});
 
 		it("An error can be supplied", () => {
@@ -78,8 +77,7 @@ describe("form-checkbox", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getFormField("form-checkbox")
-				.shouldHaveAttribute("aria-describedby", "id-abc-error");
+			cy.getFormField("form-checkbox").shouldHaveAttribute("aria-describedby", "id-abc-error");
 		});
 
 		it("Both help and an error can be supplied", () => {
@@ -95,8 +93,10 @@ describe("form-checkbox", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getFormField("form-checkbox")
-				.shouldHaveAttribute("aria-describedby", "id-abc-help id-abc-error");
+			cy.getFormField("form-checkbox").shouldHaveAttribute(
+				"aria-describedby",
+				"id-abc-help id-abc-error",
+			);
 		});
 	});
 });

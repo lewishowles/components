@@ -1,72 +1,65 @@
 <template>
 	<component-page>
-		<template #title>
-			Modal dialog
-		</template>
+		<template #title> Modal dialog </template>
 
 		<template #introduction>
-			<p>The <code>modal-dialog</code> component provides a base modal dialog. When opened, the user's focus is moved to the dialog, and the rest of the page is made inert.</p>
+			<p>
+				The <code>modal-dialog</code> component provides a base modal dialog. When opened, the
+				user's focus is moved to the dialog, and the rest of the page is made inert.
+			</p>
 
 			<p>Dialogs should be used sparingly, ideally for confirmation actions.</p>
 
-			<p>Using <a href="/messaging/modal-controller"><code>modal-controller</code></a> with <code>useModalDialog</code> is recommended, as opposed to creating individual modals within other components.</p>
+			<p>
+				Using <a href="/messaging/modal-controller"><code>modal-controller</code></a> with
+				<code>useModalDialog</code> is recommended, as opposed to creating individual modals within
+				other components.
+			</p>
 		</template>
 
 		<component-props>
 			<component-prop id="prop-initially-open">
-				<template #name>
-					initiallyOpen
-				</template>
+				<template #name> initiallyOpen </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					false
-				</template>
+				<template #default-value> false </template>
 
-				<p>Whether the dialog should open itself immediately. This is true by default for use with <code>modal-controller</code>, but will likely need to be set to false if used directly.</p>
+				<p>
+					Whether the dialog should open itself immediately. This is true by default for use with
+					<code>modal-controller</code>, but will likely need to be set to false if used directly.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-focus-dialog-on-open">
-				<template #name>
-					focusDialogOnOpen
-				</template>
+				<template #name> focusDialogOnOpen </template>
 
-				<template #type>
-					Boolean
-				</template>
+				<template #type> Boolean </template>
 
-				<template #default-value>
-					true
-				</template>
+				<template #default-value> true </template>
 
-				<p>When opening the dialog, determine whether to focus the dialog itself, or the first focusable element within it.</p>
+				<p>
+					When opening the dialog, determine whether to focus the dialog itself, or the first
+					focusable element within it.
+				</p>
 			</component-prop>
 		</component-props>
 
 		<component-slots>
 			<component-slot id="slot-title">
-				<template #name>
-					title
-				</template>
+				<template #name> title </template>
 
 				<p>The title of the dialog.</p>
 			</component-slot>
 
 			<component-slot id="slot-default">
-				<template #name>
-					default
-				</template>
+				<template #name> default </template>
 
 				<p>The main content of the dialog.</p>
 			</component-slot>
 
 			<component-slot id="slot-actions">
-				<template #name>
-					actions
-				</template>
+				<template #name> actions </template>
 
 				<p>Any specific action buttons the user should be able to interact with.</p>
 			</component-slot>
@@ -74,9 +67,7 @@
 
 		<component-events>
 			<component-event id="event-dialog:close">
-				<template #name>
-					dialog:close
-				</template>
+				<template #name> dialog:close </template>
 
 				<p>Fired when the dialog is closed by the user.</p>
 			</component-event>

@@ -1,8 +1,6 @@
 <template>
 	<component-tab v-bind="{ id: 'tab-playground', icon: 'icon-code' }">
-		<template #title>
-			Playground
-		</template>
+		<template #title> Playground </template>
 
 		<template #default>
 			<slot name="additional-content" />

@@ -20,7 +20,10 @@
 			<component-slot id="slot-description">
 				<template #name> description </template>
 
-				<p>Additional context about the chart's findings. Use this to describe trends rather than repeating the label.</p>
+				<p>
+					Additional context about the chart's findings. Use this to describe trends rather than
+					repeating the label.
+				</p>
 			</component-slot>
 		</component-slots>
 

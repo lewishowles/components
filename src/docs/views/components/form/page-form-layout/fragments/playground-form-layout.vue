@@ -1,19 +1,23 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-form-fieldset" v-model="textSlots">
-		<template #title>
-			Fieldset
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-form-fieldset"
+		v-model="textSlots"
+	>
+		<template #title> Fieldset </template>
 
 		<form-layout>
 			<form-field name="name">
 				Your name
 
 				<template #introduction>
-					We will only use your name to address you in your account and communications, and will not pass it on to third parties.
+					We will only use your name to address you in your account and communications, and will not
+					pass it on to third parties.
 				</template>
 
 				<template #help>
-					Please use the name you wish to be addressed by, even if this is different to your legal name.
+					Please use the name you wish to be addressed by, even if this is different to your legal
+					name.
 				</template>
 			</form-field>
 
@@ -48,11 +52,13 @@ const nameFieldTemplate = useTemplateGenerator("form-field", {
 		},
 
 		introduction: {
-			value: "We will only use your name to address you in your account and communications, and will not pass it on to third parties.",
+			value:
+				"We will only use your name to address you in your account and communications, and will not pass it on to third parties.",
 		},
 
 		help: {
-			value: "Please use the name you wish to be addressed by, even if this is different to your legal name.",
+			value:
+				"Please use the name you wish to be addressed by, even if this is different to your legal name.",
 		},
 	},
 	indent: 1,
@@ -81,10 +87,7 @@ const emailFieldTemplate = useTemplateGenerator("form-field", {
 	indent: 1,
 });
 
-const additionalContent = [
-	nameFieldTemplate,
-	emailFieldTemplate,
-];
+const additionalContent = [nameFieldTemplate, emailFieldTemplate];
 
 const template = useTemplateGenerator("form-layout", { additionalContent });
 </script>

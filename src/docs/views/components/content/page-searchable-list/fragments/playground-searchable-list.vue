@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-searchable-list" v-model="textSlots">
-		<template #title>
-			Searchable list
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-searchable-list"
+		v-model="textSlots"
+	>
+		<template #title> Searchable list </template>
 
 		<searchable-list v-bind="componentProps" v-model="componentModel">
 			<template #label>
@@ -17,7 +19,7 @@
 						<div class="flex flex-col">
 							{{ person.name }}
 
-							<span class="text-xs text-grey-500 dark:text-white/60">
+							<span class="text-grey-500 text-xs dark:text-white/60">
 								{{ person.role }}
 							</span>
 						</div>
@@ -134,13 +136,13 @@ const additionalContent = [
 								props: {
 									"v-for": { value: "person in items", isInline: true },
 									":key": { value: "person.id", isInline: true },
-									"class": { value: "flex items-center gap-4", isInline: true },
+									class: { value: "flex items-center gap-4", isInline: true },
 								},
 								additionalContent: [
 									useTemplateGenerator("image-tag", {
 										props: {
 											":src": { value: "person.image_url", isInline: true },
-											"class": { value: "size-8 rounded", isInline: true },
+											class: { value: "size-8 rounded", isInline: true },
 										},
 										indent: 1,
 									}),
@@ -152,7 +154,8 @@ const additionalContent = [
 											useTemplateGenerator("span", {
 												props: {
 													class: {
-														value: "text-xs text-grey-500 dark:text-white/60", isInline: true,
+														value: "text-xs text-grey-500 dark:text-white/60",
+														isInline: true,
 													},
 												},
 												slots: {
@@ -180,10 +183,12 @@ const additionalContent = [
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
-const template = useTemplateGenerator("searchable-list", { slots: textSlots, props, additionalContent });
+const template = useTemplateGenerator("searchable-list", {
+	slots: textSlots,
+	props,
+	additionalContent,
+});
 </script>

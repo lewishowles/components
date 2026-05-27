@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-progress-bar" v-model="textSlots">
-		<template #title>
-			Custom classes
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-progress-bar"
+		v-model="textSlots"
+	>
+		<template #title> Custom classes </template>
 
 		<progress-bar v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}
@@ -27,17 +29,17 @@ const textSlots = ref({
 
 // Props both for the template and for the component example itself.
 const props = ref({
-	"current": {
+	current: {
 		label: "Current",
 		value: 45,
 		type: "number",
 	},
-	"showLabel": {
+	showLabel: {
 		label: "Show label",
 		value: true,
 		type: "boolean",
 	},
-	"showValue": {
+	showValue: {
 		label: "Show value",
 		value: true,
 		type: "boolean",
@@ -58,9 +60,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("progress-bar", { slots: textSlots, props });

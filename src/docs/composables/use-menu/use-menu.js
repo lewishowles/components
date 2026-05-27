@@ -32,7 +32,11 @@ export default function useMenu() {
 
 		// If we can't determine a key piece of information for a menu item, we
 		// can't realistically include it.
-		if (!isNonEmptyString(internalSection) || !isNonEmptyString(internalLabel) || (!isNonEmptyString(internalTo) && !isNonEmptyObject(internalTo))) {
+		if (
+			!isNonEmptyString(internalSection) ||
+			!isNonEmptyString(internalLabel) ||
+			(!isNonEmptyString(internalTo) && !isNonEmptyObject(internalTo))
+		) {
 			return;
 		}
 

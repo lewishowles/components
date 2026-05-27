@@ -52,11 +52,11 @@ Classes to apply to the value display.
 
 Provide custom content alongside the bar. Receives metric values and calculated percentage.
 
-| Slot prop | Type | Description |
-| --- | --- | --- |
-| `current` | `number` | The current value. |
-| `min` | `number` | The minimum value. |
-| `max` | `number` | The maximum value. |
+| Slot prop    | Type     | Description                        |
+| ------------ | -------- | ---------------------------------- |
+| `current`    | `number` | The current value.                 |
+| `min`        | `number` | The minimum value.                 |
+| `max`        | `number` | The maximum value.                 |
 | `percentage` | `number` | The calculated percentage (0–100). |
 
 The default slot output, when empty, displays `{{ percentage }}%`.

@@ -1,4 +1,4 @@
-import { afterEach } from "vitest";
+import { afterEach } from "vite-plus/test";
 import { components } from "@/components";
 import { config } from "@vue/test-utils";
 import { cleanupMountedWrappers } from "./support/mount";

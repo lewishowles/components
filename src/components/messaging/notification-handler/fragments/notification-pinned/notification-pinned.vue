@@ -21,7 +21,10 @@
 		</template>
 
 		<template #badge>
-			<icon-pin class="absolute end-0 top-0 me-5 mt-4.5 size-4 text-purple-600" data-test="notification-pinned-badge" />
+			<icon-pin
+				class="absolute end-0 top-0 me-5 mt-4.5 size-4 text-purple-600"
+				data-test="notification-pinned-badge"
+			/>
 		</template>
 	</notification-base>
 </template>

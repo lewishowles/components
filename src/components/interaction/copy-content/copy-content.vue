@@ -1,31 +1,44 @@
 <template>
-	<ui-button v-bind="$attrs" :class="{ 'relative': !$attrs.class?.includes('absolute') }" data-test="copy-content" @click="copyContent">
-		<span class="flex gap-2 items-center transition-opacity" :class="{ 'opacity-0': showCopySuccess || showCopyError }" data-test="copy-content-label">
+	<ui-button
+		v-bind="$attrs"
+		:class="{ relative: !$attrs.class?.includes('absolute') }"
+		data-test="copy-content"
+		@click="copyContent"
+	>
+		<span
+			class="flex items-center gap-2 transition-opacity"
+			:class="{ 'opacity-0': showCopySuccess || showCopyError }"
+			data-test="copy-content-label"
+		>
 			<icon-clipboard />
 
-			<slot>
-				Copy
-			</slot>
+			<slot> Copy </slot>
 		</span>
 
-		<span v-if="showCopySuccess" class="absolute inset-0 flex gap-1 items-center justify-center animate-fade-in" data-test="copy-content-success">
+		<span
+			v-if="showCopySuccess"
+			class="animate-fade-in absolute inset-0 flex items-center justify-center gap-1"
+			data-test="copy-content-success"
+		>
 			<icon-check-circled />
 
-			<slot name="copy-success-label">
-				Copied
-			</slot>
+			<slot name="copy-success-label"> Copied </slot>
 		</span>
 
-		<span v-if="showCopyError" class="absolute inset-0 flex gap-1 items-center justify-center animate-fade-in" data-test="copy-content-error">
+		<span
+			v-if="showCopyError"
+			class="animate-fade-in absolute inset-0 flex items-center justify-center gap-1"
+			data-test="copy-content-error"
+		>
 			<icon-danger />
 
-			<slot name="copy-error-label">
-				Error
-			</slot>
+			<slot name="copy-error-label"> Error </slot>
 		</span>
 	</ui-button>
 
-	<span role="status" aria-live="polite" class="sr-only" data-test="copy-content-status">{{ statusMessage }}</span>
+	<span role="status" aria-live="polite" class="sr-only" data-test="copy-content-status">{{
+		statusMessage
+	}}</span>
 </template>
 
 <script setup>

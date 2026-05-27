@@ -45,7 +45,7 @@ describe("data-table-columns", () => {
 	});
 
 	it("Custom visibility is retrieved from localStorage", () => {
-		localStorage.setItem("data-table:sample-table:columns", "{\"title\":true,\"release_year\":false}");
+		localStorage.setItem("data-table:sample-table:columns", '{"title":true,"release_year":false}');
 
 		mount();
 
@@ -60,7 +60,9 @@ describe("data-table-columns", () => {
 		cy.getByData("data-table-columns-checkbox").eq(0).getFormField().click();
 
 		cy.getByData("data-table-columns").then(() => {
-			expect(localStorage.getItem("data-table:sample-table:columns")).to.equal("{\"title\":false,\"release_year\":true}");
+			expect(localStorage.getItem("data-table:sample-table:columns")).to.equal(
+				'{"title":false,"release_year":true}',
+			);
 		});
 	});
 });

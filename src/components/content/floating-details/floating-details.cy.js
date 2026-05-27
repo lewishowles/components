@@ -63,7 +63,8 @@ describe("floating-details", () => {
 			mount({
 				slots: {
 					summary: "Summary label",
-					default: ({ close }) => h("button", { "data-test": "close-button", onClick: close }, "Close"),
+					default: ({ close }) =>
+						h("button", { "data-test": "close-button", onClick: close }, "Close"),
 				},
 			});
 
@@ -95,7 +96,11 @@ describe("floating-details", () => {
 	describe("Interaction", () => {
 		describe("closeWithEscape", () => {
 			it("true", () => {
-				mount({ slots: { default: h("a", { "href": "#", "data-test": "focusable-content" }, "Focusable content") } });
+				mount({
+					slots: {
+						default: h("a", { href: "#", "data-test": "focusable-content" }, "Focusable content"),
+					},
+				});
 
 				cy.getByData("floating-details-summary").click();
 
@@ -110,7 +115,12 @@ describe("floating-details", () => {
 			});
 
 			it("false", () => {
-				mount({ props: { closeWithEscape: false }, slots: { default: h("a", { "href": "#", "data-test": "focusable-content" }, "Focusable content") } });
+				mount({
+					props: { closeWithEscape: false },
+					slots: {
+						default: h("a", { href: "#", "data-test": "focusable-content" }, "Focusable content"),
+					},
+				});
 
 				cy.getByData("floating-details-summary").click();
 
@@ -138,7 +148,7 @@ describe("floating-details", () => {
 
 			cy.getByData("floating-details").shouldNotHaveAttribute("open");
 
-			cy.getByData("click-target").then(element => {
+			cy.getByData("click-target").then((element) => {
 				element.remove();
 			});
 		});
@@ -155,7 +165,7 @@ describe("floating-details", () => {
  *     The `data-test` selector for the element
  */
 function createSiblingElement(content, selector) {
-	cy.get("body").then(body => {
+	cy.get("body").then((body) => {
 		const siblingElement = document.createElement("div");
 
 		siblingElement.setAttribute("class", "mt-20");

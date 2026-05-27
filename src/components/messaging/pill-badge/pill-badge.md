@@ -34,19 +34,13 @@ The colour of this badge.
 ### A basic badge
 
 ```html
-<pill-badge theme="green">
-	Green
-</pill-badge>
+<pill-badge theme="green"> Green </pill-badge>
 ```
 
 ### With an icon
 
 ```html
-<pill-badge v-bind="{ colour: 'green', iconStart: 'icon-arrow-up' }">
-	Reload
-</pill-badge>
+<pill-badge v-bind="{ colour: 'green', iconStart: 'icon-arrow-up' }"> Reload </pill-badge>
 
-<pill-badge v-bind="{ colour: 'red', iconEnd: 'icon-arrow-down' }">
-	Next step
-</pill-badge>
+<pill-badge v-bind="{ colour: 'red', iconEnd: 'icon-arrow-down' }"> Next step </pill-badge>
 ```

@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-loading-spinner" v-model="textSlots">
-		<template #title>
-			Loading spinner
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-loading-spinner"
+		v-model="textSlots"
+	>
+		<template #title> Loading spinner </template>
 
 		<template #introduction>
 			<p>A simple spinner.</p>

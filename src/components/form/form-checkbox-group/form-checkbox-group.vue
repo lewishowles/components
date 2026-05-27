@@ -1,5 +1,10 @@
 <template>
-	<form-input-group ref="input-group" v-model="internalModel" v-bind="{ type: 'checkbox' }" data-test="form-checkbox-group">
+	<form-input-group
+		ref="input-group"
+		v-model="internalModel"
+		v-bind="{ type: 'checkbox' }"
+		data-test="form-checkbox-group"
+	>
 		<slot />
 
 		<template #introduction>
@@ -40,38 +45,48 @@ const inputGroupRef = useTemplateRef("input-group");
 const internalModel = ref({});
 
 // When a new value is provided by the input-group, convert it and emit it.
-watch(internalModel, () => {
-	if (!isNonEmptyObject(internalModel.value)) {
-		return;
-	}
+watch(
+	internalModel,
+	() => {
+		if (!isNonEmptyObject(internalModel.value)) {
+			return;
+		}
 
-	// We attempt to make sure that the model has changed before emitting a new
-	// one, to avoid any infinite loops.
-	const selectedKeys = keys(internalModel.value).filter(key => internalModel.value[key]);
+		// We attempt to make sure that the model has changed before emitting a new
+		// one, to avoid any infinite loops.
+		const selectedKeys = keys(internalModel.value).filter((key) => internalModel.value[key]);
 
-	if (arrayLength(selectedKeys) !== arrayLength(props.modelValue) || selectedKeys.some((key, index) => key !== props.modelValue[index])) {
-		emit("update:modelValue", selectedKeys);
-	}
-}, { deep: true });
+		if (
+			arrayLength(selectedKeys) !== arrayLength(props.modelValue) ||
+			selectedKeys.some((key, index) => key !== props.modelValue[index])
+		) {
+			emit("update:modelValue", selectedKeys);
+		}
+	},
+	{ deep: true },
+);
 
 // When the provided modelValue updates, update our internal model to match.
-watch(() => props.modelValue, () => {
-	if (!isNonEmptyArray(props.modelValue)) {
-		internalModel.value = {};
-	}
+watch(
+	() => props.modelValue,
+	() => {
+		if (!isNonEmptyArray(props.modelValue)) {
+			internalModel.value = {};
+		}
 
-	// Since we avoid infinite loops when watching internalModel, we don't need
-	// to worry too much about over-checking here.
-	const values = props.modelValue.filter(item => isNonEmptyString(item));
+		// Since we avoid infinite loops when watching internalModel, we don't need
+		// to worry too much about over-checking here.
+		const values = props.modelValue.filter((item) => isNonEmptyString(item));
 
-	const objectValues = values.reduce((objectValues, value) => {
-		objectValues[value] = true;
+		const objectValues = values.reduce((objectValues, value) => {
+			objectValues[value] = true;
 
-		return objectValues;
-	}, {});
+			return objectValues;
+		}, {});
 
-	internalModel.value = objectValues;
-});
+		internalModel.value = objectValues;
+	},
+);
 
 function triggerFocus() {
 	runComponentMethod(inputGroupRef.value, "triggerFocus");

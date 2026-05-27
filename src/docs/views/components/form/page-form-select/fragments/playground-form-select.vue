@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-select" v-model="textSlots">
-		<template #title>
-			Form select
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-form-select"
+		v-model="textSlots"
+	>
+		<template #title> Form select </template>
 
 		<form-select v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}
@@ -42,7 +44,8 @@ const textSlots = ref({
 	},
 	help: {
 		label: "Help text",
-		value: "We're sorry if your favourite isn't listed, but please pick from one of the options provided.",
+		value:
+			"We're sorry if your favourite isn't listed, but please pick from one of the options provided.",
 		type: "textarea",
 	},
 	error: {
@@ -63,9 +66,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("form-select", { slots: textSlots, props });

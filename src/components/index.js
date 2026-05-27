@@ -14,7 +14,7 @@ for (const path in modules) {
 // Create a Vue plugin to globally register each component.
 const componentLibrary = {
 	install(app) {
-		Object.keys(components).forEach(name => {
+		Object.keys(components).forEach((name) => {
 			app.component(name, components[name]);
 		});
 	},

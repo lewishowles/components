@@ -15,16 +15,12 @@ Create a modal dialog as its own component. This can be created as you choose, b
 ```html
 <template>
 	<modal-dialog>
-		<template #title>
-			Delete "Sophie Wardhaugh"
-		</template>
+		<template #title> Delete "Sophie Wardhaugh" </template>
 
 		<p>Are you sure you want to delete this user? This cannot be undone.</p>
 
 		<template #actions>
-			<ui-button class="button--primary" v-bind="{ reactive: true }">
-				Delete user
-			</ui-button>
+			<ui-button class="button--primary" v-bind="{ reactive: true }"> Delete user </ui-button>
 		</template>
 	</modal-dialog>
 </template>

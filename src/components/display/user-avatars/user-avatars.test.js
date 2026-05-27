@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test, vi } from "vitest";
+import { describe, expect, test, vi } from "vite-plus/test";
 import UserAvatars from "./user-avatars.vue";
 
 const users = [
@@ -111,35 +111,35 @@ describe("user-avatars", () => {
 		});
 
 		describe("shapeClasses", () => {
-			test("should add the appropriate class for \"square\"", () => {
+			test('should add the appropriate class for "square"', () => {
 				const wrapper = mount({ shape: "square" });
 				const vm = wrapper.vm;
 
 				expect(vm.shapeClasses).toBe("");
 			});
 
-			test("should add the appropriate class for \"squircle\"", () => {
+			test('should add the appropriate class for "squircle"', () => {
 				const wrapper = mount({ shape: "squircle" });
 				const vm = wrapper.vm;
 
 				expect(vm.shapeClasses).toBe("rounded-lg");
 			});
 
-			test("should add the appropriate class for \"roundangle\"", () => {
+			test('should add the appropriate class for "roundangle"', () => {
 				const wrapper = mount({ shape: "roundangle" });
 				const vm = wrapper.vm;
 
 				expect(vm.shapeClasses).toBe("rounded-lg");
 			});
 
-			test("should add the appropriate class for \"circle\"", () => {
+			test('should add the appropriate class for "circle"', () => {
 				const wrapper = mount({ shape: "circle" });
 				const vm = wrapper.vm;
 
 				expect(vm.shapeClasses).toBe("rounded-full");
 			});
 
-			test("should default to \"circle\"", () => {
+			test('should default to "circle"', () => {
 				const wrapper = mount({ shape: "banana" });
 				const vm = wrapper.vm;
 
@@ -150,42 +150,42 @@ describe("user-avatars", () => {
 		describe("overlapClasses", () => {
 			const standardOutlineClasses = "-ms-2 outline-3 outline-white dark:outline-purple-200";
 
-			test("should default to overlap for \"circle\"", () => {
+			test('should default to overlap for "circle"', () => {
 				const wrapper = mount({ shape: "circle" });
 				const vm = wrapper.vm;
 
 				expect(vm.overlapClasses).toBe(standardOutlineClasses);
 			});
 
-			test("should allow the default for \"circle\" to be overridden", () => {
+			test('should allow the default for "circle" to be overridden', () => {
 				const wrapper = mount({ shape: "circle", overlap: false });
 				const vm = wrapper.vm;
 
 				expect(vm.overlapClasses).toBeNull();
 			});
 
-			test("should default to no overlap for \"square\"", () => {
+			test('should default to no overlap for "square"', () => {
 				const wrapper = mount({ shape: "square" });
 				const vm = wrapper.vm;
 
 				expect(vm.overlapClasses).toBeNull("");
 			});
 
-			test("should allow the default for \"square\" to be overridden", () => {
+			test('should allow the default for "square" to be overridden', () => {
 				const wrapper = mount({ shape: "square", overlap: true });
 				const vm = wrapper.vm;
 
 				expect(vm.overlapClasses).toBe(standardOutlineClasses);
 			});
 
-			test("should default to no overlap for \"squircle\"", () => {
+			test('should default to no overlap for "squircle"', () => {
 				const wrapper = mount({ shape: "squircle" });
 				const vm = wrapper.vm;
 
 				expect(vm.overlapClasses).toBeNull("");
 			});
 
-			test("should allow the default for \"squircle\" to be overridden", () => {
+			test('should allow the default for "squircle" to be overridden', () => {
 				const wrapper = mount({ shape: "squircle", overlap: true });
 				const vm = wrapper.vm;
 
@@ -230,28 +230,36 @@ describe("user-avatars", () => {
 				const vm = wrapper.vm;
 
 				expect(vm.standardiseUser(users[0])).toEqual(expect.objectContaining({ hasAvatar: true }));
-				expect(vm.standardiseUser({ name: "Mike Wazowski", initials: "MW" })).toEqual(expect.objectContaining({ hasAvatar: false }));
+				expect(vm.standardiseUser({ name: "Mike Wazowski", initials: "MW" })).toEqual(
+					expect.objectContaining({ hasAvatar: false }),
+				);
 			});
 
 			test("should add initials where they are missing but a name is provided", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.standardiseUser({ name: "Mike Wazowski" })).toEqual(expect.objectContaining({ initials: "MW" }));
+				expect(vm.standardiseUser({ name: "Mike Wazowski" })).toEqual(
+					expect.objectContaining({ initials: "MW" }),
+				);
 			});
 
 			test("should add a tooltip containing the user's name where provided", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.standardiseUser(users[0])).toEqual(expect.objectContaining({ tooltip: "Mickey Mouse" }));
+				expect(vm.standardiseUser(users[0])).toEqual(
+					expect.objectContaining({ tooltip: "Mickey Mouse" }),
+				);
 			});
 
 			test("should add a tooltip containing the user's initials where provided and no name is available", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.standardiseUser({ initials: "MW" })).toEqual(expect.objectContaining({ tooltip: "MW" }));
+				expect(vm.standardiseUser({ initials: "MW" })).toEqual(
+					expect.objectContaining({ tooltip: "MW" }),
+				);
 			});
 		});
 	});

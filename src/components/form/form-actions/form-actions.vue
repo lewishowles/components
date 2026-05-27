@@ -1,5 +1,10 @@
 <template>
-	<div role="group" v-bind="{ 'aria-labelledby': haveLabelSlot ? internalId : null }" class="flex flex-wrap items-center gap-4" data-test="form-actions">
+	<div
+		role="group"
+		v-bind="{ 'aria-labelledby': haveLabelSlot ? internalId : null }"
+		class="flex flex-wrap items-center gap-4"
+		data-test="form-actions"
+	>
 		<span v-if="haveLabelSlot" v-bind="{ id: internalId }" class="sr-only">
 			<slot name="label" />
 		</span>

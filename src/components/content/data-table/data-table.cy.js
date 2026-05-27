@@ -140,7 +140,7 @@ describe("data-table", () => {
 		it("Column headings have scope='col'", () => {
 			mount();
 
-			cy.getByData("data-table-heading").each($th => {
+			cy.getByData("data-table-heading").each(($th) => {
 				cy.wrap($th).shouldHaveAttribute("scope", "col");
 			});
 		});
@@ -256,12 +256,14 @@ describe("data-table", () => {
 				},
 			});
 
-			cy.getByData("data-table-heading").eq(2)
+			cy.getByData("data-table-heading")
+				.eq(2)
 				.shouldHaveClass("text-right")
 				.shouldHaveClass("text-purple-800")
 				.shouldNotHaveClass("text-purple-600");
 
-			cy.getByData("data-table-cell").eq(2)
+			cy.getByData("data-table-cell")
+				.eq(2)
 				.shouldHaveClass("text-right")
 				.shouldHaveClass("text-purple-600")
 				.shouldNotHaveClass("text-purple-800");
@@ -360,7 +362,7 @@ describe("data-table", () => {
 
 			cy.getByData("data-table-search-input").type("Aladdin");
 
-			cy.getByData("data-table-status").shouldHaveText("Showing 1 result for \"Aladdin\"");
+			cy.getByData("data-table-status").shouldHaveText('Showing 1 result for "Aladdin"');
 		});
 
 		it("The status region announces when no results are found", () => {
@@ -368,7 +370,7 @@ describe("data-table", () => {
 
 			cy.getByData("data-table-search-input").type("Not found");
 
-			cy.getByData("data-table-status").shouldHaveText("No results for \"Not found\"");
+			cy.getByData("data-table-status").shouldHaveText('No results for "Not found"');
 		});
 	});
 
@@ -376,13 +378,29 @@ describe("data-table", () => {
 		it("A table can be sorted", () => {
 			mount();
 
-			cy.getByData("data-table-row").eq(0).getByData("data-table-cell").eq(0).shouldHaveText("Toy Story");
-			cy.getByData("data-table-row").eq(1).getByData("data-table-cell").eq(0).shouldHaveText("Aladdin");
+			cy.getByData("data-table-row")
+				.eq(0)
+				.getByData("data-table-cell")
+				.eq(0)
+				.shouldHaveText("Toy Story");
+			cy.getByData("data-table-row")
+				.eq(1)
+				.getByData("data-table-cell")
+				.eq(0)
+				.shouldHaveText("Aladdin");
 
 			sortByColumn("Title");
 
-			cy.getByData("data-table-row").eq(0).getByData("data-table-cell").eq(0).shouldHaveText("Aladdin");
-			cy.getByData("data-table-row").eq(1).getByData("data-table-cell").eq(0).shouldHaveText("The Emperor's New Groove");
+			cy.getByData("data-table-row")
+				.eq(0)
+				.getByData("data-table-cell")
+				.eq(0)
+				.shouldHaveText("Aladdin");
+			cy.getByData("data-table-row")
+				.eq(1)
+				.getByData("data-table-cell")
+				.eq(0)
+				.shouldHaveText("The Emperor's New Groove");
 		});
 
 		it("The appropriate aria-sort is added to the sorted column", () => {
@@ -415,7 +433,7 @@ describe("data-table", () => {
 	describe("Pagination", () => {
 		afterEach(() => {
 			// Reset the history after each test
-			cy.window().then(window => {
+			cy.window().then((window) => {
 				window.history.pushState({}, "", "/");
 			});
 		});
@@ -487,9 +505,13 @@ describe("data-table", () => {
 			assertCurrentPage(1);
 		});
 
-
 		it("The showing items indicator can be overridden", () => {
-			mount({ props: { data: extendedData }, slots: { "showing-items-label": ({ first, last, total }) => `${first} to ${last} of ${total}` } });
+			mount({
+				props: { data: extendedData },
+				slots: {
+					"showing-items-label": ({ first, last, total }) => `${first} to ${last} of ${total}`,
+				},
+			});
 
 			cy.getByData("app-pagination-showing-items-label").shouldHaveText("1 to 10 of 15");
 		});
@@ -541,7 +563,10 @@ describe("data-table", () => {
 			});
 
 			it("Custom visibility is retrieved from localStorage", () => {
-				localStorage.setItem("data-table:sample-table:columns", "{\"title\":true,\"release_year\":false,\"box_office\":false}");
+				localStorage.setItem(
+					"data-table:sample-table:columns",
+					'{"title":true,"release_year":false,"box_office":false}',
+				);
 
 				mount({ name: "sample-table" });
 
@@ -583,7 +608,7 @@ describe("data-table", () => {
 			cy.getByData("data-table-select-all-rows").shouldBeVisible();
 			cy.getByData("data-table-select-row").shouldBeVisible().shouldHaveCount(5);
 
-			cy.getFormField("data-table-select-row").each($checkbox => {
+			cy.getFormField("data-table-select-row").each(($checkbox) => {
 				cy.wrap($checkbox).should("not.be.checked");
 			});
 		});
@@ -593,7 +618,7 @@ describe("data-table", () => {
 
 			cy.getFormField("data-table-select-all-rows").click();
 
-			cy.getByData("data-table-select-row").each($checkbox => {
+			cy.getByData("data-table-select-row").each(($checkbox) => {
 				cy.wrap($checkbox).shouldBeChecked();
 			});
 		});
@@ -603,13 +628,13 @@ describe("data-table", () => {
 
 			cy.getFormField("data-table-select-all-rows").click();
 
-			cy.getByData("data-table-select-row").each($checkbox => {
+			cy.getByData("data-table-select-row").each(($checkbox) => {
 				cy.wrap($checkbox).shouldBeChecked();
 			});
 
 			cy.getFormField("data-table-select-all-rows").click();
 
-			cy.getByData("data-table-select-row").each($checkbox => {
+			cy.getByData("data-table-select-row").each(($checkbox) => {
 				cy.wrap($checkbox).shouldNotBeChecked();
 			});
 		});
@@ -631,7 +656,7 @@ describe("data-table", () => {
 
 			cy.getByData("data-table-select-all-rows").shouldNotBeChecked();
 
-			cy.getFormField("data-table-select-row").each($checkbox => {
+			cy.getFormField("data-table-select-row").each(($checkbox) => {
 				cy.wrap($checkbox).click();
 			});
 
@@ -715,7 +740,9 @@ function sortByColumn(columnTitle) {
  *     The page to select.
  */
 function selectPage(page) {
-	cy.getByData("app-pagination-page-button").eq(page - 1).click();
+	cy.getByData("app-pagination-page-button")
+		.eq(page - 1)
+		.click();
 
 	assertCurrentPage(page);
 }
@@ -727,7 +754,9 @@ function selectPage(page) {
  *     The page to check.
  */
 function assertCurrentPage(page) {
-	cy.getByData("app-pagination-page").eq(page - 1).shouldHaveAttribute("aria-current", "page");
+	cy.getByData("app-pagination-page")
+		.eq(page - 1)
+		.shouldHaveAttribute("aria-current", "page");
 }
 
 /**

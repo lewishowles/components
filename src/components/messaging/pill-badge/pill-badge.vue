@@ -1,10 +1,24 @@
 <template>
-	<span class="inline-flex items-center gap-1 rounded-md px-2 py-1 font-medium ring-1 ring-inset" :class="[sizeClass, themeClasses]" data-test="pill-badge">
-		<component :is="iconStart" v-if="haveIconStart" class="stroke-current" data-test="pill-badge-icon-start" />
+	<span
+		class="inline-flex items-center gap-1 rounded-md px-2 py-1 font-medium ring-1 ring-inset"
+		:class="[sizeClass, themeClasses]"
+		data-test="pill-badge"
+	>
+		<component
+			:is="iconStart"
+			v-if="haveIconStart"
+			class="stroke-current"
+			data-test="pill-badge-icon-start"
+		/>
 
 		<slot />
 
-		<component :is="iconEnd" v-if="haveIconEnd" class="stroke-current" data-test="pill-badge-icon-end" />
+		<component
+			:is="iconEnd"
+			v-if="haveIconEnd"
+			class="stroke-current"
+			data-test="pill-badge-icon-end"
+		/>
 	</span>
 </template>
 

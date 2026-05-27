@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vite-plus/test";
 import { createMount } from "@unit/support/mount";
 import { nextTick } from "vue";
 import AppPagination from "./app-pagination.vue";
@@ -432,7 +432,7 @@ describe("app-pagination", () => {
 	});
 
 	describe("Watch", () => {
-		test("should emit the current page on change", async() => {
+		test("should emit the current page on change", async () => {
 			const wrapper = mount();
 			const vm = wrapper.vm;
 
@@ -445,7 +445,7 @@ describe("app-pagination", () => {
 			expect(wrapper.emitted("@update:page")[1][0]).toBe(5);
 		});
 
-		test("should reset the current page when the number of pages changes", async() => {
+		test("should reset the current page when the number of pages changes", async () => {
 			const wrapper = mount();
 			const vm = wrapper.vm;
 

@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-link-tag" v-model="textSlots">
-		<template #title>
-			Icon link
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-link-tag"
+		v-model="textSlots"
+	>
+		<template #title> Icon link </template>
 
 		<template #introduction>
 			<p>A link with an icon prefix.</p>
@@ -43,9 +45,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("link-tag", { slots: textSlots, props });

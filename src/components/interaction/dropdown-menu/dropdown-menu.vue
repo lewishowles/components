@@ -11,7 +11,10 @@
 			@click="toggleMenu"
 			@keydown="onTriggerKeydown"
 		>
-			<slot name="summary" v-bind="{ open: isOpen, openMenu, closeMenu, toggleMenu, triggerProps }" />
+			<slot
+				name="summary"
+				v-bind="{ open: isOpen, openMenu, closeMenu, toggleMenu, triggerProps }"
+			/>
 		</button>
 
 		<div
@@ -48,7 +51,8 @@ defineProps({
 	 */
 	detailsClasses: {
 		type: [String, Array, Object],
-		default: "animate-fade-in-down animate-fast mt-2 min-w-3xs py-2 rounded-lg border border-grey-300 bg-white dark:border-white/20 dark:bg-grey-950/20 backdrop-blur-lg z-50",
+		default:
+			"animate-fade-in-down animate-fast mt-2 min-w-3xs py-2 rounded-lg border border-grey-300 bg-white dark:border-white/20 dark:bg-grey-950/20 backdrop-blur-lg z-50",
 	},
 });
 
@@ -94,7 +98,7 @@ onClickOutside(menuContainerElement, () => {
 });
 
 // Close the menu and return focus to the trigger when Escape is pressed.
-onKeyStroke("Escape", event => {
+onKeyStroke("Escape", (event) => {
 	if (!isOpen.value) {
 		return;
 	}
@@ -113,9 +117,7 @@ function getMenuItems() {
 		return [];
 	}
 
-	return Array.from(
-		menuElement.value.querySelectorAll(":is(button, a, summary):not([disabled])"),
-	);
+	return Array.from(menuElement.value.querySelectorAll(":is(button, a, summary):not([disabled])"));
 }
 
 /**
@@ -128,7 +130,7 @@ function getMenuItems() {
  *     The index to focus.
  */
 function focusItem(items, index) {
-	items.forEach(item => item.setAttribute("tabindex", "-1"));
+	items.forEach((item) => item.setAttribute("tabindex", "-1"));
 	items[index].setAttribute("tabindex", "0");
 	items[index].focus();
 }
@@ -149,7 +151,7 @@ function handleTypeahead(character, items) {
 	typeaheadBuffer += character.toLowerCase();
 
 	// Find the item that matches
-	const match = items.find(item =>
+	const match = items.find((item) =>
 		item.textContent?.trim().toLowerCase().startsWith(typeaheadBuffer),
 	);
 
@@ -192,7 +194,7 @@ function onMenuKeydown(event) {
 		return;
 	}
 
-	const currentIndex = items.findIndex(item => item === document.activeElement);
+	const currentIndex = items.findIndex((item) => item === document.activeElement);
 
 	switch (event.key) {
 		case "ArrowDown":
@@ -261,7 +263,7 @@ async function openMenu() {
 	}
 
 	// Focus the first item, and ensure that other items can't be focused.
-	items.forEach(item => item.setAttribute("tabindex", "-1"));
+	items.forEach((item) => item.setAttribute("tabindex", "-1"));
 	items[0].setAttribute("tabindex", "0");
 	items[0].focus();
 }

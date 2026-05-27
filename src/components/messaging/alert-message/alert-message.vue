@@ -1,5 +1,11 @@
 <template>
-	<div class="flex w-full gap-3 rounded-lg border p-4" :class="alertColours" :role="alertRole" :aria-live="alertLive" data-test="alert-message">
+	<div
+		class="flex w-full gap-3 rounded-lg border p-4"
+		:class="alertColours"
+		:role="alertRole"
+		:aria-live="alertLive"
+		data-test="alert-message"
+	>
 		<div v-if="haveIcon" class="mt-1">
 			<slot name="icon">
 				<component :is="defaultIcon" data-test="alert-message-icon" />
@@ -7,12 +13,22 @@
 		</div>
 
 		<div class="flex flex-col">
-			<component :is="titleTag" v-if="haveTitleSlot" class="font-semibold" data-test="alert-message-title">
+			<component
+				:is="titleTag"
+				v-if="haveTitleSlot"
+				class="font-semibold"
+				data-test="alert-message-title"
+			>
 				<slot name="title" />
 			</component>
 
 			<div>
-				<span v-if="alertType !== alertTypes.MUTED" class="sr-only" data-test="alert-message-type-prefix">{{ alertPrefix }}: </span>
+				<span
+					v-if="alertType !== alertTypes.MUTED"
+					class="sr-only"
+					data-test="alert-message-type-prefix"
+					>{{ alertPrefix }}:
+				</span>
 				<slot />
 			</div>
 		</div>
@@ -75,8 +91,11 @@ const messageTypes = Object.values(alertTypes);
 const defaultMessageType = alertTypes.MUTED;
 
 const slots = useSlots();
+
 // The internal message type, accounting for an invalid choice by the user.
-const alertType = computed(() => (messageTypes.includes(props.type) ? props.type : defaultMessageType));
+const alertType = computed(() =>
+	messageTypes.includes(props.type) ? props.type : defaultMessageType,
+);
 
 // The ARIA role for this alert. This allows error and warning alerts to be
 // assertive, and other alerts to be polite. If the alert is not live, the role
@@ -128,9 +147,12 @@ const alertColours = computed(() => {
 
 // Whether an icon has been provided via the `icon` slot.
 const haveIconSlot = computed(() => isNonEmptySlot(slots.icon));
+
 // Whether we have an icon to display, based on any provided slot, the alert
 // type, or the `showIcon` prop.
-const haveIcon = computed(() => props.showIcon && (alertType.value !== alertTypes.MUTED || haveIconSlot.value));
+const haveIcon = computed(
+	() => props.showIcon && (alertType.value !== alertTypes.MUTED || haveIconSlot.value),
+);
 
 // The icon to display by default, based on the alert type.
 const defaultIcon = computed(() => {

@@ -2,39 +2,46 @@
 	<div data-test="data-table">
 		<span role="status" aria-live="polite" class="sr-only" data-test="data-table-status">
 			<template v-if="statusType === statusTypes.SORT">
-				<slot name="sort-status" v-bind="{ column: getColumnLabel(sortedColumn), ascending: sortDirection === 1 }">
-					Sorted by {{ getColumnLabel(sortedColumn) }} {{ sortDirection === 1 ? "ascending" : "descending" }}
+				<slot
+					name="sort-status"
+					v-bind="{ column: getColumnLabel(sortedColumn), ascending: sortDirection === 1 }"
+				>
+					Sorted by {{ getColumnLabel(sortedColumn) }}
+					{{ sortDirection === 1 ? "ascending" : "descending" }}
 				</slot>
 			</template>
 
 			<template v-else-if="statusType === statusTypes.SEARCH">
 				<slot name="search-status" v-bind="{ count: filteredRows.length, query: searchQuery }">
-					<template v-if="filteredRows.length === 0">
-						No results for "{{ searchQuery }}"
-					</template>
+					<template v-if="filteredRows.length === 0"> No results for "{{ searchQuery }}" </template>
 					<template v-else>
-						Showing {{ filteredRows.length }} result{{ filteredRows.length === 1 ? "" : "s" }} for "{{ searchQuery }}"
+						Showing {{ filteredRows.length }} result{{ filteredRows.length === 1 ? "" : "s" }} for
+						"{{ searchQuery }}"
 					</template>
 				</slot>
 			</template>
 
 			<template v-else-if="statusType === statusTypes.SELECTION">
-				<slot name="selection-status" v-bind="{ selectedCount: selectedRowCount, total: rowCount, allSelected: areAllRowsSelected }">
-					<template v-if="selectedRowCount === 0">
-						All rows deselected
-					</template>
-					<template v-else-if="areAllRowsSelected">
-						All {{ rowCount }} rows selected
-					</template>
-					<template v-else>
-						{{ selectedRowCount }} of {{ rowCount }} rows selected
-					</template>
+				<slot
+					name="selection-status"
+					v-bind="{
+						selectedCount: selectedRowCount,
+						total: rowCount,
+						allSelected: areAllRowsSelected,
+					}"
+				>
+					<template v-if="selectedRowCount === 0"> All rows deselected </template>
+					<template v-else-if="areAllRowsSelected"> All {{ rowCount }} rows selected </template>
+					<template v-else> {{ selectedRowCount }} of {{ rowCount }} rows selected </template>
 				</slot>
 			</template>
 		</span>
 
-		<div v-if="haveTitle || haveIntroduction" class="mb-6 flex flex-col gap-4 border-b border-grey-200 pb-6">
-			<component :is="headingLevel" v-if="haveTitle" class="text-3xl font-bold text-grey-950">
+		<div
+			v-if="haveTitle || haveIntroduction"
+			class="border-grey-200 mb-6 flex flex-col gap-4 border-b pb-6"
+		>
+			<component :is="headingLevel" v-if="haveTitle" class="text-grey-950 text-3xl font-bold">
 				<slot name="table-title" />
 			</component>
 
@@ -43,14 +50,17 @@
 
 		<div class="text-sm">
 			<alert-message v-if="!haveData" data-test="data-table-no-data">
-				<slot name="no-data-message">
-					No data to display.
-				</slot>
+				<slot name="no-data-message"> No data to display. </slot>
 			</alert-message>
 
 			<div v-if="haveData" class="flex flex-col gap-6">
 				<div v-if="enableSearch || showUserConfiguration" class="flex items-end gap-4">
-					<data-table-search v-if="enableSearch" ref="dataTableSearchComponent" v-model="searchQuery" class="w-full">
+					<data-table-search
+						v-if="enableSearch"
+						ref="dataTableSearchComponent"
+						v-model="searchQuery"
+						class="w-full"
+					>
 						<template #search-label>
 							<slot name="search-label" />
 						</template>
@@ -59,30 +69,33 @@
 						</template>
 					</data-table-search>
 
-					<dropdown-menu v-if="showUserConfiguration" v-bind="{ align: 'end' }" class="ms-auto" data-test="data-table-display-options">
+					<dropdown-menu
+						v-if="showUserConfiguration"
+						v-bind="{ align: 'end' }"
+						class="ms-auto"
+						data-test="data-table-display-options"
+					>
 						<template #summary>
-							<slot name="configure-label">
-								Configure
-							</slot>
+							<slot name="configure-label"> Configure </slot>
 						</template>
 
 						<template v-if="haveTableName">
 							<dropdown-menu-title>
-								<slot name="display-options-label">
-									Display options
-								</slot>
+								<slot name="display-options-label"> Display options </slot>
 							</dropdown-menu-title>
 
 							<data-table-density v-model="tableDensity">
-								<template v-for="key in tableDensityOptions" #[`display-option-${key}-label`] :key="key">
+								<template
+									v-for="key in tableDensityOptions"
+									#[`display-option-${key}-label`]
+									:key="key"
+								>
 									<slot :name="`display-option-${key}-label`" />
 								</template>
 							</data-table-density>
 
 							<dropdown-menu-title>
-								<slot name="column-visibility-label">
-									Columns
-								</slot>
+								<slot name="column-visibility-label"> Columns </slot>
 							</dropdown-menu-title>
 
 							<data-table-columns v-model="columnVisibility" />
@@ -99,29 +112,40 @@
 					:aria-label="isOverflowing && !haveCaption ? 'Table' : null"
 				>
 					<table v-show="haveDataToDisplay" class="w-full" data-test="data-table-table">
-						<caption v-if="haveCaption || (enableSort && sortedColumn)" :id="captionId" class="text-left italic" :class="{ 'mb-2': haveCaption }">
+						<caption
+							v-if="haveCaption || (enableSort && sortedColumn)"
+							:id="captionId"
+							class="text-left italic"
+							:class="{ 'mb-2': haveCaption }"
+						>
 							<slot name="caption" />
 
 							<span class="sr-only">
-								<slot name="sorted-hint" v-bind="{ sortedColumn: getColumnLabel(sortedColumn), ascending: sortDirection === 1 }">
+								<slot
+									name="sorted-hint"
+									v-bind="{
+										sortedColumn: getColumnLabel(sortedColumn),
+										ascending: sortDirection === 1,
+									}"
+								>
 									Sorted by {{ getColumnLabel(sortedColumn) }}
-									<template v-if="sortDirection === 1">
-										ascending
-									</template>
-									<template v-else>
-										descending
-									</template>
+									<template v-if="sortDirection === 1"> ascending </template>
+									<template v-else> descending </template>
 								</slot>
 							</span>
 						</caption>
 
 						<thead>
-							<tr class="border-b border-grey-300 dark:border-white/20">
+							<tr class="border-grey-300 border-b dark:border-white/20">
 								<th v-if="enableSelection" scope="col" class="w-px px-4">
-									<form-checkbox v-bind="{ displayLabel: false, indeterminate: selectAllIndeterminate }" v-model="selectAllRows" class="shrink" data-test="data-table-select-all-rows" @change="toggleAllRows">
-										<slot name="select-all-rows-label">
-											Select all rows
-										</slot>
+									<form-checkbox
+										v-bind="{ displayLabel: false, indeterminate: selectAllIndeterminate }"
+										v-model="selectAllRows"
+										class="shrink"
+										data-test="data-table-select-all-rows"
+										@change="toggleAllRows"
+									>
+										<slot name="select-all-rows-label"> Select all rows </slot>
 									</form-checkbox>
 								</th>
 								<th
@@ -130,11 +154,45 @@
 									v-bind="{ 'aria-sort': getColumnSortDirection(columnKey) }"
 									scope="col"
 									class="py-4"
-									:class="[{ 'ps-3': !column.sortable && !column.first, 'pe-3': !column.sortable && !column.last, 'text-start': column.align !== 'right', 'text-end': column.align === 'right', [headingClasses]: !column.sortable, [column.columnClasses]: !column.sortable, [column.headingClasses]: !column.sortable }]"
+									:class="[
+										{
+											'ps-3': !column.sortable && !column.first,
+											'pe-3': !column.sortable && !column.last,
+											'text-start': column.align !== 'right',
+											'text-end': column.align === 'right',
+											[headingClasses]: !column.sortable,
+											[column.columnClasses]: !column.sortable,
+											[column.headingClasses]: !column.sortable,
+										},
+									]"
 									data-test="data-table-heading"
 								>
-									<conditional-wrapper v-bind="{ wrap: column.sortable, tag: 'ui-button', iconEnd: getSortIcon(columnKey), ariaLabel: column.sortable ? getSortAriaLabel(columnKey) : null }" class="-mt-4 -mb-4.25 w-full border-b border-transparent py-4 hocus:border-purple-800 hocus:bg-grey-100 dark:hocus:bg-grey-950/30 dark:hocus:border-purple-400" :class="[{ 'ps-3': !column.first, 'pe-3': !column.last, 'justify-start': column.align !== 'right', 'justify-end': column.align === 'right' }, headingClasses, column.columnClasses, column.headingClasses]" data-test="data-table-sort" @click="sortColumn(columnKey)">
-										<slot :name="`${columnKey}_heading`" v-bind="{ key: columnKey, label: columnKey }">
+									<conditional-wrapper
+										v-bind="{
+											wrap: column.sortable,
+											tag: 'ui-button',
+											iconEnd: getSortIcon(columnKey),
+											ariaLabel: column.sortable ? getSortAriaLabel(columnKey) : null,
+										}"
+										class="hocus:border-purple-800 hocus:bg-grey-100 dark:hocus:bg-grey-950/30 dark:hocus:border-purple-400 -mt-4 -mb-4.25 w-full border-b border-transparent py-4"
+										:class="[
+											{
+												'ps-3': !column.first,
+												'pe-3': !column.last,
+												'justify-start': column.align !== 'right',
+												'justify-end': column.align === 'right',
+											},
+											headingClasses,
+											column.columnClasses,
+											column.headingClasses,
+										]"
+										data-test="data-table-sort"
+										@click="sortColumn(columnKey)"
+									>
+										<slot
+											:name="`${columnKey}_heading`"
+											v-bind="{ key: columnKey, label: columnKey }"
+										>
 											{{ column.label }}
 										</slot>
 									</conditional-wrapper>
@@ -142,10 +200,23 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(row, rowIndex) in paginatedRows" :key="row.configuration.id" class="border-b border-grey-200 dark:border-white/20 transition-colors hover:bg-grey-50 dark:hover:bg-grey-950/30" data-test="data-table-row">
+							<tr
+								v-for="(row, rowIndex) in paginatedRows"
+								:key="row.configuration.id"
+								class="border-grey-200 hover:bg-grey-50 dark:hover:bg-grey-950/30 border-b transition-colors dark:border-white/20"
+								data-test="data-table-row"
+							>
 								<td v-if="enableSelection" class="px-4">
-									<form-checkbox v-bind="{ displayLabel: false, inputAttributes: { value: getRowId(row) } }" v-model="selectedRowIds" class="shrink" data-test="data-table-select-row">
-										<slot name="select-row-label" v-bind="{ row: getRawRow(row), rowNumber: rowIndex + 1 }">
+									<form-checkbox
+										v-bind="{ displayLabel: false, inputAttributes: { value: getRowId(row) } }"
+										v-model="selectedRowIds"
+										class="shrink"
+										data-test="data-table-select-row"
+									>
+										<slot
+											name="select-row-label"
+											v-bind="{ row: getRawRow(row), rowNumber: rowIndex + 1 }"
+										>
 											Select row {{ rowIndex + 1 }}
 										</slot>
 									</form-checkbox>
@@ -155,10 +226,26 @@
 									v-for="(column, columnKey) in visibleColumnDefinitions"
 									:key="columnKey"
 									:scope="column.primary ? 'row' : null"
-									:class="[tableSpacingClasses, { 'ps-3': !column.first, 'pe-3': !column.last, 'font-semibold text-grey-950': column.primary, 'text-start': column.align !== 'right', 'text-end': column.align === 'right', 'tabular-nums': column.tabularNums }, cellClasses, column.columnClasses, column.cellClasses]"
+									:class="[
+										tableSpacingClasses,
+										{
+											'ps-3': !column.first,
+											'pe-3': !column.last,
+											'text-grey-950 font-semibold': column.primary,
+											'text-start': column.align !== 'right',
+											'text-end': column.align === 'right',
+											'tabular-nums': column.tabularNums,
+										},
+										cellClasses,
+										column.columnClasses,
+										column.cellClasses,
+									]"
 									data-test="data-table-cell"
 								>
-									<slot :name="columnKey" v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }">
+									<slot
+										:name="columnKey"
+										v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }"
+									>
 										{{ getRowContent(row, columnKey) }}
 									</slot>
 								</component>
@@ -173,7 +260,13 @@
 					</slot>
 				</div>
 
-				<app-pagination v-if="enablePagination" v-show="haveDataToDisplay" v-model="currentPage" v-bind="{ count: rowCount }" data-test="data-table-pagination">
+				<app-pagination
+					v-if="enablePagination"
+					v-show="haveDataToDisplay"
+					v-model="currentPage"
+					v-bind="{ count: rowCount }"
+					data-test="data-table-pagination"
+				>
 					<template #page-number-page="{ page }">
 						<slot name="page-number-label" v-bind="{ page }" />
 					</template>
@@ -220,7 +313,7 @@ const props = defineProps({
 	 */
 	data: {
 		type: Array,
-		default: () => ([]),
+		default: () => [],
 	},
 
 	/**
@@ -400,12 +493,13 @@ const isOverflowing = ref(false);
 const captionId = useId();
 
 useResizeObserver(tableScrollWrapper, () => {
-	isOverflowing.value = tableScrollWrapper.value?.scrollWidth > tableScrollWrapper.value?.clientWidth;
+	isOverflowing.value =
+		tableScrollWrapper.value?.scrollWidth > tableScrollWrapper.value?.clientWidth;
 });
 
 // Our table spacing, based on our current density.
 const tableSpacingClasses = computed(() => {
-	switch(tableDensity.value) {
+	switch (tableDensity.value) {
 		case "compact":
 			return "py-2";
 		case "standard":
@@ -577,7 +671,11 @@ const sortedRows = computed(() => {
 		return filteredRows.value;
 	}
 
-	return sortObjectsByProperty(filteredRows.value, `content.${sortedColumn.value}.configuration.sortable`, { ascending: sortDirection.value === 1 });
+	return sortObjectsByProperty(
+		filteredRows.value,
+		`content.${sortedColumn.value}.configuration.sortable`,
+		{ ascending: sortDirection.value === 1 },
+	);
 });
 
 // Our paginated rows, based on the current page.
@@ -598,13 +696,15 @@ const selectedRows = computed(() => {
 		return [];
 	}
 
-	const internalRows = internalData.value.filter(row => selectedRowIds.value.includes(getRowId(row)));
+	const internalRows = internalData.value.filter((row) =>
+		selectedRowIds.value.includes(getRowId(row)),
+	);
 
 	if (!isNonEmptyArray(internalRows)) {
 		return [];
 	}
 
-	return internalRows.map(row => getRawRow(row));
+	return internalRows.map((row) => getRawRow(row));
 });
 
 // Our checkbox that visually determines whether all rows are selected, and
@@ -614,8 +714,11 @@ const selectAllRows = ref(false);
 const selectedRowCount = computed(() => arrayLength(selectedRowIds.value));
 // Whether all rows are selected.
 const areAllRowsSelected = computed(() => selectedRowCount.value === rowCount.value);
+
 // Whether the select-all checkbox should be in an indeterminate state (some but not all rows selected).
-const selectAllIndeterminate = computed(() => selectedRowCount.value > 0 && !areAllRowsSelected.value);
+const selectAllIndeterminate = computed(
+	() => selectedRowCount.value > 0 && !areAllRowsSelected.value,
+);
 
 // Reset to the first page when our filtered rows or sort change.
 watch([filteredRows, sortedColumn, sortDirection], () => {
@@ -626,16 +729,20 @@ watch([filteredRows, sortedColumn, sortDirection], () => {
 // computed property, Vue didn't seem to be detecting the changes to sortedRows,
 // even though the sortedRows computed property was triggering correctly, the
 // paginatedRows computed property was not.
-watch([sortedRows, currentPage, sortDirection, sortedColumn], ([newSortedRows, newPage]) => {
-	if (!props.enablePagination) {
-		paginatedRows.value = newSortedRows;
-	} else {
-		const start = (newPage - 1) * 10;
-		const end = start + 10;
+watch(
+	[sortedRows, currentPage, sortDirection, sortedColumn],
+	([newSortedRows, newPage]) => {
+		if (!props.enablePagination) {
+			paginatedRows.value = newSortedRows;
+		} else {
+			const start = (newPage - 1) * 10;
+			const end = start + 10;
 
-		paginatedRows.value = newSortedRows.slice(start, end);
-	}
-}, { deep: true, immediate: true });
+			paginatedRows.value = newSortedRows.slice(start, end);
+		}
+	},
+	{ deep: true, immediate: true },
+);
 
 // When the selected rows change, update our model value.
 watch(selectedRows, () => {
@@ -927,7 +1034,7 @@ function updateTableDensityOptions(options) {
  */
 function toggleAllRows() {
 	if (selectAllRows.value) {
-		selectedRowIds.value = filteredRows.value.map(row => getRowId(row));
+		selectedRowIds.value = filteredRows.value.map((row) => getRowId(row));
 	} else {
 		selectedRowIds.value = [];
 	}

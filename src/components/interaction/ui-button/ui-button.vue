@@ -2,30 +2,47 @@
 	<button
 		type="button"
 		class="inline-flex items-center justify-center"
-		:class="{ 'relative': reactive, 'button--disabled': disabled }"
+		:class="{ relative: reactive, 'button--disabled': disabled }"
 		v-bind="attributes"
 		data-test="ui-button"
 		@click="react"
 	>
-		<component :is="iconStart" v-if="haveIconStart" :class="[computedIconClasses, { 'me-2': !iconOnly }]" data-test="ui-button-icon-start" />
+		<component
+			:is="iconStart"
+			v-if="haveIconStart"
+			:class="[computedIconClasses, { 'me-2': !iconOnly }]"
+			data-test="ui-button-icon-start"
+		/>
 
-		<conditional-wrapper v-bind="{ wrap: reactive || iconOnly, tag: 'span' }" :class="{ 'invisible': isReacting, 'sr-only': iconOnly }" data-test="ui-button-label">
+		<conditional-wrapper
+			v-bind="{ wrap: reactive || iconOnly, tag: 'span' }"
+			:class="{ invisible: isReacting, 'sr-only': iconOnly }"
+			data-test="ui-button-label"
+		>
 			<slot />
 		</conditional-wrapper>
 
-		<span v-if="reactive" v-show="isReacting" class="absolute inset-0 flex items-center justify-center" data-test="ui-button-loading">
-			<icon-loading class="stroke-current animate-spin" />
+		<span
+			v-if="reactive"
+			v-show="isReacting"
+			class="absolute inset-0 flex items-center justify-center"
+			data-test="ui-button-loading"
+		>
+			<icon-loading class="animate-spin stroke-current" />
 		</span>
 
 		<span v-if="reactive" role="status" class="sr-only" data-test="ui-button-status">
 			<template v-if="isReacting">
-				<slot name="loading-label">
-					Loading
-				</slot>
+				<slot name="loading-label"> Loading </slot>
 			</template>
 		</span>
 
-		<component :is="iconEnd" v-if="haveIconEnd" :class="[computedIconClasses, { 'ms-2': !iconOnly }]" data-test="ui-button-icon-end" />
+		<component
+			:is="iconEnd"
+			v-if="haveIconEnd"
+			:class="[computedIconClasses, { 'ms-2': !iconOnly }]"
+			data-test="ui-button-icon-end"
+		/>
 	</button>
 </template>
 
@@ -157,8 +174,8 @@ const attributes = computed(() => {
 // provided their own `size-` or `stroke-` classes, and merge those with the
 // defaults.
 const computedIconClasses = computed(() => {
-	if ((!haveIconStart.value && !haveIconEnd.value)) {
-		return;
+	if (!haveIconStart.value && !haveIconEnd.value) {
+		return null;
 	}
 
 	const baseStrokeClass = "stroke-current";
@@ -172,11 +189,11 @@ const computedIconClasses = computed(() => {
 
 	const classes = props.iconClasses.split(" ");
 
-	if (!classes.some(className => className.includes("stroke-"))) {
+	if (!classes.some((className) => className.includes("stroke-"))) {
 		classes.push(baseStrokeClass);
 	}
 
-	if (!classes.some(className => className.includes("size-"))) {
+	if (!classes.some((className) => className.includes("size-"))) {
 		classes.push(baseSizeClass);
 	}
 
@@ -206,8 +223,8 @@ function react() {
 	if (props.loadingAuto) {
 		const onClick = instance?.vnode.props?.onClick;
 		const handlers = Array.isArray(onClick) ? onClick : [onClick].filter(Boolean);
-		const results = handlers.map(handler => handler());
-		const promise = results.find(result => result instanceof Promise);
+		const results = handlers.map((handler) => handler());
+		const promise = results.find((result) => result instanceof Promise);
 
 		if (promise) {
 			// Use .then(reset, reset) rather than .finally(reset) so that

@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 
 import { normaliseDate, normaliseDateToEpochMilliseconds } from "./normalise-date";
 

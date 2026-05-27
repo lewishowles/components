@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test, vi } from "vitest";
+import { describe, expect, test, vi } from "vite-plus/test";
 import FormField from "./form-field.vue";
 
 const registerFieldMock = vi.fn();
@@ -87,21 +87,39 @@ describe("form-field", () => {
 				const wrapper = mount({ type: "email" });
 				const vm = wrapper.vm;
 
-				expect(vm.fieldProps).toEqual({ id: expect.any(String), inputAttributes: { type: "email" } });
+				expect(vm.fieldProps).toEqual({
+					id: expect.any(String),
+					inputAttributes: { type: "email" },
+				});
 			});
 
 			test("should add props for `required` validation rule", () => {
-				const wrapper = mount({ validation: [{ rule: "required", message: "Validation message" }] });
+				const wrapper = mount({
+					validation: [{ rule: "required", message: "Validation message" }],
+				});
+
 				const vm = wrapper.vm;
 
-				expect(vm.fieldProps).toEqual({ required: true, id: expect.any(String), inputAttributes: { required: true } });
+				expect(vm.fieldProps).toEqual({
+					required: true,
+					id: expect.any(String),
+					inputAttributes: { required: true },
+				});
 			});
 
 			test("should combine type and validation props", () => {
-				const wrapper = mount({ type: "email", validation: [{ rule: "required", message: "Validation message" }] });
+				const wrapper = mount({
+					type: "email",
+					validation: [{ rule: "required", message: "Validation message" }],
+				});
+
 				const vm = wrapper.vm;
 
-				expect(vm.fieldProps).toEqual({ required: true, id: expect.any(String), inputAttributes: { required: true, type: "email" } });
+				expect(vm.fieldProps).toEqual({
+					required: true,
+					id: expect.any(String),
+					inputAttributes: { required: true, type: "email" },
+				});
 			});
 		});
 
@@ -114,10 +132,16 @@ describe("form-field", () => {
 			});
 
 			test("should add props for `required` rule", () => {
-				const wrapper = mount({ validation: [{ rule: "required", message: "Validation message" }] });
+				const wrapper = mount({
+					validation: [{ rule: "required", message: "Validation message" }],
+				});
+
 				const vm = wrapper.vm;
 
-				expect(vm.propsForValidation).toEqual({ required: true, inputAttributes: { required: true } });
+				expect(vm.propsForValidation).toEqual({
+					required: true,
+					inputAttributes: { required: true },
+				});
 			});
 		});
 
@@ -153,7 +177,7 @@ describe("form-field", () => {
 			});
 
 			test("should be true if no parent form is detected", () => {
-				const wrapper = mount( { global: { provide: { "form-wrapper": { registerField: null } } } });
+				const wrapper = mount({ global: { provide: { "form-wrapper": { registerField: null } } } });
 				const vm = wrapper.vm;
 
 				expect(vm.haveNameIfRequired).toBe(true);

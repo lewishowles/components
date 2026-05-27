@@ -2,17 +2,24 @@
 	<dialog
 		ref="dialog"
 		aria-modal="true"
-		v-bind="{ 'aria-labelledby': ariaLabelledby, 'aria-describedby': ariaDescribedby, inert, role: dialogRole }"
-		class="fixed inset-s-1/2 top-1/2 w-full max-w-2xl -translate-1/2 rounded-md border border-grey-300 p-12 text-current shadow-2xl backdrop-blur-xl dark:border-white/10 dark:bg-grey-950/80"
+		v-bind="{
+			'aria-labelledby': ariaLabelledby,
+			'aria-describedby': ariaDescribedby,
+			inert,
+			role: dialogRole,
+		}"
+		class="border-grey-300 dark:bg-grey-950/80 fixed inset-s-1/2 top-1/2 w-full max-w-2xl -translate-1/2 rounded-md border p-12 text-current shadow-2xl backdrop-blur-xl dark:border-white/10"
 		data-test="modal-dialog"
 	>
-		<ui-button class="absolute inset-e-0 top-0 me-4 mt-4 rounded-sm p-3 hocus:bg-grey-200 dark:hocus:bg-white/20" data-test="modal-dialog-close" @click="closeDialog">
+		<ui-button
+			class="hocus:bg-grey-200 dark:hocus:bg-white/20 absolute inset-e-0 top-0 me-4 mt-4 rounded-sm p-3"
+			data-test="modal-dialog-close"
+			@click="closeDialog"
+		>
 			<icon-cross />
 
 			<span class="sr-only">
-				<slot name="close-dialog-label">
-					Close dialog
-				</slot>
+				<slot name="close-dialog-label"> Close dialog </slot>
 			</span>
 		</ui-button>
 

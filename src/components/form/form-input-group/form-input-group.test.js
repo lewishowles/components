@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test, vi } from "vitest";
+import { describe, expect, test, vi } from "vite-plus/test";
 import FormInputGroup from "./form-input-group.vue";
 
 const defaultProps = { options: ["pineapple", "banana", "coconut"] };
@@ -60,7 +60,13 @@ describe("form-input-group", () => {
 			});
 
 			test("A simple object has its key value pairs converted", () => {
-				const wrapper = mount({ options: [{ label: "One", value: "1" }, { label: "Two", value: "2" }] });
+				const wrapper = mount({
+					options: [
+						{ label: "One", value: "1" },
+						{ label: "Two", value: "2" },
+					],
+				});
+
 				const vm = wrapper.vm;
 
 				expect(vm.internalOptions).toEqual([
@@ -69,7 +75,7 @@ describe("form-input-group", () => {
 				]);
 			});
 
-			test("An array of objects with a \"label\" and a \"value\"", () => {
+			test('An array of objects with a "label" and a "value"', () => {
 				const wrapper = mount({
 					options: [
 						{ label: "one", value: 1 },
@@ -87,7 +93,7 @@ describe("form-input-group", () => {
 				]);
 			});
 
-			test("An array of objects with defined \"labelKey\" and a \"valueKey\"", () => {
+			test('An array of objects with defined "labelKey" and a "valueKey"', () => {
 				const wrapper = mount({
 					options: [
 						{ sport: "Tennis", score: 1 },
@@ -109,11 +115,7 @@ describe("form-input-group", () => {
 
 			test("Multiple option types can be combined", () => {
 				const wrapper = mount({
-					options: [
-						{ label: "one", value: 1 },
-						"two",
-						3,
-					],
+					options: [{ label: "one", value: 1 }, "two", 3],
 				});
 
 				const vm = wrapper.vm;
@@ -153,7 +155,7 @@ describe("form-input-group", () => {
 				expect(vm.internalOptions).toEqual([]);
 			});
 
-			test("An object not containing a defined \"labelKey\" property is ignored", () => {
+			test('An object not containing a defined "labelKey" property is ignored', () => {
 				const wrapper = mount({
 					options: [
 						{ label: "one", score: 1 },
@@ -168,7 +170,7 @@ describe("form-input-group", () => {
 				expect(vm.internalOptions).toEqual([]);
 			});
 
-			test("An object not containing a defined \"valueKey\" property is ignored", () => {
+			test('An object not containing a defined "valueKey" property is ignored', () => {
 				const wrapper = mount({
 					options: [
 						{ label: "one", value: 1 },

@@ -1,11 +1,18 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-ui-button-disabled" v-model="textSlots">
-		<template #title>
-			Disabled button
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-ui-button-disabled"
+		v-model="textSlots"
+	>
+		<template #title> Disabled button </template>
 
 		<template #introduction>
-			<p>A disabled button communicates that an action is unavailable. Unlike the native <code>disabled</code> attribute, the <code>disabled</code> prop uses <code>aria-disabled</code>, keeping the button in the tab order so screen reader users can still encounter and understand it.</p>
+			<p>
+				A disabled button communicates that an action is unavailable. Unlike the native
+				<code>disabled</code> attribute, the <code>disabled</code> prop uses
+				<code>aria-disabled</code>, keeping the button in the tab order so screen reader users can
+				still encounter and understand it.
+			</p>
 		</template>
 
 		<ui-button v-bind="componentProps">
@@ -42,9 +49,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("ui-button", { slots: textSlots, props });

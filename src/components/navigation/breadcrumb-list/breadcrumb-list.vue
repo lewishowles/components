@@ -1,8 +1,6 @@
 <template>
 	<alert-message v-if="!haveLabel" type="error" v-bind="{ live: false }">
-		<template #title>
-			&lt;breadcrumb-list&gt;
-		</template>
+		<template #title> &lt;breadcrumb-list&gt; </template>
 
 		A `label` is required for accessibility purposes.
 	</alert-message>

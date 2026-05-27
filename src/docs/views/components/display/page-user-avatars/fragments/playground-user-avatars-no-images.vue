@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-user-avatars" v-model="textSlots">
-		<template #title>
-			No images
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-user-avatars"
+		v-model="textSlots"
+	>
+		<template #title> No images </template>
 
 		<template #introduction>
 			<p>Avatars where no images are available.</p>
@@ -45,9 +47,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("user-avatars", { props });

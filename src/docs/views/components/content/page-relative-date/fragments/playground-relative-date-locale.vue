@@ -6,9 +6,7 @@
 	>
 		<template #title> Custom locale </template>
 
-		<template #introduction>
-			Display a relative date with a custom locale.
-		</template>
+		<template #introduction> Display a relative date with a custom locale. </template>
 
 		<relative-date v-bind="componentProps" />
 	</component-playground>
@@ -39,9 +37,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("relative-date", { props });

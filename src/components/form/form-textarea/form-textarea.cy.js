@@ -11,8 +11,7 @@ describe("form-textarea", () => {
 
 		cy.getByData("form-textarea").shouldBeVisible();
 
-		cy.getFormField("form-textarea")
-			.shouldHaveAttribute("id", "id-abc");
+		cy.getFormField("form-textarea").shouldHaveAttribute("id", "id-abc");
 
 		cy.getByData("form-textarea")
 			.getByData("form-label")
@@ -49,8 +48,7 @@ describe("form-textarea", () => {
 				.shouldHaveText("Help text")
 				.shouldHaveAttribute("id", "id-abc-help");
 
-			cy.getFormField("form-textarea")
-				.shouldHaveAttribute("aria-describedby", "id-abc-help");
+			cy.getFormField("form-textarea").shouldHaveAttribute("aria-describedby", "id-abc-help");
 		});
 
 		it("An error can be supplied", () => {
@@ -61,8 +59,7 @@ describe("form-textarea", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getFormField("form-textarea")
-				.shouldHaveAttribute("aria-describedby", "id-abc-error");
+			cy.getFormField("form-textarea").shouldHaveAttribute("aria-describedby", "id-abc-error");
 		});
 
 		it("Both help and an error can be supplied", () => {
@@ -78,8 +75,10 @@ describe("form-textarea", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getFormField("form-textarea")
-				.shouldHaveAttribute("aria-describedby", "id-abc-help id-abc-error");
+			cy.getFormField("form-textarea").shouldHaveAttribute(
+				"aria-describedby",
+				"id-abc-help id-abc-error",
+			);
 		});
 	});
 });

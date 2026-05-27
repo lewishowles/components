@@ -1,8 +1,10 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import NotificationBase from "./notification-base.vue";
 
-const notificationMessage = "Ullamco eu amet labore elit quis eiusmod ea consectetur fugiat do commodo esse dolore consequat ipsum.";
+const notificationMessage =
+	"Ullamco eu amet labore elit quis eiusmod ea consectetur fugiat do commodo esse dolore consequat ipsum.";
+
 const notification = { id: "notification-1", message: notificationMessage };
 const defaultProps = { notification };
 const mount = createMount(NotificationBase, { props: defaultProps });

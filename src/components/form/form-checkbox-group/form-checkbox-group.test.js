@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import { nextTick } from "vue";
 import FormCheckboxGroup from "./form-checkbox-group.vue";
 
@@ -15,7 +15,7 @@ describe("form-checkbox-group", () => {
 		});
 	});
 
-	test("should update the internal model when provided a new model value", async() => {
+	test("should update the internal model when provided a new model value", async () => {
 		const wrapper = mount();
 		const vm = wrapper.vm;
 
@@ -26,7 +26,7 @@ describe("form-checkbox-group", () => {
 		expect(vm.internalModel).toEqual({ chocolate: true, banana: true, strawberry: true });
 	});
 
-	test("should emit a new model value when the internal model updates", async() => {
+	test("should emit a new model value when the internal model updates", async () => {
 		const wrapper = mount();
 		const vm = wrapper.vm;
 
@@ -35,6 +35,10 @@ describe("form-checkbox-group", () => {
 		await nextTick();
 
 		expect(wrapper.emitted()).toHaveProperty("update:modelValue");
-		expect(wrapper.emitted("update:modelValue")[0][0]).toEqual(["chocolate", "banana", "strawberry"]);
+		expect(wrapper.emitted("update:modelValue")[0][0]).toEqual([
+			"chocolate",
+			"banana",
+			"strawberry",
+		]);
 	});
 });

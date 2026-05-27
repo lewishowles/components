@@ -1,5 +1,10 @@
 <template>
-	<form-input-group ref="input-group" v-model="internalModel" v-bind="{ type: 'radio' }" data-test="form-radio-group">
+	<form-input-group
+		ref="input-group"
+		v-model="internalModel"
+		v-bind="{ type: 'radio' }"
+		data-test="form-radio-group"
+	>
 		<slot />
 
 		<template #introduction>
@@ -56,26 +61,33 @@ const fieldName = computed(() => {
 const underlyingValue = computed(() => unwrap(internalModel.value));
 
 // When a new value is provided by the input-group, unwrap it and emit it.
-watch(internalModel, () => {
-	if (!isNonEmptyObject(internalModel.value)) {
-		return;
-	}
+watch(
+	internalModel,
+	() => {
+		if (!isNonEmptyObject(internalModel.value)) {
+			return;
+		}
 
-	emit("update:modelValue", underlyingValue.value);
-}, { deep: true });
+		emit("update:modelValue", underlyingValue.value);
+	},
+	{ deep: true },
+);
 
 // When the provided modelValue updates, update our internal model to match.
-watch(() => props.modelValue, () => {
-	if (!isNonEmptyString(fieldName.value)) {
-		return;
-	}
+watch(
+	() => props.modelValue,
+	() => {
+		if (!isNonEmptyString(fieldName.value)) {
+			return;
+		}
 
-	if (props.modelValue === underlyingValue.value) {
-		return;
-	}
+		if (props.modelValue === underlyingValue.value) {
+			return;
+		}
 
-	internalModel.value = { [fieldName.value]: props.modelValue };
-});
+		internalModel.value = { [fieldName.value]: props.modelValue };
+	},
+);
 
 function triggerFocus() {
 	runComponentMethod(inputGroupRef.value, "triggerFocus");

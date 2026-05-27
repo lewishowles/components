@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import ImageTag from "./image-tag.vue";
 
 const defaultProps = { src: "https://picsum.photos/300/300" };

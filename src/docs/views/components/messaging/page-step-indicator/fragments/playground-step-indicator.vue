@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-step-indicator" v-model="textSlots">
-		<template #title>
-			Step indicator
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-step-indicator"
+		v-model="textSlots"
+	>
+		<template #title> Step indicator </template>
 
 		<step-indicator v-bind="componentProps">
 			{{ textSlots.default?.value }}
@@ -41,9 +43,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("step-indicator", { slots: textSlots, props });

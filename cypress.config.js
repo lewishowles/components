@@ -3,6 +3,8 @@ import viteConfig from "./vite.config";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
 
+const baseViteConfig = await viteConfig;
+
 export default defineConfig({
 	allowCypressEnv: false,
 	fixturesFolder: "",
@@ -19,7 +21,7 @@ export default defineConfig({
 			framework: "vue",
 			bundler: "vite",
 			viteConfig: {
-				...viteConfig,
+				...baseViteConfig,
 				plugins: [tailwindcss(), vue()],
 			},
 		},

@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import IconChevronRightCircled from "./icon-chevron-right-circled.vue";
 
 const mount = createMount(IconChevronRightCircled);

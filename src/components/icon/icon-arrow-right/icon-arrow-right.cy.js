@@ -11,4 +11,3 @@ describe("icon-arrow-right", () => {
 		cy.get("svg").shouldBeVisible();
 	});
 });
-

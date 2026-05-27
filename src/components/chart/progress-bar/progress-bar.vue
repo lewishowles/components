@@ -48,15 +48,13 @@
 	</div>
 </template>
 
-<script>
-// The valid variant values and their corresponding ARIA roles.
-const progressVariants = { METER: "meter", PROGRESS: "progress" };
-</script>
-
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
 import { computed, useId } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
+
+// The valid variant values and their corresponding ARIA roles.
+const progressVariants = { METER: "meter", PROGRESS: "progress" };
 
 const props = defineProps({
 	/**

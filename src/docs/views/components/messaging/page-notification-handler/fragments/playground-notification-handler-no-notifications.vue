@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-notification-handler" v-model="textSlots">
-		<template #title>
-			No notifications
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-notification-handler"
+		v-model="textSlots"
+	>
+		<template #title> No notifications </template>
 
 		<div class="flex justify-end">
 			<notification-handler v-bind="componentProps">
@@ -65,9 +67,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("notification-handler", { slots: textSlots, props });

@@ -20,7 +20,9 @@ describe("modal-controller", () => {
 			cy.getByData("stacking-test-open-second").click();
 			cy.getByData("stacking-test-second-content").shouldBeVisible();
 
-			cy.getByData("stacking-test-first-content").closest("dialog").should("have.prop", "inert", true);
+			cy.getByData("stacking-test-first-content")
+				.closest("dialog")
+				.should("have.prop", "inert", true);
 		});
 
 		it("The first modal is no longer inert after the second modal closes", () => {
@@ -31,7 +33,9 @@ describe("modal-controller", () => {
 
 			cy.getByData("stacking-test-close-second").click();
 
-			cy.getByData("stacking-test-first-content").closest("dialog").should("have.prop", "inert", false);
+			cy.getByData("stacking-test-first-content")
+				.closest("dialog")
+				.should("have.prop", "inert", false);
 		});
 
 		it("Both modals remain in the DOM while stacked", () => {

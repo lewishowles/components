@@ -1,5 +1,5 @@
 <template>
-	<component :is="headingLevel" class="my-2 px-4 font-semibold text-grey-950">
+	<component :is="headingLevel" class="text-grey-950 my-2 px-4 font-semibold">
 		<slot />
 	</component>
 </template>

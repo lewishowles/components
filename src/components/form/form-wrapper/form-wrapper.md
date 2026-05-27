@@ -66,21 +66,21 @@ Two methods are provided by `form-wrapper` under the "form-wrapper" namespace to
 
 Allow a field to register itself with the form.
 
-| Parameter            | Type       | Description |
-|----------------------|-----------|-------------|
-| `field.name`        | `string`   | Name of the field to register. |
-| `field.id`          | `string`   | The ID of the field, helpful for linking errors to fields. |
-| `field.validateField` | `function` | Validation function, run when the form is submitted. |
-| `field.focusField`  | `function` | Method to focus on this field, used by the error summary. |
+| Parameter             | Type       | Description                                                |
+| --------------------- | ---------- | ---------------------------------------------------------- |
+| `field.name`          | `string`   | Name of the field to register.                             |
+| `field.id`            | `string`   | The ID of the field, helpful for linking errors to fields. |
+| `field.validateField` | `function` | Validation function, run when the form is submitted.       |
+| `field.focusField`    | `function` | Method to focus on this field, used by the error summary.  |
 
 ### `updateFieldValue(name, value)`
 
 Allow a field to update its value in the form.
 
-| Parameter | Type     | Description |
-|-----------|---------|-------------|
+| Parameter | Type      | Description                      |
+| --------- | --------- | -------------------------------- |
 | `name`    | `string`  | The name of the field to update. |
-| `value`   | `unknown` | The value to set. |
+| `value`   | `unknown` | The value to set.                |
 
 ## Examples
 
@@ -88,9 +88,7 @@ Allow a field to update its value in the form.
 
 ```html
 <form-wrapper v-model="formData">
-	<form-field name="your_name">
-		Your name
-	</form-field>
+	<form-field name="your_name"> Your name </form-field>
 </form-wrapper>
 ```
 

@@ -68,9 +68,7 @@ Focus this input.
 ### Basic usage
 
 ```html
-<form-input v-model="username">
-	Username
-</form-input>
+<form-input v-model="username"> Username </form-input>
 ```
 
 ### With icon
@@ -91,8 +89,6 @@ Focus this input.
 <form-input v-model="username">
 	Username
 
-	<template #help>
-		Your username will be displayed on your public profile.
-	</template>
+	<template #help> Your username will be displayed on your public profile. </template>
 </form-input>
 ```

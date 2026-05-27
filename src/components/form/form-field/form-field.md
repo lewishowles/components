@@ -114,9 +114,7 @@ The current value of the underlying form field will be available via `v-model`.
 ### Text field
 
 ```html
-<form-field name="username">
-	Username
-</form-field>
+<form-field name="username"> Username </form-field>
 ```
 
 ### Checkbox

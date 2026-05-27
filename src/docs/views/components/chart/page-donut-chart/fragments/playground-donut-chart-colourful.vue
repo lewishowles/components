@@ -1,11 +1,14 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-donut-chart-colourful" v-model="textSlots">
-		<template #title>
-			Colourful chart
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-donut-chart-colourful"
+		v-model="textSlots"
+	>
+		<template #title> Colourful chart </template>
 
 		<template #introduction>
-			A more colourful donut chart. Use with caution, as depending on the number of slices, adjacent slices may not be sufficiently distinct.
+			A more colourful donut chart. Use with caution, as depending on the number of slices, adjacent
+			slices may not be sufficiently distinct.
 		</template>
 
 		<donut-chart v-bind="componentProps">
@@ -50,9 +53,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("donut-chart", { props, slots: textSlots });

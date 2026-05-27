@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-ui-button-reactive" v-model="textSlots">
-		<template #title>
-			Reactive button
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-ui-button-reactive"
+		v-model="textSlots"
+	>
+		<template #title> Reactive button </template>
 
 		<template #introduction>
 			<p>A button that reacts, giving user feedback, on activation.</p>
@@ -50,9 +52,7 @@ const events = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("ui-button", { slots: textSlots, props, events });

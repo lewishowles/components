@@ -8,7 +8,12 @@
 			<slot name="introduction" />
 		</conditional-wrapper>
 
-		<div class="flex transition-shadow" :class="{ 'form-field--error': haveError }" data-selector="form-field-wrapper" data-test="form-input-wrapper">
+		<div
+			class="flex transition-shadow"
+			:class="{ 'form-field--error': haveError }"
+			data-selector="form-field-wrapper"
+			data-test="form-input-wrapper"
+		>
 			<select
 				ref="select-element"
 				v-model="model"
@@ -22,9 +27,7 @@
 				}"
 			>
 				<option v-if="allowEmpty" value="">
-					<slot name="empty-option-label">
-						Please select…
-					</slot>
+					<slot name="empty-option-label"> Please select… </slot>
 				</option>
 				<option v-for="option in internalOptions" :key="option.value" :value="option.value">
 					{{ option.label }}
@@ -32,7 +35,10 @@
 			</select>
 		</div>
 
-		<form-supplementary v-bind="{ inputId }" @update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })">
+		<form-supplementary
+			v-bind="{ inputId }"
+			@update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })"
+		>
 			<template #error>
 				<slot name="error" />
 			</template>
@@ -139,8 +145,13 @@ const model = defineModel({
 
 // A reference to the input, which allows us to trigger focus on it.
 const selectElement = useTemplateRef("select-element");
+
 // Standardised options.
-const { options: internalOptions } = useOptions(props.options, { labelKey: props.labelKey, valueKey: props.valueKey });
+const { options: internalOptions } = useOptions(props.options, {
+	labelKey: props.labelKey,
+	valueKey: props.valueKey,
+});
+
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.

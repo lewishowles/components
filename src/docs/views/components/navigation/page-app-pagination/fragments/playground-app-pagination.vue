@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-app-pagination" v-model="textSlots">
-		<template #title>
-			App pagination
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-app-pagination"
+		v-model="textSlots"
+	>
+		<template #title> App pagination </template>
 
 		<template #introduction>
 			<p>A simple pagination example.</p>
@@ -32,9 +34,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("app-pagination", { props });

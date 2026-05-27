@@ -87,9 +87,7 @@ Focus this select.
 ### Basic usage
 
 ```html
-<form-select v-model="mode" v-bind="{ options }">
-	Design mode
-</form-select>
+<form-select v-model="mode" v-bind="{ options }"> Design mode </form-select>
 ```
 
 ### With help

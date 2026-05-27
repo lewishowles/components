@@ -1,11 +1,16 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-field-checkbox" v-model="textSlots">
-		<template #title>
-			Checkbox
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-form-field-checkbox"
+		v-model="textSlots"
+	>
+		<template #title> Checkbox </template>
 
 		<template #introduction>
-			<p>Allow the user to select a single checkbox, to confirm terms, for example. A single checkbox returns <code>true</code> or <code>false</code> depending on whether it's checked.</p>
+			<p>
+				Allow the user to select a single checkbox, to confirm terms, for example. A single checkbox
+				returns <code>true</code> or <code>false</code> depending on whether it's checked.
+			</p>
 		</template>
 
 		<form-field v-model="componentModel" v-bind="componentProps">
@@ -37,7 +42,8 @@ const textSlots = ref({
 	},
 	help: {
 		label: "Help text",
-		value: "When you confirm your newsletter subscription, we'll send you an email with your exclusive discount code.",
+		value:
+			"When you confirm your newsletter subscription, we'll send you an email with your exclusive discount code.",
 		type: "textarea",
 	},
 	error: {
@@ -58,9 +64,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("form-field", { slots: textSlots, props });

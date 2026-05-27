@@ -1,11 +1,16 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-field-password" v-model="textSlots">
-		<template #title>
-			Password
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-form-field-password"
+		v-model="textSlots"
+	>
+		<template #title> Password </template>
 
 		<template #introduction>
-			<p>Password is a variant of <code>text</code>, automatically applying a <code>type</code> of <code>password</code>.</p>
+			<p>
+				Password is a variant of <code>text</code>, automatically applying a <code>type</code> of
+				<code>password</code>.
+			</p>
 		</template>
 
 		<form-field v-model="componentModel" v-bind="componentProps">
@@ -67,9 +72,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("form-field", { slots: textSlots, props });

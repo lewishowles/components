@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test } from "vite-plus/test";
 import ProgressBar from "./progress-bar.vue";
 
 const mount = createMount(ProgressBar);
@@ -55,7 +55,7 @@ describe("progress-bar", () => {
 				expect(wrapper.vm.percentageValue).toBe(40);
 			});
 
-			test("should calculate percentage for custom range", async() => {
+			test("should calculate percentage for custom range", async () => {
 				const wrapper = mount({ min: 40, max: 80, current: 50 });
 
 				expect(wrapper.vm.percentageValue).toBe(25);
@@ -99,7 +99,7 @@ describe("progress-bar", () => {
 				const wrapper = mount({
 					current: 3,
 					max: 10,
-					getValueLabel: value => `${value} of 10 files uploaded`,
+					getValueLabel: (value) => `${value} of 10 files uploaded`,
 				});
 
 				expect(wrapper.vm.valueText).toBe("3 of 10 files uploaded");
@@ -107,7 +107,7 @@ describe("progress-bar", () => {
 		});
 
 		describe("internalId", () => {
-			test("should be stable across re-renders", async() => {
+			test("should be stable across re-renders", async () => {
 				const wrapper = mount({ current: 25 });
 				const id = wrapper.vm.internalId;
 

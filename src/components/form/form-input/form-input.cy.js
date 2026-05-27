@@ -36,9 +36,7 @@ describe("form-input", () => {
 		it("An introduction can be supplied", () => {
 			mount({ slots: { introduction: "Introductory text" } });
 
-			cy.getByData("form-input-introduction")
-				.shouldBeVisible()
-				.shouldHaveText("Introductory text");
+			cy.getByData("form-input-introduction").shouldBeVisible().shouldHaveText("Introductory text");
 		});
 
 		it("Help can be supplied", () => {
@@ -49,8 +47,7 @@ describe("form-input", () => {
 				.shouldHaveText("Help text")
 				.shouldHaveAttribute("id", "id-abc-help");
 
-			cy.getFormField("form-input")
-				.shouldHaveAttribute("aria-describedby", "id-abc-help");
+			cy.getFormField("form-input").shouldHaveAttribute("aria-describedby", "id-abc-help");
 		});
 
 		it("An error can be supplied", () => {
@@ -61,8 +58,7 @@ describe("form-input", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getFormField("form-input")
-				.shouldHaveAttribute("aria-describedby", "id-abc-error");
+			cy.getFormField("form-input").shouldHaveAttribute("aria-describedby", "id-abc-error");
 		});
 
 		it("Both help and an error can be supplied", () => {
@@ -78,8 +74,10 @@ describe("form-input", () => {
 				.shouldHaveText("Error text")
 				.shouldHaveAttribute("id", "id-abc-error");
 
-			cy.getFormField("form-input")
-				.shouldHaveAttribute("aria-describedby", "id-abc-help id-abc-error");
+			cy.getFormField("form-input").shouldHaveAttribute(
+				"aria-describedby",
+				"id-abc-help id-abc-error",
+			);
 		});
 	});
 

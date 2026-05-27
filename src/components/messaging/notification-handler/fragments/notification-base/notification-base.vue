@@ -1,16 +1,35 @@
 <template>
 	<div class="relative py-4 ps-8 pe-12" :data-test="dataTest">
-		<div class="absolute inset-y-0 start-0 w-1 rounded-full" :class="stripeClasses" :data-test="`${dataTest}-stripe`" />
+		<div
+			class="absolute inset-y-0 start-0 w-1 rounded-full"
+			:class="stripeClasses"
+			:data-test="`${dataTest}-stripe`"
+		/>
 
 		<conditional-wrapper v-bind="{ wrap: hasImage || hasIcon }" class="flex items-start gap-4">
-			<image-tag v-if="hasImage" :src="notification.image_url" class="size-10 rounded-md object-cover" :data-test="`${dataTest}-image`" />
+			<image-tag
+				v-if="hasImage"
+				:src="notification.image_url"
+				class="size-10 rounded-md object-cover"
+				:data-test="`${dataTest}-image`"
+			/>
 
-			<div v-else-if="hasIcon" class="w-10 rounded-md p-3" :class="iconBackgroundClasses" :data-test="`${dataTest}-icon`">
+			<div
+				v-else-if="hasIcon"
+				class="w-10 rounded-md p-3"
+				:class="iconBackgroundClasses"
+				:data-test="`${dataTest}-icon`"
+			>
 				<component :is="notification.icon" class="size-4.5" :class="iconClasses" />
 			</div>
 
 			<conditional-wrapper v-bind="{ wrap: hasImage || hasIcon }">
-				<h3 v-if="hasTitle" class="font-semibold" :class="titleClasses" :data-test="`${dataTest}-title`">
+				<h3
+					v-if="hasTitle"
+					class="font-semibold"
+					:class="titleClasses"
+					:data-test="`${dataTest}-title`"
+				>
 					{{ notification.title }}
 				</h3>
 
@@ -20,31 +39,46 @@
 
 				<display-date
 					v-if="hasDate"
-					class="mt-2 block text-xs text-grey-500 dark:text-white/60"
+					class="text-grey-500 mt-2 block text-xs dark:text-white/60"
 					v-bind="{ date: notification.date, locale, format: dateFormat }"
 					:data-test="`${dataTest}-date`"
 				/>
 			</conditional-wrapper>
 		</conditional-wrapper>
 
-		<div v-if="showToolbar" class="mt-2 flex items-center gap-4 text-xs" :class="{ 'ps-14': hasImage || hasIcon }" :data-test="`${dataTest}-actions`">
-			<link-tag v-if="hasMoreInformationUrl" v-bind="{ href: notification.url, external: true }" :data-test="`${dataTest}-view-more`">
-				<slot name="view-more-label">
-					View more
-				</slot>
+		<div
+			v-if="showToolbar"
+			class="mt-2 flex items-center gap-4 text-xs"
+			:class="{ 'ps-14': hasImage || hasIcon }"
+			:data-test="`${dataTest}-actions`"
+		>
+			<link-tag
+				v-if="hasMoreInformationUrl"
+				v-bind="{ href: notification.url, external: true }"
+				:data-test="`${dataTest}-view-more`"
+			>
+				<slot name="view-more-label"> View more </slot>
 			</link-tag>
 
-			<ui-button v-if="canMarkRead" v-bind="{ iconStart: 'icon-check' }" class="button--muted" :data-test="`${dataTest}-mark-read`" @click="markNotificationRead">
-				<slot name="mark-read-label">
-					Mark as read
-				</slot>
+			<ui-button
+				v-if="canMarkRead"
+				v-bind="{ iconStart: 'icon-check' }"
+				class="button--muted"
+				:data-test="`${dataTest}-mark-read`"
+				@click="markNotificationRead"
+			>
+				<slot name="mark-read-label"> Mark as read </slot>
 			</ui-button>
 
 			<slot name="actions" v-bind="{ notification }" />
 		</div>
 
 		<slot name="badge">
-			<div class="absolute end-0 top-0" :class="[badgeClasses, 'bg-current size-2 rounded-full me-6 mt-5.5']" :data-test="`${dataTest}-badge`" />
+			<div
+				class="absolute end-0 top-0"
+				:class="[badgeClasses, 'me-6 mt-5.5 size-2 rounded-full bg-current']"
+				:data-test="`${dataTest}-badge`"
+			/>
 		</slot>
 	</div>
 </template>
@@ -171,9 +205,12 @@ const haveActions = computed(() => isNonEmptySlot(slots.actions));
 // Whether this notification can be marked as read, which requires an ID and
 // that this type of notification can be marked read.
 const canMarkRead = computed(() => props.allowMarkRead === true && hasId.value === true);
+
 // Whether we should include the toolbar for the notification, including "mark
 // read", "view more", etc.
-const showToolbar = computed(() => hasMoreInformationUrl.value || canMarkRead.value || haveActions.value);
+const showToolbar = computed(
+	() => hasMoreInformationUrl.value || canMarkRead.value || haveActions.value,
+);
 
 /**
  * Emit an event requesting that this notification be marked as "read".

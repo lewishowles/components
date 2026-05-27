@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-loading-skeleton" v-model="textSlots">
-		<template #title>
-			Skeleton loader
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-loading-skeleton"
+		v-model="textSlots"
+	>
+		<template #title> Skeleton loader </template>
 
 		<loading-skeleton>
 			<template #label>
@@ -48,12 +50,7 @@ const additionalContent = useTemplateGenerator("div", {
 			isInline: true,
 		},
 	},
-	additionalContent: [
-		userSkeleton,
-		userSkeleton,
-		userSkeleton,
-		userSkeleton,
-	],
+	additionalContent: [userSkeleton, userSkeleton, userSkeleton, userSkeleton],
 	indent: 1,
 });
 

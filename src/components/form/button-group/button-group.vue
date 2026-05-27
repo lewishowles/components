@@ -4,9 +4,15 @@
 
 		<template #options="{ options, name }">
 			<slot name="options" v-bind="{ options, name }">
-				<div ref="optionsWrapperElement" class="flex mt-1">
+				<div ref="optionsWrapperElement" class="mt-1 flex">
 					<div v-for="option in options" :key="option.id">
-						<input ref="inputReferences" v-model="model" type="radio" class="peer sr-only" v-bind="{ id: option.id, value: option.value, name }" />
+						<input
+							ref="inputReferences"
+							v-model="model"
+							type="radio"
+							class="peer sr-only"
+							v-bind="{ id: option.id, value: option.value, name }"
+						/>
 
 						<form-label
 							v-bind="{ id: option.id, styled: false }"

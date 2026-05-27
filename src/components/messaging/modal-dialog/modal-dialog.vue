@@ -50,7 +50,7 @@ const props = defineProps({
 	variant: {
 		type: String,
 		default: "dialog",
-		validator: value => ["dialog", "alert"].includes(value),
+		validator: (value) => ["dialog", "alert"].includes(value),
 	},
 });
 
@@ -94,8 +94,15 @@ provide("modal-dialog-title-id", titleId);
 
 // Validate that the dialog has an accessible label.
 onMounted(() => {
-	if (import.meta.env.DEV && !haveTitle.value && !attrs["aria-label"] && !attrs["aria-labelledby"]) {
-		console.warn("[modal-dialog] No accessible label found. Provide a `title` slot, or pass `aria-label` / `aria-labelledby`.");
+	if (
+		import.meta.env.DEV &&
+		!haveTitle.value &&
+		!attrs["aria-label"] &&
+		!attrs["aria-labelledby"]
+	) {
+		console.warn(
+			"[modal-dialog] No accessible label found. Provide a `title` slot, or pass `aria-label` / `aria-labelledby`.",
+		);
 	}
 });
 

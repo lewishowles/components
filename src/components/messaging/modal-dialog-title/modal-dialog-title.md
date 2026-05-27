@@ -20,7 +20,5 @@ The tag to use for the dialog title.
 ## Examples
 
 ```html
-<modal-dialog-title>
-	Delete user {{ username }}
-</modal-dialog-title>
+<modal-dialog-title> Delete user {{ username }} </modal-dialog-title>
 ```

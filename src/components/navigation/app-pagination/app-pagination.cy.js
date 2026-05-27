@@ -190,7 +190,5 @@ function goToLastPage() {
 // Find the page that is marked as current via aria-current, and check that
 // it displays the correct number.
 function assertCurrentPage(number) {
-	cy.getByData("app-pagination-page")
-		.find("[aria-current=page]")
-		.shouldHaveText(String(number));
+	cy.getByData("app-pagination-page").find("[aria-current=page]").shouldHaveText(String(number));
 }

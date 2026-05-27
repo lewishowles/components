@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-form-textarea" v-model="textSlots">
-		<template #title>
-			Form textarea
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-form-textarea"
+		v-model="textSlots"
+	>
+		<template #title> Form textarea </template>
 
 		<form-textarea v-model="componentModel">
 			{{ textSlots.default?.value }}
@@ -37,7 +39,8 @@ const textSlots = ref({
 	},
 	introduction: {
 		label: "Introduction",
-		value: "This will be displayed on your profile and will be visible to other users of the website.",
+		value:
+			"This will be displayed on your profile and will be visible to other users of the website.",
 		type: "textarea",
 	},
 	help: {

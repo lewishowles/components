@@ -30,7 +30,6 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
-
 });
 
 const { registerSection } = inject("component-tab");

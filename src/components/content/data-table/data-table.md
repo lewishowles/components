@@ -24,10 +24,10 @@ An optional visible caption to display above the table. When the table overflows
 
 A screen-reader-only hint rendered inside the caption area, announcing which column the table is currently sorted by. Only rendered when a column is sorted.
 
-| Slot prop      | Type    | Description                                      |
-|----------------|---------|--------------------------------------------------|
-| `sortedColumn` | string  | The label of the column currently being sorted.  |
-| `ascending`    | boolean | Whether the column is sorted ascending.          |
+| Slot prop      | Type    | Description                                     |
+| -------------- | ------- | ----------------------------------------------- |
+| `sortedColumn` | string  | The label of the column currently being sorted. |
+| `ascending`    | boolean | Whether the column is sorted ascending.         |
 
 ### `search-label`
 
@@ -51,8 +51,8 @@ The message to display when no data could be found for the table.
 
 The message to display when no data could be found for the current search term.
 
-| Slot prop | Type | Description |
-| --- | --- | --- |
+| Slot prop     | Type     | Description                            |
+| ------------- | -------- | -------------------------------------- |
 | `searchQuery` | `string` | The current search query in the table. |
 
 ### `<columnName>_heading`
@@ -61,8 +61,8 @@ The message to display when no data could be found for the current search term.
 
 Provides the ability to override the label for a particular column, by its key from the original data. Provided to the slot are is the key for that column.
 
-| Slot prop | Type   | Description                                                                 |
-|-----------|--------|-----------------------------------------------------------------------------|
+| Slot prop | Type   | Description                                                                  |
+| --------- | ------ | ---------------------------------------------------------------------------- |
 | `key`     | string | The key for this column, as determined by the original data provided.        |
 | `label`   | string | The current label for the column, as determined by any column configuration. |
 
@@ -73,7 +73,7 @@ Provides the ability to override the label for a particular column, by its key f
 Provides the ability to override the display for a particular column, by its key from the original data. Provided to the slot are the content of the cell itself, as well as the rest of its row, allowing cells to be combined where necessary.
 
 | Slot prop | Type   | Description                                              |
-|-----------|--------|----------------------------------------------------------|
+| --------- | ------ | -------------------------------------------------------- |
 | `cell`    | string | The original content of the cell, as provided in `data`. |
 | `row`     | object | The content of the entire row that the cell belongs to.  |
 
@@ -89,9 +89,9 @@ The hidden label for the "select" checkbox that represents all rows.
 
 The hidden label for each "select" checkbox, used when `enableSelection` is true.
 
-| Slot prop   | Type   | Description                               |
-|-------------|--------|-------------------------------------------|
-| `row`       | object | The data for the current row.             |
+| Slot prop   | Type   | Description                                  |
+| ----------- | ------ | -------------------------------------------- |
+| `row`       | object | The data for the current row.                |
 | `rowNumber` | number | The 1-based position of the row in the list. |
 
 ### `configure-label`
@@ -137,7 +137,7 @@ The label for the "Columns" options in the configure dropdown.
 The screen-reader-only announcement made when the table is sorted. Rendered inside a `role="status"` live region.
 
 | Slot prop   | Type    | Description                                     |
-|-------------|---------|-------------------------------------------------|
+| ----------- | ------- | ----------------------------------------------- |
 | `column`    | string  | The label of the column currently being sorted. |
 | `ascending` | boolean | Whether the column is sorted ascending.         |
 
@@ -147,10 +147,10 @@ The screen-reader-only announcement made when the table is sorted. Rendered insi
 
 The screen-reader-only announcement made when the search results change. Rendered inside a `role="status"` live region.
 
-| Slot prop | Type   | Description                        |
-|-----------|--------|------------------------------------|
-| `count`   | number | The number of results found.       |
-| `query`   | string | The current search query.          |
+| Slot prop | Type   | Description                  |
+| --------- | ------ | ---------------------------- |
+| `count`   | number | The number of results found. |
+| `query`   | string | The current search query.    |
 
 ### `selection-status`
 
@@ -159,7 +159,7 @@ The screen-reader-only announcement made when the search results change. Rendere
 The screen-reader-only announcement made when the row selection changes. Only active when `enableSelection` is enabled. Rendered inside a `role="status"` live region.
 
 | Slot prop       | Type    | Description                                        |
-|-----------------|---------|----------------------------------------------------|
+| --------------- | ------- | -------------------------------------------------- |
 | `selectedCount` | number  | The number of rows currently selected.             |
 | `total`         | number  | The total number of rows available for selection.  |
 | `allSelected`   | boolean | Whether all available rows are currently selected. |
@@ -170,17 +170,17 @@ The screen-reader-only announcement made when the row selection changes. Only ac
 
 The label for the number of rows currently selected. This is only shown if `enableSelection` is enabled.
 
-| Slot prop      | Type   | Description                        |
-|----------------|--------|------------------------------------|
-| `selectedCount`| string | The count of rows currently selected.|
+| Slot prop       | Type   | Description                           |
+| --------------- | ------ | ------------------------------------- |
+| `selectedCount` | string | The count of rows currently selected. |
 
 ### `page-number-label`
 
 The label for each individual page number button in the pagination controls.
 
-| Slot prop | Type   | Description              |
-|-----------|--------|--------------------------|
-| `page`    | number | The page number.         |
+| Slot prop | Type   | Description      |
+| --------- | ------ | ---------------- |
+| `page`    | number | The page number. |
 
 ### `next-page-label`
 
@@ -192,10 +192,10 @@ The label for the "next page" button in the pagination controls.
 
 A display of the current items being shown, giving the user an indication of where they are in the list.
 
-| Slot prop | Type   | Description                        |
-|-----------|--------|------------------------------------|
-| `first`   | number | The first item being displayed.     |
-| `last`    | number | The last item being displayed.      |
+| Slot prop | Type   | Description                            |
+| --------- | ------ | -------------------------------------- |
+| `first`   | number | The first item being displayed.        |
+| `last`    | number | The last item being displayed.         |
 | `count`   | number | The total number of items in the list. |
 
 ## Props
@@ -216,18 +216,18 @@ Any additional configuration for columns. **Note:** Any column without configura
 
 #### Available configuration keys
 
-|Key|Type|Default|Description|
-|-|-|-|-|
-|`label`|`string`|`""`|The label to display in the column header.|
-|`hidden`|`boolean`|`false`|Whether this column is hidden, allowing hidden columns to be more explicitly defined where helpful.|
-|`searchable`|`boolean`|`true`|Whether this column is included in searches. If false, search will ignore this column entirely.|
-|`sortable`|`boolean`|`true`|Whether this column can be sorted.|
-|`align`|`string`|`left`|The alignment of the column. Anything but "right" will be treated as "left".|
-|`primary`|`boolean`|`false`|Whether this is the primary column. Primary cells render as `<th scope="row">` rather than `<td>`, which helps screen readers associate row headers with their data.|
-|`headingClasses`|`Vue class binding`|`""`|Classes to apply only to this column's heading.|
-|`cellClasses`|`Vue class binding`|`""`|Classes to apply only to this column's cells.|
-|`columnClasses`|`Vue class binding`|`""`|Classes to apply to both this column's heading and cells.|
-|`tabularNums`|`boolean`|`false`|Whether to apply tabular number formatting (`tabular-nums`) to cells in this column. Useful for numeric columns to ensure digits align vertically.|
+| Key              | Type                | Default | Description                                                                                                                                                          |
+| ---------------- | ------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`          | `string`            | `""`    | The label to display in the column header.                                                                                                                           |
+| `hidden`         | `boolean`           | `false` | Whether this column is hidden, allowing hidden columns to be more explicitly defined where helpful.                                                                  |
+| `searchable`     | `boolean`           | `true`  | Whether this column is included in searches. If false, search will ignore this column entirely.                                                                      |
+| `sortable`       | `boolean`           | `true`  | Whether this column can be sorted.                                                                                                                                   |
+| `align`          | `string`            | `left`  | The alignment of the column. Anything but "right" will be treated as "left".                                                                                         |
+| `primary`        | `boolean`           | `false` | Whether this is the primary column. Primary cells render as `<th scope="row">` rather than `<td>`, which helps screen readers associate row headers with their data. |
+| `headingClasses` | `Vue class binding` | `""`    | Classes to apply only to this column's heading.                                                                                                                      |
+| `cellClasses`    | `Vue class binding` | `""`    | Classes to apply only to this column's cells.                                                                                                                        |
+| `columnClasses`  | `Vue class binding` | `""`    | Classes to apply to both this column's heading and cells.                                                                                                            |
+| `tabularNums`    | `boolean`           | `false` | Whether to apply tabular number formatting (`tabular-nums`) to cells in this column. Useful for numeric columns to ensure digits align vertically.                   |
 
 ### `name`
 
@@ -300,8 +300,8 @@ Classes to apply to all standard cells in the table. Cell padding will always ap
 
 Set the table's current search query, overriding any current search. This could be used in conjunction with a cell template to allow the user to find all similar rows, for example.
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter     | Type   | Description                  |
+| ------------- | ------ | ---------------------------- |
 | `searchQuery` | string | The new search query to set. |
 
 ## Examples

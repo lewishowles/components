@@ -1,8 +1,10 @@
 <template>
-	<component-playground v-bind="{ copy: template, componentModel }" id="playground-accordion-group" v-model="textSlots">
-		<template #title>
-			Accordion group
-		</template>
+	<component-playground
+		v-bind="{ copy: template, componentModel }"
+		id="playground-accordion-group"
+		v-model="textSlots"
+	>
+		<template #title> Accordion group </template>
 
 		<accordion-group v-bind="componentProps" v-model="componentModel">
 			<template #show-all-panels-label>
@@ -22,28 +24,30 @@
 			</template>
 
 			<accordion-panel>
-				<template #title>
-					The Flux Capacitor
-				</template>
+				<template #title> The Flux Capacitor </template>
 
-				<template #introduction>
-					The key to time travel.
-				</template>
+				<template #introduction> The key to time travel. </template>
 
 				<div class="prose dark:prose-invert">
-					<p>In the world of Back to the Future, the time circuits are the heart of the DeLorean's time-traveling capabilities. With a simple keypad interface, Doc Brown can input any date and time to travel to. The display shows the destination time, the present time, and the last departed time.</p>
+					<p>
+						In the world of Back to the Future, the time circuits are the heart of the DeLorean's
+						time-traveling capabilities. With a simple keypad interface, Doc Brown can input any
+						date and time to travel to. The display shows the destination time, the present time,
+						and the last departed time.
+					</p>
 
-					<p>It's a marvel of 1980s science fiction, giving Marty the ability to journey to the past, present, or future at the press of a button. The time circuits add an element of urgency and excitement, as every second counts when avoiding time paradoxes and ensuring the timeline remains intact.</p>
+					<p>
+						It's a marvel of 1980s science fiction, giving Marty the ability to journey to the past,
+						present, or future at the press of a button. The time circuits add an element of urgency
+						and excitement, as every second counts when avoiding time paradoxes and ensuring the
+						timeline remains intact.
+					</p>
 				</div>
 			</accordion-panel>
 			<accordion-panel>
-				<template #title>
-					The DeLorean
-				</template>
+				<template #title> The DeLorean </template>
 
-				<template #introduction>
-					The iconic time-travelling machine.
-				</template>
+				<template #introduction> The iconic time-travelling machine. </template>
 
 				<div class="prose dark:prose-invert">
 					<p>...</p>
@@ -97,7 +101,8 @@ const additionalContent = [
 				useTemplateGenerator("p", {
 					slots: {
 						default: {
-							value: "In the world of Back to the Future, the time circuits are the heart of the DeLorean's time-traveling capabilities. With a simple keypad interface, Doc Brown can input any date and time to travel to. The display shows the destination time, the present time, and the last departed time.",
+							value:
+								"In the world of Back to the Future, the time circuits are the heart of the DeLorean's time-traveling capabilities. With a simple keypad interface, Doc Brown can input any date and time to travel to. The display shows the destination time, the present time, and the last departed time.",
 						},
 					},
 					indent: 1,
@@ -105,7 +110,8 @@ const additionalContent = [
 				useTemplateGenerator("p", {
 					slots: {
 						default: {
-							value: "It's a marvel of 1980s science fiction, giving Marty the ability to journey to the past, present, or future at the press of a button. The time circuits add an element of urgency and excitement, as every second counts when avoiding time paradoxes and ensuring the timeline remains intact.",
+							value:
+								"It's a marvel of 1980s science fiction, giving Marty the ability to journey to the past, present, or future at the press of a button. The time circuits add an element of urgency and excitement, as every second counts when avoiding time paradoxes and ensuring the timeline remains intact.",
 						},
 					},
 					indent: 1,
@@ -140,10 +146,12 @@ const additionalContent = [
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
-const template = useTemplateGenerator("accordion-group", { slots: textSlots, props, additionalContent });
+const template = useTemplateGenerator("accordion-group", {
+	slots: textSlots,
+	props,
+	additionalContent,
+});
 </script>

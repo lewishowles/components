@@ -1,10 +1,12 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-relative-date" v-model="textSlots">
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-relative-date"
+		v-model="textSlots"
+	>
 		<template #title> Relative date </template>
 
-		<template #introduction>
-			A relative date compared with the current time.
-		</template>
+		<template #introduction> A relative date compared with the current time. </template>
 
 		<relative-date v-bind="componentProps" />
 	</component-playground>
@@ -25,9 +27,7 @@ const props = ref({
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 const template = useTemplateGenerator("relative-date", { props });

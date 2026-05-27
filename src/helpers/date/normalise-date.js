@@ -53,14 +53,10 @@ export function normaliseDateToEpochMilliseconds(date) {
 		return temporalDate
 			.toPlainDateTime(Temporal.PlainTime.from("00:00"))
 			.toZonedDateTime(Temporal.Now.timeZoneId())
-			.toInstant()
-			.epochMilliseconds;
+			.toInstant().epochMilliseconds;
 	}
 
-	return temporalDate
-		.toZonedDateTime(Temporal.Now.timeZoneId())
-		.toInstant()
-		.epochMilliseconds;
+	return temporalDate.toZonedDateTime(Temporal.Now.timeZoneId()).toInstant().epochMilliseconds;
 }
 
 /**

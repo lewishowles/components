@@ -1,11 +1,18 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-ui-button-loading-auto" v-model="textSlots">
-		<template #title>
-			Auto-loading button
-		</template>
+	<component-playground
+		v-bind="{ copy: template }"
+		id="playground-ui-button-loading-auto"
+		v-model="textSlots"
+	>
+		<template #title> Auto-loading button </template>
 
 		<template #introduction>
-			<p>When a button is <code>reactive</code>, its <code>loadingAuto</code> defaults to true. The button detects a Promise returned by the click handler and automatically enters its loading state, resetting when the Promise resolves or rejects. Click the button below to see it in action.</p>
+			<p>
+				When a button is <code>reactive</code>, its <code>loadingAuto</code> defaults to true. The
+				button detects a Promise returned by the click handler and automatically enters its loading
+				state, resetting when the Promise resolves or rejects. Click the button below to see it in
+				action.
+			</p>
 		</template>
 
 		<div class="flex items-center gap-4">
@@ -61,9 +68,7 @@ const saveComplete = ref(false);
 
 // Convert our props into a format that can be passed directly to our component.
 const componentProps = computed(() => {
-	return Object.fromEntries(
-		Object.entries(props.value).map(([key, prop]) => [key, prop.value]),
-	);
+	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
 // Simulate an async operation to demonstrate loadingAuto.
@@ -71,7 +76,7 @@ async function simulateSave() {
 	processing.value = true;
 	saveComplete.value = false;
 
-	await new Promise(resolve => setTimeout(resolve, 2000));
+	await new Promise((resolve) => setTimeout(resolve, 2000));
 
 	processing.value = false;
 	saveComplete.value = true;
