@@ -1,15 +1,25 @@
 <template>
 	<component-page>
-		<template #title>
-			Accordion group
-		</template>
+		<template #title> Accordion group </template>
 
 		<template #introduction>
-			<p><code>accordion-group</code> represents an accordion and is used in conjunction with <code>accordion-panel</code>, which represents each panel in the group, to create a set of accessible content.</p>
-			<p>Accordions are very much like tabs, but display content vertically. Accordions provide a few benefits, one of which is that there isn't really a physical limit to the number of accordion panels, as they’re displayed vertically. To that point, accordion buttons can also have more text explaining their purpose—though this should be kept to an absolute minimum.</p>
+			<p>
+				<code>accordion-group</code> represents an accordion and is used in conjunction with
+				<code>accordion-panel</code>, which represents each panel in the group, to create a set of
+				accessible content.
+			</p>
+			<p>
+				Accordions are very much like tabs, but display content vertically. Accordions provide a few
+				benefits, one of which is that there isn't really a physical limit to the number of
+				accordion panels, as they’re displayed vertically. To that point, accordion buttons can also
+				have more text explaining their purpose—though this should be kept to an absolute minimum.
+			</p>
 			<p>Another advantage is that multiple (or all) panels can be displayed at once.</p>
 			<p>
-				Accordions should only really be used with content, however, and should not be used to hide panels of a form. If this is the case, it is likely that the form is too complex and should be split over multiple pages. If a user needs to compare two panels or change between them regularly,
+				Accordions should only really be used with content, however, and should not be used to hide
+				panels of a form. If this is the case, it is likely that the form is too complex and should
+				be split over multiple pages. If a user needs to compare two panels or change between them
+				regularly,
 				<router-link v-bind="{ to: '/content/tab-group' }">
 					<code>tab-group</code>
 				</router-link>
@@ -22,22 +32,21 @@
 				</router-link>
 				element instead.
 			</p>
-			<p>When 6 or fewer panels are present, each panel's content is wrapped in <code>role="region"</code> with <code>aria-labelledby</code> pointing to the panel title, making each panel a named landmark for screen reader navigation. Above 6 panels the region role is omitted to avoid cluttering the landmark list.</p>
+			<p>
+				When 6 or fewer panels are present, each panel's content is wrapped in
+				<code>role="region"</code> with <code>aria-labelledby</code> pointing to the panel title,
+				making each panel a named landmark for screen reader navigation. Above 6 panels the region
+				role is omitted to avoid cluttering the landmark list.
+			</p>
 		</template>
 
 		<component-props>
 			<component-prop id="prop-heading-level">
-				<template #name>
-					headingLevel
-				</template>
+				<template #name> headingLevel </template>
 
-				<template #type>
-					String
-				</template>
+				<template #type> String </template>
 
-				<template #default-value>
-					h2
-				</template>
+				<template #default-value> h2 </template>
 
 				<p>The heading level to use for all panels.</p>
 			</component-prop>
@@ -45,81 +54,63 @@
 
 		<component-slots>
 			<component-slot id="slot-default">
-				<template #name>
-					default
-				</template>
+				<template #name> default </template>
 
-				<p>The <code>default</code> slot contains the <code>accordion-panel</code> components that represent the content.</p>
+				<p>
+					The <code>default</code> slot contains the <code>accordion-panel</code> components that
+					represent the content.
+				</p>
 			</component-slot>
 
 			<component-slot id="slot-show-all-panels-label">
-				<template #name>
-					show-all-panels-label
-				</template>
+				<template #name> show-all-panels-label </template>
 
-				<template #default-value>
-					"Show all panels"
-				</template>
+				<template #default-value> "Show all panels" </template>
 
 				<p>The label for the button which shows all accordion panels.</p>
 			</component-slot>
 
 			<component-slot id="slot-hide-all-panels-label">
-				<template #name>
-					hide-all-panels-label
-				</template>
+				<template #name> hide-all-panels-label </template>
 
-				<template #default-value>
-					"Hide all panels"
-				</template>
+				<template #default-value> "Hide all panels" </template>
 
 				<p>The label for the button which hides all accordion panels.</p>
 			</component-slot>
 
 			<component-slot id="slot-show-panel-label">
-				<template #name>
-					show-panel-label
-				</template>
+				<template #name> show-panel-label </template>
 
-				<template #default-value>
-					"Show panel"
-				</template>
+				<template #default-value> "Show panel" </template>
 
 				<p>The label for the individual panel buttons to show that panel.</p>
 			</component-slot>
 
 			<component-slot id="slot-hide-panel-label">
-				<template #name>
-					hide-panel-label
-				</template>
+				<template #name> hide-panel-label </template>
 
-				<template #default-value>
-					"Hide panel"
-				</template>
+				<template #default-value> "Hide panel" </template>
 
 				<p>The label for the individual panel buttons to hide that panel.</p>
 			</component-slot>
 
 			<component-slot id="slot-accordion-panel-title">
-				<template #name>
-					title (<code>accordion-panel</code>)
-				</template>
+				<template #name> title (<code>accordion-panel</code>) </template>
 
 				<p>The title of the panel, which is used in the show / hide button.</p>
 			</component-slot>
 
 			<component-slot id="slot-accordion-panel-introduction">
-				<template #name>
-					introduction (<code>accordion-panel</code>)
-				</template>
+				<template #name> introduction (<code>accordion-panel</code>) </template>
 
-				<p>Any introduction to further explain the panel's content. If used, this should be as short as possible.</p>
+				<p>
+					Any introduction to further explain the panel's content. If used, this should be as short
+					as possible.
+				</p>
 			</component-slot>
 
 			<component-slot id="slot-accordion-panel-default">
-				<template #name>
-					default (<code>accordion-panel</code>)
-				</template>
+				<template #name> default (<code>accordion-panel</code>) </template>
 
 				<p>The content of the accordion panel, which is shown when the panel is visible.</p>
 
@@ -142,15 +133,14 @@
 			</component-slot>
 
 			<component-slot id="slot-accordion-panel-show-panel-label">
-				<template #name>
-					show-panel-label (<code>accordion-panel</code>)
-				</template>
+				<template #name> show-panel-label (<code>accordion-panel</code>) </template>
 
-				<template #default-value>
-					"Show panel"
-				</template>
+				<template #default-value> "Show panel" </template>
 
-				<p>The label to show this panel. Overrides the <code>show-panel-label</code> slot in the parent <code>accordion-group</code>.</p>
+				<p>
+					The label to show this panel. Overrides the <code>show-panel-label</code> slot in the
+					parent <code>accordion-group</code>.
+				</p>
 
 				<table>
 					<thead>
@@ -176,15 +166,14 @@
 			</component-slot>
 
 			<component-slot id="slot-accordion-panel-hide-panel-label">
-				<template #name>
-					hide-panel-label (<code>accordion-panel</code>)
-				</template>
+				<template #name> hide-panel-label (<code>accordion-panel</code>) </template>
 
-				<template #default-value>
-					"Hide panel"
-				</template>
+				<template #default-value> "Hide panel" </template>
 
-				<p>The label to hide this panel. Overrides the <code>hide-panel-label</code> slot in the parent <code>accordion-group</code>.</p>
+				<p>
+					The label to hide this panel. Overrides the <code>hide-panel-label</code> slot in the
+					parent <code>accordion-group</code>.
+				</p>
 
 				<table>
 					<thead>
@@ -209,6 +198,44 @@
 				</table>
 			</component-slot>
 		</component-slots>
+
+		<component-styling-hooks>
+			<component-styling-hook id="hook-accordion-group-data-component">
+				<template #attribute>data-component="accordion-group"</template>
+				<p>
+					Present on the root element of <code>accordion-group</code>. Use to scope styles to this
+					component.
+				</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-accordion-group-data-part-controls">
+				<template #attribute>data-part="controls" (<code>accordion-group</code>)</template>
+				<p>The container holding the expand all and collapse all buttons.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-accordion-panel-data-component">
+				<template #attribute>data-component="accordion-panel"</template>
+				<p>Present on the root element of each <code>accordion-panel</code>.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-accordion-panel-data-part-trigger">
+				<template #attribute>data-part="trigger" (<code>accordion-panel</code>)</template>
+				<p>The button that shows or hides this panel.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-accordion-panel-data-part-content">
+				<template #attribute>data-part="content" (<code>accordion-panel</code>)</template>
+				<p>The content region revealed when the panel is open.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-accordion-panel-data-state">
+				<template #attribute>data-state (<code>accordion-panel</code>)</template>
+				<p>
+					Set to <code>"open"</code> when the panel is visible, <code>"closed"</code> when hidden.
+					Present on the root element of each <code>accordion-panel</code>.
+				</p>
+			</component-styling-hook>
+		</component-styling-hooks>
 
 		<component-playgrounds>
 			<playground-accordion-group />

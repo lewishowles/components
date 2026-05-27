@@ -1,20 +1,33 @@
 <template>
-	<div ref="groupRef" data-test="accordion-group" @keydown="handleKeydown">
-		<div class="flex items-center gap-4">
-			<ui-button icon-start="icon-chevron-down-circled" class="text-purple-800 hocus:underline dark:text-purple-300" :disabled="areAllPanelsVisible" data-test="accordion-group-expand-button" @click="showAllPanels">
-				<slot name="show-all-panels-label">
-					Expand all
-				</slot>
+	<div
+		ref="groupRef"
+		data-component="accordion-group"
+		data-test="accordion-group"
+		@keydown="handleKeydown"
+	>
+		<div data-part="controls" class="flex items-center gap-4">
+			<ui-button
+				icon-start="icon-chevron-down-circled"
+				class="hocus:underline text-purple-800 dark:text-purple-300"
+				:disabled="areAllPanelsVisible"
+				data-test="accordion-group-expand-button"
+				@click="showAllPanels"
+			>
+				<slot name="show-all-panels-label"> Expand all </slot>
 			</ui-button>
 
-			<ui-button icon-start="icon-chevron-up-circled" class="text-purple-800 hocus:underline dark:text-purple-300" :disabled="areNoPanelsVisible" data-test="accordion-group-collapse-button" @click="hideAllPanels">
-				<slot name="hide-all-panels-label">
-					Collapse all
-				</slot>
+			<ui-button
+				icon-start="icon-chevron-up-circled"
+				class="hocus:underline text-purple-800 dark:text-purple-300"
+				:disabled="areNoPanelsVisible"
+				data-test="accordion-group-collapse-button"
+				@click="hideAllPanels"
+			>
+				<slot name="hide-all-panels-label"> Collapse all </slot>
 			</ui-button>
 		</div>
 
-		<div class="divide-y divide-grey-200">
+		<div class="divide-grey-200 divide-y">
 			<slot />
 		</div>
 	</div>
@@ -46,9 +59,9 @@ const showPanelLabel = computed(() => getSlotText(slots["show-panel-label"]));
 // An overall label for each panel's "Hide panel" action.
 const hidePanelLabel = computed(() => getSlotText(slots["hide-panel-label"]));
 // Whether all of the panels are currently visible.
-const areAllPanelsVisible = computed(() => panels.value.every(panel => panel.isVisible === true));
+const areAllPanelsVisible = computed(() => panels.value.every((panel) => panel.isVisible === true));
 // Whether no panels are currently visible.
-const areNoPanelsVisible = computed(() => panels.value.every(panel => panel.isVisible === false));
+const areNoPanelsVisible = computed(() => panels.value.every((panel) => panel.isVisible === false));
 
 function registerPanel({ isVisible, show, hide }) {
 	if (!isRef(isVisible) || !isFunction(show) || !isFunction(hide)) {
@@ -101,7 +114,7 @@ function handleKeydown(event) {
 		return;
 	}
 
-	const buttons = Array.from(groupRef.value?.querySelectorAll("[data-part='accordion-trigger']") ?? []);
+	const buttons = Array.from(groupRef.value?.querySelectorAll("[data-part='trigger']") ?? []);
 
 	if (buttons.length === 0) {
 		return;

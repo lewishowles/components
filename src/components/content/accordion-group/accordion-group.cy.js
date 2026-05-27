@@ -25,49 +25,69 @@ describe("accordion-group", () => {
 		it("Panel content has role=region when fewer than 7 panels are present", () => {
 			mount();
 
-			cy.getByData("accordion-panel").eq(0).within(() => {
-				cy.getByData("accordion-panel-content").shouldHaveAttribute("role", "region");
-			});
+			cy.getByData("accordion-panel")
+				.eq(0)
+				.within(() => {
+					cy.getByData("accordion-panel-content").shouldHaveAttribute("role", "region");
+				});
 		});
 
 		it("Panel content aria-labelledby matches the title span id", () => {
 			mount();
 
-			cy.getByData("accordion-panel").eq(0).within(() => {
-				cy.get("span[id]").invoke("attr", "id").then(titleId => {
-					cy.getByData("accordion-panel-content").shouldHaveAttribute("aria-labelledby", titleId);
+			cy.getByData("accordion-panel")
+				.eq(0)
+				.within(() => {
+					cy.get("span[id]")
+						.invoke("attr", "id")
+						.then((titleId) => {
+							cy.getByData("accordion-panel-content").shouldHaveAttribute(
+								"aria-labelledby",
+								titleId,
+							);
+						});
 				});
-			});
 		});
 
-		it("Trigger button has data-part=\"accordion-trigger\"", () => {
+		it('Trigger button has data-part="trigger"', () => {
 			mount();
 
-			cy.getByData("accordion-panel").eq(0).within(() => {
-				cy.getByData("accordion-panel-button").shouldHaveAttribute("data-part", "accordion-trigger");
-			});
+			cy.getByData("accordion-panel")
+				.eq(0)
+				.within(() => {
+					cy.getByData("accordion-panel-button").shouldHaveAttribute("data-part", "trigger");
+				});
 		});
 
 		it("Trigger button aria-labelledby matches the title span id", () => {
 			mount();
 
-			cy.getByData("accordion-panel").eq(0).within(() => {
-				cy.get("span[id]").invoke("attr", "id").then(titleId => {
-					cy.getByData("accordion-panel-button").shouldHaveAttribute("aria-labelledby", titleId);
+			cy.getByData("accordion-panel")
+				.eq(0)
+				.within(() => {
+					cy.get("span[id]")
+						.invoke("attr", "id")
+						.then((titleId) => {
+							cy.getByData("accordion-panel-button").shouldHaveAttribute(
+								"aria-labelledby",
+								titleId,
+							);
+						});
 				});
-			});
 		});
 
 		it("Panel syncs aria-expanded when beforematch fires on panel content", () => {
 			mount();
 
-			cy.getByData("accordion-panel").eq(0).within(() => {
-				cy.getByData("accordion-panel-button").shouldHaveAttribute("aria-expanded", "false");
+			cy.getByData("accordion-panel")
+				.eq(0)
+				.within(() => {
+					cy.getByData("accordion-panel-button").shouldHaveAttribute("aria-expanded", "false");
 
-				cy.getByData("accordion-panel-content").trigger("beforematch", { force: true });
+					cy.getByData("accordion-panel-content").trigger("beforematch", { force: true });
 
-				cy.getByData("accordion-panel-button").shouldHaveAttribute("aria-expanded", "true");
-			});
+					cy.getByData("accordion-panel-button").shouldHaveAttribute("aria-expanded", "true");
+				});
 		});
 	});
 
@@ -81,12 +101,14 @@ describe("accordion-group", () => {
 		it("A panel can be opened via keyboard", () => {
 			mount();
 
-			cy.getByData("accordion-panel").eq(0).then($panel => {
-				cy.wrap($panel).getByData("accordion-panel-button").focus();
-				cy.wrap($panel).getByData("accordion-panel-button").realPress("Enter");
+			cy.getByData("accordion-panel")
+				.eq(0)
+				.then(($panel) => {
+					cy.wrap($panel).getByData("accordion-panel-button").focus();
+					cy.wrap($panel).getByData("accordion-panel-button").realPress("Enter");
 
-				confirmSectionOpen(0);
-			});
+					confirmSectionOpen(0);
+				});
 		});
 	});
 
@@ -222,11 +244,15 @@ describe("accordion-group", () => {
  *     The content of the panel.
  */
 function createPanel({ title, introduction, content }) {
-	return h(AccordionPanel, {}, {
-		title: () => title,
-		introduction: () => introduction,
-		default: () => h("p", content),
-	});
+	return h(
+		AccordionPanel,
+		{},
+		{
+			title: () => title,
+			introduction: () => introduction,
+			default: () => h("p", content),
+		},
+	);
 }
 
 /**
@@ -237,13 +263,15 @@ function createPanel({ title, introduction, content }) {
  *     The index of the panel to open.
  */
 function openSection(index) {
-	cy.getByData("accordion-panel").eq(index).then($panel => {
-		confirmSectionClosed(index);
+	cy.getByData("accordion-panel")
+		.eq(index)
+		.then(($panel) => {
+			confirmSectionClosed(index);
 
-		cy.wrap($panel).getByData("accordion-panel-button").click();
+			cy.wrap($panel).getByData("accordion-panel-button").click();
 
-		confirmSectionOpen(index);
-	});
+			confirmSectionOpen(index);
+		});
 }
 
 /**
@@ -254,13 +282,15 @@ function openSection(index) {
  *     The index of the panel to close.
  */
 function closeSection(index) {
-	cy.getByData("accordion-panel").eq(index).then($panel => {
-		confirmSectionOpen(index);
+	cy.getByData("accordion-panel")
+		.eq(index)
+		.then(($panel) => {
+			confirmSectionOpen(index);
 
-		cy.wrap($panel).getByData("accordion-panel-button").click();
+			cy.wrap($panel).getByData("accordion-panel-button").click();
 
-		confirmSectionClosed(index);
-	});
+			confirmSectionClosed(index);
+		});
 }
 
 /**
@@ -271,10 +301,17 @@ function closeSection(index) {
  *     The index of the panel to verify.
  */
 function confirmSectionOpen(index) {
-	cy.getByData("accordion-panel").eq(index).then($panel => {
-		cy.wrap($panel).getByData("accordion-panel-button").shouldHaveAttribute("aria-expanded", "true");
-		cy.wrap($panel).getByData("accordion-panel-content").shouldBeVisible().shouldNotHaveAttribute("hidden");
-	});
+	cy.getByData("accordion-panel")
+		.eq(index)
+		.then(($panel) => {
+			cy.wrap($panel)
+				.getByData("accordion-panel-button")
+				.shouldHaveAttribute("aria-expanded", "true");
+			cy.wrap($panel)
+				.getByData("accordion-panel-content")
+				.shouldBeVisible()
+				.shouldNotHaveAttribute("hidden");
+		});
 }
 
 /**
@@ -285,8 +322,12 @@ function confirmSectionOpen(index) {
  *     The index of the panel to verify.
  */
 function confirmSectionClosed(index) {
-	cy.getByData("accordion-panel").eq(index).then($panel => {
-		cy.wrap($panel).getByData("accordion-panel-button").shouldHaveAttribute("aria-expanded", "false");
-		cy.wrap($panel).getByData("accordion-panel-content").shouldHaveAttribute("hidden");
-	});
+	cy.getByData("accordion-panel")
+		.eq(index)
+		.then(($panel) => {
+			cy.wrap($panel)
+				.getByData("accordion-panel-button")
+				.shouldHaveAttribute("aria-expanded", "false");
+			cy.wrap($panel).getByData("accordion-panel-content").shouldHaveAttribute("hidden");
+		});
 }

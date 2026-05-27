@@ -1,19 +1,25 @@
 <template>
-	<div data-test="accordion-panel">
+	<div
+		data-component="accordion-panel"
+		v-bind="{ 'data-state': isVisible ? 'open' : 'closed' }"
+		data-test="accordion-panel"
+	>
 		<component :is="headingLevel" class="py-6" data-test="accordion-panel-title">
 			<button
 				type="button"
 				class="group flex flex-col items-start"
 				v-bind="{ 'aria-controls': id, 'aria-expanded': isVisible, 'aria-labelledby': titleId }"
-				data-part="accordion-trigger"
+				data-part="trigger"
 				data-test="accordion-panel-button"
 				@click="toggle"
 			>
-				<span :id="titleId" class="mb-1 text-2xl font-bold text-grey-950 dark:text-grey-50">
+				<span :id="titleId" class="text-grey-950 dark:text-grey-50 mb-1 text-2xl font-bold">
 					<slot name="title" />
 				</span>
 
-				<div class="inline-flex items-center gap-2 text-purple-800 group-hocus:underline dark:text-purple-300">
+				<div
+					class="group-hocus:underline inline-flex items-center gap-2 text-purple-800 dark:text-purple-300"
+				>
 					<component :is="statusIcon" class="size-text" />
 
 					<span v-show="!isVisible" class="inline-flex items-center gap-2">
@@ -38,6 +44,7 @@
 			ref="contentRef"
 			v-bind="contentRegionProps"
 			:class="{ 'pb-6': isVisible }"
+			data-part="content"
 			data-test="accordion-panel-content"
 		>
 			<slot v-bind="{ isOpen: isVisible }" />
@@ -49,7 +56,13 @@
 import { computed, inject, onBeforeUnmount, onMounted, ref, useId, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 
-const { headingLevel, hidePanelLabel, panelCount = ref(0), registerPanel, showPanelLabel } = inject("accordion-group", {});
+const {
+	headingLevel,
+	hidePanelLabel,
+	panelCount = ref(0),
+	registerPanel,
+	showPanelLabel,
+} = inject("accordion-group", {});
 
 const slots = useSlots();
 // A ref to the panel content element, used to listen for find-in-page reveals.
@@ -60,8 +73,12 @@ const id = useId();
 const titleId = useId();
 // Whether this panel is visible.
 const isVisible = ref(false);
+
 // The icon to show depending on the visibility of this panel.
-const statusIcon = computed(() => (isVisible.value ? "icon-chevron-up-circled" : "icon-chevron-down-circled"));
+const statusIcon = computed(() =>
+	isVisible.value ? "icon-chevron-up-circled" : "icon-chevron-down-circled",
+);
+
 // Whether this panel should use role="region". Skipped above 6 panels to avoid
 // cluttering the landmark list.
 const useRegion = computed(() => panelCount.value <= 6);
@@ -71,9 +88,9 @@ const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 // Accessibility attributes for the panel content region.
 const contentRegionProps = computed(() => ({
 	id,
-	"role": useRegion.value ? "region" : null,
+	role: useRegion.value ? "region" : null,
 	"aria-labelledby": useRegion.value ? titleId : null,
-	"hidden": isVisible.value ? null : "until-found",
+	hidden: isVisible.value ? null : "until-found",
 }));
 
 // Register this panel with the accordion, allowing it insight into the
@@ -119,5 +136,4 @@ function toggle() {
 
 	show();
 }
-
 </script>

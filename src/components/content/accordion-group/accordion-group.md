@@ -37,6 +37,15 @@ The label for the button which hides all accordion panels.
 
 The heading level to use for all panels.
 
+## Styling hooks
+
+| Attribute                          | Element                          | Notes                          |
+| ---------------------------------- | -------------------------------- | ------------------------------ |
+| `data-component="accordion-group"` | Root                             | Scope styles to this component |
+| `data-part="controls"`             | Expand/collapse button container | —                              |
+
+See also the `accordion-panel` styling hooks, which expose `data-component`, `data-part="trigger"`, `data-part="content"`, and `data-state`.
+
 ## Examples
 
 ### Basic accordion
@@ -44,26 +53,28 @@ The heading level to use for all panels.
 ```html
 <accordion-group>
 	<accordion-panel>
-		<template #title>
-			The Flux Capacitor
-		</template>
+		<template #title> The Flux Capacitor </template>
 
-		<template #introduction>
-			The key to time travel.
-		</template>
+		<template #introduction> The key to time travel. </template>
 
-		<p>In the world of Back to the Future, the time circuits are the heart of the DeLorean's time-travelling capabilities. With a simple keypad interface, Doc Brown can input any date and time to travel to. The display shows the destination time, the present time, and the last departed time.</p>
+		<p>
+			In the world of Back to the Future, the time circuits are the heart of the DeLorean's
+			time-travelling capabilities. With a simple keypad interface, Doc Brown can input any date and
+			time to travel to. The display shows the destination time, the present time, and the last
+			departed time.
+		</p>
 
-		<p>It's a marvel of 1980s science fiction, giving Marty the ability to journey to the past, present, or future at the press of a button. The time circuits add an element of urgency and excitement, as every second counts when avoiding time paradoxes and ensuring the timeline remains intact.</p>
+		<p>
+			It's a marvel of 1980s science fiction, giving Marty the ability to journey to the past,
+			present, or future at the press of a button. The time circuits add an element of urgency and
+			excitement, as every second counts when avoiding time paradoxes and ensuring the timeline
+			remains intact.
+		</p>
 	</accordion-panel>
 	<accordion-panel>
-		<template #title>
-			The DeLorean
-		</template>
+		<template #title> The DeLorean </template>
 
-		<template #introduction>
-			The iconic time-traveling machine.
-		</template>
+		<template #introduction> The iconic time-traveling machine. </template>
 
 		...
 	</accordion-panel>

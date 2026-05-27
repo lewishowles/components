@@ -2,26 +2,46 @@
 	<div class="prose prose-slate dark:prose-invert *:animate-fade-in *:delay">
 		<h1>@lewishowles/components</h1>
 
-		<p>A library of beautiful components with a focus on accessibility, as well as ease of use for developers and for users.</p>
+		<p>
+			A library of beautiful components with a focus on accessibility, as well as ease of use for
+			developers and for users.
+		</p>
 
-		<p>The components in this library have mostly been created as needed, to remove repetition from the process of creating interfaces, letting the developer focus on creating the best user experience they can.</p>
+		<p>
+			The components in this library have mostly been created as needed, to remove repetition from
+			the process of creating interfaces, letting the developer focus on creating the best user
+			experience they can.
+		</p>
 
 		<h2>Why accessibility?</h2>
 
-		<p>Accessibility is one of the most important things we can spend time improving. The web is for everyone, and making steps to ensure content is as accessible as possible helps everyone, not just those who need it most.</p>
-
-		<p>This library helps improve accessibility in two primary ways; the first by implementing the components with accessibility in mind, so a developer can be confident out of the box; and the second by using the documentation to help promote the mindset of accessibility. In addition, some components show visible errors if standards are not met—such as form fields requiring labels.</p>
+		<p>
+			Accessibility is one of the most important things we can spend time improving. The web is for
+			everyone, and making steps to ensure content is as accessible as possible helps everyone, not
+			just those who need it most.
+		</p>
 
 		<p>
-			<router-link v-bind="{ to: { name: 'getting-started' } }">
-				Get started &rarr;
-			</router-link>
+			This library helps improve accessibility in two primary ways; the first by implementing the
+			components with accessibility in mind, so a developer can be confident out of the box; and the
+			second by using the documentation to help promote the mindset of accessibility. In addition,
+			some components show visible errors if standards are not met—such as form fields requiring
+			labels.
+		</p>
+
+		<p>
+			<router-link v-bind="{ to: { name: 'getting-started' } }"> Get started &rarr; </router-link>
 		</p>
 	</div>
 
-	<div class="grid lg:grid-cols-4 gap-8 mt-12">
-		<div v-for="section in internalSections" :key="section.label" class="px-4 py-3 rounded-md animate-fade-in delay dark:ring-0" :class="section.colours">
-			<component :is="section.icon" class="size-12 block mx-auto my-6" />
+	<div class="mt-12 grid gap-8 lg:grid-cols-4">
+		<div
+			v-for="section in internalSections"
+			:key="section.label"
+			class="animate-fade-in delay rounded-md px-4 py-3 dark:ring-0"
+			:class="section.colours"
+		>
+			<component :is="section.icon" class="mx-auto my-6 block size-12" />
 
 			<h3 class="font-semibold">
 				{{ section.label }}
@@ -29,10 +49,15 @@
 
 			<ol class="font-mono">
 				<li v-for="item in section.items" :key="item.label">
-					<router-link v-bind="{ to: item.to }" class="flex justify-between items-center group font-mono text-current no-underline hocus:underline py-1 block">
+					<router-link
+						v-bind="{ to: item.to }"
+						class="group hocus:underline block flex items-center justify-between py-1 font-mono text-current no-underline"
+					>
 						{{ item.label }}
 
-						<icon-arrow-right class="size-3 group-hocus:opacity-100 -translate-x-1 group-hocus:translate-x-0 opacity-0 transition-all" />
+						<icon-arrow-right
+							class="group-hocus:opacity-100 group-hocus:translate-x-0 size-3 -translate-x-1 opacity-0 transition-all"
+						/>
 					</router-link>
 				</li>
 			</ol>
@@ -67,11 +92,13 @@ const { menuItems } = useMenu();
 const sectionConfiguration = {
 	Chart: {
 		icon: IconChart,
-		colours: "bg-orange-50 ring-orange-200 text-orange-800 dark:bg-orange-500/20 dark:text-orange-200",
+		colours:
+			"bg-orange-50 ring-orange-200 text-orange-800 dark:bg-orange-500/20 dark:text-orange-200",
 	},
 	Content: {
 		icon: IconContent,
-		colours: "bg-purple-50 ring-purple-200 text-purple-800 dark:bg-purple-500/20 dark:text-purple-200",
+		colours:
+			"bg-purple-50 ring-purple-200 text-purple-800 dark:bg-purple-500/20 dark:text-purple-200",
 	},
 	Display: {
 		icon: IconDisplay,
@@ -87,7 +114,8 @@ const sectionConfiguration = {
 	},
 	Icons: {
 		icon: IconIcons,
-		colours: "bg-indigo-50 ring-indigo-200 text-indigo-800 dark:bg-indigo-500/20 dark:text-indigo-200",
+		colours:
+			"bg-indigo-50 ring-indigo-200 text-indigo-800 dark:bg-indigo-500/20 dark:text-indigo-200",
 	},
 	Interaction: {
 		icon: IconInteraction,
@@ -112,12 +140,16 @@ const internalSections = computed(() => {
 
 	const sections = {};
 
-	menuItems.value.forEach(item => {
+	menuItems.value.forEach((item) => {
+		if (item.section === "Introduction") {
+			return;
+		}
+
 		if (!Object.hasOwn(sections, item.section)) {
 			sections[item.section] = {
 				label: item.section,
 				items: [],
-				...sectionConfiguration[item.section] || {},
+				...sectionConfiguration[item.section],
 			};
 		}
 
