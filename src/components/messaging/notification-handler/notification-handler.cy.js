@@ -401,8 +401,9 @@ function generateNotification(overrides) {
  * Open the notification panel, verifying its open state.
  */
 function openNotificationPanel() {
-	cy.getByData("notification-handler-content").shouldNotBeVisible();
+	cy.getByData("notification-handler").shouldNotHaveAttribute("open");
 	cy.getByData("notification-handler-summary").click();
+	cy.getByData("notification-handler").shouldHaveAttribute("open");
 	cy.getByData("notification-handler-content").shouldBeVisible();
 }
 
@@ -410,7 +411,7 @@ function openNotificationPanel() {
  * Close the notification panel, verifying its closed state.
  */
 function closeNotificationPanel() {
-	cy.getByData("notification-handler-content").shouldBeVisible();
+	cy.getByData("notification-handler").shouldHaveAttribute("open");
 	cy.getByData("notification-handler-summary").click();
-	cy.getByData("notification-handler-content").shouldNotBeVisible();
+	cy.getByData("notification-handler").shouldNotHaveAttribute("open");
 }
