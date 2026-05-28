@@ -70,8 +70,8 @@
 		</template>
 
 		<component-props>
-			<component-prop id="prop-summary-classes">
-				<template #name> summaryClasses </template>
+			<component-prop id="prop-button-classes">
+				<template #name> buttonClasses </template>
 
 				<template #type> string, array, object </template>
 
@@ -87,6 +87,34 @@
 				<template #type> string, array, object </template>
 
 				<p>Additional classes applied to the menu panel. Defaults to the standard panel styling.</p>
+			</component-prop>
+
+			<component-prop id="prop-placement">
+				<template #name> placement </template>
+
+				<template #type> string </template>
+
+				<template #default-value> below </template>
+
+				<p>
+					Preferred placement of the panel relative to the trigger: <code>"above"</code> or
+					<code>"below"</code>. The panel flips to the opposite side automatically if it would clip
+					the viewport edge.
+				</p>
+			</component-prop>
+
+			<component-prop id="prop-align">
+				<template #name> align </template>
+
+				<template #type> string </template>
+
+				<template #default-value> start </template>
+
+				<p>
+					Preferred alignment of the panel relative to the trigger: <code>"start"</code> or
+					<code>"end"</code>. The panel flips to the opposite side automatically if it would clip
+					the viewport edge.
+				</p>
 			</component-prop>
 		</component-props>
 

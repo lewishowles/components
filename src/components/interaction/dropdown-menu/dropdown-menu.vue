@@ -6,13 +6,13 @@
 		:data-state="isOpen ? 'open' : 'closed'"
 		data-test="dropdown-menu"
 	>
-		<button
-			ref="triggerElement"
-			type="button"
-			:class="summaryClasses"
+		<ui-button
+			v-bind="{
+				class: buttonClasses,
+				'aria-expanded': isOpen,
+				'aria-controls': menuId,
+			}"
 			aria-haspopup="menu"
-			:aria-expanded="isOpen"
-			:aria-controls="menuId"
 			data-part="trigger"
 			data-test="dropdown-menu-trigger"
 			@click="toggleMenu"
@@ -22,15 +22,23 @@
 				name="summary"
 				v-bind="{ open: isOpen, openMenu, closeMenu, toggleMenu, triggerProps }"
 			/>
-		</button>
+		</ui-button>
 
 		<div
 			v-if="isOpen"
-			:id="menuId"
+			v-bind="{
+				id: menuId,
+				class: [
+					detailsClasses,
+					placementClasses,
+					computedPlacement === 'above' ? 'bottom-full' : 'top-full',
+					computedAlign === 'end' ? 'inset-e-0' : 'inset-s-0',
+					{ 'opacity-0': isPositioning },
+				],
+			}"
 			ref="menuElement"
 			role="menu"
-			:class="detailsClasses"
-			class="absolute inset-s-0 top-full"
+			class="absolute"
 			data-part="panel"
 			data-test="dropdown-menu-panel"
 			@keydown="onMenuKeydown"
@@ -41,15 +49,16 @@
 </template>
 
 <script setup>
-import { computed, nextTick, provide, ref, useId, useTemplateRef } from "vue";
+import { computed, provide, ref, toRef, useId, useTemplateRef } from "vue";
 import { getNextIndex } from "@lewishowles/helpers/array";
 import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
+import { useFloatingPosition } from "@/composables";
 
-defineProps({
+const props = defineProps({
 	/**
 	 * Any classes to add to the trigger button.
 	 */
-	summaryClasses: {
+	buttonClasses: {
 		type: [String, Array, Object],
 		default: "button--muted",
 	},
@@ -60,7 +69,25 @@ defineProps({
 	detailsClasses: {
 		type: [String, Array, Object],
 		default:
-			"animate-fade-in-down animate-fast mt-2 min-w-3xs py-2 rounded-lg border border-grey-300 bg-white dark:border-white/20 dark:bg-grey-950/20 backdrop-blur-lg z-50",
+			"animate-fade-in-down animate-fast min-w-3xs py-2 rounded-lg border border-grey-300 bg-white dark:border-white/20 dark:bg-grey-950/20 backdrop-blur-lg z-50",
+	},
+
+	/**
+	 * Whether to open the panel above or below the trigger. The panel flips to
+	 * the opposite side if it would clip the viewport edge.
+	 */
+	placement: {
+		type: String,
+		default: "below",
+	},
+
+	/**
+	 * Whether to align the panel to the start or end of the trigger. The panel
+	 * flips to the opposite side if it would clip the viewport edge.
+	 */
+	align: {
+		type: String,
+		default: "start",
 	},
 });
 
@@ -72,13 +99,32 @@ const menuId = useId();
 const isOpen = ref(false);
 // A reference to the outermost container, used for click-outside detection.
 const menuContainerElement = useTemplateRef("menuContainerElement");
-// A reference to the trigger button, used to restore focus on close.
-const triggerElement = useTemplateRef("triggerElement");
 // A reference to the menu panel, used to query items and handle keyboard events.
 const menuElement = useTemplateRef("menuElement");
 // Whether focus is currently within the menu panel. Used to decide whether to
 // return focus to the trigger when the menu closes.
 const { focused: hasFocus } = useFocusWithin(menuElement);
+
+// Resolves the trigger button DOM element for positioning measurements. Queried
+// by data-part rather than a direct ref so it works regardless of what renders
+// the trigger (ui-button, custom trigger, etc.).
+const triggerDomElement = computed(() =>
+	menuContainerElement.value?.querySelector("[data-part='trigger']"),
+);
+
+const {
+	computedPlacement,
+	computedAlign,
+	isPositioning,
+	placementClasses,
+	handleOpen: handleFloatingOpen,
+	handleClose: handleFloatingClose,
+} = useFloatingPosition({
+	triggerElement: triggerDomElement,
+	panelElement: menuElement,
+	initialPlacement: toRef(props, "placement"),
+	initialAlign: toRef(props, "align"),
+});
 
 // The ARIA attributes that belong on the trigger element, exposed as a slot
 // prop so users building a custom trigger can spread them onto their own element.
@@ -255,14 +301,14 @@ function toggleMenu() {
 }
 
 /**
- * Open the menu and focus the first item once the panel is in the DOM.
+ * Open the menu, resolve panel positioning, then focus the first item.
  */
 async function openMenu() {
 	isOpen.value = true;
 
 	emit("open");
 
-	await nextTick();
+	await handleFloatingOpen();
 
 	const items = getMenuItems();
 
@@ -270,10 +316,7 @@ async function openMenu() {
 		return;
 	}
 
-	// Focus the first item, and ensure that other items can't be focused.
-	items.forEach((item) => item.setAttribute("tabindex", "-1"));
-	items[0].setAttribute("tabindex", "0");
-	items[0].focus();
+	focusItem(items, 0);
 }
 
 /**
@@ -283,6 +326,8 @@ function closeMenu() {
 	isOpen.value = false;
 
 	emit("close");
+
+	handleFloatingClose();
 }
 
 /**
@@ -290,7 +335,7 @@ function closeMenu() {
  */
 function closeAndRestoreFocus() {
 	if (hasFocus.value) {
-		triggerElement.value?.focus();
+		menuContainerElement.value?.querySelector("[data-part='trigger']")?.focus();
 	}
 
 	closeMenu();
