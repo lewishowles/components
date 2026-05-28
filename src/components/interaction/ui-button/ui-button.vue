@@ -18,14 +18,13 @@
 			data-test="ui-button-icon-start"
 		/>
 
-		<conditional-wrapper
-			v-bind="{ wrap: reactive || iconOnly, tag: 'span' }"
+		<span
 			:class="{ invisible: isReacting, 'sr-only': iconOnly }"
 			data-part="label"
 			data-test="ui-button-label"
 		>
 			<slot />
-		</conditional-wrapper>
+		</span>
 
 		<span
 			v-if="reactive"
