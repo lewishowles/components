@@ -8,6 +8,14 @@
 			data-test="data-table-search-input"
 		>
 			<slot name="search-label"> Search </slot>
+
+			<template #introduction>
+				<slot name="search-introduction" />
+			</template>
+
+			<template #help>
+				<slot name="search-help" />
+			</template>
 		</form-input>
 
 		<ui-button

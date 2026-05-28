@@ -64,6 +64,12 @@
 						<template #search-label>
 							<slot name="search-label" />
 						</template>
+						<template #search-introduction>
+							<slot name="search-introduction" />
+						</template>
+						<template #search-help>
+							<slot name="search-help" />
+						</template>
 						<template #reset-search-label>
 							<slot name="reset-search-label" />
 						</template>
