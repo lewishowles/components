@@ -94,6 +94,28 @@
 			</component-method>
 		</component-methods>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="form-checkbox"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-checked">
+				<template #attribute>data-checked</template>
+				<p>Present on the root element when the checkbox is checked.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-indeterminate">
+				<template #attribute>data-indeterminate</template>
+				<p>Present on the root element when the checkbox is in an indeterminate state.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-invalid">
+				<template #attribute>data-invalid</template>
+				<p>Present on the root element when the field has an error.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-form-checkbox />
 		</component-playgrounds>

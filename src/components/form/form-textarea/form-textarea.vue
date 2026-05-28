@@ -1,5 +1,9 @@
 <template>
-	<field-wrapper v-bind="{ haveError }" data-test="form-textarea">
+	<field-wrapper
+		v-bind="{ haveError, 'data-invalid': haveError || null }"
+		data-component="form-textarea"
+		data-test="form-textarea"
+	>
 		<form-label v-bind="{ id: inputId, required }">
 			<slot />
 		</form-label>

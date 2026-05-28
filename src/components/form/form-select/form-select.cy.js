@@ -23,4 +23,24 @@ describe("form-select", () => {
 			cy.getFormField("form-select").shouldNotHaveAttribute("aria-invalid");
 		});
 	});
+
+	describe("Styling hooks", () => {
+		it("data-component is set on the root element", () => {
+			mount();
+
+			cy.getByData("form-select").shouldHaveAttribute("data-component", "form-select");
+		});
+
+		it("data-invalid is set when the field has an error", () => {
+			mount({ slots: { error: "Error text" } });
+
+			cy.getByData("form-select").shouldHaveAttribute("data-invalid");
+		});
+
+		it("data-invalid is not set without an error", () => {
+			mount();
+
+			cy.getByData("form-select").shouldNotHaveAttribute("data-invalid");
+		});
+	});
 });

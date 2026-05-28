@@ -1,4 +1,5 @@
 export default {
+	ignorePatterns: ["**/build/**", "support/**", ".codebase-memory/**", ".boilersuit/**"],
 	useTabs: true,
 	semi: true,
 	singleQuote: false,

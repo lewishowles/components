@@ -82,6 +82,13 @@ Any additional attributes to pass to the field itself, such as `required`.
 
 Focus this select.
 
+## Styling hooks
+
+| Attribute                      | Element | Notes                               |
+| ------------------------------ | ------- | ----------------------------------- |
+| `data-component="form-select"` | Root    | Scope styles to this component      |
+| `data-invalid`                 | Root    | Present when the field has an error |
+
 ## Examples
 
 ### Basic usage

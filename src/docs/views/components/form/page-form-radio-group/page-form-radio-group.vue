@@ -165,6 +165,13 @@
 			</component-method>
 		</component-methods>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="form-radio-group"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-form-radio-group />
 			<playground-form-radio-group-inline />

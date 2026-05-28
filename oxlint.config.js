@@ -23,7 +23,13 @@ export default {
 		defineSlots: "readonly",
 		withDefaults: "readonly",
 	},
-	ignorePatterns: ["**/dist/*", "**/dist-docs/*", "support/"],
+	ignorePatterns: [
+		"**/dist/*",
+		"**/dist-docs/*",
+		"support/",
+		".codebase-memory/**",
+		".boilersuit/**",
+	],
 	rules: {
 		"constructor-super": "error",
 		"for-direction": "error",

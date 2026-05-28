@@ -73,6 +73,12 @@ Any ID to apply to this checkbox group. If an ID is not provided, one will be ge
 
 Focus this checkbox group.
 
+## Styling hooks
+
+| Attribute                              | Element | Notes                          |
+| -------------------------------------- | ------- | ------------------------------ |
+| `data-component="form-checkbox-group"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### Basic usage

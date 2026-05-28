@@ -3,6 +3,7 @@
 		ref="input-group"
 		v-model="internalModel"
 		v-bind="{ type: 'radio' }"
+		data-component="form-radio-group"
 		data-test="form-radio-group"
 	>
 		<slot />

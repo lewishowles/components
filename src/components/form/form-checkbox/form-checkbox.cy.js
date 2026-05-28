@@ -99,4 +99,42 @@ describe("form-checkbox", () => {
 			);
 		});
 	});
+
+	describe("Styling hooks", () => {
+		it("data-component is set on the root element", () => {
+			mount();
+
+			cy.getByData("form-checkbox").shouldHaveAttribute("data-component", "form-checkbox");
+		});
+
+		it("data-checked is set when the checkbox is checked", () => {
+			mount({ modelValue: true });
+
+			cy.getByData("form-checkbox").shouldHaveAttribute("data-checked");
+		});
+
+		it("data-checked is not set when unchecked", () => {
+			mount({ modelValue: false });
+
+			cy.getByData("form-checkbox").shouldNotHaveAttribute("data-checked");
+		});
+
+		it("data-indeterminate is set when indeterminate", () => {
+			mount({ indeterminate: true });
+
+			cy.getByData("form-checkbox").shouldHaveAttribute("data-indeterminate");
+		});
+
+		it("data-invalid is set when the field has an error", () => {
+			mount({ slots: { error: "Error text" } });
+
+			cy.getByData("form-checkbox").shouldHaveAttribute("data-invalid");
+		});
+
+		it("data-invalid is not set without an error", () => {
+			mount();
+
+			cy.getByData("form-checkbox").shouldNotHaveAttribute("data-invalid");
+		});
+	});
 });

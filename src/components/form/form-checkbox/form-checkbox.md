@@ -54,6 +54,15 @@ Whether to display the checkbox in an indeterminate state. This is useful when r
 
 Focus this input.
 
+## Styling hooks
+
+| Attribute                        | Element | Notes                                                  |
+| -------------------------------- | ------- | ------------------------------------------------------ |
+| `data-component="form-checkbox"` | Root    | Scope styles to this component                         |
+| `data-checked`                   | Root    | Present when the checkbox is checked                   |
+| `data-indeterminate`             | Root    | Present when the checkbox is in an indeterminate state |
+| `data-invalid`                   | Root    | Present when the field has an error                    |
+
 ## Examples
 
 ### Basic usage

@@ -1,5 +1,14 @@
 <template>
-	<div class="flex flex-col gap-1" data-test="form-checkbox">
+	<div
+		class="flex flex-col gap-1"
+		v-bind="{
+			'data-checked': model || null,
+			'data-indeterminate': indeterminate || null,
+			'data-invalid': haveError || null,
+		}"
+		data-component="form-checkbox"
+		data-test="form-checkbox"
+	>
 		<div class="flex gap-3" :class="{ 'justify-center': !displayLabel }">
 			<input
 				ref="inputElement"

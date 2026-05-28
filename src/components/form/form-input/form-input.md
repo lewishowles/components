@@ -63,6 +63,13 @@ The current value of the form field will be available via `v-model`.
 
 Focus this input.
 
+## Styling hooks
+
+| Attribute                     | Element | Notes                               |
+| ----------------------------- | ------- | ----------------------------------- |
+| `data-component="form-input"` | Root    | Scope styles to this component      |
+| `data-invalid`                | Root    | Present when the field has an error |
+
 ## Examples
 
 ### Basic usage

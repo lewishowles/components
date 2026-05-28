@@ -38,4 +38,24 @@ describe("form-input-group", () => {
 			cy.getByData("form-input-group").shouldNotHaveAttribute("aria-required");
 		});
 	});
+
+	describe("Styling hooks", () => {
+		it("data-component is set on the root element", () => {
+			mount();
+
+			cy.getByData("form-input-group").shouldHaveAttribute("data-component", "form-input-group");
+		});
+
+		it("data-invalid is set when the field has an error", () => {
+			mount({ slots: { error: "Error text" } });
+
+			cy.getByData("form-input-group").shouldHaveAttribute("data-invalid");
+		});
+
+		it("data-invalid is not set without an error", () => {
+			mount();
+
+			cy.getByData("form-input-group").shouldNotHaveAttribute("data-invalid");
+		});
+	});
 });

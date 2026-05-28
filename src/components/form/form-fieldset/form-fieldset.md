@@ -29,6 +29,12 @@ The content of the fieldset, which will be wrapped in a [form-layout](/src/compo
 
 The heading level to use this fieldset.
 
+## Styling hooks
+
+| Attribute                        | Element | Notes                          |
+| -------------------------------- | ------- | ------------------------------ |
+| `data-component="form-fieldset"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### Basic fieldset

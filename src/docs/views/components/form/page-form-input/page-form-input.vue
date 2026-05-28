@@ -123,6 +123,18 @@
 			</component-method>
 		</component-methods>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="form-input"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-invalid">
+				<template #attribute>data-invalid</template>
+				<p>Present on the root element when the field has an error.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-form-input />
 		</component-playgrounds>

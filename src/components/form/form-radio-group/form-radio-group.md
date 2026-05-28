@@ -82,6 +82,12 @@ Note that this only takes effect when the radio buttons are in a _container_ tha
 
 Focus this radio group.
 
+## Styling hooks
+
+| Attribute                           | Element | Notes                          |
+| ----------------------------------- | ------- | ------------------------------ |
+| `data-component="form-radio-group"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### Basic usage

@@ -53,6 +53,13 @@ Any additional attributes to pass to the textarea itself, such as `required` or 
 
 Focus this textarea.
 
+## Styling hooks
+
+| Attribute                        | Element | Notes                               |
+| -------------------------------- | ------- | ----------------------------------- |
+| `data-component="form-textarea"` | Root    | Scope styles to this component      |
+| `data-invalid`                   | Root    | Present when the field has an error |
+
 ## Examples
 
 ### Basic usage

@@ -69,4 +69,12 @@ describe("form-radio-group", () => {
 			);
 		});
 	});
+
+	describe("Styling hooks", () => {
+		it("data-component is set on the root element", () => {
+			mount();
+
+			cy.getByData("form-radio-group").shouldHaveAttribute("data-component", "form-radio-group");
+		});
+	});
 });

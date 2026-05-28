@@ -84,6 +84,13 @@ Set the current `day`, `month`, and `year`, as parsed from an [RFC 9557 format](
 
 Focus the "day" input of this field.
 
+## Styling hooks
+
+| Attribute                    | Element | Notes                               |
+| ---------------------------- | ------- | ----------------------------------- |
+| `data-component="form-date"` | Root    | Scope styles to this component      |
+| `data-invalid`               | Root    | Present when the field has an error |
+
 ## Examples
 
 ### Basic date

@@ -4,10 +4,12 @@
 			tag: 'fieldset',
 			haveError,
 			'aria-describedby': describedBy,
-			'aria-invalid': haveError ? 'true' : undefined,
-			'aria-required': required ? 'true' : undefined,
+			'aria-invalid': haveError ? 'true' : null,
+			'aria-required': required ? 'true' : null,
+			'data-invalid': haveError || null,
 		}"
 		class="@container"
+		data-component="form-input-group"
 		data-test="form-input-group"
 	>
 		<form-label v-bind="{ tag: 'legend' }">

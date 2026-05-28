@@ -3,6 +3,7 @@
 		ref="input-group"
 		v-model="internalModel"
 		v-bind="{ type: 'checkbox' }"
+		data-component="form-checkbox-group"
 		data-test="form-checkbox-group"
 	>
 		<slot />

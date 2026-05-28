@@ -1,6 +1,12 @@
 <template>
 	<field-wrapper
-		v-bind="{ tag: 'fieldset', haveError, 'aria-invalid': haveError ? 'true' : undefined }"
+		v-bind="{
+			tag: 'fieldset',
+			haveError,
+			'aria-invalid': haveError ? 'true' : undefined,
+			'data-invalid': haveError || null,
+		}"
+		data-component="form-date"
 		data-test="form-date"
 	>
 		<form-label tag="legend">
