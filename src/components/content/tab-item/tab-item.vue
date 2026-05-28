@@ -12,6 +12,7 @@
 
 <script setup>
 import { computed, inject, onMounted, useId, useSlots } from "vue";
+import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 const props = defineProps({
@@ -42,11 +43,11 @@ const props = defineProps({
 	},
 });
 
-const { registerTab, activeTabId } = inject("tab-group");
+const { registerTab, activeTabId } = inject("tab-group", {});
 
 const slots = useSlots();
 // Whether this tab is active.
-const active = computed(() => activeTabId.value === tabId.value);
+const active = computed(() => activeTabId?.value === tabId.value);
 // The content of the label slot. This is rendered by `tab-group` using `component`.
 const label = computed(() => slots.label);
 // The ID of this tab, used to link the panel and the tab together.
@@ -55,16 +56,18 @@ const tabId = computed(() => (isNonEmptyString(props.id) ? props.id : `tab-${use
 const panelId = computed(() => `${tabId.value}-panel`);
 
 onMounted(() => {
-	registerTab(
-		{
-			initiallyActive: props.initiallyActive,
-			label,
-			tabId,
-			panelId,
-			icon: props.icon,
-		},
-		active,
-	);
+	if (isFunction(registerTab)) {
+		registerTab(
+			{
+				initiallyActive: props.initiallyActive,
+				label,
+				tabId,
+				panelId,
+				icon: props.icon,
+			},
+			active,
+		);
+	}
 
 	const hash = window.location.hash.slice(1);
 
@@ -72,7 +75,10 @@ onMounted(() => {
 		return;
 	}
 
-	if (hash === tabId.value || document.querySelector(`[id="${panelId.value}"]  #${hash}`)) {
+	if (
+		activeTabId &&
+		(hash === tabId.value || document.querySelector(`[id="${panelId.value}"]  #${hash}`))
+	) {
 		activeTabId.value = tabId.value;
 	}
 });
@@ -81,7 +87,9 @@ onMounted(() => {
  * Activate this tab programmatically.
  */
 function select() {
-	activeTabId.value = tabId.value;
+	if (activeTabId) {
+		activeTabId.value = tabId.value;
+	}
 }
 
 defineExpose({ select });

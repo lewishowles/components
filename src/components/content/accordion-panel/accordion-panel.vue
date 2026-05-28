@@ -54,6 +54,7 @@
 
 <script setup>
 import { computed, inject, onBeforeUnmount, onMounted, ref, useId, useSlots } from "vue";
+import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 
 const {
@@ -99,11 +100,13 @@ const contentRegionProps = computed(() => ({
 
 // Register this panel with the accordion, allowing it insight into the
 // current state, and how to show and hide this panel.
-registerPanel({
-	isVisible,
-	show,
-	hide,
-});
+if (isFunction(registerPanel)) {
+	registerPanel({
+		isVisible,
+		show,
+		hide,
+	});
+}
 
 onMounted(() => {
 	contentRef.value?.addEventListener("beforematch", show);

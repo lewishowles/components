@@ -4,6 +4,7 @@
 			tag: 'fieldset',
 			haveError,
 			'aria-describedby': describedBy,
+			'aria-errormessage': haveError ? errorId : null,
 			'aria-invalid': haveError ? 'true' : null,
 			'aria-required': required ? 'true' : null,
 			'data-invalid': haveError || null,
@@ -190,7 +191,7 @@ const { inputId } = useInputId(props.id);
 // for the user.
 const fieldName = computed(() => props.name || inputId.value);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
-const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
+const { errorId, updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
 // A reference to the inputs, allowing us to trigger focus.
 const inputReferences = ref([]);
 // Whether an introduction has been provided.

@@ -58,6 +58,7 @@ const panels = ref([]);
 const showPanelLabel = computed(() => getSlotText(slots["show-panel-label"]));
 // An overall label for each panel's "Hide panel" action.
 const hidePanelLabel = computed(() => getSlotText(slots["hide-panel-label"]));
+
 // Whether all of the panels are currently visible.
 const areAllPanelsVisible = computed(() => panels.value.every((panel) => panel.isVisible === true));
 // Whether no panels are currently visible.

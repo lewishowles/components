@@ -16,10 +16,11 @@
 
 <script setup>
 import { inject, ref } from "vue";
+import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useStorage } from "@vueuse/core";
 
-const { tableName, haveTableName, updateTableDensityOptions } = inject("data-table");
+const { tableName, haveTableName, updateTableDensityOptions } = inject("data-table", {});
 
 // The user selected density. We know we will have a table name because this
 // component isn't activated without it, but we check it just in case.
@@ -40,7 +41,9 @@ const tableDensityOptions = ref([
 
 // Notify the parent of the available densities, which means it can make the
 // appropriate slots available for users.
-updateTableDensityOptions(tableDensityOptions.value.map((density) => density.value));
+if (isFunction(updateTableDensityOptions)) {
+	updateTableDensityOptions(tableDensityOptions.value.map((density) => density.value));
+}
 
 // Initialise our model value for table density based on our determined initial
 // value.

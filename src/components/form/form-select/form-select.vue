@@ -25,6 +25,7 @@
 				v-bind="{
 					id: inputId,
 					'aria-describedby': describedBy,
+					'aria-errormessage': haveError ? errorId : undefined,
 					'aria-invalid': haveError ? 'true' : undefined,
 					required,
 					...inputAttributes,
@@ -159,7 +160,7 @@ const { options: internalOptions } = useOptions(props.options, {
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
-const { updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
+const { errorId, updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
 // Whether an introduction has been provided.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 // Whether help text has been provided.

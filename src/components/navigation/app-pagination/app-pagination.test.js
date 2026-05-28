@@ -436,13 +436,13 @@ describe("app-pagination", () => {
 			const wrapper = mount();
 			const vm = wrapper.vm;
 
-			expect(wrapper.emitted("@update:page")[0][0]).toBe(1);
+			expect(wrapper.emitted("update:page")[0][0]).toBe(1);
 
 			vm.currentPage = 5;
 
 			await nextTick();
 
-			expect(wrapper.emitted("@update:page")[1][0]).toBe(5);
+			expect(wrapper.emitted("update:page")[1][0]).toBe(5);
 		});
 
 		test("should reset the current page when the number of pages changes", async () => {

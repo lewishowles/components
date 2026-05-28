@@ -14,7 +14,7 @@
 <script setup>
 import { computed, inject } from "vue";
 
-const { columnDefinitions } = inject("data-table");
+const { columnDefinitions } = inject("data-table", {});
 
 // Our user-selected column visibility.
 const columnVisibility = defineModel({

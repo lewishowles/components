@@ -276,15 +276,12 @@
 					v-bind="{ count: rowCount }"
 					data-test="data-table-pagination"
 				>
-					<template #page-number-page="{ page }">
+					<template #page-number-label="{ page }">
 						<slot name="page-number-label" v-bind="{ page }" />
 					</template>
 
 					<template #next-page-label>
 						<slot name="next-page-label" />
-					</template>
-					<template #page-number-label>
-						<slot name="page-number-label" />
 					</template>
 					<template #showing-items-label="{ first, last, total }">
 						<slot name="showing-items-label" v-bind="{ first, last, total }" />

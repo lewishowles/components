@@ -34,7 +34,7 @@ import { computed, inject, ref } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 
-const { searchPlaceholder } = inject("data-table");
+const { searchPlaceholder } = inject("data-table", {});
 
 // The current search query.
 const searchQuery = defineModel({

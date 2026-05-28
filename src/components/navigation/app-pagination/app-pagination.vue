@@ -50,6 +50,7 @@
 
 					<button
 						v-else
+						type="button"
 						class="button hocus:decoration-2 hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200 underline"
 						data-test="app-pagination-page-button"
 						@click="currentPage = page"
@@ -114,7 +115,7 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits(["@update:page"]);
+const emit = defineEmits(["update:page"]);
 
 // An internal ID to link the pagination to its label.
 const internalId = useId();
@@ -262,7 +263,7 @@ function selectNextPage() {
 watch(
 	currentPage,
 	() => {
-		emit("@update:page", currentPage.value);
+		emit("update:page", currentPage.value);
 
 		if (currentPage.value >= 1) {
 			updateUrlParameter("page", currentPage.value);

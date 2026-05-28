@@ -33,6 +33,7 @@
 					id: inputId,
 					placeholder,
 					'aria-describedby': describedBy,
+					'aria-errormessage': haveError ? errorId : undefined,
 					'aria-invalid': haveError ? 'true' : undefined,
 					required,
 					...inputAttributes,
@@ -130,8 +131,12 @@ const model = defineModel({
 const inputElement = useTemplateRef("inputElement");
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
+
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
-const { introductionId, updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
+const { errorId, introductionId, updateDescribedBy, describedBy } = useFormSupplementary(
+	inputId.value,
+);
+
 // Whether an introduction has been provided.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 // Whether a prefix is defined.
