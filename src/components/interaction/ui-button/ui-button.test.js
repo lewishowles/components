@@ -74,11 +74,11 @@ describe("ui-button", () => {
 		});
 
 		describe("computedIconClasses", () => {
-			test("should return undefined without an icon", () => {
+			test("should return null without an icon", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.computedIconClasses).toBe(undefined);
+				expect(vm.computedIconClasses).toBe(null);
 			});
 
 			test("should return base classes if no icon classes are defined", () => {

@@ -53,9 +53,6 @@ import { clamp } from "@lewishowles/helpers/number";
 import { computed, useId } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
 
-// The valid variant values and their corresponding ARIA roles.
-const progressVariants = { METER: "meter", PROGRESS: "progress" };
-
 const props = defineProps({
 	/**
 	 * The current value represented by the progress bar. Pass `null` to render
@@ -91,8 +88,7 @@ const props = defineProps({
 	 */
 	variant: {
 		type: String,
-		default: progressVariants.PROGRESS,
-		validator: (value) => Object.values(progressVariants).includes(value),
+		default: "progress",
 	},
 
 	/**
@@ -140,6 +136,8 @@ const props = defineProps({
 	},
 });
 
+// The valid variant values and their corresponding ARIA roles.
+const progressVariants = { METER: "meter", PROGRESS: "progress" };
 // Whether the bar represents an unknown quantity rather than a specific value.
 const isIndeterminate = computed(() => props.current === null);
 

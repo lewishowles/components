@@ -1,5 +1,5 @@
 import { createMount } from "@unit/support/mount";
-import { afterEach, describe, expect, test } from "vite-plus/test";
+import { describe, expect, test } from "vite-plus/test";
 import { ref } from "vue";
 import DataTableColumns from "./data-table-columns.vue";
 
@@ -25,12 +25,6 @@ const global = { provide: { "data-table": { tableName, haveTableName, columnDefi
 const mount = createMount(DataTableColumns, { global });
 
 describe("data-table-columns", () => {
-	afterEach(() => {
-		// We remove any local storage for this table after each run to ensure
-		// there are no conflicts between tests.
-		localStorage.removeItem("data-table:sample-table:columns");
-	});
-
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
 			const wrapper = mount();
@@ -49,7 +43,7 @@ describe("data-table-columns", () => {
 		});
 
 		test("should repsect localStorage when initialising column visibility", () => {
-			localStorage.setItem("data-table:sample-table:columns", JSON.stringify({ title: false }));
+			localStorage.getItem.mockReturnValue(JSON.stringify({ title: false }));
 
 			const wrapper = mount();
 			const vm = wrapper.vm;
