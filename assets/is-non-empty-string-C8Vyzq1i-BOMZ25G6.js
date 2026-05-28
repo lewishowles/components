@@ -1,0 +1,1 @@
+function e(e,{trim:t=!1}={}){return typeof e==`string`?t===!0?e.trim().length>0:e.length>0:!1}export{e as t};
