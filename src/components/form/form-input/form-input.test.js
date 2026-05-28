@@ -18,4 +18,28 @@ describe("form-input", () => {
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
 	});
+
+	describe("Computed", () => {
+		describe("haveSuggestions", () => {
+			test("should be false when no suggestions are provided", () => {
+				const wrapper = mount();
+
+				expect(wrapper.vm.haveSuggestions).toBe(false);
+			});
+
+			test("should be false for an empty suggestions array", () => {
+				const wrapper = mount({ props: { ...defaultProps, suggestions: [] } });
+
+				expect(wrapper.vm.haveSuggestions).toBe(false);
+			});
+
+			test("should be true when suggestions are provided", () => {
+				const wrapper = mount({
+					props: { ...defaultProps, suggestions: ["Option A", "Option B"] },
+				});
+
+				expect(wrapper.vm.haveSuggestions).toBe(true);
+			});
+		});
+	});
 });

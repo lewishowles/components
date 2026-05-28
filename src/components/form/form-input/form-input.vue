@@ -35,6 +35,7 @@
 					'aria-describedby': describedBy,
 					'aria-errormessage': haveError ? errorId : undefined,
 					'aria-invalid': haveError ? 'true' : undefined,
+					list: haveSuggestions ? datalistId : undefined,
 					required,
 					...inputAttributes,
 				}"
@@ -48,6 +49,10 @@
 				<slot name="suffix" />
 			</form-suffix>
 		</div>
+
+		<datalist v-if="haveSuggestions" v-bind="{ id: datalistId }">
+			<option v-for="suggestion in suggestions" :key="suggestion" v-bind="{ value: suggestion }" />
+		</datalist>
 
 		<form-supplementary
 			v-bind="{ inputId }"
@@ -72,7 +77,8 @@
  * `prefix` and `suffix` slots exist for placing elements beside the input.
  * `error` and `help` slots exist for additional descriptive text.
  */
-import { computed, useSlots, useTemplateRef } from "vue";
+import { computed, useId, useSlots, useTemplateRef } from "vue";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary/use-form-supplementary";
 import useInputId from "@/components/form/composables/use-input-id/use-input-id";
@@ -119,6 +125,16 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+
+	/**
+	 * A list of suggestions to display to the user as they type, rendered
+	 * as a datalist linked to this input. Users can select from the list or
+	 * ignore it and enter their own value.
+	 */
+	suggestions: {
+		type: Array,
+		default: null,
+	},
 });
 
 const slots = useSlots();
@@ -131,12 +147,16 @@ const model = defineModel({
 const inputElement = useTemplateRef("inputElement");
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
+// An ID linking the input to its datalist when suggestions are provided.
+const datalistId = useId();
 
 // Utilise form supplementary to retrieve the appropriate describedby attribute.
 const { errorId, introductionId, updateDescribedBy, describedBy } = useFormSupplementary(
 	inputId.value,
 );
 
+// Whether suggestions have been provided for the datalist.
+const haveSuggestions = computed(() => isNonEmptyArray(props.suggestions));
 // Whether an introduction has been provided.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 // Whether a prefix is defined.

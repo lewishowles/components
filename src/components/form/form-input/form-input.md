@@ -51,6 +51,13 @@ Any placeholder to show in the field. Do not use a placeholder for critical info
 
 Any additional attributes to pass to the field itself, such as `required` or `autocomplete`. This can also be used to change the type of the field, such as to `email`.
 
+### `suggestions`
+
+- type: `string[]`
+- default: `null`
+
+A list of suggestions to offer to the user as they type, rendered as a native `<datalist>` linked to the input. The user can select a suggestion or ignore it and enter a different value entirely.
+
 ## Events
 
 ### `v-model`

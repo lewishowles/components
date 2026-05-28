@@ -18,6 +18,7 @@ A number of components now provide more information to their slots, allowing us 
   - `columns` configuration now includes `searchableContentCallback`, to allow the "searchable" content for each column to be customised.
   - `columns` configuration now includes `sortableContentCallback`, to allow the "sortable" content for each column to be customised.
   - `columns` configuration now includes `searchCallback`, to allow the search behaviour of each column to be customised.
+- `form-input` A new `suggestions` prop allows the use of a `datalist`.
 
 ## 1.9.0
 
