@@ -151,6 +151,15 @@ onUnmounted(() => {
  */
 function getRelativeDateParts(date, relativeTo) {
 	const difference = date - relativeTo;
+
+	// Avoid minute differences in time showing as in the future or past.
+	if (Math.abs(difference) < 1000) {
+		return {
+			unit: "second",
+			value: 0,
+		};
+	}
+
 	const absoluteDifference = Math.abs(difference);
 	const direction = difference > 0 ? 1 : -1;
 	const { amount, unit } = getRelativeDateAmount(absoluteDifference);
