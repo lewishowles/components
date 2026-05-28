@@ -168,6 +168,30 @@ describe("data-table", () => {
 					},
 				});
 			});
+
+			test("should respect stored column visibility", () => {
+				localStorage.getItem.mockReturnValue(JSON.stringify({ title: false }));
+
+				const columns = { title: { label: "Title" }, release_year: { label: "Release year" } };
+				const wrapper = mount({ columns, name: "sample-table" });
+				const vm = wrapper.vm;
+
+				expect(vm.columnDefinitions).toEqual({
+					title: {
+						...baseColumnDefinition,
+						label: "Title",
+						first: true,
+						visible: false,
+					},
+					release_year: {
+						...baseColumnDefinition,
+						label: "Release year",
+						last: true,
+					},
+				});
+
+				localStorage.getItem.mockReturnValue(null);
+			});
 		});
 
 		describe("visibleColumnDefinitions", () => {

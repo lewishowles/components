@@ -309,7 +309,7 @@ import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber } from "@lewishowles/helpers/number";
-import { useResizeObserver } from "@vueuse/core";
+import { useResizeObserver, useStorage } from "@vueuse/core";
 
 import DataTableColumns from "./fragments/data-table-columns/data-table-columns.vue";
 import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
@@ -488,7 +488,13 @@ const tableDensity = ref(null);
 // sub-component. This means we can provide slots for their labels, without
 // having to know what those available densities are from this component.
 const tableDensityOptions = ref([]);
-// Our user-selected column visibility from the fragment component.
+
+// The stored user-selected column visibility for this table.
+const userColumnVisibility = haveTableName.value
+	? useStorage(`data-table:${props.name}:columns`, {})
+	: ref({});
+
+// Our user-selected column visibility.
 const columnVisibility = ref({});
 // The available status announcement types for the live region.
 const statusTypes = { SORT: "sort", SEARCH: "search", SELECTION: "selection" };
@@ -505,6 +511,9 @@ useResizeObserver(tableScrollWrapper, () => {
 	isOverflowing.value =
 		tableScrollWrapper.value?.scrollWidth > tableScrollWrapper.value?.clientWidth;
 });
+
+// Initialise the table with stored column visibility before the menu opens.
+initialiseColumnVisibility();
 
 // Our table spacing, based on our current density.
 const tableSpacingClasses = computed(() => {
@@ -808,6 +817,44 @@ watch(selectedRowCount, () => {
 
 	statusType.value = statusTypes.SELECTION;
 });
+
+// Persist column visibility when users change the table configuration.
+watch(
+	columnVisibility,
+	() => {
+		userColumnVisibility.value = columnVisibility.value;
+	},
+	{ deep: true },
+);
+
+/**
+ * Initialise column visibility based on any stored values.
+ */
+function initialiseColumnVisibility() {
+	if (!isNonEmptyObject(props.columns)) {
+		return;
+	}
+
+	const visibility = {};
+
+	for (const columnKey of keys(props.columns)) {
+		const userConfiguration = get(props.columns, columnKey) || {};
+		const hiddenByConfiguration = get(userConfiguration, "hidden") === true;
+
+		if (hiddenByConfiguration) {
+			continue;
+		}
+
+		visibility[columnKey] = true;
+
+		if (Object.hasOwn(userColumnVisibility.value, columnKey)) {
+			visibility[columnKey] = userColumnVisibility.value[columnKey];
+		}
+	}
+
+	columnVisibility.value = visibility;
+	userColumnVisibility.value = visibility;
+}
 
 /**
  * Get the unique ID for the given row, which is added when data is

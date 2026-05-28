@@ -3,9 +3,6 @@ import { describe, expect, test } from "vite-plus/test";
 import { ref } from "vue";
 import DataTableColumns from "./data-table-columns.vue";
 
-const tableName = ref("sample-table");
-const haveTableName = ref(true);
-
 const columnDefinitions = ref({
 	title: {
 		label: "Title",
@@ -21,8 +18,9 @@ const columnDefinitions = ref({
 	},
 });
 
-const global = { provide: { "data-table": { tableName, haveTableName, columnDefinitions } } };
-const mount = createMount(DataTableColumns, { global });
+const modelValue = { title: true, release_year: true };
+const global = { provide: { "data-table": { columnDefinitions } } };
+const mount = createMount(DataTableColumns, { global, props: { modelValue } });
 
 describe("data-table-columns", () => {
 	describe("Initialisation", () => {
@@ -32,24 +30,12 @@ describe("data-table-columns", () => {
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
 
-		test("should initialise column visibility", () => {
+		test("should receive column visibility", () => {
 			const wrapper = mount();
 			const vm = wrapper.vm;
 
 			expect(vm.columnVisibility).toEqual({
 				title: true,
-				release_year: true,
-			});
-		});
-
-		test("should repsect localStorage when initialising column visibility", () => {
-			localStorage.getItem.mockReturnValue(JSON.stringify({ title: false }));
-
-			const wrapper = mount();
-			const vm = wrapper.vm;
-
-			expect(vm.columnVisibility).toEqual({
-				title: false,
 				release_year: true,
 			});
 		});

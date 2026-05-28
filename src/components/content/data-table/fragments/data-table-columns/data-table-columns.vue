@@ -12,20 +12,11 @@
 </template>
 
 <script setup>
-import { computed, inject, watch } from "vue";
-import { isNonEmptyArray } from "@lewishowles/helpers/array";
-import { isObject } from "@lewishowles/helpers/object";
-import { useStorage } from "@vueuse/core";
+import { computed, inject } from "vue";
 
-const { tableName, haveTableName, columnDefinitions } = inject("data-table");
+const { columnDefinitions } = inject("data-table");
 
-// The user selected column visibility. We know we will have a table name
-// because this component isn't activated without it, but we check it just in
-// case.
-const userColumnVisibility =
-	haveTableName.value && useStorage(`data-table:${tableName.value}:columns`, {});
-
-// Our user-selected table density.
+// Our user-selected column visibility.
 const columnVisibility = defineModel({
 	type: Object,
 });
@@ -46,45 +37,4 @@ const columns = computed(() => {
 
 	return columns;
 });
-
-// Initialise our column visibility.
-initialiseColumnVisibility();
-
-/**
- * Initialise column visibility based on any stored values.
- */
-function initialiseColumnVisibility() {
-	if (!isNonEmptyArray(columns.value)) {
-		return;
-	}
-
-	if (!isObject(columnVisibility.value)) {
-		columnVisibility.value = {};
-	}
-
-	// Initialise our columns with default visibility, selecting user values as
-	// preference.
-	for (const column of columns.value) {
-		columnVisibility.value[column.key] = true;
-
-		if (Object.hasOwn(userColumnVisibility.value, column.key)) {
-			columnVisibility.value[column.key] = userColumnVisibility.value[column.key];
-		}
-	}
-
-	// Remove any columns no longer found.
-	for (const columnKey in columnVisibility.value) {
-		if (!columns.value.find((column) => column.key === columnKey)) {
-			delete columnVisibility.value[columnKey];
-		}
-	}
-}
-
-watch(
-	columnVisibility,
-	() => {
-		userColumnVisibility.value = columnVisibility.value;
-	},
-	{ deep: true },
-);
 </script>

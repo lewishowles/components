@@ -2,9 +2,6 @@ import DataTableColumns from "./data-table-columns.vue";
 import { createMount } from "@cypress/support/mount";
 import { ref } from "vue";
 
-const tableName = ref("sample-table");
-const haveTableName = ref(true);
-
 const columnDefinitions = ref({
 	title: {
 		label: "Title",
@@ -20,16 +17,11 @@ const columnDefinitions = ref({
 	},
 });
 
-const global = { provide: { "data-table": { tableName, haveTableName, columnDefinitions } } };
-const mount = createMount(DataTableColumns, { global });
+const modelValue = { title: true, release_year: true };
+const global = { provide: { "data-table": { columnDefinitions } } };
+const mount = createMount(DataTableColumns, { global, props: { modelValue } });
 
 describe("data-table-columns", () => {
-	afterEach(() => {
-		// We remove any local storage for this table after each run to ensure
-		// there are no conflicts between tests.
-		localStorage.removeItem("data-table:sample-table:columns");
-	});
-
 	it("A component is rendered", () => {
 		mount();
 
@@ -44,25 +36,19 @@ describe("data-table-columns", () => {
 		cy.getByData("data-table-columns-checkbox").eq(1).getFormField().should("be.checked");
 	});
 
-	it("Custom visibility is retrieved from localStorage", () => {
-		localStorage.setItem("data-table:sample-table:columns", '{"title":true,"release_year":false}');
-
-		mount();
+	it("Custom visibility can be provided", () => {
+		mount({ modelValue: { title: true, release_year: false } });
 
 		cy.getByData("data-table-columns-checkbox").shouldHaveCount(2);
 		cy.getByData("data-table-columns-checkbox").eq(0).getFormField().should("be.checked");
 		cy.getByData("data-table-columns-checkbox").eq(1).getFormField().should("not.be.checked");
 	});
 
-	it.skip("A change in visibility is stored in localStorage", () => {
+	it("A column can be hidden", () => {
 		mount();
 
 		cy.getByData("data-table-columns-checkbox").eq(0).getFormField().click();
 
-		cy.getByData("data-table-columns").then(() => {
-			expect(localStorage.getItem("data-table:sample-table:columns")).to.equal(
-				'{"title":false,"release_year":true}',
-			);
-		});
+		cy.getByData("data-table-columns-checkbox").eq(0).getFormField().should("not.be.checked");
 	});
 });
