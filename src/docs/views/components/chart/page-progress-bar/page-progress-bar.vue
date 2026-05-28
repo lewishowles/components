@@ -160,6 +160,36 @@
 			</component-slot>
 		</component-slots>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="progress-bar"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-label">
+				<template #attribute>data-part="label"</template>
+				<p>
+					The label element. Visible when <code>showLabel</code> is true; otherwise present but
+					visually hidden for accessibility.
+				</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-track">
+				<template #attribute>data-part="track"</template>
+				<p>The track element — the background behind the filled bar.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-bar">
+				<template #attribute>data-part="bar"</template>
+				<p>The filled bar indicating the current value. Also present on the indeterminate bar.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-indeterminate">
+				<template #attribute>data-indeterminate</template>
+				<p>Present on the root element when <code>current</code> is <code>null</code>.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-progress-bar />
 			<playground-progress-bar-showing-labels />

@@ -114,6 +114,23 @@
 			</component-slot>
 		</component-slots>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="spark-bar"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-track">
+				<template #attribute>data-part="track"</template>
+				<p>The track element — the background behind the filled bar.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-bar">
+				<template #attribute>data-part="bar"</template>
+				<p>The filled bar indicating the current value.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-spark-bar />
 			<playground-spark-bar-with-content />

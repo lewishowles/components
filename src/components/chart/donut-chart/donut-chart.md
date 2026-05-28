@@ -30,6 +30,12 @@ The values to display. If any value is not a number, or is negative, no chart wi
 
 Whether to use the brighter set of chart colours. Use with caution; adjacent slices may not be sufficiently distinct depending on the number of segments.
 
+## Styling hooks
+
+| Attribute                      | Element           | Notes                          |
+| ------------------------------ | ----------------- | ------------------------------ |
+| `data-component="donut-chart"` | SVG chart element | Scope styles to this component |
+
 ## Examples
 
 ### Basic chart

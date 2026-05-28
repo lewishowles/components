@@ -53,6 +53,13 @@
 			</component-prop>
 		</component-props>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="donut-chart"</template>
+				<p>Present on the SVG chart element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-donut-chart />
 			<playground-donut-chart-colourful />

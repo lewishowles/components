@@ -65,6 +65,14 @@ The default slot output, when empty, displays `{{ percentage }}%`.
 
 The component uses `role="meter"` with `aria-valuenow`, `aria-valuemin`, and `aria-valuemax`. Provide an accessible name for the meter via the parent component using `aria-label` or `aria-labelledby`.
 
+## Styling hooks
+
+| Attribute                    | Element          | Notes                          |
+| ---------------------------- | ---------------- | ------------------------------ |
+| `data-component="spark-bar"` | Root             | Scope styles to this component |
+| `data-part="track"`          | Track background | —                              |
+| `data-part="bar"`            | Filled bar       | —                              |
+
 ## Examples
 
 ### Basic usage

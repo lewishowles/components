@@ -7,12 +7,14 @@
 		}"
 		class="flex items-center gap-4"
 		role="meter"
+		data-component="spark-bar"
 		data-test="spark-bar"
 	>
-		<div :class="['grow', trackClasses]">
+		<div :class="['grow', trackClasses]" data-part="track">
 			<div
 				class="transition-all ease-out"
 				:class="barClasses"
+				data-part="bar"
 				:style="{ width: `${percentageValue}%` }"
 			/>
 		</div>

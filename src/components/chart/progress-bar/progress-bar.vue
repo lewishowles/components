@@ -8,7 +8,9 @@
 			'aria-valuetext': isIndeterminate ? null : valueText,
 			'aria-labelledby': internalId,
 		}"
+		data-component="progress-bar"
 		data-test="progress-bar"
+		:data-indeterminate="isIndeterminate || null"
 	>
 		<conditional-wrapper
 			v-bind="{ wrap: showLabel || showValue, tag: 'div' }"
@@ -17,6 +19,7 @@
 			<div
 				:class="{ 'sr-only': !showLabel }"
 				v-bind="{ id: internalId }"
+				data-part="label"
 				data-test="progress-bar-label"
 			>
 				<slot />
@@ -29,11 +32,12 @@
 			</div>
 		</conditional-wrapper>
 
-		<div :class="[trackClasses, { 'relative overflow-hidden': isIndeterminate }]">
+		<div :class="[trackClasses, { 'relative overflow-hidden': isIndeterminate }]" data-part="track">
 			<div
 				v-if="isIndeterminate"
 				class="animate-progress-indeterminate absolute inset-y-0 w-1/4 rounded-full motion-reduce:w-full motion-reduce:animate-pulse"
 				:class="barClasses"
+				data-part="bar"
 				data-test="progress-bar-indeterminate"
 			/>
 
@@ -42,6 +46,7 @@
 				class="transition-all ease-out"
 				:class="barClasses"
 				:style="{ width: `${percentageValue}%` }"
+				data-part="bar"
 				data-test="progress-bar-fill"
 			/>
 		</div>

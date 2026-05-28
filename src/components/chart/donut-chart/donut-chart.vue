@@ -12,6 +12,7 @@
 			'aria-describedby': haveDescription ? descId : undefined,
 			viewBox: `0 0 ${svgSize} ${svgSize}`,
 		}"
+		data-component="donut-chart"
 		data-test="donut-chart"
 	>
 		<desc v-if="haveDescription" :id="descId">
