@@ -3,6 +3,7 @@
 		v-bind="{ ...$attrs, align, includeIcon: false }"
 		summary-classes="button--muted relative p-3"
 		class="w-min text-sm"
+		data-component="notification-handler"
 		data-test="notification-handler"
 	>
 		<template #summary>
@@ -78,7 +79,11 @@
 					</ui-button>
 				</div>
 
-				<div class="flex flex-col gap-4" data-test="notification-handler-notifications">
+				<div
+					class="flex flex-col gap-4"
+					data-part="list"
+					data-test="notification-handler-notifications"
+				>
 					<template v-for="notification in pinnedNotifications" :key="notification.id">
 						<slot name="notification-pinned-template" v-bind="{ notification }">
 							<reuse-template v-bind="{ notification }" />

@@ -198,6 +198,13 @@ Called when one (or all via "Mark all notifications read") notifications are mar
 
 The user has requested that the notifications be reloaded. A loading indicator is not automatically shown to the user, to allow for the consuming component to better control the interaction, and should be displayed via the loading prop.
 
+## Styling hooks
+
+| Attribute                               | Element            | Notes                          |
+| --------------------------------------- | ------------------ | ------------------------------ |
+| `data-component="notification-handler"` | Root element       | Scope styles to this component |
+| `data-part="list"`                      | Notifications list | —                              |
+
 ## Examples
 
 ### Basic notifications

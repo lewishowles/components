@@ -1,10 +1,15 @@
 <template>
-	<base-modal ref="dialog" v-bind="baseModalProps">
+	<base-modal
+		ref="dialog"
+		v-bind="baseModalProps"
+		data-component="modal-dialog"
+		:data-state="props.variant"
+	>
 		<template #close-dialog-label>
 			<slot name="close-dialog-label" />
 		</template>
 
-		<modal-dialog-title v-if="haveTitle">
+		<modal-dialog-title v-if="haveTitle" data-part="title">
 			<slot name="title" />
 		</modal-dialog-title>
 
@@ -12,7 +17,7 @@
 			<slot v-bind="{ titleId, descriptionId }" />
 		</conditional-wrapper>
 
-		<modal-dialog-actions v-if="haveActions">
+		<modal-dialog-actions v-if="haveActions" data-part="actions">
 			<slot name="actions" />
 		</modal-dialog-actions>
 	</base-modal>

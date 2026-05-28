@@ -58,6 +58,15 @@ Open the dialog.
 
 Close the dialog.
 
+## Styling hooks
+
+| Attribute                       | Element         | Notes                                    |
+| ------------------------------- | --------------- | ---------------------------------------- |
+| `data-component="modal-dialog"` | Root `<dialog>` | Scope styles to this component           |
+| `data-part="title"`             | Title element   | Present when `title` slot is populated   |
+| `data-part="actions"`           | Actions area    | Present when `actions` slot is populated |
+| `data-state`                    | Root            | Dialog variant: `"dialog"` or `"alert"`  |
+
 ## Examples
 
 ### Basic dialog

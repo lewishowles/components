@@ -4,9 +4,11 @@
 		:class="alertColours"
 		:role="alertRole"
 		:aria-live="alertLive"
+		data-component="alert-message"
+		:data-state="alertType"
 		data-test="alert-message"
 	>
-		<div v-if="haveIcon" class="mt-1">
+		<div v-if="haveIcon" class="mt-1" data-part="icon">
 			<slot name="icon">
 				<component :is="defaultIcon" data-test="alert-message-icon" />
 			</slot>
@@ -17,12 +19,13 @@
 				:is="titleTag"
 				v-if="haveTitleSlot"
 				class="font-semibold"
+				data-part="title"
 				data-test="alert-message-title"
 			>
 				<slot name="title" />
 			</component>
 
-			<div>
+			<div data-part="content">
 				<span
 					v-if="alertType !== alertTypes.MUTED"
 					class="sr-only"

@@ -2,6 +2,7 @@
 	<span
 		class="inline-flex items-center gap-1 rounded-md px-2 py-1 font-medium ring-1 ring-inset"
 		:class="[sizeClass, themeClasses]"
+		data-component="pill-badge"
 		data-test="pill-badge"
 	>
 		<component

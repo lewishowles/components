@@ -48,6 +48,13 @@ Open the dialog.
 
 Close the dialog.
 
+## Styling hooks
+
+| Attribute                     | Element         | Notes                          |
+| ----------------------------- | --------------- | ------------------------------ |
+| `data-component="base-modal"` | Root `<dialog>` | Scope styles to this component |
+| `data-part="close-button"`    | Close button    | —                              |
+
 ## Examples
 
 ### Basic dialog

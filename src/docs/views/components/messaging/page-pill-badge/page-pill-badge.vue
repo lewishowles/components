@@ -82,6 +82,13 @@
 			</component-slot>
 		</component-slots>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="pill-badge"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-pill-badge />
 			<playground-pill-badge-icon />

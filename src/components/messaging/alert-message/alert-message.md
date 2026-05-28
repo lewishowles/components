@@ -32,6 +32,16 @@ The type of alert, one of "success", "error", "warning", "info" or "muted". Note
 
 Whether to show an icon with the alert. Note that a "muted" alert does not have an icon by default.
 
+## Styling hooks
+
+| Attribute                        | Element         | Notes                                                                   |
+| -------------------------------- | --------------- | ----------------------------------------------------------------------- |
+| `data-component="alert-message"` | Root            | Scope styles to this component                                          |
+| `data-part="icon"`               | Icon wrapper    | Present when an icon is shown                                           |
+| `data-part="title"`              | Title element   | Present when `title` slot is populated                                  |
+| `data-part="content"`            | Content wrapper | —                                                                       |
+| `data-state`                     | Root            | Alert type: `"success"`, `"error"`, `"warning"`, `"info"`, or `"muted"` |
+
 ## Examples
 
 ### Basic success message

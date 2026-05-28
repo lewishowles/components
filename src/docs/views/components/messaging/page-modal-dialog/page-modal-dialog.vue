@@ -91,6 +91,28 @@
 			</component-method>
 		</component-methods>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="modal-dialog"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-title">
+				<template #attribute>data-part="title"</template>
+				<p>The title element. Present when the <code>title</code> slot is populated.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-actions">
+				<template #attribute>data-part="actions"</template>
+				<p>The actions area. Present when the <code>actions</code> slot is populated.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-state">
+				<template #attribute>data-state</template>
+				<p>Set to the dialog variant: <code>"dialog"</code> or <code>"alert"</code>.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-modal-dialog />
 		</component-playgrounds>

@@ -29,6 +29,12 @@ _Note that `start` and `end` depend on the current document direction._
 
 The colour of this badge.
 
+## Styling hooks
+
+| Attribute                     | Element | Notes                          |
+| ----------------------------- | ------- | ------------------------------ |
+| `data-component="pill-badge"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### A basic badge

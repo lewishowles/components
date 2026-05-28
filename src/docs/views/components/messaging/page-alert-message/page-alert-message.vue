@@ -58,6 +58,36 @@
 			</component-slot>
 		</component-slots>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="alert-message"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-icon">
+				<template #attribute>data-part="icon"</template>
+				<p>The icon wrapper. Present when an icon is shown.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-title">
+				<template #attribute>data-part="title"</template>
+				<p>The title element. Present when the <code>title</code> slot is populated.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-content">
+				<template #attribute>data-part="content"</template>
+				<p>The message content wrapper.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-state">
+				<template #attribute>data-state</template>
+				<p>
+					Set to the resolved alert type: <code>"success"</code>, <code>"error"</code>,
+					<code>"warning"</code>, <code>"info"</code>, or <code>"muted"</code>.
+				</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-alert-message />
 			<playground-alert-message-info />

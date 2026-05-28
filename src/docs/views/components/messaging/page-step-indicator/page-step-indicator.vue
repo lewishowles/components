@@ -44,6 +44,23 @@
 			</component-slot>
 		</component-slots>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="step-indicator"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-label">
+				<template #attribute>data-part="label"</template>
+				<p>The label describing this indicator.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-progress">
+				<template #attribute>data-part="progress"</template>
+				<p>The progress bar and step count container.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-step-indicator />
 		</component-playgrounds>

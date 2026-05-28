@@ -29,6 +29,14 @@ The user's current step.
 
 The number of steps that the user can expect in this workflow.
 
+## Styling hooks
+
+| Attribute                         | Element                     | Notes                          |
+| --------------------------------- | --------------------------- | ------------------------------ |
+| `data-component="step-indicator"` | Root                        | Scope styles to this component |
+| `data-part="label"`               | Label element               | —                              |
+| `data-part="progress"`            | Progress bar and step count | —                              |
+
 ## Examples
 
 ### Basic button
