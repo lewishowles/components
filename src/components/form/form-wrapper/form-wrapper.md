@@ -16,6 +16,11 @@ Any elements to place before the form elements, and outside of the `form-layout`
 
 The `default` slot contains the content of the form itself, including any fields, layout elements, or information as necessary.
 
+| Slot prop      | Type      | Description                                         |
+| -------------- | --------- | --------------------------------------------------- |
+| `isSubmitting` | `boolean` | Whether a form submission is currently in progress. |
+| `hasErrors`    | `boolean` | Whether the form currently has validation errors.   |
+
 ### `submit-button-label`
 
 The label to use on the submit button. This should be representative of what is about to happen—such as "Create account" or "Update settings", not something generic, and as such **no default label is provided**.

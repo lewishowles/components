@@ -167,6 +167,10 @@ const showingFirstPage = computed(() => currentPage.value == 1);
 // Whether we are currently looking at the last page, which determines whether
 // we need to display the "next" button.
 const showingLastPage = computed(() => currentPage.value == pageCount.value);
+// Whether there is a next page to navigate to.
+const hasNext = computed(() => !showingLastPage.value);
+// Whether there is a previous page to navigate to.
+const hasPrev = computed(() => !showingFirstPage.value);
 
 // The pages to display. By default this includes the first page, last page,
 // current page and a page either side of it, but any of those can collapse
@@ -256,6 +260,20 @@ function selectNextPage() {
 	currentPage.value = Math.min(currentPage.value + 1, pageCount.value);
 }
 
+/**
+ * Navigate to a specific page, clamped to the valid range.
+ *
+ * @param  {number}  page
+ *     The page number to navigate to.
+ */
+function goTo(page) {
+	if (!isNumber(page)) {
+		return;
+	}
+
+	currentPage.value = Math.max(1, Math.min(page, pageCount.value));
+}
+
 // When our current page changes, emit an event to notify the parent (if they're
 // not using v-model), and update the URL. We only want to update the URL when
 // the page is not the first page, as that is the default anyway and there is no
@@ -282,4 +300,14 @@ watch(
 );
 
 // TODO: Add per-page options
+
+defineExpose({
+	currentPage,
+	totalPages: pageCount,
+	hasNext,
+	hasPrev,
+	next: selectNextPage,
+	prev: selectPreviousPage,
+	goTo,
+});
 </script>

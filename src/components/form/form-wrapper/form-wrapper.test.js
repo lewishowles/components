@@ -121,6 +121,29 @@ describe("form-wrapper", () => {
 
 				expect(wrapper.vm.resetSubmitButton).toBeTypeOf("function");
 			});
+
+			test("Resets isSubmitting to false", async () => {
+				const onSubmit = vi.fn();
+				const wrapper = mount({ props: { onSubmit } });
+
+				await wrapper.vm.handleFormSubmit();
+
+				// isSubmitting is true after a non-Promise handler — the caller must
+				// reset it manually.
+				expect(wrapper.vm.isSubmitting).toBe(true);
+
+				wrapper.vm.resetSubmitButton();
+
+				expect(wrapper.vm.isSubmitting).toBe(false);
+			});
+		});
+	});
+
+	describe("Expose", () => {
+		test("exposes isSubmitting", () => {
+			const wrapper = mount();
+
+			expect(wrapper.vm.isSubmitting).toBe(false);
 		});
 	});
 });

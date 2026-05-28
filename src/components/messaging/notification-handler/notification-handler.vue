@@ -551,4 +551,10 @@ function hasNotificationBeenMarkedAsRead(notificationId) {
 
 	return notificationsMarkedAsRead.value.includes(notificationId);
 }
+
+defineExpose({
+	notifications: internalNotifications,
+	unreadCount: unreadNotificationCount,
+	markAllRead: markAllNotificationsRead,
+});
 </script>

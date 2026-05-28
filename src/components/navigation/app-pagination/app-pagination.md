@@ -67,6 +67,30 @@ Updated when the user selects a different page to display, containing a `page` p
 | --------- | -------- | --------------------------- |
 | `page`    | `number` | The number of the new page. |
 
+## Methods
+
+### `goTo(page)`
+
+Navigate to a specific page number. The value is clamped to the valid range (1 to total pages).
+
+| Parameter | Type     | Description                     |
+| --------- | -------- | ------------------------------- |
+| `page`    | `number` | The page number to navigate to. |
+
+## Expose
+
+When accessed via a template ref, the following are available:
+
+| Property      | Type       | Description                                     |
+| ------------- | ---------- | ----------------------------------------------- |
+| `currentPage` | `number`   | The currently active page (writable).           |
+| `totalPages`  | `number`   | The total number of pages.                      |
+| `hasNext`     | `boolean`  | Whether there is a next page available.         |
+| `hasPrev`     | `boolean`  | Whether there is a previous page available.     |
+| `next`        | `function` | Navigate to the next page.                      |
+| `prev`        | `function` | Navigate to the previous page.                  |
+| `goTo`        | `function` | Navigate to a specific page number (see above). |
+
 ## Styling hooks
 
 | Attribute                         | Element              | Notes                          |

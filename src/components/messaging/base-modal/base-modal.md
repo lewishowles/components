@@ -10,6 +10,14 @@ For quick way to create consistent dialogs, including a title and actions, use [
 
 The main content of the dialog.
 
+| Slot prop       | Type       | Description                                  |
+| --------------- | ---------- | -------------------------------------------- |
+| `isOpen`        | `boolean`  | Whether the dialog is currently open.        |
+| `open`          | `function` | Open the dialog programmatically.            |
+| `close`         | `function` | Close the dialog programmatically.           |
+| `titleId`       | `string`   | The value of `ariaLabelledby`, if provided.  |
+| `descriptionId` | `string`   | The value of `ariaDescribedby`, if provided. |
+
 ### `close-dialog-label`
 
 - default: `Close dialog`
@@ -47,6 +55,10 @@ Open the dialog.
 ### `close`
 
 Close the dialog.
+
+### `isOpen`
+
+A reactive boolean reflecting whether the dialog is currently open. Accessible via `ref` on the component or via the default slot prop.
 
 ## Styling hooks
 

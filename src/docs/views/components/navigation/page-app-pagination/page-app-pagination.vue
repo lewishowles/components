@@ -159,6 +159,93 @@
 			</component-event>
 		</component-events>
 
+		<component-methods>
+			<component-method id="method-go-to">
+				<template #name>
+					<code>goTo(page)</code>
+				</template>
+
+				<p>
+					Navigate to a specific page number. The value is clamped to the valid range (1 to total
+					pages). Accessible via a <code>ref</code> on the component.
+				</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Parameter</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>page</code></td>
+							<td><code>number</code></td>
+							<td>The page number to navigate to.</td>
+						</tr>
+					</tbody>
+				</table>
+			</component-method>
+
+			<component-method id="expose-current-page">
+				<template #name>
+					<code>currentPage</code>
+				</template>
+
+				<p>
+					A reactive number reflecting the currently active page. Writable — set it to navigate
+					directly. Accessible via a <code>ref</code> on the component.
+				</p>
+			</component-method>
+
+			<component-method id="expose-total-pages">
+				<template #name>
+					<code>totalPages</code>
+				</template>
+
+				<p>The total number of pages. Accessible via a <code>ref</code> on the component.</p>
+			</component-method>
+
+			<component-method id="expose-has-next">
+				<template #name>
+					<code>hasNext</code>
+				</template>
+
+				<p>
+					A reactive boolean — <code>true</code> when there is a next page available. Accessible via
+					a <code>ref</code> on the component.
+				</p>
+			</component-method>
+
+			<component-method id="expose-has-prev">
+				<template #name>
+					<code>hasPrev</code>
+				</template>
+
+				<p>
+					A reactive boolean — <code>true</code> when there is a previous page available. Accessible
+					via a <code>ref</code> on the component.
+				</p>
+			</component-method>
+
+			<component-method id="expose-next">
+				<template #name>
+					<code>next</code>
+				</template>
+
+				<p>Navigate to the next page. Accessible via a <code>ref</code> on the component.</p>
+			</component-method>
+
+			<component-method id="expose-prev">
+				<template #name>
+					<code>prev</code>
+				</template>
+
+				<p>Navigate to the previous page. Accessible via a <code>ref</code> on the component.</p>
+			</component-method>
+		</component-methods>
+
 		<component-styling-hooks>
 			<component-styling-hook id="hook-data-component">
 				<template #attribute>data-component="app-pagination"</template>

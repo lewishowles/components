@@ -2,7 +2,7 @@
 
 ## 1.10.0
 
-Another round of components have been updated with improved accessibility.
+A number of components now provide more information to their slots, allowing us to create a more custom experience.
 
 ### Features
 

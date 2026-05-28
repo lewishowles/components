@@ -16,6 +16,26 @@ const mount = createMount(NotificationHandler, { props: defaultProps });
 describe("notification-handler", () => {
 	console.warn = vi.fn();
 
+	describe("Expose", () => {
+		test("exposes notifications as the filtered internal list", () => {
+			const wrapper = mount();
+
+			expect(wrapper.vm.notifications).toEqual([notification]);
+		});
+
+		test("exposes unreadCount", () => {
+			const wrapper = mount();
+
+			expect(wrapper.vm.unreadCount).toBe(1);
+		});
+
+		test("exposes markAllRead as a function", () => {
+			const wrapper = mount();
+
+			expect(wrapper.vm.markAllRead).toBeTypeOf("function");
+		});
+	});
+
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
 			const wrapper = mount();

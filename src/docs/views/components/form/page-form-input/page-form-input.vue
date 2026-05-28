@@ -48,6 +48,20 @@
 					to <code>email</code>.
 				</p>
 			</component-prop>
+
+			<component-prop id="prop-suggestions">
+				<template #name> suggestions </template>
+
+				<template #type> String[] </template>
+
+				<template #default-value> null </template>
+
+				<p>
+					A list of suggestions to offer to the user as they type, rendered as a native
+					<code>&lt;datalist&gt;</code> linked to the input. The user can select a suggestion or
+					ignore it and enter a different value entirely.
+				</p>
+			</component-prop>
 		</component-props>
 
 		<component-slots>

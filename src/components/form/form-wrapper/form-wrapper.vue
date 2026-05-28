@@ -28,7 +28,7 @@
 		<slot name="pre-form" />
 
 		<form-layout>
-			<slot />
+			<slot v-bind="{ isSubmitting, hasErrors: haveErrorSummary }" />
 
 			<form-actions>
 				<template v-if="haveActionsLabel" #label>
@@ -112,6 +112,8 @@ const errorSummary = ref([]);
 const haveErrorSummary = computed(() => isNonEmptyArray(errorSummary.value));
 // The error summary element, allowing us to focus it.
 const errorSummaryElement = ref(null);
+// Whether a form submission is currently in progress.
+const isSubmitting = ref(false);
 
 /**
  * Allow a field to register itself with the form.
@@ -225,6 +227,8 @@ function validateFields() {
  * loadingAuto pattern from ui-button.
  */
 function doSubmit() {
+	isSubmitting.value = true;
+
 	const onSubmit = instance?.vnode.props?.onSubmit;
 	const handlers = Array.isArray(onSubmit) ? onSubmit : [onSubmit].filter(Boolean);
 	const results = handlers.map((handler) => handler(formData.value));
@@ -241,6 +245,8 @@ function doSubmit() {
  * fallback.
  */
 function resetSubmitButton() {
+	isSubmitting.value = false;
+
 	runComponentMethod(submitButtonRef.value, "reset");
 }
 
@@ -258,5 +264,5 @@ function focusField(fieldName) {
 	runComponentMethod(formFields[fieldName], "triggerFocus");
 }
 
-defineExpose({ resetSubmitButton });
+defineExpose({ isSubmitting, resetSubmitButton });
 </script>

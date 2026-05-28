@@ -548,6 +548,41 @@
 			</component-event>
 		</component-events>
 
+		<component-methods>
+			<component-method id="expose-notifications">
+				<template #name>
+					<code>notifications</code>
+				</template>
+
+				<p>
+					A reactive list of the filtered notifications currently being displayed. Accessible via a
+					<code>ref</code> on the component.
+				</p>
+			</component-method>
+
+			<component-method id="expose-unread-count">
+				<template #name>
+					<code>unreadCount</code>
+				</template>
+
+				<p>
+					A reactive number reflecting how many notifications are currently unread. Accessible via a
+					<code>ref</code> on the component.
+				</p>
+			</component-method>
+
+			<component-method id="expose-mark-all-read">
+				<template #name>
+					<code>markAllRead</code>
+				</template>
+
+				<p>
+					Mark all unread notifications as read, mirroring the "Mark all notifications read" button.
+					Accessible via a <code>ref</code> on the component.
+				</p>
+			</component-method>
+		</component-methods>
+
 		<component-styling-hooks>
 			<component-styling-hook id="hook-data-component">
 				<template #attribute>data-component="notification-handler"</template>

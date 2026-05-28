@@ -366,6 +366,55 @@ describe("app-pagination", () => {
 	});
 
 	describe("Methods", () => {
+		describe("goTo", () => {
+			test.for([
+				["boolean (true)", true],
+				["boolean (false)", false],
+				["string (non-empty)", "string"],
+				["string (empty)", ""],
+				["object (non-empty)", { property: "value" }],
+				["object (empty)", {}],
+				["array (non-empty)", [1, 2, 3]],
+				["array (empty)", []],
+				["null", null],
+				["undefined", undefined],
+			])("should not change the current page for invalid input: %s", ([, input]) => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.goTo(input);
+
+				expect(vm.currentPage).toBe(1);
+			});
+
+			test("should navigate to a specific page", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.goTo(5);
+
+				expect(vm.currentPage).toBe(5);
+			});
+
+			test("should clamp to the first page for values below 1", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.goTo(-5);
+
+				expect(vm.currentPage).toBe(1);
+			});
+
+			test("should clamp to the last page for values above the page count", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.goTo(999);
+
+				expect(vm.currentPage).toBe(vm.pageCount);
+			});
+		});
+
 		describe("selectPreviousPage", () => {
 			test("should select the previous page", () => {
 				const wrapper = mount();
@@ -428,6 +477,58 @@ describe("app-pagination", () => {
 
 				expect(vm.currentPage).toBe(10);
 			});
+		});
+	});
+
+	describe("Expose", () => {
+		test("exposes currentPage", () => {
+			const wrapper = mount();
+
+			expect(wrapper.vm.currentPage).toBe(1);
+		});
+
+		test("exposes totalPages", () => {
+			const wrapper = mount();
+
+			expect(wrapper.vm.totalPages).toBe(10);
+		});
+
+		test("exposes hasNext as true when not on the last page", () => {
+			const wrapper = mount();
+
+			expect(wrapper.vm.hasNext).toBe(true);
+		});
+
+		test("exposes hasNext as false when on the last page", () => {
+			const wrapper = mount();
+			const vm = wrapper.vm;
+
+			vm.currentPage = 10;
+
+			expect(vm.hasNext).toBe(false);
+		});
+
+		test("exposes hasPrev as false when on the first page", () => {
+			const wrapper = mount();
+
+			expect(wrapper.vm.hasPrev).toBe(false);
+		});
+
+		test("exposes hasPrev as true when not on the first page", () => {
+			const wrapper = mount();
+			const vm = wrapper.vm;
+
+			vm.currentPage = 5;
+
+			expect(vm.hasPrev).toBe(true);
+		});
+
+		test("exposes next, prev, and goTo as functions", () => {
+			const wrapper = mount();
+
+			expect(wrapper.vm.next).toBeTypeOf("function");
+			expect(wrapper.vm.prev).toBeTypeOf("function");
+			expect(wrapper.vm.goTo).toBeTypeOf("function");
 		});
 	});
 

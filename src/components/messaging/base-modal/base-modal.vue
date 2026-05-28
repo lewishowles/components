@@ -25,12 +25,20 @@
 			</span>
 		</ui-button>
 
-		<slot />
+		<slot
+			v-bind="{
+				isOpen,
+				open: openDialog,
+				close: closeDialog,
+				titleId: ariaLabelledby,
+				descriptionId: ariaDescribedby,
+			}"
+		/>
 	</dialog>
 </template>
 
 <script setup>
-import { onMounted, useTemplateRef } from "vue";
+import { onMounted, ref, useTemplateRef } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
@@ -96,6 +104,8 @@ const props = defineProps({
 const emit = defineEmits(["dialog:close"]);
 // A reference to the dialog element.
 const dialog = useTemplateRef("dialog");
+// Whether the dialog is currently open.
+const isOpen = ref(false);
 
 onMounted(() => {
 	initialiseDialog();
@@ -122,6 +132,8 @@ function openDialog() {
 
 	runComponentMethod(dialog.value, "showModal");
 
+	isOpen.value = true;
+
 	if (props.focusDialogOnOpen !== true) {
 		return;
 	}
@@ -139,10 +151,13 @@ function closeDialog() {
 
 	runComponentMethod(dialog.value, "close");
 
+	isOpen.value = false;
+
 	emit("dialog:close");
 }
 
 defineExpose({
+	isOpen,
 	open: openDialog,
 	close: closeDialog,
 });

@@ -198,6 +198,16 @@ Called when one (or all via "Mark all notifications read") notifications are mar
 
 The user has requested that the notifications be reloaded. A loading indicator is not automatically shown to the user, to allow for the consuming component to better control the interaction, and should be displayed via the loading prop.
 
+## Expose
+
+When accessed via a template ref, the following are available:
+
+| Property        | Type       | Description                                                   |
+| --------------- | ---------- | ------------------------------------------------------------- |
+| `notifications` | `object[]` | The filtered list of notifications currently being displayed. |
+| `unreadCount`   | `number`   | The number of unread notifications.                           |
+| `markAllRead`   | `function` | Mark all unread notifications as read.                        |
+
 ## Styling hooks
 
 | Attribute                               | Element            | Notes                          |

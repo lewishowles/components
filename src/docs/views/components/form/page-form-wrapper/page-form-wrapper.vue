@@ -44,6 +44,28 @@
 					The <code>default</code> slot contains the content of the form itself, including any
 					fields, layout elements, or information as necessary.
 				</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Slot prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>isSubmitting</code></td>
+							<td><code>boolean</code></td>
+							<td>Whether a form submission is currently in progress.</td>
+						</tr>
+						<tr>
+							<td><code>hasErrors</code></td>
+							<td><code>boolean</code></td>
+							<td>Whether the form currently has validation errors.</td>
+						</tr>
+					</tbody>
+				</table>
 			</component-slot>
 			<component-slot id="slot-submit-button-label">
 				<template #name> submit-button-label </template>
@@ -206,7 +228,7 @@
 		</component-provides>
 
 		<component-methods>
-			<component-method id="method-set-search-query">
+			<component-method id="method-reset-submit-button">
 				<template #name>
 					<code>resetSubmitButton</code>
 				</template>
@@ -215,6 +237,17 @@
 					Resets the submit button's loading state. Call this after your
 					<code>@submit</code> handler completes if it does not return a Promise — for example, when
 					the async work is deferred or the result comes back via a separate channel.
+				</p>
+			</component-method>
+
+			<component-method id="expose-is-submitting">
+				<template #name>
+					<code>isSubmitting</code>
+				</template>
+
+				<p>
+					A reactive boolean reflecting whether a form submission is currently in progress.
+					Accessible via a <code>ref</code> on the component.
 				</p>
 			</component-method>
 		</component-methods>
