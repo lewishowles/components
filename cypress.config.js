@@ -1,9 +1,7 @@
 import { defineConfig } from "cypress";
-import viteConfig from "./vite.config";
+import { fileURLToPath, URL } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
-
-const baseViteConfig = await viteConfig;
 
 export default defineConfig({
 	allowCypressEnv: false,
@@ -21,8 +19,14 @@ export default defineConfig({
 			framework: "vue",
 			bundler: "vite",
 			viteConfig: {
-				...baseViteConfig,
-				plugins: [tailwindcss(), vue()],
+				plugins: [vue(), tailwindcss()],
+				resolve: {
+					alias: {
+						"@": fileURLToPath(new URL("./src", import.meta.url)),
+						"@cypress": fileURLToPath(new URL("./test/cypress", import.meta.url)),
+						"@unit": fileURLToPath(new URL("./test/unit", import.meta.url)),
+					},
+				},
 			},
 		},
 		viewportWidth: 1000,
