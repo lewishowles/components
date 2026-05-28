@@ -388,35 +388,6 @@ const props = defineProps({
 	},
 
 	/**
-	 * If defined, this method is called with a `columnKey` for the current
-	 * column, and `rowData` for the current row. This method is called as the
-	 * table is building up its internal content. If the method returns a
-	 * string, this is used as the searchable content for that column in that
-	 * row, **overriding** the content of the cell. If anything else is
-	 * returned, such as undefined, the original content is used instead.
-	 */
-	searchableContentCallback: {
-		type: Function,
-		default: null,
-	},
-
-	/**
-	 * If defined, this method is called with a `columnKey` for the current
-	 * column, and `rowData` for the current row. This method is called as the
-	 * table is building up its internal content. If the method returns a
-	 * string, this is used as the sortable content for that column in that row,
-	 * **overriding** the content of the cell. If anything else is returned,
-	 * such as undefined, the original content is used instead.
-	 *
-	 * The returned content is used in a `sort` method, so the returned content
-	 * should make sense when sorted in that way.
-	 */
-	sortableContentCallback: {
-		type: Function,
-		default: null,
-	},
-
-	/**
 	 * The placeholder to apply to the search input.
 	 */
 	searchPlaceholder: {
@@ -666,6 +637,19 @@ const filteredRows = computed(() => {
 
 			const searchableContent = get(cell, "configuration.searchable");
 
+			// If the column has a custom search callback, use that over our
+			// default match rule.
+			const searchCallback = props.columns[columnKey]?.searchCallback;
+
+			if (isFunction(searchCallback)) {
+				return searchCallback({
+					searchQuery: searchQuery.value,
+					columnKey,
+					cell: searchableContent,
+					row,
+				});
+			}
+
 			return isNonEmptyString(searchableContent) && searchableContent.includes(searchTerm);
 		});
 
@@ -889,11 +873,11 @@ function getRowContent(row, columnKey) {
 
 /**
  * Get the searchable content of a cell; that is, either the content provided by
- * the searchable content callback, or hte lowercase content of the cell
+ * the column searchable content callback, or the lowercase content of the cell
  * itself.
  *
  * @param  {object}  row
- *     The row as standardised for the table.
+ *     The raw row provided to the table.
  * @param  {string}  columnKey
  *     The key for the column.
  */
@@ -904,8 +888,10 @@ function getSearchableContent(row, columnKey) {
 		searchableContent = "";
 	}
 
-	if (isFunction(props.searchableContentCallback)) {
-		const callbackResponse = props.searchableContentCallback(columnKey, row);
+	const searchableContentCallback = props.columns[columnKey]?.searchableContentCallback;
+
+	if (isFunction(searchableContentCallback)) {
+		const callbackResponse = searchableContentCallback(columnKey, row);
 
 		if (isNonEmptyString(callbackResponse)) {
 			searchableContent = callbackResponse;
@@ -921,19 +907,21 @@ function getSearchableContent(row, columnKey) {
 
 /**
  * Get the sortable content of a cell; that is, either the content provided by
- * the sortable content callback, or hte lowercase content of the cell
+ * the column sortable content callback, or the lowercase content of the cell
  * itself.
  *
  * @param  {object}  row
- *     The row as standardised for the table.
+ *     The raw row provided to the table.
  * @param  {string}  columnKey
  *     The key for the column.
  */
 function getSortableContent(row, columnKey) {
 	let sortableContent = row[columnKey];
 
-	if (isFunction(props.sortableContentCallback)) {
-		const callbackResponse = props.sortableContentCallback(columnKey, row);
+	const sortableContentCallback = props.columns[columnKey]?.sortableContentCallback;
+
+	if (isFunction(sortableContentCallback)) {
+		const callbackResponse = sortableContentCallback(columnKey, row);
 
 		if (isNonEmptyString(callbackResponse)) {
 			sortableContent = callbackResponse;

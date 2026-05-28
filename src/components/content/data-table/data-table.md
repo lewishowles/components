@@ -232,18 +232,21 @@ Any additional configuration for columns. **Note:** Any column without configura
 
 #### Available configuration keys
 
-| Key              | Type                | Default | Description                                                                                                                                                          |
-| ---------------- | ------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `label`          | `string`            | `""`    | The label to display in the column header.                                                                                                                           |
-| `hidden`         | `boolean`           | `false` | Whether this column is hidden, allowing hidden columns to be more explicitly defined where helpful.                                                                  |
-| `searchable`     | `boolean`           | `true`  | Whether this column is included in searches. If false, search will ignore this column entirely.                                                                      |
-| `sortable`       | `boolean`           | `true`  | Whether this column can be sorted.                                                                                                                                   |
-| `align`          | `string`            | `left`  | The alignment of the column. Anything but "right" will be treated as "left".                                                                                         |
-| `primary`        | `boolean`           | `false` | Whether this is the primary column. Primary cells render as `<th scope="row">` rather than `<td>`, which helps screen readers associate row headers with their data. |
-| `headingClasses` | `Vue class binding` | `""`    | Classes to apply only to this column's heading.                                                                                                                      |
-| `cellClasses`    | `Vue class binding` | `""`    | Classes to apply only to this column's cells.                                                                                                                        |
-| `columnClasses`  | `Vue class binding` | `""`    | Classes to apply to both this column's heading and cells.                                                                                                            |
-| `tabularNums`    | `boolean`           | `false` | Whether to apply tabular number formatting (`tabular-nums`) to cells in this column. Useful for numeric columns to ensure digits align vertically.                   |
+| Key                         | Type                | Default | Description                                                                                                                                                          |
+| --------------------------- | ------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`                     | `string`            | `""`    | The label to display in the column header.                                                                                                                           |
+| `hidden`                    | `boolean`           | `false` | Whether this column is hidden, allowing hidden columns to be more explicitly defined where helpful.                                                                  |
+| `searchable`                | `boolean`           | `true`  | Whether this column is included in searches. If false, search will ignore this column entirely.                                                                      |
+| `searchCallback`            | `function`          | `null`  | A custom search matcher to apply when searching this column. Given the `searchQuery`, `columnKey`, `cell` and `row`, returns `true` for a matching search.           |
+| `searchableContentCallback` | `function`          | `null`  | Provides custom searchable content for this column. Given the `columnKey` and `rowData`, returns a string to use instead of the cell content.                        |
+| `sortable`                  | `boolean`           | `true`  | Whether this column can be sorted.                                                                                                                                   |
+| `sortableContentCallback`   | `function`          | `null`  | Provides custom sortable content for this column. Given the `columnKey` and `rowData`, returns a string to use instead of the cell content.                          |
+| `align`                     | `string`            | `left`  | The alignment of the column. Anything but "right" will be treated as "left".                                                                                         |
+| `primary`                   | `boolean`           | `false` | Whether this is the primary column. Primary cells render as `<th scope="row">` rather than `<td>`, which helps screen readers associate row headers with their data. |
+| `headingClasses`            | `Vue class binding` | `""`    | Classes to apply only to this column's heading.                                                                                                                      |
+| `cellClasses`               | `Vue class binding` | `""`    | Classes to apply only to this column's cells.                                                                                                                        |
+| `columnClasses`             | `Vue class binding` | `""`    | Classes to apply to both this column's heading and cells.                                                                                                            |
+| `tabularNums`               | `boolean`           | `false` | Whether to apply tabular number formatting (`tabular-nums`) to cells in this column. Useful for numeric columns to ensure digits align vertically.                   |
 
 ### `name`
 
@@ -272,22 +275,6 @@ Whether to enable the table sort. When enabled, columns marked as sortable (the 
 - default: `false`
 
 Whether to enable selection. When enabled, a new column is added to the start of the table to include selection checkboxes, and v-model on the table returns the selected rows' data.
-
-### `searchableContentCallback(columnKey, rowData)`
-
-- type: `function`
-- default: `null`
-
-If defined, this method is called with a `columnKey` for the current column, and `rowData` for the current row. This method is called as the table is building up its internal content. If the method returns a string, this is used as the searchable content for that column in that row, **overriding** the content of the cell. If anything else is returned, such as undefined, the original content is used instead.
-
-### `sortableContentCallback(columnKey, rowData)`
-
-- type: `function`
-- default: `null`
-
-If defined, this method is called with a `columnKey` for the current column, and `rowData` for the current row. This method is called as the table is building up its internal content. If the method returns a string, this is used as the sortable content for that column in that row, **overriding** the content of the cell. If anything else is returned, such as undefined, the original content is used instead.
-
-The returned content is used in a `sort` method, so the returned content should make sense when sorted in that way.
 
 ### `searchPlaceholder`
 

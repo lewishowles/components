@@ -338,6 +338,47 @@ describe("data-table", () => {
 			cy.getByData("data-table-no-results").shouldBeVisible();
 		});
 
+		it("A column can define custom searchable content", () => {
+			const searchableContentCallback = (columnKey, rowData) => {
+				if (columnKey === "title" && rowData.title === "Toy Story") {
+					return "buzz lightyear";
+				}
+			};
+
+			mount({
+				columns: {
+					...columns,
+					title: { ...columns.title, searchableContentCallback },
+				},
+			});
+
+			cy.getByData("data-table-search-input").type("buzz");
+
+			cy.getByData("data-table-row").shouldHaveCount(1);
+			cy.getByData("data-table-cell").eq(0).shouldHaveText("Toy Story");
+		});
+
+		it("A column can define a custom search callback", () => {
+			const searchCallback = ({ cell, searchQuery }) => {
+				const normalise = (value) => value.replace(/\s+/g, "").toLowerCase();
+
+				return normalise(cell).includes(normalise(searchQuery));
+			};
+
+			mount({
+				data: [{ title: "AB23 456", release_year: "2026", box_office: "0" }],
+				columns: {
+					...columns,
+					title: { ...columns.title, searchCallback },
+				},
+			});
+
+			cy.getByData("data-table-search-input").type("AB23456");
+
+			cy.getByData("data-table-row").shouldHaveCount(1);
+			cy.getByData("data-table-cell").eq(0).shouldHaveText("AB23 456");
+		});
+
 		it("A search can be reset", () => {
 			mount();
 
@@ -427,6 +468,29 @@ describe("data-table", () => {
 			sortByColumn("Title");
 
 			cy.getByData("data-table-status").shouldHaveText("Sorted by Title descending");
+		});
+
+		it("A column can define custom sortable content", () => {
+			const sortableContentCallback = (columnKey, rowData) => {
+				if (columnKey === "title" && rowData.title === "Toy Story") {
+					return "aaa";
+				}
+			};
+
+			mount({
+				columns: {
+					...columns,
+					title: { ...columns.title, sortableContentCallback },
+				},
+			});
+
+			sortByColumn("Title");
+
+			cy.getByData("data-table-row")
+				.eq(0)
+				.getByData("data-table-cell")
+				.eq(0)
+				.shouldHaveText("Toy Story");
 		});
 	});
 

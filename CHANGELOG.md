@@ -10,9 +10,14 @@ Another round of components have been updated with improved accessibility.
 - `form-actions` - A new `label` slot allows a set of actions to have a unique accessible label.
 - `form-wrapper` - A new `actions-label` slot allows a set of actions to have a unique accessible label.
 - `link-tag` - A new `external-suffix` slot allows for custom external text when a link is `external`.
-- `progress-bar` - A new `variant` prop allows using as either a progress bar or a `meter`.
-- `progress-bar` - Now allows passing `null` as the `current` value to show an indeterminate progress bar.
-- `data-table` - New `search-introduction` and `search-help` slots allow passing introduction and help content to the search field.
+- `progress-bar`
+  - A new `variant` prop allows using as either a progress bar or a `meter`.
+  - Now allows passing `null` as the `current` value to show an indeterminate progress bar.
+- `data-table`
+  - New `search-introduction` and `search-help` slots allow passing introduction and help content to the search field.
+  - `columns` configuration now includes `searchableContentCallback`, to allow the "searchable" content for each column to be customised.
+  - `columns` configuration now includes `sortableContentCallback`, to allow the "sortable" content for each column to be customised.
+  - `columns` configuration now includes `searchCallback`, to allow the search behaviour of each column to be customised.
 
 ## 1.9.0
 

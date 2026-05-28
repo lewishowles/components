@@ -84,10 +84,41 @@
 							</td>
 						</tr>
 						<tr>
+							<td><code>searchCallback</code></td>
+							<td><code>function</code></td>
+							<td><code>null</code></td>
+							<td>
+								A custom search matcher to be applied when performing a search on this column. Given
+								the <code>searchQuery</code>, <code>columnKey</code>, <code>cell</code> and
+								<code>row</code>, returns <code>true</code> for a matching search, or
+								<code>false</code> otherwise.
+							</td>
+						</tr>
+						<tr>
+							<td><code>searchableContentCallback</code></td>
+							<td><code>function</code></td>
+							<td><code>null</code></td>
+							<td>
+								Provides custom searchable content for this column. Given the
+								<code>columnKey</code> and <code>rowData</code>, returns a string to use instead of
+								the cell content.
+							</td>
+						</tr>
+						<tr>
 							<td><code>sortable</code></td>
 							<td><code>boolean</code></td>
 							<td><code>true</code></td>
 							<td>Whether this column can be sorted.</td>
+						</tr>
+						<tr>
+							<td><code>sortableContentCallback</code></td>
+							<td><code>function</code></td>
+							<td><code>null</code></td>
+							<td>
+								Provides custom sortable content for this column. Given the
+								<code>columnKey</code> and <code>rowData</code>, returns a string to use instead of
+								the cell content.
+							</td>
 						</tr>
 						<tr>
 							<td><code>align</code></td>
@@ -192,93 +223,6 @@
 					Whether to enable selection. When enabled, a new column is added to the start of the table
 					to include selection checkboxes, and v-model on the table returns the selected rows' data.
 				</p>
-			</component-prop>
-
-			<component-prop id="prop-searchable-content-callback">
-				<template #name> searchableContentCallback </template>
-
-				<template #type> Function </template>
-
-				<template #default-value> null </template>
-
-				<p>
-					If defined, this method is called with a <code>columnKey</code> for the current column,
-					and <code>rowData</code> for the current row. This method is called as the table is
-					building up its internal content. If the method returns a string, this is used as the
-					searchable content for that column in that row, <strong>overriding</strong> the content of
-					the cell. If anything else is returned, such as undefined, the original content is used
-					instead.
-				</p>
-
-				<table>
-					<thead>
-						<tr>
-							<th>Parameter</th>
-							<th>Type</th>
-							<th>Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><code>columnKey</code></td>
-							<td><code>string</code></td>
-							<td>
-								The key representing this column, which is provided as part of column configuration.
-							</td>
-						</tr>
-						<tr>
-							<td><code>rowData</code></td>
-							<td><code>object</code></td>
-							<td>The data for the current row, including all columns.</td>
-						</tr>
-					</tbody>
-				</table>
-			</component-prop>
-
-			<component-prop id="prop-sortable-content-callback">
-				<template #name> sortableContentCallback </template>
-
-				<template #type> Function </template>
-
-				<template #default-value> null </template>
-
-				<p>
-					If defined, this method is called with a <code>columnKey</code> for the current column,
-					and <code>rowData</code> for the current row. This method is called as the table is
-					building up its internal content. If the method returns a string, this is used as the
-					searchable content for that column in that row, <strong>overriding</strong> the content of
-					the cell. If anything else is returned, such as undefined, the original content is used
-					instead.
-				</p>
-
-				<p>
-					The returned content is used in a <code>sort</code> method, so the returned content should
-					make sense when sorted in that way.
-				</p>
-
-				<table>
-					<thead>
-						<tr>
-							<th>Parameter</th>
-							<th>Type</th>
-							<th>Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><code>columnKey</code></td>
-							<td><code>string</code></td>
-							<td>
-								The key representing this column, which is provided as part of column configuration.
-							</td>
-						</tr>
-						<tr>
-							<td><code>rowData</code></td>
-							<td><code>object</code></td>
-							<td>The data for the current row, including all columns.</td>
-						</tr>
-					</tbody>
-				</table>
 			</component-prop>
 
 			<component-prop id="prop-search-placeholder">

@@ -327,14 +327,14 @@ describe("data-table", () => {
 				expect(vm.filteredRows).toEqual([]);
 			});
 
-			test("should defer to searchableContentCallback if defined", () => {
+			test("should defer to a column searchableContentCallback if defined", () => {
 				const searchableContentCallback = (columnKey) => {
 					if (columnKey === "title") {
 						return "abcdef";
 					}
 				};
 
-				const wrapper = mount({ searchableContentCallback });
+				const wrapper = mount({ columns: { title: { searchableContentCallback } } });
 				const vm = wrapper.vm;
 
 				vm.searchQuery = "abcdef";
@@ -650,18 +650,18 @@ describe("data-table", () => {
 				});
 			});
 
-			test("should defer to searchableContentCallback if defined", () => {
+			test("should defer to a column searchableContentCallback if defined", () => {
 				const searchableContentCallback = (columnKey) => {
 					if (columnKey === "title") {
 						return "abcdef";
 					}
 				};
 
-				const wrapper = mount({ searchableContentCallback });
+				const wrapper = mount({ columns: { title: { searchableContentCallback } } });
 				const vm = wrapper.vm;
 
 				const row = vm.internalData[0];
-				const content = vm.getSearchableContent(row, "title");
+				const content = vm.getSearchableContent(row.raw, "title");
 
 				expect(content).toEqual("abcdef");
 			});
@@ -678,18 +678,18 @@ describe("data-table", () => {
 				expect(content).toEqual("toy story");
 			});
 
-			test("should defer to sortableContentCallback if defined", () => {
+			test("should defer to a column sortableContentCallback if defined", () => {
 				const sortableContentCallback = (columnKey) => {
 					if (columnKey === "title") {
 						return "abcdef";
 					}
 				};
 
-				const wrapper = mount({ sortableContentCallback });
+				const wrapper = mount({ columns: { title: { sortableContentCallback } } });
 				const vm = wrapper.vm;
 
 				const row = vm.internalData[0];
-				const content = vm.getSortableContent(row, "title");
+				const content = vm.getSortableContent(row.raw, "title");
 
 				expect(content).toEqual("abcdef");
 			});
