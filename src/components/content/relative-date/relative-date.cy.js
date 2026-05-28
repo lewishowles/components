@@ -27,4 +27,12 @@ describe("relative-date", () => {
 
 		cy.getByData("relative-date").shouldHaveAttribute("datetime");
 	});
+
+	describe("Styling hooks", () => {
+		it("data-component is set on the root element", () => {
+			mount();
+
+			cy.getByData("relative-date").shouldHaveAttribute("data-component", "relative-date");
+		});
+	});
 });

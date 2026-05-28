@@ -335,6 +335,32 @@
 				</p>
 			</component-slot>
 
+			<component-slot id="slot-post-search">
+				<template #name> post-search </template>
+
+				<p>A slot to allow adding content to the table's title bar, after the search box.</p>
+			</component-slot>
+
+			<component-slot id="slot-pre-configure">
+				<template #name> pre-configure </template>
+
+				<p>A slot to allow adding content to the table's title bar, before configuration.</p>
+			</component-slot>
+
+			<component-slot id="slot-search-label">
+				<template #name> search-label </template>
+
+				<p>The label to use for the search box.</p>
+			</component-slot>
+
+			<component-slot id="slot-reset-search-label">
+				<template #name> reset-search-label </template>
+
+				<template #default-value> "Reset search" </template>
+
+				<p>The label to use for the "Reset search" button.</p>
+			</component-slot>
+
 			<component-slot id="slot-sorted-hint">
 				<template #name> sorted-hint </template>
 
@@ -366,20 +392,6 @@
 						</tr>
 					</tbody>
 				</table>
-			</component-slot>
-
-			<component-slot id="slot-search-label">
-				<template #name> search-label </template>
-
-				<p>The label to use for the search box.</p>
-			</component-slot>
-
-			<component-slot id="slot-reset-search-label">
-				<template #name> reset-search-label </template>
-
-				<template #default-value> "Reset search" </template>
-
-				<p>The label to use for the "Reset search" button.</p>
 			</component-slot>
 
 			<component-slot id="slot-no-data-message">
@@ -816,6 +828,14 @@
 				</table>
 			</component-method>
 		</component-methods>
+
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="data-table"</template>
+
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
 
 		<component-playgrounds>
 			<playground-data-table />

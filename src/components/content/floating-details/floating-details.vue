@@ -17,6 +17,7 @@
 				{ invisible: isPositioning },
 			],
 		}"
+		data-component="floating-details"
 		data-test="floating-details"
 		@open="handleOpen"
 		@close="handleClose"

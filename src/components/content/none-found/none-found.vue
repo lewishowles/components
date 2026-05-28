@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col gap-1" data-test="none-found">
+	<div class="flex flex-col gap-1" data-component="none-found" data-test="none-found">
 		<component :is="headingLevel" :class="titleClasses" data-test="none-found-title">
 			<slot name="title" />
 		</component>

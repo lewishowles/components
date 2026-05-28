@@ -209,6 +209,26 @@ describe("summary-details", () => {
 	});
 });
 
+describe("Styling hooks", () => {
+	it("data-component is set on the root element", () => {
+		mount();
+
+		cy.getByData("summary-details").shouldHaveAttribute("data-component", "summary-details");
+	});
+
+	it("data-state is 'closed' by default", () => {
+		mount();
+
+		cy.getByData("summary-details").shouldHaveAttribute("data-state", "closed");
+	});
+
+	it("data-state is 'open' when the details are open", () => {
+		mount({ open: true });
+
+		cy.getByData("summary-details").shouldHaveAttribute("data-state", "open");
+	});
+});
+
 /**
  * Create an element beside the currently mounted component by adding it to the
  * body.

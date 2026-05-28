@@ -9,6 +9,14 @@
 			</p>
 		</template>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="loading-spinner"</template>
+
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-loading-spinner />
 		</component-playgrounds>

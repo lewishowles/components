@@ -99,6 +99,12 @@ Resets the current search query for the user.
 
 Trigger focus on the search input.
 
+## Styling hooks
+
+| Attribute                          | Element | Notes                          |
+| ---------------------------------- | ------- | ------------------------------ |
+| `data-component="searchable-list"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### Basic searchable list

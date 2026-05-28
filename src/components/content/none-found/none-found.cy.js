@@ -42,4 +42,12 @@ describe("none-found", () => {
 			});
 		});
 	});
+
+	describe("Styling hooks", () => {
+		it("data-component is set on the root element", () => {
+			mount();
+
+			cy.getByData("none-found").shouldHaveAttribute("data-component", "none-found");
+		});
+	});
 });

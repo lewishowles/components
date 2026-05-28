@@ -1,5 +1,5 @@
 <template>
-	<span data-test="display-date">{{ displayDate }}</span>
+	<span data-component="display-date" data-test="display-date">{{ displayDate }}</span>
 </template>
 
 <script setup>

@@ -82,6 +82,32 @@
 			</component-prop>
 		</component-props>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="content-card"</template>
+
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-header">
+				<template #attribute>data-part="header"</template>
+
+				<p>The header region, containing the title, icon, and any additional header content.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-body">
+				<template #attribute>data-part="body"</template>
+
+				<p>The main body region of the card.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-footer">
+				<template #attribute>data-part="footer"</template>
+
+				<p>The footer region of the card.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-content-card />
 			<playground-content-card-header />

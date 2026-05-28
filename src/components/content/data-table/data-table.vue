@@ -1,5 +1,5 @@
 <template>
-	<div data-test="data-table">
+	<div data-component="data-table" data-test="data-table">
 		<span role="status" aria-live="polite" class="sr-only" data-test="data-table-status">
 			<template v-if="statusType === statusTypes.SORT">
 				<slot
@@ -74,6 +74,9 @@
 							<slot name="reset-search-label" />
 						</template>
 					</data-table-search>
+
+					<slot name="post-search" />
+					<slot name="pre-configuration" />
 
 					<dropdown-menu
 						v-if="showUserConfiguration"

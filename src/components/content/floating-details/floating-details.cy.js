@@ -155,6 +155,14 @@ describe("floating-details", () => {
 	});
 });
 
+describe("Styling hooks", () => {
+	it("data-component is set on the root element", () => {
+		mount();
+
+		cy.getByData("floating-details").shouldHaveAttribute("data-component", "floating-details");
+	});
+});
+
 /**
  * Create an element beside the currently mounted component by adding it to the
  * body.

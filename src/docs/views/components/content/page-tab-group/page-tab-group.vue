@@ -244,6 +244,20 @@
 			</component-provide>
 		</component-provides>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="tab-group"</template>
+
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-tab-list">
+				<template #attribute>data-part="tab-list"</template>
+
+				<p>The ordered list containing the tab buttons.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-tab-group />
 		</component-playgrounds>

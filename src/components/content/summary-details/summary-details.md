@@ -168,6 +168,15 @@ Close the details.
 
 Toggle the details between open and closed.
 
+## Styling hooks
+
+| Attribute                          | Element         | Notes                                            |
+| ---------------------------------- | --------------- | ------------------------------------------------ |
+| `data-component="summary-details"` | Root            | Scope styles to this component                   |
+| `data-part="summary"`              | Summary trigger | The `<summary>` element that toggles the details |
+| `data-part="content"`              | Content region  | The region revealed when the details are open    |
+| `data-state`                       | Root            | `"open"` or `"closed"`                           |
+
 ## Examples
 
 ### Basic summary details

@@ -35,6 +35,20 @@
 			</component-slot>
 		</component-slots>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="loading-indicator"</template>
+
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-large">
+				<template #attribute>data-large</template>
+
+				<p>Present when the <code>large</code> prop is set.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-loading-indicator />
 			<playground-loading-indicator-large />

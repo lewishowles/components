@@ -155,6 +155,14 @@ describe("Slot props", () => {
 	});
 });
 
+describe("Styling hooks", () => {
+	it("data-component is set on the root element", () => {
+		mount();
+
+		cy.getByData("tab-group").shouldHaveAttribute("data-component", "tab-group");
+	});
+});
+
 /**
  * Simplify the process of creating a new tab to test with.
  *

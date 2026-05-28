@@ -18,6 +18,32 @@ Any introduction to display with this table.
 
 An optional visible caption to display above the table. When the table overflows its container, this caption is also used to label the scrollable region for assistive technology.
 
+### `search-label`
+
+The label to use for the search box.
+
+### `reset-search-label`
+
+- default: "Reset search"
+
+The label to use for the "Reset search" button.
+
+### `post-search`
+
+A slot to allow adding content to the table's title bar, after the search box.
+
+### `pre-configure`
+
+A slot to allow adding content to the table's title bar, before configuration.
+
+#### Slot props
+
+##### `...`
+
+- type: `string`
+
+...
+
 ### `sorted-hint`
 
 - default: "Sorted by {sortedColumn} ascending/descending"
@@ -28,16 +54,6 @@ A screen-reader-only hint rendered inside the caption area, announcing which col
 | -------------- | ------- | ----------------------------------------------- |
 | `sortedColumn` | string  | The label of the column currently being sorted. |
 | `ascending`    | boolean | Whether the column is sorted ascending.         |
-
-### `search-label`
-
-The label to use for the search box.
-
-### `reset-search-label`
-
-- default: "Reset search"
-
-The label to use for the "Reset search" button.
 
 ### `no-data-message`
 
@@ -303,6 +319,12 @@ Set the table's current search query, overriding any current search. This could 
 | Parameter     | Type   | Description                  |
 | ------------- | ------ | ---------------------------- |
 | `searchQuery` | string | The new search query to set. |
+
+## Styling hooks
+
+| Attribute                     | Element | Notes                          |
+| ----------------------------- | ------- | ------------------------------ |
+| `data-component="data-table"` | Root    | Scope styles to this component |
 
 ## Examples
 

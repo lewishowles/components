@@ -1,5 +1,5 @@
 <template>
-	<div data-test="searchable-list">
+	<div data-component="searchable-list" data-test="searchable-list">
 		<div class="flex items-end gap-4">
 			<form-input
 				ref="search-field"

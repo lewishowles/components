@@ -32,6 +32,12 @@ The locale to use when formatting the relative date. By default, the user's loca
 
 How often to refresh the relative date when comparing against the current time. Set to `0` to disable automatic refreshing.
 
+## Styling hooks
+
+| Attribute                        | Element | Notes                          |
+| -------------------------------- | ------- | ------------------------------ |
+| `data-component="relative-date"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### Basic relative date

@@ -51,6 +51,15 @@ The footer style to use. Supports `well` and `plain`.
 
 Classes to apply around the icon slot.
 
+## Styling hooks
+
+| Attribute                       | Element | Notes                          |
+| ------------------------------- | ------- | ------------------------------ |
+| `data-component="content-card"` | Root    | Scope styles to this component |
+| `data-part="header"`            | Header  | The header region              |
+| `data-part="body"`              | Body    | The main body region           |
+| `data-part="footer"`            | Footer  | The footer region              |
+
 ## Examples
 
 ### Basic card

@@ -19,6 +19,13 @@ _Note that no default text is provided by design. Using a specific message relat
 
 Whether to display a larger, vertical version of the indicator.
 
+## Styling hooks
+
+| Attribute                            | Element | Notes                                |
+| ------------------------------------ | ------- | ------------------------------------ |
+| `data-component="loading-indicator"` | Root    | Scope styles to this component       |
+| `data-large`                         | Root    | Present when the `large` prop is set |
+
 ## Examples
 
 ### Basic indicator

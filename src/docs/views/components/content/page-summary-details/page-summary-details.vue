@@ -304,6 +304,35 @@
 			</component-method>
 		</component-methods>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="summary-details"</template>
+
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-summary">
+				<template #attribute>data-part="summary"</template>
+
+				<p>The <code>&lt;summary&gt;</code> element that acts as the toggle trigger.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-content">
+				<template #attribute>data-part="content"</template>
+
+				<p>The content region revealed when the details are open.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-state">
+				<template #attribute>data-state</template>
+
+				<p>
+					Set to <code>"open"</code> when the details are visible, <code>"closed"</code> when
+					hidden.
+				</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-summary-details />
 		</component-playgrounds>

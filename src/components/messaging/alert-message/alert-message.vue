@@ -93,9 +93,13 @@ const defaultMessageType = alertTypes.MUTED;
 const slots = useSlots();
 
 // The internal message type, accounting for an invalid choice by the user.
-const alertType = computed(() =>
-	messageTypes.includes(props.type) ? props.type : defaultMessageType,
-);
+const alertType = computed(() => {
+	if (messageTypes.includes(props.type)) {
+		return props.type;
+	}
+
+	return defaultMessageType;
+});
 
 // The ARIA role for this alert. This allows error and warning alerts to be
 // assertive, and other alerts to be polite. If the alert is not live, the role

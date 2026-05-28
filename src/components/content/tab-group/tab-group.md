@@ -95,6 +95,13 @@ An icon to display with the tab button.
 
 Activate this tab programmatically. Useful when external code needs to change which tab is active.
 
+## Styling hooks
+
+| Attribute                    | Element  | Notes                           |
+| ---------------------------- | -------- | ------------------------------- |
+| `data-component="tab-group"` | Root     | Scope styles to this component  |
+| `data-part="tab-list"`       | Tab list | The ordered list of tab buttons |
+
 ## Examples
 
 ### Basic tabs

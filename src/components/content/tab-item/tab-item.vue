@@ -1,9 +1,10 @@
 <template>
 	<div
 		v-show="active"
-		v-bind="{ id: panelId, 'aria-labelledby': tabId }"
+		v-bind="{ id: panelId, 'aria-labelledby': tabId, 'data-active': active || null }"
 		tabindex="0"
 		role="tabpanel"
+		data-component="tab-item"
 	>
 		<slot v-bind="{ isActive: active }" />
 	</div>

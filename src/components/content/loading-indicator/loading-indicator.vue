@@ -1,9 +1,10 @@
 <template>
 	<div
 		class="flex items-center gap-2"
-		:class="{ 'flex-col': large }"
+		v-bind="{ class: { 'flex-col': large }, 'data-large': large || null }"
 		role="status"
 		aria-live="polite"
+		data-component="loading-indicator"
 		data-test="loading-indicator"
 	>
 		<loading-spinner :class="{ 'size-7': large }" />

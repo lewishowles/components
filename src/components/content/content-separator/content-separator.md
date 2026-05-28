@@ -20,6 +20,12 @@ The HTML element to render. Use `div` for a decorative visual rule, and `hr` for
 
 One of `horizontal` or `vertical`. Controls the visual direction of the separator and, for `tag="hr"`, the value of `aria-orientation`.
 
+## Styling hooks
+
+| Attribute                            | Element | Notes                          |
+| ------------------------------------ | ------- | ------------------------------ |
+| `data-component="content-separator"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### Decorative separator

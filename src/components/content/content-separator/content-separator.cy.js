@@ -21,4 +21,12 @@ describe("content-separator", () => {
 
 		cy.getByData("content-separator").shouldHaveAttribute("aria-hidden", "false");
 	});
+
+	describe("Styling hooks", () => {
+		it("data-component is set on the root element", () => {
+			mount();
+
+			cy.getByData("content-separator").shouldHaveAttribute("data-component", "content-separator");
+		});
+	});
 });

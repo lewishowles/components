@@ -91,4 +91,12 @@ describe("content-card", () => {
 			.shouldHaveText("Custom header");
 		cy.getByData("content-card-title").should("not.exist");
 	});
+
+	describe("Styling hooks", () => {
+		it("data-component is set on the root element", () => {
+			mount({ slots: { default: "Content" } });
+
+			cy.getByData("content-card").shouldHaveAttribute("data-component", "content-card");
+		});
+	});
 });

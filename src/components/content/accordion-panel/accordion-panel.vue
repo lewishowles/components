@@ -75,9 +75,13 @@ const titleId = useId();
 const isVisible = ref(false);
 
 // The icon to show depending on the visibility of this panel.
-const statusIcon = computed(() =>
-	isVisible.value ? "icon-chevron-up-circled" : "icon-chevron-down-circled",
-);
+const statusIcon = computed(() => {
+	if (isVisible.value) {
+		return "icon-chevron-up-circled";
+	}
+
+	return "icon-chevron-down-circled";
+});
 
 // Whether this panel should use role="region". Skipped above 6 panels to avoid
 // cluttering the landmark list.

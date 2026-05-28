@@ -27,6 +27,12 @@ The locale to use when formatting dates. By default, the user's locale is used.
 
 The formatting options to apply to the displayed date, as defined by [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat#using_options).
 
+## Styling hooks
+
+| Attribute                       | Element | Notes                          |
+| ------------------------------- | ------- | ------------------------------ |
+| `data-component="display-date"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### Basic date display using the user's locale and default formatting

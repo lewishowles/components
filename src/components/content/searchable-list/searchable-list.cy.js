@@ -137,4 +137,12 @@ describe("searchable-list", () => {
 			cy.get("ul").should("exist");
 		});
 	});
+
+	describe("Styling hooks", () => {
+		it("data-component is set on the root element", () => {
+			mount();
+
+			cy.getByData("searchable-list").shouldHaveAttribute("data-component", "searchable-list");
+		});
+	});
 });

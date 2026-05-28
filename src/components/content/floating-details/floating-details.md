@@ -169,6 +169,12 @@ Open the details.
 
 Close the details.
 
+## Styling hooks
+
+| Attribute                           | Element | Notes                          |
+| ----------------------------------- | ------- | ------------------------------ |
+| `data-component="floating-details"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### Basic summary details

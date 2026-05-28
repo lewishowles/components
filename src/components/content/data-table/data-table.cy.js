@@ -541,6 +541,12 @@ describe("data-table", () => {
 		});
 
 		describe("Column visibility", () => {
+			afterEach(() => {
+				cy.window().then((window) => {
+					window.localStorage.removeItem("data-table:sample-table:columns");
+				});
+			});
+
 			it("All columns are visible by default", () => {
 				mount({ name: "table-name" });
 
@@ -563,10 +569,12 @@ describe("data-table", () => {
 			});
 
 			it("Custom visibility is retrieved from localStorage", () => {
-				localStorage.setItem(
-					"data-table:sample-table:columns",
-					'{"title":true,"release_year":false,"box_office":false}',
-				);
+				cy.window().then((window) => {
+					window.localStorage.setItem(
+						"data-table:sample-table:columns",
+						'{"title":true,"release_year":false,"box_office":false}',
+					);
+				});
 
 				mount({ name: "sample-table" });
 
@@ -586,10 +594,6 @@ describe("data-table", () => {
 				cy.getByData("data-table-columns-checkbox").eq(1).getFormField().should("be.checked");
 
 				cy.getByData("data-table-heading").shouldHaveCount(2);
-
-				cy.getByData("data-table").then(() => {
-					localStorage.removeItem("data-table:sample-table:columns");
-				});
 			});
 		});
 	});
@@ -722,6 +726,14 @@ describe("data-table", () => {
 	});
 });
 
+describe("Styling hooks", () => {
+	it("data-component is set on the root element", () => {
+		mount();
+
+		cy.getByData("data-table").shouldHaveAttribute("data-component", "data-table");
+	});
+});
+
 /**
  * Sort the table by the column with the given title.
  *
@@ -754,9 +766,7 @@ function selectPage(page) {
  *     The page to check.
  */
 function assertCurrentPage(page) {
-	cy.getByData("app-pagination-page")
-		.eq(page - 1)
-		.shouldHaveAttribute("aria-current", "page");
+	cy.getByData("app-pagination-page").find("[aria-current=page]").shouldHaveText(String(page));
 }
 
 /**
@@ -765,7 +775,7 @@ function assertCurrentPage(page) {
 function openUserConfiguration() {
 	cy.getByData("data-table-display-options").shouldBeVisible();
 
-	cy.getByData("data-table-display-options-summary").click();
+	cy.getByData("data-table-display-options").getByData("dropdown-menu-trigger").click();
 
-	cy.getByData("data-table-display-options-content").shouldBeVisible();
+	cy.getByData("data-table-display-options").getByData("dropdown-menu-panel").shouldBeVisible();
 }

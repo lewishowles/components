@@ -36,4 +36,12 @@ describe("display-date", () => {
 			cy.getByData("display-date").shouldHaveText("29.3.2025");
 		});
 	});
+
+	describe("Styling hooks", () => {
+		it("data-component is set on the root element", () => {
+			mount();
+
+			cy.getByData("display-date").shouldHaveAttribute("data-component", "display-date");
+		});
+	});
 });

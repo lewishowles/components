@@ -32,6 +32,12 @@ The heading level to use for the title.
 
 Classes to apply to the title.
 
+## Styling hooks
+
+| Attribute                     | Element | Notes                          |
+| ----------------------------- | ------- | ------------------------------ |
+| `data-component="none-found"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### Basic message

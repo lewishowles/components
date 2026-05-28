@@ -1,5 +1,10 @@
 <template>
-	<time :datetime="dateTimeAttribute" data-test="relative-date">{{ relativeDate }}</time>
+	<time
+		v-bind="{ datetime: dateTimeAttribute }"
+		data-component="relative-date"
+		data-test="relative-date"
+		>{{ relativeDate }}</time
+	>
 </template>
 
 <script setup>

@@ -1,8 +1,9 @@
 <template>
 	<details
 		ref="detailsElement"
-		v-bind="{ 'data-test': dataTest }"
+		v-bind="{ 'data-test': dataTest, 'data-state': isOpen ? 'open' : 'closed' }"
 		:class="floatingClasses"
+		data-component="summary-details"
 		@toggle="updateState"
 	>
 		<summary
@@ -10,6 +11,7 @@
 			class="inline-flex cursor-pointer list-none items-center gap-2"
 			:class="summaryClasses"
 			v-bind="{ 'data-test': `${dataTest}-summary` }"
+			data-part="summary"
 		>
 			<component
 				:is="currentIcon"
@@ -52,6 +54,7 @@
 				'aria-live': contentLive,
 				'data-test': `${dataTest}-content`,
 			}"
+			data-part="content"
 		>
 			<slot
 				v-if="!toggletip || shouldAnnounce"

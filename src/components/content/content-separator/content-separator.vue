@@ -2,11 +2,12 @@
 	<component
 		:is="tag"
 		class="border-grey-200"
-		:class="{
-			'border-t': isHorizontal,
-			'border-l': isVertical,
+		v-bind="{
+			class: { 'border-t': isHorizontal, 'border-l': isVertical },
+			'aria-hidden': !isSemantic,
+			'aria-orientation': explicitOrientation,
 		}"
-		v-bind="{ 'aria-hidden': !isSemantic, 'aria-orientation': explicitOrientation }"
+		data-component="content-separator"
 		data-test="content-separator"
 	/>
 </template>

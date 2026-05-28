@@ -1,6 +1,11 @@
 <template>
-	<div class="flex flex-col" data-test="content-card">
-		<div v-if="haveHeader" :class="headerClasses" data-test="content-card-header">
+	<div class="flex flex-col" data-component="content-card" data-test="content-card">
+		<div
+			v-if="haveHeader"
+			:class="headerClasses"
+			data-part="header"
+			data-test="content-card-header"
+		>
 			<slot name="header">
 				<div class="flex items-center justify-between gap-14">
 					<div v-if="haveTitleArea" class="flex items-center justify-between gap-2">
@@ -25,11 +30,16 @@
 			</slot>
 		</div>
 
-		<div v-if="haveDefault" :class="bodyClasses" data-test="content-card-body">
+		<div v-if="haveDefault" :class="bodyClasses" data-part="body" data-test="content-card-body">
 			<slot />
 		</div>
 
-		<div v-if="haveFooter" :class="footerClasses" data-test="content-card-footer">
+		<div
+			v-if="haveFooter"
+			:class="footerClasses"
+			data-part="footer"
+			data-test="content-card-footer"
+		>
 			<slot name="footer" />
 		</div>
 	</div>

@@ -1,5 +1,5 @@
 <template>
-	<div data-test="tab-group">
+	<div data-component="tab-group" data-test="tab-group">
 		<span v-if="haveLabel" :id="labelId" class="sr-only">
 			<slot name="label" />
 		</span>
@@ -12,9 +12,12 @@
 		>
 			<ol
 				class="-mb-px flex items-end"
-				:class="{ 'overflow-x-auto': !wrap, 'flex-wrap': wrap }"
-				v-bind="{ 'aria-labelledby': labelId }"
+				v-bind="{
+					class: { 'overflow-x-auto': !wrap, 'flex-wrap': wrap },
+					'aria-labelledby': labelId,
+				}"
 				role="tablist"
+				data-part="tab-list"
 			>
 				<li v-for="tab in tabs" :key="tab.tabId">
 					<link-tag
