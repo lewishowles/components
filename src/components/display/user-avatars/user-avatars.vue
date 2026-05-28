@@ -3,6 +3,7 @@
 		v-if="haveUsers"
 		class="flex items-center gap-1"
 		:class="{ 'ms-2': shouldOverlap }"
+		data-component="user-avatars"
 		data-test="user-avatars"
 	>
 		<li
@@ -29,7 +30,7 @@
 				{{ user.initials }}
 			</div>
 		</li>
-		<li v-if="haveOverflowUsers" :class="[shapeClasses, overlapClasses]">
+		<li v-if="haveOverflowUsers" :class="[shapeClasses, overlapClasses]" data-part="overflow">
 			<div
 				class="flex items-center justify-center text-sm font-bold"
 				:class="[size, shapeClasses, initialsColourClasses]"

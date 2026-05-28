@@ -121,6 +121,20 @@
 			</component-prop>
 		</component-props>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="user-avatars"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-overflow">
+				<template #attribute>data-part="overflow"</template>
+				<p>
+					The overflow count indicator. Present when displayed users exceed the <code>limit</code>.
+				</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-user-avatars />
 			<playground-user-avatars-no-images />

@@ -2,6 +2,7 @@
 	<img
 		v-if="!haveImageError"
 		class="bg-grey-100"
+		data-component="image-tag"
 		data-test="image-tag"
 		v-bind="{ ...$attrs, src }"
 		@error="handleImageError"
@@ -11,6 +12,8 @@
 		<div
 			class="bg-grey-100 flex items-center justify-center p-3"
 			v-bind="$attrs"
+			data-component="image-tag"
+			data-part="fallback"
 			data-test="image-tag-fallback"
 		>
 			<icon-image class="text-grey-500 aspect-square h-auto w-8 max-w-full" />

@@ -67,6 +67,15 @@ Updated when the user selects a different page to display, containing a `page` p
 | --------- | -------- | --------------------------- |
 | `page`    | `number` | The number of the new page. |
 
+## Styling hooks
+
+| Attribute                         | Element              | Notes                          |
+| --------------------------------- | -------------------- | ------------------------------ |
+| `data-component="app-pagination"` | Root                 | Scope styles to this component |
+| `data-part="previous"`            | Previous page button | —                              |
+| `data-part="page-list"`           | Page number list     | —                              |
+| `data-part="next"`                | Next page button     | —                              |
+
 ## Examples
 
 ### Basic pagination

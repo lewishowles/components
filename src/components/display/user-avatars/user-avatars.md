@@ -70,6 +70,13 @@ The colour classes to apply when displaying initials.
 
 The colour classes to apply when displaying initials.
 
+## Styling hooks
+
+| Attribute                       | Element                  | Notes                             |
+| ------------------------------- | ------------------------ | --------------------------------- |
+| `data-component="user-avatars"` | Root                     | Scope styles to this component    |
+| `data-part="overflow"`          | Overflow count indicator | Present when users exceed `limit` |
+
 ## Examples
 
 ### Basic avatars

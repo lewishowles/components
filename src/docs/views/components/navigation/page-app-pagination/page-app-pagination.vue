@@ -159,6 +159,28 @@
 			</component-event>
 		</component-events>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="app-pagination"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-previous">
+				<template #attribute>data-part="previous"</template>
+				<p>The previous page button.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-page-list">
+				<template #attribute>data-part="page-list"</template>
+				<p>The list of page number buttons.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-next">
+				<template #attribute>data-part="next"</template>
+				<p>The next page button.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-app-pagination />
 		</component-playgrounds>

@@ -39,6 +39,18 @@
 			</component-event>
 		</component-events>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component">
+				<template #attribute>data-component="image-tag"</template>
+				<p>Present on the image and fallback elements. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-fallback">
+				<template #attribute>data-part="fallback"</template>
+				<p>The fallback element, shown when the image fails to load.</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-image-tag />
 			<playground-image-tag-fallback />

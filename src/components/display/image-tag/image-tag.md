@@ -23,6 +23,13 @@ The URL to the image, which is applied directly to the underlying `img` tag.
 
 Fired when an image load error occurs, and the `image-tag` would be showing the fallback.
 
+## Styling hooks
+
+| Attribute                    | Element                     | Notes                                |
+| ---------------------------- | --------------------------- | ------------------------------------ |
+| `data-component="image-tag"` | Image and fallback elements | Scope styles to this component       |
+| `data-part="fallback"`       | Fallback element            | Present when the image fails to load |
+
 ## Examples
 
 ### Basic image

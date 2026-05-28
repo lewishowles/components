@@ -3,6 +3,7 @@
 		v-if="!haveSinglePage"
 		v-bind="{ 'aria-labelledby': internalId }"
 		class="flex flex-wrap items-center gap-4 text-center"
+		data-component="app-pagination"
 		data-test="app-pagination"
 	>
 		<span class="sr-only" v-bind="{ id: internalId }">
@@ -17,13 +18,14 @@
 			}"
 			v-bind="{ disabled: showingFirstPage }"
 			icon-start="icon-arrow-left"
+			data-part="previous"
 			data-test="app-pagination-previous"
 			@click="selectPreviousPage"
 		>
 			<slot name="previous-page-label"> Previous </slot>
 		</ui-button>
 
-		<ul class="flex items-center">
+		<ul class="flex items-center" data-part="page-list">
 			<template v-for="page in pagesToDisplay" :key="page">
 				<li
 					v-if="page === pageCount && displayAfterSummary"
@@ -77,6 +79,7 @@
 			}"
 			v-bind="{ disabled: showingLastPage }"
 			icon-end="icon-arrow-right"
+			data-part="next"
 			data-test="app-pagination-next"
 			@click="selectNextPage"
 		>

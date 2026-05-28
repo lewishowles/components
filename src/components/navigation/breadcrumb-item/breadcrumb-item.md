@@ -24,6 +24,13 @@ The link to the breadcrumb item's section. Required when `current` is false.
 
 Whether this item represents the current page. When true, renders as a non-interactive `<span aria-current="page">` rather than a link. The current page should not link to itself.
 
+## Styling hooks
+
+| Attribute                          | Element | Notes                                      |
+| ---------------------------------- | ------- | ------------------------------------------ |
+| `data-component="breadcrumb-item"` | Root    | Scope styles to this component             |
+| `data-current`                     | Root    | Present when this item is the current page |
+
 ## Examples
 
 ### Basic breadcrumb trail

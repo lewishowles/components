@@ -1,5 +1,10 @@
 <template>
-	<li class="breadcrumb-item" data-test="breadcrumb-item">
+	<li
+		class="breadcrumb-item"
+		data-component="breadcrumb-item"
+		:data-current="current || null"
+		data-test="breadcrumb-item"
+	>
 		<span v-if="current" aria-current="page" class="flex items-center gap-2">
 			<icon-chevron-right aria-hidden="true" class="breadcrumb-divider size-3" />
 

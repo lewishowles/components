@@ -72,6 +72,25 @@
 			</component-slot>
 		</component-slots>
 
+		<component-styling-hooks>
+			<component-styling-hook id="hook-data-component-list">
+				<template #attribute>data-component="breadcrumb-list"</template>
+				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-component-item">
+				<template #attribute>data-component="breadcrumb-item"</template>
+				<p>Present on each breadcrumb item's root element.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-current">
+				<template #attribute>data-current</template>
+				<p>
+					Present on a <code>breadcrumb-item</code> root when the <code>current</code> prop is true.
+				</p>
+			</component-styling-hook>
+		</component-styling-hooks>
+
 		<component-playgrounds>
 			<playground-breadcrumb-list />
 		</component-playgrounds>

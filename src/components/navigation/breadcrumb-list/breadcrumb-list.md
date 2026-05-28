@@ -17,6 +17,12 @@ The label for the breadcrumbs, intended to explain to screen reader users the pu
 
 Intended to contain one or more `breadcrumb-item` components.
 
+## Styling hooks
+
+| Attribute                          | Element | Notes                          |
+| ---------------------------------- | ------- | ------------------------------ |
+| `data-component="breadcrumb-list"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### Basic navigation
