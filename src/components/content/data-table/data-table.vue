@@ -589,7 +589,7 @@ const internalData = computed(() => {
 
 		data.push({
 			configuration: {
-				id: useId(),
+				id: crypto.randomUUID(),
 			},
 			content: rowContent,
 			raw: row,
