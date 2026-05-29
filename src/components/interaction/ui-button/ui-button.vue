@@ -19,6 +19,7 @@
 		/>
 
 		<span
+			class="contents"
 			:class="{ invisible: isReacting, 'sr-only': iconOnly }"
 			data-part="label"
 			data-test="ui-button-label"
