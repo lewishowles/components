@@ -10,19 +10,17 @@ Creating a modal for display comes in two parts.
 
 ### The modal itself
 
-Create a modal dialog as its own component. This can be created as you choose, but using `modal-dialog` is a good starting point. For example:
+Create the _content_ of the dialog as a component. Note that you should not wrap the content in a dialog itself. This is handled by `modal-controller`.
 
 ```html
 <template>
-	<modal-dialog>
-		<template #title> Delete "Sophie Wardhaugh" </template>
+	<modal-dialog-title> Delete "Sophie Wardhaugh" </modal-dialog-title>
 
-		<p>Are you sure you want to delete this user? This cannot be undone.</p>
+	<p>Are you sure you want to delete this user? This cannot be undone.</p>
 
-		<template #actions>
-			<ui-button class="button--primary" v-bind="{ reactive: true }"> Delete user </ui-button>
-		</template>
-	</modal-dialog>
+	<modal-dialog-actions>
+		<ui-button class="button--primary" v-bind="{ reactive: true }"> Delete user </ui-button>
+	</modal-dialog-actions>
 </template>
 
 <script setup>
@@ -37,7 +35,7 @@ Displaying the modal involves adding it to the stack via `useModalDialog`. For e
 ```javascript
 import { useModalDialog } from "@lewishowles/components";
 
-import DeleteUserDialog from "./dialogs/delete-user-dialog";
+import DeleteUser from "./fragments/delete-user";
 
 const { openModal } = useModalDialog();
 
@@ -45,5 +43,5 @@ const { openModal } = useModalDialog();
 
 const componentProps = { ... };
 
-openModal(DeleteUserDialog, componentProps);
+openModal(DeleteUser, componentProps);
 ```
