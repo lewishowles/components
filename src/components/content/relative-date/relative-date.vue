@@ -3,8 +3,13 @@
 		v-bind="{ datetime: dateTimeAttribute }"
 		data-component="relative-date"
 		data-test="relative-date"
-		>{{ relativeDate }}</time
 	>
+		<template v-if="relativeDateParts?.value === 0">
+			<slot v-bind="relativeDateParts">Just now</slot>
+		</template>
+
+		<template v-else>{{ relativeDate }}</template>
+	</time>
 </template>
 
 <script setup>
@@ -109,9 +114,18 @@ const dateTimeAttribute = computed(() => {
 	return new Date(dateEpochMilliseconds.value).toISOString();
 });
 
+// The raw relative date parts.
+const relativeDateParts = computed(() => {
+	if (dateEpochMilliseconds.value === null || relativeToEpochMilliseconds.value === null) {
+		return null;
+	}
+
+	return getRelativeDateParts(dateEpochMilliseconds.value, relativeToEpochMilliseconds.value);
+});
+
 // The relative date string for display.
 const relativeDate = computed(() => {
-	if (dateEpochMilliseconds.value === null || relativeToEpochMilliseconds.value === null) {
+	if (relativeDateParts.value === null) {
 		return null;
 	}
 
@@ -119,10 +133,7 @@ const relativeDate = computed(() => {
 		numeric: "always",
 	});
 
-	const { unit, value } = getRelativeDateParts(
-		dateEpochMilliseconds.value,
-		relativeToEpochMilliseconds.value,
-	);
+	const { unit, value } = relativeDateParts.value;
 
 	return formatter.format(value, unit);
 });

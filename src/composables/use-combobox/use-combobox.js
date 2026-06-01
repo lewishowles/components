@@ -1,4 +1,4 @@
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
@@ -47,6 +47,13 @@ export function useCombobox({ listboxId: providedListboxId, onSelect } = {}) {
 		id: listboxId,
 		role: "listbox",
 	}));
+
+	// Auto-highlight the sole option when open so users can confirm with Enter without navigating first.
+	watch([isOpen, optionIds], ([open, ids]) => {
+		if (open && ids.length === 1) {
+			activeId.value = ids[0];
+		}
+	});
 
 	/**
 	 * Get the computed ARIA attributes for an individual option.
