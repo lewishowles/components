@@ -22,7 +22,10 @@ export default defineConfig({
 	},
 	build: {
 		lib: {
-			entry: fileURLToPath(new URL("./src/index.js", import.meta.url)),
+			entry: {
+				components: fileURLToPath(new URL("./src/index.js", import.meta.url)),
+				composables: fileURLToPath(new URL("./src/composables/index.js", import.meta.url)),
+			},
 			formats: ["es"],
 		},
 		rollupOptions: {
