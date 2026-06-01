@@ -86,6 +86,15 @@ const props = defineProps({
 		type: Array,
 		default: () => [],
 	},
+
+	/**
+	 * Any additional attributes to pass to the input itself, such as
+	 * `autocomplete` or `aria-labelledby`.
+	 */
+	inputAttributes: {
+		type: Object,
+		default: null,
+	},
 });
 
 const model = defineModel({
@@ -155,8 +164,8 @@ const fieldComponent = computed(() => {
 	}
 });
 
-// Any additional props to pass to the field, including default props and any
-// added by validation.
+// Any additional props to pass to the field, including default props, any added
+// by validation, and any provided directly.
 const fieldProps = computed(() => {
 	const baseProps = deepMerge({ id: inputId.value }, fieldTypes[fieldType.value]);
 
@@ -164,7 +173,13 @@ const fieldProps = computed(() => {
 		return null;
 	}
 
-	return deepMerge(baseProps, propsForValidation.value);
+	const attributeGroups = [baseProps, propsForValidation.value];
+
+	if (props.inputAttributes) {
+		attributeGroups.push({ inputAttributes: props.inputAttributes });
+	}
+
+	return deepMerge(...attributeGroups);
 });
 
 // Any additional props to provide to the input based on current validation

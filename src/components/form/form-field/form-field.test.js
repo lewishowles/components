@@ -121,6 +121,22 @@ describe("form-field", () => {
 					inputAttributes: { required: true, type: "email" },
 				});
 			});
+
+			test("should merge external inputAttributes", () => {
+				const wrapper = mount({
+					type: "email",
+					validation: [{ rule: "required", message: "Validation message" }],
+					inputAttributes: { "aria-labelledby": "id-123" },
+				});
+
+				const vm = wrapper.vm;
+
+				expect(vm.fieldProps).toEqual({
+					required: true,
+					id: expect.any(String),
+					inputAttributes: { required: true, type: "email", "aria-labelledby": "id-123" },
+				});
+			});
 		});
 
 		describe("propsForValidation", () => {

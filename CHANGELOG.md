@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.0
+
+### Features
+
+`form-field`: `inputAttributes` can now be passed.
+
 ## 1.10.0
 
 A number of components now provide more information to their slots, allowing us to create a more custom experience.
