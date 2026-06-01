@@ -2,6 +2,10 @@
 
 ## 1.11.0
 
+### New composable
+
+`use-combobox`: A new composable has been added to provide the plumbing and accessibility required to implement a `combobox` pattern.
+
 ### Features
 
 `form-field`: `inputAttributes` can now be passed.
