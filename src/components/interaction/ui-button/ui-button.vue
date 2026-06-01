@@ -19,8 +19,7 @@
 		/>
 
 		<span
-			class="contents"
-			:class="{ invisible: isReacting, 'sr-only': iconOnly }"
+			:class="{ invisible: isReacting, 'sr-only': iconOnly, contents: !isReacting && !iconOnly }"
 			data-part="label"
 			data-test="ui-button-label"
 		>
