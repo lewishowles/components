@@ -25,7 +25,7 @@
  */
 import { computed } from "vue";
 import { isNonEmptyArray, lastDefined } from "@lewishowles/helpers/array";
-import useModalDialog from "@/composables/use-modal-dialog/use-modal-dialog";
+import { useModalDialog } from "@/composables/use-modal-dialog/use-modal-dialog";
 
 const { modals, closeTopModal } = useModalDialog();
 

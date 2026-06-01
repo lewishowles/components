@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "vite-plus/test";
-import useModalDialog from "./use-modal-dialog.js";
+import { useModalDialog } from "./use-modal-dialog.js";
 
 describe("useModalDialog", () => {
 	afterEach(() => {

@@ -11,7 +11,7 @@ let modalId = 0;
  * `modal-dialog-controller`, which will display the most recently requested
  * dialog.
  */
-export default function useModalDialog() {
+export function useModalDialog() {
 	/**
 	 * Add a modal to the stack, to be displayed by `modal-dialog-controller`.
 	 *

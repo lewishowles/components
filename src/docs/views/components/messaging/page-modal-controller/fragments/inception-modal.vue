@@ -20,7 +20,7 @@
 
 <script setup>
 import InceptionModal from "./inception-modal.vue";
-import useModalDialog from "@/composables/use-modal-dialog/use-modal-dialog";
+import { useModalDialog } from "@/composables/use-modal-dialog/use-modal-dialog";
 
 const props = defineProps({
 	/**

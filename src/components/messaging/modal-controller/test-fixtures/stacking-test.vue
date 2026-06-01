@@ -15,7 +15,7 @@
  * be verified.
  */
 import { defineComponent, h, markRaw } from "vue";
-import useModalDialog from "@/composables/use-modal-dialog/use-modal-dialog";
+import { useModalDialog } from "@/composables/use-modal-dialog/use-modal-dialog";
 
 import ModalController from "../modal-controller.vue";
 

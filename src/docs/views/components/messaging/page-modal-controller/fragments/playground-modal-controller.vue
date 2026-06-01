@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import useModalDialog from "@/composables/use-modal-dialog/use-modal-dialog";
+import { useModalDialog } from "@/composables/use-modal-dialog/use-modal-dialog";
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
 import InceptionModal from "./inception-modal.vue";
