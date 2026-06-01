@@ -7,7 +7,7 @@
  *     The instance of the Vue app.
  */
 export default function registerDocComponents(app) {
-	const modules = import.meta.glob("@/docs/views/components/fragments/**/*.vue", { eager: true });
+	const modules = import.meta.glob("@/docs/views/fragments/**/*.vue", { eager: true });
 
 	for (const path in modules) {
 		const component = modules[path].default;

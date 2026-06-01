@@ -32,9 +32,9 @@ export function useFloatingPosition({
 	initialAlign,
 }) {
 	// The resolved placement after measuring available viewport space.
-	const computedPlacement = ref(unref(initialPlacement.value));
+	const computedPlacement = ref(unref(initialPlacement));
 	// The resolved alignment after measuring available viewport space.
-	const computedAlign = ref(unref(initialAlign.value));
+	const computedAlign = ref(unref(initialAlign));
 	// Whether the panel is hidden while positioning is being measured, to
 	// prevent a layout flash while the panel jumps to its final position.
 	const isPositioning = ref(false);

@@ -13,5 +13,5 @@
 </template>
 
 <script setup>
-import ComponentTab from "@/docs/views/components/fragments/component-page/fragments/component-tab/component-tab.vue";
+import ComponentTab from "@/docs/views/fragments/component-page/fragments/component-tab/component-tab.vue";
 </script>

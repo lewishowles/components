@@ -12,8 +12,8 @@ import { nanoid } from "nanoid";
  * the following to handle closing the menu in the context of the app.
  *
  * const containerElement = useTemplateRef("container");
- * onClickOutside(containerElement, close); onFocusOutside(containerElement,
- * close);
+ * onClickOutside(containerElement, close);
+ * onFocusOutside(containerElement, close);
  *
  * @param  {object}  options
  * @param  {string}  [options.listboxId]
@@ -134,9 +134,7 @@ export function useCombobox({ listboxId: providedListboxId, onSelect } = {}) {
 			return;
 		}
 
-		// When nothing is highlighted yet, jump to the appropriate end rather
-		// than relying on getNextIndex(-1), which wraps unexpectedly in
-		// reverse.
+		// When nothing is highlighted yet, jump to the appropriate end.
 		if (activeId.value === null) {
 			activeId.value = reverse ? ids.at(-1) : ids[0];
 
@@ -149,8 +147,9 @@ export function useCombobox({ listboxId: providedListboxId, onSelect } = {}) {
 	}
 
 	/**
-	 * Select an option, call the onSelect callback, and close the popup.
-	 * Selects the currently active option when no ID is provided.
+	 * Select an individual option, which in turn calls the onSelect callback,
+	 * and closes the popup. Selects the currently active option when no ID is
+	 * provided.
 	 *
 	 * @param  {string}  [id]
 	 *     The option ID to select. Defaults to activeId.
@@ -170,7 +169,9 @@ export function useCombobox({ listboxId: providedListboxId, onSelect } = {}) {
 	}
 
 	/**
-	 * Handle keydown events on the input element.
+	 * Attach to the input to handle keydown events, implementing the combobox
+	 * keyboard functionality: arrow keys open and navigate the list, Enter
+	 * selects, Escape closes, and cursor keys return to text editing.
 	 *
 	 * @param  {KeyboardEvent}  event
 	 */

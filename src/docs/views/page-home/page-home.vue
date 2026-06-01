@@ -41,7 +41,7 @@
 			class="animate-fade-in delay rounded-md px-4 py-3 dark:ring-0"
 			:class="section.colours"
 		>
-			<component :is="section.icon" class="mx-auto my-6 block size-12" />
+			<component :is="section.icon" class="my-6 block size-12" />
 
 			<h3 class="font-semibold">
 				{{ section.label }}
@@ -72,6 +72,7 @@ import useMenu from "@/docs/composables/use-menu/use-menu";
 import useTitle from "@/docs/composables/use-title/use-title";
 
 import IconChart from "./fragments/icon/icon-chart.vue";
+import IconComposables from "./fragments/icon/icon-composables.vue";
 import IconContent from "./fragments/icon/icon-content.vue";
 import IconDisplay from "./fragments/icon/icon-display.vue";
 import IconForm from "./fragments/icon/icon-form.vue";
@@ -94,6 +95,10 @@ const sectionConfiguration = {
 		icon: IconChart,
 		colours:
 			"bg-orange-50 ring-orange-200 text-orange-800 dark:bg-orange-500/20 dark:text-orange-200",
+	},
+	Composables: {
+		icon: IconComposables,
+		colours: "bg-cyan-50 ring-cyan-200 text-cyan-800 dark:bg-cyan-500/20 dark:text-cyan-200",
 	},
 	Content: {
 		icon: IconContent,

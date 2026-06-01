@@ -100,6 +100,16 @@
 
 					<app-menu-link to="/general/conditional-wrapper"> conditional-wrapper </app-menu-link>
 				</app-menu-section>
+
+				<app-menu-section>
+					<template #title> Composables </template>
+
+					<app-menu-link to="/composables/use-combobox"> useCombobox </app-menu-link>
+					<app-menu-link to="/composables/use-floating-position">
+						useFloatingPosition
+					</app-menu-link>
+					<app-menu-link to="/composables/use-modal-dialog"> useModalDialog </app-menu-link>
+				</app-menu-section>
 			</ol>
 		</nav>
 	</define-template>
