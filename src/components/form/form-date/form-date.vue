@@ -74,13 +74,13 @@
 </template>
 
 <script setup>
-import { computed, useSlots, useTemplateRef } from "vue";
+import { computed, useTemplateRef } from "vue";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber, isNumeric } from "@lewishowles/helpers/number";
-import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
 import { Temporal } from "temporal-polyfill";
-import useInputId from "@/components/form/composables/use-input-id/use-input-id";
+import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
 import FormLabel from "@/components/form/form-label/form-label.vue";
@@ -111,15 +111,10 @@ const date = defineModel({
 	type: [Object, String],
 });
 
-const slots = useSlots();
 // A reference to the day input, which we will use to focus this field.
 const dayInput = useTemplateRef("dayInput");
-// Generate an appropriate input ID.
-const { inputId } = useInputId(props.id);
-// Whether an introduction has been provided.
-const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
-// Whether error text has been provided.
-const haveError = computed(() => isNonEmptySlot(slots.error));
+
+const { inputId, haveIntroduction, haveError } = useFormField({ id: props.id });
 
 initialise();
 

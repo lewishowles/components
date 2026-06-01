@@ -40,10 +40,7 @@
 			</select>
 		</div>
 
-		<form-supplementary
-			v-bind="{ inputId }"
-			@update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })"
-		>
+		<form-supplementary v-bind="{ inputId }">
 			<template #error>
 				<slot name="error" />
 			</template>
@@ -62,12 +59,11 @@
  * The `default` slot contains the label for the select.
  * `error` and `help` slots exist for additional descriptive text.
  */
-import { computed, useSlots, useTemplateRef } from "vue";
+import { useTemplateRef } from "vue";
 import { firstDefined } from "@lewishowles/helpers/array";
 import { get } from "@lewishowles/helpers/object";
-import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
-import useFormSupplementary from "@/components/form/composables/use-form-supplementary/use-form-supplementary";
-import useInputId from "@/components/form/composables/use-input-id/use-input-id";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
+import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 import useOptions from "@/components/form/composables/use-options/use-options";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
@@ -141,8 +137,6 @@ const props = defineProps({
 	},
 });
 
-const slots = useSlots();
-
 const model = defineModel({
 	type: String,
 	default: "",
@@ -157,16 +151,9 @@ const { options: internalOptions } = useOptions(props.options, {
 	valueKey: props.valueKey,
 });
 
-// Generate an appropriate input ID.
-const { inputId } = useInputId(props.id);
-// Utilise form supplementary to retrieve the appropriate describedby attribute.
-const { errorId, updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
-// Whether an introduction has been provided.
-const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
-// Whether help text has been provided.
-const haveHelp = computed(() => isNonEmptySlot(slots.help));
-// Whether error text has been provided.
-const haveError = computed(() => isNonEmptySlot(slots.error));
+const { inputId, errorId, describedBy, haveIntroduction, haveHelp, haveError } = useFormField({
+	id: props.id,
+});
 
 // When initialising, if we are not allowed an empty option, select the first
 // option in the list.

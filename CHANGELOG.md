@@ -6,7 +6,7 @@
 
 `use-combobox`: A new composable has been added to provide the plumbing and accessibility required to implement a `combobox` pattern.
 
-### Features
+### New features
 
 `form-field`: `inputAttributes` can now be passed.
 
@@ -14,7 +14,7 @@
 
 A number of components now provide more information to their slots, allowing us to create a more custom experience.
 
-### Features
+### New features
 
 - `breadcrumb-item` - A new `current` prop marks the current page.
 - `form-actions` - A new `label` slot allows a set of actions to have a unique accessible label.
@@ -40,7 +40,7 @@ Further components have been updated with better accessibility, especially aroun
 - [`relative-date`](/src/components/content/relative-date/relative-date.md) Display a date relative to now or an optional comparison date (e.g. 30 seconds ago).
 - [`content-card`](/src/components/content/content-card/content-card.md) Display content in a standardised bordered card layout.
 
-### Features
+### New features
 
 - `none-found` - New `titleClasses` prop gives better customisation of the display of `none-found`.
 - `copy-content` - Now properly announces its status to screen readers
@@ -50,7 +50,7 @@ Further components have been updated with better accessibility, especially aroun
 
 ## 1.8.0
 
-### Features
+### New features
 
 - `ui-button` - New `disabled` prop for disabled (but still accessible) buttons.
 - `ui-button` - New `pressed` prop allows for toggle buttons.
@@ -92,7 +92,7 @@ Further components have been updated with better accessibility, especially aroun
 - `icon-sidebar`
 - `icon-users`
 
-### Features
+### New features
 
 - `form-wrapper` - New `error` slot for general form errors, such as API responses.
 
@@ -112,7 +112,7 @@ Further components have been updated with better accessibility, especially aroun
 
 A number of other icons have also been updated to give them a more modern appearance.
 
-### Features
+### New features
 
 - `form-select` - New `labelKey` and `valueKey` options have been added, allowing a label and value to be extracted from any list of objects provided to `options`.
 - `form-radio-button-group` - New `labelKey` and `valueKey` options have been added, allowing a label and value to be extracted from any list of objects provided to `options`.

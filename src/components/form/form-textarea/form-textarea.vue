@@ -34,10 +34,7 @@
 			/>
 		</div>
 
-		<form-supplementary
-			v-bind="{ inputId }"
-			@update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })"
-		>
+		<form-supplementary v-bind="{ inputId }">
 			<template #error>
 				<slot name="error" />
 			</template>
@@ -63,10 +60,9 @@
  * a natural extension, and attempting to shoe-horn the prefix/suffix in would
  * remove some of the benefits of inheritance.
  */
-import { computed, useSlots, useTemplateRef } from "vue";
-import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
-import useFormSupplementary from "@/components/form/composables/use-form-supplementary/use-form-supplementary";
-import useInputId from "@/components/form/composables/use-input-id/use-input-id";
+import { useTemplateRef } from "vue";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
+import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
 import FormLabel from "@/components/form/form-label/form-label.vue";
@@ -110,24 +106,16 @@ const props = defineProps({
 	},
 });
 
-const slots = useSlots();
-
 const model = defineModel({
 	type: String,
 });
 
 // A reference to the input, which allows us to trigger focus on it.
 const inputElement = useTemplateRef("inputElement");
-// Generate an appropriate input ID.
-const { inputId } = useInputId(props.id);
-// Utilise form supplementary to retrieve the appropriate describedby attribute.
-const { errorId, updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
-// Whether an introduction has been provided.
-const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
-// Whether help text has been provided.
-const haveHelp = computed(() => isNonEmptySlot(slots.help));
-// Whether error text has been provided.
-const haveError = computed(() => isNonEmptySlot(slots.error));
+
+const { inputId, errorId, describedBy, haveIntroduction, haveHelp, haveError } = useFormField({
+	id: props.id,
+});
 
 /**
  * Focus on our input.

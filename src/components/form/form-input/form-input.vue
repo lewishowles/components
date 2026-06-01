@@ -54,10 +54,7 @@
 			<option v-for="suggestion in suggestions" :key="suggestion" v-bind="{ value: suggestion }" />
 		</datalist>
 
-		<form-supplementary
-			v-bind="{ inputId }"
-			@update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })"
-		>
+		<form-supplementary v-bind="{ inputId }">
 			<template #error>
 				<slot name="error" />
 			</template>
@@ -80,8 +77,7 @@
 import { computed, useId, useSlots, useTemplateRef } from "vue";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
-import useFormSupplementary from "@/components/form/composables/use-form-supplementary/use-form-supplementary";
-import useInputId from "@/components/form/composables/use-input-id/use-input-id";
+import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
 import FormLabel from "@/components/form/form-label/form-label.vue";
@@ -145,28 +141,18 @@ const model = defineModel({
 
 // A reference to the input, which allows us to trigger focus on it.
 const inputElement = useTemplateRef("inputElement");
-// Generate an appropriate input ID.
-const { inputId } = useInputId(props.id);
 // An ID linking the input to its datalist when suggestions are provided.
 const datalistId = useId();
 
-// Utilise form supplementary to retrieve the appropriate describedby attribute.
-const { errorId, introductionId, updateDescribedBy, describedBy } = useFormSupplementary(
-	inputId.value,
-);
+const { inputId, introductionId, errorId, describedBy, haveIntroduction, haveHelp, haveError } =
+	useFormField({ id: props.id });
 
 // Whether suggestions have been provided for the datalist.
 const haveSuggestions = computed(() => isNonEmptyArray(props.suggestions));
-// Whether an introduction has been provided.
-const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 // Whether a prefix is defined.
 const havePrefix = computed(() => isNonEmptySlot(slots.prefix));
 // Whether a suffix is defined.
 const haveSuffix = computed(() => isNonEmptySlot(slots.suffix));
-// Whether help text has been provided.
-const haveHelp = computed(() => isNonEmptySlot(slots.help));
-// Whether error text has been provided.
-const haveError = computed(() => isNonEmptySlot(slots.error));
 
 /**
  * Focus on our input.

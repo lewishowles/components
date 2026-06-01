@@ -30,10 +30,7 @@
 			</form-label>
 		</div>
 
-		<form-supplementary
-			v-bind="{ inputId }"
-			@update:describedby="updateDescribedBy({ haveHelp, haveError })"
-		>
+		<form-supplementary v-bind="{ inputId }">
 			<template #error>
 				<slot name="error" />
 			</template>
@@ -53,10 +50,9 @@
  * The `default` slot contains the label for the checkbox. `error` and `help`
  * slots exist for additional descriptive text.
  */
-import { computed, useSlots, useTemplateRef, watch } from "vue";
-import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
-import useFormSupplementary from "@/components/form/composables/use-form-supplementary/use-form-supplementary";
-import useInputId from "@/components/form/composables/use-input-id/use-input-id";
+import { useTemplateRef, watch } from "vue";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
+import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
 import FormSupplementary from "@/components/form/fragments/form-supplementary/form-supplementary.vue";
@@ -111,22 +107,14 @@ const props = defineProps({
 	},
 });
 
-const slots = useSlots();
-
 const model = defineModel({
 	type: [Boolean, Array],
 });
 
 // A reference to the input, which allows us to trigger focus on it.
 const inputElement = useTemplateRef("inputElement");
-// Generate an appropriate input ID.
-const { inputId } = useInputId(props.id);
-// Utilise form supplementary to retrieve the appropriate describedby attribute.
-const { errorId, updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
-// Whether help text has been provided.
-const haveHelp = computed(() => isNonEmptySlot(slots.help));
-// Whether error text has been provided.
-const haveError = computed(() => isNonEmptySlot(slots.error));
+
+const { inputId, errorId, describedBy, haveHelp, haveError } = useFormField({ id: props.id });
 
 // Set the indeterminate DOM property when the prop changes.
 watch(

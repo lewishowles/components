@@ -57,11 +57,7 @@
 			</div>
 		</slot>
 
-		<form-supplementary
-			v-bind="{ inputId }"
-			class="mt-1"
-			@update:describedby="updateDescribedBy({ haveIntroduction, haveHelp, haveError })"
-		>
+		<form-supplementary v-bind="{ inputId }" class="mt-1">
 			<template #error>
 				<slot name="error" />
 			</template>
@@ -80,11 +76,10 @@
  * `form-input-group` allows options to be provided in a few different formats
  * for simplicity.
  */
-import { computed, ref, useSlots } from "vue";
+import { computed, ref } from "vue";
 import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
-import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
-import useFormSupplementary from "@/components/form/composables/use-form-supplementary/use-form-supplementary";
-import useInputId from "@/components/form/composables/use-input-id/use-input-id";
+import { runComponentMethod } from "@lewishowles/helpers/vue";
+import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 import useOptions from "@/components/form/composables/use-options/use-options";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
@@ -173,7 +168,6 @@ const model = defineModel({
 	default: {},
 });
 
-const slots = useSlots();
 // Whether this is a radio group variant
 const isRadio = computed(() => props.type === "radio");
 // Whether this is a checkbox variant
@@ -185,21 +179,15 @@ const { options: internalOptions } = useOptions(props.options, {
 	valueKey: props.valueKey,
 });
 
-// Generate an appropriate input ID.
-const { inputId } = useInputId(props.id);
+const { inputId, errorId, describedBy, haveIntroduction, haveHelp, haveError } = useFormField({
+	id: props.id,
+});
+
 // The computed name of this field, either the one provided, or one generated
 // for the user.
 const fieldName = computed(() => props.name || inputId.value);
-// Utilise form supplementary to retrieve the appropriate describedby attribute.
-const { errorId, updateDescribedBy, describedBy } = useFormSupplementary(inputId.value);
 // A reference to the inputs, allowing us to trigger focus.
 const inputReferences = ref([]);
-// Whether an introduction has been provided.
-const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
-// Whether help text has been provided.
-const haveHelp = computed(() => isNonEmptySlot(slots.help));
-// Whether error text has been provided.
-const haveError = computed(() => isNonEmptySlot(slots.error));
 
 /**
  * Trigger focus on the selected input, or the first if no selection has been
