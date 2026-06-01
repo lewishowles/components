@@ -1,9 +1,9 @@
-@import url("font.css");
-@import url("buttons.css");
-@import url("form.css");
-@import url("animation.css");
-
 @import "tailwindcss";
+
+@import "./font.css";
+@import "./buttons.css";
+@import "./form.css";
+@import "./animation.css";
 
 @plugin "@tailwindcss/container-queries";
 @plugin "tailwindcss-hocus";
@@ -112,10 +112,11 @@
 		transition-timing-function: var(--default-transition-timing-function);
 
 		&:focus-visible {
+			outline: 0;
 			box-shadow: 0 0 0 2px var(--color-purple-800);
 			box-shadow:
 				0 0 0 2px var(--color-purple-800),
-				0 0 0 4px rgb(120 81 169 / 0.1);
+				0 0 0 4px --alpha(var(--color-purple-800) / 10%);
 		}
 
 		&:where(.dark, .dark *):focus-visible {
