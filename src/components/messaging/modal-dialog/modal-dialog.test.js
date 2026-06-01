@@ -2,7 +2,8 @@ import { createDeepMount } from "@unit/support/mount";
 import { describe, expect, test } from "vite-plus/test";
 import ModalDialog from "./modal-dialog.vue";
 
-const mount = createDeepMount(ModalDialog);
+const defaultSlots = { title: "Modal dialog title" };
+const mount = createDeepMount(ModalDialog, { slots: defaultSlots });
 
 describe("modal-dialog", () => {
 	describe("Initialisation", () => {
@@ -36,7 +37,7 @@ describe("modal-dialog", () => {
 			});
 
 			test("should be null when no title slot is provided", () => {
-				const wrapper = mount();
+				const wrapper = mount({ slots: { title: null } });
 
 				expect(wrapper.vm.ariaLabelledby).toBeNull();
 			});

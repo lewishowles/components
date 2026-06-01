@@ -99,14 +99,9 @@ provide("modal-dialog-title-id", titleId);
 
 // Validate that the dialog has an accessible label.
 onMounted(() => {
-	if (
-		import.meta.env.DEV &&
-		!haveTitle.value &&
-		!attrs["aria-label"] &&
-		!attrs["aria-labelledby"]
-	) {
+	if (import.meta.env.DEV && !haveTitle.value && !attrs["aria-labelledby"]) {
 		console.warn(
-			"[modal-dialog] No accessible label found. Provide a `title` slot, or pass `aria-label` / `aria-labelledby`.",
+			"[modal-dialog] No accessible label found. Provide a `title` slot, or pass `aria-labelledby`.",
 		);
 	}
 });
