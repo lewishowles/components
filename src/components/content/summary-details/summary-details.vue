@@ -368,8 +368,6 @@ onClickOutside(detailsElement, (event) => {
 		return;
 	}
 
-	event.preventDefault();
-
 	closeDetails();
 });
 

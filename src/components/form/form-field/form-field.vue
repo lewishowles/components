@@ -98,7 +98,7 @@ const props = defineProps({
 });
 
 const model = defineModel({
-	type: String,
+	type: [String, Array, Boolean],
 });
 
 // Generate an appropriate input ID.

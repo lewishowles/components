@@ -7,7 +7,6 @@ For a simple summary-details or floating content area, use `summary-details` or 
 To build up a standardised menu, use the companion components:
 
 - `dropdown-menu-button`, a styled action button
-- `dropdown-menu-checkbox`, a styled checkbox for selection
 - `dropdown-menu-link`, a styled link
 - `dropdown-menu-divider`, a visual divider between sections
 

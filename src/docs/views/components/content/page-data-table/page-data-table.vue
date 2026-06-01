@@ -350,9 +350,9 @@
 				<template #name> no-results-message </template>
 
 				<template #default-value>
-					"No results could be found for term &lt;span class=&quot;font-bold&quot;&gt;&quot;{{
-						searchQuery
-					}}&quot;&lt;/span&gt;."
+					"No results could be found for term &lt;span
+					class=&quot;font-bold&quot;&gt;&quot;&#123;&#123; searchQuery
+					&#125;&#125;&quot;&lt;/span&gt;."
 				</template>
 
 				<p>The message to display when no data could be found for the current search term.</p>
@@ -648,7 +648,9 @@
 			<component-slot id="slot-selected-row-count-label">
 				<template #name> selected-row-count-label </template>
 
-				<template #default-value> `{{ selectedCount }} rows selected` </template>
+				<template #default-value>
+					`&#123;&#123; selectedCount &#125;&#125; rows selected`
+				</template>
 
 				<p>
 					The label for the number of rows currently selected. This is only shown if
@@ -706,7 +708,10 @@
 				<template #name> showing-items-label </template>
 
 				<template #default-value>
-					`Showing {{ first }}&ndash;{{ last }} of {{ total }} items`
+					<span v-pre
+						>`Showing &#123;&#123; first &#125;&#125;&ndash;&#123;&#123; last &#125;&#125; of
+						&#123;&#123; total &#125;&#125; items`</span
+					>
 				</template>
 
 				<p>

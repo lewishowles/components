@@ -1,9 +1,5 @@
 <template>
-	<component-playground
-		v-bind="{ copy: template, componentModel }"
-		id="playground-data-table"
-		v-model="textSlots"
-	>
+	<component-playground v-bind="{ copy: template, componentModel }" id="playground-data-table">
 		<template #title> Data table </template>
 
 		<data-table v-bind="componentProps" v-model="componentModel">
@@ -194,6 +190,11 @@ const props = ref({
 		label: "Column configuration",
 		value: columns,
 		type: "object",
+	},
+	name: {
+		label: "Table name",
+		value: "playground-data-table",
+		type: "string",
 	},
 });
 

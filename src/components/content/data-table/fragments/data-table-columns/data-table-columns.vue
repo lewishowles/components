@@ -1,13 +1,14 @@
 <template>
 	<div class="py-1" data-test="data-table-columns">
-		<dropdown-menu-checkbox
+		<form-checkbox
 			v-for="column in columns"
 			:key="column.key"
 			v-model="columnVisibility[column.key]"
+			class="px-4 py-1"
 			data-test="data-table-columns-checkbox"
 		>
 			{{ column.label }}
-		</dropdown-menu-checkbox>
+		</form-checkbox>
 	</div>
 </template>
 

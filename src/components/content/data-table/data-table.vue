@@ -78,10 +78,11 @@
 					<slot name="post-search" />
 					<slot name="pre-configuration" />
 
-					<dropdown-menu
+					<floating-details
 						v-if="showUserConfiguration"
-						v-bind="{ align: 'end' }"
+						align="end"
 						class="ms-auto"
+						details-classes="min-w-3xs py-2 rounded-lg border"
 						data-test="data-table-display-options"
 					>
 						<template #summary>
@@ -89,9 +90,9 @@
 						</template>
 
 						<template v-if="haveTableName">
-							<dropdown-menu-title>
+							<h4 class="text-grey-950 my-2 px-4 font-semibold">
 								<slot name="display-options-label"> Display options </slot>
-							</dropdown-menu-title>
+							</h4>
 
 							<data-table-density v-model="tableDensity">
 								<template
@@ -103,13 +104,13 @@
 								</template>
 							</data-table-density>
 
-							<dropdown-menu-title>
+							<h4 class="text-grey-950 my-2 px-4 font-semibold">
 								<slot name="column-visibility-label"> Columns </slot>
-							</dropdown-menu-title>
+							</h4>
 
 							<data-table-columns v-model="columnVisibility" />
 						</template>
-					</dropdown-menu>
+					</floating-details>
 				</div>
 
 				<div
