@@ -1,5 +1,5 @@
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
-import { readonly, ref } from "vue";
+import { markRaw, readonly, ref } from "vue";
 
 const modals = ref([]);
 
@@ -26,7 +26,7 @@ export function useModalDialog() {
 			return;
 		}
 
-		modals.value.push({ id: ++modalId, component, props });
+		modals.value.push({ id: ++modalId, component: markRaw(component), props });
 	}
 
 	/**
