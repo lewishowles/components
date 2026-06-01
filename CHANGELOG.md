@@ -8,7 +8,7 @@
 
 ### New features
 
-`form-field`: `inputAttributes` can now be passed.
+`form-field`: `inputAttributes` can now be passed to the underlying input.
 
 ## 1.10.0
 
