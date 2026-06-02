@@ -13,20 +13,22 @@
 		data-component="form-input-group"
 		data-test="form-input-group"
 	>
-		<form-label v-bind="{ tag: 'legend' }">
-			<slot />
-		</form-label>
+		<div class="flex flex-col">
+			<form-label v-bind="{ tag: 'legend' }">
+				<slot />
+			</form-label>
 
-		<conditional-wrapper
-			v-bind="{ wrap: haveIntroduction, tag: 'p' }"
-			data-test="form-input-group-introduction"
-		>
-			<slot name="introduction" />
-		</conditional-wrapper>
+			<conditional-wrapper
+				v-bind="{ wrap: haveIntroduction, tag: 'p' }"
+				data-test="form-input-group-introduction"
+			>
+				<slot name="introduction" />
+			</conditional-wrapper>
+		</div>
 
 		<slot name="options" v-bind="{ options: internalOptions, name: fieldName }">
 			<div
-				class="mt-2 flex flex-col"
+				class="mt-2 mb-1 flex flex-col"
 				:class="{ '@xs:flex-row @xs:gap-10': inline, 'gap-2': !inline }"
 			>
 				<template v-for="option in internalOptions" :key="option.id">

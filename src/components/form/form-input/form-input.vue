@@ -4,19 +4,21 @@
 		data-component="form-input"
 		data-test="form-input"
 	>
-		<form-label v-bind="{ id: inputId, required }">
-			<slot />
-		</form-label>
+		<div class="flex flex-col">
+			<form-label v-bind="{ id: inputId, required }">
+				<slot />
+			</form-label>
 
-		<conditional-wrapper
-			v-bind="{ id: introductionId, wrap: haveIntroduction, tag: 'p' }"
-			data-test="form-input-introduction"
-		>
-			<slot name="introduction" />
-		</conditional-wrapper>
+			<conditional-wrapper
+				v-bind="{ id: introductionId, wrap: haveIntroduction, tag: 'p' }"
+				data-test="form-input-introduction"
+			>
+				<slot name="introduction" />
+			</conditional-wrapper>
+		</div>
 
 		<div
-			class="flex transition-shadow"
+			class="my-1 flex transition-shadow"
 			:class="{ 'form-field--error': haveError }"
 			data-selector="form-field-wrapper"
 			data-test="form-input-wrapper"

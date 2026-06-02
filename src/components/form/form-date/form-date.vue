@@ -9,15 +9,17 @@
 		data-component="form-date"
 		data-test="form-date"
 	>
-		<form-label tag="legend">
-			<slot />
-		</form-label>
+		<div class="flex flex-col">
+			<form-label tag="legend">
+				<slot />
+			</form-label>
 
-		<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }">
-			<slot name="introduction" />
-		</conditional-wrapper>
+			<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }">
+				<slot name="introduction" />
+			</conditional-wrapper>
+		</div>
 
-		<div class="mt-1 flex gap-8">
+		<div class="mt-2 mb-1 flex gap-8">
 			<form-input
 				v-if="haveValidDate"
 				ref="dayInput"
