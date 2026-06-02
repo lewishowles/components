@@ -101,7 +101,7 @@
 </template>
 
 <script setup>
-import { computed, ref, useId, watch } from "vue";
+import { computed, useId, watch } from "vue";
 import { getUrlParameter, updateUrlParameter } from "@lewishowles/helpers/url";
 import { isNumber } from "@lewishowles/helpers/number";
 
@@ -113,14 +113,20 @@ const props = defineProps({
 		type: Number,
 		default: 0,
 	},
+
+	/**
+	 * The number of items to display per page.
+	 */
+	itemsPerPage: {
+		type: Number,
+		default: 10,
+	},
 });
 
 const emit = defineEmits(["update:page"]);
 
 // An internal ID to link the pagination to its label.
 const internalId = useId();
-// The number of items that will be displayed per page.
-const itemsPerPage = ref(10);
 
 // The page number from the URL parameter, read at setup time so that the
 // immediate watcher does not overwrite it before onMounted can read it.
@@ -137,11 +143,11 @@ const currentPage = defineModel({
 // The number of pages, based on the total number of items and the items
 // displayed per page.
 const pageCount = computed(() => {
-	if (!isNumber(props.count) || props.count <= 0 || !isNumber(itemsPerPage.value)) {
+	if (!isNumber(props.count) || props.count <= 0 || !isNumber(props.itemsPerPage)) {
 		return 1;
 	}
 
-	return Math.ceil(props.count / itemsPerPage.value);
+	return Math.ceil(props.count / props.itemsPerPage);
 });
 
 // Initialise currentPage from the URL parameter now, before the immediate
@@ -163,10 +169,10 @@ const displayAfterSummary = computed(
 
 // Whether we are currently looking at the first page, which determines whether
 // we need to display the "previous" button.
-const showingFirstPage = computed(() => currentPage.value == 1);
+const showingFirstPage = computed(() => currentPage.value === 1);
 // Whether we are currently looking at the last page, which determines whether
 // we need to display the "next" button.
-const showingLastPage = computed(() => currentPage.value == pageCount.value);
+const showingLastPage = computed(() => currentPage.value === pageCount.value);
 // Whether there is a next page to navigate to.
 const hasNext = computed(() => !showingLastPage.value);
 // Whether there is a previous page to navigate to.
@@ -240,11 +246,11 @@ const pagesToDisplay = computed(() => {
 
 // The number of the first item being displayed based on the current pagination
 // settings.
-const firstItem = computed(() => (currentPage.value - 1) * itemsPerPage.value + 1);
+const firstItem = computed(() => (currentPage.value - 1) * props.itemsPerPage + 1);
 // The number of the last item being displayed based on the current pagination
 // settings. With the last item, we need to account for a single page that
 // contains fewer than the number of items per page.
-const lastItem = computed(() => Math.min(firstItem.value + itemsPerPage.value - 1, props.count));
+const lastItem = computed(() => Math.min(firstItem.value + props.itemsPerPage - 1, props.count));
 
 /**
  * Select the next page, limited to 1.

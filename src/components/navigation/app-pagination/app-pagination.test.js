@@ -31,27 +31,15 @@ describe("app-pagination", () => {
 			});
 
 			test("should reject an invalid `itemsPerPage`", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
+				const wrapper = mount({ itemsPerPage: "12" });
 
-				vm.itemsPerPage = "12";
-
-				expect(vm.pageCount).toBe(1);
+				expect(wrapper.vm.pageCount).toBe(1);
 			});
 
 			test("should calculate the required number of pages", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				expect(vm.pageCount).toBe(10);
-
-				vm.itemsPerPage = 12;
-
-				expect(vm.pageCount).toBe(9);
-
-				vm.itemsPerPage = 26;
-
-				expect(vm.pageCount).toBe(4);
+				expect(mount().vm.pageCount).toBe(10);
+				expect(mount({ itemsPerPage: 12 }).vm.pageCount).toBe(9);
+				expect(mount({ itemsPerPage: 26 }).vm.pageCount).toBe(4);
 			});
 		});
 

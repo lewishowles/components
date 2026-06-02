@@ -57,6 +57,13 @@ A display of the current items being shown, giving the user an indication of whe
 
 The number of items in the paginated collection.
 
+### `itemsPerPage`
+
+- type: `number`
+- default: `10`
+
+The number of items to display per page.
+
 ## Events
 
 ### `@update:page`

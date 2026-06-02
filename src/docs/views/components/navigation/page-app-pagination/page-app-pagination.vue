@@ -28,6 +28,16 @@
 
 				<p>The number of items in the paginated collection.</p>
 			</component-prop>
+
+			<component-prop id="prop-items-per-page">
+				<template #name> itemsPerPage </template>
+
+				<template #type> Number </template>
+
+				<template #default-value> 10 </template>
+
+				<p>The number of items to display per page.</p>
+			</component-prop>
 		</component-props>
 
 		<component-slots>
