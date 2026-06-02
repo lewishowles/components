@@ -2,6 +2,8 @@
 
 ## 1.12.0
 
+In this version, many components that had `*Classes` props have been updated to allow classes to be provided and merged, without overriding untouched base classes.
+
 ### New features
 
 `image-tag`: Now shows the fallback if no `src` is provided, as well as if the image fails to load.
