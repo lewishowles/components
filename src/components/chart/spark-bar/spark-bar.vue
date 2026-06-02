@@ -10,10 +10,9 @@
 		data-component="spark-bar"
 		data-test="spark-bar"
 	>
-		<div :class="['grow', trackClasses]" data-part="track">
+		<div :class="cn('grow', trackClasses)" data-part="track">
 			<div
-				class="transition-all ease-out"
-				:class="barClasses"
+				:class="cn('transition-all ease-out', barClasses)"
 				data-part="bar"
 				:style="{ width: `${percentageValue}%` }"
 			/>
@@ -30,6 +29,7 @@
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
 import { computed } from "vue";
+import { cn } from "@/utilities/cn.js";
 
 const props = defineProps({
 	/**

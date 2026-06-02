@@ -130,13 +130,14 @@
 			<component-prop id="prop-icon-classes">
 				<template #name> iconClasses </template>
 
-				<template #type> String </template>
+				<template #type> Vue class binding </template>
 
 				<template #default-value> null </template>
 
 				<p>
-					Any classes to add to the icon itself. If a size class is added (<code>size-</code>), the
-					default size class will not be included.
+					Additional classes to apply to the icon, merged on top of the base styles (stroke,
+					alignment, and size). Any provided classes that conflict with base classes will override
+					as necessary.
 				</p>
 			</component-prop>
 

@@ -30,14 +30,14 @@ The maximum value, used to determine bar fill.
 - type: `Vue class binding`
 - default: `h-1 rounded-full bg-grey-200 dark:bg-white/20`
 
-Classes to apply to the track (background).
+Additional classes to apply to the track, merged on top of the base styles. `grow` is always applied to ensure the track fills available space. Any provided classes that conflict with base classes will override as necessary.
 
 ### `barClasses`
 
 - type: `Vue class binding`
 - default: `h-full rounded-full bg-purple-800 dark:bg-purple-300`
 
-Classes to apply to the bar (fill).
+Additional classes to apply to the bar, merged on top of the base styles. `transition-all ease-out` is always applied. Any provided classes that conflict with base classes will override as necessary.
 
 ### `valueClasses`
 

@@ -110,37 +110,16 @@ The preferred panel placement: `below` opens beneath the trigger, `above` opens 
 ### `summaryClasses`
 
 - type: `Vue class binding`
-- default: `null`
+- default: `button--muted`
 
 Any classes to add to the summary element, allowing styling to wrap both the summary and icons.
 
 ### `detailsClasses`
 
 - type: `Vue class binding`
-- default: `mt-3 rounded-md border border-grey-200 bg-white p-4 shadow`
-
-Any classes to add to the details content wrapper.
-
-### detailsColourClasses
-
-- type: `Vue class binding`
-- default: `mt-3 rounded-md border border-grey-200 bg-white p-4 shadow`
-
-Any colours to apply to the details. These are passed as additional classes, but are separate so that colours can be redefined without affecting remaining styling.
-
-### `detailsSizeClasses`
-
-- type: `Vue class binding`
-- default: `max-w-lg`
-
-Any classes to add to specify the details content's size. This is separate to details classes so that the appearance can be consistent even if the size is not.
-
-### detailsAdditionalClasses
-
-- type: `Vue class binding`
 - default: `null`
 
-Any classes to add that don't fit into other categories. This is so that existing classes do not have to be reproduced.
+Any additional classes to apply to the details panel, merged on top of the panel's base styles. Any provided classes that conflict with base classes will override as necessary.
 
 ### `iconClasses`
 

@@ -26,19 +26,9 @@
 
 		<div
 			v-if="isOpen"
-			v-bind="{
-				id: menuId,
-				class: [
-					detailsClasses,
-					placementClasses,
-					computedPlacement === 'above' ? 'bottom-full' : 'top-full',
-					computedAlign === 'end' ? 'inset-e-0' : 'inset-s-0',
-					{ 'opacity-0': isPositioning },
-				],
-			}"
 			ref="menuElement"
+			v-bind="{ id: menuId, class: resolvedPanelClasses }"
 			role="menu"
-			class="absolute"
 			data-part="panel"
 			data-test="dropdown-menu-panel"
 			@keydown="onMenuKeydown"
@@ -53,6 +43,7 @@ import { computed, provide, ref, toRef, useId, useTemplateRef } from "vue";
 import { getNextIndex } from "@lewishowles/helpers/array";
 import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
 import { useFloatingPosition } from "@/composables";
+import { cn } from "@/utilities/cn.js";
 
 const props = defineProps({
 	/**
@@ -64,12 +55,12 @@ const props = defineProps({
 	},
 
 	/**
-	 * Any classes to add to the dropdown panel.
+	 * Additional classes to apply to the dropdown panel, merged on top of the
+	 * panel's base styles. Any provided classes that conflict with base classes will override as necessary.
 	 */
 	detailsClasses: {
 		type: [String, Array, Object],
-		default:
-			"animate-fade-in-down animate-fast min-w-3xs py-2 rounded-lg border border-grey-300 bg-white dark:border-white/20 dark:bg-grey-950/20 backdrop-blur-lg z-50",
+		default: null,
 	},
 
 	/**
@@ -125,6 +116,19 @@ const {
 	initialPlacement: toRef(props, "placement"),
 	initialAlign: toRef(props, "align"),
 });
+
+// The full class list for the dropdown panel: base shape, colours, and
+// animation merged with the placement gap, position, and any user overrides.
+const resolvedPanelClasses = computed(() =>
+	cn(
+		"absolute animate-fade-in-down animate-fast min-w-3xs py-2 rounded-lg border border-grey-300 bg-white backdrop-blur-lg z-50 dark:border-white/20 dark:bg-grey-950/20",
+		placementClasses.value,
+		computedPlacement.value === "above" ? "bottom-full" : "top-full",
+		computedAlign.value === "end" ? "inset-e-0" : "inset-s-0",
+		{ "opacity-0": isPositioning.value },
+		props.detailsClasses,
+	),
+);
 
 // The ARIA attributes that belong on the trigger element, exposed as a slot
 // prop so users building a custom trigger can spread them onto their own element.

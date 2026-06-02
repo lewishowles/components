@@ -105,9 +105,12 @@
 
 				<template #type> Vue class binding </template>
 
-				<template #default-value> h-4 rounded-full bg-grey-200 </template>
+				<template #default-value> null </template>
 
-				<p>Classes to apply to the track, which is the background behind the bar.</p>
+				<p>
+					Additional classes to apply to the track, merged on top of the base styles. Any provided
+					classes that conflict with base classes will override as necessary.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-bar-classes">
@@ -115,9 +118,12 @@
 
 				<template #type> Vue class binding </template>
 
-				<template #default-value> h-full rounded-full bg-purple-700 </template>
+				<template #default-value> null </template>
 
-				<p>Classes to apply to the bar, which indicates the current value.</p>
+				<p>
+					Additional classes to apply to the bar, merged on top of the base styles. Any provided
+					classes that conflict with base classes will override as necessary.
+				</p>
 			</component-prop>
 		</component-props>
 

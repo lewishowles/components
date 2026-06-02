@@ -47,6 +47,7 @@ import { computed, ref } from "vue";
 import { isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber } from "@lewishowles/helpers/number";
+import { cn } from "@/utilities/cn.js";
 
 const props = defineProps({
 	/**
@@ -191,13 +192,7 @@ const overlapClasses = computed(() => {
 		return null;
 	}
 
-	const baseClasses = "-ms-2 outline-3";
-
-	if (!isNonEmptyString(props.initialsOutlineClasses)) {
-		return baseClasses;
-	}
-
-	return `${baseClasses} ${props.initialsOutlineClasses}`;
+	return cn("-ms-2 outline-3", props.initialsOutlineClasses);
 });
 
 // Any avatar URLs that have failed to load.

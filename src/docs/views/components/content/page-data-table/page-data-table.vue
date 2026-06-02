@@ -238,21 +238,27 @@
 			<component-prop id="prop-heading-classes">
 				<template #name> headingClasses </template>
 
-				<template #type> String </template>
+				<template #type> string </template>
 
-				<template #default-value> null </template>
+				<template #default-value> font-bold text-grey-700 dark:text-white/60 </template>
 
-				<p>Classes to apply to all headings in the table. Cell padding will always apply.</p>
+				<p>
+					Additional classes to apply to all headings in the table, merged with any column-level
+					<code>headingClasses</code>. Cell padding will always apply.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-cell-classes">
 				<template #name> cellClasses </template>
 
-				<template #type> String </template>
+				<template #type> string </template>
 
-				<template #default-value> null </template>
+				<template #default-value> text-sm text-grey-800 dark:text-grey-100 </template>
 
-				<p>Classes to apply to all standard cells in the table. Cell padding will always apply.</p>
+				<p>
+					Additional classes to apply to all standard cells in the table, merged with any
+					column-level <code>cellClasses</code>. Cell padding will always apply.
+				</p>
 			</component-prop>
 		</component-props>
 

@@ -32,19 +32,22 @@
 			</div>
 		</conditional-wrapper>
 
-		<div :class="[trackClasses, { 'relative overflow-hidden': isIndeterminate }]" data-part="track">
+		<div :class="resolvedTrackClasses" data-part="track">
 			<div
 				v-if="isIndeterminate"
-				class="animate-progress-indeterminate absolute inset-y-0 w-1/4 rounded-full motion-reduce:w-full motion-reduce:animate-pulse"
-				:class="barClasses"
+				:class="
+					cn(
+						'animate-progress-indeterminate absolute inset-y-0 w-1/4 rounded-full motion-reduce:w-full motion-reduce:animate-pulse',
+						resolvedBarClasses,
+					)
+				"
 				data-part="bar"
 				data-test="progress-bar-indeterminate"
 			/>
 
 			<div
 				v-else
-				class="transition-all ease-out"
-				:class="barClasses"
+				:class="cn('transition-all ease-out', resolvedBarClasses)"
 				:style="{ width: `${percentageValue}%` }"
 				data-part="bar"
 				data-test="progress-bar-fill"
@@ -57,6 +60,7 @@
 import { clamp } from "@lewishowles/helpers/number";
 import { computed, useId } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
+import { cn } from "@/utilities/cn.js";
 
 const props = defineProps({
 	/**
@@ -125,19 +129,23 @@ const props = defineProps({
 	},
 
 	/**
-	 * Classes to apply to the track, which is the background behind the bar.
+	 * Additional classes to apply to the track, merged on top of the track's
+	 * base styles. Any provided classes that conflict with base classes will
+	 * override as necessary.
 	 */
 	trackClasses: {
 		type: [String, Array, Object],
-		default: "p-1 rounded-full bg-grey-200 dark:bg-white/20",
+		default: null,
 	},
 
 	/**
-	 * Classes to apply to the bar, which indicates the current value.
+	 * Additional classes to apply to the bar, merged on top of the bar's base
+	 * styles. Any provided classes that conflict with base classes will
+	 * override as necessary.
 	 */
 	barClasses: {
 		type: [String, Array, Object],
-		default: "h-full rounded-full bg-purple-800 dark:bg-purple-300",
+		default: null,
 	},
 });
 
@@ -145,6 +153,21 @@ const props = defineProps({
 const progressVariants = { METER: "meter", PROGRESS: "progress" };
 // Whether the bar represents an unknown quantity rather than a specific value.
 const isIndeterminate = computed(() => props.current === null);
+
+// The resolved track classes, merging the base track styles with the
+// indeterminate positioning requirement and any user overrides.
+const resolvedTrackClasses = computed(() =>
+	cn(
+		"p-1 rounded-full bg-grey-200 dark:bg-white/20",
+		{ "relative overflow-hidden": isIndeterminate.value },
+		props.trackClasses,
+	),
+);
+
+// The resolved bar classes, merging the base bar styles with any user overrides.
+const resolvedBarClasses = computed(() =>
+	cn("h-full rounded-full bg-purple-800 dark:bg-purple-300", props.barClasses),
+);
 
 // The internal current value, clamped between min and max.
 const internalValue = computed(() => {

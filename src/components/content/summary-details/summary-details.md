@@ -142,7 +142,7 @@ Any classes to add to the details content wrapper.
 - type: `Vue class binding`
 - default: `null`
 
-Any classes to add to the icon itself. Particularly useful if the icon is the only visible summary element.
+Additional classes to apply to the summary icon, merged on top of the base size (`size-[0.857em]`). Any provided classes that conflict with base classes will override as necessary.
 
 ## Events
 

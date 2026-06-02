@@ -16,7 +16,7 @@
 			<component
 				:is="currentIcon"
 				v-if="iconAtStart && includeIcon"
-				:class="iconClasses"
+				:class="cn('size-[0.857em]', iconClasses)"
 				v-bind="{ 'data-test': `${dataTest}-icon-start` }"
 			/>
 
@@ -36,7 +36,7 @@
 			<component
 				:is="currentIcon"
 				v-if="includeIcon && !iconAtStart"
-				:class="iconClasses"
+				:class="cn('size-[0.857em]', iconClasses)"
 				v-bind="{ 'data-test': `${dataTest}-icon-end` }"
 			/>
 		</summary>
@@ -79,6 +79,7 @@
 import { computed, nextTick, onMounted, ref, useAttrs, useTemplateRef, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
+import { cn } from "@/utilities/cn.js";
 
 const props = defineProps({
 	/**
@@ -206,12 +207,12 @@ const props = defineProps({
 	},
 
 	/**
-	 * Any classes to add to the icon itself. Particularly useful if the icon is
-	 * the only visible summary element.
+	 * Additional classes to apply to the icon, merged on top of the icon's base
+	 * styles. Any provided classes that conflict with base classes will override as necessary.
 	 */
 	iconClasses: {
 		type: [String, Array, Object],
-		default: "size-[0.857em]",
+		default: null,
 	},
 
 	/**

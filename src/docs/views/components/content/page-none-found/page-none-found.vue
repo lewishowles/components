@@ -45,11 +45,14 @@
 			<component-prop id="prop-title-classes">
 				<template #name> titleClasses </template>
 
-				<template #type> string </template>
+				<template #type> Vue class binding </template>
 
-				<template #default-value> text-2xl font-bold </template>
+				<template #default-value> null </template>
 
-				<p>Classes to apply to the title.</p>
+				<p>
+					Additional classes to apply to the title, merged on top of the base styles. Any provided
+					classes that conflict with base classes will override as necessary.
+				</p>
 			</component-prop>
 		</component-props>
 

@@ -83,9 +83,14 @@
 			<component-prop id="prop-details-classes">
 				<template #name> detailsClasses </template>
 
-				<template #type> string, array, object </template>
+				<template #type> Vue class binding </template>
 
-				<p>Additional classes applied to the menu panel. Defaults to the standard panel styling.</p>
+				<template #default-value> null </template>
+
+				<p>
+					Additional classes to apply to the menu panel, merged on top of the panel's base styles.
+					Any provided classes that conflict with base classes will override as necessary.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-placement">

@@ -134,7 +134,7 @@
 
 				<template #type> Vue class binding </template>
 
-				<template #default-value> null </template>
+				<template #default-value> button--muted </template>
 
 				<p>
 					Any classes to add to the summary element, allowing styling to wrap both the summary and
@@ -147,23 +147,11 @@
 
 				<template #type> Vue class binding </template>
 
-				<template #default-value>
-					mt-3 rounded-md border border-grey-200 bg-white p-4 shadow
-				</template>
-
-				<p>Any classes to add to the details content wrapper.</p>
-			</component-prop>
-
-			<component-prop id="prop-details-size-classes">
-				<template #name> detailsSizeClasses </template>
-
-				<template #type> Vue class binding </template>
-
-				<template #default-value> max-w-lg </template>
+				<template #default-value> null </template>
 
 				<p>
-					Any classes to add to specify the details content's size. This is separate to details
-					classes so that the appearance can be consistent even if the size is not.
+					Any additional classes to apply to the details panel, merged on top of the panel's base
+					styles. Any provided classes that conflict with base classes will override as necessary.
 				</p>
 			</component-prop>
 

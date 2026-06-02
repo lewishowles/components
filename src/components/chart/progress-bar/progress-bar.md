@@ -56,16 +56,16 @@ Show the value to the user, formatted as a percentage.
 ### `trackClasses`
 
 - type: `Vue class binding`
-- default: `h-4 rounded-full bg-grey-200`
+- default: `null`
 
-Classes to apply to the track (background).
+Additional classes to apply to the track, merged on top of the base styles (`p-1 rounded-full bg-grey-200 dark:bg-white/20`). Any provided classes that conflict with base classes will override as necessary.
 
 ### `barClasses`
 
 - type: `Vue class binding`
-- default: `h-full rounded-full bg-purple-800`
+- default: `null`
 
-Classes to apply to the bar (fill). Applied to the indeterminate bar too.
+Additional classes to apply to the bar, merged on top of the base styles (`h-full rounded-full bg-purple-800 dark:bg-purple-300`). Applied to the indeterminate bar too. Any provided classes that conflict with base classes will override as necessary.
 
 ## Slots
 

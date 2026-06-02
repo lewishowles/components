@@ -45,9 +45,13 @@
 
 				<template #type> Vue class binding </template>
 
-				<template #default-value> h-1 rounded-full bg-grey-200 </template>
+				<template #default-value> h-1 rounded-full bg-grey-200 dark:bg-white/20 </template>
 
-				<p>Classes to apply to the track (background).</p>
+				<p>
+					Additional classes to apply to the track, merged on top of the base styles.
+					<code>grow</code> is always applied to ensure the track fills available space. Classes
+					provided will override default classes.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-bar-classes">
@@ -55,9 +59,13 @@
 
 				<template #type> Vue class binding </template>
 
-				<template #default-value> h-full rounded-full bg-purple-800 </template>
+				<template #default-value> h-full rounded-full bg-purple-800 dark:bg-purple-300 </template>
 
-				<p>Classes to apply to the bar (fill).</p>
+				<p>
+					Additional classes to apply to the bar, merged on top of the base styles.
+					<code>transition-all ease-out</code> is always applied. Classes provided will override
+					default classes.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-value-classes">

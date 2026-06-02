@@ -159,13 +159,13 @@
 			<component-prop id="prop-icon-classes">
 				<template #name> iconClasses </template>
 
-				<template #type> String </template>
+				<template #type> Vue class binding </template>
 
 				<template #default-value> null </template>
 
 				<p>
-					Any classes to add to the icon itself. Particularly useful if the icon is the only visible
-					summary element.
+					Additional classes to apply to the summary icon, merged on top of the base size. Any
+					provided classes that conflict with base classes will override as necessary.
 				</p>
 			</component-prop>
 		</component-props>

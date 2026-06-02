@@ -27,10 +27,10 @@ The heading level to use for the title.
 
 ### `titleClasses`
 
-- type: `string`
-- default: `text-2xl font-bold`
+- type: `Vue class binding`
+- default: `null`
 
-Classes to apply to the title.
+Additional classes to apply to the title, merged on top of the base styles (`text-2xl font-bold text-grey-950`). Any provided classes that conflict with base classes will override as necessary.
 
 ## Styling hooks
 

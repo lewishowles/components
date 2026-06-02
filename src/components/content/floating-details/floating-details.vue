@@ -7,15 +7,7 @@
 			placement: computedPlacement,
 			closeWithClickOutside: true,
 			summaryClasses,
-			detailsClasses: [
-				'w-screen',
-				placementClasses,
-				detailsClasses,
-				detailsColourClasses,
-				detailsSizeClasses,
-				detailsAdditionalClasses,
-				{ invisible: isPositioning },
-			],
+			detailsClasses: resolvedDetailsClasses,
 		}"
 		data-component="floating-details"
 		data-test="floating-details"
@@ -33,6 +25,7 @@
 </template>
 
 <script setup>
+import { cn } from "@/utilities/cn.js";
 import { computed, toRef, useTemplateRef } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 import { useFloatingPosition } from "@/composables";
@@ -66,39 +59,10 @@ const props = defineProps({
 	},
 
 	/**
-	 * Any classes to add to the details content.
+	 * Any additional classes to apply to the details panel, merged on top of
+	 * the panel's base styles. Any provided classes that conflict with base classes will override as necessary.
 	 */
 	detailsClasses: {
-		type: [String, Array, Object],
-		default: "rounded-md border p-4 shadow",
-	},
-
-	/**
-	 * Any colours to apply to the details. These are passed as additional
-	 * classes, but are separate so that colours can be redefined without
-	 * affecting remaining styling.
-	 */
-	detailsColourClasses: {
-		type: [String, Array, Object],
-		default:
-			"border-grey-200 bg-white dark:border-transparent dark:bg-grey-950/80 backdrop-blur-lg",
-	},
-
-	/**
-	 * Any classes to add to specify the details content's size. This is
-	 * separate to details classes so that the appearance can be consistent even
-	 * if the size is not.
-	 */
-	detailsSizeClasses: {
-		type: [String, Array, Object],
-		default: "max-w-[calc(100vw-1rem)] lg:max-w-lg",
-	},
-
-	/**
-	 * Any classes to add that don't fit into other categories. This is so that
-	 * existing classes do not have to be reproduced.
-	 */
-	detailsAdditionalClasses: {
 		type: [String, Array, Object],
 		default: null,
 	},
@@ -123,6 +87,18 @@ const {
 	initialPlacement: toRef(props, "placement"),
 	initialAlign: toRef(props, "align"),
 });
+
+// The final class list for the details panel, merging various sources.
+const resolvedDetailsClasses = computed(() =>
+	cn(
+		"w-screen rounded-md border p-4 shadow",
+		"border-grey-200 bg-white backdrop-blur-lg dark:border-transparent dark:bg-grey-950/80",
+		"max-w-[calc(100vw-1rem)] lg:max-w-lg",
+		placementClasses.value,
+		{ invisible: isPositioning.value },
+		props.detailsClasses,
+	),
+);
 
 /**
  * Open the details element.

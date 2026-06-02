@@ -53,7 +53,7 @@ When true, the button detects a Promise returned by the click listener and autom
 - type: `Vue class binding`
 - default: `null`
 
-Any classes to add to the icon itself. If a size class is added (`size-`), the default size class will not be included.
+Additional classes to apply to the icon, merged on top of the base styles. Any provided classes that conflict with base classes will override as necessary.
 
 ### `pressed`
 

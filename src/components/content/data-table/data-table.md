@@ -286,16 +286,16 @@ The placeholder to apply to the search input.
 ### `headingClasses`
 
 - type: `string`
-- default: `text-left font-bold text-grey-950`
+- default: `font-bold text-grey-700 dark:text-white/60`
 
-Classes to apply to all headings in the table. Cell padding will always apply.
+Additional classes to apply to all headings in the table, merged with any column-level `headingClasses`. Cell padding will always apply.
 
 ### `cellClasses`
 
 - type: `string`
-- default: `text-grey-500`
+- default: `text-sm text-grey-800 dark:text-grey-100`
 
-Classes to apply to all standard cells in the table. Cell padding will always apply.
+Additional classes to apply to all standard cells in the table, merged with any column-level `cellClasses`. Cell padding will always apply.
 
 ## Methods
 

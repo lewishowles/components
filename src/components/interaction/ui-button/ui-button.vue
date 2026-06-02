@@ -64,6 +64,7 @@
  */
 import { computed, getCurrentInstance, ref } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { cn } from "@/utilities/cn.js";
 
 const props = defineProps({
 	/**
@@ -176,38 +177,19 @@ const attributes = computed(() => {
 	return attributes;
 });
 
-// Classes to apply to the icons. For this, we check whether the user has
-// provided their own `size-` or `stroke-` classes, and merge those with the
-// defaults.
+// Classes to apply to the icons, merging base stroke, alignment, and size
+// defaults with any user-provided overrides. Tailwind conflicts resolve in
+// favour of the user's classes.
 const computedIconClasses = computed(() => {
 	if (!haveIconStart.value && !haveIconEnd.value) {
 		return null;
 	}
 
-	const baseStrokeClass = "stroke-current";
-	const baseAlignmentClasses = "inline-block align-[0]";
 	const baseSizeClass = props.iconOnly ? "size-[1em]" : "size-[0.857em]";
-	const defaultClasses = [baseStrokeClass, baseAlignmentClasses, baseSizeClass];
 
-	if (!isNonEmptyString(props.iconClasses)) {
-		return isReacting.value ? [...defaultClasses, "invisible"] : defaultClasses;
-	}
-
-	const classes = props.iconClasses.split(" ");
-
-	if (!classes.some((className) => className.includes("stroke-"))) {
-		classes.push(baseStrokeClass);
-	}
-
-	if (!classes.some((className) => className.includes("size-"))) {
-		classes.push(baseSizeClass);
-	}
-
-	if (isReacting.value) {
-		classes.push("invisible");
-	}
-
-	return classes;
+	return cn("stroke-current inline-block align-[0]", baseSizeClass, props.iconClasses, {
+		invisible: isReacting.value,
+	});
 });
 
 /**

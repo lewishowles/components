@@ -1,6 +1,10 @@
 <template>
 	<div class="flex flex-col gap-1" data-component="none-found" data-test="none-found">
-		<component :is="headingLevel" :class="titleClasses" data-test="none-found-title">
+		<component
+			:is="headingLevel"
+			:class="cn('text-grey-950 text-2xl font-bold', titleClasses)"
+			data-test="none-found-title"
+		>
 			<slot name="title" />
 		</component>
 
@@ -15,6 +19,7 @@
 <script setup>
 import { computed, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
+import { cn } from "@/utilities/cn.js";
 
 defineProps({
 	/**
@@ -26,11 +31,12 @@ defineProps({
 	},
 
 	/**
-	 * Classes to apply to the title.
+	 * Additional classes to apply to the title, merged on top of the title's
+	 * base styles. Any provided classes that conflict with base classes will override as necessary.
 	 */
 	titleClasses: {
-		type: String,
-		default: "text-2xl font-bold text-grey-950",
+		type: [String, Array, Object],
+		default: null,
 	},
 });
 

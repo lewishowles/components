@@ -12,12 +12,12 @@ To build up a standardised menu, use the companion components:
 
 ## Props
 
-| Prop             | Type                        | Default   | Description                                                                                            |
-| ---------------- | --------------------------- | --------- | ------------------------------------------------------------------------------------------------------ |
-| `buttonClasses`  | `string \| array \| object` | —         | Additional classes applied to the trigger button. Defaults to the standard muted button styling.       |
-| `detailsClasses` | `string \| array \| object` | —         | Additional classes applied to the menu panel. Defaults to the standard panel styling.                  |
-| `placement`      | `string`                    | `"below"` | Preferred placement: `"above"` or `"below"`. Flips automatically if the panel would clip the viewport. |
-| `align`          | `string`                    | `"start"` | Preferred alignment: `"start"` or `"end"`. Flips automatically if the panel would clip the viewport.   |
+| Prop             | Type                        | Default   | Description                                                                                                                                                              |
+| ---------------- | --------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `buttonClasses`  | `string \| array \| object` | —         | Additional classes applied to the trigger button. Defaults to the standard muted button styling.                                                                         |
+| `detailsClasses` | `string \| array \| object` | `null`    | Additional classes applied to the menu panel, merged on top of the panel's base styles. Any provided classes that conflict with base classes will override as necessary. |
+| `placement`      | `string`                    | `"below"` | Preferred placement: `"above"` or `"below"`. Flips automatically if the panel would clip the viewport.                                                                   |
+| `align`          | `string`                    | `"start"` | Preferred alignment: `"start"` or `"end"`. Flips automatically if the panel would clip the viewport.                                                                     |
 
 ## Slots
 

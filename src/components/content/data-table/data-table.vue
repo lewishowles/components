@@ -170,10 +170,8 @@
 											'pe-3': !column.sortable && !column.last,
 											'text-start': column.align !== 'right',
 											'text-end': column.align === 'right',
-											[headingClasses]: !column.sortable,
-											[column.columnClasses]: !column.sortable,
-											[column.headingClasses]: !column.sortable,
 										},
+										!column.sortable ? getHeadingClasses(column) : null,
 									]"
 									data-test="data-table-heading"
 								>
@@ -192,9 +190,7 @@
 												'justify-start': column.align !== 'right',
 												'justify-end': column.align === 'right',
 											},
-											headingClasses,
-											column.columnClasses,
-											column.headingClasses,
+											getHeadingClasses(column),
 										]"
 										data-test="data-table-sort"
 										@click="sortColumn(columnKey)"
@@ -237,7 +233,6 @@
 									:key="columnKey"
 									:scope="column.primary ? 'row' : null"
 									:class="[
-										tableSpacingClasses,
 										{
 											'ps-3': !column.first,
 											'pe-3': !column.last,
@@ -246,9 +241,7 @@
 											'text-end': column.align === 'right',
 											'tabular-nums': column.tabularNums,
 										},
-										cellClasses,
-										column.columnClasses,
-										column.cellClasses,
+										getCellClasses(column),
 									]"
 									data-test="data-table-cell"
 								>
@@ -302,6 +295,7 @@
 <script setup>
 import { arrayLength, isNonEmptyArray, sortObjectsByProperty } from "@lewishowles/helpers/array";
 import { computed, provide, ref, useId, useSlots, watch } from "vue";
+import { cn } from "@/utilities/cn.js";
 import { get, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
@@ -495,6 +489,28 @@ const tableSpacingClasses = computed(() => {
 			return "py-4";
 	}
 });
+
+/**
+ * Merge table-level and column-level heading classes, with column-level
+ * classes taking precedence.
+ *
+ * @param  {object}  column
+ *     The column definition.
+ */
+function getHeadingClasses(column) {
+	return cn(props.headingClasses, column.columnClasses, column.headingClasses);
+}
+
+/**
+ * Merge table-level and column-level cell classes, with column-level classes
+ * taking precedence.
+ *
+ * @param  {object}  column
+ *     The column definition.
+ */
+function getCellClasses(column) {
+	return cn(tableSpacingClasses.value, props.cellClasses, column.columnClasses, column.cellClasses);
+}
 
 // A list of columns to display in the table, taking into account validation,
 // and containing the relevant data. We base these columns on those provided by

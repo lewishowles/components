@@ -22,10 +22,10 @@
 					follows:
 				</p>
 
-				<code-block
-					>[{ name: &quot;Sophie Wardhaugh&quot;, initials: &quot;SW&quot;, avatar:
-					&quot;/absolute/path/to/avatar&quot; }]</code-block
-				>
+				<code-block>
+					[{ name: &quot;Sophie Wardhaugh&quot;, initials: &quot;SW&quot;, avatar:
+					&quot;/absolute/path/to/avatar&quot; }]
+				</code-block>
 
 				<p>
 					Any of the information can be omitted, and the component will do its best to compensate.
@@ -113,11 +113,14 @@
 			<component-prop id="prop-initials-outline-classes">
 				<template #name> initialsOutlineClasses </template>
 
-				<template #type> String </template>
+				<template #type> Vue class binding </template>
 
 				<template #default-value> outline-white dark:outline-purple-200 </template>
 
-				<p>The colour classes to apply when displaying initials.</p>
+				<p>
+					Additional classes to apply to the overlap outline ring, merged on top of the base styles.
+					Any provided classes that conflict with base classes will override as necessary.
+				</p>
 			</component-prop>
 		</component-props>
 
