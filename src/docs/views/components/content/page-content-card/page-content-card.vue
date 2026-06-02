@@ -61,14 +61,18 @@
 				<p>The heading level to use for the title.</p>
 			</component-prop>
 
-			<component-prop id="prop-footer-variant">
-				<template #name> footerVariant </template>
+			<component-prop id="prop-footer-classes">
+				<template #name> footerClasses </template>
 
-				<template #type> String </template>
+				<template #type> Vue class binding </template>
 
-				<template #default-value> well </template>
+				<template #default-value> null </template>
 
-				<p>The footer style to use. Supports <code>well</code> and <code>plain</code>.</p>
+				<p>
+					Additional classes to apply to the footer, merged on top of the base styles (border,
+					rounding, flex, padding, text-sm). Any provided classes that conflict with base classes
+					will override as necessary.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-icon-classes">
