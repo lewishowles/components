@@ -94,8 +94,10 @@ const slots = useSlots();
 
 // Whether a label slot has been provided.
 const haveLabel = computed(() => isNonEmptySlot(slots.label));
+// A stable ID for this tab group instance, used to construct the label's aria-labelledby reference.
+const tabGroupId = useId();
 // Stable ID for the label slot content, used for aria-labelledby.
-const labelId = computed(() => (haveLabel.value ? `tab-group-label-${useId()}` : undefined));
+const labelId = computed(() => (haveLabel.value ? `tab-group-label-${tabGroupId}` : undefined));
 
 // The list of available tabs, as registered by `tab-item` components.
 const tabData = ref([]);
