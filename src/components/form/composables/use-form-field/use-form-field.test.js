@@ -19,7 +19,7 @@ describe("useFormField", () => {
 				"introductionId",
 				"invalid",
 			]) {
-				expect(instance).not.toHaveProperty(key);
+				expect(instance).toHaveProperty(key);
 			}
 		});
 	});

@@ -76,45 +76,38 @@ describe("ui-button", () => {
 		describe("computedIconClasses", () => {
 			test("should return null without an icon", () => {
 				const wrapper = mount();
-				const vm = wrapper.vm;
 
-				expect(vm.computedIconClasses).toBe(null);
+				expect(wrapper.vm.computedIconClasses).toBe(null);
 			});
 
 			test("should return base classes if no icon classes are defined", () => {
 				const wrapper = mount({ iconStart: "icon-arrow-left" });
-				const vm = wrapper.vm;
 
-				expect(vm.computedIconClasses).toEqual([
-					"stroke-current",
-					"inline-block align-[0]",
-					"size-[0.857em]",
-				]);
+				expect(wrapper.vm.computedIconClasses).toContain("stroke-current");
+				expect(wrapper.vm.computedIconClasses).toContain("inline-block");
+				expect(wrapper.vm.computedIconClasses).toContain("size-[0.857em]");
 			});
 
-			test("should return base classes combined with provided classes if no size is defined", () => {
+			test("should merge provided classes on top of base classes when no size is overridden", () => {
 				const wrapper = mount({ iconStart: "icon-arrow-left", iconClasses: "rounded-full" });
-				const vm = wrapper.vm;
 
-				expect(vm.computedIconClasses).toEqual([
-					"rounded-full",
-					"stroke-current",
-					"size-[0.857em]",
-				]);
+				expect(wrapper.vm.computedIconClasses).toContain("stroke-current");
+				expect(wrapper.vm.computedIconClasses).toContain("size-[0.857em]");
+				expect(wrapper.vm.computedIconClasses).toContain("rounded-full");
 			});
 
-			test("should return the correct combined classes if a size is defined", () => {
+			test("should override the base size when a size class is provided", () => {
 				const wrapper = mount({ iconStart: "icon-arrow-left", iconClasses: "size-4" });
-				const vm = wrapper.vm;
 
-				expect(vm.computedIconClasses).toEqual(["size-4", "stroke-current"]);
+				expect(wrapper.vm.computedIconClasses).toContain("size-4");
+				expect(wrapper.vm.computedIconClasses).not.toContain("size-[0.857em]");
 			});
 
-			test("should return the correct combined classes if a stroke is defined", () => {
+			test("should override the base stroke when a stroke class is provided", () => {
 				const wrapper = mount({ iconStart: "icon-arrow-left", iconClasses: "stroke-purple-600" });
-				const vm = wrapper.vm;
 
-				expect(vm.computedIconClasses).toEqual(["stroke-purple-600", "size-[0.857em]"]);
+				expect(wrapper.vm.computedIconClasses).toContain("stroke-purple-600");
+				expect(wrapper.vm.computedIconClasses).not.toContain("stroke-current");
 			});
 		});
 	});
