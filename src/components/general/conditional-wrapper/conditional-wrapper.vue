@@ -14,6 +14,8 @@
  * group items together when there are more than one, but keep a template simple
  * otherwise.
  */
+defineOptions({ inheritAttrs: false });
+
 defineProps({
 	/**
 	 * Whether to wrap the contents.
@@ -31,10 +33,4 @@ defineProps({
 		default: "div",
 	},
 });
-</script>
-
-<script>
-export default {
-	inheritAttrs: false,
-};
 </script>
