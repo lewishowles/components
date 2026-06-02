@@ -1,4 +1,4 @@
-import{M as e,O as t,h as n,m as r,p as i,s as a,u as o}from"./runtime-core.esm-bundler-BI-ka0hg.js";import{a as s}from"./index-ysAmWhLi.js";var c={class:`prose prose-slate dark:prose-invert *:animate-fade-in *:delay`},l=`<!-- rendered HTML -->
+import{M as e,O as t,h as n,m as r,p as i,s as a,u as o}from"./runtime-core.esm-bundler-BI-ka0hg.js";import{a as s}from"./index-Bw3Ajj8g.js";var c={class:`prose prose-slate dark:prose-invert *:animate-fade-in *:delay`},l=`<!-- rendered HTML -->
 <details data-component="floating-details">
 	...
 </details>`,u=`<!-- rendered HTML -->
