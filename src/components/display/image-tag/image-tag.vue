@@ -1,6 +1,6 @@
 <template>
 	<img
-		v-if="!haveImageError"
+		v-if="haveImageSrc && !haveImageError"
 		class="bg-grey-100"
 		data-component="image-tag"
 		data-test="image-tag"
@@ -22,9 +22,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
 
-defineProps({
+const props = defineProps({
 	/**
 	 * The source of the image.
 	 */
@@ -35,7 +36,8 @@ defineProps({
 });
 
 const emit = defineEmits(["error"]);
-
+// Whether an image src has been provided.
+const haveImageSrc = computed(() => isNonEmptyString(props.src));
 // Whether the image has encountered an error.
 const haveImageError = ref(false);
 

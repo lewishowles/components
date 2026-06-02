@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.12.0
+
+### New features
+
+`image-tag`: Now shows the fallback if no `src` is provided, as well as if the image fails to load.
+
 ## 1.11.0
 
 ### New composable
