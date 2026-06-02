@@ -149,6 +149,14 @@ const props = defineProps({
 		type: String,
 		default: "star",
 	},
+
+	/**
+	 * The maximum rating value and number of icons to display.
+	 */
+	max: {
+		type: Number,
+		default: 5,
+	},
 });
 
 const model = defineModel({
@@ -161,7 +169,8 @@ const readOnlyLabelId = useId();
 // The currently highlighted star, allowing us to be smarter with our
 // highlighting.
 const highlightedValue = ref(null);
-const ratingOptions = ref([1, 2, 3, 4, 5]);
+// The selectable rating options, derived from the maximum value.
+const ratingOptions = computed(() => Array.from({ length: props.max }, (_, i) => i + 1));
 // A reference to the inputs, allowing us to trigger focus.
 const inputReferences = ref([]);
 // The element wrapping our options template, which allows us to determine which
@@ -185,7 +194,7 @@ const readOnlyLabel = computed(() => {
 		return `${unitSingular.value[0].toUpperCase()}${unitSingular.value.slice(1)} rating`;
 	}
 
-	return `Rating: ${model.value} of 5 ${unitPlural.value}`;
+	return `Rating: ${model.value} of ${props.max} ${unitPlural.value}`;
 });
 
 /**

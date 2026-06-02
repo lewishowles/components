@@ -18,7 +18,7 @@ The label for each selectable option. Receives `{ value }` as a slot prop. Defau
 
 ### `read-only-label`
 
-The label for the `readOnly` display. Defaults to "Star rating" when no value is set, or "Rating: N of 5 stars" when one is.
+The label for the `readOnly` display. Defaults to "Star rating" when no value is set, or "Rating: N of max stars" when one is.
 
 | Slot prop | Type     | Description               |
 | --------- | -------- | ------------------------- |
@@ -69,6 +69,13 @@ Whether to allow the user to choose a rating. If false, this component can just 
 - default: `star`
 
 One of `star` or `heart`. Defaults to `star` if the shape is unrecognised.
+
+### `max`
+
+- type: `number`
+- default: `5`
+
+The maximum rating value and number of icons to display.
 
 ## Styling hooks
 

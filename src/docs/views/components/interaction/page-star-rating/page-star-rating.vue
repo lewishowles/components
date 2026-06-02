@@ -61,6 +61,16 @@
 					is unrecognised.
 				</p>
 			</component-prop>
+
+			<component-prop id="prop-max">
+				<template #name> max </template>
+
+				<template #type> Number </template>
+
+				<template #default-value> 5 </template>
+
+				<p>The maximum rating value and number of icons to display.</p>
+			</component-prop>
 		</component-props>
 
 		<component-slots>
@@ -88,7 +98,7 @@
 				<p>
 					The label for the <code>readOnly</code> display. Receives <code>{ value }</code> as a slot
 					prop (the current model value). Defaults to "Star rating" when no value is set, or
-					"Rating: N of 5 stars" when one is.
+					"Rating: N of max stars" when one is.
 				</p>
 			</component-slot>
 
