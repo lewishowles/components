@@ -4,13 +4,14 @@
 		id="playground-content-card-footer"
 		v-model="textSlots"
 	>
-		<template #title> Footer variants </template>
+		<template #title> Card with footer </template>
 
 		<template #introduction>
-			A card footer can use the default well treatment or a plain treatment.
+			Pass <code>footerClasses</code> to style the footer. The base structural styles (border,
+			rounding, flex, padding) are always applied; any classes you provide will be merged on top.
 		</template>
 
-		<content-card footer-variant="well">
+		<content-card v-bind="{ footerClasses: props.footerClasses.value || null }">
 			<template #title>
 				{{ textSlots.title.value }}
 			</template>
@@ -47,9 +48,9 @@ const textSlots = ref({
 
 // Props both for the template and for the component example itself.
 const props = ref({
-	footerVariant: {
-		label: "Footer variant",
-		value: "well",
+	footerClasses: {
+		label: "Footer classes",
+		value: "bg-grey-50",
 		type: "text",
 	},
 });
