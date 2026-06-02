@@ -182,7 +182,7 @@ export default {
 		},
 	],
 	options: {
-		typeAware: true,
-		typeCheck: true,
+		typeAware: false,
+		typeCheck: false,
 	},
 };
