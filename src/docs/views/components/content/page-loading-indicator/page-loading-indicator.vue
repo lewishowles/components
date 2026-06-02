@@ -19,6 +19,20 @@
 
 				<p>Whether to display a larger, vertical version of the indicator.</p>
 			</component-prop>
+
+			<component-prop id="prop-spinner-classes">
+				<template #name> spinnerClasses </template>
+
+				<template #type> Vue class binding </template>
+
+				<template #default-value> null </template>
+
+				<p>
+					Additional classes to apply to the spinner, merged on top of any size set by
+					<code>large</code>. Any provided classes that conflict with base classes will override as
+					necessary.
+				</p>
+			</component-prop>
 		</component-props>
 
 		<component-slots>
