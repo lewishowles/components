@@ -7,6 +7,10 @@ In this version, many components that had `*Classes` props have been updated to 
 ### New features
 
 `image-tag`: Now shows the fallback if no `src` is provided, as well as if the image fails to load.
+`app-pagination`: A new `itemsPerPage` prop allows changing the number of items to show per page.
+`star-rating`: A new `max` prop allows setting the maximum rating value.
+`loading-indicator`: A new `spinnerClasses` prop allows classes to be applied to the loading spinner.
+`content-card`: A new `footerClasses` prop allows classes to be applied to a card footer.
 
 ## 1.11.0
 
