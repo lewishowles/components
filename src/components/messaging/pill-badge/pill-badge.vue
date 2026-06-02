@@ -1,7 +1,13 @@
 <template>
 	<span
-		class="inline-flex items-center gap-1 rounded-md px-2 py-1 font-medium ring-1 ring-inset"
-		:class="[sizeClass, themeClasses]"
+		:class="
+			cn(
+				'inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
+				themeClasses,
+				attributes.class,
+			)
+		"
+		v-bind="attrsWithoutClass"
 		data-component="pill-badge"
 		data-test="pill-badge"
 	>
@@ -24,9 +30,11 @@
 </template>
 
 <script setup>
+import { cn } from "@/utilities/cn.js";
 import { computed, useAttrs } from "vue";
-import { containsTextSizeClass } from "@/helpers/tailwind";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
 	/**
@@ -62,14 +70,12 @@ const haveIconStart = computed(() => isNonEmptyString(props.iconStart));
 // Whether an end icon is defined.
 const haveIconEnd = computed(() => isNonEmptyString(props.iconEnd));
 
-// If the user provides their own text size class, allow it to override the
-// default.
-const sizeClass = computed(() => {
-	if (containsTextSizeClass(attributes.class)) {
-		return null;
-	}
+// All attributes except class, spread onto the root element separately so that
+// class can be handled via cn() without doubling up.
+const attrsWithoutClass = computed(() => {
+	const { class: _omitted, ...rest } = attributes;
 
-	return "text-xs";
+	return rest;
 });
 
 // The classes that make up the chosen colour scheme. We write these out in

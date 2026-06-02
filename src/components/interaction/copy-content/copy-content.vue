@@ -1,7 +1,7 @@
 <template>
 	<ui-button
-		v-bind="$attrs"
-		:class="{ relative: !$attrs.class?.includes('absolute') }"
+		:class="cn('relative', attributes.class)"
+		v-bind="attributesWithoutClass"
 		data-component="copy-content"
 		:data-copied="showCopySuccess || null"
 		data-test="copy-content"
@@ -47,9 +47,12 @@
 </template>
 
 <script setup>
+import { cn } from "@/utilities/cn.js";
 import { getSlotText } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { computed, ref, useSlots } from "vue";
+import { computed, ref, useAttrs, useSlots } from "vue";
+
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
 	/**
@@ -61,9 +64,17 @@ const props = defineProps({
 	},
 });
 
-defineOptions({ inheritAttrs: false });
-
+const attributes = useAttrs();
 const slots = useSlots();
+
+// All attributes except class, spread onto the root button separately so that
+// class can be handled via cn() without doubling up.
+const attributesWithoutClass = computed(() => {
+	const { class: _omitted, ...rest } = attributes;
+
+	return rest;
+});
+
 // Whether to show the copy success message.
 const showCopySuccess = ref(false);
 // Whether to show the copy error message.
