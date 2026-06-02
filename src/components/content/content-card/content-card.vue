@@ -36,7 +36,7 @@
 
 		<div
 			v-if="haveFooter"
-			:class="footerClasses"
+			:class="resolvedFooterClasses"
 			data-part="footer"
 			data-test="content-card-footer"
 		>
@@ -46,6 +46,7 @@
 </template>
 
 <script setup>
+import { cn } from "@/utilities/cn.js";
 import { computed, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 
@@ -59,11 +60,13 @@ const props = defineProps({
 	},
 
 	/**
-	 * The footer style to use.
+	 * Additional classes to apply to the footer, merged on top of the base
+	 * styles (border, rounding, flex, padding, text-sm). Any provided classes
+	 * that conflict with base classes will override as necessary.
 	 */
-	footerVariant: {
-		type: String,
-		default: "well",
+	footerClasses: {
+		type: [String, Array, Object],
+		default: null,
 	},
 
 	/**
@@ -74,12 +77,6 @@ const props = defineProps({
 		default: "text-purple-800",
 	},
 });
-
-// Footer presentation options.
-const footerVariants = {
-	PLAIN: "plain",
-	WELL: "well",
-};
 
 const slots = useSlots();
 
@@ -122,13 +119,15 @@ const bodyClasses = computed(() => [
 	},
 ]);
 
-// Classes for the card footer.
-const footerClasses = computed(() => [
-	"border-grey-200 flex items-center gap-4 rounded-b-xl border px-6 py-4 text-sm",
-	{
-		"bg-grey-50": props.footerVariant === footerVariants.WELL,
-		"border-t-0": haveHeader.value && !haveDefault.value,
-		"rounded-t-xl": !haveHeader.value && !haveDefault.value,
-	},
-]);
+// Classes for the card footer, merging structural base with any consumer overrides.
+const resolvedFooterClasses = computed(() =>
+	cn(
+		"border-grey-200 flex items-center gap-4 rounded-b-xl border px-6 py-4 text-sm",
+		{
+			"border-t-0": haveHeader.value && !haveDefault.value,
+			"rounded-t-xl": !haveHeader.value && !haveDefault.value,
+		},
+		props.footerClasses,
+	),
+);
 </script>

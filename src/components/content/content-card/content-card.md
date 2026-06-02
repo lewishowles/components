@@ -37,12 +37,12 @@ Optional footer content.
 
 The heading level to use for the title.
 
-### `footerVariant`
+### `footerClasses`
 
-- type: `string`
-- default: `well`
+- type: `string` | `array` | `object`
+- default: `null`
 
-The footer style to use. Supports `well` and `plain`.
+Additional classes to apply to the footer, merged on top of the base styles (border, rounding, flex, padding, text-sm). Any provided classes that conflict with base classes will override as necessary.
 
 ### `iconClasses`
 
@@ -75,7 +75,7 @@ Classes to apply around the icon slot.
 ### Card with footer
 
 ```html
-<content-card footer-variant="plain">
+<content-card>
 	<template #title> Card title </template>
 
 	Card content

@@ -58,7 +58,7 @@ describe("content-card", () => {
 			expect(vm.haveHeader).toBe(true);
 		});
 
-		test("Uses well footer styling by default", () => {
+		test("Has base structural footer classes by default", () => {
 			const wrapper = mount({
 				slots: {
 					default: "Card content",
@@ -66,19 +66,15 @@ describe("content-card", () => {
 				},
 			});
 
-			const vm = wrapper.vm;
-
-			expect(vm.footerClasses).toContainEqual({
-				"bg-grey-50": true,
-				"border-t-0": false,
-				"rounded-t-xl": false,
-			});
+			expect(wrapper.vm.resolvedFooterClasses).toContain("rounded-b-xl");
+			expect(wrapper.vm.resolvedFooterClasses).toContain("px-6");
+			expect(wrapper.vm.resolvedFooterClasses).not.toContain("bg-grey-50");
 		});
 
-		test("Allows plain footer styling", () => {
+		test("Merges footerClasses on top of base styles", () => {
 			const wrapper = mount({
 				props: {
-					footerVariant: "plain",
+					footerClasses: "bg-grey-50",
 				},
 				slots: {
 					default: "Card content",
@@ -86,13 +82,8 @@ describe("content-card", () => {
 				},
 			});
 
-			const vm = wrapper.vm;
-
-			expect(vm.footerClasses).toContainEqual({
-				"bg-grey-50": false,
-				"border-t-0": false,
-				"rounded-t-xl": false,
-			});
+			expect(wrapper.vm.resolvedFooterClasses).toContain("bg-grey-50");
+			expect(wrapper.vm.resolvedFooterClasses).toContain("rounded-b-xl");
 		});
 
 		test("Applies collapsed border classes between sections", () => {
