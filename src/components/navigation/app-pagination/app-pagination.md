@@ -114,7 +114,3 @@ When accessed via a template ref, the following are available:
 ```html
 <app-pagination v-bind="{ count: 100 }" />
 ```
-
-## To do
-
-- Update the URL with the current page and read that parameter to allow the current page to be initialised
