@@ -19,6 +19,13 @@ _Note that no default text is provided by design. Using a specific message relat
 
 Whether to display a larger, vertical version of the indicator.
 
+### `spinnerClasses`
+
+- type: `string` | `array` | `object`
+- default: `null`
+
+Additional classes to apply to the spinner, merged on top of any size set by `large`. Any provided classes that conflict with base classes will override as necessary.
+
 ## Styling hooks
 
 | Attribute                            | Element | Notes                                |

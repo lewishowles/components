@@ -7,7 +7,7 @@
 		data-component="loading-indicator"
 		data-test="loading-indicator"
 	>
-		<loading-spinner :class="{ 'size-7': large }" />
+		<loading-spinner :class="cn({ 'size-7': large }, spinnerClasses)" />
 
 		<slot />
 	</div>
@@ -18,14 +18,25 @@
  * `loading-indicator` provides a consistent loading notice and animation when
  * data is pending.
  */
+import { cn } from "@/utilities/cn.js";
 
 defineProps({
 	/**
-	 * Whether to display a larger version of the loading indicator.
+	 * Whether to display a larger, vertical version of the indicator.
 	 */
 	large: {
 		type: Boolean,
 		default: false,
+	},
+
+	/**
+	 * Additional classes to apply to the spinner, merged on top of any size
+	 * classes set by the large prop. Any provided classes that conflict with
+	 * base classes will override as necessary.
+	 */
+	spinnerClasses: {
+		type: [String, Array, Object],
+		default: null,
 	},
 });
 </script>
