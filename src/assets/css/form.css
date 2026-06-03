@@ -70,7 +70,7 @@
 	}
 
 	&:focus {
-		--ring-colour: var(--ring-focus);
+		--ring-colour: var(--primary-fill);
 
 		outline: 2px solid var(--ring-colour);
 		outline-offset: 2px;
@@ -80,7 +80,7 @@
 		--ring-colour: currentColor;
 
 		background-color: currentColor;
-		color: var(--primary-800);
+		color: var(--primary-fill);
 	}
 
 	&:where(.dark, .dark *) {
@@ -95,7 +95,7 @@
 		&:checked {
 			--ring-colour: currentColor;
 
-			color: var(--primary-400);
+			color: var(--primary-fill);
 		}
 	}
 }
@@ -122,7 +122,7 @@
 	}
 
 	&:focus {
-		--ring-colour: var(--ring-focus);
+		--ring-colour: var(--primary-fill);
 
 		outline: 2px solid var(--ring-colour);
 		outline-offset: 2px;
@@ -132,7 +132,7 @@
 		--ring-colour: currentColor;
 
 		background-color: currentColor;
-		color: var(--primary-800);
+		color: var(--primary-fill);
 	}
 
 	&:where(.dark, .dark *) {
@@ -147,7 +147,7 @@
 		&:checked {
 			--ring-colour: currentColor;
 
-			color: var(--primary-400);
+			color: var(--primary-fill);
 		}
 	}
 }
@@ -205,20 +205,20 @@
 
 	&:is(:where(.peer):focus ~ *) {
 		--ring-size: 2px;
-		--ring-colour: var(--ring-focus);
+		--ring-colour: var(--primary-fill);
 
 		background-color: var(--color-grey-50);
 		border-color: var(--color-grey-400);
 	}
 
 	&:is(:where(.peer):checked ~ *) {
-		background-color: var(--primary-800);
+		background-color: var(--primary-fill);
 		border-color: var(--primary-900);
 		color: white;
 	}
 
 	&:is(:where(.peer):checked:focus ~ *) {
-		background-color: var(--primary-800);
+		background-color: var(--primary-fill);
 		color: white;
 	}
 
@@ -228,6 +228,7 @@
 
 		&:is(:where(.peer):focus ~ *) {
 			--ring-size: 2px;
+			--ring-colour: var(--primary-fill);
 
 			background-color: rgb(255 255 255 / 30%);
 			border-color: rgb(255 255 255 / 20%);
@@ -283,7 +284,7 @@
 
 	&:has(:focus) {
 		--ring-size: 2px;
-		--ring-colour: var(--ring-focus);
+		--ring-colour: var(--primary-fill);
 	}
 
 	&:where(.dark, .dark *) {

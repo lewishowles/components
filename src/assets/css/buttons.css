@@ -15,7 +15,7 @@
 }
 
 .link {
-	color: var(--text-brand);
+	color: var(--primary-text);
 
 	&:is(:hover, :focus) {
 		color: var(--primary-900);
@@ -119,8 +119,8 @@
 }
 
 .button--primary {
-	--background-colour: var(--primary-solid);
-	--outline-colour: var(--ring-focus);
+	--background-colour: var(--primary-fill);
+	--outline-colour: var(--primary-fill);
 
 	&:is(:hover, :focus) {
 		--background-colour: var(--primary-900);
@@ -160,7 +160,7 @@
 
 	&:active {
 		--background-colour: var(--primary-200);
-		--colour: var(--text-brand);
+		--colour: var(--primary-text);
 		--border-colour: var(--primary-600);
 	}
 }
@@ -194,8 +194,8 @@
 }
 
 .button--danger {
-	--background-colour: var(--danger-solid);
-	--outline-colour: var(--danger-800);
+	--background-colour: var(--danger-fill);
+	--outline-colour: var(--danger-fill);
 
 	&:is(:hover, :focus) {
 		--background-colour: var(--danger-800);

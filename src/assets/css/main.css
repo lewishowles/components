@@ -46,16 +46,16 @@
 
 		&:focus-visible {
 			outline: 0;
-			box-shadow: 0 0 0 2px var(--ring-focus);
+			box-shadow: 0 0 0 2px var(--primary-fill);
 			box-shadow:
-				0 0 0 2px var(--ring-focus),
-				0 0 0 4px --alpha(var(--ring-focus) / 10%);
+				0 0 0 2px var(--primary-fill),
+				0 0 0 4px --alpha(var(--primary-fill) / 10%);
 		}
 	}
 
 	a,
 	summary {
-		color: var(--text-brand);
+		color: var(--primary-text);
 		text-decoration: underline;
 		text-decoration-skip-ink: auto;
 		text-underline-offset: 4px;
