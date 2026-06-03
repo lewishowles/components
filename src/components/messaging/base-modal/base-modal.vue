@@ -9,6 +9,7 @@
 			role: dialogRole,
 		}"
 		class="border-grey-300 dark:bg-grey-950/80 fixed inset-s-1/2 top-1/2 w-full max-w-2xl -translate-1/2 rounded-lg border p-12 text-current shadow-2xl backdrop-blur-xl dark:border-white/10"
+		:class="{ hidden: inert }"
 		data-component="base-modal"
 		data-test="modal-dialog"
 	>
