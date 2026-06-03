@@ -27,7 +27,6 @@
 				v-bind="{
 					required,
 					id: `${inputId}-day`,
-					placeholder: dayPlaceholder,
 				}"
 				class="w-20"
 				data-test="form-date-day"
@@ -41,7 +40,6 @@
 				v-bind="{
 					required,
 					id: `${inputId}-month`,
-					placeholder: monthPlaceholder,
 				}"
 				class="w-20"
 				data-test="form-date-month"
@@ -55,7 +53,6 @@
 				v-bind="{
 					required,
 					id: `${inputId}-year`,
-					placeholder: yearPlaceholder,
 				}"
 				class="w-40"
 				data-test="form-date-year"
