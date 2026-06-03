@@ -18,28 +18,24 @@
 	color: var(--text-brand);
 
 	&:is(:hover, :focus) {
-		color: var(--color-purple-900);
+		color: var(--primary-900);
 	}
 
 	&:where(.dark, .dark *) {
-		color: var(--color-purple-300);
-
 		&:is(:hover, :focus) {
-			color: var(--color-purple-200);
+			color: var(--primary-200);
 		}
 	}
 }
 
 .link--muted {
-	color: var(--color-grey-500);
+	color: var(--content-muted);
 
 	&:is(:hover, :focus) {
 		color: var(--color-grey-700);
 	}
 
 	&:where(.dark, .dark *) {
-		color: rgb(255 255 255 / 60%);
-
 		&:is(:hover, :focus) {
 			color: rgb(255 255 255 / 90%);
 		}
@@ -123,11 +119,11 @@
 }
 
 .button--primary {
-	--background-colour: var(--text-brand);
-	--outline-colour: var(--text-brand);
+	--background-colour: var(--primary-solid);
+	--outline-colour: var(--ring-focus);
 
 	&:is(:hover, :focus) {
-		--background-colour: var(--color-purple-900);
+		--background-colour: var(--primary-900);
 	}
 
 	&:focus-visible {
@@ -136,56 +132,54 @@
 	}
 
 	&:active {
-		--background-colour: var(--color-purple-950);
+		--background-colour: var(--primary-950);
 	}
 
 	&:where(.dark, .dark *) {
-		--background-colour: var(--color-purple-500);
-
 		&:is(:hover, :focus) {
-			--background-colour: var(--color-purple-600);
-			--outline-colour: var(--color-purple-600);
+			--background-colour: var(--primary-600);
+			--outline-colour: var(--primary-600);
 		}
 
 		&:active {
-			--background-colour: var(--color-purple-700);
+			--background-colour: var(--primary-700);
 		}
 	}
 }
 
 .button--toggle[aria-pressed="true"] {
-	--background-colour: var(--color-purple-50);
-	--colour: var(--color-purple-600);
-	--border-colour: var(--color-purple-400);
+	--background-colour: var(--primary-50);
+	--colour: var(--primary-600);
+	--border-colour: var(--primary-400);
 
 	&:is(:hover, :focus) {
-		--background-colour: var(--color-purple-100);
-		--colour: var(--color-purple-700);
-		--border-colour: var(--color-purple-500);
+		--background-colour: var(--primary-100);
+		--colour: var(--primary-700);
+		--border-colour: var(--primary-500);
 	}
 
 	&:active {
-		--background-colour: var(--color-purple-200);
+		--background-colour: var(--primary-200);
 		--colour: var(--text-brand);
-		--border-colour: var(--color-purple-600);
+		--border-colour: var(--primary-600);
 	}
 }
 
 .button--toggle:where(.dark, .dark *)[aria-pressed="true"] {
-	--background-colour: rgb(from var(--color-purple-400) r g b / 10%);
-	--colour: var(--color-purple-300);
-	--border-colour: var(--color-purple-400);
+	--background-colour: rgb(from var(--primary-400) r g b / 10%);
+	--colour: var(--primary-300);
+	--border-colour: var(--primary-400);
 
 	&:is(:hover, :focus) {
-		--background-colour: rgb(from var(--color-purple-400) r g b / 20%);
-		--colour: var(--color-purple-200);
-		--border-colour: var(--color-purple-300);
+		--background-colour: rgb(from var(--primary-400) r g b / 20%);
+		--colour: var(--primary-200);
+		--border-colour: var(--primary-300);
 	}
 
 	&:active {
-		--background-colour: rgb(from var(--color-purple-400) r g b / 30%);
-		--colour: var(--color-purple-100);
-		--border-colour: var(--color-purple-200);
+		--background-colour: rgb(from var(--primary-400) r g b / 30%);
+		--colour: var(--primary-100);
+		--border-colour: var(--primary-200);
 	}
 }
 
@@ -200,11 +194,11 @@
 }
 
 .button--danger {
-	--background-colour: var(--color-red-700);
-	--outline-colour: var(--color-red-800);
+	--background-colour: var(--danger-solid);
+	--outline-colour: var(--danger-800);
 
 	&:is(:hover, :focus) {
-		--background-colour: var(--color-red-800);
+		--background-colour: var(--danger-800);
 	}
 
 	&:focus-visible {
@@ -212,6 +206,6 @@
 	}
 
 	&:active {
-		--background-colour: var(--color-red-900);
+		--background-colour: var(--danger-900);
 	}
 }

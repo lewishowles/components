@@ -70,7 +70,7 @@
 	}
 
 	&:focus {
-		--ring-colour: var(--color-purple-800);
+		--ring-colour: var(--ring-focus);
 
 		outline: 2px solid var(--ring-colour);
 		outline-offset: 2px;
@@ -80,7 +80,7 @@
 		--ring-colour: currentColor;
 
 		background-color: currentColor;
-		color: var(--color-purple-800);
+		color: var(--primary-800);
 	}
 
 	&:where(.dark, .dark *) {
@@ -92,14 +92,10 @@
 			--ring-colour: rgb(255 255 255 / 50%);
 		}
 
-		&:focus {
-			--ring-colour: var(--color-purple-400);
-		}
-
 		&:checked {
 			--ring-colour: currentColor;
 
-			color: var(--color-purple-400);
+			color: var(--primary-400);
 		}
 	}
 }
@@ -126,7 +122,7 @@
 	}
 
 	&:focus {
-		--ring-colour: var(--color-purple-800);
+		--ring-colour: var(--ring-focus);
 
 		outline: 2px solid var(--ring-colour);
 		outline-offset: 2px;
@@ -136,7 +132,7 @@
 		--ring-colour: currentColor;
 
 		background-color: currentColor;
-		color: var(--color-purple-800);
+		color: var(--primary-800);
 	}
 
 	&:where(.dark, .dark *) {
@@ -148,14 +144,10 @@
 			--ring-colour: rgb(255 255 255 / 50%);
 		}
 
-		&:focus {
-			--ring-colour: var(--color-purple-400);
-		}
-
 		&:checked {
 			--ring-colour: currentColor;
 
-			color: var(--color-purple-400);
+			color: var(--primary-400);
 		}
 	}
 }
@@ -213,20 +205,20 @@
 
 	&:is(:where(.peer):focus ~ *) {
 		--ring-size: 2px;
-		--ring-colour: var(--color-purple-800);
+		--ring-colour: var(--ring-focus);
 
 		background-color: var(--color-grey-50);
 		border-color: var(--color-grey-400);
 	}
 
 	&:is(:where(.peer):checked ~ *) {
-		background-color: var(--color-purple-800);
-		border-color: var(--color-purple-900);
+		background-color: var(--primary-800);
+		border-color: var(--primary-900);
 		color: white;
 	}
 
 	&:is(:where(.peer):checked:focus ~ *) {
-		background-color: var(--color-purple-800);
+		background-color: var(--primary-800);
 		color: white;
 	}
 
@@ -236,20 +228,19 @@
 
 		&:is(:where(.peer):focus ~ *) {
 			--ring-size: 2px;
-			--ring-colour: var(--color-purple-400);
 
 			background-color: rgb(255 255 255 / 30%);
 			border-color: rgb(255 255 255 / 20%);
 		}
 
 		&:is(:where(.peer):checked ~ *) {
-			background-color: var(--color-purple-500);
-			border-color: var(--color-purple-400);
+			background-color: var(--primary-500);
+			border-color: var(--primary-400);
 		}
 
 		&:is(:where(.peer):checked:focus ~ *) {
-			background-color: var(--color-purple-600);
-			border-color: var(--color-purple-500);
+			background-color: var(--primary-600);
+			border-color: var(--primary-500);
 		}
 	}
 }
@@ -269,12 +260,12 @@
 }
 
 .form-field--error {
-	--ring-colour: var(--color-red-600);
+	--ring-colour: var(--danger-600);
 
 	box-shadow: 0 0 0 1px var(--ring-colour);
 
 	&:where(.dark, .dark *) {
-		--ring-colour: var(--color-red-300);
+		--ring-colour: var(--danger-300);
 	}
 }
 
@@ -292,7 +283,7 @@
 
 	&:has(:focus) {
 		--ring-size: 2px;
-		--ring-colour: var(--color-purple-800);
+		--ring-colour: var(--ring-focus);
 	}
 
 	&:where(.dark, .dark *) {
@@ -301,10 +292,6 @@
 
 		&:has(:hover) {
 			--ring-colour: rgb(255 255 255 / 50%);
-		}
-
-		&:has(:focus) {
-			--ring-colour: var(--color-purple-400);
 		}
 	}
 }
