@@ -13,8 +13,7 @@
 		<ui-button
 			class="button flex items-center gap-2"
 			:class="{
-				'hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200 underline':
-					!showingFirstPage,
+				'button--ghost': !showingFirstPage,
 			}"
 			v-bind="{ disabled: showingFirstPage }"
 			icon-start="icon-arrow-left"
@@ -35,10 +34,10 @@
 					⋯
 				</li>
 				<li data-test="app-pagination-page">
-					<span
+					<div
 						v-if="page === currentPage"
 						aria-current="page"
-						class="button bg-primary text-primary-foreground underline"
+						class="button bg-primary text-primary-foreground"
 						data-test="app-pagination-page-button"
 					>
 						<span class="sr-only">
@@ -46,12 +45,12 @@
 						</span>
 
 						<span aria-hidden="true">{{ page }}</span>
-					</span>
+					</div>
 
 					<button
 						v-else
 						type="button"
-						class="button hocus:decoration-2 hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200 underline"
+						class="button--ghost"
 						data-test="app-pagination-page-button"
 						@click="currentPage = page"
 					>
@@ -75,8 +74,7 @@
 		<ui-button
 			class="button flex items-center gap-2"
 			:class="{
-				'hocus:bg-grey-200 hocus:text-grey-700 dark:hocus:bg-grey-950/30 dark:hocus:text-grey-200 underline':
-					!showingLastPage,
+				'button--ghost': !showingLastPage,
 			}"
 			v-bind="{ disabled: showingLastPage }"
 			icon-end="icon-arrow-right"
