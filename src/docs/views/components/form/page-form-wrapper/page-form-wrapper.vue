@@ -27,6 +27,33 @@
 			</p>
 		</template>
 
+		<component-props>
+			<component-prop id="prop-field-errors">
+				<template #name> fieldErrors </template>
+
+				<template #type> Object </template>
+
+				<template #default-value> {} </template>
+
+				<p>
+					Field-level errors managed by the parent, usually from an API response. Keys should match
+					registered <code>form-field</code> names. Values can be either a single message or a list
+					of messages.
+				</p>
+
+				<p>
+					These errors are shown in the error summary and passed to the relevant field so they use
+					the same error display as validation messages. They are controlled by the parent and are
+					not cleared automatically when field values change.
+				</p>
+
+				<code-block>
+					const fieldErrors = { date: "The date must be in the future", email: ["The email address
+					provided already exists"], };
+				</code-block>
+			</component-prop>
+		</component-props>
+
 		<component-slots>
 			<component-slot id="slot-pre-form">
 				<template #name> pre-form </template>
@@ -188,7 +215,7 @@
 							<td>Validation function, run when the form is submitted.</td>
 						</tr>
 						<tr>
-							<td><code>field.focusField</code></td>
+							<td><code>field.triggerFocus</code></td>
 							<td><code>function</code></td>
 							<td>Method to focus on this field, used by the error summary.</td>
 						</tr>

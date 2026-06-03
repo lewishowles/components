@@ -1,16 +1,28 @@
 # Changelog
 
+## 2.0.0
+
+### Themes
+
+A new theming system has been implemented! You can now change the colours of components in an easy to maintain way.
+
+Take a look at [`theme.css`](/src/assets/css/theme.css), which is the theme used on the docs website. The simplest way to get started is to copy this into your own project and update colours as desired.
+
+### New features
+
+- `form-wrapper` - A new `fieldErrors` prop allows error messages to be passed directly to fields, and displayed in the same way validation errors are, including linked `error-summary`.
+
 ## 1.12.0
 
 In this version, many components that had `*Classes` props have been updated to allow classes to be provided and merged, without overriding untouched base classes.
 
 ### New features
 
-`image-tag`: Now shows the fallback if no `src` is provided, as well as if the image fails to load.
-`app-pagination`: A new `itemsPerPage` prop allows changing the number of items to show per page.
-`star-rating`: A new `max` prop allows setting the maximum rating value.
-`loading-indicator`: A new `spinnerClasses` prop allows classes to be applied to the loading spinner.
-`content-card`: A new `footerClasses` prop allows classes to be applied to a card footer.
+- `image-tag`: Now shows the fallback if no `src` is provided, as well as if the image fails to load.
+- `app-pagination`: A new `itemsPerPage` prop allows changing the number of items to show per page.
+- `star-rating`: A new `max` prop allows setting the maximum rating value.
+- `loading-indicator`: A new `spinnerClasses` prop allows classes to be applied to the loading spinner.
+- `content-card`: A new `footerClasses` prop allows classes to be applied to a card footer.
 
 ## 1.11.0
 
@@ -20,7 +32,7 @@ In this version, many components that had `*Classes` props have been updated to 
 
 ### New features
 
-`form-field`: `inputAttributes` can now be passed to the underlying input.
+- `form-field`: `inputAttributes` can now be passed to the underlying input.
 
 ## 1.10.0
 

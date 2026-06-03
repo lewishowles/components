@@ -6,6 +6,24 @@ We recommend a [required by default, marked if optional technique](https://adams
 
 `form-wrapper` automatically includes `form-layout` around its `default` content.
 
+## Props
+
+### `fieldErrors`
+
+- type: `object`
+- default: `{}`
+
+Field-level errors managed by the parent, usually from an API response. Keys should match registered `form-field` names. Values can be either a single message or a list of messages.
+
+These errors are shown in the error summary and passed to the relevant field so they use the same error display as validation messages. They are controlled by the parent and are not cleared automatically when field values change.
+
+```js
+const fieldErrors = {
+	date: "The date must be in the future",
+	email: ["The email address provided already exists"],
+};
+```
+
 ## Slots
 
 ### `pre-form`
@@ -76,7 +94,7 @@ Allow a field to register itself with the form.
 | `field.name`          | `string`   | Name of the field to register.                             |
 | `field.id`            | `string`   | The ID of the field, helpful for linking errors to fields. |
 | `field.validateField` | `function` | Validation function, run when the form is submitted.       |
-| `field.focusField`    | `function` | Method to focus on this field, used by the error summary.  |
+| `field.triggerFocus`  | `function` | Method to focus on this field, used by the error summary.  |
 
 ### `updateFieldValue(name, value)`
 

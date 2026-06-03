@@ -12,7 +12,7 @@
 			</h2>
 
 			<ul class="list-disc ps-4">
-				<li v-for="error in errorSummary" :key="error.id">
+				<li v-for="(error, index) in errorSummary" :key="`${error.id}-${index}`">
 					<a
 						:href="`#${error.id}`"
 						class="text-current"
@@ -75,11 +75,32 @@
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, nextTick, provide, reactive, ref, useSlots } from "vue";
+import {
+	computed,
+	getCurrentInstance,
+	nextTick,
+	provide,
+	reactive,
+	ref,
+	useSlots,
+	watch,
+} from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
+
+const props = defineProps({
+	/**
+	 * Field-level errors managed by the parent, usually from an API response.
+	 * Each value can be a single message or a list of messages.
+	 */
+	fieldErrors: {
+		type: Object,
+		default: () => ({}),
+	},
+});
 
 defineEmits(["submit"]);
 
@@ -107,7 +128,31 @@ const formFields = reactive({});
 // Whether we have any form fields registered to the form.
 const haveFormFields = computed(() => isNonEmptyObject(formFields));
 // A holding pot for any validation errors found during validation.
-const errorSummary = ref([]);
+const validationErrorSummary = ref([]);
+
+// Parent-owned field errors formatted for the error summary.
+const externalErrorSummary = computed(() => {
+	const errors = [];
+
+	for (const fieldName in formFields) {
+		if (!Object.hasOwn(formFields, fieldName)) {
+			continue;
+		}
+
+		getFieldErrors(fieldName).forEach((message) => {
+			errors.push({ fieldName, id: formFields[fieldName].id, message });
+		});
+	}
+
+	return errors;
+});
+
+// All field errors shown in the error summary.
+const errorSummary = computed(() => [
+	...validationErrorSummary.value,
+	...externalErrorSummary.value,
+]);
+
 // Whether our error summary contains any errors.
 const haveErrorSummary = computed(() => isNonEmptyArray(errorSummary.value));
 // The error summary element, allowing us to focus it.
@@ -125,7 +170,7 @@ const isSubmitting = ref(false);
  *     fields.
  * @param  {function}  field.validateField
  *     The validation function for this field, run when the form is submitted.
- * @param  {function}  field.focusField
+ * @param  {function}  field.triggerFocus
  *     A method to focus on this field, used by the error summary.
  */
 async function registerField(field) {
@@ -162,9 +207,22 @@ async function updateFieldValue(name, value) {
 }
 
 provide("form-wrapper", {
+	getFieldErrors,
 	registerField,
 	updateFieldValue,
 });
+
+watch(
+	() => props.fieldErrors,
+	async () => {
+		if (!isNonEmptyArray(externalErrorSummary.value)) {
+			return;
+		}
+
+		await focusErrorSummary();
+	},
+	{ deep: true },
+);
 
 /**
  * Handle the submit of the form, checking any provided validation, and
@@ -180,10 +238,8 @@ async function handleFormSubmit() {
 	validateFields();
 
 	if (haveErrorSummary.value) {
-		await nextTick();
-
 		resetSubmitButton();
-		runComponentMethod(errorSummaryElement.value, "focus");
+		await focusErrorSummary();
 
 		return;
 	}
@@ -196,7 +252,7 @@ async function handleFormSubmit() {
  * are encountered, populate the `errorSummary`.
  */
 function validateFields() {
-	errorSummary.value = [];
+	validationErrorSummary.value = [];
 
 	for (const fieldName in formFields) {
 		if (!Object.hasOwn(formFields, fieldName)) {
@@ -216,9 +272,42 @@ function validateFields() {
 		}
 
 		validationResult.forEach((message) => {
-			errorSummary.value.push({ fieldName, id: field.id, message });
+			validationErrorSummary.value.push({ fieldName, id: field.id, message });
 		});
 	}
+}
+
+/**
+ * Get parent-owned error messages for a field.
+ *
+ * @param  {string}  fieldName
+ *     The field to retrieve error messages for.
+ */
+function getFieldErrors(fieldName) {
+	if (!isNonEmptyObject(props.fieldErrors)) {
+		return [];
+	}
+
+	const fieldErrors = props.fieldErrors[fieldName];
+
+	if (isNonEmptyString(fieldErrors)) {
+		return [fieldErrors];
+	}
+
+	if (!isNonEmptyArray(fieldErrors)) {
+		return [];
+	}
+
+	return fieldErrors.filter((message) => isNonEmptyString(message));
+}
+
+/**
+ * Focus the error summary after Vue has rendered the latest errors.
+ */
+async function focusErrorSummary() {
+	await nextTick();
+
+	runComponentMethod(errorSummaryElement.value, "focus");
 }
 
 /**

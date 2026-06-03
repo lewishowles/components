@@ -24,8 +24,8 @@
 		</template>
 		<template #error>
 			<slot name="error">
-				<ul v-if="haveValidationMessages">
-					<li v-for="message in validationMessages" :key="message">
+				<ul v-if="haveFieldMessages">
+					<li v-for="(message, index) in fieldMessages" :key="`${message}-${index}`">
 						{{ message }}
 					</li>
 				</ul>
@@ -97,9 +97,7 @@ const props = defineProps({
 	},
 });
 
-const model = defineModel({
-	type: [String, Array, Boolean],
-});
+const model = defineModel();
 
 // Generate an appropriate input ID.
 const { inputId } = useInputId(props.id);
@@ -108,14 +106,27 @@ const { inputId } = useInputId(props.id);
 // case it isn't provided.
 const formWrapperInject = inject("form-wrapper", {});
 // The injection may not be defined, so we get its properties in a safe way.
+const getFieldErrors = formWrapperInject?.getFieldErrors;
 const registerField = formWrapperInject?.registerField;
 const updateFieldValue = formWrapperInject?.updateFieldValue;
 // Whether any validation has been provided for this field.
 const haveValidation = computed(() => isNonEmptyArray(props.validation));
 // Any validation messages as a result of the latest validation run.
 const validationMessages = ref([]);
-// Whether we have any validation messages to show.
-const haveValidationMessages = computed(() => isNonEmptyArray(validationMessages.value));
+
+// Parent-owned error messages provided by the form wrapper.
+const externalMessages = computed(() => {
+	if (!isFunction(getFieldErrors)) {
+		return [];
+	}
+
+	return getFieldErrors(props.name);
+});
+
+// All messages to show for this field.
+const fieldMessages = computed(() => [...validationMessages.value, ...externalMessages.value]);
+// Whether we have any field messages to show.
+const haveFieldMessages = computed(() => isNonEmptyArray(fieldMessages.value));
 // A reference to the field being rendered.
 const fieldRef = ref(null);
 // The default field type.

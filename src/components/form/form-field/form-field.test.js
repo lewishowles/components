@@ -2,9 +2,14 @@ import { createMount } from "@unit/support/mount";
 import { describe, expect, test, vi } from "vite-plus/test";
 import FormField from "./form-field.vue";
 
+const getFieldErrorsMock = vi.fn(() => []);
 const registerFieldMock = vi.fn();
 const defaultProps = { name: "username" };
-const provide = { "form-wrapper": { registerField: registerFieldMock } };
+
+const provide = {
+	"form-wrapper": { getFieldErrors: getFieldErrorsMock, registerField: registerFieldMock },
+};
+
 const mount = createMount(FormField, { props: defaultProps, global: { provide } });
 
 describe("form-field", () => {
@@ -197,6 +202,25 @@ describe("form-field", () => {
 				const vm = wrapper.vm;
 
 				expect(vm.haveNameIfRequired).toBe(true);
+			});
+		});
+
+		describe("fieldMessages", () => {
+			test("should include parent-owned field errors from the form wrapper", () => {
+				const wrapper = mount({
+					global: {
+						provide: {
+							"form-wrapper": {
+								getFieldErrors: () => ["Enter a different username"],
+								registerField: registerFieldMock,
+							},
+						},
+					},
+				});
+
+				const vm = wrapper.vm;
+
+				expect(vm.fieldMessages).toEqual(["Enter a different username"]);
 			});
 		});
 	});

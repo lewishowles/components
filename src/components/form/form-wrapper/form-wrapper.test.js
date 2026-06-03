@@ -72,6 +72,25 @@ describe("form-wrapper", () => {
 
 				expect(onSubmit).not.toHaveBeenCalled();
 			});
+
+			test("Does not call the submit handler if parent-owned field errors are present", async () => {
+				const onSubmit = vi.fn();
+
+				const wrapper = mount({
+					props: {
+						fieldErrors: {
+							email: "Enter a different email address",
+						},
+						onSubmit,
+					},
+				});
+
+				wrapper.vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+
+				await wrapper.vm.handleFormSubmit();
+
+				expect(onSubmit).not.toHaveBeenCalled();
+			});
 		});
 
 		describe("validateFields", () => {
@@ -98,6 +117,27 @@ describe("form-wrapper", () => {
 
 				expect(vm.errorSummary).toEqual([
 					{ fieldName: "email", id: "email-id", message: "Error message" },
+				]);
+			});
+
+			test("should include parent-owned field errors in `errorSummary`", () => {
+				const wrapper = mount({
+					props: {
+						fieldErrors: {
+							email: "Enter a different email address",
+							name: ["Enter your full name"],
+						},
+					},
+				});
+
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "name", id: "name-id", validateField: () => true });
+				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+
+				expect(vm.errorSummary).toEqual([
+					{ fieldName: "name", id: "name-id", message: "Enter your full name" },
+					{ fieldName: "email", id: "email-id", message: "Enter a different email address" },
 				]);
 			});
 		});
