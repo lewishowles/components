@@ -25,7 +25,7 @@ _Note that `start` and `end` depend on the current document direction._
 
 - type: `string`
 - default: `grey`
-- available values: `grey`, `red`, `orange`, `yellow`, `green`, `teal`, `blue`, `indigo`, `primary`, `pink`
+- available values: `grey`, `danger`/`red`, `orange`, `warning`/`yellow`, `success`/`green`, `teal`, `info`/`blue`, `indigo`, `primary`, `pink`
 
 The colour of this badge.
 

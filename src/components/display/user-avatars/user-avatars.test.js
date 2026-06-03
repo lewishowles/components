@@ -148,7 +148,7 @@ describe("user-avatars", () => {
 		});
 
 		describe("overlapClasses", () => {
-			const standardOutlineClasses = "-ms-2 outline-3 outline-white dark:outline-purple-200";
+			const standardOutlineClasses = "-ms-2 outline-3 outline-white dark:outline-primary-200";
 
 			test('should default to overlap for "circle"', () => {
 				const wrapper = mount({ shape: "circle" });

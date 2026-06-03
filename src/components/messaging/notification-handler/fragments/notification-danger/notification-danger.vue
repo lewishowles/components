@@ -1,15 +1,15 @@
 <template>
 	<notification-base
-		class="rounded-e-lg bg-red-50/50 dark:bg-red-500/10"
+		class="bg-danger-50/50 dark:bg-danger-500/10 rounded-e-lg"
 		v-bind="{
 			notification,
 			locale,
 			dateFormat,
-			stripeClasses: 'bg-red-100 dark:bg-red-500/50',
-			iconBackgroundClasses: 'bg-red-50 dark:bg-red-500/50',
-			iconClasses: 'text-red-600 dark:text-red-200',
-			badgeClasses: 'text-red-600 dark:text-red-500/50',
-			titleClasses: 'text-red-800 dark:text-red-400',
+			stripeClasses: 'bg-danger-100 dark:bg-danger-500/50',
+			iconBackgroundClasses: 'bg-danger-subtle',
+			iconClasses: 'text-danger-600 dark:text-danger-200',
+			badgeClasses: 'text-danger-600 dark:text-danger-500/50',
+			titleClasses: 'text-danger-800 dark:text-danger-400',
 		}"
 		data-test="notification-danger"
 	>

@@ -140,11 +140,11 @@ const alertPrefix = computed(() => {
 const alertColours = computed(() => {
 	switch (alertType.value) {
 		case alertTypes.SUCCESS:
-			return "border-green-200 bg-green-50 text-green-800 dark:border-transparent dark:bg-green-500/50 dark:text-green-200";
+			return "border-success-200 bg-success-subtle text-success dark:border-transparent";
 		case alertTypes.ERROR:
-			return "border-red-200 bg-red-50 text-red-800 dark:border-transparent dark:bg-red-500/50 dark:text-red-200";
+			return "border-danger-200 bg-danger-subtle text-danger dark:border-transparent";
 		case alertTypes.WARNING:
-			return "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-transparent dark:bg-yellow-500/50 dark:text-yellow-200";
+			return "border-warning-200 bg-warning-subtle text-warning dark:border-transparent";
 		case alertTypes.INFO:
 			return "border-primary-200 bg-primary-subtle text-primary-800 dark:border-transparent dark:text-primary-200";
 		default:

@@ -69,7 +69,10 @@
 				<p>
 					The colour of this badge, one of <code>grey</code>, <code>red</code>, <code>orange</code>,
 					<code>yellow</code>, <code>green</code>, <code>teal</code>, <code>blue</code>,
-					<code>indigo</code>, <code>primary</code>, <code>pink</code>
+					<code>indigo</code>, <code>primary</code>, <code>pink</code>. Semantic aliases
+					<code>danger</code>, <code>warning</code>, <code>success</code>, and <code>info</code> map
+					to <code>red</code>, <code>yellow</code>, <code>green</code>, and <code>blue</code>
+					respectively.
 				</p>
 			</component-prop>
 		</component-props>
