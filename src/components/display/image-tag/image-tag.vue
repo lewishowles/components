@@ -31,7 +31,7 @@ const props = defineProps({
 	 */
 	src: {
 		type: String,
-		required: true,
+		default: null,
 	},
 });
 
