@@ -97,8 +97,8 @@ const themeClasses = computed(() => {
 			return "bg-blue-50 text-blue-700 ring-blue-200 dark:bg-blue-500/50 dark:text-blue-200 dark:ring-0";
 		case "indigo":
 			return "bg-indigo-50 text-indigo-700 ring-indigo-200 dark:bg-indigo-500/50 dark:text-indigo-200 dark:ring-0";
-		case "purple":
-			return "bg-purple-50 text-purple-700 ring-purple-200 dark:bg-purple-500/50 dark:text-purple-200 dark:ring-0";
+		case "primary":
+			return "bg-primary-subtle text-primary-700 ring-primary-200 dark:text-primary-200 dark:ring-0";
 		case "pink":
 			return "bg-pink-50 text-pink-700 ring-pink-200 dark:bg-pink-500/50 dark:text-pink-200 dark:ring-0";
 		default:

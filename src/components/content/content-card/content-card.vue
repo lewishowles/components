@@ -74,7 +74,7 @@ const props = defineProps({
 	 */
 	iconClasses: {
 		type: [String, Array, Object],
-		default: "text-purple-800",
+		default: "text-primary",
 	},
 });
 

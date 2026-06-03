@@ -182,7 +182,7 @@
 											iconEnd: getSortIcon(columnKey),
 											ariaLabel: column.sortable ? getSortAriaLabel(columnKey) : null,
 										}"
-										class="hocus:border-purple-800 hocus:bg-grey-100 dark:hocus:bg-grey-950/30 dark:hocus:border-purple-400 -mt-4 -mb-4.25 w-full border-b border-transparent py-4"
+										class="hocus:border-primary hocus:bg-grey-100 dark:hocus:bg-grey-950/30 -mt-4 -mb-4.25 w-full border-b border-transparent py-4"
 										:class="[
 											{
 												'ps-3': !column.first,

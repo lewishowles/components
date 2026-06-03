@@ -36,7 +36,7 @@
 
 						<form-label
 							v-bind="{ id: option.id, styled: false }"
-							class="block cursor-pointer rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-purple-800 peer-focus-visible:ring-offset-2 dark:peer-focus-visible:ring-purple-400 dark:peer-focus-visible:ring-offset-0"
+							class="peer-focus-visible:ring-primary-800 dark:peer-focus-visible:ring-primary-400 block cursor-pointer rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2 dark:peer-focus-visible:ring-offset-0"
 							@mouseover="highlightedValue = option.value"
 						>
 							<span class="sr-only">

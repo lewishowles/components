@@ -38,7 +38,7 @@
 					<span
 						v-if="page === currentPage"
 						aria-current="page"
-						class="button bg-purple-800 text-white underline dark:bg-purple-500"
+						class="button bg-primary text-primary-foreground underline"
 						data-test="app-pagination-page-button"
 					>
 						<span class="sr-only">

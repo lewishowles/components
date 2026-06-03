@@ -165,9 +165,7 @@ const resolvedTrackClasses = computed(() =>
 );
 
 // The resolved bar classes, merging the base bar styles with any user overrides.
-const resolvedBarClasses = computed(() =>
-	cn("h-full rounded-full bg-purple-800 dark:bg-purple-300", props.barClasses),
-);
+const resolvedBarClasses = computed(() => cn("h-full rounded-full bg-primary", props.barClasses));
 
 // The internal current value, clamped between min and max.
 const internalValue = computed(() => {

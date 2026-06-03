@@ -8,7 +8,7 @@
 		<div data-part="controls" class="flex items-center gap-4">
 			<ui-button
 				icon-start="icon-chevron-down-circled"
-				class="hocus:underline text-purple-800 dark:text-purple-300"
+				class="hocus:underline text-primary"
 				:disabled="areAllPanelsVisible"
 				data-test="accordion-group-expand-button"
 				@click="showAllPanels"
@@ -18,7 +18,7 @@
 
 			<ui-button
 				icon-start="icon-chevron-up-circled"
-				class="hocus:underline text-purple-800 dark:text-purple-300"
+				class="hocus:underline text-primary"
 				:disabled="areNoPanelsVisible"
 				data-test="accordion-group-collapse-button"
 				@click="hideAllPanels"

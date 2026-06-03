@@ -146,7 +146,7 @@ const alertColours = computed(() => {
 		case alertTypes.WARNING:
 			return "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-transparent dark:bg-yellow-500/50 dark:text-yellow-200";
 		case alertTypes.INFO:
-			return "border-purple-200 bg-purple-50 text-purple-800 dark:border-transparent dark:bg-purple-500/50 dark:text-purple-200";
+			return "border-primary-200 bg-primary-subtle text-primary-800 dark:border-transparent dark:text-primary-200";
 		default:
 			return "border-grey-200 bg-grey-50 text-grey-800 dark:border-transparent dark:bg-white/10 dark:text-grey-200";
 	}

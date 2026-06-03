@@ -112,7 +112,7 @@ const props = defineProps({
 	 */
 	initialsColourClasses: {
 		type: [String, Array, Object],
-		default: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
+		default: "bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200",
 	},
 
 	/**
@@ -120,7 +120,7 @@ const props = defineProps({
 	 */
 	initialsOutlineClasses: {
 		type: [String, Array, Object],
-		default: "outline-white dark:outline-purple-200",
+		default: "outline-white dark:outline-primary-200",
 	},
 });
 

@@ -18,7 +18,7 @@
 			<div
 				v-if="haveUnreadNotifications"
 				aria-hidden="true"
-				class="absolute inset-e-0 top-0 -me-2 -mt-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-800 p-1 text-xs leading-none text-white"
+				class="bg-primary text-primary-foreground absolute inset-e-0 top-0 -me-2 -mt-2 flex h-5 min-w-5 items-center justify-center rounded-full p-1 text-xs leading-none"
 				data-test="notification-handler-badge"
 			>
 				{{ unreadNotificationCount }}
@@ -103,7 +103,7 @@
 
 			<div v-else class="flex flex-col items-center gap-2 py-4">
 				<icon-bell
-					class="animate-fade-in delay size-10 rounded-full bg-purple-100 p-3 text-purple-800"
+					class="animate-fade-in delay bg-primary-100 text-primary-800 size-10 rounded-full p-3"
 				/>
 
 				<span class="animate-fade-in delay">

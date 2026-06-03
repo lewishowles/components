@@ -17,9 +17,7 @@
 					<slot name="title" />
 				</span>
 
-				<div
-					class="group-hocus:underline inline-flex items-center gap-2 text-purple-800 dark:text-purple-300"
-				>
+				<div class="group-hocus:underline text-primary inline-flex items-center gap-2">
 					<component :is="statusIcon" class="size-text" />
 
 					<span v-show="!isVisible" class="inline-flex items-center gap-2">

@@ -33,7 +33,7 @@
 						ref="tabAnchors"
 						class="border-b-2 px-4 py-2 whitespace-nowrap no-underline"
 						:class="{
-							'border-purple-800 text-purple-800 dark:border-white dark:text-white': tab.active,
+							'border-primary text-primary dark:border-white dark:text-white': tab.active,
 							'hocus:border-grey-500 hocus:text-grey-950 dark:hocus:border-white/60 dark:hocus:text-white border-transparent text-current':
 								!tab.active,
 						}"

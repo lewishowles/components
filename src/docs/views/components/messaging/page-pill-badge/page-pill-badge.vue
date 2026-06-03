@@ -69,7 +69,7 @@
 				<p>
 					The colour of this badge, one of <code>grey</code>, <code>red</code>, <code>orange</code>,
 					<code>yellow</code>, <code>green</code>, <code>teal</code>, <code>blue</code>,
-					<code>indigo</code>, <code>purple</code>, <code>pink</code>
+					<code>indigo</code>, <code>primary</code>, <code>pink</code>
 				</p>
 			</component-prop>
 		</component-props>
