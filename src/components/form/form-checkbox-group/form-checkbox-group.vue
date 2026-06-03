@@ -23,10 +23,10 @@
 </template>
 
 <script setup>
-import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
+import { arrayLength } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { ref, useTemplateRef, watch } from "vue";
+import { computed, ref, useTemplateRef, watch } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
@@ -35,7 +35,7 @@ const props = defineProps({
 	 * something that can be provided to our input group.
 	 */
 	modelValue: {
-		type: Array,
+		type: [Array, null],
 		default: () => [],
 	},
 });
@@ -44,6 +44,16 @@ const emit = defineEmits(["update:modelValue"]);
 const inputGroupRef = useTemplateRef("input-group");
 // The model provided by the input group, which we intend to transform.
 const internalModel = ref({});
+
+// The selected values, normalised so that an empty field behaves like no
+// selection.
+const selectedValues = computed(() => {
+	if (!Array.isArray(props.modelValue)) {
+		return [];
+	}
+
+	return props.modelValue;
+});
 
 // When a new value is provided by the input-group, convert it and emit it.
 watch(
@@ -58,8 +68,8 @@ watch(
 		const selectedKeys = keys(internalModel.value).filter((key) => internalModel.value[key]);
 
 		if (
-			arrayLength(selectedKeys) !== arrayLength(props.modelValue) ||
-			selectedKeys.some((key, index) => key !== props.modelValue[index])
+			arrayLength(selectedKeys) !== arrayLength(selectedValues.value) ||
+			selectedKeys.some((key, index) => key !== selectedValues.value[index])
 		) {
 			emit("update:modelValue", selectedKeys);
 		}
@@ -71,13 +81,9 @@ watch(
 watch(
 	() => props.modelValue,
 	() => {
-		if (!isNonEmptyArray(props.modelValue)) {
-			internalModel.value = {};
-		}
-
 		// Since we avoid infinite loops when watching internalModel, we don't need
 		// to worry too much about over-checking here.
-		const values = props.modelValue.filter((item) => isNonEmptyString(item));
+		const values = selectedValues.value.filter((item) => isNonEmptyString(item));
 
 		const objectValues = values.reduce((objectValues, value) => {
 			objectValues[value] = true;
