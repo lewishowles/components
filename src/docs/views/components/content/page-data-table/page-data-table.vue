@@ -541,6 +541,51 @@
 				<p>The label for the "Columns" options in the configure dropdown.</p>
 			</component-slot>
 
+			<component-slot id="slot-sort-instruction">
+				<template #name> sort-instruction </template>
+
+				<template #default-value> `(sortable — activate to sort ascending)` </template>
+
+				<p>
+					A screen-reader-only instruction inside each sortable column's heading button, describing
+					the column's current sort state and what activating it will do. Included only for sortable
+					columns. The default text varies by state:
+					<code>(sortable — activate to sort ascending)</code> when unsorted,
+					<code>(sorted ascending — activate to sort descending)</code> when sorted ascending, and
+					<code>(sorted descending — activate to sort ascending)</code> when sorted descending.
+				</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Slot prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>label</code></td>
+							<td>string</td>
+							<td>The label of the column.</td>
+						</tr>
+						<tr>
+							<td><code>sorted</code></td>
+							<td>boolean</td>
+							<td>Whether this is the column the table is currently sorted by.</td>
+						</tr>
+						<tr>
+							<td><code>direction</code></td>
+							<td>string | null</td>
+							<td>
+								The sort direction (<code>"ascending"</code> or <code>"descending"</code>), or
+								<code>null</code> when unsorted.
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</component-slot>
+
 			<component-slot id="slot-sort-status">
 				<template #name> sort-status </template>
 

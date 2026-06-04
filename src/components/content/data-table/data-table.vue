@@ -4,10 +4,10 @@
 			<template v-if="statusType === statusTypes.SORT">
 				<slot
 					name="sort-status"
-					v-bind="{ column: getColumnLabel(sortedColumn), ascending: sortDirection === 1 }"
+					v-bind="{ column: getColumnLabel(sortedColumn), ascending: isAscending }"
 				>
 					Sorted by {{ getColumnLabel(sortedColumn) }}
-					{{ sortDirection === 1 ? "ascending" : "descending" }}
+					{{ isAscending ? "ascending" : "descending" }}
 				</slot>
 			</template>
 
@@ -135,11 +135,11 @@
 									name="sorted-hint"
 									v-bind="{
 										sortedColumn: getColumnLabel(sortedColumn),
-										ascending: sortDirection === 1,
+										ascending: isAscending,
 									}"
 								>
 									Sorted by {{ getColumnLabel(sortedColumn) }}
-									<template v-if="sortDirection === 1"> ascending </template>
+									<template v-if="isAscending"> ascending </template>
 									<template v-else> descending </template>
 								</slot>
 							</span>
@@ -180,7 +180,6 @@
 											wrap: column.sortable,
 											tag: 'ui-button',
 											iconEnd: getSortIcon(columnKey),
-											ariaLabel: column.sortable ? getSortAriaLabel(columnKey) : null,
 										}"
 										class="hocus:border-primary hocus:bg-surface-sunken -mt-4 -mb-4.25 w-full border-b border-transparent py-4"
 										:class="[
@@ -201,6 +200,19 @@
 										>
 											{{ column.label }}
 										</slot>
+
+										<span v-if="column.sortable" class="sr-only">
+											<slot
+												name="sort-instruction"
+												v-bind="{
+													label: column.label,
+													sorted: columnKey === sortedColumn,
+													direction: getColumnSortDirection(columnKey),
+												}"
+											>
+												{{ getSortInstruction(columnKey) }}
+											</slot>
+										</span>
 									</conditional-wrapper>
 								</th>
 							</tr>
@@ -293,7 +305,7 @@
 </template>
 
 <script setup>
-import { arrayLength, isNonEmptyArray, sortObjectsByProperty } from "@lewishowles/helpers/array";
+import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed, provide, ref, useId, useSlots, watch } from "vue";
 import { cn } from "@/utilities/cn.js";
 import { get, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
@@ -306,6 +318,8 @@ import { useResizeObserver, useStorage } from "@vueuse/core";
 import DataTableColumns from "./fragments/data-table-columns/data-table-columns.vue";
 import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
 import DataTableSearch from "./fragments/data-table-search/data-table-search.vue";
+
+import useTableSort, { sortDirections } from "./composables/use-table-sort/use-table-sort.js";
 
 const props = defineProps({
 	/**
@@ -427,11 +441,6 @@ const searchQuery = ref("");
 // Whether we have a search term, and thus whether the user is currently
 // searching.
 const haveSearchQuery = computed(() => isNonEmptyString(searchQuery.value));
-// The column currently sorted. If no column is sorted (the default state), then
-// data is displayed as it is provided.
-const sortedColumn = ref(null);
-// The direction to sort the sorted column. 1 for ascending, -1 for descending.
-const sortDirection = ref(1);
 // The current page of results being viewed.
 const currentPage = ref(1);
 // Whether a name has been provided for this table.
@@ -677,22 +686,38 @@ const filteredRows = computed(() => {
 	}, []);
 });
 
-// Our filtered rows, sorted by any currently defined sort.
-const sortedRows = computed(() => {
-	if (!haveData.value) {
-		return [];
+// Column sorting: the sort state, the sorted rows, and the sort-control helpers.
+const {
+	getColumnSortDirection,
+	getSortIcon,
+	isAscending,
+	sortColumn,
+	sortDirection,
+	sortedColumn,
+	sortedRows,
+} = useTableSort(filteredRows, columnDefinitions);
+
+/**
+ * The default screen-reader instruction for a column's sort button, describing
+ * the current state and the action a click will take. Overridable per column
+ * via the `sort-instruction` slot for translation.
+ *
+ * @param  {string}  columnKey
+ *     The key of the column to describe.
+ */
+function getSortInstruction(columnKey) {
+	const direction = getColumnSortDirection(columnKey);
+
+	if (direction === null) {
+		return "(sortable — activate to sort ascending)";
 	}
 
-	if (sortedColumn.value === null) {
-		return filteredRows.value;
+	if (direction === sortDirections.ASCENDING) {
+		return "(sorted ascending — activate to sort descending)";
 	}
 
-	return sortObjectsByProperty(
-		filteredRows.value,
-		`content.${sortedColumn.value}.configuration.sortable`,
-		{ ascending: sortDirection.value === 1 },
-	);
-});
+	return "(sorted descending — activate to sort ascending)";
+}
 
 // Our paginated rows, based on the current page.
 const paginatedRows = ref([]);
@@ -985,91 +1010,6 @@ function setSearchQuery(value) {
 	searchQuery.value = value;
 
 	runComponentMethod(dataTableSearchComponent.value, "triggerFocus");
-}
-
-/**
- * Sort the given column key. This will reset any other column sorting. If the
- * same column is already sorted, the direction will be reversed.
- *
- * @param  {string}  columnKey
- *     The key of the column to sort.
- */
-function sortColumn(columnKey) {
-	if (!isNonEmptyString(columnKey)) {
-		return;
-	}
-
-	if (!Object.hasOwn(columnDefinitions.value, columnKey)) {
-		return;
-	}
-
-	if (sortedColumn.value === columnKey) {
-		sortDirection.value = sortDirection.value * -1;
-
-		return;
-	}
-
-	sortedColumn.value = columnKey;
-	sortDirection.value = 1;
-}
-
-/**
- * Retrieve the appropriate sort direction label for a given column by its key.
- * If the column is not sorted, returns null.
- *
- * @param  {string}  columnKey
- *     The key of the column to check.
- */
-function getColumnSortDirection(columnKey) {
-	if (columnKey !== sortedColumn.value) {
-		return null;
-	}
-
-	if (sortDirection.value === 1) {
-		return "ascending";
-	}
-
-	return "descending";
-}
-
-/**
- * Retrieve the appropriate sort icon for a given column by its key, depending
- * on whether that column is currently sorted.
- *
- * @param  {string}  columnKey
- *     The key of the column to check.
- */
-function getSortIcon(columnKey) {
-	if (sortedColumn.value !== columnKey) {
-		return null;
-	}
-
-	if (sortDirection.value == -1) {
-		return "icon-arrow-up";
-	}
-
-	return "icon-arrow-down";
-}
-
-/**
- * Return a descriptive aria-label for the sort button of the given column,
- * communicating the current sort state and the action that will occur on click.
- *
- * @param  {string}  columnKey
- *     The key of the column to generate the label for.
- */
-function getSortAriaLabel(columnKey) {
-	const label = getColumnLabel(columnKey);
-
-	if (sortedColumn.value !== columnKey) {
-		return `Sort by ${label} ascending`;
-	}
-
-	if (sortDirection.value === 1) {
-		return `Sort by ${label} — currently ascending, click to sort descending`;
-	}
-
-	return `Sort by ${label} — currently descending, click to sort ascending`;
 }
 
 /**

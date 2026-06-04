@@ -27,7 +27,7 @@ describe("data-table-density", () => {
 	it("A default density is selected", () => {
 		mount();
 
-		cy.getByData("data-table-density-relaxed").shouldHaveClass("text-purple-800");
+		cy.getByData("data-table-density-relaxed").shouldHaveClass("text-primary");
 	});
 
 	it("A custom density is retrieved from localStorage", () => {
@@ -35,14 +35,14 @@ describe("data-table-density", () => {
 
 		mount();
 
-		cy.getByData("data-table-density-compact").shouldHaveClass("text-purple-800");
+		cy.getByData("data-table-density-compact").shouldHaveClass("text-primary");
 	});
 
 	it("A change in chosen density is stored in localStorage", () => {
 		mount();
 
 		cy.getByData("data-table-density-compact").click();
-		cy.getByData("data-table-density-compact").shouldHaveClass("text-purple-800");
+		cy.getByData("data-table-density-compact").shouldHaveClass("text-primary");
 
 		cy.getByData("data-table-density").then(() => {
 			expect(localStorage.getItem("data-table:sample-table:density")).to.equal("compact");

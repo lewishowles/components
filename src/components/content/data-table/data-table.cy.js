@@ -805,7 +805,10 @@ describe("Styling hooks", () => {
  *     The title of the column to sort by.
  */
 function sortByColumn(columnTitle) {
-	cy.getByData("data-table-sort").contains(columnTitle).click();
+	cy.getByData("data-table-sort")
+		.contains(columnTitle)
+		.closest("[data-test=data-table-sort]")
+		.click();
 }
 
 /**
@@ -839,7 +842,7 @@ function assertCurrentPage(page) {
 function openUserConfiguration() {
 	cy.getByData("data-table-display-options").shouldBeVisible();
 
-	cy.getByData("data-table-display-options").getByData("dropdown-menu-trigger").click();
+	cy.getByData("data-table-display-options").find("summary").click();
 
-	cy.getByData("data-table-display-options").getByData("dropdown-menu-panel").shouldBeVisible();
+	cy.getByData("data-table-display-options").find("[data-part=content]").shouldBeVisible();
 }

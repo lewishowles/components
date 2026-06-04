@@ -740,138 +740,35 @@ describe("data-table", () => {
 			});
 		});
 
-		describe("sortColumn", () => {
-			const columns = { title: { label: "Title" }, release_year: { label: "Release year" } };
-
-			test("should sort the given column", () => {
-				const wrapper = mount({ columns });
+		describe("getSortInstruction", () => {
+			test("prompts to sort an unsorted column", () => {
+				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				vm.sortColumn("title");
-
-				expect(vm.sortedColumn).toBe("title");
+				expect(vm.getSortInstruction("title")).toBe("(sortable — activate to sort ascending)");
 			});
 
-			test("should reverse the direction of a search for the same column", () => {
-				const wrapper = mount({ columns });
-				const vm = wrapper.vm;
-
-				vm.sortColumn("title");
-
-				expect(vm.sortedColumn).toBe("title");
-				expect(vm.sortDirection).toBe(1);
-
-				vm.sortColumn("title");
-
-				expect(vm.sortedColumn).toBe("title");
-				expect(vm.sortDirection).toBe(-1);
-			});
-
-			test("should ignore an unknown column", () => {
-				const wrapper = mount({ columns });
-				const vm = wrapper.vm;
-
-				vm.sortColumn("column");
-
-				expect(vm.sortedColumn).toBe(null);
-			});
-		});
-
-		describe("getColumnSortDirection", () => {
-			test("should detect a column that is sorted ascending", () => {
+			test("describes the ascending state and offers descending", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
 				vm.sortedColumn = "title";
-				vm.sortDirection = 1;
+				vm.sortDirection = "ascending";
 
-				expect(vm.getColumnSortDirection("title")).toBe("ascending");
-			});
-
-			test("should detect a column that is sorted descending", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				vm.sortedColumn = "title";
-				vm.sortDirection = -1;
-
-				expect(vm.getColumnSortDirection("title")).toBe("descending");
-			});
-
-			test("should detect a column that is not sorted", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				vm.sortedColumn = "title";
-				vm.sortDirection = -1;
-
-				expect(vm.getColumnSortDirection("unknown")).toBe(null);
-			});
-		});
-
-		describe("getSortIcon", () => {
-			test("should detect a column that is sorted ascending", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				vm.sortedColumn = "title";
-				vm.sortDirection = 1;
-
-				expect(vm.getSortIcon("title")).toBe("icon-arrow-down");
-			});
-
-			test("should detect a column that is sorted descending", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				vm.sortedColumn = "title";
-				vm.sortDirection = -1;
-
-				expect(vm.getSortIcon("title")).toBe("icon-arrow-up");
-			});
-
-			test("should detect a column that is not sorted", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				vm.sortedColumn = "title";
-				vm.sortDirection = -1;
-
-				expect(vm.getSortIcon("unknown")).toBe(null);
-			});
-		});
-
-		describe("getSortAriaLabel", () => {
-			const columns = { title: { label: "Title" }, release_year: { label: "Release year" } };
-
-			test("should return an ascending prompt for an unsorted column", () => {
-				const wrapper = mount({ columns });
-				const vm = wrapper.vm;
-
-				expect(vm.getSortAriaLabel("title")).toBe("Sort by Title ascending");
-			});
-
-			test("should describe the current ascending state and offer descending", () => {
-				const wrapper = mount({ columns });
-				const vm = wrapper.vm;
-
-				vm.sortedColumn = "title";
-				vm.sortDirection = 1;
-
-				expect(vm.getSortAriaLabel("title")).toBe(
-					"Sort by Title — currently ascending, click to sort descending",
+				expect(vm.getSortInstruction("title")).toBe(
+					"(sorted ascending — activate to sort descending)",
 				);
 			});
 
-			test("should describe the current descending state and offer ascending", () => {
-				const wrapper = mount({ columns });
+			test("describes the descending state and offers ascending", () => {
+				const wrapper = mount();
 				const vm = wrapper.vm;
 
 				vm.sortedColumn = "title";
-				vm.sortDirection = -1;
+				vm.sortDirection = "descending";
 
-				expect(vm.getSortAriaLabel("title")).toBe(
-					"Sort by Title — currently descending, click to sort ascending",
+				expect(vm.getSortInstruction("title")).toBe(
+					"(sorted descending — activate to sort ascending)",
 				);
 			});
 		});

@@ -146,6 +146,20 @@ The label for the "Relaxed" display option.
 
 The label for the "Columns" options in the configure dropdown.
 
+### `sort-instruction`
+
+- default (unsorted): "(sortable — activate to sort ascending)"
+- default (ascending): "(sorted ascending — activate to sort descending)"
+- default (descending): "(sorted descending — activate to sort ascending)"
+
+A screen-reader-only instruction inside each sortable column's heading button, describing the column's current sort state and what activating it will do. Included only for sortable columns.
+
+| Slot prop   | Type             | Description                                                                    |
+| ----------- | ---------------- | ------------------------------------------------------------------------------ |
+| `label`     | string           | The label of the column.                                                       |
+| `sorted`    | boolean          | Whether this is the column the table is currently sorted by.                   |
+| `direction` | string \| `null` | The sort direction (`"ascending"` or `"descending"`), or `null` when unsorted. |
+
 ### `sort-status`
 
 - default: "Sorted by {column} ascending/descending"
