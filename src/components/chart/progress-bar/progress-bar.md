@@ -65,7 +65,7 @@ Additional classes to apply to the track, merged on top of the base styles (`p-1
 - type: `Vue class binding`
 - default: `null`
 
-Additional classes to apply to the bar, merged on top of the base styles (`h-full rounded-full bg-purple-800 dark:bg-purple-300`). Applied to the indeterminate bar too. Any provided classes that conflict with base classes will override as necessary.
+Additional classes to apply to the bar, merged on top of the base styles (`h-full rounded-full bg-primary`). Applied to the indeterminate bar too. Any provided classes that conflict with base classes will override as necessary.
 
 ## Slots
 

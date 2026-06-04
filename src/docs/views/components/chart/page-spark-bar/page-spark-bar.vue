@@ -59,7 +59,7 @@
 
 				<template #type> Vue class binding </template>
 
-				<template #default-value> h-full rounded-full bg-purple-800 dark:bg-purple-300 </template>
+				<template #default-value> h-full rounded-full bg-primary </template>
 
 				<p>
 					Additional classes to apply to the bar, merged on top of the base styles.

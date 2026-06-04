@@ -35,7 +35,7 @@ Additional classes to apply to the track, merged on top of the base styles. `gro
 ### `barClasses`
 
 - type: `Vue class binding`
-- default: `h-full rounded-full bg-purple-800 dark:bg-purple-300`
+- default: `h-full rounded-full bg-primary`
 
 Additional classes to apply to the bar, merged on top of the base styles. `transition-all ease-out` is always applied. Any provided classes that conflict with base classes will override as necessary.
 

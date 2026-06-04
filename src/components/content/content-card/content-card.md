@@ -47,7 +47,7 @@ Additional classes to apply to the footer, merged on top of the base styles (bor
 ### `iconClasses`
 
 - type: `string` | `array` | `object`
-- default: `text-purple-800`
+- default: `text-primary`
 
 Classes to apply around the icon slot.
 

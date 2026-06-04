@@ -104,7 +104,7 @@
 				<template #type> String </template>
 
 				<template #default-value>
-					bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200
+					bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200
 				</template>
 
 				<p>The colour classes to apply when displaying initials.</p>
@@ -115,7 +115,7 @@
 
 				<template #type> Vue class binding </template>
 
-				<template #default-value> outline-white dark:outline-purple-200 </template>
+				<template #default-value> outline-white dark:outline-primary-200 </template>
 
 				<p>
 					Additional classes to apply to the overlap outline ring, merged on top of the base styles.

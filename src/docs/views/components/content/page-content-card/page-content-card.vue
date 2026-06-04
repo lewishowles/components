@@ -80,7 +80,7 @@
 
 				<template #type> String | Array | Object </template>
 
-				<template #default-value> text-purple-800 </template>
+				<template #default-value> text-primary </template>
 
 				<p>Classes to apply around the icon slot.</p>
 			</component-prop>
