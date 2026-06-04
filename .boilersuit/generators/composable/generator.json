@@ -1,0 +1,35 @@
+{
+	"schema_version": 1,
+	"id": "composable",
+	"display_name": "Composable",
+	"description": "Creates a Vue composable with a colocated unit test.",
+	"default_path": "src/composables",
+	"fields": [
+		{
+			"token": "NAME",
+			"label": "Composable name",
+			"description": "Used for the composable folder, file name, exported function name, and test names.",
+			"placeholder": "use-floating-position",
+			"hint": "Include the use- prefix and use kebab-case.",
+			"validation": {
+				"min_length": 5,
+				"max_length": 80,
+				"pattern": "^use-[a-z0-9]+(-[a-z0-9]+)*$",
+				"message": "Use lowercase kebab-case starting with use-."
+			},
+			"required": true
+		}
+	],
+	"files": [
+		{
+			"template": "composable.js",
+			"output_path": "{{ NAME | kebab }}/{{ NAME | kebab }}.js",
+			"required": true
+		},
+		{
+			"template": "composable.test.js",
+			"output_path": "{{ NAME | kebab }}/{{ NAME | kebab }}.test.js",
+			"required": true
+		}
+	]
+}

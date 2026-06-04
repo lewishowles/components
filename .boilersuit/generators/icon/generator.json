@@ -1,0 +1,44 @@
+{
+	"schema_version": 1,
+	"id": "icon",
+	"display_name": "Icon",
+	"description": "Creates a library icon component with unit and Cypress component tests.",
+	"default_path": "src/components/icon",
+	"fields": [
+		{
+			"token": "NAME",
+			"label": "Icon name",
+			"description": "Used for the icon folder, file name, component import name, and test names.",
+			"placeholder": "icon-calendar",
+			"hint": "Include the icon- prefix and use kebab-case.",
+			"validation": {
+				"min_length": 6,
+				"max_length": 80,
+				"pattern": "^icon-[a-z0-9]+(-[a-z0-9]+)*$",
+				"message": "Use lowercase kebab-case starting with icon-."
+			},
+			"required": true
+		}
+	],
+	"files": [
+		{
+			"template": "icon.vue",
+			"output_path": "{{ NAME | kebab }}/{{ NAME | kebab }}.vue",
+			"required": true
+		},
+		{
+			"template": "icon.test.js",
+			"output_path": "{{ NAME | kebab }}/{{ NAME | kebab }}.test.js",
+			"required": true
+		},
+		{
+			"template": "icon.cy.js",
+			"output_path": "{{ NAME | kebab }}/{{ NAME | kebab }}.cy.js",
+			"required": false,
+			"label": "Cypress component test",
+			"include_when": {
+				"test_framework": "cypress"
+			}
+		}
+	]
+}

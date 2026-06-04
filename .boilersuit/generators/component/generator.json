@@ -1,0 +1,92 @@
+{
+	"schema_version": 1,
+	"id": "component",
+	"display_name": "Component",
+	"description": "Creates a full component with a Vue file, unit test, Cypress component test, and documentation page.",
+	"default_path": "src/components",
+	"fields": [
+		{
+			"token": "NAME",
+			"label": "Component name",
+			"description": "Used for the component folder, file name, component import name, test names, and documentation title.",
+			"placeholder": "ui-button",
+			"hint": "Use at least two words in kebab-case.",
+			"validation": {
+				"min_length": 3,
+				"max_length": 80,
+				"pattern": "^[a-z][a-z0-9]+(-[a-z0-9]+)+$",
+				"message": "Use lowercase kebab-case with at least two words."
+			},
+			"required": true
+		},
+		{
+			"token": "CATEGORY",
+			"label": "Category",
+			"description": "Controls which component section the new component is created in.",
+			"type": "select",
+			"options": [
+				{
+					"label": "Chart",
+					"value": "chart"
+				},
+				{
+					"label": "Content",
+					"value": "content"
+				},
+				{
+					"label": "Display",
+					"value": "display"
+				},
+				{
+					"label": "Form",
+					"value": "form"
+				},
+				{
+					"label": "General",
+					"value": "general"
+				},
+				{
+					"label": "Interaction",
+					"value": "interaction"
+				},
+				{
+					"label": "Messaging",
+					"value": "messaging"
+				},
+				{
+					"label": "Navigation",
+					"value": "navigation"
+				}
+			],
+			"default_value": "content",
+			"required": true
+		}
+	],
+	"files": [
+		{
+			"template": "component.vue",
+			"output_path": "{{ CATEGORY }}/{{ NAME | kebab }}/{{ NAME | kebab }}.vue",
+			"required": true
+		},
+		{
+			"template": "component.test.js",
+			"output_path": "{{ CATEGORY }}/{{ NAME | kebab }}/{{ NAME | kebab }}.test.js",
+			"required": true
+		},
+		{
+			"template": "component.cy.js",
+			"output_path": "{{ CATEGORY }}/{{ NAME | kebab }}/{{ NAME | kebab }}.cy.js",
+			"required": false,
+			"label": "Cypress component test",
+			"include_when": {
+				"test_framework": "cypress"
+			}
+		},
+		{
+			"template": "component.md",
+			"output_path": "{{ CATEGORY }}/{{ NAME | kebab }}/{{ NAME | kebab }}.md",
+			"required": false,
+			"label": "Documentation page"
+		}
+	]
+}
