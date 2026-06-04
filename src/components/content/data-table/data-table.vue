@@ -306,7 +306,7 @@
 
 <script setup>
 import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
-import { computed, provide, ref, useId, useSlots, watch } from "vue";
+import { computed, provide, ref, toRef, useId, useSlots, watch } from "vue";
 import { cn } from "@/utilities/cn.js";
 import { get, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
@@ -318,6 +318,7 @@ import DataTableColumns from "./fragments/data-table-columns/data-table-columns.
 import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
 import DataTableSearch from "./fragments/data-table-search/data-table-search.vue";
 
+import useTableSelection from "./composables/use-table-selection/use-table-selection.js";
 import useTableSort, { sortDirections } from "./composables/use-table-sort/use-table-sort.js";
 import { getRawRow, getRowContent, getRowId } from "./utilities/row.js";
 
@@ -727,39 +728,17 @@ const paginatedRows = ref([]);
 const haveDataToDisplay = computed(() => isNonEmptyArray(filteredRows.value));
 // The count of rows currently included in the table.
 const rowCount = computed(() => arrayLength(filteredRows.value));
-// The internal IDs of the selected rows, available when the user has enabled
-// row selection.
-const selectedRowIds = ref([]);
 
-// The rows and data that correspond to our `selectedRowIds`
-const selectedRows = computed(() => {
-	if (props.enableSelection !== true) {
-		return [];
-	}
-
-	const internalRows = internalData.value.filter((row) =>
-		selectedRowIds.value.includes(getRowId(row)),
-	);
-
-	if (!isNonEmptyArray(internalRows)) {
-		return [];
-	}
-
-	return internalRows.map((row) => getRawRow(row));
-});
-
-// Our checkbox that visually determines whether all rows are selected, and
-// allows the user to toggle state globally.
-const selectAllRows = ref(false);
-// The number of rows currently selected.
-const selectedRowCount = computed(() => arrayLength(selectedRowIds.value));
-// Whether all rows are selected.
-const areAllRowsSelected = computed(() => selectedRowCount.value === rowCount.value);
-
-// Whether the select-all checkbox should be in an indeterminate state (some but not all rows selected).
-const selectAllIndeterminate = computed(
-	() => selectedRowCount.value > 0 && !areAllRowsSelected.value,
-);
+// Row selection: the selected ids, the select-all state, the selection counts,
+// and the action to toggle every row. Keeps the `v-model` in sync.
+const {
+	areAllRowsSelected,
+	selectAllIndeterminate,
+	selectAllRows,
+	selectedRowCount,
+	selectedRowIds,
+	toggleAllRows,
+} = useTableSelection(internalData, filteredRows, selection, toRef(props, "enableSelection"));
 
 // Reset to the first page when our filtered rows or sort change.
 watch([filteredRows, sortedColumn, sortDirection], () => {
@@ -784,35 +763,6 @@ watch(
 	},
 	{ deep: true, immediate: true },
 );
-
-// When the selected rows change, update our model value.
-watch(selectedRows, () => {
-	if (props.enableSelection !== true) {
-		return;
-	}
-
-	if (!isNonEmptyArray(selectedRows.value)) {
-		selection.value = [];
-
-		if (selectAllRows.value === true) {
-			selectAllRows.value = false;
-		}
-
-		return;
-	}
-
-	selection.value = selectedRows.value;
-});
-
-// If all rows are now selected, and `selectAllRows` is not, we check it. If not
-// all rows are selected, but `selectAllRows` is, we uncheck it.
-watch(selectedRowIds, () => {
-	if (areAllRowsSelected.value && !selectAllRows.value) {
-		selectAllRows.value = true;
-	} else if (!areAllRowsSelected.value && selectAllRows.value) {
-		selectAllRows.value = false;
-	}
-});
 
 // Trigger a sort announcement when the sorted column or direction changes.
 watch([sortedColumn, sortDirection], () => {
@@ -979,20 +929,6 @@ function updateTableDensityOptions(options) {
 	}
 
 	tableDensityOptions.value = options;
-}
-
-/**
- * Select, or deselect, all individual rows depending on the current state of
- * the `selectAllRows` checkbox. We perform this action as part of a function to
- * separate the display of whether all rows are selected from the intention to
- * select or deselect all rows.
- */
-function toggleAllRows() {
-	if (selectAllRows.value) {
-		selectedRowIds.value = filteredRows.value.map((row) => getRowId(row));
-	} else {
-		selectedRowIds.value = [];
-	}
 }
 
 provide("data-table", {

@@ -509,24 +509,6 @@ describe("data-table", () => {
 		});
 
 		describe("selectedRows", () => {
-			test("should include raw data for the currently selected rows", () => {
-				const wrapper = mount({ enableSelection: true });
-				const vm = wrapper.vm;
-
-				vm.selectedRowIds = [vm.internalData[0].configuration.id];
-
-				expect(vm.selectedRows).toEqual([sampleRow]);
-			});
-
-			test("should not return data if selection is not enabled", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				vm.selectedRowIds = [vm.internalData[0].configuration.id];
-
-				expect(vm.selectedRows).toEqual([]);
-			});
-
 			test("should update `selectAllRows` if all rows are selected", async () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
