@@ -33,7 +33,7 @@
 	"scripts": {
 		"dev": "vp dev",
 		"build": "vp build",
-		"build:docs": "vp build --config support/vite.config.docs.js && cp dist-docs/index.html dist-docs/404.html && touch dist-docs/.nojekyll",
+		"build:docs": "vp build --config support/vite.config.docs.js",
 		"preview": "vp preview",
 		"test:unit": "vp test",
 		"test:unit:run": "vp test run",
