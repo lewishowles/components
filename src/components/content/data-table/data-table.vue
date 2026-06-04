@@ -305,7 +305,7 @@
 </template>
 
 <script setup>
-import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed, provide, ref, toRef, useId, useSlots, watch } from "vue";
 import { cn } from "@/utilities/cn.js";
 import { get, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
@@ -318,6 +318,7 @@ import DataTableColumns from "./fragments/data-table-columns/data-table-columns.
 import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
 import DataTableSearch from "./fragments/data-table-search/data-table-search.vue";
 
+import useTablePagination from "./composables/use-table-pagination/use-table-pagination.js";
 import useTableSearch from "./composables/use-table-search/use-table-search.js";
 import useTableSelection from "./composables/use-table-selection/use-table-selection.js";
 import useTableSort, { sortDirections } from "./composables/use-table-sort/use-table-sort.js";
@@ -438,8 +439,6 @@ const selection = defineModel({
 const slots = useSlots();
 // A reference to the search component, allowing us to focus it when necessary.
 const dataTableSearchComponent = ref(null);
-// The current page of results being viewed.
-const currentPage = ref(1);
 // Whether a name has been provided for this table.
 const haveTableName = computed(() => isNonEmptyString(props.name));
 // Whether to show the "display" options to the user, which require a name for
@@ -666,14 +665,10 @@ function getSortInstruction(columnKey) {
 	return "(sorted descending — activate to sort ascending)";
 }
 
-// Our paginated rows, based on the current page.
-const paginatedRows = ref([]);
 // Whether we have any data to display. That is, not only do we have data for
 // the table, but if the user is performing a search, there are results for that
 // search term.
 const haveDataToDisplay = computed(() => isNonEmptyArray(filteredRows.value));
-// The count of rows currently included in the table.
-const rowCount = computed(() => arrayLength(filteredRows.value));
 
 // Row selection: the selected ids, the select-all state, the selection counts,
 // and the action to toggle every row. Keeps the `v-model` in sync.
@@ -686,28 +681,11 @@ const {
 	toggleAllRows,
 } = useTableSelection(internalData, filteredRows, selection, toRef(props, "enableSelection"));
 
-// Reset to the first page when our filtered rows or sort change.
-watch([filteredRows, sortedColumn, sortDirection], () => {
-	currentPage.value = 1;
-});
-
-// We use a watch here, rather than another computed property, as with a
-// computed property, Vue didn't seem to be detecting the changes to sortedRows,
-// even though the sortedRows computed property was triggering correctly, the
-// paginatedRows computed property was not.
-watch(
-	[sortedRows, currentPage, sortDirection, sortedColumn],
-	([newSortedRows, newPage]) => {
-		if (!props.enablePagination) {
-			paginatedRows.value = newSortedRows;
-		} else {
-			const start = (newPage - 1) * 10;
-			const end = start + 10;
-
-			paginatedRows.value = newSortedRows.slice(start, end);
-		}
-	},
-	{ deep: true, immediate: true },
+// Pagination: the current page, the rows shown for that page, and the total
+// row count.
+const { currentPage, paginatedRows, rowCount } = useTablePagination(
+	{ filteredRows, sortedRows, sortedColumn, sortDirection },
+	toRef(props, "enablePagination"),
 );
 
 // Trigger a sort announcement when the sorted column or direction changes.
