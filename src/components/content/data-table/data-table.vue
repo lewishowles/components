@@ -318,6 +318,7 @@ import DataTableColumns from "./fragments/data-table-columns/data-table-columns.
 import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
 import DataTableSearch from "./fragments/data-table-search/data-table-search.vue";
 
+import useTableSearch from "./composables/use-table-search/use-table-search.js";
 import useTableSelection from "./composables/use-table-selection/use-table-selection.js";
 import useTableSort, { sortDirections } from "./composables/use-table-sort/use-table-sort.js";
 import { getRawRow, getRowContent, getRowId } from "./utilities/row.js";
@@ -437,11 +438,6 @@ const selection = defineModel({
 const slots = useSlots();
 // A reference to the search component, allowing us to focus it when necessary.
 const dataTableSearchComponent = ref(null);
-// The current search query, as provided by the search sub-component.
-const searchQuery = ref("");
-// Whether we have a search term, and thus whether the user is currently
-// searching.
-const haveSearchQuery = computed(() => isNonEmptyString(searchQuery.value));
 // The current page of results being viewed.
 const currentPage = ref(1);
 // Whether a name has been provided for this table.
@@ -630,62 +626,12 @@ const internalData = computed(() => {
 // validated and contains a non-empty array of at least one object.
 const haveData = computed(() => isNonEmptyArray(internalData.value));
 
-// Our internal data, filtered to those rows matching any current search term.
-const filteredRows = computed(() => {
-	if (!haveData.value) {
-		return [];
-	}
-
-	if (!haveSearchQuery.value) {
-		return internalData.value;
-	}
-
-	const searchTerm = searchQuery.value.toLowerCase();
-
-	return internalData.value.reduce((rows, row) => {
-		const rowContent = get(row, "content");
-
-		if (!isNonEmptyObject(rowContent)) {
-			return rows;
-		}
-
-		const includesTerm = Object.entries(rowContent).some(([columnKey, cell]) => {
-			// We check against false here so that the developer can exclude
-			// this key and the column is searchable by default.
-			const searchableColumn = get(props.columns, `${columnKey}.searchable`) !== false;
-
-			// If this column isn't searchable, we don't need to check it.
-			if (!searchableColumn) {
-				return false;
-			}
-
-			const searchableContent = get(cell, "configuration.searchable");
-
-			// If the column has a custom search callback, use that over our
-			// default match rule.
-			const searchCallback = props.columns[columnKey]?.searchCallback;
-
-			if (isFunction(searchCallback)) {
-				return searchCallback({
-					searchQuery: searchQuery.value,
-					columnKey,
-					cell: searchableContent,
-					row,
-				});
-			}
-
-			return isNonEmptyString(searchableContent) && searchableContent.includes(searchTerm);
-		});
-
-		// If we find the term in the searchable columns of this row, we add it
-		// to our list of rows to display.
-		if (includesTerm) {
-			rows.push(row);
-		}
-
-		return rows;
-	}, []);
-});
+// Table search: the current query, whether a search is active, and the rows
+// that match it.
+const { filteredRows, haveSearchQuery, searchQuery } = useTableSearch(
+	internalData,
+	toRef(props, "columns"),
+);
 
 // Column sorting: the sort state, the sorted rows, and the sort-control helpers.
 const {
