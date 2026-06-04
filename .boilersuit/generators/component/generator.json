@@ -87,6 +87,18 @@
 			"output_path": "{{ CATEGORY }}/{{ NAME | kebab }}/{{ NAME | kebab }}.md",
 			"required": false,
 			"label": "Documentation page"
+		},
+		{
+			"template": "component-docs-page.vue",
+			"output_path": "../docs/views/components/{{ CATEGORY }}/page-{{ NAME | kebab }}/page-{{ NAME | kebab }}.vue",
+			"required": false,
+			"label": "Documentation view"
+		},
+		{
+			"template": "component-docs-playground.vue",
+			"output_path": "../docs/views/components/{{ CATEGORY }}/page-{{ NAME | kebab }}/fragments/playground-{{ NAME | kebab }}.vue",
+			"required": false,
+			"label": "Documentation playground"
 		}
 	]
 }
