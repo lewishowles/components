@@ -6,6 +6,10 @@ node_modules
 dist
 dist-docs
 
+# Tool caches (regenerated on demand)
+.vite
+.codebase-memory
+
 # macOS files
 .DS_Store
 

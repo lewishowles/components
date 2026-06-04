@@ -1,7 +1,7 @@
 import { defineConfig } from "cypress";
-import { fileURLToPath, URL } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
+import { alias } from "./support/aliases.js";
 
 export default defineConfig({
 	allowCypressEnv: false,
@@ -9,7 +9,7 @@ export default defineConfig({
 	screenshotOnRunFailure: false,
 	video: false,
 	viewportWidth: 1440,
-	viewPortHeight: 900,
+	viewportHeight: 900,
 
 	component: {
 		specPattern: "src/components/**/*.cy.js",
@@ -21,15 +21,11 @@ export default defineConfig({
 			viteConfig: {
 				plugins: [vue(), tailwindcss()],
 				resolve: {
-					alias: {
-						"@": fileURLToPath(new URL("./src", import.meta.url)),
-						"@cypress": fileURLToPath(new URL("./test/cypress", import.meta.url)),
-						"@unit": fileURLToPath(new URL("./test/unit", import.meta.url)),
-					},
+					alias,
 				},
 			},
 		},
 		viewportWidth: 1000,
-		viewPortHeight: 1000,
+		viewportHeight: 1000,
 	},
 });

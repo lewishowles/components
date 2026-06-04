@@ -1,15 +1,13 @@
-import { defineConfig } from "vite-plus";
 import { fileURLToPath, URL } from "node:url";
 import { readFileSync, readdirSync } from "node:fs";
-import tailwindcss from "@tailwindcss/vite";
-import vue from "@vitejs/plugin-vue";
 
 /**
  * Publish the library's stylesheets alongside the docs so that the theming page
- * can link to current copies as a starting point.
+ * can link to current copies as a starting point. Served in local dev and
+ * emitted into the build, both under `/css/`.
  */
-function publishStylesheets() {
-	const stylesheetDirectory = fileURLToPath(new URL("./src/assets/css", import.meta.url));
+export function publishStylesheets() {
+	const stylesheetDirectory = fileURLToPath(new URL("../../src/assets/css", import.meta.url));
 	// Every stylesheet the library ships.
 	const stylesheetFiles = readdirSync(stylesheetDirectory).filter((file) => file.endsWith(".css"));
 
@@ -36,17 +34,3 @@ function publishStylesheets() {
 		},
 	};
 }
-
-export default defineConfig({
-	plugins: [vue(), tailwindcss(), publishStylesheets()],
-	resolve: {
-		alias: {
-			"@": fileURLToPath(new URL("./src", import.meta.url)),
-			"@cypress": fileURLToPath(new URL("./test/cypress", import.meta.url)),
-			"@unit": fileURLToPath(new URL("./test/unit", import.meta.url)),
-		},
-	},
-	build: {
-		outDir: "dist-docs",
-	},
-});
