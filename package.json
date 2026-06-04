@@ -24,7 +24,8 @@
 		"./utilities": {
 			"import": "./dist/utilities.js",
 			"require": "./dist/utilities.js"
-		}
+		},
+		"./source": "./dist/source.css"
 	},
 	"publishConfig": {
 		"registry": "https://npm.pkg.github.com/"

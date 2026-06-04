@@ -8,6 +8,14 @@ A new theming system has been implemented! You can now change the colours of com
 
 Take a look at [`theme.css`](/src/assets/css/theme.css), which is the theme used on the docs website. The simplest way to get started is to copy this into your own project and update colours as desired.
 
+To wire the components into your build, import the library's source once so Tailwind (version 4) can generate the classes they use:
+
+```css
+@import "@lewishowles/components/source";
+```
+
+The theming guide in the docs covers the full token reference, the stylesheets you can start from, and dark mode.
+
 ### New features
 
 - `form-wrapper` - A new `fieldErrors` prop allows error messages to be passed directly to fields, and displayed in the same way validation errors are, including linked `error-summary`.

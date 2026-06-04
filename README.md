@@ -12,11 +12,11 @@ The goal is to test the components as thoroughly as possible, from unit tests fo
 
 Accessibility is one of the most important things we can spend time improving. The web is for everyone, and making steps to ensure content is as accessible as possible helps everyone, not just those who need it most.
 
-This library helps improve accessibility in two primary ways; the first by implementing the components with accessibility in mind, so a developer can be confident out of the box; and the second by using the documentation to help promote the mindset of accessibility. In addition, some components show visible errors if standards are not met—such as form fields requiring labels.
+This library helps improve accessibility in two primary ways; the first by implementing the components with accessibility in mind, so a developer can be confident out of the box; and the second by using the documentation to help promote the mindset of accessibility. In addition, some components show visible errors if standards aren't met—such as form fields requiring labels.
 
 ## Setup
 
-At the moment, components in the library are registered globally, so there is no need to manually import any of the components. To use the library, set it up in your main file, for example:
+At the moment, components in the library are registered globally, so there's no need to manually import any of the components. To use the library, set it up in your main file, for example:
 
 ```javascript
 import { createApp } from "vue";
@@ -31,7 +31,7 @@ app.mount("#app");
 
 ## Using a component
 
-Since components are globally registered for now, you can simply use them directly anywhere in your app. For example:
+Since components are globally registered for now, you can use them directly anywhere in your app. For example:
 
 ```html
 <ui-button @click="doMagic"> 🪄 Bibbidi-Bobbidi-Boo </ui-button>
@@ -102,10 +102,6 @@ You can find more information about each component on its relevant docs page.
 ### General
 
 - [conditional-wrapper](/src/components/general/conditional-wrapper/conditional-wrapper.md)
-
-## Scaffolding
-
-Special scaffold scripts have been created to generate files for a new component (or icon). These can be found at `support/scaffold-component.sh` and `support/scaffold-icon.sh`.
 
 ## Roadmap
 

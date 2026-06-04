@@ -16,6 +16,11 @@ const baseRoutes = [
 		name: "styling-hooks",
 		component: () => import("@/docs/views/page-styling-hooks/page-styling-hooks.vue"),
 	},
+	{
+		path: "/theming",
+		name: "theming",
+		component: () => import("@/docs/views/page-theming/page-theming.vue"),
+	},
 ];
 
 // We want to auto-generate routes from our available views.
