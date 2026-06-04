@@ -6,7 +6,7 @@
 
 		<div
 			ref="tabBarReference"
-			class="border-grey-200 mb-12 border-b dark:border-white/20"
+			class="border-border mb-12 border-b"
 			:class="{ 'wrap-tabs': wrap }"
 			data-selector="tab-group-nav"
 		>
@@ -34,7 +34,7 @@
 						class="border-b-2 px-4 py-2 whitespace-nowrap no-underline"
 						:class="{
 							'border-primary text-primary dark:border-white dark:text-white': tab.active,
-							'hocus:border-grey-500 hocus:text-grey-950 dark:hocus:border-white/60 dark:hocus:text-white border-transparent text-current':
+							'hocus:border-border-strong hocus:text-content-strong dark:hocus:border-white/60 border-transparent text-current':
 								!tab.active,
 						}"
 						data-test="tab-group-tab"

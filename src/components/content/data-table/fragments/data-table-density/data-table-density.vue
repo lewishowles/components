@@ -3,9 +3,9 @@
 		<template v-for="{ label, value } in tableDensityOptions" :key="value">
 			<ui-button
 				v-bind="{ iconStart: `icon-density-${value}` }"
-				class="hocus:border-current hocus:bg-grey-50 hocus:text-primary dark:hocus:bg-white/10 w-full justify-start border-s-2 px-4 py-2"
+				class="hocus:border-current hocus:bg-surface-subtle hocus:text-primary w-full justify-start border-s-2 px-4 py-2"
 				:class="{
-					'bg-grey-50 text-primary border-current dark:bg-white/10': tableDensity === value,
+					'bg-surface-subtle text-primary border-current': tableDensity === value,
 					'border-transparent': tableDensity !== value,
 				}"
 				:data-test="`data-table-density-${value}`"

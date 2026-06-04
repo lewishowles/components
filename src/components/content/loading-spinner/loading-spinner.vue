@@ -1,6 +1,6 @@
 <template>
 	<icon-loading
-		class="spin text-grey-500 dark:text-white/60"
+		class="spin text-content-muted"
 		data-component="loading-spinner"
 		data-test="loading-spinner"
 	/>

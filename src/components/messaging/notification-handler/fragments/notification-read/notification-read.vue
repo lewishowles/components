@@ -7,8 +7,8 @@
 			dateFormat,
 			stripeClasses: 'hidden',
 			badgeClasses: 'hidden',
-			titleClasses: 'text-grey-500 dark:text-white/60',
-			textClasses: 'text-grey-500 dark:text-white/60',
+			titleClasses: 'text-content-muted',
+			textClasses: 'text-content-muted',
 		}"
 		data-test="notification-read"
 	>

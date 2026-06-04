@@ -121,7 +121,7 @@ const {
 // animation merged with the placement gap, position, and any user overrides.
 const resolvedPanelClasses = computed(() =>
 	cn(
-		"absolute animate-fade-in-down animate-fast min-w-3xs py-2 rounded-lg border border-grey-300 bg-white backdrop-blur-lg z-50 dark:border-white/20 dark:bg-grey-950/20",
+		"absolute animate-fade-in-down animate-fast min-w-3xs py-2 rounded-lg border border-border-strong bg-white backdrop-blur-lg z-50 dark:border-white/20 dark:bg-grey-950/20",
 		placementClasses.value,
 		computedPlacement.value === "above" ? "bottom-full" : "top-full",
 		computedAlign.value === "end" ? "inset-e-0" : "inset-s-0",

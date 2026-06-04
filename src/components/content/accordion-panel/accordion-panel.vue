@@ -13,7 +13,7 @@
 				data-test="accordion-panel-button"
 				@click="toggle"
 			>
-				<span :id="titleId" class="text-grey-950 dark:text-grey-50 mb-1 text-2xl font-bold">
+				<span :id="titleId" class="text-content-strong mb-1 text-2xl font-bold">
 					<slot name="title" />
 				</span>
 

@@ -16,7 +16,7 @@
 						<component
 							:is="headingLevel"
 							v-if="haveTitle"
-							class="text-grey-950 text-xl font-bold"
+							class="text-content-strong text-xl font-bold"
 							data-test="content-card-title"
 						>
 							<slot name="title" />
@@ -102,7 +102,7 @@ const haveHeader = computed(
 
 // Classes for the header shell.
 const headerClasses = computed(() => [
-	"border-grey-200 rounded-t-xl border px-6 py-4",
+	"border-border rounded-t-xl border px-6 py-4",
 	{
 		"rounded-b-xl": !haveDefault.value && !haveFooter.value,
 	},
@@ -110,7 +110,7 @@ const headerClasses = computed(() => [
 
 // Classes for the main card body.
 const bodyClasses = computed(() => [
-	"border-grey-200 flex flex-col justify-center gap-4 border p-6",
+	"border-border flex flex-col justify-center gap-4 border p-6",
 	{
 		"rounded-t-xl": !haveHeader.value,
 		"rounded-b-xl": !haveFooter.value,
@@ -122,7 +122,7 @@ const bodyClasses = computed(() => [
 // Classes for the card footer, merging structural base with any consumer overrides.
 const resolvedFooterClasses = computed(() =>
 	cn(
-		"border-grey-200 flex items-center gap-4 rounded-b-xl border px-6 py-4 text-sm",
+		"border-border flex items-center gap-4 rounded-b-xl border px-6 py-4 text-sm",
 		{
 			"border-t-0": haveHeader.value && !haveDefault.value,
 			"rounded-t-xl": !haveHeader.value && !haveDefault.value,

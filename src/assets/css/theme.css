@@ -408,3 +408,7 @@
 @utility border-border-strong {
 	border-color: var(--border-strong);
 }
+
+@utility divide-border {
+	border-color: var(--border);
+}

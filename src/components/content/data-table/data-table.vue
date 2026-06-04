@@ -39,9 +39,9 @@
 
 		<div
 			v-if="haveTitle || haveIntroduction"
-			class="border-grey-200 mb-6 flex flex-col gap-4 border-b pb-6"
+			class="border-border mb-6 flex flex-col gap-4 border-b pb-6"
 		>
-			<component :is="headingLevel" v-if="haveTitle" class="text-grey-950 text-3xl font-bold">
+			<component :is="headingLevel" v-if="haveTitle" class="text-content-strong text-3xl font-bold">
 				<slot name="table-title" />
 			</component>
 
@@ -90,7 +90,7 @@
 						</template>
 
 						<template v-if="haveTableName">
-							<h4 class="text-grey-950 my-2 px-4 font-semibold">
+							<h4 class="text-content-strong my-2 px-4 font-semibold">
 								<slot name="display-options-label"> Display options </slot>
 							</h4>
 
@@ -104,7 +104,7 @@
 								</template>
 							</data-table-density>
 
-							<h4 class="text-grey-950 my-2 px-4 font-semibold">
+							<h4 class="text-content-strong my-2 px-4 font-semibold">
 								<slot name="column-visibility-label"> Columns </slot>
 							</h4>
 
@@ -146,7 +146,7 @@
 						</caption>
 
 						<thead>
-							<tr class="border-grey-300 border-b dark:border-white/20">
+							<tr class="border-border-strong border-b">
 								<th v-if="enableSelection" scope="col" class="w-px px-4">
 									<form-checkbox
 										v-bind="{ displayLabel: false, indeterminate: selectAllIndeterminate }"
@@ -182,7 +182,7 @@
 											iconEnd: getSortIcon(columnKey),
 											ariaLabel: column.sortable ? getSortAriaLabel(columnKey) : null,
 										}"
-										class="hocus:border-primary hocus:bg-grey-100 dark:hocus:bg-grey-950/30 -mt-4 -mb-4.25 w-full border-b border-transparent py-4"
+										class="hocus:border-primary hocus:bg-surface-sunken -mt-4 -mb-4.25 w-full border-b border-transparent py-4"
 										:class="[
 											{
 												'ps-3': !column.first,
@@ -209,7 +209,7 @@
 							<tr
 								v-for="(row, rowIndex) in paginatedRows"
 								:key="row.configuration.id"
-								class="border-grey-200 hover:bg-grey-50 dark:hover:bg-grey-950/30 border-b transition-colors dark:border-white/20"
+								class="border-border hover:bg-surface-subtle border-b transition-colors"
 								data-test="data-table-row"
 							>
 								<td v-if="enableSelection" class="px-4">
@@ -236,7 +236,7 @@
 										{
 											'ps-3': !column.first,
 											'pe-3': !column.last,
-											'text-grey-950 font-semibold': column.primary,
+											'text-content-strong font-semibold': column.primary,
 											'text-start': column.align !== 'right',
 											'text-end': column.align === 'right',
 											'tabular-nums': column.tabularNums,
@@ -401,7 +401,7 @@ const props = defineProps({
 	 */
 	headingClasses: {
 		type: String,
-		default: "font-bold text-grey-950 dark:text-grey-50",
+		default: "font-bold text-content-strong",
 	},
 
 	/**
@@ -410,7 +410,7 @@ const props = defineProps({
 	 */
 	cellClasses: {
 		type: String,
-		default: "text-grey-500 dark:text-white/60",
+		default: "text-content-muted",
 	},
 });
 

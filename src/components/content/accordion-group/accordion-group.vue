@@ -27,7 +27,7 @@
 			</ui-button>
 		</div>
 
-		<div class="divide-grey-200 divide-y">
+		<div class="divide-border divide-y">
 			<slot />
 		</div>
 	</div>

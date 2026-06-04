@@ -39,7 +39,7 @@
 
 				<display-date
 					v-if="hasDate"
-					class="text-grey-500 mt-2 block text-xs dark:text-white/60"
+					class="text-content-muted mt-2 block text-xs"
 					v-bind="{ date: notification.date, locale, format: dateFormat }"
 					:data-test="`${dataTest}-date`"
 				/>
@@ -128,7 +128,7 @@ const props = defineProps({
 	 */
 	stripeClasses: {
 		type: String,
-		default: "bg-grey-100 dark:bg-white/20",
+		default: "bg-surface-sunken",
 	},
 
 	/**
@@ -137,7 +137,7 @@ const props = defineProps({
 	 */
 	iconBackgroundClasses: {
 		type: String,
-		default: "bg-grey-50 dark:bg-white/10",
+		default: "bg-surface-subtle",
 	},
 
 	/**
@@ -154,7 +154,7 @@ const props = defineProps({
 	 */
 	titleClasses: {
 		type: String,
-		default: "text-grey-950 dark:text-grey-50",
+		default: "text-content-strong",
 	},
 
 	/**
@@ -171,7 +171,7 @@ const props = defineProps({
 	 */
 	badgeClasses: {
 		type: String,
-		default: "bg-grey-500",
+		default: "bg-content-muted",
 	},
 
 	/**

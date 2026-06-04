@@ -1,7 +1,7 @@
 <template>
 	<component
 		:is="tag"
-		class="border-grey-200"
+		class="border-border"
 		v-bind="{
 			class: { 'border-t': isHorizontal, 'border-l': isVertical },
 			'aria-hidden': !isSemantic,

@@ -1,7 +1,7 @@
 <template>
 	<img
 		v-if="haveImageSrc && !haveImageError"
-		class="bg-grey-100"
+		class="bg-surface-sunken"
 		data-component="image-tag"
 		data-test="image-tag"
 		v-bind="{ ...$attrs, src }"
@@ -10,13 +10,13 @@
 
 	<slot v-else name="fallback">
 		<div
-			class="bg-grey-100 flex items-center justify-center p-3"
+			class="bg-surface-sunken flex items-center justify-center p-3"
 			v-bind="$attrs"
 			data-component="image-tag"
 			data-part="fallback"
 			data-test="image-tag-fallback"
 		>
-			<icon-image class="text-grey-500 aspect-square h-auto w-8 max-w-full" />
+			<icon-image class="text-content-muted aspect-square h-auto w-8 max-w-full" />
 		</div>
 	</slot>
 </template>

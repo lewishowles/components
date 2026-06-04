@@ -2,7 +2,7 @@
 	<div class="flex flex-col gap-1" data-component="none-found" data-test="none-found">
 		<component
 			:is="headingLevel"
-			:class="cn('text-grey-950 text-2xl font-bold', titleClasses)"
+			:class="cn('text-content-strong text-2xl font-bold', titleClasses)"
 			data-test="none-found-title"
 		>
 			<slot name="title" />

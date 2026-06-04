@@ -24,7 +24,7 @@
 	<component
 		:is="tag"
 		v-bind="{ for: id, ...$attrs }"
-		:class="{ 'sr-only': hidden, 'text-grey-950 dark:text-grey-50 font-semibold': styled }"
+		:class="{ 'sr-only': hidden, 'text-content-strong font-semibold': styled }"
 		data-test="form-label"
 	>
 		<slot />

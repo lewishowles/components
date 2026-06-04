@@ -1,7 +1,7 @@
 <template>
 	<div data-component="form-fieldset" data-test="form-fieldset">
-		<div class="border-grey-200 mb-6 flex flex-col gap-4 border-b pb-6">
-			<component :is="headingLevel" class="text-grey-950 dark:text-grey-50 text-3xl font-bold">
+		<div class="border-border mb-6 flex flex-col gap-4 border-b pb-6">
+			<component :is="headingLevel" class="text-content-strong text-3xl font-bold">
 				<slot name="title" />
 			</component>
 

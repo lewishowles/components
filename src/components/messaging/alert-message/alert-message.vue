@@ -148,7 +148,7 @@ const alertColours = computed(() => {
 		case alertTypes.INFO:
 			return "border-primary-200 bg-primary-subtle text-primary-800 dark:border-transparent dark:text-primary-200";
 		default:
-			return "border-grey-200 bg-grey-50 text-grey-800 dark:border-transparent dark:bg-white/10 dark:text-grey-200";
+			return "border-border bg-surface-subtle text-grey-800 dark:border-transparent dark:text-grey-200";
 	}
 });
 

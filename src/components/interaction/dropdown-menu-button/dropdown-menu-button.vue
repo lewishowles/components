@@ -1,8 +1,8 @@
 <template>
 	<ui-button
-		class="hocus:border-current hocus:bg-grey-50 hocus:text-primary dark:hocus:bg-white/10 w-full justify-start border-s-2 px-4 py-2"
+		class="hocus:border-current hocus:bg-surface-subtle hocus:text-primary w-full justify-start border-s-2 px-4 py-2"
 		:class="{
-			'bg-grey-50 text-primary border-current dark:bg-white/10': selected,
+			'bg-surface-subtle text-primary border-current': selected,
 			'border-transparent': !selected,
 		}"
 		v-bind="{ iconStart: icon }"

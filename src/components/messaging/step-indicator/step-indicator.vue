@@ -28,10 +28,7 @@
 				/>
 			</div>
 
-			<span
-				class="text-grey-500 text-sm dark:text-white/60"
-				data-test="step-indicator-current-step"
-			>
+			<span class="text-content-muted text-sm" data-test="step-indicator-current-step">
 				<slot name="current-step"> Step {{ currentStep }} of {{ stepCount }} </slot>
 			</span>
 		</div>
