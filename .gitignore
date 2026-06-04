@@ -12,8 +12,3 @@ dist-docs
 
 # macOS files
 .DS_Store
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.tokensave
