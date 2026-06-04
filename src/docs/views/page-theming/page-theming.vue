@@ -220,50 +220,50 @@
 				<tr>
 					<td><code>bg-surface</code></td>
 					<td>Page and card background</td>
-					<td>White</td>
-					<td>Grey 950</td>
+					<td><code>white</code></td>
+					<td><code>grey-950</code></td>
 				</tr>
 				<tr>
 					<td><code>bg-surface-subtle</code></td>
 					<td>A slightly raised panel</td>
-					<td>Grey 50</td>
-					<td>White at 10%</td>
+					<td><code>grey-50</code></td>
+					<td><code>white/10%</code></td>
 				</tr>
 				<tr>
 					<td><code>bg-surface-sunken</code></td>
 					<td>A recessed well</td>
-					<td>Grey 100</td>
-					<td>White at 20%</td>
+					<td><code>grey-100</code></td>
+					<td><code>white/20%</code></td>
 				</tr>
 				<tr>
 					<td><code>text-content</code></td>
 					<td>Body text</td>
-					<td>Grey 600</td>
-					<td>Grey 50</td>
+					<td><code>grey-600</code></td>
+					<td><code>grey-50</code></td>
 				</tr>
 				<tr>
 					<td><code>text-content-strong</code></td>
 					<td>Headings and emphasis</td>
-					<td>Grey 950</td>
-					<td>White</td>
+					<td><code>grey-950</code></td>
+					<td><code>white</code></td>
 				</tr>
 				<tr>
 					<td><code>text-content-muted</code></td>
 					<td>Secondary text</td>
-					<td>Grey 500</td>
-					<td>White at 60%</td>
+					<td><code>grey-500</code></td>
+					<td><code>white/60%</code></td>
 				</tr>
 				<tr>
 					<td><code>border-border</code></td>
 					<td>Default border</td>
-					<td>Grey 200</td>
-					<td>White at 20%</td>
+					<td><code>grey-200</code></td>
+					<td><code>white/20%</code></td>
 				</tr>
 				<tr>
 					<td><code>border-border-strong</code></td>
 					<td>A stronger border</td>
-					<td>Grey 300</td>
-					<td>White at 30%</td>
+					<td><code>grey-300</code></td>
+					<td><code>white/30%</code></td>
 				</tr>
 			</tbody>
 		</table>
