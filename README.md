@@ -39,69 +39,7 @@ Since components are globally registered for now, you can use them directly anyw
 
 ## Available components
 
-You can find more information about each component on its relevant docs page.
-
-### Forms
-
-- [form-wrapper](/src/components/form/form-wrapper/form-wrapper.md)
-- [form-fieldset](/src/components/form/form-fieldset/form-fieldset.md)
-- [form-layout](/src/components/form/form-layout/form-layout.md)
-- [form-field](/src/components/form/form-field/form-field.md)
-- [form-actions](/src/components/form/form-actions/form-actions.md)
-
-### Interaction
-
-- [ui-button](/src/components/interaction/ui-button/ui-button.md)
-- [link-tag](/src/components/interaction/link-tag/link-tag.md)
-- [dropdown-menu](/src/components/content/dropdown-menu/dropdown-menu.md)
-- [copy-content](/src/components/interaction/copy-content/copy-content.md)
-- [star-rating](/src/components/interaction/star-rating/star-rating.md)
-
-### Content
-
-- [data-table](/src/components/content/data-table/data-table.md)
-- [tab-group](/src/components/content/tab-group/tab-group.md)
-- [accordion-group](/src/components/content/accordion-group/accordion-group.md)
-- [accordion-section](/src/components/content/accordion-section/accordion-section.md)
-- [searchable-list](/src/components/content/searchable-list/searchable-list.md)
-- [summary-details](/src/components/content/summary-details/summary-details.md)
-- [floating-details](/src/components/content/floating-details/floating-details.md)
-- [display-date](/src/components/content/display-date/display-date.md)
-- [loading-indicator](/src/components/content/loading-indicator/loading-indicator.md)
-- [loading-skeleton](/src/components/interaction/loading-skeleton/loading-skeleton.md)
-- [none-found](/src/components/interaction/none-found/none-found.md)
-
-### Icons
-
-- [icons](/src/components/icon/icons.md)
-
-### Navigation
-
-- [breadcrumb-list](/src/components/navigation/breadcrumb-list/breadcrumb-list.md)
-- [app-pagination](/src/components/navigation/app-pagination/app-pagination.md)
-
-### Display
-
-- [image-tag](/src/components/display/image-tag/image-tag.md)
-- [user-avatars](/src/components/display/user-avatars/user-avatars.md)
-
-### Messaging
-
-- [alert-message](/src/components/messaging/alert-message/alert-message.md)
-- [pill-badge](/src/components/messaging/pill-badge/pill-badge.md)
-- [modal-controller](/src/components/messaging/modal-controller/modal-controller.md)
-- [modal-dialog](/src/components/messaging/modal-dialog/modal-dialog.md)
-- [step-indicator](/src/components/messaging/step-indicator/step-indicator.md)
-- [notification-handler](/src/components/messaging/notification-handler/notification-handler.md)
-
-### Chart
-
-- [donut-chart](/src/components/chart/donut-chart/donut-chart.md)
-- [progress-bar](/src/components/chart/progress-bar/progress-bar.md)
-
-### General
-
-- [conditional-wrapper](/src/components/general/conditional-wrapper/conditional-wrapper.md)
+Every component is documented, with live examples, on the [documentation site](https://components.howles.dev).
 
 ## Roadmap
 
