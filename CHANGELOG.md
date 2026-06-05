@@ -16,6 +16,10 @@ To wire the components into your build, import the library's source once so Tail
 
 The theming guide in the docs covers the full token reference, the stylesheets you can start from, and dark mode.
 
+### `extendComponent`
+
+A new `extendComponent` utility has been added. This allows intercepting a component before using it in a project. For example, you can provide different defaults, or global slot content, such as translations.
+
 ### Flash messages
 
 A new `useFlashMessages` composable allows messages to registered for display, while a new `flash-messages` component can display messages. Messages, and the `flash-messages` component, can also be namespaced to only show relevant messages.

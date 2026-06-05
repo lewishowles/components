@@ -30,7 +30,7 @@
 		</p>
 
 		<p>
-			<router-link v-bind="{ to: { name: 'getting-started' } }"> Get started &rarr; </router-link>
+			<router-link v-bind="{ to: { name: 'getting-started' } }">Get started &rarr;</router-link>
 		</p>
 	</div>
 
@@ -133,6 +133,11 @@ const sectionConfiguration = {
 	Navigation: {
 		icon: IconNavigation,
 		colours: "bg-red-50 ring-red-200 text-red-800 dark:bg-red-500/20 dark:text-red-200",
+	},
+	Utilities: {
+		icon: IconGeneral,
+		colours:
+			"bg-yellow-50 ring-yellow-200 text-yellow-800 dark:bg-yellow-500/20 dark:text-yellow-200",
 	},
 };
 
