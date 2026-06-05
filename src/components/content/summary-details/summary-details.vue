@@ -364,7 +364,7 @@ onKeyStroke("Escape", (event) => {
 	closeDetails();
 });
 
-onClickOutside(detailsElement, (event) => {
+onClickOutside(detailsElement, () => {
 	if (!isOpen.value || !props.closeWithClickOutside) {
 		return;
 	}
