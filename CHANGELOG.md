@@ -16,6 +16,10 @@ To wire the components into your build, import the library's source once so Tail
 
 The theming guide in the docs covers the full token reference, the stylesheets you can start from, and dark mode.
 
+### Flash messages
+
+A new `useFlashMessages` composable allows messages to registered for display, while a new `flash-messages` component can display messages. Messages, and the `flash-messages` component, can also be namespaced to only show relevant messages.
+
 ### New features
 
 - `form-wrapper` - A new `fieldErrors` prop allows error messages to be passed directly to fields, and displayed in the same way validation errors are, including linked `error-summary`.

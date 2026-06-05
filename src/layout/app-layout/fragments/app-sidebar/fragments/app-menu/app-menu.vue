@@ -47,6 +47,7 @@
 					<app-menu-link to="/content/searchable-list"> searchable-list </app-menu-link>
 					<app-menu-link to="/content/summary-details"> summary-details </app-menu-link>
 					<app-menu-link to="/content/floating-details"> floating-details </app-menu-link>
+					<app-menu-link to="/content/flash-messages"> flash-messages </app-menu-link>
 					<app-menu-link to="/content/content-card"> content-card </app-menu-link>
 					<app-menu-link to="/content/display-date"> display-date </app-menu-link>
 					<app-menu-link to="/content/relative-date"> relative-date </app-menu-link>
@@ -109,6 +110,7 @@
 					<app-menu-link to="/composables/use-floating-position">
 						useFloatingPosition
 					</app-menu-link>
+					<app-menu-link to="/composables/use-flash-messages"> useFlashMessages </app-menu-link>
 					<app-menu-link to="/composables/use-modal-dialog"> useModalDialog </app-menu-link>
 				</app-menu-section>
 			</ol>
