@@ -1,7 +1,9 @@
 {
 	"compilerOptions": {
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@cypress/*": ["./test/cypress/*"],
+			"@unit/*": ["./test/unit/*"]
 		}
 	},
 	"exclude": ["node_modules", "dist"]
