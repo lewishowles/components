@@ -1,13 +1,13 @@
 <template>
 	<component-page>
-		<template #title> Form wrapper </template>
+		<template #title>Form wrapper</template>
 
 		<template #introduction>
 			<p>
-				<code>form-wrapper</code> is intended as a complete form, wrapped around individual fields.
-				The wrapper automatically adds actions and, when fields are provided validation information,
-				handles field validation and the generation of an error summary to maximise the
-				accessibility of the form.
+				<code>form-wrapper</code>
+				is intended as a complete form, wrapped around individual fields. The wrapper automatically
+				adds actions and, when fields are provided validation information, handles field validation
+				and the generation of an error summary to maximise the accessibility of the form.
 			</p>
 
 			<p>
@@ -22,23 +22,28 @@
 			</p>
 
 			<p>
-				<code>form-wrapper</code> automatically includes <code>form-layout</code> around its
-				<code>default</code> content.
+				<code>form-wrapper</code>
+				automatically includes
+				<code>form-layout</code>
+				around its
+				<code>default</code>
+				content.
 			</p>
 		</template>
 
 		<component-props>
 			<component-prop id="prop-field-errors">
-				<template #name> fieldErrors </template>
+				<template #name>fieldErrors</template>
 
-				<template #type> Object </template>
+				<template #type>Object</template>
 
-				<template #default-value> {} </template>
+				<template #default-value>{}</template>
 
 				<p>
 					Field-level errors managed by the parent, usually from an API response. Keys should match
-					registered <code>form-field</code> names. Values can be either a single message or a list
-					of messages.
+					registered
+					<code>form-field</code>
+					names. Values can be either a single message or a list of messages.
 				</p>
 
 				<p>
@@ -52,24 +57,54 @@
 					provided already exists"], };
 				</code-block>
 			</component-prop>
+
+			<component-prop id="prop-field-errors-callback">
+				<template #name>fieldErrorsCallback</template>
+
+				<template #type>Function</template>
+
+				<template #default-value>null</template>
+
+				<p>
+					An optional callback that maps a rejected submit Promise into field errors, keyed by field
+					name, where each value is a single message or a list of messages.
+				</p>
+
+				<p>
+					Errors whose keys match a registered
+					<code>form-field</code>
+					are shown in the error summary and passed to the field, exactly like
+					<code>fieldErrors</code>
+					. Errors whose keys don't match a registered field are surfaced as general errors through
+					the
+					<code>error</code>
+					slot's
+					<code>errors</code>
+					scoped prop. Return an empty value for errors that aren't field errors so that they
+					re-throw and reach your own handling.
+				</p>
+			</component-prop>
 		</component-props>
 
 		<component-slots>
 			<component-slot id="slot-pre-form">
-				<template #name> pre-form </template>
+				<template #name>pre-form</template>
 
 				<p>
 					Any elements to place before the form elements, and outside of the
-					<code>form-layout</code> wrapper. For example, navigational items such as &quot;Back to
-					…&quot; or &quot;Forgot password&quot;.
+					<code>form-layout</code>
+					wrapper. For example, navigational items such as &quot;Back to …&quot; or &quot;Forgot
+					password&quot;.
 				</p>
 			</component-slot>
 			<component-slot id="slot-default">
-				<template #name> default </template>
+				<template #name>default</template>
 
 				<p>
-					The <code>default</code> slot contains the content of the form itself, including any
-					fields, layout elements, or information as necessary.
+					The
+					<code>default</code>
+					slot contains the content of the form itself, including any fields, layout elements, or
+					information as necessary.
 				</p>
 
 				<table>
@@ -95,16 +130,18 @@
 				</table>
 			</component-slot>
 			<component-slot id="slot-submit-button-label">
-				<template #name> submit-button-label </template>
+				<template #name>submit-button-label</template>
 
 				<p>
 					The label to use on the submit button. This should be representative of what is about to
 					happen—such as &quot;Create account&quot; or &quot;Update settings&quot;, not something
-					generic, and as such <strong>no default label is provided</strong>.
+					generic, and as such
+					<strong>no default label is provided</strong>
+					.
 				</p>
 			</component-slot>
 			<component-slot id="slot-secondary-actions">
-				<template #name> secondary-actions </template>
+				<template #name>secondary-actions</template>
 
 				<p>
 					Additional actions to appear beside the submit button—such as &quot;Save and exit&quot; to
@@ -114,33 +151,55 @@
 				</p>
 			</component-slot>
 			<component-slot id="slot-tertiary-actions">
-				<template #name> tertiary-actions </template>
+				<template #name>tertiary-actions</template>
 
 				<p>
 					Additional actions to appear below the primary and secondary actions, such as
 					&quot;Cancel&quot;. Navigational actions, such as &quot;Back to …&quot; or &quot;Forgot
 					password&quot; should appear above the form fields, such as in the
-					<code>pre-form</code> slot.
+					<code>pre-form</code>
+					slot.
 				</p>
 			</component-slot>
 			<component-slot id="slot-error">
-				<template #name> error </template>
+				<template #name>error</template>
 
 				<p>
 					A general error message to display to the user by the form's actions, useful for things
 					like explaining an error message received after an API call failure.
 				</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Slot prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>errors</code></td>
+							<td><code>string[]</code></td>
+							<td>
+								General errors produced by
+								<code>fieldErrorsCallback</code>
+								whose keys don't match a registered field.
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</component-slot>
 			<component-slot id="slot-error-summary-title">
-				<template #name> error-summary-title </template>
+				<template #name>error-summary-title</template>
 
-				<template #default-value> There is a problem </template>
+				<template #default-value>There is a problem</template>
 
 				<p>The title of the error summary that appears if any errors are found in the form.</p>
 			</component-slot>
 
 			<component-slot id="slot-actions-label">
-				<template #name> actions-label </template>
+				<template #name>actions-label</template>
 
 				<p>
 					An optional visually hidden label for the action group, used by screen readers to identify
@@ -157,20 +216,23 @@
 
 		<component-events>
 			<component-event id="event-submit">
-				<template #name> submit </template>
+				<template #name>submit</template>
 
 				<p>
 					Fired when the user submits the form and validation succeeds, containing the current
-					values of each of the <code>form-field</code> elements contained within the form.
+					values of each of the
+					<code>form-field</code>
+					elements contained within the form.
 				</p>
 			</component-event>
 
 			<component-event id="event-v-model">
-				<template #name> v-model </template>
+				<template #name>v-model</template>
 
 				<p>
 					The current value of the included form fields, in a flat objected, keyed by the
-					<code>name</code> value for each field.
+					<code>name</code>
+					value for each field.
 				</p>
 			</component-event>
 		</component-events>
@@ -178,8 +240,11 @@
 		<component-provides>
 			<template #introduction>
 				<p>
-					Two methods are provided by <code>form-wrapper</code> under the
-					<code>form-wrapper</code> namespace to allow a field to communicate and update its value.
+					Two methods are provided by
+					<code>form-wrapper</code>
+					under the
+					<code>form-wrapper</code>
+					namespace to allow a field to communicate and update its value.
 				</p>
 			</template>
 
@@ -262,8 +327,9 @@
 
 				<p>
 					Resets the submit button's loading state. Call this after your
-					<code>@submit</code> handler completes if it does not return a Promise — for example, when
-					the async work is deferred or the result comes back via a separate channel.
+					<code>@submit</code>
+					handler completes if it does not return a Promise — for example, when the async work is
+					deferred or the result comes back via a separate channel.
 				</p>
 			</component-method>
 
@@ -274,7 +340,9 @@
 
 				<p>
 					A reactive boolean reflecting whether a form submission is currently in progress.
-					Accessible via a <code>ref</code> on the component.
+					Accessible via a
+					<code>ref</code>
+					on the component.
 				</p>
 			</component-method>
 		</component-methods>

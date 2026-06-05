@@ -8,7 +8,7 @@
 			data-test="form-wrapper-error-summary"
 		>
 			<h2 class="mb-2 font-bold">
-				<slot name="error-summary-title"> There is a problem </slot>
+				<slot name="error-summary-title">There is a problem</slot>
 			</h2>
 
 			<ul class="list-disc ps-4">
@@ -41,11 +41,12 @@
 					v-bind="{ live: false }"
 					data-test="form-wrapper-submit-button-label-error"
 				>
-					<template #title> &lt;form-wrapper&gt; </template>
+					<template #title>&lt;form-wrapper&gt;</template>
 
 					<p>
-						The slot <code>`submit-button-label`</code> is required to provide a meaningful call to
-						action for the form.
+						The slot
+						<code>`submit-button-label`</code>
+						is required to provide a meaningful call to action for the form.
 					</p>
 				</alert-message>
 
@@ -60,8 +61,8 @@
 					<slot name="submit-button-label" />
 				</ui-button>
 
-				<alert-message v-if="haveErrorMessage" type="error">
-					<slot name="error" />
+				<alert-message v-if="haveErrorMessage || haveApiGeneralErrors" type="error">
+					<slot name="error" v-bind="{ errors: apiGeneralErrors }" />
 				</alert-message>
 
 				<slot name="secondary-actions" />
@@ -100,6 +101,17 @@ const props = defineProps({
 		type: Object,
 		default: () => ({}),
 	},
+
+	/**
+	 * An optional method that maps a rejected submit Promise into field errors,
+	 * keyed by field name, where each value is a message or a list of messages.
+	 * Return an empty value for errors that aren't field errors so that they
+	 * re-throw and reach the application's own handling.
+	 */
+	fieldErrorsCallback: {
+		type: Function,
+		default: null,
+	},
 });
 
 defineEmits(["submit"]);
@@ -129,6 +141,9 @@ const formFields = reactive({});
 const haveFormFields = computed(() => isNonEmptyObject(formFields));
 // A holding pot for any validation errors found during validation.
 const validationErrorSummary = ref([]);
+// Field errors produced by the `fieldErrorsCallback` from a rejected submit,
+// keyed by field name.
+const apiFieldErrors = ref({});
 
 // Parent-owned field errors formatted for the error summary.
 const externalErrorSummary = computed(() => {
@@ -146,6 +161,29 @@ const externalErrorSummary = computed(() => {
 
 	return errors;
 });
+
+// Parsed API errors whose field name doesn't match a registered field, surfaced
+// as general errors rather than in the field error summary.
+const apiGeneralErrors = computed(() => {
+	const messages = [];
+
+	for (const fieldName in apiFieldErrors.value) {
+		if (!Object.hasOwn(apiFieldErrors.value, fieldName)) {
+			continue;
+		}
+
+		if (Object.hasOwn(formFields, fieldName)) {
+			continue;
+		}
+
+		messages.push(...normaliseFieldErrors(apiFieldErrors.value[fieldName]));
+	}
+
+	return messages;
+});
+
+// Whether we have any general (non-field) API errors to show.
+const haveApiGeneralErrors = computed(() => isNonEmptyArray(apiGeneralErrors.value));
 
 // All field errors shown in the error summary.
 const errorSummary = computed(() => [
@@ -229,6 +267,10 @@ watch(
  * submitting the appropriate event if validation succeeds.
  */
 async function handleFormSubmit() {
+	// Clear any field errors from a previous submit so stale API errors don't
+	// block this attempt or linger in the summary.
+	apiFieldErrors.value = {};
+
 	if (!haveFormFields.value) {
 		doSubmit();
 
@@ -278,27 +320,36 @@ function validateFields() {
 }
 
 /**
- * Get parent-owned error messages for a field.
+ * Get all error messages for a field, combining parent-owned errors with any
+ * produced by the `fieldErrorsCallback`.
  *
  * @param  {string}  fieldName
  *     The field to retrieve error messages for.
  */
 function getFieldErrors(fieldName) {
-	if (!isNonEmptyObject(props.fieldErrors)) {
+	return [
+		...normaliseFieldErrors(props.fieldErrors?.[fieldName]),
+		...normaliseFieldErrors(apiFieldErrors.value?.[fieldName]),
+	];
+}
+
+/**
+ * Normalise a field's error value, which may be a single message or a list,
+ * into an array of non-empty messages.
+ *
+ * @param  {string|Array}  value
+ *     The raw error value for a field.
+ */
+function normaliseFieldErrors(value) {
+	if (isNonEmptyString(value)) {
+		return [value];
+	}
+
+	if (!isNonEmptyArray(value)) {
 		return [];
 	}
 
-	const fieldErrors = props.fieldErrors[fieldName];
-
-	if (isNonEmptyString(fieldErrors)) {
-		return [fieldErrors];
-	}
-
-	if (!isNonEmptyArray(fieldErrors)) {
-		return [];
-	}
-
-	return fieldErrors.filter((message) => isNonEmptyString(message));
+	return value.filter((message) => isNonEmptyString(message));
 }
 
 /**
@@ -324,8 +375,32 @@ function doSubmit() {
 	const promise = results.find((result) => result instanceof Promise);
 
 	if (promise) {
-		promise.then(resetSubmitButton, resetSubmitButton);
+		promise.catch(handleSubmitError).finally(resetSubmitButton);
 	}
+}
+
+/**
+ * Handle a rejected submit Promise. If a `fieldErrorsCallback` is provided and
+ * can map the error to field errors, surface those; otherwise re-throw so
+ * general failures still reach the parent app.
+ *
+ * @param  {unknown}  error
+ *     The error the submit Promise rejected with.
+ */
+function handleSubmitError(error) {
+	if (!isFunction(props.fieldErrorsCallback)) {
+		throw error;
+	}
+
+	const parsedErrors = props.fieldErrorsCallback(error);
+
+	if (!isNonEmptyObject(parsedErrors)) {
+		throw error;
+	}
+
+	apiFieldErrors.value = parsedErrors;
+
+	focusErrorSummary();
 }
 
 /**

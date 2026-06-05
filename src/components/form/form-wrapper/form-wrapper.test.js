@@ -1,4 +1,5 @@
 import { createMount } from "@unit/support/mount";
+import { flushPromises } from "@vue/test-utils";
 import { describe, expect, test, vi } from "vite-plus/test";
 import FormWrapper from "./form-wrapper.vue";
 
@@ -175,6 +176,145 @@ describe("form-wrapper", () => {
 				wrapper.vm.resetSubmitButton();
 
 				expect(wrapper.vm.isSubmitting).toBe(false);
+			});
+		});
+	});
+
+	describe("fieldErrorsCallback", () => {
+		describe("handleSubmitError", () => {
+			test("Maps a rejected error to a registered field", () => {
+				const wrapper = mount({
+					props: { fieldErrorsCallback: () => ({ email: "That email is taken" }) },
+				});
+
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+
+				vm.handleSubmitError(new Error("Request failed"));
+
+				expect(vm.errorSummary).toEqual([
+					{ fieldName: "email", id: "email-id", message: "That email is taken" },
+				]);
+			});
+
+			test("Normalises a list of messages for a field", () => {
+				const wrapper = mount({
+					props: { fieldErrorsCallback: () => ({ name: ["Too short", "Required"] }) },
+				});
+
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "name", id: "name-id", validateField: () => true });
+
+				vm.handleSubmitError(new Error("Request failed"));
+
+				expect(vm.errorSummary).toEqual([
+					{ fieldName: "name", id: "name-id", message: "Too short" },
+					{ fieldName: "name", id: "name-id", message: "Required" },
+				]);
+			});
+
+			test("Surfaces errors for unknown fields as general errors", () => {
+				const wrapper = mount({
+					props: { fieldErrorsCallback: () => ({ form: "Something went wrong" }) },
+				});
+
+				const vm = wrapper.vm;
+
+				vm.handleSubmitError(new Error("Request failed"));
+
+				expect(vm.apiGeneralErrors).toEqual(["Something went wrong"]);
+				expect(vm.errorSummary).toEqual([]);
+			});
+
+			test("Re-throws when the adapter returns nothing mappable", () => {
+				const error = new Error("Server error");
+				const wrapper = mount({ props: { fieldErrorsCallback: () => null } });
+
+				const vm = wrapper.vm;
+
+				expect(() => vm.handleSubmitError(error)).toThrow(error);
+				expect(vm.apiGeneralErrors).toEqual([]);
+			});
+
+			test("Re-throws when no fieldErrorsCallback is provided", () => {
+				const error = new Error("Server error");
+				const wrapper = mount();
+
+				expect(() => wrapper.vm.handleSubmitError(error)).toThrow(error);
+			});
+		});
+
+		describe("getFieldErrors", () => {
+			test("Combines parent-owned and adapter errors", () => {
+				const wrapper = mount({
+					props: {
+						fieldErrors: { email: "Parent error" },
+						fieldErrorsCallback: () => ({ email: "API error" }),
+					},
+				});
+
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+				vm.handleSubmitError(new Error("Request failed"));
+
+				expect(vm.getFieldErrors("email")).toEqual(["Parent error", "API error"]);
+			});
+		});
+
+		describe("Async submit", () => {
+			test("Maps a rejected submit and resets the submitting state", async () => {
+				const onSubmit = vi.fn(() => Promise.reject(new Error("Request failed")));
+
+				const wrapper = mount({
+					props: {
+						onSubmit,
+						fieldErrorsCallback: () => ({ email: "That email is taken" }),
+					},
+				});
+
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+
+				await vm.handleFormSubmit();
+				await flushPromises();
+
+				expect(vm.errorSummary).toEqual([
+					{ fieldName: "email", id: "email-id", message: "That email is taken" },
+				]);
+				expect(vm.isSubmitting).toBe(false);
+			});
+
+			test("Clears stale field errors on a new submit", async () => {
+				const onSubmit = vi
+					.fn()
+					.mockReturnValueOnce(Promise.reject(new Error("Request failed")))
+					.mockReturnValueOnce(Promise.resolve());
+
+				const wrapper = mount({
+					props: {
+						onSubmit,
+						fieldErrorsCallback: () => ({ email: "That email is taken" }),
+					},
+				});
+
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+
+				await vm.handleFormSubmit();
+				await flushPromises();
+
+				expect(vm.errorSummary).toHaveLength(1);
+
+				await vm.handleFormSubmit();
+
+				expect(vm.errorSummary).toEqual([]);
+
+				await flushPromises();
 			});
 		});
 	});

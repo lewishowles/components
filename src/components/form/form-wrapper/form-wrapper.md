@@ -24,6 +24,15 @@ const fieldErrors = {
 };
 ```
 
+### `fieldErrorsCallback`
+
+- type: `function`
+- default: `null`
+
+An optional callback that maps a rejected submit Promise into field errors, keyed by field name, where each value is a single message or a list of messages.
+
+Errors whose keys match a registered `form-field` are shown in the error summary and passed to the field, exactly like `fieldErrors`. Errors whose keys don't match a registered field are surfaced as general errors through the `error` slot's `errors` scoped prop. Return an empty value for errors that aren't field errors so that they re-throw and reach your own handling.
+
 ## Slots
 
 ### `pre-form`
@@ -54,6 +63,10 @@ Additional actions to appear below the primary and secondary actions, such as "C
 ### `error`
 
 A general error message to display to the user by the form's actions, useful for things like explaining an error message received after an API call failure.
+
+| Slot prop | Type       | Description                                                                      |
+| --------- | ---------- | -------------------------------------------------------------------------------- |
+| `errors`  | `string[]` | General errors produced by `fieldErrorsCallback` whose keys don't match a field. |
 
 ### `error-summary-title`
 
@@ -111,7 +124,7 @@ Allow a field to update its value in the form.
 
 ```html
 <form-wrapper v-model="formData">
-	<form-field name="your_name"> Your name </form-field>
+	<form-field name="your_name">Your name</form-field>
 </form-wrapper>
 ```
 
