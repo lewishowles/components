@@ -27,8 +27,6 @@ export default function useTablePagination(source, enablePagination) {
 
 	// The current page of results being viewed.
 	const currentPage = ref(1);
-	// The rows shown for the current page.
-	const paginatedRows = ref([]);
 	// The total number of rows being paginated.
 	const rowCount = computed(() => arrayLength(sortedRows.value));
 
@@ -37,27 +35,28 @@ export default function useTablePagination(source, enablePagination) {
 		currentPage.value = 1;
 	});
 
-	// We watch sortedColumn and sortDirection alongside sortedRows because the
-	// sort orders the underlying array in place, so sortedRows can return the
-	// same reference after a sort change; watching the sort state directly forces
-	// this to re-run. A plain computed misses these changes for the same reason —
-	// these dependencies are load-bearing, not redundant.
-	watch(
-		[sortedRows, currentPage, sortDirection, sortedColumn],
-		([rows, page]) => {
-			if (!enablePagination.value) {
-				paginatedRows.value = rows;
+	// The rows shown for the current page.
+	const paginatedRows = computed(() => {
+		// Track the sort state directly. The sort orders the underlying array
+		// in place, so sortedRows can return the same reference after a sort
+		// change (e.g. flipping direction while already on page one, where
+		// currentPage does not change either). Reading the column and direction
+		// here forces a re-evaluation that a reference check on sortedRows
+		// alone would miss.
+		void sortedColumn.value;
+		void sortDirection.value;
 
-				return;
-			}
+		const rows = sortedRows.value;
 
-			const start = (page - 1) * pageSize;
-			const end = start + pageSize;
+		if (!enablePagination.value) {
+			return rows;
+		}
 
-			paginatedRows.value = rows.slice(start, end);
-		},
-		{ deep: true, immediate: true },
-	);
+		const start = (currentPage.value - 1) * pageSize;
+		const end = start + pageSize;
+
+		return rows.slice(start, end);
+	});
 
 	return {
 		currentPage,
