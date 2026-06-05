@@ -307,8 +307,6 @@
 <script setup>
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed, provide, ref, toRef, useId, useSlots, watch } from "vue";
-import { isNonEmptyObject, keys } from "@lewishowles/helpers/object";
-import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useResizeObserver } from "@vueuse/core";
@@ -318,6 +316,7 @@ import DataTableDensity from "./fragments/data-table-density/data-table-density.
 import DataTableSearch from "./fragments/data-table-search/data-table-search.vue";
 
 import useTableColumns from "./composables/use-table-columns/use-table-columns.js";
+import useTableData from "./composables/use-table-data/use-table-data.js";
 import useTablePagination from "./composables/use-table-pagination/use-table-pagination.js";
 import useTableSearch from "./composables/use-table-search/use-table-search.js";
 import useTableSelection from "./composables/use-table-selection/use-table-selection.js";
@@ -466,49 +465,9 @@ useResizeObserver(tableScrollWrapper, () => {
 		tableScrollWrapper.value?.scrollWidth > tableScrollWrapper.value?.clientWidth;
 });
 
-// Transform the provided data into something more suitable for display in our
-// table. This includes adding cell configuration for internal tracking, and
-// removing any rows that seem to be invalid.
-const internalData = computed(() => {
-	if (!isNonEmptyArray(props.data)) {
-		return [];
-	}
-
-	return props.data.reduce((data, row) => {
-		if (!isNonEmptyObject(row)) {
-			return data;
-		}
-
-		// We update the structure of our data, allowing for both row and cell
-		// configuration in addition to the provided data, but we avoid the user
-		// having to know what that structure is.
-		const rowContent = keys(row).reduce((rowData, columnKey) => {
-			rowData[columnKey] = {
-				configuration: {
-					searchable: getSearchableContent(row, columnKey),
-					sortable: getSortableContent(row, columnKey),
-				},
-				content: row[columnKey],
-			};
-
-			return rowData;
-		}, {});
-
-		data.push({
-			configuration: {
-				id: crypto.randomUUID(),
-			},
-			content: rowContent,
-			raw: row,
-		});
-
-		return data;
-	}, []);
-});
-
-// Whether we have any data for our table. That is, the provided data was
-// validated and contains a non-empty array of at least one object.
-const haveData = computed(() => isNonEmptyArray(internalData.value));
+// Table data: the provided data, transformed into the internal shape the table
+// works with, and whether any valid data is present.
+const { haveData, internalData } = useTableData(toRef(props, "data"), toRef(props, "columns"));
 
 // Columns: the derived column definitions, which are visible, the table
 // density, and the helpers that merge classes and read labels.
@@ -619,70 +578,6 @@ watch(selectedRowCount, () => {
 
 	statusType.value = statusTypes.SELECTION;
 });
-
-/**
- * Get the searchable content of a cell; that is, either the content provided by
- * the column searchable content callback, or the lowercase content of the cell
- * itself.
- *
- * @param  {object}  row
- *     The raw row provided to the table.
- * @param  {string}  columnKey
- *     The key for the column.
- */
-function getSearchableContent(row, columnKey) {
-	let searchableContent = row[columnKey];
-
-	if (!isNonEmptyString(searchableContent)) {
-		searchableContent = "";
-	}
-
-	const searchableContentCallback = props.columns[columnKey]?.searchableContentCallback;
-
-	if (isFunction(searchableContentCallback)) {
-		const callbackResponse = searchableContentCallback(columnKey, row);
-
-		if (isNonEmptyString(callbackResponse)) {
-			searchableContent = callbackResponse;
-		}
-	}
-
-	if (isNonEmptyString(searchableContent)) {
-		searchableContent = searchableContent.toLowerCase();
-	}
-
-	return searchableContent;
-}
-
-/**
- * Get the sortable content of a cell; that is, either the content provided by
- * the column sortable content callback, or the lowercase content of the cell
- * itself.
- *
- * @param  {object}  row
- *     The raw row provided to the table.
- * @param  {string}  columnKey
- *     The key for the column.
- */
-function getSortableContent(row, columnKey) {
-	let sortableContent = row[columnKey];
-
-	const sortableContentCallback = props.columns[columnKey]?.sortableContentCallback;
-
-	if (isFunction(sortableContentCallback)) {
-		const callbackResponse = sortableContentCallback(columnKey, row);
-
-		if (isNonEmptyString(callbackResponse)) {
-			sortableContent = callbackResponse;
-		}
-	}
-
-	if (isNonEmptyString(sortableContent)) {
-		sortableContent = sortableContent.toLowerCase();
-	}
-
-	return sortableContent;
-}
 
 /**
  * Set the search query to the provided value.
