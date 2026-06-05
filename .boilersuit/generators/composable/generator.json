@@ -30,6 +30,12 @@
 			"template": "composable.test.js",
 			"output_path": "{{ NAME | kebab }}/{{ NAME | kebab }}.test.js",
 			"required": true
+		},
+		{
+			"template": "composable-docs-page.vue",
+			"output_path": "../docs/views/composables/page-{{ NAME | kebab }}/page-{{ NAME | kebab }}.vue",
+			"required": false,
+			"label": "Documentation view"
 		}
 	]
 }
