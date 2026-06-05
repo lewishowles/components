@@ -32,7 +32,7 @@ describe("relative-date", () => {
 				const wrapper = mount({ date: "2025-03-29T13:14:19" });
 				const vm = wrapper.vm;
 
-				expect(vm.relativeDate).toBe("2 minutes ago");
+				expect(vm.relativeDate).toBe("1 minute ago");
 			});
 
 			test("Returns minutes ago for dates less than 60 minutes ago", () => {
@@ -46,7 +46,7 @@ describe("relative-date", () => {
 				const wrapper = mount({ date: "2025-03-29T12:14:20" });
 				const vm = wrapper.vm;
 
-				expect(vm.relativeDate).toBe("2 hours ago");
+				expect(vm.relativeDate).toBe("1 hour ago");
 			});
 
 			test("Returns hours ago for dates less than 24 hours ago", () => {

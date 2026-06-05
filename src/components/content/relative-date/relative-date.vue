@@ -193,19 +193,19 @@ function getRelativeDateParts(date, relativeTo) {
  *     The absolute difference between two dates, as milliseconds.
  */
 function getRelativeDateAmount(difference) {
-	const seconds = Math.ceil(difference / relativeUnitMilliseconds.SECOND);
+	const seconds = Math.floor(difference / relativeUnitMilliseconds.SECOND);
 
 	if (seconds < 60) {
 		return { amount: seconds, unit: relativeUnits.SECOND };
 	}
 
-	const minutes = Math.ceil(difference / relativeUnitMilliseconds.MINUTE);
+	const minutes = Math.floor(difference / relativeUnitMilliseconds.MINUTE);
 
 	if (minutes < 60) {
 		return { amount: minutes, unit: relativeUnits.MINUTE };
 	}
 
-	const hours = Math.ceil(difference / relativeUnitMilliseconds.HOUR);
+	const hours = Math.floor(difference / relativeUnitMilliseconds.HOUR);
 
 	if (hours < 24) {
 		return { amount: hours, unit: relativeUnits.HOUR };
