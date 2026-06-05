@@ -45,6 +45,7 @@
 					<app-menu-link to="/content/tab-group">tab-group</app-menu-link>
 					<app-menu-link to="/content/accordion-group">accordion-group</app-menu-link>
 					<app-menu-link to="/content/searchable-list">searchable-list</app-menu-link>
+					<app-menu-link to="/content/combo-box">combo-box</app-menu-link>
 					<app-menu-link to="/content/summary-details">summary-details</app-menu-link>
 					<app-menu-link to="/content/floating-details">floating-details</app-menu-link>
 					<app-menu-link to="/content/flash-messages">flash-messages</app-menu-link>

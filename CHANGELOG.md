@@ -29,6 +29,10 @@ A new `useFlashMessages` composable allows messages to registered for display, w
 - A new `fieldErrors` prop allows error messages to be passed directly to fields, and displayed in the same way validation errors are, including linked `error-summary`.
 - A new `fieldErrorsCallback` prop fires when an error is returned, allowing any field-specific errors to be extracted from the rejected Promise called by the form's submit method..
 
+### New components
+
+- A new `combo-box` component provides a ready-to-use implementation of the combobox pattern, and wraps `use-combobox`, with custom result display, much like `searchable-list`.
+
 ## 1.12.0
 
 In this version, many components that had `*Classes` props have been updated to allow classes to be provided and merged, without overriding untouched base classes.
