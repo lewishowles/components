@@ -307,17 +307,17 @@
 <script setup>
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed, provide, ref, toRef, useId, useSlots, watch } from "vue";
-import { cn } from "@/utilities/cn.js";
-import { get, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
+import { isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { useResizeObserver, useStorage } from "@vueuse/core";
+import { useResizeObserver } from "@vueuse/core";
 
 import DataTableColumns from "./fragments/data-table-columns/data-table-columns.vue";
 import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
 import DataTableSearch from "./fragments/data-table-search/data-table-search.vue";
 
+import useTableColumns from "./composables/use-table-columns/use-table-columns.js";
 import useTablePagination from "./composables/use-table-pagination/use-table-pagination.js";
 import useTableSearch from "./composables/use-table-search/use-table-search.js";
 import useTableSelection from "./composables/use-table-selection/use-table-selection.js";
@@ -450,20 +450,6 @@ const haveCaption = computed(() => isNonEmptySlot(slots.caption));
 const haveTitle = computed(() => isNonEmptySlot(slots["table-title"]));
 // Whether this table includes an introduction.
 const haveIntroduction = computed(() => isNonEmptySlot(slots["table-introduction"]));
-// Our user-selected table density from the fragment component.
-const tableDensity = ref(null);
-// Our available table density options, as provided by the `data-table-density`
-// sub-component. This means we can provide slots for their labels, without
-// having to know what those available densities are from this component.
-const tableDensityOptions = ref([]);
-
-// The stored user-selected column visibility for this table.
-const userColumnVisibility = haveTableName.value
-	? useStorage(`data-table:${props.name}:columns`, {})
-	: ref({});
-
-// Our user-selected column visibility.
-const columnVisibility = ref({});
 // The available status announcement types for the live region.
 const statusTypes = { SORT: "sort", SEARCH: "search", SELECTION: "selection" };
 // Which type of announcement is currently active in the status live region.
@@ -478,107 +464,6 @@ const captionId = useId();
 useResizeObserver(tableScrollWrapper, () => {
 	isOverflowing.value =
 		tableScrollWrapper.value?.scrollWidth > tableScrollWrapper.value?.clientWidth;
-});
-
-// Initialise the table with stored column visibility before the menu opens.
-initialiseColumnVisibility();
-
-// Our table spacing, based on our current density.
-const tableSpacingClasses = computed(() => {
-	switch (tableDensity.value) {
-		case "compact":
-			return "py-2";
-		case "standard":
-			return "py-3";
-		default:
-			return "py-4";
-	}
-});
-
-/**
- * Merge table-level and column-level heading classes, with column-level
- * classes taking precedence.
- *
- * @param  {object}  column
- *     The column definition.
- */
-function getHeadingClasses(column) {
-	return cn(props.headingClasses, column.columnClasses, column.headingClasses);
-}
-
-/**
- * Merge table-level and column-level cell classes, with column-level classes
- * taking precedence.
- *
- * @param  {object}  column
- *     The column definition.
- */
-function getCellClasses(column) {
-	return cn(tableSpacingClasses.value, props.cellClasses, column.columnClasses, column.cellClasses);
-}
-
-// A list of columns to display in the table, taking into account validation,
-// and containing the relevant data. We base these columns on those provided by
-// the user, which means that any column not configured will not be displayed by
-// default.
-const columnDefinitions = computed(() => {
-	if (!haveData.value || !isNonEmptyObject(props.columns)) {
-		return {};
-	}
-
-	const columns = keys(props.columns).reduce((columns, columnKey) => {
-		const userConfiguration = get(props.columns, columnKey) || {};
-
-		// If this column is hidden by configuration, we don't add it at all.
-		const hiddenByConfiguration = get(userConfiguration, "hidden") === true;
-
-		if (hiddenByConfiguration) {
-			return columns;
-		}
-
-		// However, if this column is hidden by the user's preferences, we want
-		// to add it (as that preference may change, and we want to show the
-		// checkbox), but we want to mark it as hidden.
-
-		const hiddenByPreference = get(columnVisibility.value, columnKey) === false;
-
-		columns[columnKey] = {
-			label: columnKey,
-			first: false,
-			last: false,
-			sortable: true,
-			tabularNums: false,
-			visible: !hiddenByPreference,
-			...userConfiguration,
-		};
-
-		return columns;
-	}, {});
-
-	// After we determine which columns are present, we need to determine which
-	// column is first and which is last, as columns may have been removed or
-	// re-ordered by configuration.
-	const columnKeys = keys(columns);
-
-	if (columnKeys.length > 0) {
-		columns[columnKeys[0]].first = true;
-		columns[columnKeys[columnKeys.length - 1]].last = true;
-	}
-
-	return columns;
-});
-
-// Our column definitions, limited to those that are visible.
-const visibleColumnDefinitions = computed(() => {
-	return keys(columnDefinitions.value).reduce((columns, columnKey) => {
-		const column = columnDefinitions.value[columnKey];
-
-		if (column.visible) {
-			columns[columnKey] = column;
-		}
-
-		return columns;
-	}, {});
 });
 
 // Transform the provided data into something more suitable for display in our
@@ -624,6 +509,26 @@ const internalData = computed(() => {
 // Whether we have any data for our table. That is, the provided data was
 // validated and contains a non-empty array of at least one object.
 const haveData = computed(() => isNonEmptyArray(internalData.value));
+
+// Columns: the derived column definitions, which are visible, the table
+// density, and the helpers that merge classes and read labels.
+const {
+	columnDefinitions,
+	columnVisibility,
+	getCellClasses,
+	getColumnLabel,
+	getHeadingClasses,
+	tableDensity,
+	tableDensityOptions,
+	updateTableDensityOptions,
+	visibleColumnDefinitions,
+} = useTableColumns({
+	columns: toRef(props, "columns"),
+	name: props.name,
+	haveData,
+	headingClasses: toRef(props, "headingClasses"),
+	cellClasses: toRef(props, "cellClasses"),
+});
 
 // Table search: the current query, whether a search is active, and the rows
 // that match it.
@@ -715,44 +620,6 @@ watch(selectedRowCount, () => {
 	statusType.value = statusTypes.SELECTION;
 });
 
-// Persist column visibility when users change the table configuration.
-watch(
-	columnVisibility,
-	() => {
-		userColumnVisibility.value = columnVisibility.value;
-	},
-	{ deep: true },
-);
-
-/**
- * Initialise column visibility based on any stored values.
- */
-function initialiseColumnVisibility() {
-	if (!isNonEmptyObject(props.columns)) {
-		return;
-	}
-
-	const visibility = {};
-
-	for (const columnKey of keys(props.columns)) {
-		const userConfiguration = get(props.columns, columnKey) || {};
-		const hiddenByConfiguration = get(userConfiguration, "hidden") === true;
-
-		if (hiddenByConfiguration) {
-			continue;
-		}
-
-		visibility[columnKey] = true;
-
-		if (Object.hasOwn(userColumnVisibility.value, columnKey)) {
-			visibility[columnKey] = userColumnVisibility.value[columnKey];
-		}
-	}
-
-	columnVisibility.value = visibility;
-	userColumnVisibility.value = visibility;
-}
-
 /**
  * Get the searchable content of a cell; that is, either the content provided by
  * the column searchable content callback, or the lowercase content of the cell
@@ -818,16 +685,6 @@ function getSortableContent(row, columnKey) {
 }
 
 /**
- * Retrieve the label for the given column key from the column definitions.
- *
- * @param  {string}  columnKey
- *     The column key to retrieve the label for.
- */
-function getColumnLabel(columnKey) {
-	return get(columnDefinitions.value, `${columnKey}.label`);
-}
-
-/**
  * Set the search query to the provided value.
  *
  * @param  {string}  value
@@ -841,18 +698,6 @@ function setSearchQuery(value) {
 	searchQuery.value = value;
 
 	runComponentMethod(dataTableSearchComponent.value, "triggerFocus");
-}
-
-/**
- * Update our local table density options, which allows us to provide slots to
- * overwrite the labels, particularly useful for translation.
- */
-function updateTableDensityOptions(options) {
-	if (!isNonEmptyArray(options)) {
-		return;
-	}
-
-	tableDensityOptions.value = options;
 }
 
 provide("data-table", {
