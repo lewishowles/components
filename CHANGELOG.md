@@ -24,9 +24,10 @@ A new `extendComponent` utility has been added. This allows intercepting a compo
 
 A new `useFlashMessages` composable allows messages to registered for display, while a new `flash-messages` component can display messages. Messages, and the `flash-messages` component, can also be namespaced to only show relevant messages.
 
-### New features
+### Form wrapper
 
-- `form-wrapper` - A new `fieldErrors` prop allows error messages to be passed directly to fields, and displayed in the same way validation errors are, including linked `error-summary`.
+- A new `fieldErrors` prop allows error messages to be passed directly to fields, and displayed in the same way validation errors are, including linked `error-summary`.
+- A new `fieldErrorsCallback` prop fires when an error is returned, allowing any field-specific errors to be extracted from the rejected Promise called by the form's submit method..
 
 ## 1.12.0
 
