@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
 import { alias } from "./support/aliases.js";
-import { createComponentSource } from "./support/plugins/index.js";
+import { createComponentSource, createNamedExports } from "./support/plugins/index.js";
 import fmt from "./support/oxfmt.config.js";
 import lint from "./support/oxlint.config.js";
 
@@ -14,7 +14,7 @@ export default defineConfig({
 	},
 	fmt,
 	lint,
-	plugins: [vue(), vueDevTools(), tailwindcss(), createComponentSource()],
+	plugins: [vue(), vueDevTools(), tailwindcss(), createComponentSource(), createNamedExports()],
 	resolve: {
 		alias,
 	},
