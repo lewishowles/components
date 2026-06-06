@@ -1,8 +1,8 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-image-tag" v-model="textSlots">
-		<template #title> Image tag </template>
+		<template #title>Image tag</template>
 
-		<template #introduction> A simple image tag. </template>
+		<template #introduction>A simple image tag.</template>
 
 		<image-tag v-bind="componentProps" />
 	</component-playground>

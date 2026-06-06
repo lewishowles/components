@@ -29,7 +29,7 @@ Intended to contain one or more `breadcrumb-item` components.
 
 ```html
 <breadcrumb-list>
-	<breadcrumb-item href="/"> Admin </breadcrumb-item>
-	<breadcrumb-item href="/users"> Users </breadcrumb-item>
+	<breadcrumb-item href="/">Admin</breadcrumb-item>
+	<breadcrumb-item href="/users">Users</breadcrumb-item>
 </breadcrumb-list>
 ```

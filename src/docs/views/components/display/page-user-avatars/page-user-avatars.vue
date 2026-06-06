@@ -1,21 +1,22 @@
 <template>
 	<component-page>
-		<template #title> User avatars </template>
+		<template #title>User avatars</template>
 
 		<template #introduction>
 			<p>
-				<code>user-avatars</code> displays a list of provided avatars, with additional information
-				such as their name or initials as provided.
+				<code>user-avatars</code>
+				displays a list of provided avatars, with additional information such as their name or
+				initials as provided.
 			</p>
 		</template>
 
 		<component-props>
 			<component-prop id="prop-users">
-				<template #name> users </template>
+				<template #name>users</template>
 
-				<template #type> Array </template>
+				<template #type>Array</template>
 
-				<template #default-value> [] </template>
+				<template #default-value>[]</template>
 
 				<p>
 					The list of users to display. By default, the format of provided users should be as
@@ -44,11 +45,11 @@
 			</component-prop>
 
 			<component-prop id="prop-limit">
-				<template #name> limit </template>
+				<template #name>limit</template>
 
-				<template #type> Number </template>
+				<template #type>Number</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					The maximum number of avatars to display. Any additional will contribute to a "+X" last
@@ -57,11 +58,11 @@
 			</component-prop>
 
 			<component-prop id="prop-shape">
-				<template #name> shape </template>
+				<template #name>shape</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> round </template>
+				<template #default-value>round</template>
 
 				<p>
 					The shape of avatars to display. Available values include &quot;round&quot;,
@@ -71,21 +72,21 @@
 			</component-prop>
 
 			<component-prop id="prop-size">
-				<template #name> size </template>
+				<template #name>size</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> size-10 </template>
+				<template #default-value>size-10</template>
 
 				<p>The size of the avatars to display, based on Tailwind size classes.</p>
 			</component-prop>
 
 			<component-prop id="prop-overlap">
-				<template #name> overlap </template>
+				<template #name>overlap</template>
 
-				<template #type> Boolean </template>
+				<template #type>Boolean</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					Whether avatars should overlap. If they do, they're given an outline so that the images
@@ -99,9 +100,9 @@
 			</component-prop>
 
 			<component-prop id="prop-initials-colour-classes">
-				<template #name> initialsColourClasses </template>
+				<template #name>initialsColourClasses</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
 				<template #default-value>
 					bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200
@@ -111,11 +112,11 @@
 			</component-prop>
 
 			<component-prop id="prop-initials-outline-classes">
-				<template #name> initialsOutlineClasses </template>
+				<template #name>initialsOutlineClasses</template>
 
-				<template #type> Vue class binding </template>
+				<template #type>Vue class binding</template>
 
-				<template #default-value> outline-white dark:outline-primary-200 </template>
+				<template #default-value>outline-white dark:outline-primary-200</template>
 
 				<p>
 					Additional classes to apply to the overlap outline ring, merged on top of the base styles.
@@ -133,7 +134,9 @@
 			<component-styling-hook id="hook-data-part-overflow">
 				<template #attribute>data-part="overflow"</template>
 				<p>
-					The overflow count indicator. Present when displayed users exceed the <code>limit</code>.
+					The overflow count indicator. Present when displayed users exceed the
+					<code>limit</code>
+					.
 				</p>
 			</component-styling-hook>
 		</component-styling-hooks>

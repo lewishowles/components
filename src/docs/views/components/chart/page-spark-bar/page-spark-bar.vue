@@ -1,6 +1,6 @@
 <template>
 	<component-page>
-		<template #title> Spark bar </template>
+		<template #title>Spark bar</template>
 
 		<template #introduction>
 			<p>
@@ -11,69 +11,70 @@
 
 		<component-props>
 			<component-prop id="prop-current">
-				<template #name> current </template>
+				<template #name>current</template>
 
-				<template #type> number </template>
+				<template #type>number</template>
 
-				<template #default-value> 0 </template>
+				<template #default-value>0</template>
 
 				<p>The current value represented by the spark bar.</p>
 			</component-prop>
 
 			<component-prop id="prop-min">
-				<template #name> min </template>
+				<template #name>min</template>
 
-				<template #type> number </template>
+				<template #type>number</template>
 
-				<template #default-value> 0 </template>
+				<template #default-value>0</template>
 
 				<p>The minimum value, used to determine bar fill.</p>
 			</component-prop>
 
 			<component-prop id="prop-max">
-				<template #name> max </template>
+				<template #name>max</template>
 
-				<template #type> number </template>
+				<template #type>number</template>
 
-				<template #default-value> 100 </template>
+				<template #default-value>100</template>
 
 				<p>The maximum value, used to determine bar fill.</p>
 			</component-prop>
 
 			<component-prop id="prop-track-classes">
-				<template #name> trackClasses </template>
+				<template #name>trackClasses</template>
 
-				<template #type> Vue class binding </template>
+				<template #type>Vue class binding</template>
 
-				<template #default-value> h-1 rounded-full bg-grey-200 dark:bg-white/20 </template>
+				<template #default-value>h-1 rounded-full bg-grey-200 dark:bg-white/20</template>
 
 				<p>
 					Additional classes to apply to the track, merged on top of the base styles.
-					<code>grow</code> is always applied to ensure the track fills available space. Classes
-					provided will override default classes.
+					<code>grow</code>
+					is always applied to ensure the track fills available space. Classes provided will
+					override default classes.
 				</p>
 			</component-prop>
 
 			<component-prop id="prop-bar-classes">
-				<template #name> barClasses </template>
+				<template #name>barClasses</template>
 
-				<template #type> Vue class binding </template>
+				<template #type>Vue class binding</template>
 
-				<template #default-value> h-full rounded-full bg-primary </template>
+				<template #default-value>h-full rounded-full bg-primary</template>
 
 				<p>
 					Additional classes to apply to the bar, merged on top of the base styles.
-					<code>transition-all ease-out</code> is always applied. Classes provided will override
-					default classes.
+					<code>transition-all ease-out</code>
+					is always applied. Classes provided will override default classes.
 				</p>
 			</component-prop>
 
 			<component-prop id="prop-value-classes">
-				<template #name> valueClasses </template>
+				<template #name>valueClasses</template>
 
-				<template #type> Vue class binding </template>
+				<template #type>Vue class binding</template>
 
-				<template #default-value> text-xs font-medium </template>
+				<template #default-value>text-xs font-medium</template>
 
 				<p>Classes to apply to the value display.</p>
 			</component-prop>
@@ -81,7 +82,7 @@
 
 		<component-slots>
 			<component-slot id="slot-default">
-				<template #name> default </template>
+				<template #name>default</template>
 
 				<p>
 					Provide custom content alongside the bar. Receives metric values and calculated

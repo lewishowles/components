@@ -88,14 +88,14 @@ Close the menu programmatically.
 
 ```html
 <dropdown-menu>
-	<template #summary> Bulk actions </template>
+	<template #summary>Bulk actions</template>
 
-	<dropdown-menu-button icon="icon-pencil"> Edit </dropdown-menu-button>
+	<dropdown-menu-button icon="icon-pencil">Edit</dropdown-menu-button>
 
-	<dropdown-menu-button icon="icon-reload"> Refresh </dropdown-menu-button>
+	<dropdown-menu-button icon="icon-reload">Refresh</dropdown-menu-button>
 
 	<dropdown-menu-divider />
 
-	<dropdown-menu-button icon="icon-bin"> Delete </dropdown-menu-button>
+	<dropdown-menu-button icon="icon-bin">Delete</dropdown-menu-button>
 </dropdown-menu>
 ```

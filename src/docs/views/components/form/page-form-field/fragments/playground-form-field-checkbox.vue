@@ -4,12 +4,16 @@
 		id="playground-form-field-checkbox"
 		v-model="textSlots"
 	>
-		<template #title> Checkbox </template>
+		<template #title>Checkbox</template>
 
 		<template #introduction>
 			<p>
 				Allow the user to select a single checkbox, to confirm terms, for example. A single checkbox
-				returns <code>true</code> or <code>false</code> depending on whether it's checked.
+				returns
+				<code>true</code>
+				or
+				<code>false</code>
+				depending on whether it's checked.
 			</p>
 		</template>
 

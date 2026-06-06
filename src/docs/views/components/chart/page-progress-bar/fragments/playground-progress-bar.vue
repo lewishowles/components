@@ -1,6 +1,6 @@
 <template>
 	<component-playground v-bind="{ copy: template, componentModel }" id="playground-progress-bar">
-		<template #title> Progress bar </template>
+		<template #title>Progress bar</template>
 
 		<progress-bar v-bind="componentProps" v-model="componentModel" />
 	</component-playground>

@@ -5,7 +5,7 @@
 		v-bind="{ live: false }"
 		data-test="form-label-no-label"
 	>
-		<template #title> &lt;form-label&gt; </template>
+		<template #title>&lt;form-label&gt;</template>
 
 		A label is required for accessibility purposes.
 	</alert-message>
@@ -16,7 +16,7 @@
 		v-bind="{ live: false }"
 		data-test="form-label-no-id"
 	>
-		<template #title> &lt;form-label&gt; </template>
+		<template #title>&lt;form-label&gt;</template>
 
 		An ID for the corresponding input is required when using the tag `label`.
 	</alert-message>

@@ -17,7 +17,7 @@
 				data-test="searchable-list-reset-search-button"
 				@click="resetSearch"
 			>
-				<slot name="reset-search-label"> Reset search </slot>
+				<slot name="reset-search-label">Reset search</slot>
 			</ui-button>
 		</div>
 
@@ -25,7 +25,8 @@
 			<div v-if="!haveResults" data-test="searchable-list-no-results">
 				<slot name="no-results" v-bind="{ query: searchQuery }">
 					<pill-badge class="text-sm">
-						Sorry, no results could be found for <span class="font-bold">"{{ searchQuery }}"</span>
+						Sorry, no results could be found for
+						<span class="font-bold">"{{ searchQuery }}"</span>
 					</pill-badge>
 				</slot>
 			</div>
@@ -39,7 +40,7 @@
 						<template v-if="performingSearch">
 							Showing {{ resultCount }} of {{ itemCount }}
 						</template>
-						<template v-else> Showing {{ resultCount }} </template>
+						<template v-else>Showing {{ resultCount }}</template>
 					</pill-badge>
 				</slot>
 			</template>

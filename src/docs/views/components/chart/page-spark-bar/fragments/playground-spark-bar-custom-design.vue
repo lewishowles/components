@@ -3,10 +3,10 @@
 		v-bind="{ copy: template, componentModel }"
 		id="playground-spark-bar-custom-design"
 	>
-		<template #title> Custom design </template>
+		<template #title>Custom design</template>
 
 		<spark-bar v-bind="componentProps" v-model="componentModel">
-			<template #default="{ percentage }"> {{ percentage }}% </template>
+			<template #default="{ percentage }">{{ percentage }}%</template>
 		</spark-bar>
 	</component-playground>
 </template>

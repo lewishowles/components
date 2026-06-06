@@ -3,7 +3,7 @@
 		v-bind="{ copy: template, componentModel }"
 		id="playground-progress-bar-indeterminate"
 	>
-		<template #title> Indeterminate </template>
+		<template #title>Indeterminate</template>
 
 		<progress-bar v-bind="componentProps" v-model="componentModel" />
 	</component-playground>

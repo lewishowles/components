@@ -42,7 +42,7 @@ Whether to use the brighter set of chart colours. Use with caution; adjacent sli
 
 ```html
 <donut-chart v-bind="{ values: [5, 4, 3, 2, 1] }">
-	<template #label> Sales by region </template>
+	<template #label>Sales by region</template>
 </donut-chart>
 ```
 
@@ -50,7 +50,7 @@ Whether to use the brighter set of chart colours. Use with caution; adjacent sli
 
 ```html
 <donut-chart v-bind="{ values: [5, 4, 3, 2, 1] }">
-	<template #label> Sales by region </template>
-	<template #description> Northern region leads with 33%, followed by Southern at 27%. </template>
+	<template #label>Sales by region</template>
+	<template #description>Northern region leads with 33%, followed by Southern at 27%.</template>
 </donut-chart>
 ```

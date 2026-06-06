@@ -1,12 +1,16 @@
 <template>
 	<component-page>
-		<template #title> flash-messages </template>
+		<template #title>flash-messages</template>
 
 		<template #introduction>
 			<p>
 				Display one or more flash messages to the user, optionally filtered to the provided
-				<code>namespace</code>. If no <code>namespace</code> is provided, messages that are
-				generated without a <code>namespace</code> will be shown.
+				<code>namespace</code>
+				. If no
+				<code>namespace</code>
+				is provided, messages that are generated without a
+				<code>namespace</code>
+				will be shown.
 			</p>
 
 			<p>
@@ -18,8 +22,9 @@
 			<p>
 				Messages are added through
 				<router-link v-bind="{ to: '/composables/use-flash-messages' }">
-					<code>useFlashMessages</code> </router-link
-				>.
+					<code>useFlashMessages</code>
+				</router-link>
+				.
 			</p>
 		</template>
 
@@ -27,9 +32,9 @@
 			<component-prop id="prop-example">
 				<template #name>namespace</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					The namespace from which to retrieve messages. If no namespace is provided, only messages
@@ -40,19 +45,27 @@
 
 		<component-slots>
 			<component-slot id="slot-default">
-				<template #name> default </template>
+				<template #name>default</template>
 
 				<p>
-					Custom content for each message. The slot receives the stored <code>message</code> object,
-					including its generated <code>id</code>. If no default slot is provided, each message is
-					shown with <code>alert-message</code>.
+					Custom content for each message. The slot receives the stored
+					<code>message</code>
+					object, including its generated
+					<code>id</code>
+					. If no default slot is provided, each message is shown with
+					<code>alert-message</code>
+					.
 				</p>
 			</component-slot>
 
 			<component-slot id="slot-icon">
-				<template #name> icon </template>
+				<template #name>icon</template>
 
-				<p>Any icon to display in the default <code>alert-message</code> output.</p>
+				<p>
+					Any icon to display in the default
+					<code>alert-message</code>
+					output.
+				</p>
 			</component-slot>
 		</component-slots>
 

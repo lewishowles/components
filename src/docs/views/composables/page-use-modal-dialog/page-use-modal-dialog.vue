@@ -1,11 +1,12 @@
 <template>
 	<component-page>
-		<template #title> useModalDialog </template>
+		<template #title>useModalDialog</template>
 
 		<template #introduction>
 			<p>
-				<code>useModalDialog</code> provides a shared stack of modal dialogs. The most recently
-				requested dialog is displayed by the
+				<code>useModalDialog</code>
+				provides a shared stack of modal dialogs. The most recently requested dialog is displayed by
+				the
 				<router-link v-bind="{ to: '/messaging/modal-controller' }">
 					<code>modal-controller</code>
 				</router-link>
@@ -13,21 +14,23 @@
 			</p>
 
 			<p>
-				You will typically call <code>openModal</code> to show a dialog and let the controller
-				handle rendering and stacking. Direct use is rarely needed beyond that.
+				You will typically call
+				<code>openModal</code>
+				to show a dialog and let the controller handle rendering and stacking. Direct use is rarely
+				needed beyond that.
 			</p>
 		</template>
 
 		<component-returns>
 			<component-return id="return-modals">
-				<template #name> modals </template>
+				<template #name>modals</template>
 
-				<template #type> Readonly&lt;Ref&lt;object[]&gt;&gt; </template>
+				<template #type>Readonly&lt;Ref&lt;object[]&gt;&gt;</template>
 
 				<p>
 					The current stack of modal dialogs, each an entry of
-					<code>{ id, component, props }</code>. Read-only; manage the stack through the methods
-					below.
+					<code>{ id, component, props }</code>
+					. Read-only; manage the stack through the methods below.
 				</p>
 			</component-return>
 		</component-returns>

@@ -4,13 +4,16 @@
 		id="playground-ui-button-pressed"
 		v-model="textSlots"
 	>
-		<template #title> Toggle button </template>
+		<template #title>Toggle button</template>
 
 		<template #introduction>
 			<p>
-				Toggle buttons have two stable states — pressed and unpressed. The <code>pressed</code> prop
-				adds <code>aria-pressed</code> so screen readers announce the current state without needing
-				a label change. Click the button below to toggle it.
+				Toggle buttons have two stable states — pressed and unpressed. The
+				<code>pressed</code>
+				prop adds
+				<code>aria-pressed</code>
+				so screen readers announce the current state without needing a label change. Click the
+				button below to toggle it.
 			</p>
 		</template>
 

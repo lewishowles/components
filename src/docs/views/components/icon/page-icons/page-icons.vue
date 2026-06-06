@@ -1,6 +1,6 @@
 <template>
 	<component-page>
-		<template #title> Icons </template>
+		<template #title>Icons</template>
 
 		<template #introduction>
 			<p>
@@ -22,7 +22,7 @@
 		</template>
 
 		<searchable-list v-bind="{ data: icons }">
-			<template #label> Search icons </template>
+			<template #label>Search icons</template>
 
 			<template #default="{ items }">
 				<ol class="grid grid-cols-[repeat(auto-fit,minmax(13rem,1fr))] gap-4">

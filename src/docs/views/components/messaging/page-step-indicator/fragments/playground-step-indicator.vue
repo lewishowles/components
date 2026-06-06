@@ -4,7 +4,7 @@
 		id="playground-step-indicator"
 		v-model="textSlots"
 	>
-		<template #title> Step indicator </template>
+		<template #title>Step indicator</template>
 
 		<step-indicator v-bind="componentProps">
 			{{ textSlots.default?.value }}

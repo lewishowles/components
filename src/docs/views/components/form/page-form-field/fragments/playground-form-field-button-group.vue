@@ -4,7 +4,7 @@
 		id="playground-form-field-button-group"
 		v-model="textSlots"
 	>
-		<template #title> Button group </template>
+		<template #title>Button group</template>
 
 		<template #introduction>
 			<p>

@@ -38,5 +38,5 @@ Additional classes to apply to the spinner, merged on top of any size set by `la
 ### Basic indicator
 
 ```html
-<loading-indicator> Loading data… </loading-indicator>
+<loading-indicator>Loading data…</loading-indicator>
 ```

@@ -4,7 +4,7 @@
 		id="playground-donut-chart-colourful"
 		v-model="textSlots"
 	>
-		<template #title> Colourful chart </template>
+		<template #title>Colourful chart</template>
 
 		<template #introduction>
 			A more colourful donut chart. Use with caution, as depending on the number of slices, adjacent

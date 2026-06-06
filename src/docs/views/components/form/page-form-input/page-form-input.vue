@@ -1,21 +1,23 @@
 <template>
 	<component-page>
-		<template #title> Form input </template>
+		<template #title>Form input</template>
 
 		<template #introduction>
 			<p>
-				<code>form-input</code> is an extension of the standard <code>input</code> tag, with a
-				consistent design and baked-in accessibility features.
+				<code>form-input</code>
+				is an extension of the standard
+				<code>input</code>
+				tag, with a consistent design and baked-in accessibility features.
 			</p>
 		</template>
 
 		<component-props>
 			<component-prop id="prop-id">
-				<template #name> id </template>
+				<template #name>id</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					Any ID to apply to this field. If an ID is not provided, one will be generated at random.
@@ -24,11 +26,11 @@
 				</p>
 			</component-prop>
 			<component-prop id="prop-placeholder">
-				<template #name> placeholder </template>
+				<template #name>placeholder</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					Any placeholder to show in the field. Do not use a placeholder for critical information.
@@ -36,49 +38,54 @@
 				</p>
 			</component-prop>
 			<component-prop id="prop-input-attributes">
-				<template #name> inputAttributes </template>
+				<template #name>inputAttributes</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
-					Any additional attributes to pass to the field itself, such as <code>required</code> or
-					<code>autocomplete</code>. This can also be used to change the type of the field, such as
-					to <code>email</code>.
+					Any additional attributes to pass to the field itself, such as
+					<code>required</code>
+					or
+					<code>autocomplete</code>
+					. This can also be used to change the type of the field, such as to
+					<code>email</code>
+					.
 				</p>
 			</component-prop>
 
 			<component-prop id="prop-suggestions">
-				<template #name> suggestions </template>
+				<template #name>suggestions</template>
 
-				<template #type> String[] </template>
+				<template #type>String[]</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					A list of suggestions to offer to the user as they type, rendered as a native
-					<code>&lt;datalist&gt;</code> linked to the input. The user can select a suggestion or
-					ignore it and enter a different value entirely.
+					<code>&lt;datalist&gt;</code>
+					linked to the input. The user can select a suggestion or ignore it and enter a different
+					value entirely.
 				</p>
 			</component-prop>
 		</component-props>
 
 		<component-slots>
 			<component-slot id="slot-default">
-				<template #name> default </template>
+				<template #name>default</template>
 
 				<p>The default slot contains the label of the field.</p>
 				<p>
-					<em
-						>Note that a label is always required, even if a label is not shown to the user, as it
+					<em>
+						Note that a label is always required, even if a label is not shown to the user, as it
 						will be critical for screen readers. This component will show an error if no label is
-						provided.</em
-					>
+						provided.
+					</em>
 				</p>
 			</component-slot>
 			<component-slot id="slot-introduction">
-				<template #name> introduction </template>
+				<template #name>introduction</template>
 
 				<p>
 					Any additional text to introduce this input, which appears between the label and the
@@ -86,7 +93,7 @@
 				</p>
 			</component-slot>
 			<component-slot id="slot-prefix">
-				<template #name> prefix </template>
+				<template #name>prefix</template>
 
 				<p>Any element—text or icon—to place at the start of the field.</p>
 				<p>
@@ -97,7 +104,7 @@
 				</p>
 			</component-slot>
 			<component-slot id="slot-suffix">
-				<template #name> suffix </template>
+				<template #name>suffix</template>
 
 				<p>Any element—text or icon—to place at the end of the field.</p>
 				<p>
@@ -108,12 +115,12 @@
 				</p>
 			</component-slot>
 			<component-slot id="slot-error">
-				<template #name> error </template>
+				<template #name>error</template>
 
 				<p>Any error text to display below the field.</p>
 			</component-slot>
 			<component-slot id="slot-help">
-				<template #name> help </template>
+				<template #name>help</template>
 
 				<p>Any help text to display below the field.</p>
 			</component-slot>
@@ -121,9 +128,13 @@
 
 		<component-events>
 			<component-event id="event-v-model">
-				<template #name> v-model </template>
+				<template #name>v-model</template>
 
-				<p>The current value of the input will be available via <code>v-model</code>.</p>
+				<p>
+					The current value of the input will be available via
+					<code>v-model</code>
+					.
+				</p>
 			</component-event>
 		</component-events>
 

@@ -4,7 +4,7 @@
 		id="playground-loading-indicator"
 		v-model="textSlots"
 	>
-		<template #title> Large indicator </template>
+		<template #title>Large indicator</template>
 
 		<template #introduction>
 			A larger loading indicator, more suited to when a whole section of content is pending.

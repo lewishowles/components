@@ -29,7 +29,7 @@
 			</div>
 
 			<span class="text-content-muted text-sm" data-test="step-indicator-current-step">
-				<slot name="current-step"> Step {{ currentStep }} of {{ stepCount }} </slot>
+				<slot name="current-step">Step {{ currentStep }} of {{ stepCount }}</slot>
 			</span>
 		</div>
 	</div>

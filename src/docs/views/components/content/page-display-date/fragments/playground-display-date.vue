@@ -4,9 +4,9 @@
 		id="playground-display-date"
 		v-model="textSlots"
 	>
-		<template #title> Simple date </template>
+		<template #title>Simple date</template>
 
-		<template #introduction> A simple date with default display settings. </template>
+		<template #introduction>A simple date with default display settings.</template>
 
 		<display-date v-bind="componentProps" />
 	</component-playground>

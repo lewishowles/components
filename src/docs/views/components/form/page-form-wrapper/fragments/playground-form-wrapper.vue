@@ -4,7 +4,7 @@
 		id="playground-form-wrapper"
 		v-model="textSlots"
 	>
-		<template #title> Form wrapper </template>
+		<template #title>Form wrapper</template>
 
 		<form-wrapper v-model="componentModel" v-bind="componentProps">
 			<form-field name="name" v-bind="{ validation: validation.name }">
@@ -28,9 +28,7 @@
 					We will not use your email address for marketing purposes.
 				</template>
 
-				<template #help>
-					You can change your email address later in your account settings.
-				</template>
+				<template #help>You can change your email address later in your account settings.</template>
 			</form-field>
 
 			<template #submit-button-label>

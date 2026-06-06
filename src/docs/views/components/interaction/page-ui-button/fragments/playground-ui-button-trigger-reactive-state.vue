@@ -4,12 +4,13 @@
 		id="playground-ui-button-reactive"
 		v-model="textSlots"
 	>
-		<template #title> Triggering reactive state </template>
+		<template #title>Triggering reactive state</template>
 
 		<template #introduction>
 			<p>
 				When a button is reactive, its reactive state can be triggered using the exposed
-				<code>react</code> method.
+				<code>react</code>
+				method.
 			</p>
 		</template>
 

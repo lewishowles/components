@@ -4,14 +4,17 @@
 		id="playground-ui-button-loading-auto"
 		v-model="textSlots"
 	>
-		<template #title> Auto-loading button </template>
+		<template #title>Auto-loading button</template>
 
 		<template #introduction>
 			<p>
-				When a button is <code>reactive</code>, its <code>loadingAuto</code> defaults to true. The
-				button detects a Promise returned by the click handler and automatically enters its loading
-				state, resetting when the Promise resolves or rejects. Click the button below to see it in
-				action.
+				When a button is
+				<code>reactive</code>
+				, its
+				<code>loadingAuto</code>
+				defaults to true. The button detects a Promise returned by the click handler and
+				automatically enters its loading state, resetting when the Promise resolves or rejects.
+				Click the button below to see it in action.
 			</p>
 		</template>
 

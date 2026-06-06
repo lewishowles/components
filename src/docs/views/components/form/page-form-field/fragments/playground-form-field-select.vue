@@ -4,7 +4,7 @@
 		id="playground-form-field-select"
 		v-model="textSlots"
 	>
-		<template #title> Select </template>
+		<template #title>Select</template>
 
 		<template #introduction>
 			<p>

@@ -4,9 +4,9 @@
 		id="playground-content-card"
 		v-model="textSlots"
 	>
-		<template #title> Basic card </template>
+		<template #title>Basic card</template>
 
-		<template #introduction> A simple card with a title and content. </template>
+		<template #introduction>A simple card with a title and content.</template>
 
 		<content-card>
 			<template #title>

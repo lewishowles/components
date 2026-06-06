@@ -4,7 +4,7 @@
 		id="playground-form-textarea"
 		v-model="textSlots"
 	>
-		<template #title> Form textarea </template>
+		<template #title>Form textarea</template>
 
 		<form-textarea v-model="componentModel">
 			{{ textSlots.default?.value }}

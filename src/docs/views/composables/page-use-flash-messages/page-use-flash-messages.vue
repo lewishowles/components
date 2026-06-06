@@ -1,19 +1,22 @@
 <template>
 	<component-page>
-		<template #title> useFlashMessages </template>
+		<template #title>useFlashMessages</template>
 
 		<template #introduction>
 			<p>
-				<code>useFlashMessages</code> provides shared flash-message state for messages that should
-				appear somewhere else in the page after an action completes.
+				<code>useFlashMessages</code>
+				provides shared flash-message state for messages that should appear somewhere else in the
+				page after an action completes.
 			</p>
 
 			<p>
 				Messages are shown by
 				<router-link v-bind="{ to: '/content/flash-messages' }">
-					<code>flash-messages</code> </router-link
-				>. Pass a <code>namespace</code> when the message should appear in a specific outlet, or
-				omit it for page-level messages.
+					<code>flash-messages</code>
+				</router-link>
+				. Pass a
+				<code>namespace</code>
+				when the message should appear in a specific outlet, or omit it for page-level messages.
 			</p>
 		</template>
 
@@ -24,10 +27,23 @@
 				</template>
 
 				<p>
-					Add a message. The message should include <code>type</code>, <code>title</code>, and
-					<code>message</code>. It may also include <code>namespace</code>, <code>showIcon</code>,
-					<code>live</code>, and <code>titleTag</code>. A unique <code>id</code> is added when the
-					message is stored.
+					Add a message. The message should include
+					<code>type</code>
+					,
+					<code>title</code>
+					, and
+					<code>message</code>
+					. It may also include
+					<code>namespace</code>
+					,
+					<code>showIcon</code>
+					,
+					<code>live</code>
+					, and
+					<code>titleTag</code>
+					. A unique
+					<code>id</code>
+					is added when the message is stored.
 				</p>
 			</component-method>
 

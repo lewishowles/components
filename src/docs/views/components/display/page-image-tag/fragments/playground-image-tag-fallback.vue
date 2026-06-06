@@ -1,6 +1,6 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-image-tag" v-model="textSlots">
-		<template #title> Fallback display </template>
+		<template #title>Fallback display</template>
 
 		<template #introduction>
 			An image tag with an image that fails to load, revealing the fallback.

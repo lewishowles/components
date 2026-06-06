@@ -103,7 +103,7 @@ Override the default percentage display. Only rendered when `showValue` is true.
 ### Meter variant
 
 ```html
-<progress-bar v-bind="{ current: 72, variant: 'meter' }"> Disk usage </progress-bar>
+<progress-bar v-bind="{ current: 72, variant: 'meter' }">Disk usage</progress-bar>
 ```
 
 ### Indeterminate
@@ -128,7 +128,7 @@ Override the default percentage display. Only rendered when `showValue` is true.
 
 ```html
 <progress-bar v-bind="{ current: 75, showLabel: true, showValue: true }">
-	<template #default> Processing… </template>
-	<template #value="{ percentage }"> {{ percentage }}% done </template>
+	<template #default>Processing…</template>
+	<template #value="{ percentage }">{{ percentage }}% done</template>
 </progress-bar>
 ```

@@ -4,7 +4,7 @@
 		id="playground-notification-handler"
 		v-model="textSlots"
 	>
-		<template #title> Notification handler </template>
+		<template #title>Notification handler</template>
 
 		<template #introduction>
 			<p>Displaying a sample set of notifications.</p>

@@ -4,7 +4,7 @@
 		id="playground-link-tag"
 		v-model="textSlots"
 	>
-		<template #title> External link </template>
+		<template #title>External link</template>
 
 		<template #introduction>
 			<p>A link to an external resource.</p>

@@ -4,20 +4,20 @@
 		id="playground-dropdown-menu"
 		v-model="textSlots"
 	>
-		<template #title> Dropdown menu </template>
+		<template #title>Dropdown menu</template>
 
 		<dropdown-menu v-bind="componentProps" v-model="componentModel">
 			<template #summary>
 				{{ textSlots.summary?.value }}
 			</template>
 
-			<dropdown-menu-button icon="icon-pencil"> Edit </dropdown-menu-button>
+			<dropdown-menu-button icon="icon-pencil">Edit</dropdown-menu-button>
 
-			<dropdown-menu-button icon="icon-reload"> Refresh </dropdown-menu-button>
+			<dropdown-menu-button icon="icon-reload">Refresh</dropdown-menu-button>
 
 			<dropdown-menu-divider />
 
-			<dropdown-menu-button icon="icon-bin"> Delete </dropdown-menu-button>
+			<dropdown-menu-button icon="icon-bin">Delete</dropdown-menu-button>
 		</dropdown-menu>
 	</component-playground>
 </template>

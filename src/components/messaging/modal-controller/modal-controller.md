@@ -14,12 +14,12 @@ Create the _content_ of the dialog as a component. Note that you should not wrap
 
 ```html
 <template>
-	<modal-dialog-title> Delete "Sophie Wardhaugh" </modal-dialog-title>
+	<modal-dialog-title>Delete "Sophie Wardhaugh"</modal-dialog-title>
 
 	<p>Are you sure you want to delete this user? This cannot be undone.</p>
 
 	<modal-dialog-actions>
-		<ui-button class="button--primary" v-bind="{ reactive: true }"> Delete user </ui-button>
+		<ui-button class="button--primary" v-bind="{ reactive: true }">Delete user</ui-button>
 	</modal-dialog-actions>
 </template>
 

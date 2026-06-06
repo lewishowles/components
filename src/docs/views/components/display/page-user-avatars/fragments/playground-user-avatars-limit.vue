@@ -4,7 +4,7 @@
 		id="playground-user-avatars"
 		v-model="textSlots"
 	>
-		<template #title> Avatar limit </template>
+		<template #title>Avatar limit</template>
 
 		<template #introduction>
 			<p>A limited list of avatars.</p>

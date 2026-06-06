@@ -57,7 +57,7 @@
 				v-bind="{ href: notification.url, external: true }"
 				:data-test="`${dataTest}-view-more`"
 			>
-				<slot name="view-more-label"> View more </slot>
+				<slot name="view-more-label">View more</slot>
 			</link-tag>
 
 			<ui-button
@@ -67,7 +67,7 @@
 				:data-test="`${dataTest}-mark-read`"
 				@click="markNotificationRead"
 			>
-				<slot name="mark-read-label"> Mark as read </slot>
+				<slot name="mark-read-label">Mark as read</slot>
 			</ui-button>
 
 			<slot name="actions" v-bind="{ notification }" />

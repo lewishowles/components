@@ -53,9 +53,9 @@ See also the `accordion-panel` styling hooks, which expose `data-component`, `da
 ```html
 <accordion-group>
 	<accordion-panel>
-		<template #title> The Flux Capacitor </template>
+		<template #title>The Flux Capacitor</template>
 
-		<template #introduction> The key to time travel. </template>
+		<template #introduction>The key to time travel.</template>
 
 		<p>
 			In the world of Back to the Future, the time circuits are the heart of the DeLorean's
@@ -72,9 +72,9 @@ See also the `accordion-panel` styling hooks, which expose `data-component`, `da
 		</p>
 	</accordion-panel>
 	<accordion-panel>
-		<template #title> The DeLorean </template>
+		<template #title>The DeLorean</template>
 
-		<template #introduction> The iconic time-traveling machine. </template>
+		<template #introduction>The iconic time-traveling machine.</template>
 
 		...
 	</accordion-panel>

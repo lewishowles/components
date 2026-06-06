@@ -1,8 +1,8 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-image-tag" v-model="textSlots">
-		<template #title> Custom fallback </template>
+		<template #title>Custom fallback</template>
 
-		<template #introduction> Displaying a custom fallback if an image fails to load. </template>
+		<template #introduction>Displaying a custom fallback if an image fails to load.</template>
 
 		<image-tag v-bind="componentProps">
 			<template #fallback>

@@ -4,7 +4,7 @@
 		id="playground-modal-controller"
 		v-model="textSlots"
 	>
-		<template #title> Modal controller </template>
+		<template #title>Modal controller</template>
 
 		<template #introduction>
 			<p>Creating a modal for display comes in three parts.</p>
@@ -12,26 +12,35 @@
 			<h4>The modal content</h4>
 
 			<p>
-				Each modal invoked using <code>useModalDialog</code> is wrapped in a
-				<code>base-modal</code>, so only the content is necessary.
+				Each modal invoked using
+				<code>useModalDialog</code>
+				is wrapped in a
+				<code>base-modal</code>
+				, so only the content is necessary.
 			</p>
 
 			<h4>Displaying the modal</h4>
 
 			<p>
-				Displaying the modal involves adding it to the stack via <code>openModal</code> from
-				<code>useModalDialog</code>.
+				Displaying the modal involves adding it to the stack via
+				<code>openModal</code>
+				from
+				<code>useModalDialog</code>
+				.
 			</p>
 
 			<h4>Closing the modal</h4>
 
 			<p>
 				The top-most modal can be closed programmatically via the provided
-				<code>closeTopModal</code> from <code>useModalDialog</code>.
+				<code>closeTopModal</code>
+				from
+				<code>useModalDialog</code>
+				.
 			</p>
 		</template>
 
-		<ui-button class="button--primary" @click="displayModal"> Open modal </ui-button>
+		<ui-button class="button--primary" @click="displayModal">Open modal</ui-button>
 
 		<template #additional-code>
 			<code-block :code="modalDialogTemplateCode" />

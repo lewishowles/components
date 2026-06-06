@@ -30,7 +30,8 @@
 					v-if="alertType !== alertTypes.MUTED"
 					class="sr-only"
 					data-test="alert-message-type-prefix"
-					>{{ alertPrefix }}:
+				>
+					{{ alertPrefix }}:
 				</span>
 				<slot />
 			</div>

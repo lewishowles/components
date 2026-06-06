@@ -160,7 +160,7 @@ Close the details.
 
 ```html
 <floating-details>
-	<template #summary> Summary content </template>
+	<template #summary>Summary content</template>
 
 	Details content
 </floating-details>
@@ -170,7 +170,7 @@ Close the details.
 
 ```html
 <floating-details v-bind="{ icon: 'icon-user' }">
-	<template #summary> Summary content </template>
+	<template #summary>Summary content</template>
 
 	Details content
 </floating-details>

@@ -1,6 +1,6 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-ui-button" v-model="textSlots">
-		<template #title> Simple button </template>
+		<template #title>Simple button</template>
 
 		<template #introduction>
 			<p>A simple UI button</p>

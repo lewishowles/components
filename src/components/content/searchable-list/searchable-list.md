@@ -115,7 +115,7 @@ const data = [{ id: "123", name: "Lewis" }];
 
 ```html
 <searchable-list v-bind="{ data }">
-	<template #label> Search users by name </template>
+	<template #label>Search users by name</template>
 
 	<template #default="{ items }">
 		<ul>

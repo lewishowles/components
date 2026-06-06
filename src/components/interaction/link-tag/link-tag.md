@@ -69,9 +69,9 @@ Whether to only show an icon (and not the associated text). If true, the text is
 ### Basic links
 
 ```html
-<link-tag href="/"> Visit the homepage </link-tag>
+<link-tag href="/">Visit the homepage</link-tag>
 
-<link-tag href="https://howles.dev" v-bind="{ external: true }"> See some cool projects </link-tag>
+<link-tag href="https://howles.dev" v-bind="{ external: true }">See some cool projects</link-tag>
 ```
 
 ### External link with custom suffix
@@ -80,14 +80,14 @@ Whether to only show an icon (and not the associated text). If true, the text is
 <link-tag href="https://howles.dev" v-bind="{ external: true }">
 	See some cool projects
 
-	<template #external-suffix> (new tab) </template>
+	<template #external-suffix>(new tab)</template>
 </link-tag>
 ```
 
 ### With an icon
 
 ```html
-<link-tag href="/user/create" v-bind="{ iconStart: 'icon-plus' }"> Add new user </link-tag>
+<link-tag href="/user/create" v-bind="{ iconStart: 'icon-plus' }">Add new user</link-tag>
 
-<link-tag href="/next" v-bind="{ iconEnd: 'icon-arrow-right' }"> Next step </link-tag>
+<link-tag href="/next" v-bind="{ iconEnd: 'icon-arrow-right' }">Next step</link-tag>
 ```

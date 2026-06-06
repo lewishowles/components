@@ -4,7 +4,7 @@
 		id="playground-notification-handler"
 		v-model="textSlots"
 	>
-		<template #title> No notifications </template>
+		<template #title>No notifications</template>
 
 		<div class="flex justify-end">
 			<notification-handler v-bind="componentProps">

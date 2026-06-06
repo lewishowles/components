@@ -13,5 +13,6 @@
 ### As part of an indicator
 
 ```html
-<loading-spinner /> Loading data…
+<loading-spinner />
+Loading data…
 ```

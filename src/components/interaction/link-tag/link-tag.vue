@@ -43,7 +43,7 @@
 		/>
 
 		<span v-if="external" class="sr-only" data-test="link-tag-external-suffix">
-			<slot name="external-suffix"> (opens in new tab) </slot>
+			<slot name="external-suffix">(opens in new tab)</slot>
 		</span>
 	</a>
 </template>

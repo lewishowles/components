@@ -3,10 +3,10 @@
 		v-bind="{ copy: template, componentModel }"
 		id="playground-spark-bar-with-content"
 	>
-		<template #title> With slot content </template>
+		<template #title>With slot content</template>
 
 		<spark-bar v-bind="componentProps" v-model="componentModel">
-			<template #default="{ percentage }"> {{ percentage }}% storage used </template>
+			<template #default="{ percentage }">{{ percentage }}% storage used</template>
 		</spark-bar>
 	</component-playground>
 </template>

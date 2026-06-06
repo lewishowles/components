@@ -38,19 +38,22 @@ The formatting options to apply to the displayed date, as defined by [Intl.DateT
 ### Basic date display using the user's locale and default formatting
 
 ```html
-<display-date date="2025-03-29" /> // 29/03/2025
+<display-date date="2025-03-29" />
+// 29/03/2025
 ```
 
 ### Date instance
 
 ```html
-<display-date v-bind="{ date: new Date(2025, 2, 29, 13, 15, 20) }" /> // 29/03/2025, 13:15:20
+<display-date v-bind="{ date: new Date(2025, 2, 29, 13, 15, 20) }" />
+// 29/03/2025, 13:15:20
 ```
 
 ### Timestamp
 
 ```html
-<display-date v-bind="{ date: 1743254120000 }" /> // 29/03/2025, 13:15:20
+<display-date v-bind="{ date: 1743254120000 }" />
+// 29/03/2025, 13:15:20
 ```
 
 ### Custom formatting

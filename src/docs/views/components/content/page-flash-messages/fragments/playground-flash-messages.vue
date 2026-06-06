@@ -1,6 +1,6 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-flash-messages">
-		<template #title> Namespaced messages </template>
+		<template #title>Namespaced messages</template>
 
 		<template #introduction>
 			<p>A namespaced flash message shown by the matching message outlet.</p>

@@ -7,7 +7,7 @@
 		data-test="app-pagination"
 	>
 		<span class="sr-only" v-bind="{ id: internalId }">
-			<slot> Pagination </slot>
+			<slot>Pagination</slot>
 		</span>
 
 		<ui-button
@@ -21,7 +21,7 @@
 			data-test="app-pagination-previous"
 			@click="selectPreviousPage"
 		>
-			<slot name="previous-page-label"> Previous </slot>
+			<slot name="previous-page-label">Previous</slot>
 		</ui-button>
 
 		<ul class="flex items-center" data-part="page-list">
@@ -41,7 +41,7 @@
 						data-test="app-pagination-page-button"
 					>
 						<span class="sr-only">
-							<slot name="page-number-label" v-bind="{ page }"> Page {{ page }} </slot>
+							<slot name="page-number-label" v-bind="{ page }">Page {{ page }}</slot>
 						</span>
 
 						<span aria-hidden="true">{{ page }}</span>
@@ -55,7 +55,7 @@
 						@click="currentPage = page"
 					>
 						<span class="sr-only">
-							<slot name="page-number-label" v-bind="{ page }"> Page {{ page }} </slot>
+							<slot name="page-number-label" v-bind="{ page }">Page {{ page }}</slot>
 						</span>
 
 						<span aria-hidden="true">{{ page }}</span>
@@ -82,7 +82,7 @@
 			data-test="app-pagination-next"
 			@click="selectNextPage"
 		>
-			<slot name="next-page-label"> Next </slot>
+			<slot name="next-page-label">Next</slot>
 		</ui-button>
 
 		<span

@@ -4,7 +4,7 @@
 		id="playground-button-group"
 		v-model="textSlots"
 	>
-		<template #title> Button group </template>
+		<template #title>Button group</template>
 
 		<button-group v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}

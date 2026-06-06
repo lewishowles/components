@@ -4,9 +4,9 @@
 		id="playground-display-date-locale"
 		v-model="textSlots"
 	>
-		<template #title> Custom locale </template>
+		<template #title>Custom locale</template>
 
-		<template #introduction> Display a date with the default format and a custom locale. </template>
+		<template #introduction>Display a date with the default format and a custom locale.</template>
 
 		<display-date v-bind="componentProps" />
 	</component-playground>

@@ -4,7 +4,7 @@
 		id="playground-app-pagination"
 		v-model="textSlots"
 	>
-		<template #title> App pagination </template>
+		<template #title>App pagination</template>
 
 		<template #introduction>
 			<p>A simple pagination example.</p>

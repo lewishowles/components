@@ -4,7 +4,7 @@
 		id="playground-progress-bar-meter"
 		v-model="textSlots"
 	>
-		<template #title> Meter variant </template>
+		<template #title>Meter variant</template>
 
 		<progress-bar v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}

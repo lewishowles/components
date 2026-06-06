@@ -14,7 +14,7 @@
 			</template>
 		</form-field>
 
-		<ui-button class="button--primary self-start" @click="displayModal"> Open another </ui-button>
+		<ui-button class="button--primary self-start" @click="displayModal">Open another</ui-button>
 	</div>
 </template>
 

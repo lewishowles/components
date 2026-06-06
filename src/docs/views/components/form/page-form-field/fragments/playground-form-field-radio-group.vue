@@ -4,7 +4,7 @@
 		id="playground-form-field-radio-group"
 		v-model="textSlots"
 	>
-		<template #title> Radio group </template>
+		<template #title>Radio group</template>
 
 		<template #introduction>
 			<p>

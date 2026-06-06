@@ -15,7 +15,7 @@
 		>
 			<icon-clipboard />
 
-			<slot> Copy </slot>
+			<slot>Copy</slot>
 		</span>
 
 		<span
@@ -26,7 +26,7 @@
 		>
 			<icon-check-circled />
 
-			<slot name="copy-success-label"> Copied </slot>
+			<slot name="copy-success-label">Copied</slot>
 		</span>
 
 		<span
@@ -37,13 +37,13 @@
 		>
 			<icon-danger />
 
-			<slot name="copy-error-label"> Error </slot>
+			<slot name="copy-error-label">Error</slot>
 		</span>
 	</ui-button>
 
-	<span role="status" aria-live="polite" class="sr-only" data-test="copy-content-status">{{
-		statusMessage
-	}}</span>
+	<span role="status" aria-live="polite" class="sr-only" data-test="copy-content-status">
+		{{ statusMessage }}
+	</span>
 </template>
 
 <script setup>

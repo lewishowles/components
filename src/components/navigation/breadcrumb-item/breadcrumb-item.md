@@ -37,8 +37,8 @@ Whether this item represents the current page. When true, renders as a non-inter
 
 ```html
 <breadcrumb-list>
-	<breadcrumb-item href="/"> Admin </breadcrumb-item>
-	<breadcrumb-item href="/users"> Users </breadcrumb-item>
-	<breadcrumb-item :current="true"> Lewis Howles </breadcrumb-item>
+	<breadcrumb-item href="/">Admin</breadcrumb-item>
+	<breadcrumb-item href="/users">Users</breadcrumb-item>
+	<breadcrumb-item :current="true">Lewis Howles</breadcrumb-item>
 </breadcrumb-list>
 ```

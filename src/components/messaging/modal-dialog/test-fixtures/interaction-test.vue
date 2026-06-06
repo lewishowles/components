@@ -5,9 +5,9 @@
 		</ui-button>
 
 		<modal-dialog ref="dialogComponent">
-			<template #title> Confirm action </template>
+			<template #title>Confirm action</template>
 
-			<ui-button data-test="modal-dialog-interaction-test-confirm"> Confirm </ui-button>
+			<ui-button data-test="modal-dialog-interaction-test-confirm">Confirm</ui-button>
 
 			<ui-button data-test="modal-dialog-interaction-test-close" @click="closeDialog">
 				Close

@@ -4,12 +4,17 @@
 		id="playground-form-field-password"
 		v-model="textSlots"
 	>
-		<template #title> Password </template>
+		<template #title>Password</template>
 
 		<template #introduction>
 			<p>
-				Password is a variant of <code>text</code>, automatically applying a <code>type</code> of
-				<code>password</code>.
+				Password is a variant of
+				<code>text</code>
+				, automatically applying a
+				<code>type</code>
+				of
+				<code>password</code>
+				.
 			</p>
 		</template>
 

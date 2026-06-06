@@ -4,7 +4,7 @@
 		id="playground-content-card-custom-header"
 		v-model="slots"
 	>
-		<template #title> Custom header </template>
+		<template #title>Custom header</template>
 
 		<template #introduction>
 			A custom header replaces the default title layout while keeping the card header shell.

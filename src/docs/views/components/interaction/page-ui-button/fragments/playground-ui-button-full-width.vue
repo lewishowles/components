@@ -4,7 +4,7 @@
 		id="playground-ui-button-reactive"
 		v-model="textSlots"
 	>
-		<template #title> Wide button </template>
+		<template #title>Wide button</template>
 
 		<template #introduction>
 			<p>A button that is wider than its contents should centre those contents.</p>

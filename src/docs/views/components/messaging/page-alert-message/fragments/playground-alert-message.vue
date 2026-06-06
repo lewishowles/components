@@ -4,7 +4,7 @@
 		id="playground-alert-message"
 		v-model="textSlots"
 	>
-		<template #title> Muted alert message </template>
+		<template #title>Muted alert message</template>
 
 		<alert-message v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}

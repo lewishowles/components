@@ -4,7 +4,7 @@
 		id="playground-summary-details"
 		v-model="textSlots"
 	>
-		<template #title> Summary details </template>
+		<template #title>Summary details</template>
 
 		<template #introduction>
 			<p>The default implementation, where details appear below the summary.</p>

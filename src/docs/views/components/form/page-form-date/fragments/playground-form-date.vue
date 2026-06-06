@@ -4,7 +4,7 @@
 		id="playground-form-date"
 		v-model="textSlots"
 	>
-		<template #title> Form date </template>
+		<template #title>Form date</template>
 
 		<form-date v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}

@@ -44,7 +44,7 @@ Additional classes to apply to the title, merged on top of the base styles (`tex
 
 ```html
 <none-found>
-	<template #title> No users found </template>
+	<template #title>No users found</template>
 
 	There are no users pending deletion.
 </none-found>
@@ -54,12 +54,12 @@ Additional classes to apply to the title, merged on top of the base styles (`tex
 
 ```html
 <none-found>
-	<template #title> No users found </template>
+	<template #title>No users found</template>
 
 	No users could be found matching "{{ searchQuery }}".
 
 	<template #actions>
-		<ui-button class="button--muted" @click="resetSearch"> Reset search </ui-button>
+		<ui-button class="button--muted" @click="resetSearch">Reset search</ui-button>
 	</template>
 </none-found>
 ```

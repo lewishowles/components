@@ -34,7 +34,7 @@ app.mount("#app");
 Since components are globally registered for now, you can use them directly anywhere in your app. For example:
 
 ```html
-<ui-button @click="doMagic"> 🪄 Bibbidi-Bobbidi-Boo </ui-button>
+<ui-button @click="doMagic">🪄 Bibbidi-Bobbidi-Boo</ui-button>
 ```
 
 ## Available components

@@ -90,7 +90,7 @@ The component uses `role="meter"` with `aria-valuenow`, `aria-valuemin`, and `ar
 	<spark-bar v-bind="{ current: 81, max: 100 }">
 		<template #default="{ percentage }">
 			{{ percentage }}%
-			<span aria-hidden="true"> used</span>
+			<span aria-hidden="true">used</span>
 		</template>
 	</spark-bar>
 </div>

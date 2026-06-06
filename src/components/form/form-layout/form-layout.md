@@ -18,8 +18,8 @@ The default slot contains the content to wrap.
 
 ```html
 <form-layout>
-	<form-input v-model="name"> Your name </form-input>
+	<form-input v-model="name">Your name</form-input>
 
-	<form-textarea v-model="biography"> A little about yourself </form-textarea>
+	<form-textarea v-model="biography">A little about yourself</form-textarea>
 </form-layout>
 ```

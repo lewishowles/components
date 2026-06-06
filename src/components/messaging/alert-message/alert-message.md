@@ -47,14 +47,14 @@ Whether to show an icon with the alert. Note that a "muted" alert does not have 
 ### Basic success message
 
 ```html
-<alert-message v-bind="{ type: 'success' }"> Message </alert-message>
+<alert-message v-bind="{ type: 'success' }">Message</alert-message>
 ```
 
 ### With title
 
 ```html
 <alert-message v-bind="{ type: 'success' }">
-	<template #title> Message title </template>
+	<template #title>Message title</template>
 
 	Message
 </alert-message>

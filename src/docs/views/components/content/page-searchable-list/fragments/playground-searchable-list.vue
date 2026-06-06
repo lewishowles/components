@@ -4,7 +4,7 @@
 		id="playground-searchable-list"
 		v-model="textSlots"
 	>
-		<template #title> Searchable list </template>
+		<template #title>Searchable list</template>
 
 		<searchable-list v-bind="componentProps" v-model="componentModel">
 			<template #label>

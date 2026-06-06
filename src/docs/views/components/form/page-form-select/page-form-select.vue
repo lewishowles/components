@@ -1,91 +1,99 @@
 <template>
 	<component-page>
-		<template #title> Form select </template>
+		<template #title>Form select</template>
 
 		<template #introduction>
 			<p>
-				<code>form-select</code> is an extension of the standard <code>select</code> tag, with a
-				consistent design and baked-in accessibility features.
+				<code>form-select</code>
+				is an extension of the standard
+				<code>select</code>
+				tag, with a consistent design and baked-in accessibility features.
 			</p>
 		</template>
 
 		<component-props>
 			<component-prop id="prop-options">
-				<template #name> options </template>
+				<template #name>options</template>
 
-				<template #type> Array </template>
+				<template #type>Array</template>
 
-				<template #default-value> [] </template>
+				<template #default-value>[]</template>
 
 				<p>The options for this select can be provided in a number of formats for ease.</p>
 
 				<ul>
 					<li>
 						An array of strings
-						<code>[&quot;option1&quot;, &quot;option2&quot;, &quot;option3&quot;]</code>, in which
-						case both the label and value are the same.
+						<code>[&quot;option1&quot;, &quot;option2&quot;, &quot;option3&quot;]</code>
+						, in which case both the label and value are the same.
 					</li>
 					<li>
-						An array of numbers <code>[1, 2, 3]</code>, in which case both the label and value are
-						the same.
+						An array of numbers
+						<code>[1, 2, 3]</code>
+						, in which case both the label and value are the same.
 					</li>
 					<li>
 						An array of objects
-						<code>[{ label: &quot;Label&quot;, value: &quot;value&quot; }]</code> where labels and
-						values are explicitly defined.
+						<code>[{ label: &quot;Label&quot;, value: &quot;value&quot; }]</code>
+						where labels and values are explicitly defined.
 					</li>
 					<li>
-						An array of objects combined with the <code>labelKey</code> and
-						<code>valueKey</code> properties.
+						An array of objects combined with the
+						<code>labelKey</code>
+						and
+						<code>valueKey</code>
+						properties.
 					</li>
 					<li>
-						An object <code>{ value: &quot;label&quot; }</code> where each key is the value of oan
-						option, and each value is the label.
+						An object
+						<code>{ value: &quot;label&quot; }</code>
+						where each key is the value of oan option, and each value is the label.
 					</li>
 				</ul>
 			</component-prop>
 
 			<component-prop id="prop-label-key">
-				<template #name> labelKey </template>
+				<template #name>labelKey</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> label </template>
+				<template #default-value>label</template>
 
 				The key needed to find each option's label within its object. If an individual option is a
 				string or number, this is ignored.
 			</component-prop>
 
 			<component-prop id="prop-value-key">
-				<template #name> valueKey </template>
+				<template #name>valueKey</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> value </template>
+				<template #default-value>value</template>
 
 				The key needed to find each option's value within its object. If an individual option is a
 				string or number, this is ignored.
 			</component-prop>
 
 			<component-prop id="prop-allow-empty">
-				<template #name> allowEmpty </template>
+				<template #name>allowEmpty</template>
 
-				<template #type> Boolean </template>
+				<template #type>Boolean</template>
 
-				<template #default-value> true </template>
+				<template #default-value>true</template>
 
 				<p>
 					Whether to allow an empty option, the label of which can be provided via the
-					<code>empty-option-label</code> slot.
+					<code>empty-option-label</code>
+					slot.
 				</p>
 			</component-prop>
 
 			<component-prop id="prop-id">
-				<template #name> id </template>
+				<template #name>id</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					Any ID to apply to this field. If an ID is not provided, one will be generated at random.
@@ -95,32 +103,36 @@
 			</component-prop>
 
 			<component-prop id="prop-input-attributes">
-				<template #name> inputAttributes </template>
+				<template #name>inputAttributes</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
-				<p>Any additional attributes to pass to the field itself, such as <code>required</code>.</p>
+				<p>
+					Any additional attributes to pass to the field itself, such as
+					<code>required</code>
+					.
+				</p>
 			</component-prop>
 		</component-props>
 
 		<component-slots>
 			<component-slot id="slot-default">
-				<template #name> default </template>
+				<template #name>default</template>
 
 				<p>The default slot contains the label of the field.</p>
 				<p>
-					<em
-						>Note that a label is always required, even if a label is not shown to the user, as it
+					<em>
+						Note that a label is always required, even if a label is not shown to the user, as it
 						will be critical for screen readers. This component will show an error if no label is
-						provided.</em
-					>
+						provided.
+					</em>
 				</p>
 			</component-slot>
 
 			<component-slot id="slot-introduction">
-				<template #name> introduction </template>
+				<template #name>introduction</template>
 
 				<p>
 					Any additional text to introduce this input, which appears between the label and the
@@ -129,13 +141,13 @@
 			</component-slot>
 
 			<component-slot id="slot-error">
-				<template #name> error </template>
+				<template #name>error</template>
 
 				<p>Any error text to display below the field.</p>
 			</component-slot>
 
 			<component-slot id="slot-help">
-				<template #name> help </template>
+				<template #name>help</template>
 
 				<p>Any help text to display below the field.</p>
 			</component-slot>
@@ -143,9 +155,13 @@
 
 		<component-events>
 			<component-event id="event-v-model">
-				<template #name> v-model </template>
+				<template #name>v-model</template>
 
-				<p>The current value of the select will be available via <code>v-model</code>.</p>
+				<p>
+					The current value of the select will be available via
+					<code>v-model</code>
+					.
+				</p>
 			</component-event>
 		</component-events>
 

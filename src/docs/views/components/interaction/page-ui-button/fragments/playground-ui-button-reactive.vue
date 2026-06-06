@@ -4,7 +4,7 @@
 		id="playground-ui-button-reactive"
 		v-model="textSlots"
 	>
-		<template #title> Reactive button </template>
+		<template #title>Reactive button</template>
 
 		<template #introduction>
 			<p>A button that reacts, giving user feedback, on activation.</p>

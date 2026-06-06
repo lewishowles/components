@@ -4,7 +4,7 @@
 		id="playground-copy-content"
 		v-model="textSlots"
 	>
-		<template #title> Copy content </template>
+		<template #title>Copy content</template>
 
 		<copy-content v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}

@@ -4,7 +4,7 @@
 		id="playground-floating-details"
 		v-model="textSlots"
 	>
-		<template #title> Floating details </template>
+		<template #title>Floating details</template>
 
 		<div class="flex justify-end">
 			<floating-details v-bind="componentProps" v-model="componentModel">
@@ -13,9 +13,9 @@
 				</template>
 
 				<div class="flex flex-col gap-4">
-					<link-tag href="#" icon-start="icon-clipboard"> Your orders </link-tag>
-					<link-tag href="#" icon-start="icon-user"> Your details </link-tag>
-					<link-tag href="#" icon-start="icon-megaphone"> Communication preferences </link-tag>
+					<link-tag href="#" icon-start="icon-clipboard">Your orders</link-tag>
+					<link-tag href="#" icon-start="icon-user">Your details</link-tag>
+					<link-tag href="#" icon-start="icon-megaphone">Communication preferences</link-tag>
 				</div>
 			</floating-details>
 		</div>

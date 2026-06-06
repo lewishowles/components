@@ -5,7 +5,7 @@
 		v-bind="{ live: false }"
 		data-test="loading-skeleton-no-label"
 	>
-		<template #title> &lt;loading-skeleton&gt; </template>
+		<template #title>&lt;loading-skeleton&gt;</template>
 
 		A `label` is required for accessibility purposes.
 	</alert-message>

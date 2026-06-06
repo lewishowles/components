@@ -1,11 +1,12 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-content-separator">
-		<template #title> Content separator </template>
+		<template #title>Content separator</template>
 
 		<template #introduction>
 			<p>
-				A decorative visual rule, hidden from screen readers. Use <code>tag="hr"</code> for a break
-				in content.
+				A decorative visual rule, hidden from screen readers. Use
+				<code>tag="hr"</code>
+				for a break in content.
 			</p>
 		</template>
 

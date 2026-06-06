@@ -91,7 +91,7 @@ The maximum rating value and number of icons to display.
 ### Basic usage
 
 ```html
-<star-rating v-model="rating"> Rate your experience </star-rating>
+<star-rating v-model="rating">Rate your experience</star-rating>
 ```
 
 ### With help
@@ -100,6 +100,6 @@ The maximum rating value and number of icons to display.
 <star-rating v-model="rating">
 	Rate your experience
 
-	<template #help> From 1 to 5, with 1 being unacceptable, and 5 being excellent </template>
+	<template #help>From 1 to 5, with 1 being unacceptable, and 5 being excellent</template>
 </star-rating>
 ```

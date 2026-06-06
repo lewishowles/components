@@ -4,7 +4,7 @@
 		id="playground-form-field-text"
 		v-model="textSlots"
 	>
-		<template #title> Text input </template>
+		<template #title>Text input</template>
 
 		<template #introduction>
 			<p>

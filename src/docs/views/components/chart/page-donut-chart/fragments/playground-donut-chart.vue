@@ -1,8 +1,8 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-donut-chart" v-model="textSlots">
-		<template #title> Donut chart </template>
+		<template #title>Donut chart</template>
 
-		<template #introduction> The default donut chart. </template>
+		<template #introduction>The default donut chart.</template>
 
 		<donut-chart v-bind="componentProps">
 			<template #label>

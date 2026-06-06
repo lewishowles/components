@@ -28,7 +28,7 @@ Any additional actions that should appear below the main row.
 
 ```html
 <form-actions>
-	<ui-button class="button--primary"> Save profile </ui-button>
+	<ui-button class="button--primary">Save profile</ui-button>
 </form-actions>
 ```
 
@@ -36,8 +36,8 @@ Any additional actions that should appear below the main row.
 
 ```html
 <form-actions>
-	<template #label> Danger zone </template>
+	<template #label>Danger zone</template>
 
-	<ui-button> Delete account </ui-button>
+	<ui-button>Delete account</ui-button>
 </form-actions>
 ```

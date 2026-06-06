@@ -13,7 +13,7 @@
 				data-test="accordion-group-expand-button"
 				@click="showAllPanels"
 			>
-				<slot name="show-all-panels-label"> Expand all </slot>
+				<slot name="show-all-panels-label">Expand all</slot>
 			</ui-button>
 
 			<ui-button
@@ -23,7 +23,7 @@
 				data-test="accordion-group-collapse-button"
 				@click="hideAllPanels"
 			>
-				<slot name="hide-all-panels-label"> Collapse all </slot>
+				<slot name="hide-all-panels-label">Collapse all</slot>
 			</ui-button>
 		</div>
 

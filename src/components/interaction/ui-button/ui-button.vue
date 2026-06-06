@@ -38,7 +38,7 @@
 
 		<span v-if="reactive" role="status" class="sr-only" data-test="ui-button-status">
 			<template v-if="isReacting">
-				<slot name="loading-label"> Loading </slot>
+				<slot name="loading-label">Loading</slot>
 			</template>
 		</span>
 

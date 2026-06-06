@@ -4,7 +4,7 @@
 		id="playground-alert-message"
 		v-model="textSlots"
 	>
-		<template #title> Error message </template>
+		<template #title>Error message</template>
 
 		<alert-message v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}

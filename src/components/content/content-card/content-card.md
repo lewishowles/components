@@ -66,7 +66,7 @@ Classes to apply around the icon slot.
 
 ```html
 <content-card>
-	<template #title> Card title </template>
+	<template #title>Card title</template>
 
 	Card content
 </content-card>
@@ -76,11 +76,11 @@ Classes to apply around the icon slot.
 
 ```html
 <content-card>
-	<template #title> Card title </template>
+	<template #title>Card title</template>
 
 	Card content
 
-	<template #footer> Card footer </template>
+	<template #footer>Card footer</template>
 </content-card>
 ```
 
@@ -88,7 +88,7 @@ Classes to apply around the icon slot.
 
 ```html
 <content-card>
-	<template #header> Custom header </template>
+	<template #header>Custom header</template>
 
 	Card content
 </content-card>

@@ -1,6 +1,6 @@
 <template>
 	<component-playground v-bind="{ copy: template, componentModel }" id="playground-spark-bar">
-		<template #title> Spark bar </template>
+		<template #title>Spark bar</template>
 
 		<div aria-label="Storage used">
 			<spark-bar v-bind="componentProps" v-model="componentModel" />

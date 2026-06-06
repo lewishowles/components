@@ -4,15 +4,15 @@
 		id="playground-conditional-wrapper"
 		v-model="textSlots"
 	>
-		<template #title> Conditional wrapper </template>
+		<template #title>Conditional wrapper</template>
 
 		<template #introduction>
 			<p />
 		</template>
 
 		<ui-button class="button--muted mb-4" @click="shouldWrap = !shouldWrap">
-			<template v-if="!shouldWrap"> Wrap </template>
-			<template v-else> Unwrap </template>
+			<template v-if="!shouldWrap">Wrap</template>
+			<template v-else>Unwrap</template>
 		</ui-button>
 
 		<conditional-wrapper v-bind="componentProps">

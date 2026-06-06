@@ -1,13 +1,15 @@
 <template>
 	<component-page>
-		<template #title> Dropdown menu </template>
+		<template #title>Dropdown menu</template>
 
 		<template #introduction>
 			<p>
-				<code>dropdown-menu</code> provides an accessible action menu with a button trigger,
-				<code>role="menu"</code> semantics, and full keyboard navigation. It's well suited to bulk
-				action buttons, row-level controls in data tables, and any situation where a small set of
-				actions needs to be de-cluttered from the interface.
+				<code>dropdown-menu</code>
+				provides an accessible action menu with a button trigger,
+				<code>role="menu"</code>
+				semantics, and full keyboard navigation. It's well suited to bulk action buttons, row-level
+				controls in data tables, and any situation where a small set of actions needs to be
+				de-cluttered from the interface.
 			</p>
 
 			<p>
@@ -21,9 +23,18 @@
 			<p>To build up a standardised menu, use the companion components:</p>
 
 			<ul>
-				<li><code>dropdown-menu-button</code>, a styled action button</li>
-				<li><code>dropdown-menu-link</code>, a styled link</li>
-				<li><code>dropdown-menu-divider</code>, a visual divider between sections</li>
+				<li>
+					<code>dropdown-menu-button</code>
+					, a styled action button
+				</li>
+				<li>
+					<code>dropdown-menu-link</code>
+					, a styled link
+				</li>
+				<li>
+					<code>dropdown-menu-divider</code>
+					, a visual divider between sections
+				</li>
 			</ul>
 
 			<h3>Keyboard behaviour</h3>
@@ -37,11 +48,19 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><code>Enter</code> / <code>Space</code></td>
+						<td>
+							<code>Enter</code>
+							/
+							<code>Space</code>
+						</td>
 						<td>Open the menu (on trigger)</td>
 					</tr>
 					<tr>
-						<td><code>ArrowDown</code> / <code>ArrowUp</code></td>
+						<td>
+							<code>ArrowDown</code>
+							/
+							<code>ArrowUp</code>
+						</td>
 						<td>Open the menu and focus first item (on trigger); move between items (in menu)</td>
 					</tr>
 					<tr>
@@ -70,9 +89,9 @@
 
 		<component-props>
 			<component-prop id="prop-button-classes">
-				<template #name> buttonClasses </template>
+				<template #name>buttonClasses</template>
 
-				<template #type> string, array, object </template>
+				<template #type>string, array, object</template>
 
 				<p>
 					Additional classes applied to the trigger button. Defaults to the standard muted button
@@ -81,11 +100,11 @@
 			</component-prop>
 
 			<component-prop id="prop-details-classes">
-				<template #name> detailsClasses </template>
+				<template #name>detailsClasses</template>
 
-				<template #type> Vue class binding </template>
+				<template #type>Vue class binding</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					Additional classes to apply to the menu panel, merged on top of the panel's base styles.
@@ -94,37 +113,41 @@
 			</component-prop>
 
 			<component-prop id="prop-placement">
-				<template #name> placement </template>
+				<template #name>placement</template>
 
-				<template #type> string </template>
+				<template #type>string</template>
 
-				<template #default-value> below </template>
+				<template #default-value>below</template>
 
 				<p>
-					Preferred placement of the panel relative to the trigger: <code>"above"</code> or
-					<code>"below"</code>. The panel flips to the opposite side automatically if it would clip
-					the viewport edge.
+					Preferred placement of the panel relative to the trigger:
+					<code>"above"</code>
+					or
+					<code>"below"</code>
+					. The panel flips to the opposite side automatically if it would clip the viewport edge.
 				</p>
 			</component-prop>
 
 			<component-prop id="prop-align">
-				<template #name> align </template>
+				<template #name>align</template>
 
-				<template #type> string </template>
+				<template #type>string</template>
 
-				<template #default-value> start </template>
+				<template #default-value>start</template>
 
 				<p>
-					Preferred alignment of the panel relative to the trigger: <code>"start"</code> or
-					<code>"end"</code>. The panel flips to the opposite side automatically if it would clip
-					the viewport edge.
+					Preferred alignment of the panel relative to the trigger:
+					<code>"start"</code>
+					or
+					<code>"end"</code>
+					. The panel flips to the opposite side automatically if it would clip the viewport edge.
 				</p>
 			</component-prop>
 		</component-props>
 
 		<component-slots>
 			<component-slot id="slot-summary">
-				<template #name> summary </template>
+				<template #name>summary</template>
 
 				<p>The trigger button content.</p>
 
@@ -161,8 +184,13 @@
 							<td><code>triggerProps</code></td>
 							<td><code>object</code></td>
 							<td>
-								ARIA attributes (<code>aria-haspopup</code>, <code>aria-expanded</code>,
-								<code>aria-controls</code>) to spread onto a custom trigger element.
+								ARIA attributes (
+								<code>aria-haspopup</code>
+								,
+								<code>aria-expanded</code>
+								,
+								<code>aria-controls</code>
+								) to spread onto a custom trigger element.
 							</td>
 						</tr>
 					</tbody>
@@ -170,7 +198,7 @@
 			</component-slot>
 
 			<component-slot id="slot-default">
-				<template #name> default </template>
+				<template #name>default</template>
 
 				<p>The menu items, shown when the menu is open.</p>
 
@@ -195,13 +223,13 @@
 
 		<component-events>
 			<component-event id="event-open">
-				<template #name> open </template>
+				<template #name>open</template>
 
 				<p>Fired when the menu opens.</p>
 			</component-event>
 
 			<component-event id="event-close">
-				<template #name> close </template>
+				<template #name>close</template>
 
 				<p>Fired when the menu closes.</p>
 			</component-event>
@@ -247,8 +275,11 @@
 			<component-styling-hook id="hook-data-state">
 				<template #attribute>data-state</template>
 				<p>
-					Set to <code>"open"</code> when the menu is open, <code>"closed"</code> when it is not.
-					Present on the root element.
+					Set to
+					<code>"open"</code>
+					when the menu is open,
+					<code>"closed"</code>
+					when it is not. Present on the root element.
 				</p>
 			</component-styling-hook>
 		</component-styling-hooks>

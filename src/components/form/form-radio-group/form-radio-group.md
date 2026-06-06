@@ -113,7 +113,7 @@ const options = [
 <form-radio-group v-model="accountType" v-bind="{ inline: true }">
 	Account type
 
-	<template #help> You can change the account type from the user screen later. </template>
+	<template #help>You can change the account type from the user screen later.</template>
 </form-radio-group>
 ```
 

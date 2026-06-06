@@ -15,7 +15,7 @@
 				class="border-grey-200 bg-grey-50 dark:bg-grey-950/20 flex justify-end gap-3 rounded-md border p-3 text-sm backdrop-blur-sm dark:border-transparent"
 				:class="{ 'z-10': isTextSlotsOpen }"
 			>
-				<copy-content v-bind="{ content: copy }" class="button--muted"> Copy code </copy-content>
+				<copy-content v-bind="{ content: copy }" class="button--muted">Copy code</copy-content>
 
 				<floating-details
 					v-show="!useTranslation && haveTextSlots"
@@ -23,7 +23,7 @@
 					details-size-classes="max-w-xs"
 					v-bind="{ align: 'right' }"
 				>
-					<template #summary> Text slots </template>
+					<template #summary>Text slots</template>
 
 					<form-layout>
 						<form-field
@@ -55,9 +55,7 @@
 					v-if="haveComponentModel"
 					class="bg-grey-50 dark:bg-grey-950/30 dark:text-grey-200 border-grey-200 text-grey-800 relative mt-12 rounded-md border p-6 dark:border-transparent"
 				>
-					<pill-badge class="absolute start-0 top-0 ms-6 -translate-y-1/2">
-						Model value
-					</pill-badge>
+					<pill-badge class="absolute start-0 top-0 ms-6 -translate-y-1/2">Model value</pill-badge>
 
 					<pre>{{ componentModel }}</pre>
 				</div>

@@ -40,9 +40,9 @@
 							@mouseover="highlightedValue = option.value"
 						>
 							<span class="sr-only">
-								<slot name="option-label" v-bind="{ value: option.value }">{{
-									iconLabel(option.value)
-								}}</slot>
+								<slot name="option-label" v-bind="{ value: option.value }">
+									{{ iconLabel(option.value) }}
+								</slot>
 							</span>
 
 							<base-icon

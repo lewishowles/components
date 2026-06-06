@@ -4,7 +4,7 @@
 		id="playground-ui-button-icon"
 		v-model="textSlots"
 	>
-		<template #title> Icon button </template>
+		<template #title>Icon button</template>
 
 		<template #introduction>
 			<p>A button with an icon prefix</p>

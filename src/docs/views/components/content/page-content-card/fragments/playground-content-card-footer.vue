@@ -4,11 +4,13 @@
 		id="playground-content-card-footer"
 		v-model="textSlots"
 	>
-		<template #title> Card with footer </template>
+		<template #title>Card with footer</template>
 
 		<template #introduction>
-			Pass <code>footerClasses</code> to style the footer. The base structural styles (border,
-			rounding, flex, padding) are always applied; any classes you provide will be merged on top.
+			Pass
+			<code>footerClasses</code>
+			to style the footer. The base structural styles (border, rounding, flex, padding) are always
+			applied; any classes you provide will be merged on top.
 		</template>
 
 		<content-card v-bind="{ footerClasses: props.footerClasses.value || null }">

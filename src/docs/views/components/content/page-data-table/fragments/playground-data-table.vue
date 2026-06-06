@@ -1,6 +1,6 @@
 <template>
 	<component-playground v-bind="{ copy: template, componentModel }" id="playground-data-table">
-		<template #title> Data table </template>
+		<template #title>Data table</template>
 
 		<data-table v-bind="componentProps" v-model="componentModel">
 			<template #box_office="{ cell }">
@@ -12,7 +12,7 @@
 					}).format(cell)
 				}}
 			</template>
-			<template #runtime="{ cell }"> {{ cell }} min </template>
+			<template #runtime="{ cell }">{{ cell }} min</template>
 		</data-table>
 
 		<template #additional-code>

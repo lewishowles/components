@@ -1,35 +1,39 @@
 <template>
 	<component-page>
-		<template #title> Content card </template>
+		<template #title>Content card</template>
 
 		<template #introduction>
 			<p>
-				<code>content-card</code> groups related content in a bordered card with optional header and
-				footer areas.
+				<code>content-card</code>
+				groups related content in a bordered card with optional header and footer areas.
 			</p>
 		</template>
 
 		<component-slots>
 			<component-slot id="slot-title">
-				<template #name> title </template>
+				<template #name>title</template>
 
-				<p>The card title. Rendered inside the heading level set by <code>headingLevel</code>.</p>
+				<p>
+					The card title. Rendered inside the heading level set by
+					<code>headingLevel</code>
+					.
+				</p>
 			</component-slot>
 
 			<component-slot id="slot-icon">
-				<template #name> icon </template>
+				<template #name>icon</template>
 
 				<p>Optional icon content shown before the title in the default header layout.</p>
 			</component-slot>
 
 			<component-slot id="slot-header-additional">
-				<template #name> header-additional </template>
+				<template #name>header-additional</template>
 
 				<p>Optional content shown at the end of the default header layout.</p>
 			</component-slot>
 
 			<component-slot id="slot-header">
-				<template #name> header </template>
+				<template #name>header</template>
 
 				<p>
 					Optional custom header content. This replaces the default header layout, but remains
@@ -38,13 +42,13 @@
 			</component-slot>
 
 			<component-slot id="slot-default">
-				<template #name> default </template>
+				<template #name>default</template>
 
 				<p>The main card content.</p>
 			</component-slot>
 
 			<component-slot id="slot-footer">
-				<template #name> footer </template>
+				<template #name>footer</template>
 
 				<p>Optional footer content.</p>
 			</component-slot>
@@ -52,21 +56,21 @@
 
 		<component-props>
 			<component-prop id="prop-heading-level">
-				<template #name> headingLevel </template>
+				<template #name>headingLevel</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> h2 </template>
+				<template #default-value>h2</template>
 
 				<p>The heading level to use for the title.</p>
 			</component-prop>
 
 			<component-prop id="prop-footer-classes">
-				<template #name> footerClasses </template>
+				<template #name>footerClasses</template>
 
-				<template #type> Vue class binding </template>
+				<template #type>Vue class binding</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					Additional classes to apply to the footer, merged on top of the base styles (border,
@@ -76,11 +80,11 @@
 			</component-prop>
 
 			<component-prop id="prop-icon-classes">
-				<template #name> iconClasses </template>
+				<template #name>iconClasses</template>
 
-				<template #type> String | Array | Object </template>
+				<template #type>String | Array | Object</template>
 
-				<template #default-value> text-primary </template>
+				<template #default-value>text-primary</template>
 
 				<p>Classes to apply around the icon slot.</p>
 			</component-prop>

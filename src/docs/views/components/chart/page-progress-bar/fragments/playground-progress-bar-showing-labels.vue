@@ -4,7 +4,7 @@
 		id="playground-progress-bar"
 		v-model="textSlots"
 	>
-		<template #title> Showing labels </template>
+		<template #title>Showing labels</template>
 
 		<progress-bar v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}

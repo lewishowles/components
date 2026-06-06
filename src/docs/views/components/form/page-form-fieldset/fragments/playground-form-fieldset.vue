@@ -4,7 +4,7 @@
 		id="playground-form-fieldset"
 		v-model="textSlots"
 	>
-		<template #title> Fieldset </template>
+		<template #title>Fieldset</template>
 
 		<form-fieldset>
 			<template #title>
@@ -36,9 +36,7 @@
 					We will not use your email address for marketing purposes.
 				</template>
 
-				<template #help>
-					You can change your email address later in your account settings.
-				</template>
+				<template #help>You can change your email address later in your account settings.</template>
 			</form-field>
 		</form-fieldset>
 	</component-playground>

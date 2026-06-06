@@ -28,7 +28,7 @@ _Note that no default text is provided by design. Using a specific message relat
 
 ```html
 <loading-skeleton>
-	<template #label> Loading users… </template>
+	<template #label>Loading users…</template>
 
 	<div class="flex flex-wrap gap-4">
 		<loading-skeleton-indicator class="size-10 rounded-full" />

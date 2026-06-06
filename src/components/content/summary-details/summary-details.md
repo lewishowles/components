@@ -183,7 +183,7 @@ Toggle the details between open and closed.
 
 ```html
 <summary-details>
-	<template #summary> Summary content </template>
+	<template #summary>Summary content</template>
 
 	Details content
 </summary-details>
@@ -193,7 +193,7 @@ Toggle the details between open and closed.
 
 ```html
 <summary-details v-bind="{ icon: 'icon-user' }">
-	<template #summary> Summary content </template>
+	<template #summary>Summary content</template>
 
 	Details content
 </summary-details>

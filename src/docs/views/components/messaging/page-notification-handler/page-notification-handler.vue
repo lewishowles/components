@@ -1,13 +1,14 @@
 <template>
 	<component-page>
-		<template #title> Notification handler </template>
+		<template #title>Notification handler</template>
 
 		<template #introduction>
 			<p>
-				<code>notification-handler</code> displays and allows and end-user to manage notifications
-				as provided by an app. Notifications are provided directly to the component, allowing the
-				parent app to deal with what notifications to display and how notifications are marked as
-				read depending on its requirements.
+				<code>notification-handler</code>
+				displays and allows and end-user to manage notifications as provided by an app.
+				Notifications are provided directly to the component, allowing the parent app to deal with
+				what notifications to display and how notifications are marked as read depending on its
+				requirements.
 			</p>
 			<p>
 				<link-tag
@@ -22,11 +23,11 @@
 
 		<component-props>
 			<component-prop id="prop-notifications">
-				<template #name> notifications </template>
+				<template #name>notifications</template>
 
-				<template #type> Object[] </template>
+				<template #type>Object[]</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>The notifications to display to the user.</p>
 
@@ -69,8 +70,15 @@
 							<td><code>string</code></td>
 							<td>No</td>
 							<td>
-								The type of notification, one of <code>danger</code>, <code>warning</code>, or
-								<code>info</code>. Defaults to <code>info</code>.
+								The type of notification, one of
+								<code>danger</code>
+								,
+								<code>warning</code>
+								, or
+								<code>info</code>
+								. Defaults to
+								<code>info</code>
+								.
 							</td>
 						</tr>
 						<tr>
@@ -78,11 +86,13 @@
 							<td><code>string</code></td>
 							<td>No</td>
 							<td>
-								The date the notification was issued (<code>YYYY-MM-DD</code>). If included, a
-								formatted date is displayed to the user using
+								The date the notification was issued (
+								<code>YYYY-MM-DD</code>
+								). If included, a formatted date is displayed to the user using
 								<router-link v-bind="{ to: '/content/display-date' }">
-									<code>display-date</code> </router-link
-								>.
+									<code>display-date</code>
+								</router-link>
+								.
 							</td>
 						</tr>
 						<tr>
@@ -111,7 +121,9 @@
 							<td>
 								Whether this notification should be pinned to the top of the list. Pinned
 								notifications cannot be marked as read, and will appear each time regardless of read
-								status or <code>hideNotificationsWhenRead</code>.
+								status or
+								<code>hideNotificationsWhenRead</code>
+								.
 							</td>
 						</tr>
 						<tr>
@@ -120,8 +132,12 @@
 							<td>No</td>
 							<td>
 								The URL to any image to display beside the notification. If both
-								<code>image_url</code> and <code>icon</code> are defined,
-								<code>image_url</code> takes precedence.
+								<code>image_url</code>
+								and
+								<code>icon</code>
+								are defined,
+								<code>image_url</code>
+								takes precedence.
 							</td>
 						</tr>
 						<tr>
@@ -129,9 +145,15 @@
 							<td><code>string</code></td>
 							<td>No</td>
 							<td>
-								Any icon component to display beside the notification, e.g. <code>icon-help</code>.
-								If both <code>image_url</code> and <code>icon</code> are defined,
-								<code>image_url</code> takes precedence.
+								Any icon component to display beside the notification, e.g.
+								<code>icon-help</code>
+								. If both
+								<code>image_url</code>
+								and
+								<code>icon</code>
+								are defined,
+								<code>image_url</code>
+								takes precedence.
 							</td>
 						</tr>
 					</tbody>
@@ -139,11 +161,11 @@
 			</component-prop>
 
 			<component-prop id="prop-locale">
-				<template #name> locale </template>
+				<template #name>locale</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					The locale to use when displaying dates. To reset to the user's locale settings, set the
@@ -152,11 +174,11 @@
 			</component-prop>
 
 			<component-prop id="prop-date-format">
-				<template #name> dateFormat </template>
+				<template #name>dateFormat</template>
 
-				<template #type> Object </template>
+				<template #type>Object</template>
 
-				<template #default-value> { year: "numeric", day: "numeric", month: "long" } </template>
+				<template #default-value>{ year: "numeric", day: "numeric", month: "long" }</template>
 
 				<p>
 					The date format to use in the display of the date. To reset to the user's locale settings,
@@ -165,24 +187,27 @@
 			</component-prop>
 
 			<component-prop id="prop-align">
-				<template #name> align </template>
+				<template #name>align</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> end </template>
+				<template #default-value>end</template>
 
 				<p>
-					The alignment of the pop up notifications panel. Anything but <code>start</code> will be
-					treated as <code>end</code>.
+					The alignment of the pop up notifications panel. Anything but
+					<code>start</code>
+					will be treated as
+					<code>end</code>
+					.
 				</p>
 			</component-prop>
 
 			<component-prop id="prop-allow-mark-all-read">
-				<template #name> allowMarkAllRead </template>
+				<template #name>allowMarkAllRead</template>
 
-				<template #type> Boolean </template>
+				<template #type>Boolean</template>
 
-				<template #default-value> true </template>
+				<template #default-value>true</template>
 
 				<p>
 					Whether to display the “Mark all read” button. Deactivating means the user will be
@@ -191,11 +216,11 @@
 			</component-prop>
 
 			<component-prop id="prop-allow-reload">
-				<template #name> allowReload </template>
+				<template #name>allowReload</template>
 
-				<template #type> Boolean </template>
+				<template #type>Boolean</template>
 
-				<template #default-value> true </template>
+				<template #default-value>true</template>
 
 				<p>
 					Whether to display the “Reload” button. Deactivating means new notifications will only be
@@ -204,11 +229,11 @@
 			</component-prop>
 
 			<component-prop id="prop-loading">
-				<template #name> loading </template>
+				<template #name>loading</template>
 
-				<template #type> Boolean </template>
+				<template #type>Boolean</template>
 
-				<template #default-value> false </template>
+				<template #default-value>false</template>
 
 				<p>
 					Whether the notifications are currently loading (or re-loading). This will show a loading
@@ -217,11 +242,11 @@
 			</component-prop>
 
 			<component-prop id="prop-hide-notifications-when-read">
-				<template #name> hideNotificationsWhenRead </template>
+				<template #name>hideNotificationsWhenRead</template>
 
-				<template #type> Boolean </template>
+				<template #type>Boolean</template>
 
-				<template #default-value> false </template>
+				<template #default-value>false</template>
 
 				<p>
 					Whether to hide notifications when they are marked as read. If false, notifications will
@@ -231,11 +256,11 @@
 			</component-prop>
 
 			<component-prop id="prop-read-notification-count">
-				<template #name> readNotificationCount </template>
+				<template #name>readNotificationCount</template>
 
-				<template #type> Number </template>
+				<template #type>Number</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					The number of read notifications to display at maximum. Unread notifications are always
@@ -246,12 +271,16 @@
 
 		<component-slots>
 			<component-slot id="slot-notification-read-template">
-				<template #name> notification-read-template </template>
+				<template #name>notification-read-template</template>
 
 				<p>
 					A general slot to allow custom designs for notifications marked as
-					<code>{ read: true }</code> (where <code>hideNotificationsWhenRead</code> is
-					<code>false</code>).
+					<code>{ read: true }</code>
+					(where
+					<code>hideNotificationsWhenRead</code>
+					is
+					<code>false</code>
+					).
 				</p>
 
 				<table>
@@ -273,11 +302,12 @@
 			</component-slot>
 
 			<component-slot id="slot-notification-unread-template">
-				<template #name> notification-unread-template </template>
+				<template #name>notification-unread-template</template>
 
 				<p>
 					A general slot to allow custom designs for notifications marked as
-					<code>{ read: false }</code>.
+					<code>{ read: false }</code>
+					.
 				</p>
 
 				<table>
@@ -307,13 +337,22 @@
 			</component-slot>
 
 			<component-slot id="slot-notification-type-template">
-				<template #name> notification-&lt;type&gt;-template </template>
+				<template #name>notification-&lt;type&gt;-template</template>
 
 				<p>
 					A general slot to allow custom designs for notifications of a given
-					<code>&lt;type&gt;</code> (one of <code>danger</code>, <code>warning</code>, and
-					<code>info</code>). Takes precedence over the <code>notification-read</code> and
-					<code>notification-unread</code> slots.
+					<code>&lt;type&gt;</code>
+					(one of
+					<code>danger</code>
+					,
+					<code>warning</code>
+					, and
+					<code>info</code>
+					). Takes precedence over the
+					<code>notification-read</code>
+					and
+					<code>notification-unread</code>
+					slots.
 				</p>
 
 				<table>
@@ -343,12 +382,18 @@
 			</component-slot>
 
 			<component-slot id="slot-notification-pinned-template">
-				<template #name> notification-pinned-template </template>
+				<template #name>notification-pinned-template</template>
 
 				<p>
 					A general slot to allow custom designs for notifications that are
-					<code>{ pinned: true }</code> . Takes precedence over the <code>notification-read</code>,
-					<code>notification-unread</code> and <code>notification-&lt;type&gt;</code> slots.
+					<code>{ pinned: true }</code>
+					. Takes precedence over the
+					<code>notification-read</code>
+					,
+					<code>notification-unread</code>
+					and
+					<code>notification-&lt;type&gt;</code>
+					slots.
 				</p>
 
 				<table>
@@ -378,12 +423,18 @@
 			</component-slot>
 
 			<component-slot id="slot-notification-id-template">
-				<template #name> notification-&lt;id&gt;-template </template>
+				<template #name>notification-&lt;id&gt;-template</template>
 
 				<p>
 					A general slot to allow custom designs for notifications that are
-					<code>{ pinned: true }</code> . Takes precedence over the <code>notification-read</code>,
-					<code>notification-unread</code> and <code>notification-&lt;type&gt;</code> slots.
+					<code>{ pinned: true }</code>
+					. Takes precedence over the
+					<code>notification-read</code>
+					,
+					<code>notification-unread</code>
+					and
+					<code>notification-&lt;type&gt;</code>
+					slots.
 				</p>
 
 				<table>
@@ -413,12 +464,13 @@
 			</component-slot>
 
 			<component-slot id="slot-notification-actions">
-				<template #name> notification-actions </template>
+				<template #name>notification-actions</template>
 
 				<p>
 					A slot intended to allow actions to be added to individual notifications as required. The
-					contents of this slot appear <em>after</em> any &quot;Mark as read&quot; and &quot;View
-					more&quot; actions.
+					contents of this slot appear
+					<em>after</em>
+					any &quot;Mark as read&quot; and &quot;View more&quot; actions.
 				</p>
 
 				<table>
@@ -440,9 +492,9 @@
 			</component-slot>
 
 			<component-slot id="slot-show-notifications-label">
-				<template #name> show-notifications-label </template>
+				<template #name>show-notifications-label</template>
 
-				<template #default-value> Show notifications </template>
+				<template #default-value>Show notifications</template>
 
 				<p>
 					The label to use for the button that opens the notifications panel. This label is hidden
@@ -451,9 +503,9 @@
 			</component-slot>
 
 			<component-slot id="slot-no-notifications-label">
-				<template #name> no-notifications-label </template>
+				<template #name>no-notifications-label</template>
 
-				<template #default-value> No new notifications </template>
+				<template #default-value>No new notifications</template>
 
 				<p>
 					The text to show when no notifications are being displayed, either because none were
@@ -463,41 +515,41 @@
 			</component-slot>
 
 			<component-slot id="slot-mark-all-read-label">
-				<template #name> mark-all-read-label </template>
+				<template #name>mark-all-read-label</template>
 
-				<template #default-value> Mark all notifications read </template>
+				<template #default-value>Mark all notifications read</template>
 
 				<p>The label to use for the button that marks all unread notifications read.</p>
 			</component-slot>
 
 			<component-slot id="slot-reload-label">
-				<template #name> reload-label </template>
+				<template #name>reload-label</template>
 
-				<template #default-value> Reload notifications </template>
+				<template #default-value>Reload notifications</template>
 
 				<p>The label to use for the button that attempts to re-load notifications.</p>
 			</component-slot>
 
 			<component-slot id="slot-loading-label">
-				<template #name> loading-label </template>
+				<template #name>loading-label</template>
 
-				<template #default-value> Loading notifications </template>
+				<template #default-value>Loading notifications</template>
 
 				<p>The label to use when the loading indicator is shown.</p>
 			</component-slot>
 
 			<component-slot id="slot-mark-read-label">
-				<template #name> mark-read-label </template>
+				<template #name>mark-read-label</template>
 
-				<template #default-value> Mark read </template>
+				<template #default-value>Mark read</template>
 
 				<p>The label to use for the button that marks an individual notification as read.</p>
 			</component-slot>
 
 			<component-slot id="slot-view-more-label">
-				<template #name> view-more-label </template>
+				<template #name>view-more-label</template>
 
-				<template #default-value> View more </template>
+				<template #default-value>View more</template>
 
 				<p>
 					The label to use for the button the link to view more information, if a notification has
@@ -508,7 +560,7 @@
 
 		<component-events>
 			<component-event id="event-notifications-read">
-				<template #name> notifications:read </template>
+				<template #name>notifications:read</template>
 
 				<p>A list of one or more notification IDs which have been marked as read by the user.</p>
 
@@ -538,7 +590,7 @@
 			</component-event>
 
 			<component-event id="event-notifications-reload">
-				<template #name> notifications:reload </template>
+				<template #name>notifications:reload</template>
 
 				<p>
 					The user has requested that the notifications be reloaded. A loading indicator is not
@@ -556,7 +608,8 @@
 
 				<p>
 					A reactive list of the filtered notifications currently being displayed. Accessible via a
-					<code>ref</code> on the component.
+					<code>ref</code>
+					on the component.
 				</p>
 			</component-method>
 
@@ -567,7 +620,8 @@
 
 				<p>
 					A reactive number reflecting how many notifications are currently unread. Accessible via a
-					<code>ref</code> on the component.
+					<code>ref</code>
+					on the component.
 				</p>
 			</component-method>
 
@@ -578,7 +632,9 @@
 
 				<p>
 					Mark all unread notifications as read, mirroring the "Mark all notifications read" button.
-					Accessible via a <code>ref</code> on the component.
+					Accessible via a
+					<code>ref</code>
+					on the component.
 				</p>
 			</component-method>
 		</component-methods>

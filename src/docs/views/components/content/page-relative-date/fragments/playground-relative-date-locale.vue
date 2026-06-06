@@ -4,9 +4,9 @@
 		id="playground-relative-date-locale"
 		v-model="textSlots"
 	>
-		<template #title> Custom locale </template>
+		<template #title>Custom locale</template>
 
-		<template #introduction> Display a relative date with a custom locale. </template>
+		<template #introduction>Display a relative date with a custom locale.</template>
 
 		<relative-date v-bind="componentProps" />
 	</component-playground>

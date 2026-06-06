@@ -1,58 +1,70 @@
 <template>
 	<component-page>
-		<template #title> Alert message </template>
+		<template #title>Alert message</template>
 
 		<template #introduction>
 			<p>
-				The <code>alert-message</code> component is designed to display an accessible message to the
-				user.
+				The
+				<code>alert-message</code>
+				component is designed to display an accessible message to the user.
 			</p>
 		</template>
 
 		<component-props>
 			<component-prop id="prop-type">
-				<template #name> type </template>
+				<template #name>type</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> muted </template>
+				<template #default-value>muted</template>
 
 				<p>
-					The type of alert, one of <code>success</code>, <code>error</code>, <code>warning</code>,
-					<code>info</code> or <code>muted</code>. Note that a <code>muted</code> alert does not
-					have an icon by default.
+					The type of alert, one of
+					<code>success</code>
+					,
+					<code>error</code>
+					,
+					<code>warning</code>
+					,
+					<code>info</code>
+					or
+					<code>muted</code>
+					. Note that a
+					<code>muted</code>
+					alert does not have an icon by default.
 				</p>
 			</component-prop>
 
 			<component-prop id="prop-show-icon">
-				<template #name> showIcon </template>
+				<template #name>showIcon</template>
 
-				<template #type> Boolean </template>
+				<template #type>Boolean</template>
 
-				<template #default-value> true </template>
+				<template #default-value>true</template>
 
 				<p>
-					Whether to show an icon with the alert. Note that a <code>muted</code> alert does not have
-					an icon by default.
+					Whether to show an icon with the alert. Note that a
+					<code>muted</code>
+					alert does not have an icon by default.
 				</p>
 			</component-prop>
 		</component-props>
 
 		<component-slots>
 			<component-slot id="slot-title">
-				<template #name> title </template>
+				<template #name>title</template>
 
 				<p>Any title to display with the message.</p>
 			</component-slot>
 
 			<component-slot id="slot-default">
-				<template #name> default </template>
+				<template #name>default</template>
 
 				<p>The default slot contains the content of the alert.</p>
 			</component-slot>
 
 			<component-slot id="slot-icon">
-				<template #name> icon </template>
+				<template #name>icon</template>
 
 				<p>Any icon to display in the alert, overriding any default icon.</p>
 			</component-slot>
@@ -71,7 +83,11 @@
 
 			<component-styling-hook id="hook-data-part-title">
 				<template #attribute>data-part="title"</template>
-				<p>The title element. Present when the <code>title</code> slot is populated.</p>
+				<p>
+					The title element. Present when the
+					<code>title</code>
+					slot is populated.
+				</p>
 			</component-styling-hook>
 
 			<component-styling-hook id="hook-data-part-content">
@@ -82,8 +98,17 @@
 			<component-styling-hook id="hook-data-state">
 				<template #attribute>data-state</template>
 				<p>
-					Set to the resolved alert type: <code>"success"</code>, <code>"error"</code>,
-					<code>"warning"</code>, <code>"info"</code>, or <code>"muted"</code>.
+					Set to the resolved alert type:
+					<code>"success"</code>
+					,
+					<code>"error"</code>
+					,
+					<code>"warning"</code>
+					,
+					<code>"info"</code>
+					, or
+					<code>"muted"</code>
+					.
 				</p>
 			</component-styling-hook>
 		</component-styling-hooks>

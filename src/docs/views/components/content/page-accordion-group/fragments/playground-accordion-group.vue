@@ -4,7 +4,7 @@
 		id="playground-accordion-group"
 		v-model="textSlots"
 	>
-		<template #title> Accordion group </template>
+		<template #title>Accordion group</template>
 
 		<accordion-group v-bind="componentProps" v-model="componentModel">
 			<template #show-all-panels-label>
@@ -24,9 +24,9 @@
 			</template>
 
 			<accordion-panel>
-				<template #title> The Flux Capacitor </template>
+				<template #title>The Flux Capacitor</template>
 
-				<template #introduction> The key to time travel. </template>
+				<template #introduction>The key to time travel.</template>
 
 				<div class="prose dark:prose-invert">
 					<p>
@@ -45,9 +45,9 @@
 				</div>
 			</accordion-panel>
 			<accordion-panel>
-				<template #title> The DeLorean </template>
+				<template #title>The DeLorean</template>
 
-				<template #introduction> The iconic time-travelling machine. </template>
+				<template #introduction>The iconic time-travelling machine.</template>
 
 				<div class="prose dark:prose-invert">
 					<p>...</p>

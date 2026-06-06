@@ -4,13 +4,14 @@
 		id="playground-form-field-checkbox-group"
 		v-model="textSlots"
 	>
-		<template #title> Checkbox group </template>
+		<template #title>Checkbox group</template>
 
 		<template #introduction>
 			<p>
 				Allow a user to select one or more options from those available. A checkbox group differs
-				from a singular checkbox in that the <code>value</code> of each selected checkbox is
-				returned.
+				from a singular checkbox in that the
+				<code>value</code>
+				of each selected checkbox is returned.
 			</p>
 		</template>
 

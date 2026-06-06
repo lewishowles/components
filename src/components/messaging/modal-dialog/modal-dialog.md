@@ -73,14 +73,14 @@ Close the dialog.
 
 ```html
 <modal-dialog>
-	<template #title> Delete your account </template>
+	<template #title>Delete your account</template>
 
 	Are you sure you want to delete your account? This cannot be undone.
 
 	<template #actions>
-		<ui-button class="button--danger" @click="deleteAccount"> Delete my account </ui-button>
+		<ui-button class="button--danger" @click="deleteAccount">Delete my account</ui-button>
 
-		<ui-button class="button--muted" @click="closeDialog"> Cancel </ui-button>
+		<ui-button class="button--muted" @click="closeDialog">Cancel</ui-button>
 	</template>
 </modal-dialog>
 ```

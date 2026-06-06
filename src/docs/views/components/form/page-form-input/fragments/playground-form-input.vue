@@ -4,7 +4,7 @@
 		id="playground-form-input"
 		v-model="textSlots"
 	>
-		<template #title> Form input </template>
+		<template #title>Form input</template>
 
 		<form-input v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}

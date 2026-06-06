@@ -65,7 +65,7 @@ Focus this button group.
 ### Basic usage
 
 ```html
-<button-group v-model="theme" v-bind="{ options }"> Theme </button-group>
+<button-group v-model="theme" v-bind="{ options }">Theme</button-group>
 ```
 
 ```javascript
@@ -82,7 +82,7 @@ const options = [
 <button-group v-model="accountType" v-bind="{ inline: true }">
 	Account type
 
-	<template #help> You can change the account type from the user screen later. </template>
+	<template #help>You can change the account type from the user screen later.</template>
 </button-group>
 ```
 

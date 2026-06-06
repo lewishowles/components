@@ -1,10 +1,10 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-tab-group" v-model="textSlots">
-		<template #title> Tab group </template>
+		<template #title>Tab group</template>
 
 		<tab-group v-bind="componentProps">
 			<tab-item icon="icon-object">
-				<template #label> Props </template>
+				<template #label>Props</template>
 
 				<div class="prose dark:prose-invert">
 					<h2>Props</h2>
@@ -12,7 +12,7 @@
 				</div>
 			</tab-item>
 			<tab-item icon="icon-slot">
-				<template #label> Slots </template>
+				<template #label>Slots</template>
 
 				<div class="prose dark:prose-invert">
 					<h2>Slots</h2>

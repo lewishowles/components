@@ -4,12 +4,12 @@
 		id="playground-breadcrumb-list"
 		v-model="textSlots"
 	>
-		<template #title> Breadcrumb list </template>
+		<template #title>Breadcrumb list</template>
 
 		<breadcrumb-list v-bind="componentProps" v-model="componentModel">
-			<breadcrumb-item href="/"> Admin </breadcrumb-item>
-			<breadcrumb-item href="/users"> Users </breadcrumb-item>
-			<breadcrumb-item current> Sophie Wardhaugh </breadcrumb-item>
+			<breadcrumb-item href="/">Admin</breadcrumb-item>
+			<breadcrumb-item href="/users">Users</breadcrumb-item>
+			<breadcrumb-item current>Sophie Wardhaugh</breadcrumb-item>
 		</breadcrumb-list>
 	</component-playground>
 </template>

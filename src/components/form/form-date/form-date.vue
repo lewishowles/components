@@ -31,7 +31,7 @@
 				class="w-20"
 				data-test="form-date-day"
 			>
-				<slot name="day-label"> Day </slot>
+				<slot name="day-label">Day</slot>
 			</form-input>
 
 			<form-input
@@ -44,7 +44,7 @@
 				class="w-20"
 				data-test="form-date-month"
 			>
-				<slot name="month-label"> Month </slot>
+				<slot name="month-label">Month</slot>
 			</form-input>
 
 			<form-input
@@ -57,7 +57,7 @@
 				class="w-40"
 				data-test="form-date-year"
 			>
-				<slot name="year-label"> Year </slot>
+				<slot name="year-label">Year</slot>
 			</form-input>
 		</div>
 

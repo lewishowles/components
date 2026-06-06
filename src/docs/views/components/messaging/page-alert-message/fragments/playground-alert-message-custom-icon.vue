@@ -4,7 +4,7 @@
 		id="playground-alert-message"
 		v-model="textSlots"
 	>
-		<template #title> Custom icon </template>
+		<template #title>Custom icon</template>
 
 		<alert-message v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}

@@ -4,7 +4,7 @@
 		id="playground-loading-skeleton"
 		v-model="textSlots"
 	>
-		<template #title> Skeleton loader </template>
+		<template #title>Skeleton loader</template>
 
 		<loading-skeleton>
 			<template #label>

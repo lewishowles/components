@@ -109,12 +109,12 @@ Activate this tab programmatically. Useful when external code needs to change wh
 ```html
 <tab-group>
 	<tab-item>
-		<template #label> Log in </template>
+		<template #label>Log in</template>
 
 		<user-log-in />
 	</tab-item>
 	<tab-item>
-		<template #label> Register </template>
+		<template #label>Register</template>
 
 		<user-register />
 	</tab-item>

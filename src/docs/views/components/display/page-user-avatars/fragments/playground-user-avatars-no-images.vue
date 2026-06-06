@@ -4,7 +4,7 @@
 		id="playground-user-avatars"
 		v-model="textSlots"
 	>
-		<template #title> No images </template>
+		<template #title>No images</template>
 
 		<template #introduction>
 			<p>Avatars where no images are available.</p>

@@ -4,7 +4,7 @@
 		id="playground-form-field-date"
 		v-model="textSlots"
 	>
-		<template #title> Date </template>
+		<template #title>Date</template>
 
 		<template #introduction>
 			<p>

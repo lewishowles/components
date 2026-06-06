@@ -4,7 +4,7 @@
 		id="playground-form-checkbox"
 		v-model="textSlots"
 	>
-		<template #title> Form checkbox </template>
+		<template #title>Form checkbox</template>
 
 		<form-checkbox v-model="componentModel">
 			{{ textSlots.default?.value }}

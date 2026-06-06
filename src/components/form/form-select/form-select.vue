@@ -34,7 +34,7 @@
 				}"
 			>
 				<option v-if="allowEmpty" value="">
-					<slot name="empty-option-label"> Please select… </slot>
+					<slot name="empty-option-label">Please select…</slot>
 				</option>
 				<option v-for="option in internalOptions" :key="option.value" :value="option.value">
 					{{ option.label }}

@@ -4,7 +4,7 @@
 		id="playground-link-tag"
 		v-model="textSlots"
 	>
-		<template #title> Simple link </template>
+		<template #title>Simple link</template>
 
 		<template #introduction>
 			<p>A standard link tag.</p>

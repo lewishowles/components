@@ -4,9 +4,9 @@
 		id="playground-relative-date"
 		v-model="textSlots"
 	>
-		<template #title> Relative date </template>
+		<template #title>Relative date</template>
 
-		<template #introduction> A relative date compared with the current time. </template>
+		<template #introduction>A relative date compared with the current time.</template>
 
 		<relative-date v-bind="componentProps" />
 	</component-playground>

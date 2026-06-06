@@ -4,7 +4,7 @@
 		id="playground-link-tag"
 		v-model="textSlots"
 	>
-		<template #title> Icon link </template>
+		<template #title>Icon link</template>
 
 		<template #introduction>
 			<p>A link with an icon prefix.</p>

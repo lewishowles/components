@@ -4,7 +4,7 @@
 		id="playground-star-rating"
 		v-model="textSlots"
 	>
-		<template #title> Star rating (read only) </template>
+		<template #title>Star rating (read only)</template>
 
 		<template #introduction>
 			<p>A basic star rating allows the user to provide a value from one to five.</p>

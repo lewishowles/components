@@ -60,9 +60,9 @@ The label to hide this panel. Overrides the `hide-panel-label` slot in the paren
 ```html
 <accordion-group>
 	<accordion-panel>
-		<template #title> The Flux Capacitor </template>
+		<template #title>The Flux Capacitor</template>
 
-		<template #introduction> The key to time travel. </template>
+		<template #introduction>The key to time travel.</template>
 
 		<p>
 			In the world of Back to the Future, the time circuits are the heart of the DeLorean's
@@ -79,9 +79,9 @@ The label to hide this panel. Overrides the `hide-panel-label` slot in the paren
 		</p>
 	</accordion-panel>
 	<accordion-panel>
-		<template #title> The DeLorean </template>
+		<template #title>The DeLorean</template>
 
-		<template #introduction> The iconic time-traveling machine. </template>
+		<template #introduction>The iconic time-traveling machine.</template>
 
 		...
 	</accordion-panel>

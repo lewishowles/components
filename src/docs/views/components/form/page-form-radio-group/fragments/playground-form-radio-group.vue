@@ -4,7 +4,7 @@
 		id="playground-form-radio-group"
 		v-model="textSlots"
 	>
-		<template #title> Form radio group </template>
+		<template #title>Form radio group</template>
 
 		<form-radio-group v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}

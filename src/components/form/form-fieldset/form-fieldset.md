@@ -41,20 +41,20 @@ The heading level to use this fieldset.
 
 ```html
 <form-fieldset>
-	<template #title> Your details </template>
+	<template #title>Your details</template>
 
-	<template #introduction> Your details are used in order to maintain your account. </template>
+	<template #introduction>Your details are used in order to maintain your account.</template>
 
-	<form-field name="your_name"> Your name </form-field>
+	<form-field name="your_name">Your name</form-field>
 </form-fieldset>
 
 <form-fieldset>
-	<template #title> Your contact details </template>
+	<template #title>Your contact details</template>
 
 	<template #introduction>
 		We will only use these details to contact you about your account.
 	</template>
 
-	<form-field type="email" name="email_address"> Email address </form-field>
+	<form-field type="email" name="email_address">Email address</form-field>
 </form-fieldset>
 ```

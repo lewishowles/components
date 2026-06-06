@@ -48,7 +48,7 @@
 		</define-template>
 
 		<loading-indicator v-if="props.loading" v-bind="{ large: true }">
-			<slot name="loading-label"> Loading notifications </slot>
+			<slot name="loading-label">Loading notifications</slot>
 		</loading-indicator>
 
 		<div v-if="!props.loading">
@@ -65,7 +65,7 @@
 						data-test="notification-handler-reload"
 						@click="reloadNotifications"
 					>
-						<slot name="reload-label"> Reload notifications </slot>
+						<slot name="reload-label">Reload notifications</slot>
 					</ui-button>
 
 					<ui-button
@@ -75,7 +75,7 @@
 						data-test="notification-handler-mark-all-read"
 						@click="markAllNotificationsRead"
 					>
-						<slot name="mark-all-read-label"> Mark all notifications read </slot>
+						<slot name="mark-all-read-label">Mark all notifications read</slot>
 					</ui-button>
 				</div>
 
@@ -104,7 +104,7 @@
 				/>
 
 				<span class="animate-fade-in delay">
-					<slot name="no-notifications-label"> No new notifications </slot>
+					<slot name="no-notifications-label">No new notifications</slot>
 				</span>
 			</div>
 		</div>
@@ -116,8 +116,9 @@
 		aria-relevant="additions"
 		class="sr-only"
 		data-test="notification-handler-live-region"
-		>{{ announcement }}</span
 	>
+		{{ announcement }}
+	</span>
 </template>
 
 <script setup>

@@ -4,7 +4,7 @@
 		id="playground-form-checkbox-group"
 		v-model="textSlots"
 	>
-		<template #title> Form checkbox group </template>
+		<template #title>Form checkbox group</template>
 
 		<form-checkbox-group v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}

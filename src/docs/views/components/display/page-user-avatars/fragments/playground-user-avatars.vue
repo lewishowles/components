@@ -4,7 +4,7 @@
 		id="playground-user-avatars"
 		v-model="textSlots"
 	>
-		<template #title> User avatars </template>
+		<template #title>User avatars</template>
 
 		<template #introduction>
 			<p>A simple list of avatars with all information.</p>

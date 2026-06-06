@@ -4,12 +4,17 @@
 		id="playground-form-field-email"
 		v-model="textSlots"
 	>
-		<template #title> Email </template>
+		<template #title>Email</template>
 
 		<template #introduction>
 			<p>
-				Email is a variant of <code>text</code>, automatically applying a <code>type</code> of
-				<code>email</code>.
+				Email is a variant of
+				<code>text</code>
+				, automatically applying a
+				<code>type</code>
+				of
+				<code>email</code>
+				.
 			</p>
 		</template>
 

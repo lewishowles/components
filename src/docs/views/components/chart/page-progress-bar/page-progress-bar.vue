@@ -1,35 +1,37 @@
 <template>
 	<component-page>
-		<template #title> Progress bar </template>
+		<template #title>Progress bar</template>
 
 		<template #introduction>
 			<p>
 				Display the progress of an action. Progress is calculated as a percentage based on the
-				current, minimum, and maximum values. Pass <code>current: null</code> for an indeterminate
-				state when the quantity is unknown.
+				current, minimum, and maximum values. Pass
+				<code>current: null</code>
+				for an indeterminate state when the quantity is unknown.
 			</p>
 		</template>
 
 		<component-props>
 			<component-prop id="prop-current">
-				<template #name> current </template>
+				<template #name>current</template>
 
-				<template #type> number | null </template>
+				<template #type>number | null</template>
 
-				<template #default-value> 0 </template>
+				<template #default-value>0</template>
 
 				<p>
-					The current value represented by the progress bar. Pass <code>null</code> to render an
-					indeterminate bar.
+					The current value represented by the progress bar. Pass
+					<code>null</code>
+					to render an indeterminate bar.
 				</p>
 			</component-prop>
 
 			<component-prop id="prop-min">
-				<template #name> min </template>
+				<template #name>min</template>
 
-				<template #type> number </template>
+				<template #type>number</template>
 
-				<template #default-value> 0 </template>
+				<template #default-value>0</template>
 
 				<p>
 					The minimum value of the progress bar, used to determine how much of the bar is filled
@@ -38,11 +40,11 @@
 			</component-prop>
 
 			<component-prop id="prop-max">
-				<template #name> max </template>
+				<template #name>max</template>
 
-				<template #type> number </template>
+				<template #type>number</template>
 
-				<template #default-value> 100 </template>
+				<template #default-value>100</template>
 
 				<p>
 					The maximum value of the progress bar, used to determine how much of the bar is filled
@@ -51,61 +53,64 @@
 			</component-prop>
 
 			<component-prop id="prop-variant">
-				<template #name> variant </template>
+				<template #name>variant</template>
 
-				<template #type> "progress" | "meter" </template>
+				<template #type>"progress" | "meter"</template>
 
-				<template #default-value> progress </template>
+				<template #default-value>progress</template>
 
 				<p>
-					The kind of progress bar. Use <code>&quot;progress&quot;</code> for tasks with a known
-					endpoint (e.g. file upload or a multi-step wizard). Use <code>&quot;meter&quot;</code> for
-					measurements within a fixed range (e.g. disk usage or battery level).
+					The kind of progress bar. Use
+					<code>&quot;progress&quot;</code>
+					for tasks with a known endpoint (e.g. file upload or a multi-step wizard). Use
+					<code>&quot;meter&quot;</code>
+					for measurements within a fixed range (e.g. disk usage or battery level).
 				</p>
 			</component-prop>
 
 			<component-prop id="prop-get-value-label">
-				<template #name> getValueLabel </template>
+				<template #name>getValueLabel</template>
 
-				<template #type> (value: number) => string </template>
+				<template #type>(value: number) => string</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					A function that receives the current value and returns a custom string for
-					<code>aria-valuetext</code>. Use this in situations where providing a human-friendly
-					description instead of the default percentage makes more sense, for example,
-					<code>&quot;3 of 10 files uploaded&quot;</code>. Only called when the bar is not
-					indeterminate.
+					<code>aria-valuetext</code>
+					. Use this in situations where providing a human-friendly description instead of the
+					default percentage makes more sense, for example,
+					<code>&quot;3 of 10 files uploaded&quot;</code>
+					. Only called when the bar is not indeterminate.
 				</p>
 			</component-prop>
 
 			<component-prop id="prop-show-label">
-				<template #name> showLabel </template>
+				<template #name>showLabel</template>
 
-				<template #type> boolean </template>
+				<template #type>boolean</template>
 
-				<template #default-value> false </template>
+				<template #default-value>false</template>
 
 				<p>Whether to show the label to the user.</p>
 			</component-prop>
 
 			<component-prop id="prop-show-value">
-				<template #name> showValue </template>
+				<template #name>showValue</template>
 
-				<template #type> boolean </template>
+				<template #type>boolean</template>
 
-				<template #default-value> false </template>
+				<template #default-value>false</template>
 
 				<p>Whether to show the value to the user, formatted as a percentage.</p>
 			</component-prop>
 
 			<component-prop id="prop-track-classes">
-				<template #name> trackClasses </template>
+				<template #name>trackClasses</template>
 
-				<template #type> Vue class binding </template>
+				<template #type>Vue class binding</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					Additional classes to apply to the track, merged on top of the base styles. Any provided
@@ -114,11 +119,11 @@
 			</component-prop>
 
 			<component-prop id="prop-bar-classes">
-				<template #name> barClasses </template>
+				<template #name>barClasses</template>
 
-				<template #type> Vue class binding </template>
+				<template #type>Vue class binding</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					Additional classes to apply to the bar, merged on top of the base styles. Any provided
@@ -129,7 +134,7 @@
 
 		<component-slots>
 			<component-slot id="slot-default">
-				<template #name> default </template>
+				<template #name>default</template>
 
 				<p>
 					The label for this progress bar. This is also included when the label is hidden for
@@ -138,7 +143,7 @@
 			</component-slot>
 
 			<component-slot id="slot-value">
-				<template #name> value </template>
+				<template #name>value</template>
 
 				<p>When the value is shown, override the default value display.</p>
 
@@ -175,8 +180,9 @@
 			<component-styling-hook id="hook-data-part-label">
 				<template #attribute>data-part="label"</template>
 				<p>
-					The label element. Visible when <code>showLabel</code> is true; otherwise present but
-					visually hidden for accessibility.
+					The label element. Visible when
+					<code>showLabel</code>
+					is true; otherwise present but visually hidden for accessibility.
 				</p>
 			</component-styling-hook>
 
@@ -192,7 +198,13 @@
 
 			<component-styling-hook id="hook-data-indeterminate">
 				<template #attribute>data-indeterminate</template>
-				<p>Present on the root element when <code>current</code> is <code>null</code>.</p>
+				<p>
+					Present on the root element when
+					<code>current</code>
+					is
+					<code>null</code>
+					.
+				</p>
 			</component-styling-hook>
 		</component-styling-hooks>
 

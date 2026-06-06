@@ -1,50 +1,50 @@
 <template>
 	<component-page>
-		<template #title> Loading indicator </template>
+		<template #title>Loading indicator</template>
 
 		<template #introduction>
 			<p>
-				<code>loading-indicator</code> provides a consistent loading notice and animation when data
-				is pending.
+				<code>loading-indicator</code>
+				provides a consistent loading notice and animation when data is pending.
 			</p>
 		</template>
 
 		<component-props>
 			<component-prop id="prop-large">
-				<template #name> large </template>
+				<template #name>large</template>
 
-				<template #type> Boolean </template>
+				<template #type>Boolean</template>
 
-				<template #default-value> false </template>
+				<template #default-value>false</template>
 
 				<p>Whether to display a larger, vertical version of the indicator.</p>
 			</component-prop>
 
 			<component-prop id="prop-spinner-classes">
-				<template #name> spinnerClasses </template>
+				<template #name>spinnerClasses</template>
 
-				<template #type> Vue class binding </template>
+				<template #type>Vue class binding</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					Additional classes to apply to the spinner, merged on top of any size set by
-					<code>large</code>. Any provided classes that conflict with base classes will override as
-					necessary.
+					<code>large</code>
+					. Any provided classes that conflict with base classes will override as necessary.
 				</p>
 			</component-prop>
 		</component-props>
 
 		<component-slots>
 			<component-slot id="slot-default">
-				<template #name> default </template>
+				<template #name>default</template>
 
 				<p>The default slot contains the text to display beside the loading indicator.</p>
 				<p>
-					<em
-						>Note that no default text is provided by design. Using a specific message related to
-						what is loaded is strongly encouraged.</em
-					>
+					<em>
+						Note that no default text is provided by design. Using a specific message related to
+						what is loaded is strongly encouraged.
+					</em>
 				</p>
 			</component-slot>
 		</component-slots>
@@ -59,7 +59,11 @@
 			<component-styling-hook id="hook-data-large">
 				<template #attribute>data-large</template>
 
-				<p>Present when the <code>large</code> prop is set.</p>
+				<p>
+					Present when the
+					<code>large</code>
+					prop is set.
+				</p>
 			</component-styling-hook>
 		</component-styling-hooks>
 

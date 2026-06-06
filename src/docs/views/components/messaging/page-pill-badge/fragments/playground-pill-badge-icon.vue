@@ -1,6 +1,6 @@
 <template>
 	<component-playground v-bind="{ copy: template }" id="playground-pill-badge" v-model="textSlots">
-		<template #title> Pill badge with icon </template>
+		<template #title>Pill badge with icon</template>
 
 		<pill-badge v-bind="componentProps">
 			{{ textSlots.default?.value }}

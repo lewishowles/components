@@ -4,14 +4,18 @@
 		id="playground-ui-button-disabled"
 		v-model="textSlots"
 	>
-		<template #title> Disabled button </template>
+		<template #title>Disabled button</template>
 
 		<template #introduction>
 			<p>
 				A disabled button communicates that an action is unavailable. Unlike the native
-				<code>disabled</code> attribute, the <code>disabled</code> prop uses
-				<code>aria-disabled</code>, keeping the button in the tab order so screen reader users can
-				still encounter and understand it.
+				<code>disabled</code>
+				attribute, the
+				<code>disabled</code>
+				prop uses
+				<code>aria-disabled</code>
+				, keeping the button in the tab order so screen reader users can still encounter and
+				understand it.
 			</p>
 		</template>
 

@@ -7,7 +7,7 @@
 			class="w-full max-w-sm"
 			data-test="data-table-search-input"
 		>
-			<slot name="search-label"> Search </slot>
+			<slot name="search-label">Search</slot>
 
 			<template #introduction>
 				<slot name="search-introduction" />
@@ -24,7 +24,7 @@
 			data-test="data-table-search-reset-button"
 			@click="resetSearchQuery"
 		>
-			<slot name="reset-search-label"> Reset search </slot>
+			<slot name="reset-search-label">Reset search</slot>
 		</ui-button>
 	</div>
 </template>

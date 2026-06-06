@@ -4,9 +4,9 @@
 		id="playground-content-card-header"
 		v-model="slots"
 	>
-		<template #title> Header content </template>
+		<template #title>Header content</template>
 
-		<template #introduction> A card with an icon and additional header content. </template>
+		<template #introduction>A card with an icon and additional header content.</template>
 
 		<content-card>
 			<template #icon>

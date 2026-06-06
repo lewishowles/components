@@ -1,12 +1,13 @@
 <template>
 	<component-page>
-		<template #title> Data table </template>
+		<template #title>Data table</template>
 
 		<template #introduction>
 			<p>
-				<code>data-table</code> can display complex data with minimal effort. From hiding columns to
-				controlling their order, managing data is simple and means that the minimum amount of data
-				manipulation needs to be done beforehand.
+				<code>data-table</code>
+				can display complex data with minimal effort. From hiding columns to controlling their
+				order, managing data is simple and means that the minimum amount of data manipulation needs
+				to be done beforehand.
 			</p>
 			<p>
 				When it comes to whether to format data before passing it to the table, versus formatting it
@@ -19,11 +20,11 @@
 
 		<component-props>
 			<component-prop id="prop-data">
-				<template #name> data </template>
+				<template #name>data</template>
 
-				<template #type> Array </template>
+				<template #type>Array</template>
 
-				<template #default-value> [] </template>
+				<template #default-value>[]</template>
 
 				<p>
 					An array of objects containing the data to display in the table. Each object represents a
@@ -33,18 +34,18 @@
 			</component-prop>
 
 			<component-prop id="prop-columns">
-				<template #name> columns </template>
+				<template #name>columns</template>
 
-				<template #type> Object </template>
+				<template #type>Object</template>
 
-				<template #default-value> {} </template>
+				<template #default-value>{}</template>
 
 				<p>Any additional configuration for columns.</p>
 
 				<p>
-					<strong>Note:</strong> Any column without configuration will not be displayed. This is to
-					make it easier to hide unnecessary columns, and to help enforce proper labelling of column
-					data.
+					<strong>Note:</strong>
+					Any column without configuration will not be displayed. This is to make it easier to hide
+					unnecessary columns, and to help enforce proper labelling of column data.
 				</p>
 
 				<h4>Available configuration keys</h4>
@@ -89,9 +90,19 @@
 							<td><code>null</code></td>
 							<td>
 								A custom search matcher to be applied when performing a search on this column. Given
-								the <code>searchQuery</code>, <code>columnKey</code>, <code>cell</code> and
-								<code>row</code>, returns <code>true</code> for a matching search, or
-								<code>false</code> otherwise.
+								the
+								<code>searchQuery</code>
+								,
+								<code>columnKey</code>
+								,
+								<code>cell</code>
+								and
+								<code>row</code>
+								, returns
+								<code>true</code>
+								for a matching search, or
+								<code>false</code>
+								otherwise.
 							</td>
 						</tr>
 						<tr>
@@ -100,8 +111,10 @@
 							<td><code>null</code></td>
 							<td>
 								Provides custom searchable content for this column. Given the
-								<code>columnKey</code> and <code>rowData</code>, returns a string to use instead of
-								the cell content.
+								<code>columnKey</code>
+								and
+								<code>rowData</code>
+								, returns a string to use instead of the cell content.
 							</td>
 						</tr>
 						<tr>
@@ -116,8 +129,10 @@
 							<td><code>null</code></td>
 							<td>
 								Provides custom sortable content for this column. Given the
-								<code>columnKey</code> and <code>rowData</code>, returns a string to use instead of
-								the cell content.
+								<code>columnKey</code>
+								and
+								<code>rowData</code>
+								, returns a string to use instead of the cell content.
 							</td>
 						</tr>
 						<tr>
@@ -135,8 +150,10 @@
 							<td><code>false</code></td>
 							<td>
 								Whether this is the primary column. Primary cells render as
-								<code>&lt;th scope="row"&gt;</code> rather than <code>&lt;td&gt;</code>, which helps
-								screen readers associate row headers with their data.
+								<code>&lt;th scope="row"&gt;</code>
+								rather than
+								<code>&lt;td&gt;</code>
+								, which helps screen readers associate row headers with their data.
 							</td>
 						</tr>
 						<tr>
@@ -171,26 +188,29 @@
 			</component-prop>
 
 			<component-prop id="prop-name">
-				<template #name> name </template>
+				<template #name>name</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>
 					A unique name for this table. This will be used to store the user's preferences for how
 					dense the table is, for example. Without a name, this option will not be available. The
-					name will be used directly in <code>localStorage</code>, prefixed with
-					<code>data-table:</code>, so should be safe for users.
+					name will be used directly in
+					<code>localStorage</code>
+					, prefixed with
+					<code>data-table:</code>
+					, so should be safe for users.
 				</p>
 			</component-prop>
 
 			<component-prop id="prop-enable-search">
-				<template #name> enableSearch </template>
+				<template #name>enableSearch</template>
 
-				<template #type> Boolean </template>
+				<template #type>Boolean</template>
 
-				<template #default-value> true </template>
+				<template #default-value>true</template>
 
 				<p>
 					Whether to enable the table search. When enabled, anything typed into the search box will
@@ -200,11 +220,11 @@
 			</component-prop>
 
 			<component-prop id="prop-enable-sort">
-				<template #name> enableSort </template>
+				<template #name>enableSort</template>
 
-				<template #type> Boolean </template>
+				<template #type>Boolean</template>
 
-				<template #default-value> true </template>
+				<template #default-value>true</template>
 
 				<p>
 					Whether to enable the table sort. When enabled, columns marked as sortable (the default)
@@ -213,11 +233,11 @@
 			</component-prop>
 
 			<component-prop id="prop-enable-selection">
-				<template #name> enableSelection </template>
+				<template #name>enableSelection</template>
 
-				<template #type> Boolean </template>
+				<template #type>Boolean</template>
 
-				<template #default-value> false </template>
+				<template #default-value>false</template>
 
 				<p>
 					Whether to enable selection. When enabled, a new column is added to the start of the table
@@ -226,57 +246,60 @@
 			</component-prop>
 
 			<component-prop id="prop-search-placeholder">
-				<template #name> searchPlaceholder </template>
+				<template #name>searchPlaceholder</template>
 
-				<template #type> String </template>
+				<template #type>String</template>
 
-				<template #default-value> null </template>
+				<template #default-value>null</template>
 
 				<p>The placeholder to apply to the search input.</p>
 			</component-prop>
 
 			<component-prop id="prop-heading-classes">
-				<template #name> headingClasses </template>
+				<template #name>headingClasses</template>
 
-				<template #type> string </template>
+				<template #type>string</template>
 
-				<template #default-value> font-bold text-grey-700 dark:text-white/60 </template>
+				<template #default-value>font-bold text-grey-700 dark:text-white/60</template>
 
 				<p>
 					Additional classes to apply to all headings in the table, merged with any column-level
-					<code>headingClasses</code>. Cell padding will always apply.
+					<code>headingClasses</code>
+					. Cell padding will always apply.
 				</p>
 			</component-prop>
 
 			<component-prop id="prop-cell-classes">
-				<template #name> cellClasses </template>
+				<template #name>cellClasses</template>
 
-				<template #type> string </template>
+				<template #type>string</template>
 
-				<template #default-value> text-sm text-grey-800 dark:text-grey-100 </template>
+				<template #default-value>text-sm text-grey-800 dark:text-grey-100</template>
 
 				<p>
 					Additional classes to apply to all standard cells in the table, merged with any
-					column-level <code>cellClasses</code>. Cell padding will always apply.
+					column-level
+					<code>cellClasses</code>
+					. Cell padding will always apply.
 				</p>
 			</component-prop>
 		</component-props>
 
 		<component-slots>
 			<component-slot id="slot-table-title">
-				<template #name> table-title </template>
+				<template #name>table-title</template>
 
 				<p>Any title to display with this table.</p>
 			</component-slot>
 
 			<component-slot id="slot-table-introduction">
-				<template #name> table-introduction </template>
+				<template #name>table-introduction</template>
 
 				<p>Any introduction to display with this table.</p>
 			</component-slot>
 
 			<component-slot id="slot-caption">
-				<template #name> caption </template>
+				<template #name>caption</template>
 
 				<p>
 					An optional visible caption to display above the table. When the table overflows its
@@ -286,35 +309,35 @@
 			</component-slot>
 
 			<component-slot id="slot-post-search">
-				<template #name> post-search </template>
+				<template #name>post-search</template>
 
 				<p>A slot to allow adding content to the table's title bar, after the search box.</p>
 			</component-slot>
 
 			<component-slot id="slot-pre-configure">
-				<template #name> pre-configure </template>
+				<template #name>pre-configure</template>
 
 				<p>A slot to allow adding content to the table's title bar, before configuration.</p>
 			</component-slot>
 
 			<component-slot id="slot-search-label">
-				<template #name> search-label </template>
+				<template #name>search-label</template>
 
 				<p>The label to use for the search box.</p>
 			</component-slot>
 
 			<component-slot id="slot-reset-search-label">
-				<template #name> reset-search-label </template>
+				<template #name>reset-search-label</template>
 
-				<template #default-value> "Reset search" </template>
+				<template #default-value>"Reset search"</template>
 
 				<p>The label to use for the "Reset search" button.</p>
 			</component-slot>
 
 			<component-slot id="slot-sorted-hint">
-				<template #name> sorted-hint </template>
+				<template #name>sorted-hint</template>
 
-				<template #default-value> `Sorted by {sortedColumn} ascending/descending` </template>
+				<template #default-value>`Sorted by {sortedColumn} ascending/descending`</template>
 
 				<p>
 					A screen-reader-only hint rendered inside the caption area, announcing which column the
@@ -345,15 +368,15 @@
 			</component-slot>
 
 			<component-slot id="slot-no-data-message">
-				<template #name> no-data-message </template>
+				<template #name>no-data-message</template>
 
-				<template #default-value> "No data to display." </template>
+				<template #default-value>"No data to display."</template>
 
 				<p>The message to display when no data could be found for the table.</p>
 			</component-slot>
 
 			<component-slot id="slot-no-results-message">
-				<template #name> no-results-message </template>
+				<template #name>no-results-message</template>
 
 				<template #default-value>
 					"No results could be found for term &lt;span
@@ -382,7 +405,7 @@
 			</component-slot>
 
 			<component-slot id="slot-columnName_heading">
-				<template #name> &lt;columnName&gt;_heading </template>
+				<template #name>&lt;columnName&gt;_heading</template>
 
 				<template #default-value>
 					The heading provided within `configuration`, or the column key.
@@ -417,9 +440,9 @@
 			</component-slot>
 
 			<component-slot id="slot-columnName">
-				<template #name> &lt;columnName&gt; </template>
+				<template #name>&lt;columnName&gt;</template>
 
-				<template #default-value> The cell content as text. </template>
+				<template #default-value>The cell content as text.</template>
 
 				<p>
 					Provides the ability to override the display for a particular column, by its key from the
@@ -439,7 +462,11 @@
 						<tr>
 							<td><code>cell</code></td>
 							<td>string</td>
-							<td>The original content of the cell, as provided in <code>data</code>.</td>
+							<td>
+								The original content of the cell, as provided in
+								<code>data</code>
+								.
+							</td>
 						</tr>
 						<tr>
 							<td><code>row</code></td>
@@ -451,21 +478,22 @@
 			</component-slot>
 
 			<component-slot id="slot-select-all-rows-label">
-				<template #name> select-all-rows-label </template>
+				<template #name>select-all-rows-label</template>
 
-				<template #default-value> "Select all rows" </template>
+				<template #default-value>"Select all rows"</template>
 
 				<p>The hidden label for the "select" checkbox that represents all rows.</p>
 			</component-slot>
 
 			<component-slot id="slot-select-row-label">
-				<template #name> select-row-label </template>
+				<template #name>select-row-label</template>
 
-				<template #default-value> "Select row" </template>
+				<template #default-value>"Select row"</template>
 
 				<p>
 					The hidden label for each &quot;select&quot; checkbox, used when
-					<code>enableSelection</code> is true.
+					<code>enableSelection</code>
+					is true.
 				</p>
 
 				<table>
@@ -492,9 +520,9 @@
 			</component-slot>
 
 			<component-slot id="slot-configure-label">
-				<template #name> configure-label </template>
+				<template #name>configure-label</template>
 
-				<template #default-value> "Configure" </template>
+				<template #default-value>"Configure"</template>
 
 				<p>
 					The label for the "Configure" dropdown, including display options and column visibility.
@@ -502,57 +530,60 @@
 			</component-slot>
 
 			<component-slot id="slot-display-options-label">
-				<template #name> display-options-label </template>
+				<template #name>display-options-label</template>
 
-				<template #default-value> "Display options" </template>
+				<template #default-value>"Display options"</template>
 
 				<p>The label for the "Display" options in the configure dropdown.</p>
 			</component-slot>
 
 			<component-slot id="slot-display-option-compact-label">
-				<template #name> display-option-compact-label </template>
+				<template #name>display-option-compact-label</template>
 
-				<template #default-value> "Compact" </template>
+				<template #default-value>"Compact"</template>
 
 				<p>The label for the "Compact" display option.</p>
 			</component-slot>
 
 			<component-slot id="slot-display-option-standard-label">
-				<template #name> display-option-standard-label </template>
+				<template #name>display-option-standard-label</template>
 
-				<template #default-value> "Standard" </template>
+				<template #default-value>"Standard"</template>
 
 				<p>The label for the "Standard" display option.</p>
 			</component-slot>
 
 			<component-slot id="slot-display-option-relaxed-label">
-				<template #name> display-option-relaxed-label </template>
+				<template #name>display-option-relaxed-label</template>
 
-				<template #default-value> "Relaxed" </template>
+				<template #default-value>"Relaxed"</template>
 
 				<p>The label for the "Relaxed" display option.</p>
 			</component-slot>
 
 			<component-slot id="slot-column-visibility-label">
-				<template #name> column-visibility-label </template>
+				<template #name>column-visibility-label</template>
 
-				<template #default-value> "Columns" </template>
+				<template #default-value>"Columns"</template>
 
 				<p>The label for the "Columns" options in the configure dropdown.</p>
 			</component-slot>
 
 			<component-slot id="slot-sort-instruction">
-				<template #name> sort-instruction </template>
+				<template #name>sort-instruction</template>
 
-				<template #default-value> `(sortable — activate to sort ascending)` </template>
+				<template #default-value>`(sortable — activate to sort ascending)`</template>
 
 				<p>
 					A screen-reader-only instruction inside each sortable column's heading button, describing
 					the column's current sort state and what activating it will do. Included only for sortable
 					columns. The default text varies by state:
-					<code>(sortable — activate to sort ascending)</code> when unsorted,
-					<code>(sorted ascending — activate to sort descending)</code> when sorted ascending, and
-					<code>(sorted descending — activate to sort ascending)</code> when sorted descending.
+					<code>(sortable — activate to sort ascending)</code>
+					when unsorted,
+					<code>(sorted ascending — activate to sort descending)</code>
+					when sorted ascending, and
+					<code>(sorted descending — activate to sort ascending)</code>
+					when sorted descending.
 				</p>
 
 				<table>
@@ -578,8 +609,13 @@
 							<td><code>direction</code></td>
 							<td>string | null</td>
 							<td>
-								The sort direction (<code>"ascending"</code> or <code>"descending"</code>), or
-								<code>null</code> when unsorted.
+								The sort direction (
+								<code>"ascending"</code>
+								or
+								<code>"descending"</code>
+								), or
+								<code>null</code>
+								when unsorted.
 							</td>
 						</tr>
 					</tbody>
@@ -587,13 +623,14 @@
 			</component-slot>
 
 			<component-slot id="slot-sort-status">
-				<template #name> sort-status </template>
+				<template #name>sort-status</template>
 
-				<template #default-value> `Sorted by {column} ascending/descending` </template>
+				<template #default-value>`Sorted by {column} ascending/descending`</template>
 
 				<p>
 					The screen-reader-only announcement made when the table is sorted. Rendered inside a
-					<code>role="status"</code> live region.
+					<code>role="status"</code>
+					live region.
 				</p>
 
 				<table>
@@ -620,7 +657,7 @@
 			</component-slot>
 
 			<component-slot id="slot-search-status">
-				<template #name> search-status </template>
+				<template #name>search-status</template>
 
 				<template #default-value>
 					`Showing {count} result(s) for "{query}"` / `No results for "{query}"`
@@ -628,7 +665,8 @@
 
 				<p>
 					The screen-reader-only announcement made when the search results change. Rendered inside a
-					<code>role="status"</code> live region.
+					<code>role="status"</code>
+					live region.
 				</p>
 
 				<table>
@@ -655,7 +693,7 @@
 			</component-slot>
 
 			<component-slot id="slot-selection-status">
-				<template #name> selection-status </template>
+				<template #name>selection-status</template>
 
 				<template #default-value>
 					`{selectedCount} of {total} rows selected` / `All {total} rows selected` / `All rows
@@ -664,8 +702,10 @@
 
 				<p>
 					The screen-reader-only announcement made when the row selection changes. Only active when
-					<code>enableSelection</code> is enabled. Rendered inside a <code>role="status"</code> live
-					region.
+					<code>enableSelection</code>
+					is enabled. Rendered inside a
+					<code>role="status"</code>
+					live region.
 				</p>
 
 				<table>
@@ -697,15 +737,14 @@
 			</component-slot>
 
 			<component-slot id="slot-selected-row-count-label">
-				<template #name> selected-row-count-label </template>
+				<template #name>selected-row-count-label</template>
 
-				<template #default-value>
-					`&#123;&#123; selectedCount &#125;&#125; rows selected`
-				</template>
+				<template #default-value>`&#123;&#123; selectedCount &#125;&#125; rows selected`</template>
 
 				<p>
 					The label for the number of rows currently selected. This is only shown if
-					<code>enableSelection</code> is enabled.
+					<code>enableSelection</code>
+					is enabled.
 				</p>
 
 				<table>
@@ -727,7 +766,7 @@
 			</component-slot>
 
 			<component-slot id="slot-page-number-label">
-				<template #name> page-number-label </template>
+				<template #name>page-number-label</template>
 
 				<p>The label for each individual page number button in the pagination controls.</p>
 
@@ -750,19 +789,19 @@
 			</component-slot>
 
 			<component-slot id="slot-next-page-label">
-				<template #name> next-page-label </template>
+				<template #name>next-page-label</template>
 
 				<p>The label for the "next page" button in the pagination controls.</p>
 			</component-slot>
 
 			<component-slot id="slot-showing-items-label">
-				<template #name> showing-items-label </template>
+				<template #name>showing-items-label</template>
 
 				<template #default-value>
-					<span v-pre
-						>`Showing &#123;&#123; first &#125;&#125;&ndash;&#123;&#123; last &#125;&#125; of
-						&#123;&#123; total &#125;&#125; items`</span
-					>
+					<span v-pre>
+						`Showing &#123;&#123; first &#125;&#125;&ndash;&#123;&#123; last &#125;&#125; of
+						&#123;&#123; total &#125;&#125; items`
+					</span>
 				</template>
 
 				<p>

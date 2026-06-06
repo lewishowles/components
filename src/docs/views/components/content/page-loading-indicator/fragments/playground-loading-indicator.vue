@@ -4,7 +4,7 @@
 		id="playground-loading-indicator"
 		v-model="textSlots"
 	>
-		<template #title> Loading indicator </template>
+		<template #title>Loading indicator</template>
 
 		<template #introduction>
 			A standard loading indicator, most suitable for when a small area of content is loading.

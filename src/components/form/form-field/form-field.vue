@@ -1,6 +1,9 @@
 <template>
 	<alert-message v-if="!haveNameIfRequired" type="error">
-		<template #title> &lt;form-field&gt; &mdash; <slot /> </template>
+		<template #title>
+			&lt;form-field&gt; &mdash;
+			<slot />
+		</template>
 
 		A parent `form-wrapper` was detected, but no `name` was provided for this field.
 	</alert-message>

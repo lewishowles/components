@@ -1,16 +1,19 @@
 <template>
 	<component-page>
-		<template #title> App pagination </template>
+		<template #title>App pagination</template>
 
 		<template #introduction>
 			<p>
-				Given the number of items being displayed, <code>app-pagination</code> builds a list of
-				relevant buttons to allow the user to navigate that list.
+				Given the number of items being displayed,
+				<code>app-pagination</code>
+				builds a list of relevant buttons to allow the user to navigate that list.
 			</p>
 			<p>
-				The calculations <code>app-pagination</code> makes are live, meaning that if the number of
-				items changes (such as if a filter is applied), this may also change the pagination buttons
-				shown, and will reset the current page back to the first page.
+				The calculations
+				<code>app-pagination</code>
+				makes are live, meaning that if the number of items changes (such as if a filter is
+				applied), this may also change the pagination buttons shown, and will reset the current page
+				back to the first page.
 			</p>
 			<p>
 				Pagination will automatically be hidden if there are no items, or if the number of items
@@ -20,21 +23,21 @@
 
 		<component-props>
 			<component-prop id="prop-count">
-				<template #name> count </template>
+				<template #name>count</template>
 
-				<template #type> Number </template>
+				<template #type>Number</template>
 
-				<template #default-value> 0 </template>
+				<template #default-value>0</template>
 
 				<p>The number of items in the paginated collection.</p>
 			</component-prop>
 
 			<component-prop id="prop-items-per-page">
-				<template #name> itemsPerPage </template>
+				<template #name>itemsPerPage</template>
 
-				<template #type> Number </template>
+				<template #type>Number</template>
 
-				<template #default-value> 10 </template>
+				<template #default-value>10</template>
 
 				<p>The number of items to display per page.</p>
 			</component-prop>
@@ -42,9 +45,9 @@
 
 		<component-slots>
 			<component-slot id="slot-default">
-				<template #name> default </template>
+				<template #name>default</template>
 
-				<template #default-value> Label </template>
+				<template #default-value>Label</template>
 
 				<p>
 					The label for the pagination, intended to explain to screen reader users the purpose of
@@ -53,25 +56,25 @@
 			</component-slot>
 
 			<component-slot id="slot-previous-page-label">
-				<template #name> previous-page-label </template>
+				<template #name>previous-page-label</template>
 
-				<template #default-value> Previous page </template>
+				<template #default-value>Previous page</template>
 
 				<p>The label for the previous page button.</p>
 			</component-slot>
 
 			<component-slot id="slot-next-page-label">
-				<template #name> next-page-label </template>
+				<template #name>next-page-label</template>
 
-				<template #default-value> Next page </template>
+				<template #default-value>Next page</template>
 
 				<p>The label for the next page button.</p>
 			</component-slot>
 
 			<component-slot id="slot-page-number-label">
-				<template #name> page-number-label </template>
+				<template #name>page-number-label</template>
 
-				<template #default-value> Page &#123;&#123; page &#125;&#125; </template>
+				<template #default-value>Page &#123;&#123; page &#125;&#125;</template>
 
 				<p>The accessible label for each page.</p>
 
@@ -94,7 +97,7 @@
 			</component-slot>
 
 			<component-slot id="slot-showing-items-label">
-				<template #name> showing-items-label </template>
+				<template #name>showing-items-label</template>
 
 				<template #default-value>
 					Showing &#123;&#123; first &#125;&#125;&ndash;&#123;&#123; last &#125;&#125; of
@@ -137,13 +140,13 @@
 
 		<component-events>
 			<component-event id="event-v-model">
-				<template #name> v-model </template>
+				<template #name>v-model</template>
 
 				<p>The currently selected page.</p>
 			</component-event>
 
 			<component-event id="event-update:page">
-				<template #name> update:page </template>
+				<template #name>update:page</template>
 
 				<p>
 					Updated when the user selects a different page to display, containing a `page` parameter
@@ -177,7 +180,9 @@
 
 				<p>
 					Navigate to a specific page number. The value is clamped to the valid range (1 to total
-					pages). Accessible via a <code>ref</code> on the component.
+					pages). Accessible via a
+					<code>ref</code>
+					on the component.
 				</p>
 
 				<table>
@@ -205,7 +210,9 @@
 
 				<p>
 					A reactive number reflecting the currently active page. Writable — set it to navigate
-					directly. Accessible via a <code>ref</code> on the component.
+					directly. Accessible via a
+					<code>ref</code>
+					on the component.
 				</p>
 			</component-method>
 
@@ -214,7 +221,11 @@
 					<code>totalPages</code>
 				</template>
 
-				<p>The total number of pages. Accessible via a <code>ref</code> on the component.</p>
+				<p>
+					The total number of pages. Accessible via a
+					<code>ref</code>
+					on the component.
+				</p>
 			</component-method>
 
 			<component-method id="expose-has-next">
@@ -223,8 +234,11 @@
 				</template>
 
 				<p>
-					A reactive boolean — <code>true</code> when there is a next page available. Accessible via
-					a <code>ref</code> on the component.
+					A reactive boolean —
+					<code>true</code>
+					when there is a next page available. Accessible via a
+					<code>ref</code>
+					on the component.
 				</p>
 			</component-method>
 
@@ -234,8 +248,11 @@
 				</template>
 
 				<p>
-					A reactive boolean — <code>true</code> when there is a previous page available. Accessible
-					via a <code>ref</code> on the component.
+					A reactive boolean —
+					<code>true</code>
+					when there is a previous page available. Accessible via a
+					<code>ref</code>
+					on the component.
 				</p>
 			</component-method>
 
@@ -244,7 +261,11 @@
 					<code>next</code>
 				</template>
 
-				<p>Navigate to the next page. Accessible via a <code>ref</code> on the component.</p>
+				<p>
+					Navigate to the next page. Accessible via a
+					<code>ref</code>
+					on the component.
+				</p>
 			</component-method>
 
 			<component-method id="expose-prev">
@@ -252,7 +273,11 @@
 					<code>prev</code>
 				</template>
 
-				<p>Navigate to the previous page. Accessible via a <code>ref</code> on the component.</p>
+				<p>
+					Navigate to the previous page. Accessible via a
+					<code>ref</code>
+					on the component.
+				</p>
 			</component-method>
 		</component-methods>
 

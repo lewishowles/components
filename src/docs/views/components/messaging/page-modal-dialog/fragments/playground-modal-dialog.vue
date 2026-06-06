@@ -4,17 +4,17 @@
 		id="playground-modal-dialog"
 		v-model="textSlots"
 	>
-		<template #title> Modal dialog </template>
+		<template #title>Modal dialog</template>
 
-		<ui-button class="button--primary" @click="openDialog"> Open dialog </ui-button>
+		<ui-button class="button--primary" @click="openDialog">Open dialog</ui-button>
 
 		<modal-dialog v-bind="componentProps" v-model="componentModel">
-			<template #title> Delete "Sophie Wardhaugh" </template>
+			<template #title>Delete "Sophie Wardhaugh"</template>
 
 			<p>Are you sure you want to delete this user? This cannot be undone.</p>
 
 			<template #actions>
-				<ui-button class="button--primary" v-bind="{ reactive: true }"> Delete user </ui-button>
+				<ui-button class="button--primary" v-bind="{ reactive: true }">Delete user</ui-button>
 			</template>
 		</modal-dialog>
 

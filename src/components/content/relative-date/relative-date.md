@@ -49,6 +49,6 @@ How often to refresh the relative date when comparing against the current time. 
 ### Deterministic comparison
 
 ```html
-<relative-date v-bind="{ date: '2025-03-29T13:14:50', relativeTo: '2025-03-29T13:15:20' }" /> // 30
-seconds ago
+<relative-date v-bind="{ date: '2025-03-29T13:14:50', relativeTo: '2025-03-29T13:15:20' }" />
+// 30 seconds ago
 ```

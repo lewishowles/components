@@ -96,5 +96,5 @@ Focus the "day" input of this field.
 ### Basic date
 
 ```html
-<form-date v-model="date"> When did you first request help? </form-date>
+<form-date v-model="date">When did you first request help?</form-date>
 ```
