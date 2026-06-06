@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+Fixes an issue that stopped resolvers being able to find fragment components within the library.
+
 ## 2.0.0
 
 ### Breaking changes
