@@ -139,12 +139,9 @@
 									]"
 									data-test="data-table-heading"
 								>
-									<conditional-wrapper
-										v-bind="{
-											wrap: column.sortable,
-											tag: 'ui-button',
-											iconEnd: getSortIcon(columnKey),
-										}"
+									<ui-button
+										v-if="column.sortable"
+										v-bind="{ iconEnd: getSortIcon(columnKey) }"
 										class="hocus:border-primary hocus:bg-surface-sunken -mt-4 -mb-4.25 w-full border-b border-transparent py-4"
 										:class="[
 											{
@@ -165,7 +162,7 @@
 											{{ column.label }}
 										</slot>
 
-										<span v-if="column.sortable" class="sr-only">
+										<span class="sr-only">
 											<slot
 												name="sort-instruction"
 												v-bind="{
@@ -177,7 +174,15 @@
 												{{ getSortInstruction(columnKey) }}
 											</slot>
 										</span>
-									</conditional-wrapper>
+									</ui-button>
+
+									<slot
+										v-else
+										:name="`${columnKey}_heading`"
+										v-bind="{ key: columnKey, label: columnKey }"
+									>
+										{{ column.label }}
+									</slot>
 								</th>
 							</tr>
 						</thead>

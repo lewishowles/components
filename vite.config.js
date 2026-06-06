@@ -25,10 +25,10 @@ export default defineConfig({
 		// build time. `dirs: []` disables the default filesystem scan so the
 		// manifest-driven resolver is the only source of truth.
 		Components({ dirs: [], dts: false, resolvers: [internalComponentsResolver()] }),
-		vueDevTools(),
 		tailwindcss(),
 		createComponentSource(),
 		createNamedExports(),
+		vueDevTools(),
 	],
 	resolve: {
 		alias,

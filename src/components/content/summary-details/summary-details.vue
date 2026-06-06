@@ -14,7 +14,7 @@
 			data-part="summary"
 		>
 			<component
-				:is="currentIcon"
+				:is="currentIconComponent"
 				v-if="iconAtStart && includeIcon"
 				:class="cn('size-[0.857em]', iconClasses)"
 				v-bind="{ 'data-test': `${dataTest}-icon-start` }"
@@ -34,7 +34,7 @@
 			</conditional-wrapper>
 
 			<component
-				:is="currentIcon"
+				:is="currentIconComponent"
 				v-if="includeIcon && !iconAtStart"
 				:class="cn('size-[0.857em]', iconClasses)"
 				v-bind="{ 'data-test': `${dataTest}-icon-end` }"
@@ -76,10 +76,11 @@
  * such as custom icons, and allows a simple way of having content that can be
  * toggled. Suitable for items such as FAQs or even dropdown menus.
  */
+import { cn } from "@/utilities/cn.js";
 import { computed, nextTick, onMounted, ref, useAttrs, useTemplateRef, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
-import { cn } from "@/utilities/cn.js";
+import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
 
 const props = defineProps({
 	/**
@@ -287,6 +288,9 @@ const currentIcon = computed(() => {
 
 	return props.iconClosed;
 });
+
+// The resolved component for the current icon.
+const currentIconComponent = computed(() => resolveIconComponent(currentIcon.value));
 
 // Whether to align a floating dropdown to the start of the summary.
 const alignStart = computed(() => props.align === "start");
