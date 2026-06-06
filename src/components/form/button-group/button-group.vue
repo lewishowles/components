@@ -23,7 +23,7 @@
 								'button-group--last': option.last,
 							}"
 						>
-							<component :is="option.icon" v-if="option.icon" />
+							<component :is="resolveIconComponent(option.icon)" v-if="option.icon" />
 
 							{{ option.label }}
 						</form-label>
@@ -56,6 +56,7 @@ import { ref } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
+import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
 
 const model = defineModel({
 	type: [String, Number],

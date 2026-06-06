@@ -18,7 +18,7 @@
 				</span>
 
 				<div class="group-hocus:underline text-primary inline-flex items-center gap-2">
-					<component :is="statusIcon" class="size-text" />
+					<component :is="statusIconComponent" class="size-text" />
 
 					<span v-show="!isVisible" class="inline-flex items-center gap-2">
 						<slot name="show-panel-label" v-bind="{ isOpen: isVisible, toggle }">
@@ -54,6 +54,7 @@
 import { computed, inject, onBeforeUnmount, onMounted, ref, useId, useSlots } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
+import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
 
 const {
 	headingLevel,
@@ -81,6 +82,9 @@ const statusIcon = computed(() => {
 
 	return "icon-chevron-down-circled";
 });
+
+// The resolved component for the panel status icon.
+const statusIconComponent = computed(() => resolveIconComponent(statusIcon.value));
 
 // Whether this panel should use role="region". Skipped above 6 panels to avoid
 // cluttering the landmark list.

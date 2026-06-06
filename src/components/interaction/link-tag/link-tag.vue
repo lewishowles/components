@@ -8,7 +8,7 @@
 		data-test="link-tag"
 	>
 		<component
-			:is="iconStart"
+			:is="iconStartComponent"
 			v-if="haveIconStart"
 			class="inline-block stroke-current"
 			:class="{
@@ -27,7 +27,7 @@
 		</conditional-wrapper>
 
 		<component
-			:is="iconEnd"
+			:is="iconEndComponent"
 			v-if="shouldShowIconEnd"
 			class="inline-block stroke-current"
 			:class="{
@@ -61,6 +61,7 @@
  */
 import { computed, useTemplateRef } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
@@ -120,6 +121,10 @@ const anchorElement = useTemplateRef("anchorElement");
 const haveIconStart = computed(() => isNonEmptyString(props.iconStart));
 // Whether an end icon is defined.
 const haveIconEnd = computed(() => isNonEmptyString(props.iconEnd));
+// The resolved component for the start icon.
+const iconStartComponent = computed(() => resolveIconComponent(props.iconStart));
+// The resolved component for the end icon.
+const iconEndComponent = computed(() => resolveIconComponent(props.iconEnd));
 // Whether an external icon is needed and should be shown.
 const haveExternalIcon = computed(() => props.external && props.showExternalIcon);
 // Whether to show any defined icon-end. If an external icon is being shown,

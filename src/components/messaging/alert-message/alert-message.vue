@@ -10,7 +10,7 @@
 	>
 		<div v-if="haveIcon" class="mt-1" data-part="icon">
 			<slot name="icon">
-				<component :is="defaultIcon" data-test="alert-message-icon" />
+				<component :is="defaultIconComponent" data-test="alert-message-icon" />
 			</slot>
 		</div>
 
@@ -42,6 +42,7 @@
 <script setup>
 import { computed, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
+import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
 
 const props = defineProps({
 	/**
@@ -178,6 +179,8 @@ const defaultIcon = computed(() => {
 	return null;
 });
 
+// The resolved component for the default icon.
+const defaultIconComponent = computed(() => resolveIconComponent(defaultIcon.value));
 // Whether a title has been provided via the `title` slot.
 const haveTitleSlot = computed(() => isNonEmptySlot(slots.title));
 </script>

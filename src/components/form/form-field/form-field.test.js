@@ -1,6 +1,12 @@
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test, vi } from "vite-plus/test";
+
+import ButtonGroup from "@/components/form/button-group/button-group.vue";
+import FormCheckbox from "@/components/form/form-checkbox/form-checkbox.vue";
 import FormField from "./form-field.vue";
+import FormInput from "@/components/form/form-input/form-input.vue";
+import FormRadioGroup from "@/components/form/form-radio-group/form-radio-group.vue";
+import FormTextarea from "@/components/form/form-textarea/form-textarea.vue";
 
 const getFieldErrorsMock = vi.fn(() => []);
 const registerFieldMock = vi.fn();
@@ -59,18 +65,18 @@ describe("form-field", () => {
 				const wrapper = mount({ type: "unknown" });
 				const vm = wrapper.vm;
 
-				expect(vm.fieldComponent).toBe("form-input");
+				expect(vm.fieldComponent).toBe(FormInput);
 			});
 
 			describe("should allow a known field type", () => {
 				test.for([
-					[{ type: "text" }, "form-input"],
-					[{ type: "email" }, "form-input"],
-					[{ type: "password" }, "form-input"],
-					[{ type: "textarea" }, "form-textarea"],
-					[{ type: "checkbox" }, "form-checkbox"],
-					[{ type: "radio-group", options: [] }, "form-radio-group"],
-					[{ type: "button-group", options: [] }, "button-group"],
+					[{ type: "text" }, FormInput],
+					[{ type: "email" }, FormInput],
+					[{ type: "password" }, FormInput],
+					[{ type: "textarea" }, FormTextarea],
+					[{ type: "checkbox" }, FormCheckbox],
+					[{ type: "radio-group", options: [] }, FormRadioGroup],
+					[{ type: "button-group", options: [] }, ButtonGroup],
 				])("%s", ([props, component]) => {
 					const wrapper = mount({ props });
 					const vm = wrapper.vm;

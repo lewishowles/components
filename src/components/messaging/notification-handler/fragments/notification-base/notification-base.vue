@@ -20,7 +20,7 @@
 				:class="iconBackgroundClasses"
 				:data-test="`${dataTest}-icon`"
 			>
-				<component :is="notification.icon" class="size-4.5" :class="iconClasses" />
+				<component :is="notificationIconComponent" class="size-4.5" :class="iconClasses" />
 			</div>
 
 			<conditional-wrapper v-bind="{ wrap: hasImage || hasIcon }">
@@ -88,6 +88,7 @@ import { computed, useSlots } from "vue";
 import { get } from "@lewishowles/helpers/object";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
 
 const props = defineProps({
 	/**
@@ -198,6 +199,12 @@ const hasDate = computed(() => isNonEmptyString(get(props, "notification.date"))
 const hasImage = computed(() => isNonEmptyString(get(props, "notification.image_url")));
 // Whether this notification has an icon to display.
 const hasIcon = computed(() => isNonEmptyString(get(props, "notification.icon")));
+
+// The resolved component for this notification's icon.
+const notificationIconComponent = computed(() =>
+	resolveIconComponent(get(props, "notification.icon")),
+);
+
 // Whether this notification a URL to view more information.
 const hasMoreInformationUrl = computed(() => isNonEmptyString(get(props, "notification.url")));
 // Whether actions have been provided for this notification.

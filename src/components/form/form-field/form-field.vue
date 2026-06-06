@@ -48,7 +48,17 @@ import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 import { validateField as validateFormField } from "@lewishowles/helpers/form";
+
 import useInputId from "@/components/form/composables/use-input-id/use-input-id";
+
+import ButtonGroup from "@/components/form/button-group/button-group.vue";
+import FormCheckbox from "@/components/form/form-checkbox/form-checkbox.vue";
+import FormCheckboxGroup from "@/components/form/form-checkbox-group/form-checkbox-group.vue";
+import FormDate from "@/components/form/form-date/form-date.vue";
+import FormInput from "@/components/form/form-input/form-input.vue";
+import FormRadioGroup from "@/components/form/form-radio-group/form-radio-group.vue";
+import FormSelect from "@/components/form/form-select/form-select.vue";
+import FormTextarea from "@/components/form/form-textarea/form-textarea.vue";
 
 const props = defineProps({
 	/**
@@ -135,7 +145,19 @@ const fieldRef = ref(null);
 // The default field type.
 const defaultType = "text";
 // The default field component to use.
-const defaultComponent = "form-input";
+const defaultComponent = FormInput;
+
+// Field controls bundled with `form-field`, so automatic imports do not depend
+// on global registration.
+const fieldComponents = {
+	"button-group": ButtonGroup,
+	checkbox: FormCheckbox,
+	"checkbox-group": FormCheckboxGroup,
+	date: FormDate,
+	select: FormSelect,
+	"radio-group": FormRadioGroup,
+	textarea: FormTextarea,
+};
 
 // The available field types, including any additional props to pass by default.
 const fieldTypes = {
@@ -163,19 +185,7 @@ const fieldType = computed(() => {
 
 // The appropriate component to use, based on the determined field type.
 const fieldComponent = computed(() => {
-	switch (fieldType.value) {
-		case "textarea":
-		case "checkbox":
-		case "date":
-		case "radio-group":
-		case "checkbox-group":
-		case "select":
-			return `form-${fieldType.value}`;
-		case "button-group":
-			return fieldType.value;
-		default:
-			return defaultComponent;
-	}
+	return fieldComponents[fieldType.value] ?? defaultComponent;
 });
 
 // Any additional props to pass to the field, including default props, any added

@@ -11,7 +11,7 @@
 		@click="react"
 	>
 		<component
-			:is="iconStart"
+			:is="iconStartComponent"
 			v-if="haveIconStart"
 			:class="[computedIconClasses, { 'me-2': !iconOnly }]"
 			data-part="icon-start"
@@ -43,7 +43,7 @@
 		</span>
 
 		<component
-			:is="iconEnd"
+			:is="iconEndComponent"
 			v-if="haveIconEnd"
 			:class="[computedIconClasses, { 'ms-2': !iconOnly }]"
 			data-part="icon-end"
@@ -62,9 +62,10 @@
  * A special `reactive` mode allows for the button to show a loading indicator
  * when activated, which can be reset via an exposed `reset` method.
  */
+import { cn } from "@/utilities/cn.js";
 import { computed, getCurrentInstance, ref } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { cn } from "@/utilities/cn.js";
+import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
 
 const props = defineProps({
 	/**
@@ -157,6 +158,10 @@ const instance = getCurrentInstance();
 const haveIconStart = computed(() => isNonEmptyString(props.iconStart));
 // Whether an end icon is defined.
 const haveIconEnd = computed(() => isNonEmptyString(props.iconEnd));
+// The resolved component for the start icon.
+const iconStartComponent = computed(() => resolveIconComponent(props.iconStart));
+// The resolved component for the end icon.
+const iconEndComponent = computed(() => resolveIconComponent(props.iconEnd));
 
 // Any additional attributes to apply to the button.
 const attributes = computed(() => {

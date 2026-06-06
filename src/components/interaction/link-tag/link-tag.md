@@ -46,7 +46,7 @@ _Note that if a link is `external`, `showExternalIcon` is true and `iconEnd` is 
 
 An icon to display at the start or end of a link.
 
-The icon is implemented using `<component :is="...">`, allowing the link to use icons it doesn't explicitly import. To be used in this way, the icon must be globally registered. You can find [the list of available icons in this project](/src/components/icon/icon.md), or you can use one that is globally registered in your project.
+Built-in library icons can be used by name. You can find [the list of available icons in this project](/src/components/icon/icon.md). Custom icon names must refer to components registered by the consuming app.
 
 _Note that `start` and `end` depend on the current document direction._
 

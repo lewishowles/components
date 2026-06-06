@@ -12,7 +12,7 @@
 		data-test="pill-badge"
 	>
 		<component
-			:is="iconStart"
+			:is="iconStartComponent"
 			v-if="haveIconStart"
 			class="stroke-current"
 			data-test="pill-badge-icon-start"
@@ -21,7 +21,7 @@
 		<slot />
 
 		<component
-			:is="iconEnd"
+			:is="iconEndComponent"
 			v-if="haveIconEnd"
 			class="stroke-current"
 			data-test="pill-badge-icon-end"
@@ -33,6 +33,7 @@
 import { cn } from "@/utilities/cn.js";
 import { computed, useAttrs } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
 
 defineOptions({ inheritAttrs: false });
 
@@ -69,6 +70,10 @@ const attributes = useAttrs();
 const haveIconStart = computed(() => isNonEmptyString(props.iconStart));
 // Whether an end icon is defined.
 const haveIconEnd = computed(() => isNonEmptyString(props.iconEnd));
+// The resolved component for the start icon.
+const iconStartComponent = computed(() => resolveIconComponent(props.iconStart));
+// The resolved component for the end icon.
+const iconEndComponent = computed(() => resolveIconComponent(props.iconEnd));
 
 // All attributes except class, spread onto the root element separately so that
 // class can be handled via cn() without doubling up.

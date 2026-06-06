@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.2
+
+Fixes an issue where components used as a string wouldn't be resolved by automatic imports.
+
 ## 2.0.1
 
 Fixes an issue that stopped resolvers being able to find fragment components within the library.
