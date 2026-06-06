@@ -1,4 +1,5 @@
 import { describe, expect, test, vi } from "vite-plus/test";
+import { nextTick, ref } from "vue";
 import { useCombobox } from "./use-combobox.js";
 
 /**
@@ -27,10 +28,13 @@ describe("use-combobox", () => {
 			expect(activeId.value).toBeNull();
 		});
 
-		test("No options are registered initially", () => {
-			const { optionIds } = useCombobox();
+		test("Navigation does nothing when no options are provided", () => {
+			const { activeId, handleKeydown, isOpen } = useCombobox();
 
-			expect(optionIds.value).toHaveLength(0);
+			handleKeydown(createKeyEvent("ArrowDown"));
+
+			expect(isOpen.value).toBe(true);
+			expect(activeId.value).toBeNull();
 		});
 	});
 
@@ -66,9 +70,8 @@ describe("use-combobox", () => {
 			});
 
 			test("aria-activedescendant reflects the active option", () => {
-				const { handleKeydown, inputAttributes, open, registerOption } = useCombobox();
+				const { handleKeydown, inputAttributes, open } = useCombobox({ options: ["opt-1"] });
 
-				registerOption("opt-1");
 				open();
 				handleKeydown(createKeyEvent("ArrowDown"));
 
@@ -83,10 +86,10 @@ describe("use-combobox", () => {
 				expect(listboxAttributes.value.role).toBe("listbox");
 			});
 
-			test("Has a stable id across reads", () => {
-				const { listboxAttributes } = useCombobox();
+			test("Uses the provided listbox id", () => {
+				const { listboxAttributes } = useCombobox({ listboxId: "my-listbox" });
 
-				expect(listboxAttributes.value.id).toBe(listboxAttributes.value.id);
+				expect(listboxAttributes.value.id).toBe("my-listbox");
 			});
 		});
 
@@ -106,9 +109,8 @@ describe("use-combobox", () => {
 			});
 
 			test("aria-selected is true for the active option", () => {
-				const { getOptionAttributes, handleKeydown, open, registerOption } = useCombobox();
+				const { getOptionAttributes, handleKeydown, open } = useCombobox({ options: ["opt-1"] });
 
-				registerOption("opt-1");
 				open();
 				handleKeydown(createKeyEvent("ArrowDown"));
 
@@ -116,10 +118,10 @@ describe("use-combobox", () => {
 			});
 
 			test("aria-selected is false for inactive options", () => {
-				const { getOptionAttributes, handleKeydown, open, registerOption } = useCombobox();
+				const { getOptionAttributes, handleKeydown, open } = useCombobox({
+					options: ["opt-1", "opt-2"],
+				});
 
-				registerOption("opt-1");
-				registerOption("opt-2");
 				open();
 				handleKeydown(createKeyEvent("ArrowDown"));
 
@@ -128,81 +130,61 @@ describe("use-combobox", () => {
 		});
 	});
 
+	describe("Options", () => {
+		test("Navigates options in the provided order", () => {
+			const { activeId, handleKeydown, open } = useCombobox({
+				options: ["opt-1", "opt-2", "opt-3"],
+			});
+
+			open();
+			handleKeydown(createKeyEvent("ArrowDown"));
+			expect(activeId.value).toBe("opt-1");
+
+			handleKeydown(createKeyEvent("ArrowDown"));
+			expect(activeId.value).toBe("opt-2");
+
+			handleKeydown(createKeyEvent("ArrowDown"));
+			expect(activeId.value).toBe("opt-3");
+		});
+
+		test("Ignores empty IDs in the list", () => {
+			const { activeId, handleKeydown } = useCombobox({ options: ["", "opt-1"] });
+
+			handleKeydown(createKeyEvent("ArrowDown"));
+
+			expect(activeId.value).toBe("opt-1");
+		});
+
+		test("Clears the active option when it leaves the list", async () => {
+			const options = ref(["opt-1", "opt-2"]);
+			const { activeId, handleKeydown, open } = useCombobox({ options });
+
+			open();
+			handleKeydown(createKeyEvent("ArrowDown"));
+
+			expect(activeId.value).toBe("opt-1");
+
+			options.value = ["opt-2"];
+			await nextTick();
+
+			expect(activeId.value).toBeNull();
+		});
+
+		test("Keeps the active option when it remains in the list", async () => {
+			const options = ref(["opt-1", "opt-2"]);
+			const { activeId, handleKeydown, open } = useCombobox({ options });
+
+			open();
+			handleKeydown(createKeyEvent("ArrowDown"));
+
+			options.value = ["opt-1", "opt-3"];
+			await nextTick();
+
+			expect(activeId.value).toBe("opt-1");
+		});
+	});
+
 	describe("Methods", () => {
-		describe("registerOption", () => {
-			test("Adds an option to optionIds", () => {
-				const { optionIds, registerOption } = useCombobox();
-
-				registerOption("opt-1");
-
-				expect(optionIds.value).toContain("opt-1");
-			});
-
-			test("Maintains registration order", () => {
-				const { optionIds, registerOption } = useCombobox();
-
-				registerOption("opt-1");
-				registerOption("opt-2");
-				registerOption("opt-3");
-
-				expect(optionIds.value).toEqual(["opt-1", "opt-2", "opt-3"]);
-			});
-
-			test("Ignores duplicate option IDs", () => {
-				const { optionIds, registerOption } = useCombobox();
-
-				registerOption("opt-1");
-				registerOption("opt-1");
-
-				expect(optionIds.value.filter((id) => id === "opt-1")).toHaveLength(1);
-			});
-
-			test("Ignores an empty id", () => {
-				const { optionIds, registerOption } = useCombobox();
-
-				registerOption("");
-
-				expect(optionIds.value).toHaveLength(0);
-			});
-		});
-
-		describe("unregisterOption", () => {
-			test("Removes the option from optionIds", () => {
-				const { optionIds, registerOption, unregisterOption } = useCombobox();
-
-				registerOption("opt-1");
-				unregisterOption("opt-1");
-
-				expect(optionIds.value).not.toContain("opt-1");
-			});
-
-			test("Clears activeId when the active option is removed", () => {
-				const { activeId, handleKeydown, open, registerOption, unregisterOption } = useCombobox();
-
-				registerOption("opt-1");
-				open();
-				handleKeydown(createKeyEvent("ArrowDown"));
-
-				expect(activeId.value).toBe("opt-1");
-
-				unregisterOption("opt-1");
-
-				expect(activeId.value).toBeNull();
-			});
-
-			test("Preserves activeId when a different option is removed", () => {
-				const { activeId, handleKeydown, open, registerOption, unregisterOption } = useCombobox();
-
-				registerOption("opt-1");
-				registerOption("opt-2");
-				open();
-				handleKeydown(createKeyEvent("ArrowDown"));
-				unregisterOption("opt-2");
-
-				expect(activeId.value).toBe("opt-1");
-			});
-		});
-
 		describe("open", () => {
 			test("Sets isOpen to true", () => {
 				const { isOpen, open } = useCombobox();
@@ -224,9 +206,8 @@ describe("use-combobox", () => {
 			});
 
 			test("Clears the active option", () => {
-				const { activeId, close, handleKeydown, open, registerOption } = useCombobox();
+				const { activeId, close, handleKeydown, open } = useCombobox({ options: ["opt-1"] });
 
-				registerOption("opt-1");
 				open();
 				handleKeydown(createKeyEvent("ArrowDown"));
 				close();
@@ -239,11 +220,11 @@ describe("use-combobox", () => {
 			test("Calls onSelect with the active option ID", () => {
 				const onSelect = vi.fn();
 
-				const { handleKeydown, open, registerOption, selectOption } = useCombobox({
+				const { handleKeydown, open, selectOption } = useCombobox({
+					options: ["opt-1"],
 					onSelect,
 				});
 
-				registerOption("opt-1");
 				open();
 				handleKeydown(createKeyEvent("ArrowDown"));
 				selectOption();
@@ -261,9 +242,8 @@ describe("use-combobox", () => {
 			});
 
 			test("Closes the popup after selection", () => {
-				const { handleKeydown, isOpen, open, registerOption, selectOption } = useCombobox();
+				const { handleKeydown, isOpen, open, selectOption } = useCombobox({ options: ["opt-1"] });
 
-				registerOption("opt-1");
 				open();
 				handleKeydown(createKeyEvent("ArrowDown"));
 				selectOption();
@@ -286,10 +266,10 @@ describe("use-combobox", () => {
 		describe("handleKeydown", () => {
 			describe("ArrowDown", () => {
 				test("Opens and highlights the first option when closed", () => {
-					const { activeId, handleKeydown, isOpen, registerOption } = useCombobox();
+					const { activeId, handleKeydown, isOpen } = useCombobox({
+						options: ["opt-1", "opt-2"],
+					});
 
-					registerOption("opt-1");
-					registerOption("opt-2");
 					handleKeydown(createKeyEvent("ArrowDown"));
 
 					expect(isOpen.value).toBe(true);
@@ -297,9 +277,8 @@ describe("use-combobox", () => {
 				});
 
 				test("Alt+ArrowDown opens without moving focus", () => {
-					const { activeId, handleKeydown, isOpen, registerOption } = useCombobox();
+					const { activeId, handleKeydown, isOpen } = useCombobox({ options: ["opt-1"] });
 
-					registerOption("opt-1");
 					handleKeydown(createKeyEvent("ArrowDown", { altKey: true }));
 
 					expect(isOpen.value).toBe(true);
@@ -307,10 +286,8 @@ describe("use-combobox", () => {
 				});
 
 				test("Moves to the next option when open", () => {
-					const { activeId, handleKeydown, open, registerOption } = useCombobox();
+					const { activeId, handleKeydown, open } = useCombobox({ options: ["opt-1", "opt-2"] });
 
-					registerOption("opt-1");
-					registerOption("opt-2");
 					open();
 					handleKeydown(createKeyEvent("ArrowDown"));
 					handleKeydown(createKeyEvent("ArrowDown"));
@@ -319,10 +296,8 @@ describe("use-combobox", () => {
 				});
 
 				test("Wraps from the last option to the first", () => {
-					const { activeId, handleKeydown, open, registerOption } = useCombobox();
+					const { activeId, handleKeydown, open } = useCombobox({ options: ["opt-1", "opt-2"] });
 
-					registerOption("opt-1");
-					registerOption("opt-2");
 					open();
 					handleKeydown(createKeyEvent("ArrowDown"));
 					handleKeydown(createKeyEvent("ArrowDown"));
@@ -334,10 +309,10 @@ describe("use-combobox", () => {
 
 			describe("ArrowUp", () => {
 				test("Opens and highlights the last option when closed", () => {
-					const { activeId, handleKeydown, isOpen, registerOption } = useCombobox();
+					const { activeId, handleKeydown, isOpen } = useCombobox({
+						options: ["opt-1", "opt-2"],
+					});
 
-					registerOption("opt-1");
-					registerOption("opt-2");
 					handleKeydown(createKeyEvent("ArrowUp"));
 
 					expect(isOpen.value).toBe(true);
@@ -345,10 +320,8 @@ describe("use-combobox", () => {
 				});
 
 				test("Moves to the previous option when open", () => {
-					const { activeId, handleKeydown, open, registerOption } = useCombobox();
+					const { activeId, handleKeydown, open } = useCombobox({ options: ["opt-1", "opt-2"] });
 
-					registerOption("opt-1");
-					registerOption("opt-2");
 					open();
 					handleKeydown(createKeyEvent("ArrowDown"));
 					handleKeydown(createKeyEvent("ArrowDown"));
@@ -358,10 +331,8 @@ describe("use-combobox", () => {
 				});
 
 				test("Wraps from the first option to the last", () => {
-					const { activeId, handleKeydown, open, registerOption } = useCombobox();
+					const { activeId, handleKeydown, open } = useCombobox({ options: ["opt-1", "opt-2"] });
 
-					registerOption("opt-1");
-					registerOption("opt-2");
 					open();
 					handleKeydown(createKeyEvent("ArrowDown"));
 					handleKeydown(createKeyEvent("ArrowUp"));
@@ -373,9 +344,8 @@ describe("use-combobox", () => {
 			describe("Enter", () => {
 				test("Selects the active option and closes the popup", () => {
 					const onSelect = vi.fn();
-					const { handleKeydown, isOpen, open, registerOption } = useCombobox({ onSelect });
+					const { handleKeydown, isOpen, open } = useCombobox({ options: ["opt-1"], onSelect });
 
-					registerOption("opt-1");
 					open();
 					handleKeydown(createKeyEvent("ArrowDown"));
 					handleKeydown(createKeyEvent("Enter"));
@@ -417,9 +387,8 @@ describe("use-combobox", () => {
 				});
 
 				test("Clears the active option when closing", () => {
-					const { activeId, handleKeydown, open, registerOption } = useCombobox();
+					const { activeId, handleKeydown, open } = useCombobox({ options: ["opt-1"] });
 
-					registerOption("opt-1");
 					open();
 					handleKeydown(createKeyEvent("ArrowDown"));
 					handleKeydown(createKeyEvent("Escape"));
@@ -438,9 +407,8 @@ describe("use-combobox", () => {
 				test.for([["ArrowLeft"], ["ArrowRight"], ["End"], ["Home"]])(
 					"Clears the active option on %s",
 					([key]) => {
-						const { activeId, handleKeydown, open, registerOption } = useCombobox();
+						const { activeId, handleKeydown, open } = useCombobox({ options: ["opt-1"] });
 
-						registerOption("opt-1");
 						open();
 						handleKeydown(createKeyEvent("ArrowDown"));
 

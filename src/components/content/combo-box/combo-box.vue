@@ -94,9 +94,10 @@
  * The `no-results` slot replaces the empty-results message.
  * The `loading` slot replaces the loading message.
  */
-import { computed, ref, toRef, useTemplateRef, watch } from "vue";
+import { computed, toRef, useTemplateRef, watch } from "vue";
 import { arrayLength } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { nanoid } from "nanoid";
 import { onClickOutside } from "@vueuse/core";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
 import { useCombobox, useFloatingPosition } from "@/composables";
@@ -177,6 +178,24 @@ const query = defineModel({
 	default: "",
 });
 
+// A stable prefix for option IDs, shared with the listbox, that keeps them from
+// clashing with other IDs on the page.
+const listboxId = nanoid();
+
+// Each result paired with the ID used for its element and for keyboard
+// navigation. The ID is derived from the result's position rather than the item
+// itself, so callers can merge results from several sources without worrying
+// about their IDs clashing.
+const internalItems = computed(() =>
+	props.items.map((item, index) => ({
+		id: `${listboxId}-${index}`,
+		item,
+	})),
+);
+
+// The ordered option IDs handed to the combobox for keyboard navigation.
+const optionIds = computed(() => internalItems.value.map((entry) => entry.id));
+
 const {
 	activeId,
 	close: closeResults,
@@ -185,10 +204,8 @@ const {
 	isOpen,
 	listboxAttributes,
 	open: openResults,
-	registerOption,
 	selectOption,
-	unregisterOption,
-} = useCombobox({ onSelect: selectItem });
+} = useCombobox({ listboxId, options: optionIds, onSelect: selectItem });
 
 // A reference to the root element, so we can close the results when the user
 // interacts elsewhere.
@@ -197,9 +214,6 @@ const containerElement = useTemplateRef("container");
 const inputComponent = useTemplateRef("input");
 // A reference to the results list, used to measure and position it.
 const dropdownElement = useTemplateRef("dropdown");
-// A stable prefix for option IDs, shared with the listbox, that keeps them from
-// clashing with other IDs on the page.
-const optionIdPrefix = listboxAttributes.value.id;
 
 const {
 	computedPlacement,
@@ -214,17 +228,6 @@ const {
 	initialPlacement: toRef(props, "placement"),
 	initialAlign: toRef(props, "align"),
 });
-
-// Each result paired with the ID used for its element and for keyboard
-// navigation. The ID is derived from the result's position rather than the item
-// itself, so callers can merge results from several sources without worrying
-// about their IDs clashing.
-const internalItems = computed(() =>
-	props.items.map((item, index) => ({
-		id: `${optionIdPrefix}-${index}`,
-		item,
-	})),
-);
 
 // The number of results currently shown.
 const itemCount = computed(() => arrayLength(internalItems.value));
@@ -268,17 +271,6 @@ watch(isOpen, (currentlyOpen) => {
 
 	handleFloatingClose();
 });
-
-// Keep keyboard navigation in step with the displayed results, re-registering
-// in display order whenever the results change.
-watch(
-	internalItems,
-	(currentItems, previousItems) => {
-		(previousItems ?? []).forEach((entry) => unregisterOption(entry.id));
-		currentItems.forEach((entry) => registerOption(entry.id));
-	},
-	{ immediate: true },
-);
 
 onClickOutside(containerElement, closeResults);
 

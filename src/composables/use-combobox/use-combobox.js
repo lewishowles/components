@@ -1,4 +1,4 @@
-import { computed, ref, watch } from "vue";
+import { computed, ref, toValue, watch } from "vue";
 import { getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
@@ -8,30 +8,46 @@ import { nanoid } from "nanoid";
  * `useCombobox` provides the groundwork for implementing a combobox interaction
  * pattern, including ARIA attribute management and keyboard handling.
  *
- * In conjunction with this composable, it is recommended that components use
- * the following to handle closing the menu in the context of the app.
+ * The caller provides the ordered list of option IDs; the composable derives
+ * keyboard navigation from it directly, so there is no per-option registration
+ * to manage.
+ *
+ * In conjunction with this composable, it is recommended that components close
+ * the menu when the user interacts elsewhere, for example:
  *
  * const containerElement = useTemplateRef("container");
  * onClickOutside(containerElement, close);
- * onFocusOutside(containerElement, close);
+ * // plus a `focusout` handler on the input that closes when focus leaves.
  *
- * @param  {object}  options
- * @param  {string}  [options.listboxId]
+ * @param  {object}  config
+ * @param  {Array|object|Function}  [config.options]
+ *     The ordered list of option IDs the user can navigate, as a plain array,
+ *     a ref, or a getter. Navigation follows this order, and the active option
+ *     is cleared automatically when it leaves the list.
+ * @param  {string}  [config.listboxId]
  *     ID for the listbox element. Auto-generated if omitted.
- * @param  {Function}  [options.onSelect]
+ * @param  {Function}  [config.onSelect]
  *     Called with the selected option's ID when an option is chosen.
  */
-export function useCombobox({ listboxId: providedListboxId, onSelect } = {}) {
+export function useCombobox({ options, listboxId: providedListboxId, onSelect } = {}) {
 	// The stable ID shared between the input's aria-controls and the listbox.
 	const listboxId = providedListboxId ?? nanoid();
 	// Whether the listbox popup is currently open.
 	const isOpen = ref(false);
 	// The ID of the currently highlighted option, or null if none.
 	const activeId = ref(null);
-	// All registered options in display order: { id, groupId? }
-	const registeredOptions = ref([]);
-	// Flat ordered list of option IDs, used for keyboard navigation.
-	const optionIds = computed(() => registeredOptions.value.map((option) => option.id));
+
+	// The ordered option IDs used for keyboard navigation, normalised from the
+	// provided options to a flat list of non-empty IDs.
+	const optionIds = computed(() => {
+		const value = toValue(options);
+
+		if (!isNonEmptyArray(value)) {
+			return [];
+		}
+
+		return value.filter(isNonEmptyString);
+	});
 
 	// ARIA attributes to spread onto the input element.
 	const inputAttributes = computed(() => ({
@@ -55,6 +71,14 @@ export function useCombobox({ listboxId: providedListboxId, onSelect } = {}) {
 		}
 	});
 
+	// Clear the active option when it is no longer in the list, such as after the
+	// caller filters the results.
+	watch(optionIds, (ids) => {
+		if (activeId.value !== null && !ids.includes(activeId.value)) {
+			activeId.value = null;
+		}
+	});
+
 	/**
 	 * Get the computed ARIA attributes for an individual option.
 	 *
@@ -67,48 +91,6 @@ export function useCombobox({ listboxId: providedListboxId, onSelect } = {}) {
 			id,
 			role: "option",
 		}));
-	}
-
-	/**
-	 * Register an option so it participates in keyboard navigation. Options
-	 * are navigated in the order they are registered.
-	 *
-	 * @param  {string}  id
-	 *     The option's unique ID.
-	 * @param  {string}  [groupId]
-	 *     The group this option belongs to, if grouping is needed.
-	 */
-	function registerOption(id, groupId) {
-		if (!isNonEmptyString(id) || registeredOptions.value.some((option) => option.id === id)) {
-			return;
-		}
-
-		const entry = { id };
-
-		if (isNonEmptyString(groupId)) {
-			entry.groupId = groupId;
-		}
-
-		registeredOptions.value.push(entry);
-	}
-
-	/**
-	 * Unregister an option, removing it from keyboard navigation. If the option
-	 * was currently highlighted, the active selection is also cleared.
-	 *
-	 * @param  {string}  id
-	 *     The option's unique ID.
-	 */
-	function unregisterOption(id) {
-		if (!isNonEmptyString(id)) {
-			return;
-		}
-
-		registeredOptions.value = registeredOptions.value.filter((option) => option.id !== id);
-
-		if (activeId.value === id) {
-			activeId.value = null;
-		}
 	}
 
 	/**
@@ -273,9 +255,6 @@ export function useCombobox({ listboxId: providedListboxId, onSelect } = {}) {
 		isOpen,
 		listboxAttributes,
 		open,
-		optionIds,
-		registerOption,
 		selectOption,
-		unregisterOption,
 	};
 }
