@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@import "./theme.css";
+@import "./font.css";
+@import "./buttons.css";
+@import "./form.css";
+@import "./animation.css";
+
+@plugin "@tailwindcss/container-queries";
+@plugin "tailwindcss-hocus";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.dark\:prose-invert {
+	&:where(.dark, .dark *) {
+		--tw-prose-body: color-mix(in oklab, var(--color-white) 80%, transparent);
+		--tw-prose-headings: var(--color-white);
+		--tw-prose-lead: color-mix(in oklab, var(--color-white) 90%, transparent);
+		--tw-prose-counters: color-mix(in oklab, var(--color-white) 60%, transparent);
+		--tw-prose-bullets: color-mix(in oklab, var(--color-white) 60%, transparent);
+		--tw-prose-hr: color-mix(in oklab, var(--color-white) 60%, transparent);
+		--tw-prose-quotes: color-mix(in oklab, var(--color-white) 80%, transparent);
+		--tw-prose-quote-borders: color-mix(in oklab, var(--color-white) 60%, transparent);
+		--tw-prose-captions: color-mix(in oklab, var(--color-white) 60%, transparent);
+		--tw-prose-th-borders: color-mix(in oklab, var(--color-white) 60%, transparent);
+		--tw-prose-td-borders: color-mix(in oklab, var(--color-white) 50%, transparent);
+	}
+}
+
+@layer base {
+	svg {
+		height: 1em;
+		width: 1em;
+	}
+
+	a,
+	button,
+	summary,
+	[contenteditable],
+	[tabindex] {
+		outline: 0;
+		transition-duration: var(--default-transition-duration);
+		transition-property: all;
+		transition-timing-function: var(--default-transition-timing-function);
+
+		&:focus-visible {
+			outline: 0;
+			box-shadow: 0 0 0 2px var(--primary-fill);
+			box-shadow:
+				0 0 0 2px var(--primary-fill),
+				0 0 0 4px --alpha(var(--primary-fill) / 10%);
+		}
+	}
+
+	a,
+	summary {
+		color: var(--primary-text);
+		text-decoration: underline;
+		text-decoration-skip-ink: auto;
+		text-underline-offset: 4px;
+
+		&:hover,
+		&:focus {
+			color: var(--primary-900);
+			text-decoration: none;
+		}
+
+		&:where(.dark, .dark *) {
+			&:hover,
+			&:focus {
+				color: var(--primary-200);
+			}
+		}
+	}
+
+	button {
+		text-align: inherit;
+	}
+
+	img {
+		max-width: 100%;
+	}
+
+	summary::marker {
+		content: "";
+	}
+
+	summary::-webkit-details-marker {
+		display: none;
+	}
+}
