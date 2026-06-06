@@ -2,9 +2,14 @@ import { defineConfig } from "vite-plus";
 import { fileURLToPath, URL } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
+import Components from "unplugin-vue-components/vite";
 import vueDevTools from "vite-plugin-vue-devtools";
 import { alias } from "./support/aliases.js";
-import { createComponentSource, createNamedExports } from "./support/plugins/index.js";
+import {
+	createComponentSource,
+	createNamedExports,
+	internalComponentsResolver,
+} from "./support/plugins/index.js";
 import fmt from "./support/oxfmt.config.js";
 import lint from "./support/oxlint.config.js";
 
@@ -14,7 +19,17 @@ export default defineConfig({
 	},
 	fmt,
 	lint,
-	plugins: [vue(), vueDevTools(), tailwindcss(), createComponentSource(), createNamedExports()],
+	plugins: [
+		vue(),
+		// Resolve the library's own child-component tags to static imports at
+		// build time. `dirs: []` disables the default filesystem scan so the
+		// manifest-driven resolver is the only source of truth.
+		Components({ dirs: [], dts: false, resolvers: [internalComponentsResolver()] }),
+		vueDevTools(),
+		tailwindcss(),
+		createComponentSource(),
+		createNamedExports(),
+	],
 	resolve: {
 		alias,
 	},
