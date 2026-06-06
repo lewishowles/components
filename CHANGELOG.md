@@ -2,6 +2,12 @@
 
 ## 2.0.0
 
+### Breaking changes
+
+- Components are now coloured through the CSS-variable theming system rather than fixed Tailwind colours. To keep them styled, import the library's source so Tailwind can generate the classes (see Themes, below); to apply your own brand, set the colour scales as the theming guide describes.
+- `pill-badge`: the `colour` value `"purple"` is now `"primary"`. Semantic values `danger`, `warning`, `success`, and `info` have also been added.
+- `notification-warning` now uses a yellow (warning) palette in place of the previous orange.
+
 ### Themes
 
 A new theming system has been implemented! You can now change the colours of components in an easy to maintain way.
@@ -15,6 +21,10 @@ To wire the components into your build, import the library's source once so Tail
 ```
 
 The theming guide in the docs covers the full token reference, the stylesheets you can start from, and dark mode.
+
+### Tree-shakeable imports
+
+Components can now be imported only when used. The package ships static named exports and is marked side-effect free, so a bundler can drop the components a project doesn't use. A resolver for [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) is published at `@lewishowles/components/resolver`, giving automatic imports by tag with no import lines. The global Vue plugin remains available. The getting-started guide covers all three options, along with overriding components.
 
 ### `extendComponent`
 

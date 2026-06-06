@@ -16,22 +16,33 @@ This library helps improve accessibility in two primary ways; the first by imple
 
 ## Setup
 
-At the moment, components in the library are registered globally, so there's no need to manually import any of the components. To use the library, set it up in your main file, for example:
+Automatic imports are recommended. Using [`unplugin-vue-components`](https://github.com/unplugin/unplugin-vue-components) and the library's resolver, components are automatically imported only when used:
 
 ```javascript
-import { createApp } from "vue";
-import App from "./App.vue";
-import components from "@lewishowles/components";
+// vite.config.js
+import { componentsResolver } from "@lewishowles/components/resolver";
+import Components from "unplugin-vue-components/vite";
 
-const app = createApp(App);
-
-app.use(components);
-app.mount("#app");
+export default defineConfig({
+	plugins: [Components({ resolvers: [componentsResolver()] })],
+});
 ```
+
+Named imports and a global Vue plugin are also available. The [getting-started guide](https://components.howles.dev/getting-started) covers all three, along with overriding components.
+
+### Stylesheets
+
+Each component is styled with Tailwind, so each project needs Tailwind (version 4) as well. You also need to add the library as a source, so that Tailwind can generate the utility classes that the components use. Import this into your Tailwind entry stylesheet (e.g. `main.css`):
+
+```css
+@import "@lewishowles/components/source";
+```
+
+The [theming guide](https://components.howles.dev) covers re-colouring the library with your own brand.
 
 ## Using a component
 
-Since components are globally registered for now, you can use them directly anywhere in your app. For example:
+Once the library is set up, you can use any component by tag anywhere in your app. For example:
 
 ```html
 <ui-button @click="doMagic">🪄 Bibbidi-Bobbidi-Boo</ui-button>
@@ -48,6 +59,4 @@ There are a number of improvements and new components that could be made to impr
 - Stepper - to show step-by-step information or a multi-page form
   - "Allow progress" setting and method
   - "Allow backtrack"
-- Devise a system to allow the definition of a "brand colour" and "dark brand colour" to override any defaults. Perhaps a stylesheet.
-- Add notes about default recommended stylesheet.
 - Create a new public-facing website to display components and variants
