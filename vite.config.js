@@ -24,6 +24,7 @@ export default defineConfig({
 				components: fileURLToPath(new URL("./src/index.js", import.meta.url)),
 				composables: fileURLToPath(new URL("./src/composables/index.js", import.meta.url)),
 				utilities: fileURLToPath(new URL("./src/utilities/index.js", import.meta.url)),
+				resolver: fileURLToPath(new URL("./src/resolver.js", import.meta.url)),
 			},
 			formats: ["es"],
 		},

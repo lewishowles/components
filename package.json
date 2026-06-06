@@ -22,6 +22,10 @@
 			"require": "./dist/utilities.js",
 			"import": "./dist/utilities.js"
 		},
+		"./resolver": {
+			"require": "./dist/resolver.js",
+			"import": "./dist/resolver.js"
+		},
 		"./source": "./dist/source.css",
 		".": {
 			"require": "./dist/components.js",
