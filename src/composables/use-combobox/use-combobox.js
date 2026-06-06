@@ -64,13 +64,6 @@ export function useCombobox({ options, listboxId: providedListboxId, onSelect } 
 		role: "listbox",
 	}));
 
-	// Auto-highlight the sole option when open so users can confirm with Enter without navigating first.
-	watch([isOpen, optionIds], ([open, ids]) => {
-		if (open && ids.length === 1) {
-			activeId.value = ids[0];
-		}
-	});
-
 	// Clear the active option when it is no longer in the list, such as after the
 	// caller filters the results.
 	watch(optionIds, (ids) => {

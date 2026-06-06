@@ -1,117 +1,81 @@
 <template>
 	<div data-component="data-table" data-test="data-table">
-		<span role="status" aria-live="polite" class="sr-only" data-test="data-table-status">
-			<template v-if="statusType === statusTypes.SORT">
-				<slot
-					name="sort-status"
-					v-bind="{ column: getColumnLabel(sortedColumn), ascending: isAscending }"
-				>
-					Sorted by {{ getColumnLabel(sortedColumn) }}
-					{{ isAscending ? "ascending" : "descending" }}
-				</slot>
-			</template>
-
-			<template v-else-if="statusType === statusTypes.SEARCH">
-				<slot name="search-status" v-bind="{ count: filteredRows.length, query: searchQuery }">
-					<template v-if="filteredRows.length === 0"> No results for "{{ searchQuery }}" </template>
-					<template v-else>
-						Showing {{ filteredRows.length }} result{{ filteredRows.length === 1 ? "" : "s" }} for
-						"{{ searchQuery }}"
-					</template>
-				</slot>
-			</template>
-
-			<template v-else-if="statusType === statusTypes.SELECTION">
-				<slot
-					name="selection-status"
-					v-bind="{
-						selectedCount: selectedRowCount,
-						total: rowCount,
-						allSelected: areAllRowsSelected,
-					}"
-				>
-					<template v-if="selectedRowCount === 0"> All rows deselected </template>
-					<template v-else-if="areAllRowsSelected"> All {{ rowCount }} rows selected </template>
-					<template v-else> {{ selectedRowCount }} of {{ rowCount }} rows selected </template>
-				</slot>
-			</template>
-		</span>
-
-		<div
-			v-if="haveTitle || haveIntroduction"
-			class="border-border mb-6 flex flex-col gap-4 border-b pb-6"
+		<data-table-status
+			v-bind="{
+				type: statusType,
+				sortColumn: getColumnLabel(sortedColumn),
+				ascending: isAscending,
+				resultCount: filteredRows.length,
+				query: searchQuery,
+				selectedCount: selectedRowCount,
+				totalCount: rowCount,
+				allSelected: areAllRowsSelected,
+			}"
 		>
-			<component :is="headingLevel" v-if="haveTitle" class="text-content-strong text-3xl font-bold">
-				<slot name="table-title" />
-			</component>
+			<template #sort-status="binding">
+				<slot name="sort-status" v-bind="binding" />
+			</template>
+			<template #search-status="binding">
+				<slot name="search-status" v-bind="binding" />
+			</template>
+			<template #selection-status="binding">
+				<slot name="selection-status" v-bind="binding" />
+			</template>
+		</data-table-status>
 
-			<slot name="table-introduction" />
-		</div>
+		<data-table-header v-bind="{ headingLevel }">
+			<template #table-title>
+				<slot name="table-title" />
+			</template>
+			<template #table-introduction>
+				<slot name="table-introduction" />
+			</template>
+		</data-table-header>
 
 		<div class="text-sm">
 			<alert-message v-if="!haveData" data-test="data-table-no-data">
-				<slot name="no-data-message"> No data to display. </slot>
+				<slot name="no-data-message">No data to display.</slot>
 			</alert-message>
 
 			<div v-if="haveData" class="flex flex-col gap-6">
-				<div v-if="enableSearch || showUserConfiguration" class="flex items-end gap-4">
-					<data-table-search
-						v-if="enableSearch"
-						ref="dataTableSearchComponent"
-						v-model="searchQuery"
-						class="w-full"
-					>
-						<template #search-label>
-							<slot name="search-label" />
-						</template>
-						<template #search-introduction>
-							<slot name="search-introduction" />
-						</template>
-						<template #search-help>
-							<slot name="search-help" />
-						</template>
-						<template #reset-search-label>
-							<slot name="reset-search-label" />
-						</template>
-					</data-table-search>
-
-					<slot name="post-search" />
-					<slot name="pre-configuration" />
-
-					<floating-details
-						v-if="showUserConfiguration"
-						align="end"
-						class="ms-auto"
-						details-classes="min-w-3xs py-2 rounded-lg border"
-						data-test="data-table-display-options"
-					>
-						<template #summary>
-							<slot name="configure-label"> Configure </slot>
-						</template>
-
-						<template v-if="haveTableName">
-							<h4 class="text-content-strong my-2 px-4 font-semibold">
-								<slot name="display-options-label"> Display options </slot>
-							</h4>
-
-							<data-table-density v-model="tableDensity">
-								<template
-									v-for="key in tableDensityOptions"
-									#[`display-option-${key}-label`]
-									:key="key"
-								>
-									<slot :name="`display-option-${key}-label`" />
-								</template>
-							</data-table-density>
-
-							<h4 class="text-content-strong my-2 px-4 font-semibold">
-								<slot name="column-visibility-label"> Columns </slot>
-							</h4>
-
-							<data-table-columns v-model="columnVisibility" />
-						</template>
-					</floating-details>
-				</div>
+				<data-table-toolbar
+					ref="dataTableToolbar"
+					v-bind="{ enableSearch, tableDensityOptions }"
+					v-model:search-query="searchQuery"
+					v-model:density="tableDensity"
+					v-model:column-visibility="columnVisibility"
+				>
+					<template #search-label>
+						<slot name="search-label" />
+					</template>
+					<template #search-introduction>
+						<slot name="search-introduction" />
+					</template>
+					<template #search-help>
+						<slot name="search-help" />
+					</template>
+					<template #reset-search-label>
+						<slot name="reset-search-label" />
+					</template>
+					<template #post-search>
+						<slot name="post-search" />
+					</template>
+					<template #pre-configuration>
+						<slot name="pre-configuration" />
+					</template>
+					<template #configure-label>
+						<slot name="configure-label" />
+					</template>
+					<template #display-options-label>
+						<slot name="display-options-label" />
+					</template>
+					<template v-for="key in tableDensityOptions" #[`display-option-${key}-label`] :key="key">
+						<slot :name="`display-option-${key}-label`" />
+					</template>
+					<template #column-visibility-label>
+						<slot name="column-visibility-label" />
+					</template>
+				</data-table-toolbar>
 
 				<div
 					ref="tableScrollWrapper"
@@ -139,8 +103,8 @@
 									}"
 								>
 									Sorted by {{ getColumnLabel(sortedColumn) }}
-									<template v-if="isAscending"> ascending </template>
-									<template v-else> descending </template>
+									<template v-if="isAscending">ascending</template>
+									<template v-else>descending</template>
 								</slot>
 							</span>
 						</caption>
@@ -155,7 +119,7 @@
 										data-test="data-table-select-all-rows"
 										@change="toggleAllRows"
 									>
-										<slot name="select-all-rows-label"> Select all rows </slot>
+										<slot name="select-all-rows-label">Select all rows</slot>
 									</form-checkbox>
 								</th>
 								<th
@@ -269,36 +233,33 @@
 					</table>
 				</div>
 
-				<div v-if="enableSelection" class="ps-4">
-					<slot name="selected-row-count-label" v-bind="{ selectedCount: selectedRowCount }">
-						{{ selectedRowCount }} rows selected
-					</slot>
-				</div>
-
-				<app-pagination
-					v-if="enablePagination"
-					v-show="haveDataToDisplay"
+				<data-table-footer
+					v-bind="{
+						enableSelection,
+						selectedCount: selectedRowCount,
+						enablePagination,
+						haveDataToDisplay,
+						totalCount: rowCount,
+						searchQuery,
+					}"
 					v-model="currentPage"
-					v-bind="{ count: rowCount }"
-					data-test="data-table-pagination"
 				>
-					<template #page-number-label="{ page }">
-						<slot name="page-number-label" v-bind="{ page }" />
+					<template #selected-row-count-label="binding">
+						<slot name="selected-row-count-label" v-bind="binding" />
 					</template>
-
+					<template #page-number-label="binding">
+						<slot name="page-number-label" v-bind="binding" />
+					</template>
 					<template #next-page-label>
 						<slot name="next-page-label" />
 					</template>
-					<template #showing-items-label="{ first, last, total }">
-						<slot name="showing-items-label" v-bind="{ first, last, total }" />
+					<template #showing-items-label="binding">
+						<slot name="showing-items-label" v-bind="binding" />
 					</template>
-				</app-pagination>
-
-				<alert-message v-show="!haveDataToDisplay" data-test="data-table-no-results">
-					<slot name="no-results-message" v-bind="{ searchQuery }">
-						No results could be found for term <span class="font-bold">"{{ searchQuery }}"</span>.
-					</slot>
-				</alert-message>
+					<template #no-results-message="binding">
+						<slot name="no-results-message" v-bind="binding" />
+					</template>
+				</data-table-footer>
 			</div>
 		</div>
 	</div>
@@ -311,9 +272,10 @@ import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useResizeObserver } from "@vueuse/core";
 
-import DataTableColumns from "./fragments/data-table-columns/data-table-columns.vue";
-import DataTableDensity from "./fragments/data-table-density/data-table-density.vue";
-import DataTableSearch from "./fragments/data-table-search/data-table-search.vue";
+import DataTableFooter from "./fragments/data-table-footer/data-table-footer.vue";
+import DataTableHeader from "./fragments/data-table-header/data-table-header.vue";
+import DataTableStatus, { statusTypes } from "./fragments/data-table-status/data-table-status.vue";
+import DataTableToolbar from "./fragments/data-table-toolbar/data-table-toolbar.vue";
 
 import useTableColumns from "./composables/use-table-columns/use-table-columns.js";
 import useTableData from "./composables/use-table-data/use-table-data.js";
@@ -436,21 +398,12 @@ const selection = defineModel({
 });
 
 const slots = useSlots();
-// A reference to the search component, allowing us to focus it when necessary.
-const dataTableSearchComponent = ref(null);
+// A reference to the toolbar, allowing us to focus its search input when needed.
+const dataTableToolbar = ref(null);
 // Whether a name has been provided for this table.
 const haveTableName = computed(() => isNonEmptyString(props.name));
-// Whether to show the "display" options to the user, which require a name for
-// this table.
-const showUserConfiguration = computed(() => haveTableName.value);
 // Whether this table includes a caption.
 const haveCaption = computed(() => isNonEmptySlot(slots.caption));
-// Whether this table includes a title.
-const haveTitle = computed(() => isNonEmptySlot(slots["table-title"]));
-// Whether this table includes an introduction.
-const haveIntroduction = computed(() => isNonEmptySlot(slots["table-introduction"]));
-// The available status announcement types for the live region.
-const statusTypes = { SORT: "sort", SEARCH: "search", SELECTION: "selection" };
 // Which type of announcement is currently active in the status live region.
 const statusType = ref(null);
 // A reference to the scrollable wrapper around the table, used to detect overflow.
@@ -592,7 +545,7 @@ function setSearchQuery(value) {
 
 	searchQuery.value = value;
 
-	runComponentMethod(dataTableSearchComponent.value, "triggerFocus");
+	runComponentMethod(dataTableToolbar.value, "triggerSearchFocus");
 }
 
 provide("data-table", {

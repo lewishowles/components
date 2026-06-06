@@ -289,7 +289,7 @@
 }
 
 .button--disabled {
-	background: var(--surface-sunken);
+	background-color: var(--surface-sunken);
 	color: var(--content-muted);
 	cursor: not-allowed;
 	font-weight: normal;
