@@ -52,9 +52,8 @@
 
 		<p>
 			Each component is styled with Tailwind, so each project needs Tailwind (version 4) as well.
-			You also need to add the library as a source, so that Tailwind can generate the utility
-			classes that the components use. Import this into your Tailwind entry stylesheet (e.g.
-			`main.css`):
+			You also need to import the library styles so component CSS and generated utility classes are
+			available. Import this into your Tailwind entry stylesheet (e.g. `main.css`):
 		</p>
 
 		<code-block :code="sourceExample" />
@@ -106,7 +105,7 @@ const app = createApp(App);
 app.use(components);
 app.mount("#app");`;
 
-const sourceExample = `@import "@lewishowles/components/source";`;
+const sourceExample = `@import "@lewishowles/components/styles.css";`;
 
 const scriptTag = "script";
 

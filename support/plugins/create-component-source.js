@@ -1,18 +1,25 @@
 /**
- * Create a stylesheet that registers the built components as a Tailwind source.
- * Consumers import it once — `@import "@lewishowles/components/source"` — and
- * Tailwind generates the utility classes the components use. The `@source`
- * resolves next to the bundle, so the consumer never writes a fragile path.
+ * Create stylesheets that register the built components as a Tailwind source.
+ * `source.css` is kept for compatibility; `styles.css` also imports the
+ * component CSS extracted from SFC `<style>` blocks.
  */
 export function createComponentSource() {
 	return {
 		name: "create-component-source",
 
 		generateBundle() {
+			const source = `@source "./components.js";\n`;
+
 			this.emitFile({
 				type: "asset",
 				fileName: "source.css",
-				source: `@source "./components.js";\n`,
+				source,
+			});
+
+			this.emitFile({
+				type: "asset",
+				fileName: "styles.css",
+				source: `@import "./components.css";\n${source}`,
 			});
 		},
 	};

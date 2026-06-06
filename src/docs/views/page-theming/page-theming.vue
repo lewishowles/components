@@ -45,9 +45,9 @@
 		<h2>Using the stylesheets</h2>
 
 		<p>
-			The styles are built with Tailwind, so your project needs Tailwind (version 4) as well. Point
-			it at the library so it can generate the utility classes the components rely on. Import this
-			into your Tailwind entry stylesheet:
+			The styles are built with Tailwind, so your project needs Tailwind (version 4) as well. Import
+			the library styles so component CSS and generated utility classes are available in your
+			Tailwind entry stylesheet:
 		</p>
 
 		<code-block :code="sourceExample" />
@@ -370,8 +370,8 @@ const overrideExample = `:root {
 	--primary-500: oklch(0.6 0.2 250);
 }`;
 
-// The example code to add Components as a source.
-const sourceExample = `@import "@lewishowles/components/source";`;
+// The example code to add Components styles and source scanning.
+const sourceExample = `@import "@lewishowles/components/styles.css";`;
 
 // An example of how to trigger dark mode.
 const darkModeExample = `<html class="dark">`;

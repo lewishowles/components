@@ -32,10 +32,10 @@ Named imports and a global Vue plugin are also available. The [getting-started g
 
 ### Stylesheets
 
-Each component is styled with Tailwind, so each project needs Tailwind (version 4) as well. You also need to add the library as a source, so that Tailwind can generate the utility classes that the components use. Import this into your Tailwind entry stylesheet (e.g. `main.css`):
+Each component is styled with Tailwind, so each project needs Tailwind (version 4) as well. You also need to import the library styles so component CSS and generated utility classes are available. Import this into your Tailwind entry stylesheet (e.g. `main.css`):
 
 ```css
-@import "@lewishowles/components/source";
+@import "@lewishowles/components/styles.css";
 ```
 
 The [theming guide](https://components.howles.dev) covers re-colouring the library with your own brand.

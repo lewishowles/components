@@ -1,18 +1,18 @@
 <template>
 	<li
-		class="breadcrumb-item"
+		class="group"
 		data-component="breadcrumb-item"
 		:data-current="current || null"
 		data-test="breadcrumb-item"
 	>
 		<span v-if="current" aria-current="page" class="flex items-center gap-2">
-			<icon-chevron-right aria-hidden="true" class="breadcrumb-divider size-3" />
+			<icon-chevron-right aria-hidden="true" class="size-3 group-first:hidden" />
 
 			<slot />
 		</span>
 
 		<a v-else v-bind="{ href }" class="flex items-center gap-2 text-current">
-			<icon-chevron-right aria-hidden="true" class="breadcrumb-divider size-3" />
+			<icon-chevron-right aria-hidden="true" class="size-3 group-first:hidden" />
 
 			<slot />
 		</a>
@@ -39,13 +39,3 @@ defineProps({
 	},
 });
 </script>
-
-<style>
-/**
- * Hide the divider for the first breadcrumb, without relying on knowledge of
- * the order of breadcrumbs in Javascript
- */
-.breadcrumb-item:first-child .breadcrumb-divider {
-	display: none;
-}
-</style>

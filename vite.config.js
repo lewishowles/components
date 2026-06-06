@@ -41,6 +41,7 @@ export default defineConfig({
 				utilities: fileURLToPath(new URL("./src/utilities/index.js", import.meta.url)),
 				resolver: fileURLToPath(new URL("./src/resolver.js", import.meta.url)),
 			},
+			cssFileName: "components",
 			formats: ["es"],
 		},
 		rollupOptions: {
