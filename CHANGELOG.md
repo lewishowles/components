@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.3
+
+Fixes an issue where CSS wasn't automatically included.
+
 ## 2.0.2
 
 Fixes an issue where components used as a string wouldn't be resolved by automatic imports.
