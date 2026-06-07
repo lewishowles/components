@@ -95,6 +95,22 @@
 
 				<p>The text content of the breadcrumb.</p>
 			</component-slot>
+
+			<component-slot id="slot-link">
+				<template #name>
+					link (
+					<code>breadcrumb-item</code>
+					)
+				</template>
+
+				<p>
+					Replaces the link rendered when
+					<code>current</code>
+					is false. Use this to integrate with router components while keeping
+					<code>breadcrumb-item</code>
+					router-agnostic.
+				</p>
+			</component-slot>
 		</component-slots>
 
 		<component-styling-hooks>

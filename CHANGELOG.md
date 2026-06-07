@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0
+
+### New features
+
+- `breadcrumb-item` - A new `link` slot replaces the built-in link, useful for integrating with plugins like `vue-router`.
+
 ## 2.0.3
 
 Fixes an issue where CSS wasn't automatically included.

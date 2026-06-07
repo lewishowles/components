@@ -8,6 +8,14 @@
 
 The text content of the breadcrumb.
 
+### `link`
+
+Replaces the link rendered when `current` is false. Useful when integrating with a router while keeping `breadcrumb-item` router-agnostic.
+
+| Slot prop | Type     | Description                   |
+| --------- | -------- | ----------------------------- |
+| `href`    | `string` | The resolved breadcrumb href. |
+
 ## Props
 
 ### `href`
@@ -41,4 +49,16 @@ Whether this item represents the current page. When true, renders as a non-inter
 	<breadcrumb-item href="/users">Users</breadcrumb-item>
 	<breadcrumb-item :current="true">Lewis Howles</breadcrumb-item>
 </breadcrumb-list>
+```
+
+### Custom link
+
+```html
+<breadcrumb-item href="/users">
+	<template #link="{ href }">
+		<a v-bind="{ href }">Users</a>
+	</template>
+
+	Users
+</breadcrumb-item>
 ```

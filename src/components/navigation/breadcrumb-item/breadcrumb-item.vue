@@ -1,21 +1,21 @@
 <template>
 	<li
-		class="group"
+		class="group flex items-center gap-2"
 		data-component="breadcrumb-item"
 		:data-current="current || null"
 		data-test="breadcrumb-item"
 	>
-		<span v-if="current" aria-current="page" class="flex items-center gap-2">
-			<icon-chevron-right aria-hidden="true" class="size-3 group-first:hidden" />
+		<icon-chevron-right aria-hidden="true" class="size-3 group-first:hidden" />
 
+		<span v-if="current" aria-current="page">
 			<slot />
 		</span>
 
-		<a v-else v-bind="{ href }" class="flex items-center gap-2 text-current">
-			<icon-chevron-right aria-hidden="true" class="size-3 group-first:hidden" />
-
-			<slot />
-		</a>
+		<slot v-else name="link">
+			<a v-bind="{ href }" class="text-current">
+				<slot />
+			</a>
+		</slot>
 	</li>
 </template>
 
