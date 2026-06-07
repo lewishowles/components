@@ -208,25 +208,3 @@ const valueText = computed(() => {
 	return `${percentageValue.value}%`;
 });
 </script>
-
-<style>
-@media (prefers-reduced-motion: no-preference) {
-	.animate-progress-indeterminate {
-		animation-name: progress-bar-indeterminate;
-		animation-duration: 6s;
-		animation-iteration-count: infinite;
-	}
-}
-
-@keyframes progress-bar-indeterminate {
-	0% {
-		inset-inline-start: 0;
-	}
-	50% {
-		inset-inline-start: 75%;
-	}
-	100% {
-		inset-inline-start: 0;
-	}
-}
-</style>

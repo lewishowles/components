@@ -29,7 +29,6 @@
 			"import": "./dist/resolver.js"
 		},
 		"./source": "./dist/source.css",
-		"./styles.css": "./dist/styles.css",
 		".": {
 			"require": "./dist/components.js",
 			"import": "./dist/components.js"
