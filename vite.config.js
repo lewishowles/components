@@ -11,6 +11,7 @@ import {
 	createComponentSource,
 	createNamedExports,
 	internalComponentsResolver,
+	publishStylesheets,
 } from "./support/plugins/index.js";
 
 export default defineConfig({
@@ -28,6 +29,7 @@ export default defineConfig({
 		tailwindcss(),
 		createComponentSource(),
 		createNamedExports(),
+		publishStylesheets(),
 		vueDevTools(),
 	],
 	resolve: {

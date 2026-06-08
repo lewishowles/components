@@ -26,22 +26,6 @@
 			scales, and it picks the right shade for light or dark mode.
 		</p>
 
-		<h2>Re-theming</h2>
-
-		<p>
-			To re-theme, set the scale variables you care about in your own
-			<code>:root</code>
-			, after the library's stylesheet has loaded. Your values win:
-		</p>
-
-		<code-block :code="overrideExample" />
-
-		<p>
-			That single line re-points everything built on
-			<code>--primary-500</code>
-			. To shift the whole brand, set the shades that your brand relies on.
-		</p>
-
 		<h2>Using the stylesheets</h2>
 
 		<p>
@@ -52,23 +36,58 @@
 
 		<code-block :code="sourceExample" />
 
+		<h2>Customisation layers</h2>
+
+		<p>When using the stylesheets, there are three levels of customisation available.</p>
+
+		<h3>Colour</h3>
+
 		<p>
-			Each of the library's stylesheets is published so that you can start from a working copy
-			rather than a blank file. Overriding tokens covers most re-theming, but to change how a
-			component itself looks, from button shapes to form fields, copy the matching stylesheet and
-			edit it.
-			<code>main.css</code>
-			is the entry point and imports the rest:
+			Set the scale variables you care about in your own
+			<code>:root</code>
+			, after the library import. Your values will override the defaults:
 		</p>
 
-		<ul>
-			<li v-for="stylesheet in stylesheets" :key="stylesheet.file">
-				<a :href="stylesheetUrl(stylesheet.file)" download>
-					<code>{{ stylesheet.file }}</code>
-				</a>
-				— {{ stylesheet.description }}
-			</li>
-		</ul>
+		<code-block :code="overrideExample" />
+
+		<p>
+			That re-points everything built on
+			<code>--primary-500</code>
+			. To shift the whole palette, override the shades your brand relies on — the colour scales
+			section below lists every variable.
+		</p>
+
+		<h3>Component classes</h3>
+
+		<p>
+			Some components expose
+			<code>*Classes</code>
+			props that are merged into their own base styles. Set them as global defaults with
+			<code>extendComponent</code>
+			and the entire app re-styles without touching CSS.
+		</p>
+
+		<h3>Fork a stylesheet</h3>
+
+		<p>
+			For deep structural changes, such as button shapes, form control sizing, or border radii, copy
+			the relevant stylesheet into your project and edit it. Import your copy instead of (or after)
+			the library's version. Each stylesheet is independently importable:
+		</p>
+
+		<dl>
+			<div v-for="stylesheet in stylesheets" :key="stylesheet.file">
+				<dt>{{ stylesheet.importPath }}</dt>
+				<dd>{{ stylesheet.description }}</dd>
+			</div>
+		</dl>
+
+		<p>
+			To copy a stylesheet into your project at the correct version, use the CLI (coming in a future
+			release):
+		</p>
+
+		<code-block :code="copyCliExample" />
 
 		<h2>Colour scales</h2>
 
@@ -347,22 +366,44 @@ const { setTitle } = useTitle();
 
 setTitle("Theming");
 
-// The library's stylesheets, published alongside the docs so the links always
-// point at the current version. main.css is the entry point and imports the
-// rest.
+// The library's shipped stylesheets — each independently importable for
+// fork-one customisation.
 const stylesheets = [
 	{
 		file: "main.css",
-		description: "The entry point. Pulls in Tailwind and imports the stylesheets below.",
+		importPath: "@lewishowles/components/styles/main",
+		description: "Baseline styles, pulling in Tailwind, all partials, and base styles.",
 	},
 	{
 		file: "theme.css",
-		description: "Colour scales and semantic tokens — the file you override to re-theme.",
+		importPath: "@lewishowles/components/styles/theme",
+		description: "Colour scales and semantic tokens.",
 	},
-	{ file: "buttons.css", description: "Button shapes and variants." },
-	{ file: "form.css", description: "Form control styling." },
-	{ file: "font.css", description: "Font faces and typography tokens." },
-	{ file: "animation.css", description: "Keyframes and animation helpers." },
+	{
+		file: "buttons.css",
+		importPath: "@lewishowles/components/styles/buttons",
+		description: "Buttons and variants.",
+	},
+	{
+		file: "form.css",
+		importPath: "@lewishowles/components/styles/form",
+		description: "Form control styling.",
+	},
+	{
+		file: "font.css",
+		importPath: "@lewishowles/components/styles/font",
+		description: "Font faces and typography tokens.",
+	},
+	{
+		file: "animation.css",
+		importPath: "@lewishowles/components/styles/animation",
+		description: "Keyframes and animation helpers.",
+	},
+	{
+		file: "components.css",
+		importPath: "@lewishowles/components/styles/components",
+		description: "Component-specific CSS that Tailwind utilities can't express.",
+	},
 ];
 
 // An example for overriding a token.
@@ -371,19 +412,11 @@ const overrideExample = `:root {
 }`;
 
 // The example code to add Components styles and source scanning.
-const sourceExample = `@import "@lewishowles/components/styles.css";`;
+const sourceExample = `@import "@lewishowles/components/styles";`;
+
+// The CLI command to copy a stylesheet for fork-one editing (coming soon).
+const copyCliExample = `npx @lewishowles/components copy buttons`;
 
 // An example of how to trigger dark mode.
 const darkModeExample = `<html class="dark">`;
-
-/**
- * Build the published URL for a stylesheet, resolved against the docs base
- * path.
- *
- * @param  {string}  file
- *     The stylesheet filename.
- */
-function stylesheetUrl(file) {
-	return `${import.meta.env.BASE_URL}css/${file}`;
-}
 </script>

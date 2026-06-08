@@ -105,7 +105,7 @@ const app = createApp(App);
 app.use(components);
 app.mount("#app");`;
 
-const sourceExample = `@import "@lewishowles/components/styles.css";`;
+const sourceExample = `@import "@lewishowles/components/styles";`;
 
 const scriptTag = "script";
 
