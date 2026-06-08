@@ -1,5 +1,10 @@
 <template>
-	<div class="flex flex-col gap-2" data-component="flash-messages" data-test="flash-messages">
+	<div
+		v-if="haveMessages"
+		class="flex flex-col gap-2"
+		data-component="flash-messages"
+		data-test="flash-messages"
+	>
 		<template v-for="message in messages" :key="message.id">
 			<slot v-bind="{ message }">
 				<alert-message v-bind="{ ...pick(message, ['type', 'showIcon', 'live', 'titleTag']) }">
@@ -20,6 +25,7 @@
 
 <script setup>
 import { computed } from "vue";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { pick } from "@lewishowles/helpers/object";
 import { useFlashMessages } from "@/composables";
 
@@ -47,4 +53,6 @@ const { getMessages } = useFlashMessages();
 
 // The messages to display.
 const messages = computed(() => getMessages(props.namespace));
+// Whether there are any messages to display.
+const haveMessages = computed(() => isNonEmptyArray(messages.value));
 </script>
