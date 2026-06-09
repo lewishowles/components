@@ -84,7 +84,6 @@ const slots = useSlots();
 // Stable IDs for linking aria attributes to their labelling elements.
 const labelId = useId();
 const descId = useId();
-
 // Whether a label slot has been provided.
 const haveLabel = computed(() => isNonEmptySlot(slots.label));
 // The size of the SVG viewbox.
