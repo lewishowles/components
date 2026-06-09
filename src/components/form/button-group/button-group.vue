@@ -4,7 +4,7 @@
 
 		<template #options="{ options, name }">
 			<slot name="options" v-bind="{ options, name }">
-				<div ref="optionsWrapperElement" class="mt-1 flex">
+				<div ref="optionsWrapperElement" class="mt-3 flex">
 					<div v-for="option in options" :key="option.id">
 						<input
 							ref="inputReferences"
