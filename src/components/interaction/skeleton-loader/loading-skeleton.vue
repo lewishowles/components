@@ -1,16 +1,16 @@
 <template>
-	<alert-message
-		v-if="!haveLabel"
-		type="error"
-		v-bind="{ live: false }"
-		data-test="loading-skeleton-no-label"
-	>
-		<template #title>&lt;loading-skeleton&gt;</template>
-
-		A `label` is required for accessibility purposes.
-	</alert-message>
-
 	<div>
+		<alert-message
+			v-if="!haveLabel"
+			type="error"
+			v-bind="{ live: false }"
+			data-test="loading-skeleton-no-label"
+		>
+			<template #title>&lt;loading-skeleton&gt;</template>
+
+			A `label` is required for accessibility purposes.
+		</alert-message>
+
 		<div class="sr-only" aria-live="polite" data-test="loading-skeleton">
 			<slot name="label" />
 		</div>
