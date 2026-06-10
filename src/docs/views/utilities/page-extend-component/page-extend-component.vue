@@ -89,24 +89,64 @@
 		<component-tab v-bind="{ id: 'tab-example', icon: 'icon-code' }">
 			<template #title>Example</template>
 
+			<h3>With auto-imports (recommended)</h3>
+
 			<p>
-				Define the wrapper once in JavaScript, then import it wherever you would use the base
-				component. It behaves exactly like the component it extends—slots, props,
-				<code>v-model</code>
-				, and events are all forwarded.
+				If your project uses
+				<code>unplugin-vue-components</code>
+				or similar auto-import tooling, the simplest approach is to create a local
+				<code>.vue</code>
+				wrapper.
+			</p>
+
+			<code-block :code="autoImportExample" />
+
+			<p>Then use it anywhere, and auto-imports will resolve it:</p>
+
+			<code-block :code="usageExample" />
+
+			<p>
+				The local wrapper takes precedence over the library component because auto-imports scan
+				local components before applying custom resolvers.
+			</p>
+
+			<h3>Without auto-imports</h3>
+
+			<p>
+				If your project doesn't use auto-imports, define the wrapper as a JavaScript module and
+				import it explicitly where needed.
 			</p>
 
 			<code-block :code="definitionExample" />
 
-			<p>Then import and use it like the component it extends:</p>
+			<p>Then import and use it:</p>
 
-			<code-block :code="usageExample" />
+			<code-block :code="manualImportExample" />
 		</component-tab>
 	</component-page>
 </template>
 
 <script setup>
-const definitionExample = `// src/components/form/form-wrapper.js
+const autoImportExample = `<!-- src/components/form/form-wrapper/form-wrapper.vue -->
+<script setup>
+import { extendComponent } from "@lewishowles/components/utilities";
+import { parseApiFieldErrors } from "@/helpers/api";
+import { FormWrapper } from "@lewishowles/components";
+
+const ExtendedComponent = extendComponent(FormWrapper, {
+	props: { fieldErrorsCallback: parseApiFieldErrors },
+});
+\x3c/script>
+
+<template>
+	<extended-component v-bind="$attrs">
+		<template v-for="(_, slot) in $slots" #[slot]="slotProps">
+			<slot :name="slot" v-bind="slotProps ?? {}" />
+		</template>
+	</extended-component>
+</template>`;
+
+const definitionExample = `// src/components/form/form-wrapper/form-wrapper.js
 import { extendComponent } from "@lewishowles/components/utilities";
 import { parseApiFieldErrors } from "@/helpers/api";
 
@@ -117,7 +157,13 @@ export default extendComponent(FormWrapper, {
 	props: { fieldErrorsCallback: parseApiFieldErrors },
 });`;
 
-const usageExample = `import FormWrapper from "@/components/form/form-wrapper";
+const usageExample = `<form-wrapper v-model="form" @submit="save">
+	<form-field name="email">Email</form-field>
+
+	<template #submit-button-label>Create account</template>
+</form-wrapper>`;
+
+const manualImportExample = `import FormWrapper from "@/components/form/form-wrapper";
 
 <form-wrapper v-model="form" @submit="save">
 	<form-field name="email">Email</form-field>
