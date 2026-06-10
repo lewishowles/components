@@ -6,7 +6,11 @@
 		"type": "git",
 		"url": "https://github.com/lewishowles/components.git"
 	},
+	"bin": {
+		"components": "./bin/cli.js"
+	},
 	"files": [
+		"bin",
 		"dist"
 	],
 	"type": "module",

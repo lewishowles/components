@@ -8,8 +8,9 @@ export default mergeConfig(
 		test: {
 			setupFiles: "./test/unit/setup.js",
 			environment: "happy-dom",
+			environmentMatchGlobs: [["bin/**", "node"]],
 			root: fileURLToPath(new URL("./", import.meta.url)),
-			include: ["src/**/*.test.js"],
+			include: ["bin/**/*.test.js", "src/**/*.test.js"],
 		},
 	}),
 );

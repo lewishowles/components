@@ -70,6 +70,12 @@
 	},
 	"overrides": [
 		{
+			"files": ["bin/**/*.js"],
+			"env": {
+				"node": true
+			}
+		},
+		{
 			"files": ["**/*.cy.js", "test/cypress/support/*.js"],
 			"rules": {
 				"cypress/no-assigning-return-values": "error",

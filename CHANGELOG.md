@@ -2,6 +2,40 @@
 
 ## 2.1.0
 
+### Stylesheets
+
+The library now ships its full stylesheets. Import `@lewishowles/components/styles` to get everything — tokens, fonts, buttons, form styles, animations, and component-specific extras:
+
+```css
+@import "@lewishowles/components/styles";
+```
+
+Each stylesheet is also importable on its own:
+
+```css
+@import "@lewishowles/components/styles/theme";
+@import "@lewishowles/components/styles/buttons";
+```
+
+Available stylesheets: `animation`, `buttons`, `components`, `font`, `form`, `main`, `theme`.
+
+### Copy CLI
+
+A `copy` command copies one or more stylesheets into your project, adding a source header to each file so future upgrades can show what changed.
+
+```
+npx @lewishowles/components copy buttons theme
+npx @lewishowles/components copy --all
+```
+
+A matching `diff` command compares your local copy against the installed version:
+
+```
+npx @lewishowles/components diff buttons
+```
+
+Run `npx @lewishowles/components copy` with no arguments to see all available sheets.
+
 ### New features
 
 - `breadcrumb-item` - A new `link` slot replaces the built-in link, useful for integrating with plugins like `vue-router`.
