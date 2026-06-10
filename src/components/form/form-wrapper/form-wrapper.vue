@@ -1,5 +1,10 @@
 <template>
-	<form novalidate data-test="form-wrapper" @submit.prevent="handleFormSubmit">
+	<form
+		novalidate
+		data-component="form-wrapper"
+		data-test="form-wrapper"
+		@submit.prevent="handleFormSubmit"
+	>
 		<div
 			v-show="haveErrorSummary"
 			ref="errorSummaryElement"
@@ -224,7 +229,7 @@ async function registerField(field) {
 	if (Object.hasOwn(formData.value, field.name)) {
 		console.error(
 			"<form-wrapper>",
-			`Duplicate field name <${field.name}> detected. This only one field with a given name will be represented in form data.`,
+			`Duplicate field name <${field.name}> detected. Only one field with a given name will be represented in form data.`,
 		);
 	}
 

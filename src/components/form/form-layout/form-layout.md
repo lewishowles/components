@@ -12,6 +12,12 @@ The default slot contains the content to wrap.
 
 `form-layout` provides no props.
 
+## Styling hooks
+
+| Attribute                       | Element | Notes                          |
+| ------------------------------- | ------- | ------------------------------ |
+| `data-component="form-wrapper"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### Basic usage

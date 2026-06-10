@@ -118,6 +118,12 @@ Allow a field to update its value in the form.
 | `name`    | `string`  | The name of the field to update. |
 | `value`   | `unknown` | The value to set.                |
 
+## Styling hooks
+
+| Attribute                       | Element | Notes                          |
+| ------------------------------- | ------- | ------------------------------ |
+| `data-component="form-wrapper"` | Root    | Scope styles to this component |
+
 ## Examples
 
 ### Basic form
