@@ -71,6 +71,8 @@ const slots = useSlots();
 // Stable IDs for linking aria attributes to their labelling elements.
 const labelId = useId();
 const descId = useId();
+// Base ID for slice keys, combined with each slice's index.
+const sliceBaseId = useId();
 // Whether a label slot has been provided.
 const haveLabel = computed(() => isNonEmptySlot(slots.label));
 // Whether a description slot has been provided for the SVG <desc> element.
@@ -115,11 +117,11 @@ const slices = computed(() => {
 
 	let cumulativePercentage = 0;
 
-	return series.value.map((entry) => {
+	return series.value.map((entry, index) => {
 		const slice = {
 			commands: getDrawCommandsForValue(entry.value),
 			rotation: cumulativePercentage * 3.6,
-			id: useId(),
+			id: `${sliceBaseId}-${index}`,
 		};
 
 		cumulativePercentage += (entry.value / total.value) * 100;

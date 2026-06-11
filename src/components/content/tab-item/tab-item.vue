@@ -50,8 +50,10 @@ const slots = useSlots();
 const active = computed(() => activeTabId?.value === tabId.value);
 // The content of the label slot. This is rendered by `tab-group` using `component`.
 const label = computed(() => slots.label);
+// Stable fallback ID, used when no `id` is provided.
+const generatedId = useId();
 // The ID of this tab, used to link the panel and the tab together.
-const tabId = computed(() => (isNonEmptyString(props.id) ? props.id : `tab-${useId()}`));
+const tabId = computed(() => (isNonEmptyString(props.id) ? props.id : `tab-${generatedId}`));
 // The ID of the panel associated with this tab.
 const panelId = computed(() => `${tabId.value}-panel`);
 
