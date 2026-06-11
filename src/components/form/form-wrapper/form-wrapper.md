@@ -33,6 +33,17 @@ An optional callback that maps a rejected submit Promise into field errors, keye
 
 Errors whose keys match a registered `form-field` are shown in the error summary and passed to the field, exactly like `fieldErrors`. Errors whose keys don't match a registered field are surfaced as general errors through the `error` slot's `errors` scoped prop. Return an empty value for errors that aren't field errors so that they re-throw and reach your own handling.
 
+### `layoutClasses`
+
+- type: `string`
+- default: `""`
+
+Additional classes passed to the inner `form-layout`.
+
+```html
+<form-wrapper layout-classes="gap-y-4">…</form-wrapper>
+```
+
 ## Slots
 
 ### `pre-form`

@@ -36,6 +36,10 @@ npx @lewishowles/components diff buttons
 
 Run `npx @lewishowles/components copy` with no arguments to see all available sheets.
 
+### `form-wrapper`
+
+- A new `layout-classes` prop allows classes to be passed down to `form-layout`.
+
 ### New features
 
 - `breadcrumb-item` - A new `link` slot replaces the built-in link, useful for integrating with plugins like `vue-router`.

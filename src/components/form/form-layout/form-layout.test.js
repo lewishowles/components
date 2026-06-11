@@ -12,4 +12,21 @@ describe("form-layout", () => {
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
 	});
+
+	describe("Computed", () => {
+		describe("rootClass", () => {
+			test("includes base layout classes by default", () => {
+				const wrapper = mount();
+
+				expect(wrapper.vm.rootClass).toContain("flex flex-col gap-y-8");
+			});
+
+			test("merges override classes, resolving Tailwind conflicts", () => {
+				const wrapper = mount({ attrs: { class: "gap-y-4" } });
+
+				expect(wrapper.vm.rootClass).toContain("gap-y-4");
+				expect(wrapper.vm.rootClass).not.toContain("gap-y-8");
+			});
+		});
+	});
 });
