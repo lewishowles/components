@@ -39,6 +39,7 @@ Run `npx @lewishowles/components copy` with no arguments to see all available sh
 ### `form-wrapper`
 
 - A new `layout-classes` prop allows classes to be passed down to `form-layout`.
+- A new `messages` slot marks a place to provide generic form success or error messages, and appears below the primary actions.
 
 ### New features
 
