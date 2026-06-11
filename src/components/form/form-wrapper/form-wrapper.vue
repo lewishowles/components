@@ -100,6 +100,7 @@ import {
 	useSlots,
 	watch,
 } from "vue";
+
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
