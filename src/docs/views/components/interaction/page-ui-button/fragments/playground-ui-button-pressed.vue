@@ -4,10 +4,10 @@
 		id="playground-ui-button-pressed"
 		v-model="textSlots"
 	>
-		<template #title>{{ snippetVariant.label }}</template>
+		<template #title>{{ example.label }}</template>
 
 		<template #introduction>
-			<p>{{ snippetVariant.description }}</p>
+			<p>{{ example.summary }}</p>
 		</template>
 
 		<ui-button v-bind="{ ...componentProps, pressed: isPressed }" @click="isPressed = !isPressed">
@@ -25,7 +25,7 @@ import { useComponentPlayground } from "@/docs/views/components/composables/use-
 // Whether the toggle button is currently pressed.
 const isPressed = ref(false);
 
-const { componentProps, snippetVariant, template, textSlots } = useComponentPlayground(
+const { componentProps, example, template, textSlots } = useComponentPlayground(
 	uiButtonMetadata,
 	"toggle",
 );

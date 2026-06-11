@@ -2,7 +2,7 @@
 export const pillBadgeMetadata = {
 	name: "pill-badge",
 	category: "messaging",
-	description: "A compact badge for statuses, labels, and small count changes.",
+	summary: "A compact badge for statuses, labels, and small count changes.",
 	props: [
 		{
 			name: "colour",
@@ -25,63 +25,33 @@ export const pillBadgeMetadata = {
 				"pink",
 				"purple",
 			],
-			description: "Colour scheme for the badge.",
+			summary: "Colour scheme for the badge.",
 		},
 		{
 			name: "iconStart",
 			type: "string",
 			default: null,
-			description: "Icon to display before the badge label.",
+			summary: "Icon to display before the badge label.",
 		},
 		{
 			name: "iconEnd",
 			type: "string",
 			default: null,
-			description: "Icon to display after the badge label.",
+			summary: "Icon to display after the badge label.",
 		},
 	],
 	slots: [
 		{
 			name: "default",
-			description: "The visible badge label.",
+			summary: "The visible badge label.",
 		},
 	],
-	snippetQuestions: [
-		{
-			name: "variant",
-			label: "Badge shape",
-			type: "select",
-			options: ["default", "icon-start", "icon-end"],
-		},
-		{
-			name: "colour",
-			label: "Colour",
-			type: "select",
-			options: [
-				"grey",
-				"danger",
-				"red",
-				"orange",
-				"warning",
-				"yellow",
-				"success",
-				"green",
-				"teal",
-				"info",
-				"blue",
-				"indigo",
-				"primary",
-				"pink",
-				"purple",
-			],
-		},
-	],
-	snippetVariants: [
+	examples: [
 		{
 			name: "default",
 			label: "Default badge",
-			description: "A text badge with a chosen colour.",
-			template: {
+			summary: "A text badge with a chosen colour.",
+			snippet: {
 				slots: {
 					default: {
 						label: "Text",
@@ -101,8 +71,8 @@ export const pillBadgeMetadata = {
 		{
 			name: "icon-start",
 			label: "Start icon",
-			description: "A badge with an icon before the label.",
-			template: {
+			summary: "A badge with an icon before the label.",
+			snippet: {
 				slots: {
 					default: {
 						label: "Text",
@@ -126,8 +96,8 @@ export const pillBadgeMetadata = {
 		{
 			name: "icon-end",
 			label: "End icon",
-			description: "A badge with an icon after the label.",
-			template: {
+			summary: "A badge with an icon after the label.",
+			snippet: {
 				slots: {
 					default: {
 						label: "Text",

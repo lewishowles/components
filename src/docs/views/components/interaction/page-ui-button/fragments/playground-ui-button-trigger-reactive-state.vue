@@ -4,10 +4,10 @@
 		id="playground-ui-button-trigger-reactive-state"
 		v-model="textSlots"
 	>
-		<template #title>{{ snippetVariant.label }}</template>
+		<template #title>{{ example.label }}</template>
 
 		<template #introduction>
-			<p>{{ snippetVariant.description }}</p>
+			<p>{{ example.summary }}</p>
 		</template>
 
 		<div class="flex flex-wrap gap-8">
@@ -32,7 +32,7 @@ import { useComponentPlayground } from "@/docs/views/components/composables/use-
 // Our reactive button.
 const buttonElement = useTemplateRef("button");
 
-const { componentProps, snippetVariant, template, textSlots } = useComponentPlayground(
+const { componentProps, example, template, textSlots } = useComponentPlayground(
 	uiButtonMetadata,
 	"trigger-reactive-state",
 );

@@ -4,10 +4,10 @@
 		id="playground-ui-button-loading-auto"
 		v-model="textSlots"
 	>
-		<template #title>{{ snippetVariant.label }}</template>
+		<template #title>{{ example.label }}</template>
 
 		<template #introduction>
-			<p>{{ snippetVariant.description }}</p>
+			<p>{{ example.summary }}</p>
 		</template>
 
 		<div class="flex items-center gap-4">
@@ -31,7 +31,7 @@ const processing = ref(false);
 // Mock a "save complete" state so that we can demonstrate a workflow to the user.
 const saveComplete = ref(false);
 
-const { componentProps, snippetVariant, template, textSlots } = useComponentPlayground(
+const { componentProps, example, template, textSlots } = useComponentPlayground(
 	uiButtonMetadata,
 	"loading-auto",
 );

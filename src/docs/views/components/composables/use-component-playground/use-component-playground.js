@@ -22,17 +22,15 @@ export function useComponentPlayground(componentMetadata, variantName) {
 		throw new Error("A component playground variant name is required.");
 	}
 
-	const snippetVariant = componentMetadata.snippetVariants.find(
-		(variant) => variant.name === variantName,
-	);
+	const example = componentMetadata.examples.find((example) => example.name === variantName);
 
-	if (!snippetVariant) {
+	if (!example) {
 		throw new Error(`Unknown ${componentMetadata.name} playground variant: ${variantName}`);
 	}
 
-	const textSlots = ref(deepCopy(snippetVariant.template.slots));
-	const props = ref(deepCopy(snippetVariant.template.props ?? {}));
-	const events = ref(deepCopy(snippetVariant.template.events ?? {}));
+	const textSlots = ref(deepCopy(example.snippet.slots));
+	const props = ref(deepCopy(example.snippet.props ?? {}));
+	const events = ref(deepCopy(example.snippet.events ?? {}));
 
 	// Props ready to pass to the live component preview.
 	const componentProps = computed(() => {
@@ -50,8 +48,8 @@ export function useComponentPlayground(componentMetadata, variantName) {
 	return {
 		componentProps,
 		events,
+		example,
 		props,
-		snippetVariant,
 		template,
 		textSlots,
 	};

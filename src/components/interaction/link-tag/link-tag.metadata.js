@@ -2,76 +2,68 @@
 export const linkTagMetadata = {
 	name: "link-tag",
 	category: "interaction",
-	description: "A link component with optional icons and external-link affordances.",
+	summary: "A link component with optional icons and external-link affordances.",
 	props: [
 		{
 			name: "href",
 			type: "string",
 			required: true,
-			description: "Destination for the link.",
+			summary: "Destination for the link.",
 		},
 		{
 			name: "external",
 			type: "boolean",
 			default: false,
-			description: "Open the link in a new tab with the appropriate rel attributes.",
+			summary: "Open the link in a new tab with the appropriate rel attributes.",
 		},
 		{
 			name: "showExternalIcon",
 			type: "boolean",
 			default: true,
-			description: "Show the external-link icon when external is true.",
+			summary: "Show the external-link icon when external is true.",
 		},
 		{
 			name: "iconStart",
 			type: "string",
 			default: null,
-			description: "Icon to display before the link label.",
+			summary: "Icon to display before the link label.",
 		},
 		{
 			name: "iconEnd",
 			type: "string",
 			default: null,
-			description: "Icon to display after the link label.",
+			summary: "Icon to display after the link label.",
 		},
 		{
 			name: "iconOnly",
 			type: "boolean",
 			default: false,
-			description: "Visually hide the label while keeping it available to screen readers.",
+			summary: "Visually hide the label while keeping it available to screen readers.",
 		},
 	],
 	slots: [
 		{
 			name: "default",
-			description: "The visible link label.",
+			summary: "The visible link label.",
 		},
 		{
 			name: "external-suffix",
-			description: "Screen-reader suffix appended to external links.",
+			summary: "Screen-reader suffix appended to external links.",
 			default: "(opens in new tab)",
 		},
 	],
 	methods: [
 		{
 			name: "triggerFocus",
-			description: "Move focus to the link.",
+			summary: "Move focus to the link.",
 		},
 	],
-	snippetQuestions: [
-		{
-			name: "variant",
-			label: "Link shape",
-			type: "select",
-			options: ["default", "external", "icon-start", "icon-end"],
-		},
-	],
-	snippetVariants: [
+	examples: [
 		{
 			name: "default",
 			label: "Default link",
-			description: "A standard internal link.",
-			template: {
+			summary: "A standard internal link.",
+			snippet: {
 				slots: {
 					default: {
 						label: "Link text",
@@ -89,8 +81,8 @@ export const linkTagMetadata = {
 		{
 			name: "external",
 			label: "External link",
-			description: "A link that opens in a new tab with accessible external-link text.",
-			template: {
+			summary: "A link that opens in a new tab with accessible external-link text.",
+			snippet: {
 				slots: {
 					default: {
 						label: "Link text",
@@ -113,8 +105,8 @@ export const linkTagMetadata = {
 		{
 			name: "icon-start",
 			label: "Start icon",
-			description: "A link with an icon before the label.",
-			template: {
+			summary: "A link with an icon before the label.",
+			snippet: {
 				slots: {
 					default: {
 						label: "Link text",
@@ -136,8 +128,8 @@ export const linkTagMetadata = {
 		{
 			name: "icon-end",
 			label: "End icon",
-			description: "A link with an icon after the label.",
-			template: {
+			summary: "A link with an icon after the label.",
+			snippet: {
 				slots: {
 					default: {
 						label: "Link text",

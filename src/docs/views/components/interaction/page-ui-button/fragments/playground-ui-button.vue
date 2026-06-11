@@ -9,7 +9,7 @@
 		<template #title>{{ variant.label }}</template>
 
 		<template #introduction>
-			<p>{{ variant.description }}</p>
+			<p>{{ variant.summary }}</p>
 		</template>
 
 		<ui-button v-bind="variant.componentProps.value">
@@ -19,17 +19,15 @@
 </template>
 
 <script setup>
+import { pick } from "@lewishowles/helpers/object";
 import { uiButtonMetadata } from "@/components/interaction/ui-button/ui-button.metadata.js";
 import { useComponentPlayground } from "@/docs/views/components/composables/use-component-playground/use-component-playground";
 
 // Metadata-backed playground variants that do not need extra local behaviour.
-const playgroundVariants = uiButtonMetadata.snippetVariants
+const playgroundVariants = uiButtonMetadata.examples
 	.filter((variant) => variant.playground)
 	.map((variant) => ({
 		...useComponentPlayground(uiButtonMetadata, variant.name),
-		description: variant.description,
-		label: variant.label,
-		name: variant.name,
-		playground: variant.playground,
+		...pick(variant, ["label", "name", "playground", "summary"]),
 	}));
 </script>

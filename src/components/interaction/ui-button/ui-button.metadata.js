@@ -2,109 +2,91 @@
 export const uiButtonMetadata = {
 	name: "ui-button",
 	category: "interaction",
-	description: "A multi-purpose button with optional icons, toggle state, and reactive loading.",
+	summary: "A multi-purpose button with optional icons, toggle state, and reactive loading.",
 	props: [
 		{
 			name: "iconStart",
 			type: "string",
 			default: null,
-			description: "Icon to display before the button label.",
+			summary: "Icon to display before the button label.",
 		},
 		{
 			name: "iconEnd",
 			type: "string",
 			default: null,
-			description: "Icon to display after the button label.",
+			summary: "Icon to display after the button label.",
 		},
 		{
 			name: "iconOnly",
 			type: "boolean",
 			default: false,
-			description: "Visually hide the label while keeping it available to screen readers.",
+			summary: "Visually hide the label while keeping it available to screen readers.",
 		},
 		{
 			name: "reactive",
 			type: "boolean",
 			default: false,
-			description: "Show a loading indicator when the button is activated.",
+			summary: "Show a loading indicator when the button is activated.",
 		},
 		{
 			name: "loadingAuto",
 			type: "boolean",
 			default: true,
-			description: "Automatically reset the loading state when a returned Promise settles.",
+			summary: "Automatically reset the loading state when a returned Promise settles.",
 		},
 		{
 			name: "pressed",
 			type: "boolean | null",
 			default: null,
-			description: "Controlled pressed state for toggle buttons.",
+			summary: "Controlled pressed state for toggle buttons.",
 		},
 		{
 			name: "disabled",
 			type: "boolean",
 			default: false,
-			description: "Mark the button unavailable while keeping it focusable.",
+			summary: "Mark the button unavailable while keeping it focusable.",
 		},
 		{
 			name: "iconClasses",
 			type: "Vue class binding",
 			default: null,
-			description: "Classes to merge onto any rendered icon.",
+			summary: "Classes to merge onto any rendered icon.",
 		},
 	],
 	slots: [
 		{
 			name: "default",
-			description: "The visible button label.",
+			summary: "The visible button label.",
 		},
 		{
 			name: "loading-label",
-			description: "Screen-reader text announced while the button is loading.",
+			summary: "Screen-reader text announced while the button is loading.",
 			default: "Loading",
 		},
 	],
 	events: [
 		{
 			name: "click",
-			description: "Emitted when the button is clicked or activated with the keyboard.",
+			summary: "Emitted when the button is clicked or activated with the keyboard.",
 		},
 	],
 	methods: [
 		{
 			name: "react",
-			description: "Show the reactive loading state.",
+			summary: "Show the reactive loading state.",
 		},
 		{
 			name: "reset",
-			description: "Reset the reactive loading state.",
+			summary: "Reset the reactive loading state.",
 		},
 	],
-	snippetQuestions: [
-		{
-			name: "icon",
-			label: "Icon",
-			type: "select",
-			options: ["none", "start", "end"],
-		},
-		{
-			name: "reactive",
-			label: "Reactive loading",
-			type: "boolean",
-		},
-		{
-			name: "pressed",
-			label: "Toggle state",
-			type: "boolean",
-		},
-	],
-	snippetVariants: [
+	examples: [
 		{
 			name: "default",
 			label: "Default button",
-			description: "A standard action button.",
+			summary: "A standard action button.",
 			playground: true,
-			template: {
+			snippet: {
 				slots: {
 					default: {
 						label: "Button label",
@@ -129,8 +111,8 @@ export const uiButtonMetadata = {
 		{
 			name: "icon-start",
 			label: "Start icon",
-			description: "A button with an icon before the label.",
-			template: {
+			summary: "A button with an icon before the label.",
+			snippet: {
 				slots: {
 					default: {
 						label: "Button label",
@@ -155,8 +137,8 @@ export const uiButtonMetadata = {
 		{
 			name: "icon-end",
 			label: "End icon",
-			description: "A button with an icon after the label.",
-			template: {
+			summary: "A button with an icon after the label.",
+			snippet: {
 				slots: {
 					default: {
 						label: "Button label",
@@ -181,9 +163,9 @@ export const uiButtonMetadata = {
 		{
 			name: "icon",
 			label: "Icon button",
-			description: "A primary button with an icon before the label.",
+			summary: "A primary button with an icon before the label.",
 			playground: true,
-			template: {
+			snippet: {
 				slots: {
 					default: {
 						label: "Button label",
@@ -213,9 +195,9 @@ export const uiButtonMetadata = {
 		{
 			name: "icon-only",
 			label: "Icon-only button",
-			description: "A primary button that shows only an icon while keeping accessible text.",
+			summary: "A primary button that shows only an icon while keeping accessible text.",
 			playground: true,
-			template: {
+			snippet: {
 				slots: {
 					default: {
 						label: "Button label",
@@ -250,9 +232,9 @@ export const uiButtonMetadata = {
 		{
 			name: "loading-auto",
 			label: "Auto-loading button",
-			description:
+			summary:
 				"A reactive button that detects a Promise returned by the click handler and resets when the Promise resolves or rejects.",
-			template: {
+			snippet: {
 				slots: {
 					default: {
 						label: "Button label",
@@ -282,9 +264,9 @@ export const uiButtonMetadata = {
 		{
 			name: "reactive",
 			label: "Reactive button",
-			description: "A button that shows loading feedback while work is in progress.",
+			summary: "A button that shows loading feedback while work is in progress.",
 			playground: true,
-			template: {
+			snippet: {
 				slots: {
 					default: {
 						label: "Button label",
@@ -314,9 +296,9 @@ export const uiButtonMetadata = {
 		{
 			name: "toggle",
 			label: "Toggle button",
-			description:
+			summary:
 				"A controlled button that exposes pressed state so assistive technologies can announce whether the action is on or off.",
-			template: {
+			snippet: {
 				slots: {
 					default: {
 						label: "Button label",
@@ -346,9 +328,9 @@ export const uiButtonMetadata = {
 		{
 			name: "full-width",
 			label: "Wide button",
-			description: "A full-width button that centres its contents.",
+			summary: "A full-width button that centres its contents.",
 			playground: true,
-			template: {
+			snippet: {
 				slots: {
 					default: {
 						label: "Button label",
@@ -383,8 +365,8 @@ export const uiButtonMetadata = {
 		{
 			name: "trigger-reactive-state",
 			label: "Triggering reactive state",
-			description: "A reactive button whose loading state is triggered from another control.",
-			template: {
+			summary: "A reactive button whose loading state is triggered from another control.",
+			snippet: {
 				slots: {
 					default: {
 						label: "Button label",
@@ -414,9 +396,9 @@ export const uiButtonMetadata = {
 		{
 			name: "disabled",
 			label: "Disabled button",
-			description: "A button that communicates an unavailable action while staying focusable.",
+			summary: "A button that communicates an unavailable action while staying focusable.",
 			playground: true,
-			template: {
+			snippet: {
 				slots: {
 					default: {
 						label: "Button label",
