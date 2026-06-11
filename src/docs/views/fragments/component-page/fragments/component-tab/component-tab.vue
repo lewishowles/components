@@ -4,7 +4,7 @@
 			<slot name="title" />
 		</template>
 
-		<div class="prose dark:prose-invert *:animate-fade-in *:delay">
+		<div class="prose dark:prose-invert *:animate-fade-in *:delay mb-4">
 			<h2><slot name="title" /></h2>
 
 			<slot name="post-title" />

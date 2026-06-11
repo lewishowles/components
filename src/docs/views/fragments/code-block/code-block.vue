@@ -1,6 +1,6 @@
 <template>
 	<div class="prose dark:prose-invert relative max-w-none">
-		<pre class="peer whitespace-pre-wrap"><code><slot>{{ textToDisplay }}</slot></code></pre>
+		<pre class="peer mb-0 whitespace-pre-wrap"><code><slot>{{ textToDisplay }}</slot></code></pre>
 
 		<copy-content
 			v-bind="{ content: textToDisplay }"

@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col gap-8" v-bind="{ id }">
+	<div class="flex flex-col gap-8 py-8" v-bind="{ id }">
 		<div
 			v-if="haveTitle || haveIntroduction"
 			class="prose dark:prose-invert flex flex-col gap-3 [&_h3]:m-0 [&_p]:m-0"
