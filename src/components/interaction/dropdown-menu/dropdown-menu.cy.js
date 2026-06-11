@@ -1,13 +1,15 @@
 import DropdownMenu from "./dropdown-menu.vue";
+import DropdownMenuButton from "@/components/interaction/dropdown-menu-button/dropdown-menu-button.vue";
 import { createMount } from "@cypress/support/mount";
+import { h } from "vue";
 
 const defaultSlots = {
 	summary: "Actions",
-	default: `
-		<dropdown-menu-button type="button">Edit</dropdown-menu-button>
-		<dropdown-menu-button type="button">Duplicate</dropdown-menu-button>
-		<dropdown-menu-button type="button">Delete</dropdown-menu-button>
-	`,
+	default: () => [
+		h(DropdownMenuButton, { type: "button" }, () => "Edit"),
+		h(DropdownMenuButton, { type: "button" }, () => "Duplicate"),
+		h(DropdownMenuButton, { type: "button" }, () => "Delete"),
+	],
 };
 
 const mount = createMount(DropdownMenu, { slots: defaultSlots });

@@ -1,5 +1,6 @@
 import NotificationHandler from "./notification-handler.vue";
 import { createMount } from "@cypress/support/mount";
+import { useNotifications } from "@/composables/use-notifications/use-notifications.js";
 
 const mount = createMount(NotificationHandler, { props: { align: "start" } });
 
@@ -7,6 +8,10 @@ const notificationMessage =
 	"Mollit esse mollit aute id adipisicing. Do reprehenderit consequat non amet eu aliqua consequat do labore cupidatat sit sint elit pariatur. Mollit reprehenderit non et excepteur. Excepteur aliqua culpa nulla sint ad.";
 
 describe("notification-handler", () => {
+	beforeEach(() => {
+		useNotifications().clear();
+	});
+
 	it("A component is rendered", () => {
 		mount();
 
@@ -25,7 +30,7 @@ describe("notification-handler", () => {
 
 	describe("Display", () => {
 		it('"Read" notifications can be displayed', () => {
-			mount({ notifications: generateNotifications(5, { read: true }) });
+			mountWithNotifications(generateNotifications(5, { read: true }));
 
 			cy.getByData("notification-handler-badge").should("not.exist");
 
@@ -35,7 +40,7 @@ describe("notification-handler", () => {
 		});
 
 		it('"Unread" notifications can be displayed', () => {
-			mount({ notifications: generateNotifications(5, { read: false }) });
+			mountWithNotifications(generateNotifications(5, { read: false }));
 
 			cy.getByData("notification-handler-badge").shouldBeVisible().shouldHaveText("5");
 
@@ -45,12 +50,10 @@ describe("notification-handler", () => {
 		});
 
 		it("Mixed notifications can be displayed", () => {
-			mount({
-				notifications: [
-					...generateNotifications(3, { read: false }),
-					...generateNotifications(2, { read: true }),
-				],
-			});
+			mountWithNotifications([
+				...generateNotifications(3, { read: false }),
+				...generateNotifications(2, { read: true }),
+			]);
 
 			cy.getByData("notification-handler-badge").shouldBeVisible().shouldHaveText("3");
 
@@ -63,8 +66,7 @@ describe("notification-handler", () => {
 		describe("Slots", () => {
 			describe("`notification-read-template`", () => {
 				it("The `notification-read-template` slot can be implemented", () => {
-					mount({
-						props: { notifications: generateNotifications(1, { read: true }) },
+					mountWithNotifications(generateNotifications(1, { read: true }), {
 						slots: { "notification-read-template": "Read slot {{ params.notification.message }}" },
 					});
 
@@ -78,8 +80,7 @@ describe("notification-handler", () => {
 
 			describe("`notification-info-template`", () => {
 				it("The `notification-info-template` slot can be implemented", () => {
-					mount({
-						props: { notifications: generateNotifications(1, { read: false }) },
+					mountWithNotifications(generateNotifications(1, { read: false }), {
 						slots: { "notification-info-template": "Info slot {{ params.notification.message }}" },
 					});
 
@@ -91,14 +92,11 @@ describe("notification-handler", () => {
 				});
 
 				it("The user can utilise the `markNotificationRead` functionality provided by the slot", () => {
-					mount({
-						props: {
-							notifications: [
-								{ id: "notification-1", message: "Notification sample", read: false },
-							],
-						},
-						slots: {
-							"notification-info-template": `
+					mountWithNotifications(
+						[{ id: "notification-1", message: "Notification sample", read: false }],
+						{
+							slots: {
+								"notification-info-template": `
 								<template #default="{ notification, markNotificationRead }">
 									<span>{{ notification.message }}</span>
 									<button type="button" data-test="notification-info-custom-mark-read" @click="markNotificationRead">
@@ -106,24 +104,23 @@ describe("notification-handler", () => {
 									</button>
 								</template>
 							`,
+							},
 						},
-					});
+					);
 
 					openNotificationPanel();
 
 					cy.getByData("notification-info-custom-mark-read").shouldBeVisible().click();
 
-					cy.get("@vue").then((wrapper) => {
-						expect(wrapper.emitted("notifications:read")).to.have.length(1);
-						expect(wrapper.emitted("notifications:read")[0][0][0]).to.equal("notification-1");
+					cy.then(() => {
+						expect(getNotificationById("notification-1").read).to.equal(true);
 					});
 				});
 			});
 
 			describe("`notification-warning-template`", () => {
 				it("The `notification-warning-template` slot can be implemented", () => {
-					mount({
-						props: { notifications: generateNotifications(1, { type: "warning" }) },
+					mountWithNotifications(generateNotifications(1, { type: "warning" }), {
 						slots: {
 							"notification-warning-template": "Info slot {{ params.notification.message }}",
 						},
@@ -137,14 +134,11 @@ describe("notification-handler", () => {
 				});
 
 				it("The user can utilise the `markNotificationRead` functionality provided by the slot", () => {
-					mount({
-						props: {
-							notifications: [
-								{ id: "notification-1", message: "Notification sample", type: "warning" },
-							],
-						},
-						slots: {
-							"notification-warning-template": `
+					mountWithNotifications(
+						[{ id: "notification-1", message: "Notification sample", type: "warning" }],
+						{
+							slots: {
+								"notification-warning-template": `
 								<template #default="{ notification, markNotificationRead }">
 									<span>{{ notification.message }}</span>
 									<button type="button" data-test="notification-warning-custom-mark-read" @click="markNotificationRead">
@@ -152,24 +146,23 @@ describe("notification-handler", () => {
 									</button>
 								</template>
 							`,
+							},
 						},
-					});
+					);
 
 					openNotificationPanel();
 
 					cy.getByData("notification-warning-custom-mark-read").shouldBeVisible().click();
 
-					cy.get("@vue").then((wrapper) => {
-						expect(wrapper.emitted("notifications:read")).to.have.length(1);
-						expect(wrapper.emitted("notifications:read")[0][0][0]).to.equal("notification-1");
+					cy.then(() => {
+						expect(getNotificationById("notification-1").read).to.equal(true);
 					});
 				});
 			});
 
 			describe("`notification-danger-template`", () => {
 				it("The `notification-danger-template` slot can be implemented", () => {
-					mount({
-						props: { notifications: generateNotifications(1, { type: "danger" }) },
+					mountWithNotifications(generateNotifications(1, { type: "danger" }), {
 						slots: {
 							"notification-danger-template": "Info slot {{ params.notification.message }}",
 						},
@@ -183,14 +176,11 @@ describe("notification-handler", () => {
 				});
 
 				it("The user can utilise the `markNotificationRead` functionality provided by the slot", () => {
-					mount({
-						props: {
-							notifications: [
-								{ id: "notification-1", message: "Notification sample", type: "danger" },
-							],
-						},
-						slots: {
-							"notification-danger-template": `
+					mountWithNotifications(
+						[{ id: "notification-1", message: "Notification sample", type: "danger" }],
+						{
+							slots: {
+								"notification-danger-template": `
 								<template #default="{ notification, markNotificationRead }">
 									<span>{{ notification.message }}</span>
 									<button type="button" data-test="notification-danger-custom-mark-read" @click="markNotificationRead">
@@ -198,24 +188,23 @@ describe("notification-handler", () => {
 									</button>
 								</template>
 							`,
+							},
 						},
-					});
+					);
 
 					openNotificationPanel();
 
 					cy.getByData("notification-danger-custom-mark-read").shouldBeVisible().click();
 
-					cy.get("@vue").then((wrapper) => {
-						expect(wrapper.emitted("notifications:read")).to.have.length(1);
-						expect(wrapper.emitted("notifications:read")[0][0][0]).to.equal("notification-1");
+					cy.then(() => {
+						expect(getNotificationById("notification-1").read).to.equal(true);
 					});
 				});
 			});
 
 			describe("`notification-pinned-template`", () => {
 				it("The `notification-pinned-template` slot can be implemented", () => {
-					mount({
-						props: { notifications: generateNotifications(1, { pinned: true }) },
+					mountWithNotifications(generateNotifications(1, { pinned: true }), {
 						slots: {
 							"notification-pinned-template": "Info slot {{ params.notification.message }}",
 						},
@@ -230,8 +219,7 @@ describe("notification-handler", () => {
 			});
 
 			it("The `view-more-label` slot can be implemented", () => {
-				mount({
-					props: { notifications: generateNotifications(1, { url: "https://example.com" }) },
+				mountWithNotifications(generateNotifications(1, { url: "https://example.com" }), {
 					slots: { "view-more-label": "View something" },
 				});
 
@@ -241,8 +229,7 @@ describe("notification-handler", () => {
 			});
 
 			it("The `notification-actions` slot can be implemented", () => {
-				mount({
-					props: { notifications: generateNotifications(1) },
+				mountWithNotifications(generateNotifications(1), {
 					slots: { "notification-actions": "Additional actions" },
 				});
 
@@ -254,10 +241,11 @@ describe("notification-handler", () => {
 
 		describe("Toolbar", () => {
 			it("The global toolbar is not visible if the user cannot reload notifications or mark them all read", () => {
-				mount({
-					notifications: generateNotifications(1),
-					allowMarkAllRead: false,
-					allowReload: false,
+				mountWithNotifications(generateNotifications(1), {
+					props: {
+						allowMarkAllRead: false,
+						allowReload: false,
+					},
 				});
 
 				cy.getByData("notification-handler-toolbar").should("not.exist");
@@ -267,30 +255,25 @@ describe("notification-handler", () => {
 
 	describe("Interaction", () => {
 		it("A notification can be marked as read", () => {
-			mount({
-				props: { notifications: [{ id: "notification-1", message: "Notification sample" }] },
-			});
+			mountWithNotifications([{ id: "notification-1", message: "Notification sample" }]);
 
 			openNotificationPanel();
 
 			cy.getByData("notification-read").should("not.exist");
 			cy.getByData("notification-info-mark-read").shouldBeVisible().click();
 
-			cy.get("@vue").then((wrapper) => {
-				expect(wrapper.emitted("notifications:read")).to.have.length(1);
-				expect(wrapper.emitted("notifications:read")[0][0][0]).to.equal("notification-1");
-			});
-
 			cy.getByData("notification-info").should("not.exist");
 			cy.getByData("notification-read").shouldBeVisible();
+
+			cy.then(() => {
+				expect(getNotificationById("notification-1").read).to.equal(true);
+			});
 		});
 
 		it("A read notification cannot be marked as read", () => {
-			mount({
-				props: {
-					notifications: [{ id: "notification-1", message: "Notification sample", read: true }],
-				},
-			});
+			mountWithNotifications([
+				{ id: "notification-1", message: "Notification sample", read: true },
+			]);
 
 			openNotificationPanel();
 
@@ -301,7 +284,7 @@ describe("notification-handler", () => {
 
 		describe("Reload notifications", () => {
 			it("A reload request can be sent", () => {
-				mount({ notifications: generateNotifications(5) });
+				mountWithNotifications(generateNotifications(5));
 
 				openNotificationPanel();
 
@@ -313,7 +296,9 @@ describe("notification-handler", () => {
 			});
 
 			it("`allowReload` controls the visibility of the reload button", () => {
-				mount({ notifications: generateNotifications(5), allowReload: false });
+				mountWithNotifications(generateNotifications(5), {
+					props: { allowReload: false },
+				});
 
 				cy.getByData("notification-handler-reload").should("not.exist");
 			});
@@ -321,15 +306,11 @@ describe("notification-handler", () => {
 
 		describe("Mark all read", () => {
 			it("All notifications can be marked as read", () => {
-				mount({
-					props: {
-						notifications: [
-							{ id: "notification-1", message: "Notification sample" },
-							{ id: "notification-2", message: "Notification sample" },
-							{ id: "notification-3", message: "Notification sample" },
-						],
-					},
-				});
+				mountWithNotifications([
+					{ id: "notification-1", message: "Notification sample" },
+					{ id: "notification-2", message: "Notification sample" },
+					{ id: "notification-3", message: "Notification sample" },
+				]);
 
 				openNotificationPanel();
 
@@ -338,36 +319,62 @@ describe("notification-handler", () => {
 
 				cy.getByData("notification-handler-mark-all-read").click();
 
-				cy.get("@vue").then((wrapper) => {
-					expect(wrapper.emitted("notifications:read")).to.have.length(1);
-					expect(wrapper.emitted("notifications:read")[0][0]).to.deep.equal([
-						"notification-1",
-						"notification-2",
-						"notification-3",
-					]);
-				});
-
 				cy.getByData("notification-info").should("not.exist");
 				cy.getByData("notification-read").shouldHaveCount(3);
+
+				cy.then(() => {
+					expect(useNotifications().notifications.value).to.deep.include.members([
+						{ id: "notification-1", message: "Notification sample", read: true },
+						{ id: "notification-2", message: "Notification sample", read: true },
+						{ id: "notification-3", message: "Notification sample", read: true },
+					]);
+				});
 			});
 
 			it("`allowMarkAllRead` controls the visibility of the mark all notifications read button", () => {
-				mount({
-					notifications: generateNotifications(5, { read: false }),
-					allowMarkAllRead: false,
+				mountWithNotifications(generateNotifications(5, { read: false }), {
+					props: { allowMarkAllRead: false },
 				});
 
 				cy.getByData("notification-handler-mark-all-read").should("not.exist");
 			});
 
 			it("Mark all ready is only available if there are unread notifications", () => {
-				mount({ notifications: generateNotifications(5, { read: true }) });
+				mountWithNotifications(generateNotifications(5, { read: true }));
 
 				cy.getByData("notification-handler-mark-all-read").should("not.exist");
 			});
 		});
 	});
 });
+
+/**
+ * Mount the notification handler with the notification registry seeded.
+ *
+ * @param  {object[]}  notifications
+ *     The notifications to add to the registry before mounting.
+ * @param  {object}  options
+ *     Additional mount options.
+ */
+function mountWithNotifications(notifications = [], options = {}) {
+	const registry = useNotifications();
+
+	notifications.forEach((notification) => {
+		registry.add(notification);
+	});
+
+	mount(options);
+}
+
+/**
+ * Get a notification from the registry by ID.
+ *
+ * @param  {string}  id
+ *     The ID of the notification to find.
+ */
+function getNotificationById(id) {
+	return useNotifications().notifications.value.find((notification) => notification.id === id);
+}
 
 /**
  * Generate a given number of notifications at random, with the provided

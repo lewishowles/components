@@ -1,5 +1,7 @@
 import ContentCard from "./content-card.vue";
+import IconCctvCamera from "@/components/icon/icon-cctv-camera/icon-cctv-camera.vue";
 import { createMount } from "@cypress/support/mount";
+import { h } from "vue";
 
 const defaultOptions = {
 	slots: {
@@ -23,7 +25,7 @@ describe("content-card", () => {
 			slots: {
 				default: "Card content",
 				"header-additional": "Card actions",
-				icon: '<icon-cctv-camera data-test="card-example-icon" />',
+				icon: () => h(IconCctvCamera, { "data-test": "card-example-icon" }),
 				title: "Card title",
 			},
 		});
