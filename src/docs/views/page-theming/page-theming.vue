@@ -156,7 +156,7 @@
 		<h2>Semantic tokens</h2>
 
 		<p>
-			Each intent (primary, danger, warning, success, info) gives you four roles. Reach for the
+			Each intent (primary, danger, warning, success, info) gives you five roles. Reach for the
 			utility rather than a raw shade wherever you can, because the utility keeps light and dark
 			mode correct without any extra work from you.
 		</p>
@@ -254,8 +254,9 @@
 		<h2>Neutral tokens</h2>
 
 		<p>
-			Surfaces, body text, and borders that aren't tied to an intent have their own tokens. These
-			carry the bulk of a page's appearance:
+			Surfaces, body text, and borders that aren't tied to an intent have their own colour tokens.
+			These carry the bulk of a page's appearance and are available anywhere Tailwind expects a
+			colour, including backgrounds, text, borders, dividers, rings, and outlines:
 		</p>
 
 		<table>
@@ -305,14 +306,22 @@
 					<td><code>white/60%</code></td>
 				</tr>
 				<tr>
-					<td><code>border-border</code></td>
-					<td>Default border</td>
+					<td>
+						<code>border-border</code>
+						,
+						<code>divide-border</code>
+					</td>
+					<td>Default border and divider colour</td>
 					<td><code>grey-200</code></td>
 					<td><code>white/20%</code></td>
 				</tr>
 				<tr>
-					<td><code>border-border-strong</code></td>
-					<td>A stronger border</td>
+					<td>
+						<code>border-border-strong</code>
+						,
+						<code>divide-border-strong</code>
+					</td>
+					<td>A stronger border and divider colour</td>
 					<td><code>grey-300</code></td>
 					<td><code>white/30%</code></td>
 				</tr>
@@ -326,7 +335,8 @@
 		<p>
 			<code>bg-primary-500</code>
 			is one specific step on the scale. The scale steps are available wherever Tailwind expects a
-			colour: backgrounds, text, borders, and rings. Reach for these when you need an exact shade.
+			colour: backgrounds, text, borders, dividers, rings, and outlines. Reach for these when you
+			need an exact shade.
 		</p>
 
 		<p>

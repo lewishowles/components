@@ -177,6 +177,17 @@
 	--color-info-800: var(--info-800);
 	--color-info-900: var(--info-900);
 	--color-info-950: var(--info-950);
+
+	--color-surface: var(--surface);
+	--color-surface-subtle: var(--surface-subtle);
+	--color-surface-sunken: var(--surface-sunken);
+
+	--color-content: var(--content);
+	--color-content-strong: var(--content-strong);
+	--color-content-muted: var(--content-muted);
+
+	--color-border: var(--border);
+	--color-border-strong: var(--border-strong);
 }
 
 /*
@@ -394,43 +405,4 @@
 
 @utility text-info-foreground {
 	color: var(--info-foreground);
-}
-
-/* Neutral surfaces */
-@utility bg-surface {
-	background-color: var(--surface);
-}
-
-@utility bg-surface-subtle {
-	background-color: var(--surface-subtle);
-}
-
-@utility bg-surface-sunken {
-	background-color: var(--surface-sunken);
-}
-
-/* Neutral text */
-@utility text-content {
-	color: var(--content);
-}
-
-@utility text-content-strong {
-	color: var(--content-strong);
-}
-
-@utility text-content-muted {
-	color: var(--content-muted);
-}
-
-/* Neutral borders */
-@utility border-border {
-	border-color: var(--border);
-}
-
-@utility border-border-strong {
-	border-color: var(--border-strong);
-}
-
-@utility divide-border {
-	border-color: var(--border);
 }
