@@ -58,30 +58,42 @@
 				</code-block>
 			</component-prop>
 
-			<component-prop id="prop-field-errors-callback">
-				<template #name>fieldErrorsCallback</template>
+			<component-prop id="prop-submit-errors-callback">
+				<template #name>submitErrorsCallback</template>
 
 				<template #type>Function</template>
 
 				<template #default-value>null</template>
 
 				<p>
-					An optional callback that maps a rejected submit Promise into field errors, keyed by field
-					name, where each value is a single message or a list of messages.
+					An optional callback that maps a rejected submit Promise into an errors object. The
+					callback only runs when the submit handler returns a rejecting Promise. If the handler
+					catches the error itself, the callback will not run.
 				</p>
 
 				<p>
-					Errors whose keys match a registered
+					Keys matching registered
 					<code>form-field</code>
-					are shown in the error summary and passed to the field, exactly like
+					names are shown in the error summary and passed to the field, exactly like
 					<code>fieldErrors</code>
-					. Errors whose keys don't match a registered field are surfaced as general errors through
-					the
-					<code>error</code>
-					slot's
-					<code>errors</code>
-					scoped prop. Return an empty value for errors that aren't field errors so that they
-					re-throw and reach your own handling.
+					. Keys that don't match a registered field are treated as general submit errors and
+					rendered near the submit button using the
+					<code>submit-errors</code>
+					slot. Return an empty value for errors the form should not handle.
+				</p>
+			</component-prop>
+
+			<component-prop id="prop-layout-classes">
+				<template #name>layoutClasses</template>
+
+				<template #type>String</template>
+
+				<template #default-value>""</template>
+
+				<p>
+					Additional classes passed to the inner
+					<code>form-layout</code>
+					.
 				</p>
 			</component-prop>
 		</component-props>
@@ -161,12 +173,16 @@
 					slot.
 				</p>
 			</component-slot>
-			<component-slot id="slot-error">
-				<template #name>error</template>
+			<component-slot id="slot-submit-errors">
+				<template #name>submit-errors</template>
 
 				<p>
-					A general error message to display to the user by the form's actions, useful for things
-					like explaining an error message received after an API call failure.
+					Overrides the default general error display near the form's actions. If not provided, a
+					single error is rendered as a
+					<code>&lt;p&gt;</code>
+					and multiple errors as a
+					<code>&lt;ul&gt;</code>
+					.
 				</p>
 
 				<table>
@@ -183,13 +199,23 @@
 							<td><code>string[]</code></td>
 							<td>
 								General errors produced by
-								<code>fieldErrorsCallback</code>
+								<code>submitErrorsCallback</code>
 								whose keys don't match a registered field.
 							</td>
 						</tr>
 					</tbody>
 				</table>
 			</component-slot>
+
+			<component-slot id="slot-messages">
+				<template #name>messages</template>
+
+				<p>
+					A placement slot for general form feedback, such as success messages, flash messages, or
+					anything that belongs near the submit button but isn't tied to a specific error state.
+				</p>
+			</component-slot>
+
 			<component-slot id="slot-error-summary-title">
 				<template #name>error-summary-title</template>
 
