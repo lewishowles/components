@@ -294,12 +294,12 @@ watch(
 	{ immediate: true },
 );
 
-// When the number of items changes, assume we're looking at a new view, and
-// reset the current page.
+// Clamp the current page when either the item count or items-per-page changes,
+// so we never display an out-of-range page.
 watch(
-	() => props.count,
+	() => [props.count, props.itemsPerPage],
 	() => {
-		currentPage.value = 1;
+		currentPage.value = Math.min(currentPage.value, pageCount.value);
 	},
 );
 

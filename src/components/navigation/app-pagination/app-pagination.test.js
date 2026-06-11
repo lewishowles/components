@@ -534,7 +534,7 @@ describe("app-pagination", () => {
 			expect(wrapper.emitted("update:page")[1][0]).toBe(5);
 		});
 
-		test("should reset the current page when the number of pages changes", async () => {
+		test("should clamp the current page when count reduces the page range", async () => {
 			const wrapper = mount();
 			const vm = wrapper.vm;
 
@@ -542,7 +542,29 @@ describe("app-pagination", () => {
 
 			await wrapper.setProps({ count: 50 });
 
-			expect(vm.currentPage).toBe(1);
+			expect(vm.currentPage).toBe(5);
+		});
+
+		test("should not change the current page when it is still in range after a count change", async () => {
+			const wrapper = mount();
+			const vm = wrapper.vm;
+
+			vm.currentPage = 3;
+
+			await wrapper.setProps({ count: 50 });
+
+			expect(vm.currentPage).toBe(3);
+		});
+
+		test("should clamp the current page when itemsPerPage reduces the page range", async () => {
+			const wrapper = mount();
+			const vm = wrapper.vm;
+
+			vm.currentPage = 10;
+
+			await wrapper.setProps({ itemsPerPage: 25 });
+
+			expect(vm.currentPage).toBe(4);
 		});
 	});
 });
