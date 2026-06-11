@@ -22,6 +22,11 @@ describe("pill-badge", () => {
 		{ name: "indigo", classes: ["bg-indigo-50"] },
 		{ name: "purple", classes: ["bg-purple-50"] },
 		{ name: "pink", classes: ["bg-pink-50"] },
+		{ name: "primary", classes: ["bg-primary-subtle"] },
+		{ name: "danger", classes: ["bg-danger-subtle"] },
+		{ name: "warning", classes: ["bg-warning-subtle"] },
+		{ name: "success", classes: ["bg-success-subtle"] },
+		{ name: "info", classes: ["bg-info-subtle"] },
 	];
 
 	colors.forEach((colour) => {
