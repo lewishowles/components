@@ -1,7 +1,7 @@
 <template>
 	<div class="relative py-4 ps-8 pe-12" :data-test="dataTest">
 		<div
-			class="absolute inset-y-0 start-0 w-1 rounded-full"
+			class="absolute inset-y-0 inset-s-0 w-1 rounded-full"
 			:class="stripeClasses"
 			:data-test="`${dataTest}-stripe`"
 		/>

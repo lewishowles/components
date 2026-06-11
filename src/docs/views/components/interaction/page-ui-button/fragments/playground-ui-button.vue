@@ -1,19 +1,35 @@
 <template>
-	<component-playground v-bind="{ copy: template }" id="playground-ui-button" v-model="textSlots">
-		<template #title>Simple button</template>
+	<component-playground
+		v-for="variant in playgroundVariants"
+		v-bind="{ copy: variant.template.value }"
+		:id="`playground-ui-button-${variant.name}`"
+		:key="variant.name"
+		v-model="variant.textSlots.value"
+	>
+		<template #title>{{ variant.label }}</template>
 
 		<template #introduction>
-			<p>A simple UI button</p>
+			<p>{{ variant.description }}</p>
 		</template>
 
-		<ui-button v-bind="componentProps">
-			{{ textSlots.default?.value }}
+		<ui-button v-bind="variant.componentProps.value">
+			{{ variant.textSlots.value.default?.value }}
 		</ui-button>
 	</component-playground>
 </template>
 
 <script setup>
-import { useUiButtonPlayground } from "@/docs/views/components/interaction/page-ui-button/composables/use-ui-button-playground";
+import { uiButtonMetadata } from "@/components/interaction/ui-button/ui-button.metadata.js";
+import { useComponentPlayground } from "@/docs/views/components/composables/use-component-playground/use-component-playground";
 
-const { componentProps, template, textSlots } = useUiButtonPlayground("default");
+// Metadata-backed playground variants that do not need extra local behaviour.
+const playgroundVariants = uiButtonMetadata.snippetVariants
+	.filter((variant) => variant.playground)
+	.map((variant) => ({
+		...useComponentPlayground(uiButtonMetadata, variant.name),
+		description: variant.description,
+		label: variant.label,
+		name: variant.name,
+		playground: variant.playground,
+	}));
 </script>

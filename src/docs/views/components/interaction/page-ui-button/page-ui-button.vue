@@ -26,7 +26,7 @@
 					<code>&lt;component :is=&quot;...&quot;&gt;</code>
 					, allowing the button to use icons it doesn't explicitly import. To be used in this way,
 					the icon must be globally registered. You can find
-					<router-link v-bind="{ to: 'icons' }">
+					<router-link v-bind="{ to: '/icons' }">
 						the list of available icons in this project
 					</router-link>
 					, or you can use one that is globally registered in your project.
@@ -57,7 +57,7 @@
 					<code>&lt;component :is=&quot;...&quot;&gt;</code>
 					, allowing the button to use icons it doesn't explicitly import. To be used in this way,
 					the icon must be globally registered. You can find
-					<router-link v-bind="{ to: 'icons' }">
+					<router-link v-bind="{ to: '/icons' }">
 						the list of available icons in this project
 					</router-link>
 					, or you can use one that is globally registered in your project.
@@ -291,26 +291,16 @@
 
 		<component-playgrounds>
 			<playground-ui-button />
-			<playground-ui-button-icon />
-			<playground-ui-button-icon-only />
-			<playground-ui-button-reactive />
 			<playground-ui-button-loading-auto />
 			<playground-ui-button-trigger-reactive-state />
 			<playground-ui-button-pressed />
-			<playground-ui-button-full-width />
-			<playground-ui-button-disabled />
 		</component-playgrounds>
 	</component-page>
 </template>
 
 <script setup>
 import PlaygroundUiButton from "./fragments/playground-ui-button.vue";
-import PlaygroundUiButtonDisabled from "./fragments/playground-ui-button-disabled.vue";
-import PlaygroundUiButtonFullWidth from "./fragments/playground-ui-button-full-width.vue";
 import PlaygroundUiButtonLoadingAuto from "./fragments/playground-ui-button-loading-auto.vue";
 import PlaygroundUiButtonPressed from "./fragments/playground-ui-button-pressed.vue";
-import PlaygroundUiButtonIcon from "./fragments/playground-ui-button-icon.vue";
-import PlaygroundUiButtonIconOnly from "./fragments/playground-ui-button-icon-only.vue";
-import PlaygroundUiButtonReactive from "./fragments/playground-ui-button-reactive.vue";
 import PlaygroundUiButtonTriggerReactiveState from "./fragments/playground-ui-button-trigger-reactive-state.vue";
 </script>

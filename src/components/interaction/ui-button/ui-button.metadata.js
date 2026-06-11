@@ -103,6 +103,7 @@ export const uiButtonMetadata = {
 			name: "default",
 			label: "Default button",
 			description: "A standard action button.",
+			playground: true,
 			template: {
 				slots: {
 					default: {
@@ -181,6 +182,7 @@ export const uiButtonMetadata = {
 			name: "icon",
 			label: "Icon button",
 			description: "A primary button with an icon before the label.",
+			playground: true,
 			template: {
 				slots: {
 					default: {
@@ -212,6 +214,7 @@ export const uiButtonMetadata = {
 			name: "icon-only",
 			label: "Icon-only button",
 			description: "A primary button that shows only an icon while keeping accessible text.",
+			playground: true,
 			template: {
 				slots: {
 					default: {
@@ -247,7 +250,8 @@ export const uiButtonMetadata = {
 		{
 			name: "loading-auto",
 			label: "Auto-loading button",
-			description: "A reactive button that follows a returned Promise.",
+			description:
+				"A reactive button that detects a Promise returned by the click handler and resets when the Promise resolves or rejects.",
 			template: {
 				slots: {
 					default: {
@@ -279,6 +283,7 @@ export const uiButtonMetadata = {
 			name: "reactive",
 			label: "Reactive button",
 			description: "A button that shows loading feedback while work is in progress.",
+			playground: true,
 			template: {
 				slots: {
 					default: {
@@ -309,7 +314,8 @@ export const uiButtonMetadata = {
 		{
 			name: "toggle",
 			label: "Toggle button",
-			description: "A controlled button that exposes pressed state.",
+			description:
+				"A controlled button that exposes pressed state so assistive technologies can announce whether the action is on or off.",
 			template: {
 				slots: {
 					default: {
@@ -341,6 +347,7 @@ export const uiButtonMetadata = {
 			name: "full-width",
 			label: "Wide button",
 			description: "A full-width button that centres its contents.",
+			playground: true,
 			template: {
 				slots: {
 					default: {
@@ -408,6 +415,7 @@ export const uiButtonMetadata = {
 			name: "disabled",
 			label: "Disabled button",
 			description: "A button that communicates an unavailable action while staying focusable.",
+			playground: true,
 			template: {
 				slots: {
 					default: {

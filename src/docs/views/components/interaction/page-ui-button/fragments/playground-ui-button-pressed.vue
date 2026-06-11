@@ -4,17 +4,10 @@
 		id="playground-ui-button-pressed"
 		v-model="textSlots"
 	>
-		<template #title>Toggle button</template>
+		<template #title>{{ snippetVariant.label }}</template>
 
 		<template #introduction>
-			<p>
-				Toggle buttons have two stable states — pressed and unpressed. The
-				<code>pressed</code>
-				prop adds
-				<code>aria-pressed</code>
-				so screen readers announce the current state without needing a label change. Click the
-				button below to toggle it.
-			</p>
+			<p>{{ snippetVariant.description }}</p>
 		</template>
 
 		<ui-button v-bind="{ ...componentProps, pressed: isPressed }" @click="isPressed = !isPressed">
@@ -25,10 +18,15 @@
 
 <script setup>
 import { ref } from "vue";
-import { useUiButtonPlayground } from "@/docs/views/components/interaction/page-ui-button/composables/use-ui-button-playground";
+import { uiButtonMetadata } from "@/components/interaction/ui-button/ui-button.metadata.js";
+
+import { useComponentPlayground } from "@/docs/views/components/composables/use-component-playground/use-component-playground";
 
 // Whether the toggle button is currently pressed.
 const isPressed = ref(false);
 
-const { componentProps, template, textSlots } = useUiButtonPlayground("toggle");
+const { componentProps, snippetVariant, template, textSlots } = useComponentPlayground(
+	uiButtonMetadata,
+	"toggle",
+);
 </script>

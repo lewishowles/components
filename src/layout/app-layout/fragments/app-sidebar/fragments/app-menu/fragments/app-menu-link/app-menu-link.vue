@@ -2,7 +2,7 @@
 	<li :class="{ relative: isActiveRoute }">
 		<div
 			v-if="isActiveRoute"
-			class="absolute inset-y-0 start-0 -ms-8 w-1 rounded bg-purple-800 dark:bg-purple-300"
+			class="absolute inset-y-0 inset-s-0 -ms-8 w-1 rounded bg-purple-800 dark:bg-purple-300"
 		/>
 
 		<router-link

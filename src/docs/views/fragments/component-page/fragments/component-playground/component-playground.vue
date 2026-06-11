@@ -1,6 +1,9 @@
 <template>
 	<div class="flex flex-col gap-8" v-bind="{ id }">
-		<div v-if="haveTitle || haveIntroduction" class="prose dark:prose-invert">
+		<div
+			v-if="haveTitle || haveIntroduction"
+			class="prose dark:prose-invert flex flex-col gap-3 [&_h3]:m-0 [&_p]:m-0"
+		>
 			<section-title v-if="haveTitle" v-bind="{ id }">
 				<template #title>
 					<slot name="title" />
@@ -55,7 +58,9 @@
 					v-if="haveComponentModel"
 					class="bg-grey-50 dark:bg-grey-950/30 dark:text-grey-200 border-grey-200 text-grey-800 relative mt-12 rounded-md border p-6 dark:border-transparent"
 				>
-					<pill-badge class="absolute start-0 top-0 ms-6 -translate-y-1/2">Model value</pill-badge>
+					<pill-badge class="absolute inset-s-0 top-0 ms-6 -translate-y-1/2">
+						Model value
+					</pill-badge>
 
 					<pre>{{ componentModel }}</pre>
 				</div>
@@ -71,8 +76,8 @@
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, inject, ref, useSlots, watch } from "vue";
-import { deepCopy, get, isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
+import { computed, inject, ref, useSlots, watch } from "vue";
+import { deepCopy, isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
 import { getSlotText, isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
@@ -142,15 +147,18 @@ const haveTitle = computed(() => isNonEmptySlot(slots.title));
 const titleText = computed(() => getSlotText(slots.title));
 // Whether an introduction has been provided
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
-// The current Vue instance, which we'll use to automatically determine the
-// parent name, simplifying the boilerplate for creating various playgrounds.
-const instance = getCurrentInstance();
-// We also look for any current values in local storage, so that we can re-use
-// those values.
-const parentComponentName = get(instance, "parent.type.__name");
-// Whether we are able to determine the parent's component name, used to
-// namespace any storage.
-const haveParentComponentName = computed(() => isNonEmptyString(parentComponentName));
+
+// Unique key for persisted playground text-slot values.
+const storageKey = computed(() => {
+	if (!isNonEmptyString(props.id)) {
+		return null;
+	}
+
+	return `component-playground:${props.id}`;
+});
+
+// Whether the playground can read and write persisted text-slot values.
+const haveStorageKey = computed(() => isNonEmptyString(storageKey.value));
 // Whether the user is using translation mode.
 const { useTranslation } = useTranslationMode();
 
@@ -162,15 +170,12 @@ const textSlots = defineModel({
 
 // Whether any text slots are present.
 const haveTextSlots = computed(() => isNonEmptyObject(textSlots.value));
-
 // Our stored values from last time.
-const storedTextSlots = useStorage(`component-playground:${parentComponentName}`, {});
-
+const storedTextSlots = useStorage(storageKey, {});
 // A copy of the original text slot values. We refer to these if the user
 // chooses to reset data later, which is particularly useful if we save data to
 // local storage.
 const originalTextSlots = ref({});
-
 // Whether the text slots details is open.
 const isTextSlotsOpen = ref(false);
 
@@ -184,9 +189,9 @@ initialise();
 function initialise() {
 	originalTextSlots.value = deepCopy(textSlots.value);
 
-	// If we can't determine a name, we won't be able to reliably retrieve data
+	// If we can't determine a key, we won't be able to reliably retrieve data
 	// from storage.
-	if (!haveParentComponentName.value || !isNonEmptyObject(storedTextSlots.value)) {
+	if (!haveStorageKey.value || !isNonEmptyObject(storedTextSlots.value)) {
 		return;
 	}
 
@@ -220,8 +225,12 @@ function resetTextSlots() {
 // When the text slots change (modelValue under the hood), update our stored
 // slot values.
 watch(
-	() => props.modelValue,
+	() => textSlots.value,
 	() => {
+		if (!haveStorageKey.value) {
+			return;
+		}
+
 		// Before we store our slots, we remove any extraneous information for
 		// brevity.
 		storedTextSlots.value = Object.fromEntries(

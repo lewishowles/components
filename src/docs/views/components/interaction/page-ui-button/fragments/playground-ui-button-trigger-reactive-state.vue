@@ -1,17 +1,13 @@
 <template>
 	<component-playground
 		v-bind="{ copy: template }"
-		id="playground-ui-button-reactive"
+		id="playground-ui-button-trigger-reactive-state"
 		v-model="textSlots"
 	>
-		<template #title>Triggering reactive state</template>
+		<template #title>{{ snippetVariant.label }}</template>
 
 		<template #introduction>
-			<p>
-				When a button is reactive, its reactive state can be triggered using the exposed
-				<code>react</code>
-				method.
-			</p>
+			<p>{{ snippetVariant.description }}</p>
 		</template>
 
 		<div class="flex flex-wrap gap-8">
@@ -29,12 +25,17 @@
 <script setup>
 import { useTemplateRef } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
-import { useUiButtonPlayground } from "@/docs/views/components/interaction/page-ui-button/composables/use-ui-button-playground";
+import { uiButtonMetadata } from "@/components/interaction/ui-button/ui-button.metadata.js";
 
-const { componentProps, template, textSlots } = useUiButtonPlayground("trigger-reactive-state");
+import { useComponentPlayground } from "@/docs/views/components/composables/use-component-playground/use-component-playground";
 
-// Our reactive button
+// Our reactive button.
 const buttonElement = useTemplateRef("button");
+
+const { componentProps, snippetVariant, template, textSlots } = useComponentPlayground(
+	uiButtonMetadata,
+	"trigger-reactive-state",
+);
 
 /**
  * Trigger the reactive state on our button.
