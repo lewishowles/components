@@ -27,46 +27,11 @@
 </template>
 
 <script setup>
-import { computed, ref, useTemplateRef } from "vue";
+import { useTemplateRef } from "vue";
 import { runComponentMethod } from "@lewishowles/helpers/vue";
-import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
+import { useUiButtonPlayground } from "@/docs/views/components/interaction/page-ui-button/composables/use-ui-button-playground";
 
-// Our base text slots, available for the user to update.
-const textSlots = ref({
-	default: {
-		label: "Button label",
-		value: "Create account",
-	},
-});
-
-// Props both for the template and for the component example itself.
-const props = ref({
-	reactive: {
-		label: "Reactive",
-		value: true,
-		type: "boolean",
-	},
-	class: {
-		label: "Button classes",
-		value: "button--primary",
-		isInline: true,
-	},
-});
-
-// Events to use in the template.
-const events = ref({
-	click: {
-		label: "Click handler",
-		value: "createAccount",
-	},
-});
-
-// Convert our props into a format that can be passed directly to our component.
-const componentProps = computed(() => {
-	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
-});
-
-const template = useTemplateGenerator("ui-button", { slots: textSlots, props, events });
+const { componentProps, template, textSlots } = useUiButtonPlayground("trigger-reactive-state");
 
 // Our reactive button
 const buttonElement = useTemplateRef("button");

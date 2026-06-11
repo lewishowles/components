@@ -17,46 +17,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
+import { useUiButtonPlayground } from "@/docs/views/components/interaction/page-ui-button/composables/use-ui-button-playground";
 
-// Our base text slots, available for the user to update.
-const textSlots = ref({
-	default: {
-		label: "Button label",
-		value: "Create account",
-	},
-});
-
-// Props both for the template and for the component example itself.
-const props = ref({
-	iconStart: {
-		label: "Prefix icon",
-		value: "icon-user",
-	},
-	iconOnly: {
-		label: "Icon only",
-		value: true,
-	},
-	class: {
-		label: "Button classes",
-		value: "button--primary",
-		isInline: true,
-	},
-});
-
-// Events to use in the template.
-const events = ref({
-	click: {
-		label: "Click handler",
-		value: "createAccount",
-	},
-});
-
-// Convert our props into a format that can be passed directly to our component.
-const componentProps = computed(() => {
-	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
-});
-
-const template = useTemplateGenerator("ui-button", { slots: textSlots, props, events });
+const { componentProps, template, textSlots } = useUiButtonPlayground("icon-only");
 </script>
