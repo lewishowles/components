@@ -1,7 +1,8 @@
+import { alias } from "./support/aliases.js";
+import { createNamedExports } from "./support/plugins/index.js";
 import { defineConfig } from "cypress";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
-import { alias } from "./support/aliases.js";
 
 export default defineConfig({
 	allowCypressEnv: false,
@@ -19,7 +20,7 @@ export default defineConfig({
 			framework: "vue",
 			bundler: "vite",
 			viteConfig: {
-				plugins: [vue(), tailwindcss()],
+				plugins: [vue(), tailwindcss(), createNamedExports()],
 				resolve: {
 					alias,
 				},

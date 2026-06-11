@@ -44,7 +44,8 @@ export function createMount(component, defaultOptions = {}, mountFunction = shal
 		const isDirectProps =
 			!Object.hasOwn(options, "props") &&
 			!Object.hasOwn(options, "slots") &&
-			!Object.hasOwn(options, "global");
+			!Object.hasOwn(options, "global") &&
+			!Object.hasOwn(options, "attrs");
 
 		const providedOptions = isDirectProps ? { props: options } : options;
 
