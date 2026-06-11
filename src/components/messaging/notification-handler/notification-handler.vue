@@ -128,16 +128,9 @@ import { createReusableTemplate } from "@vueuse/core";
 import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber } from "@lewishowles/helpers/number";
+import { useNotifications } from "@/composables/use-notifications/use-notifications.js";
 
 const props = defineProps({
-	/**
-	 * The notifications to display to the user.
-	 */
-	notifications: {
-		type: Array,
-		default: null,
-	},
-
 	/**
 	 * The locale to use when displaying dates. To reset to the user's
 	 * locale settings, set the locale to undefined.
@@ -170,7 +163,7 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether to display the “Mark all read” button. Deactivating means the
+	 * Whether to display the "Mark all read" button. Deactivating means the
 	 * user will be required to mark notifications as read individually.
 	 */
 	allowMarkAllRead: {
@@ -179,7 +172,7 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether to display the “Reload” button. Deactivating means new
+	 * Whether to display the "Reload" button. Deactivating means new
 	 * notifications will only be shown when something triggers a re-load in the
 	 * parent component.
 	 */
@@ -217,7 +210,7 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits(["notifications:read", "notifications:reload"]);
+const emit = defineEmits(["notifications:reload"]);
 
 defineOptions({ inheritAttrs: false });
 
@@ -228,6 +221,12 @@ import NotificationInfo from "./fragments/notification-info/notification-info.vu
 import NotificationPinned from "./fragments/notification-pinned/notification-pinned.vue";
 import NotificationRead from "./fragments/notification-read/notification-read.vue";
 import NotificationWarning from "./fragments/notification-warning/notification-warning.vue";
+
+const {
+	markAllRead: registryMarkAllRead,
+	markRead: registryMarkRead,
+	notifications,
+} = useNotifications();
 
 // The current screen reader announcement for the live region.
 const announcement = ref("");
@@ -242,49 +241,20 @@ const triggerLabel = computed(() => {
 	return "Show notifications";
 });
 
-// Keep track of notifications that have been marked as read internally. This
-// allows us to determine their style, and whether they should be visible, aside
-// from the information provided when the notifications were originally
-// initialised.
-const notificationsMarkedAsRead = ref([]);
-
-// Our internal notifications to display.
-//
-// - Remove invalid notifications (those that aren't objects and those that do
-//   not contain a `message`)
-// - Remove read notifications if `hideNotificationsWhenRead` is true
+// The notifications to display, filtered and sorted for the current view. The
+// composable is the source of truth for notification state; this computed
+// applies display-only concerns (read visibility, date ordering, count cap).
 const internalNotifications = computed(() => {
-	if (!isNonEmptyArray(props.notifications)) {
-		return [];
+	let notifs = [...notifications.value];
+
+	if (props.hideNotificationsWhenRead) {
+		notifs = notifs.filter((n) => get(n, "read") !== true);
 	}
 
-	let notifications = props.notifications.reduce((notifications, notification) => {
-		if (!isNonEmptyObject(notification)) {
-			return notifications;
-		}
+	notifs = sortNotificationsByDate(notifs);
+	notifs = limitReadNotifications(notifs);
 
-		// A notification must contain at least a message.
-		if (!Object.hasOwn(notification, "message")) {
-			return notifications;
-		}
-
-		// If set, hide any notifications that are marked as read.
-		if (
-			props.hideNotificationsWhenRead &&
-			(get(notification, "read") === true || hasNotificationBeenMarkedAsRead(notification.id))
-		) {
-			return notifications;
-		}
-
-		notifications.push(notification);
-
-		return notifications;
-	}, []);
-
-	notifications = sortNotificationsByDate(notifications);
-	notifications = limitReadNotifications(notifications);
-
-	return notifications;
+	return notifs;
 });
 
 // Whether we have any notifications to display.
@@ -345,7 +315,7 @@ watch(unreadNotificationCount, (newCount, oldCount) => {
  * notifications to be missing a date property. Notifications with dates appear
  * before those without.
  *
- * @param  {array}  notifications
+ * @param  {object[]}  notifications
  *     The notifications to sort.
  */
 function sortNotificationsByDate(notifications) {
@@ -373,7 +343,7 @@ function sortNotificationsByDate(notifications) {
  * Limit the number of "read" notifications, based on the value of the
  * `readNotificationCount` prop.
  *
- * @param  {array}  notifications
+ * @param  {object[]}  notifications
  *     The notifications to limit.
  */
 function limitReadNotifications(notifications) {
@@ -428,10 +398,7 @@ function announce(message) {
  *     The details of the notification to display.
  */
 function getNotificationSlotName(notification) {
-	if (
-		get(notification, "read") === true ||
-		hasNotificationBeenMarkedAsRead(get(notification, "id"))
-	) {
+	if (get(notification, "read") === true) {
 		return "notification-read-template";
 	}
 
@@ -458,10 +425,7 @@ function getNotificationComponent(notification) {
 		return NotificationPinned;
 	}
 
-	if (
-		get(notification, "read") === true ||
-		hasNotificationBeenMarkedAsRead(get(notification, "id"))
-	) {
+	if (get(notification, "read") === true) {
 		return NotificationRead;
 	}
 
@@ -477,20 +441,13 @@ function getNotificationComponent(notification) {
 }
 
 /**
- * Mark a single notification as read, using the same format as marking multiple
- * notifications read for simplicity.
+ * Mark a single notification as read.
  *
  * @param  {string}  notificationId
  *     The ID of the notification to mark as read.
  */
 function markNotificationRead(notificationId) {
-	if (!isNonEmptyString(notificationId)) {
-		return;
-	}
-
-	emit("notifications:read", [notificationId]);
-
-	notificationsMarkedAsRead.value.push(notificationId);
+	registryMarkRead(notificationId);
 }
 
 /**
@@ -506,48 +463,15 @@ function reloadNotifications() {
 }
 
 /**
- * Mark all unread notifications as read, excluding those that are pinned and
- * those that are already marked as read.
+ * Mark all unread notifications as read, excluding those that are pinned.
  */
 function markAllNotificationsRead() {
 	if (!haveUnreadNotifications.value) {
 		return;
 	}
 
-	const relevantNotifications = unreadNotifications.value.filter(
-		(notification) => get(notification, "pinned") !== true,
-	);
-
-	const notificationIDs = pluck(relevantNotifications, "id");
-
-	if (!isNonEmptyArray(notificationIDs)) {
-		return;
-	}
-
-	emit("notifications:read", notificationIDs);
-
-	notificationsMarkedAsRead.value.push(...notificationIDs);
-
+	registryMarkAllRead();
 	announce("All notifications marked as read");
-}
-
-/**
- * Determine whether a notification has been marked as read by the user since
- * the notifications have been displayed.
- *
- * @param  {string}  notificationId
- *     The ID of the notification to check.
- */
-function hasNotificationBeenMarkedAsRead(notificationId) {
-	if (!isNonEmptyString(notificationId)) {
-		return false;
-	}
-
-	if (!isNonEmptyArray(notificationsMarkedAsRead.value)) {
-		return false;
-	}
-
-	return notificationsMarkedAsRead.value.includes(notificationId);
 }
 
 defineExpose({

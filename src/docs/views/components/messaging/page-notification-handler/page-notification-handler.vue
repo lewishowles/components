@@ -5,10 +5,9 @@
 		<template #introduction>
 			<p>
 				<code>notification-handler</code>
-				displays and allows and end-user to manage notifications as provided by an app.
-				Notifications are provided directly to the component, allowing the parent app to deal with
-				what notifications to display and how notifications are marked as read depending on its
-				requirements.
+				displays and allows an end-user to manage notifications. Notification data is managed via
+				<code>useNotifications()</code>
+				— a module-scoped composable that acts as the shared registry for the application.
 			</p>
 			<p>
 				<link-tag
@@ -22,144 +21,6 @@
 		</template>
 
 		<component-props>
-			<component-prop id="prop-notifications">
-				<template #name>notifications</template>
-
-				<template #type>Object[]</template>
-
-				<template #default-value>null</template>
-
-				<p>The notifications to display to the user.</p>
-
-				<table>
-					<thead>
-						<tr>
-							<th>Field</th>
-							<th>Type</th>
-							<th>Required</th>
-							<th>Purpose</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><code>id</code></td>
-							<td><code>string</code></td>
-							<td>Yes</td>
-							<td>
-								Used to identify individual notifications, which can be used when emitting events
-								for a notification being marked as read, for example.
-							</td>
-						</tr>
-						<tr>
-							<td><code>title</code></td>
-							<td><code>string</code></td>
-							<td>No</td>
-							<td>A title to display with the notification.</td>
-						</tr>
-						<tr>
-							<td><code>message</code></td>
-							<td><code>string</code></td>
-							<td>Yes</td>
-							<td>
-								The content of the notification. Any notification without a message will not be
-								displayed.
-							</td>
-						</tr>
-						<tr>
-							<td><code>type</code></td>
-							<td><code>string</code></td>
-							<td>No</td>
-							<td>
-								The type of notification, one of
-								<code>danger</code>
-								,
-								<code>warning</code>
-								, or
-								<code>info</code>
-								. Defaults to
-								<code>info</code>
-								.
-							</td>
-						</tr>
-						<tr>
-							<td><code>date</code></td>
-							<td><code>string</code></td>
-							<td>No</td>
-							<td>
-								The date the notification was issued (
-								<code>YYYY-MM-DD</code>
-								). If included, a formatted date is displayed to the user using
-								<router-link v-bind="{ to: '/content/display-date' }">
-									<code>display-date</code>
-								</router-link>
-								.
-							</td>
-						</tr>
-						<tr>
-							<td><code>url</code></td>
-							<td><code>string</code></td>
-							<td>No</td>
-							<td>
-								Any URL at which the user can get more information about this notification. Clicking
-								on the notification will open the URL in a new tab.
-							</td>
-						</tr>
-						<tr>
-							<td><code>read</code></td>
-							<td><code>boolean</code></td>
-							<td>No</td>
-							<td>
-								Whether the message has been read. If not provided, we will assume the message has
-								been read (as a safe fallback that doesn’t consistently re-introduce the same
-								notifications).
-							</td>
-						</tr>
-						<tr>
-							<td><code>pinned</code></td>
-							<td><code>boolean</code></td>
-							<td>No</td>
-							<td>
-								Whether this notification should be pinned to the top of the list. Pinned
-								notifications cannot be marked as read, and will appear each time regardless of read
-								status or
-								<code>hideNotificationsWhenRead</code>
-								.
-							</td>
-						</tr>
-						<tr>
-							<td><code>image_url</code></td>
-							<td><code>string</code></td>
-							<td>No</td>
-							<td>
-								The URL to any image to display beside the notification. If both
-								<code>image_url</code>
-								and
-								<code>icon</code>
-								are defined,
-								<code>image_url</code>
-								takes precedence.
-							</td>
-						</tr>
-						<tr>
-							<td><code>icon</code></td>
-							<td><code>string</code></td>
-							<td>No</td>
-							<td>
-								Any icon component to display beside the notification, e.g.
-								<code>icon-help</code>
-								. If both
-								<code>image_url</code>
-								and
-								<code>icon</code>
-								are defined,
-								<code>image_url</code>
-								takes precedence.
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</component-prop>
-
 			<component-prop id="prop-locale">
 				<template #name>locale</template>
 
@@ -559,36 +420,6 @@
 		</component-slots>
 
 		<component-events>
-			<component-event id="event-notifications-read">
-				<template #name>notifications:read</template>
-
-				<p>A list of one or more notification IDs which have been marked as read by the user.</p>
-
-				<p>
-					Called when one (or all via &quot;Mark all notifications read&quot;) notifications are
-					marked as read.
-				</p>
-
-				<table>
-					<thead>
-						<tr>
-							<th>Param</th>
-							<th>Type</th>
-							<th>Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><code>notificationIds</code></td>
-							<td><code>string[]</code></td>
-							<td>
-								A list of one or more notification IDs which have been marked as read by the user.
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</component-event>
-
 			<component-event id="event-notifications-reload">
 				<template #name>notifications:reload</template>
 
@@ -653,12 +484,10 @@
 
 		<component-playgrounds>
 			<playground-notification-handler />
-			<playground-notification-handler-no-notifications />
 		</component-playgrounds>
 	</component-page>
 </template>
 
 <script setup>
 import PlaygroundNotificationHandler from "./fragments/playground-notification-handler.vue";
-import PlaygroundNotificationHandlerNoNotifications from "./fragments/playground-notification-handler-no-notifications.vue";
 </script>

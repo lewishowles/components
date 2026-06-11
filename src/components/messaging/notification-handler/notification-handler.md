@@ -1,8 +1,51 @@
 # `notification-handler`
 
-`notification-handler` displays and allows and end-user to manage notifications as provided by an app. Notifications are provided directly to the component, allowing the parent app to deal with what notifications to display and how notifications are marked as read depending on its requirements.
+`notification-handler` displays and allows an end-user to manage notifications. Notification data is managed via the `useNotifications()` composable, which provides a module-scoped registry shared across the application.
 
-[More information about the process behind planning this component can be found in Notion](https://lewishowles.notion.site/Notification-handler-1b92b9e312118050bb76d8d9200d50a8)
+## `useNotifications()`
+
+The composable is the primary API for working with notifications. Import it anywhere in the application to add, remove, or update notifications.
+
+```js
+import { useNotifications } from "@lewishowles/components/composables";
+
+const { add, remove, markRead, markAllRead, clear } = useNotifications();
+```
+
+### `add(notification)`
+
+Add a notification to the registry. `message` is required; all other fields are optional.
+
+| Field       | Type       | Required | Purpose                                                                                                                                                                                     |
+| ----------- | ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`        | `string`   | No       | Unique identifier. Auto-generated if not provided.                                                                                                                                          |
+| `message`   | `string`   | Yes      | The content of the notification.                                                                                                                                                            |
+| `title`     | `string`   | No       | A title to display with the notification.                                                                                                                                                   |
+| `type`      | `string`   | No       | One of `danger`, `warning`, or `info`. Defaults to `info`.                                                                                                                                  |
+| `date`      | `string`   | No       | The date the notification was issued (`YYYY-MM-DD`). If included, a formatted date is displayed using [`display-date`](/src/components/content/display-date/display-date.md).               |
+| `url`       | `string`   | No       | Any URL at which the user can get more information. Clicking the notification will open the URL in a new tab.                                                                               |
+| `read`      | `boolean`  | No       | Whether the message has been read. Defaults to `false`.                                                                                                                                     |
+| `pinned`    | `boolean`  | No       | Whether this notification should be pinned to the top of the list. Pinned notifications cannot be marked as read, and will appear regardless of read status or `hideNotificationsWhenRead`. |
+| `image_url` | `string`   | No       | The URL to any image to display beside the notification. Takes precedence over `icon`.                                                                                                      |
+| `icon`      | `string`   | No       | Any icon component to display beside the notification, e.g. `icon-help`.                                                                                                                    |
+| `onRead`    | `function` | No       | Called when the notification is marked as read. Useful for backend sync.                                                                                                                    |
+| `onRemove`  | `function` | No       | Called when the notification is removed. Useful for backend sync.                                                                                                                           |
+
+### `remove(id)`
+
+Remove a notification by ID. Calls the notification's `onRemove` callback if registered.
+
+### `markRead(id)`
+
+Mark a single notification as read by ID. Calls the notification's `onRead` callback if registered.
+
+### `markAllRead()`
+
+Mark all non-pinned, unread notifications as read. Calls each `onRead` callback if registered.
+
+### `clear()`
+
+Remove all notifications from the registry.
 
 ## Slots
 
@@ -34,7 +77,7 @@ A general slot to allow custom designs for notifications of a given `<type>` (on
 
 ### `notification-pinned-template`
 
-A general slot to allow custom designs for notifications that are `{ pinned: true }` . Takes precedence over the `notification-read`, `notification-unread` and `notification-<type>` slots.
+A general slot to allow custom designs for notifications that are `{ pinned: true }`. Takes precedence over the `notification-read`, `notification-unread` and `notification-<type>` slots.
 
 | Slot prop              | Type     | Description                                                                   |
 | ---------------------- | -------- | ----------------------------------------------------------------------------- |
@@ -43,7 +86,7 @@ A general slot to allow custom designs for notifications that are `{ pinned: tru
 
 ### `notification-<id>-template`
 
-A general slot to allow custom designs for notifications that are `{ pinned: true }` . Takes precedence over the `notification-read`, `notification-unread` and `notification-<type>` slots.
+A general slot to allow a custom design for a notification with a specific ID. Takes precedence over all other notification slots.
 
 | Slot prop              | Type     | Description                                                                   |
 | ---------------------- | -------- | ----------------------------------------------------------------------------- |
@@ -74,7 +117,7 @@ A `role="status" aria-live="polite"` region is present in the DOM at all times. 
 
 Default: `No new notifications`
 
-The text to show when no notifications are being displayed, either because none were provided, none were viable, or all notification have been marked as read and should not be shown.
+The text to show when no notifications are being displayed.
 
 ### `mark-all-read-label`
 
@@ -108,26 +151,6 @@ The label to use for the button the link to view more information, if a notifica
 
 ## Props
 
-### `notifications`
-
-- type: `Object[]`
-- default: `null`
-
-The notifications to display to the user.
-
-| Field       | Type      | Required | Purpose                                                                                                                                                                                               |
-| ----------- | --------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`        | `string`  | Yes      | Used to identify individual notifications, which can be used when emitting events for a notification being marked as read, for example.                                                               |
-| `title`     | `string`  | No       | A title to display with the notification.                                                                                                                                                             |
-| `message`   | `string`  | Yes      | The content of the notification. Any notification without a message will not be displayed.                                                                                                            |
-| `type`      | `string`  | No       | The type of notification, one of `danger`, `warning`, or `info`. Defaults to `info`.                                                                                                                  |
-| `date`      | `string`  | No       | The date the notification was issued (`YYYY-MM-DD`). If included, a formatted date is displayed to the user using [`display-date`](/src/components/content/display-date/display-date.md).             |
-| `url`       | `string`  | No       | Any URL at which the user can get more information about this notification. Clicking on the notification will open the URL in a new tab.                                                              |
-| `read`      | `boolean` | No       | Whether the message has been read. If not provided, we will assume the message has been read (as a safe fallback that doesn’t consistently re-introduce the same notifications).                      |
-| `pinned`    | `boolean` | No       | Whether this notification should be pinned to the top of the list. Pinned notifications cannot be marked as read, and will appear each time regardless of read status or `hideNotificationsWhenRead`. |
-| `image_url` | `string`  | No       | The URL to any image to display beside the notification. If both `image_url` and `icon` are defined, `image_url` takes precedence.                                                                    |
-| `icon`      | `string`  | No       | Any icon component to display beside the notification, e.g. `icon-help`. If both `image_url` and `icon` are defined, `image_url` takes precedence.                                                    |
-
 ### `locale`
 
 - type: `string`
@@ -154,14 +177,14 @@ The alignment of the pop up notifications panel. Anything but `start` will be tr
 - type: `Boolean`
 - default: `true`
 
-Whether to display the “Mark all read” button. Deactivating means the user will be required to mark notifications as read individually.
+Whether to display the "Mark all read" button. Deactivating means the user will be required to mark notifications as read individually.
 
 ### `allowReload`
 
 - type: `Boolean`
 - default: `true`
 
-Whether to display the “Reload” button. Deactivating means new notifications will only be shown when something triggers a re-load in the parent component.
+Whether to display the "Reload" button. Deactivating means new notifications will only be shown when something triggers a re-load in the parent component.
 
 ### `loading`
 
@@ -186,14 +209,6 @@ The number of read notifications to display at maximum. Unread notifications are
 
 ## Events
 
-### @notifications:read
-
-Called when one (or all via "Mark all notifications read") notifications are marked as read.
-
-| Param             | Type       | Description                                                                        |
-| ----------------- | ---------- | ---------------------------------------------------------------------------------- |
-| `notificationIds` | `string[]` | A list of one or more notification IDs which have been marked as read by the user. |
-
 ### @notifications:reload
 
 The user has requested that the notifications be reloaded. A loading indicator is not automatically shown to the user, to allow for the consuming component to better control the interaction, and should be displayed via the loading prop.
@@ -217,16 +232,32 @@ When accessed via a template ref, the following are available:
 
 ## Examples
 
-### Basic notifications
+### Basic usage
+
+```js
+import { useNotifications } from "@lewishowles/components/composables";
+
+const { add, clear } = useNotifications();
+
+// Populate on app startup (e.g. from an API response):
+add({
+	id: "abc-123",
+	type: "info",
+	title: "Your document is ready",
+	message: "Property Portfolio, XH1530 is now ready to view.",
+	date: "2025-03-22",
+	onRead: () => api.markRead("abc-123"),
+});
+```
 
 ```html
-<notification-handler v-bind="{ notifications }" />
+<notification-handler />
 ```
 
 ### Overriding the display of a particular type
 
 ```html
-<notification-handler v-bind="{ notifications }">
+<notification-handler>
 	<template #notification-danger-template="{ notification }">
 		This is a danger notification, with message {{ notification.message }}
 	</template>

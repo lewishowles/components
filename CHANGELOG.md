@@ -2,6 +2,31 @@
 
 ## 2.1.0
 
+### `useNotifications()`
+
+A new composable for managing notifications application-wide. It provides a module-scoped registry shared between all `notification-handler` instances and any component that needs to add or update notifications.
+
+```js
+import { useNotifications } from "@lewishowles/components/composables";
+
+const { add, remove, markRead, markAllRead, clear } = useNotifications();
+
+add({
+	id: "abc-123",
+	type: "warning",
+	message: "Your subscription expires in 3 days.",
+	onRead: () => api.markRead("abc-123"),
+});
+```
+
+Each notification can declare `onRead` and `onRemove` callbacks, called automatically when the notification is marked as read or removed, which is useful for syncing state with a backend.
+
+### `notification-handler`
+
+- The `notifications` prop has been removed. Notifications are now managed entirely via `useNotifications()`.
+- The `@notifications:read` event has been removed. Use the `onRead` callback on each notification instead.
+- All other props, slots, and the `@notifications:reload` event are unchanged.
+
 ### Stylesheets
 
 The library now ships its full stylesheets. Import `@lewishowles/components/styles` to get everything — tokens, fonts, buttons, form styles, animations, and component-specific extras:

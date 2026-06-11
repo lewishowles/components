@@ -1,29 +1,44 @@
+import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 import { createMount } from "@unit/support/mount";
-import { describe, expect, test, vi } from "vite-plus/test";
-import NotificationHandler from "./notification-handler.vue";
+import { useNotifications } from "@/composables/use-notifications/use-notifications.js";
 import NotificationDanger from "./fragments/notification-danger/notification-danger.vue";
 import NotificationInfo from "./fragments/notification-info/notification-info.vue";
 import NotificationRead from "./fragments/notification-read/notification-read.vue";
 import NotificationWarning from "./fragments/notification-warning/notification-warning.vue";
+import NotificationHandler from "./notification-handler.vue";
 
 const notificationMessage =
 	"Ullamco eu amet labore elit quis eiusmod ea consectetur fugiat do commodo esse dolore consequat ipsum.";
 
 const notification = { id: "notification-1", message: notificationMessage };
-const defaultProps = { notifications: [notification] };
-const mount = createMount(NotificationHandler, { props: defaultProps });
+
+const mount = createMount(NotificationHandler, { props: {} });
+
+const { add, clear, notifications } = useNotifications();
+
+beforeEach(() => {
+	clear();
+});
+
+afterEach(() => {
+	clear();
+});
 
 describe("notification-handler", () => {
 	console.warn = vi.fn();
 
 	describe("Expose", () => {
 		test("exposes notifications as the filtered internal list", () => {
+			add(notification);
+
 			const wrapper = mount();
 
-			expect(wrapper.vm.notifications).toEqual([notification]);
+			expect(wrapper.vm.notifications).toEqual([{ ...notification, read: false }]);
 		});
 
 		test("exposes unreadCount", () => {
+			add(notification);
+
 			const wrapper = mount();
 
 			expect(wrapper.vm.unreadCount).toBe(1);
@@ -46,222 +61,127 @@ describe("notification-handler", () => {
 
 	describe("Computed", () => {
 		describe("internalNotifications", () => {
-			describe("should discard anything but non-empty array notifications", () => {
-				test.for([
-					["boolean (true)", true],
-					["boolean (false)", false],
-					["number (positive)", 1],
-					["number (negative)", -1],
-					["number (NaN)", NaN],
-					["string (non-empty)", "string"],
-					["string (empty)", ""],
-					["array (empty)", []],
-					["object (non-empty)", { property: "value" }],
-					["object (empty)", {}],
-					["null", null],
-					["undefined", undefined],
-				])("%s", ([, notifications]) => {
-					const wrapper = mount({ notifications });
-					const vm = wrapper.vm;
+			test("should return an empty list when no notifications have been added", () => {
+				const wrapper = mount();
 
-					expect(vm.internalNotifications).toEqual([]);
-				});
-			});
-
-			describe("should discard any non-empty object notification", () => {
-				test.for([
-					["boolean (true)", true],
-					["boolean (false)", false],
-					["number (positive)", 1],
-					["number (negative)", -1],
-					["number (NaN)", NaN],
-					["string (non-empty)", "string"],
-					["string (empty)", ""],
-					["array (non-empty)", [1, 2, 3]],
-					["array (empty)", []],
-					["object (empty)", {}],
-					["null", null],
-					["undefined", undefined],
-				])("%s", ([, notification]) => {
-					const wrapper = mount({ notifications: [notification] });
-					const vm = wrapper.vm;
-
-					expect(vm.internalNotifications).toEqual([]);
-				});
-			});
-
-			test("should discard any notification that does not contain a `message`", () => {
-				const wrapper = mount({ notifications: [{ id: "id-123" }] });
-				const vm = wrapper.vm;
-
-				expect(vm.internalNotifications).toEqual([]);
+				expect(wrapper.vm.internalNotifications).toEqual([]);
 			});
 
 			test("should discard any read notification when `hideNotificationsWhenRead` is true", () => {
-				const wrapper = mount({ notifications: [{ id: "id-123", read: true }] });
-				const vm = wrapper.vm;
+				add({ id: "id-123", message: "Test", read: true });
 
-				expect(vm.internalNotifications).toEqual([]);
+				const wrapper = mount({ hideNotificationsWhenRead: true });
+
+				expect(wrapper.vm.internalNotifications).toEqual([]);
 			});
 
 			describe("Sorting by date", () => {
 				test("should handle notifications where neither has a date", () => {
-					const wrapper = mount({
-						notifications: [
-							{ id: "id-1", message: "Notification 1" },
-							{ id: "id-2", message: "Notification 2" },
-						],
-					});
+					add({ id: "id-1", message: "Notification 1" });
+					add({ id: "id-2", message: "Notification 2" });
 
-					const vm = wrapper.vm;
+					const wrapper = mount();
 
-					expect(vm.internalNotifications).toEqual([
-						{ id: "id-1", message: "Notification 1" },
-						{ id: "id-2", message: "Notification 2" },
+					expect(wrapper.vm.internalNotifications).toEqual([
+						{ id: "id-1", message: "Notification 1", read: false },
+						{ id: "id-2", message: "Notification 2", read: false },
 					]);
 				});
 
 				test("should handle notifications where only the first has a date", () => {
-					const wrapper = mount({
-						notifications: [
-							{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
-							{ id: "id-2", message: "Notification 2" },
-						],
-					});
+					add({ id: "id-1", message: "Notification 1", date: "2025-01-01" });
+					add({ id: "id-2", message: "Notification 2" });
 
-					const vm = wrapper.vm;
+					const wrapper = mount();
 
-					expect(vm.internalNotifications).toEqual([
-						{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
-						{ id: "id-2", message: "Notification 2" },
+					expect(wrapper.vm.internalNotifications).toEqual([
+						{ id: "id-1", message: "Notification 1", date: "2025-01-01", read: false },
+						{ id: "id-2", message: "Notification 2", read: false },
 					]);
 				});
 
 				test("should handle notifications where only the second has a date", () => {
-					const wrapper = mount({
-						notifications: [
-							{ id: "id-1", message: "Notification 1" },
-							{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
-						],
-					});
+					add({ id: "id-1", message: "Notification 1" });
+					add({ id: "id-2", message: "Notification 2", date: "2025-01-02" });
 
-					const vm = wrapper.vm;
+					const wrapper = mount();
 
-					expect(vm.internalNotifications).toEqual([
-						{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
-						{ id: "id-1", message: "Notification 1" },
+					expect(wrapper.vm.internalNotifications).toEqual([
+						{ id: "id-2", message: "Notification 2", date: "2025-01-02", read: false },
+						{ id: "id-1", message: "Notification 1", read: false },
 					]);
 				});
 
 				test("should handle notifications where both have dates", () => {
-					const wrapper = mount({
-						notifications: [
-							{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
-							{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
-						],
-					});
+					add({ id: "id-1", message: "Notification 1", date: "2025-01-01" });
+					add({ id: "id-2", message: "Notification 2", date: "2025-01-02" });
 
-					const vm = wrapper.vm;
+					const wrapper = mount();
 
-					expect(vm.internalNotifications).toEqual([
-						{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
-						{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
+					expect(wrapper.vm.internalNotifications).toEqual([
+						{ id: "id-2", message: "Notification 2", date: "2025-01-02", read: false },
+						{ id: "id-1", message: "Notification 1", date: "2025-01-01", read: false },
 					]);
 				});
 			});
 
 			describe('Limit the number of "read" notifications', () => {
 				test("should return all notifications if `readNotificationCount` is not a number", () => {
-					const wrapper = mount({
-						readNotificationCount: "not-a-number",
-						notifications: [
-							{ id: "id-1", message: "Notification 1", read: true },
-							{ id: "id-2", message: "Notification 2", read: false },
-						],
-					});
+					add({ id: "id-1", message: "Notification 1", read: true });
+					add({ id: "id-2", message: "Notification 2", read: false });
 
-					const vm = wrapper.vm;
+					const wrapper = mount({ readNotificationCount: "not-a-number" });
 
-					expect(vm.internalNotifications).toEqual([
+					expect(wrapper.vm.internalNotifications).toEqual([
 						{ id: "id-1", message: "Notification 1", read: true },
 						{ id: "id-2", message: "Notification 2", read: false },
 					]);
 				});
 
 				test("should return all notifications if `readNotificationCount` is undefined", () => {
-					const wrapper = mount({
-						notifications: [
-							{ id: "id-1", message: "Notification 1", read: true },
-							{ id: "id-2", message: "Notification 2", read: false },
-						],
-					});
+					add({ id: "id-1", message: "Notification 1", read: true });
+					add({ id: "id-2", message: "Notification 2", read: false });
 
-					const vm = wrapper.vm;
+					const wrapper = mount();
 
-					expect(vm.internalNotifications).toEqual([
+					expect(wrapper.vm.internalNotifications).toEqual([
 						{ id: "id-1", message: "Notification 1", read: true },
 						{ id: "id-2", message: "Notification 2", read: false },
 					]);
 				});
 
 				test("should limit the number of read notifications to the value of `readNotificationCount`", () => {
-					const wrapper = mount({
-						readNotificationCount: 1,
-						notifications: [
-							{ id: "id-1", message: "Notification 1", read: true },
-							{ id: "id-2", message: "Notification 2", read: true },
-							{ id: "id-3", message: "Notification 3", read: false },
-						],
-					});
+					add({ id: "id-1", message: "Notification 1", read: true });
+					add({ id: "id-2", message: "Notification 2", read: true });
+					add({ id: "id-3", message: "Notification 3", read: false });
 
-					const vm = wrapper.vm;
+					const wrapper = mount({ readNotificationCount: 1 });
 
-					expect(vm.internalNotifications).toEqual([
+					expect(wrapper.vm.internalNotifications).toEqual([
 						{ id: "id-1", message: "Notification 1", read: true },
 						{ id: "id-3", message: "Notification 3", read: false },
 					]);
 				});
 
 				test("should not limit unread notifications", () => {
-					const wrapper = mount({
-						readNotificationCount: 1,
-						notifications: [
-							{ id: "id-1", message: "Notification 1", read: false },
-							{ id: "id-2", message: "Notification 2", read: false },
-						],
-					});
+					add({ id: "id-1", message: "Notification 1", read: false });
+					add({ id: "id-2", message: "Notification 2", read: false });
 
-					const vm = wrapper.vm;
+					const wrapper = mount({ readNotificationCount: 1 });
 
-					expect(vm.internalNotifications).toEqual([
+					expect(wrapper.vm.internalNotifications).toEqual([
 						{ id: "id-1", message: "Notification 1", read: false },
 						{ id: "id-2", message: "Notification 2", read: false },
 					]);
 				});
 
-				test("should handle an empty notifications array", () => {
-					const wrapper = mount({
-						readNotificationCount: 1,
-						notifications: [],
-					});
-
-					const vm = wrapper.vm;
-
-					expect(vm.internalNotifications).toEqual([]);
-				});
-
 				test("should handle a `readNotificationCount` of 0", () => {
-					const wrapper = mount({
-						readNotificationCount: 0,
-						notifications: [
-							{ id: "id-1", message: "Notification 1", read: true },
-							{ id: "id-2", message: "Notification 2", read: false },
-						],
-					});
+					add({ id: "id-1", message: "Notification 1", read: true });
+					add({ id: "id-2", message: "Notification 2", read: false });
 
-					const vm = wrapper.vm;
+					const wrapper = mount({ readNotificationCount: 0 });
 
-					expect(vm.internalNotifications).toEqual([
+					expect(wrapper.vm.internalNotifications).toEqual([
 						{ id: "id-2", message: "Notification 2", read: false },
 					]);
 				});
@@ -270,83 +190,70 @@ describe("notification-handler", () => {
 
 		describe("unreadNotificationCount", () => {
 			test("should return 0 if all notifications are marked as read", () => {
-				const wrapper = mount({
-					notifications: [
-						{ id: "id-1", message: "Notification 1", read: true },
-						{ id: "id-2", message: "Notification 2", read: true },
-					],
-				});
+				add({ id: "id-1", message: "Notification 1", read: true });
+				add({ id: "id-2", message: "Notification 2", read: true });
 
-				const vm = wrapper.vm;
+				const wrapper = mount();
 
-				expect(vm.unreadNotificationCount).toBe(0);
+				expect(wrapper.vm.unreadNotificationCount).toBe(0);
 			});
 
 			test("should return the correct count of unread notifications", () => {
-				const wrapper = mount({
-					notifications: [
-						{ id: "id-1", message: "Notification 1", read: true },
-						{ id: "id-2", message: "Notification 2", read: false },
-						{ id: "id-3", message: "Notification 3", read: false },
-					],
-				});
+				add({ id: "id-1", message: "Notification 1", read: true });
+				add({ id: "id-2", message: "Notification 2", read: false });
+				add({ id: "id-3", message: "Notification 3", read: false });
 
-				const vm = wrapper.vm;
+				const wrapper = mount();
 
-				expect(vm.unreadNotificationCount).toBe(2);
+				expect(wrapper.vm.unreadNotificationCount).toBe(2);
 			});
 
 			test("should handle notifications without a `read` property", () => {
-				const wrapper = mount({
-					notifications: [
-						{ id: "id-1", message: "Notification 1" },
-						{ id: "id-2", message: "Notification 2", read: false },
-						{ id: "id-3", message: "Notification 3", read: true },
-					],
-				});
+				add({ id: "id-1", message: "Notification 1" });
+				add({ id: "id-2", message: "Notification 2", read: false });
+				add({ id: "id-3", message: "Notification 3", read: true });
 
-				const vm = wrapper.vm;
+				const wrapper = mount();
 
-				expect(vm.unreadNotificationCount).toBe(2);
+				expect(wrapper.vm.unreadNotificationCount).toBe(2);
 			});
 
-			test("should handle an empty `internalNotifications` array", () => {
-				const wrapper = mount({ notifications: [] });
-				const vm = wrapper.vm;
+			test("should handle an empty notifications registry", () => {
+				const wrapper = mount();
 
-				expect(vm.unreadNotificationCount).toBe(0);
+				expect(wrapper.vm.unreadNotificationCount).toBe(0);
 			});
 		});
 
 		describe("triggerLabel", () => {
 			test("should return the default label when there are no unread notifications", () => {
-				const wrapper = mount({ notifications: [] });
+				const wrapper = mount();
 
 				expect(wrapper.vm.triggerLabel).toBe("Show notifications");
 			});
 
 			test("should include the unread count when there is one unread notification", () => {
-				const wrapper = mount({ notifications: [notification] });
+				add(notification);
+
+				const wrapper = mount();
 
 				expect(wrapper.vm.triggerLabel).toBe("Show notifications, 1 unread");
 			});
 
 			test("should include the unread count when there are multiple unread notifications", () => {
-				const wrapper = mount({
-					notifications: [
-						{ id: "notification-1", message: "First" },
-						{ id: "notification-2", message: "Second" },
-						{ id: "notification-3", message: "Third" },
-					],
-				});
+				add({ id: "notification-1", message: "First" });
+				add({ id: "notification-2", message: "Second" });
+				add({ id: "notification-3", message: "Third" });
+
+				const wrapper = mount();
 
 				expect(wrapper.vm.triggerLabel).toBe("Show notifications, 3 unread");
 			});
 
 			test("should return the default label when all notifications are read", () => {
-				const wrapper = mount({
-					notifications: [{ id: "notification-1", message: "First", read: true }],
-				});
+				add({ id: "notification-1", message: "First", read: true });
+
+				const wrapper = mount();
 
 				expect(wrapper.vm.triggerLabel).toBe("Show notifications");
 			});
@@ -359,12 +266,12 @@ describe("notification-handler", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notifications = [
+				const testNotifications = [
 					{ id: "id-1", message: "Notification 1" },
 					{ id: "id-2", message: "Notification 2" },
 				];
 
-				expect(vm.sortNotificationsByDate(notifications)).toEqual([
+				expect(vm.sortNotificationsByDate(testNotifications)).toEqual([
 					{ id: "id-1", message: "Notification 1" },
 					{ id: "id-2", message: "Notification 2" },
 				]);
@@ -374,12 +281,12 @@ describe("notification-handler", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notifications = [
+				const testNotifications = [
 					{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
 					{ id: "id-2", message: "Notification 2" },
 				];
 
-				expect(vm.sortNotificationsByDate(notifications)).toEqual([
+				expect(vm.sortNotificationsByDate(testNotifications)).toEqual([
 					{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
 					{ id: "id-2", message: "Notification 2" },
 				]);
@@ -389,12 +296,12 @@ describe("notification-handler", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notifications = [
+				const testNotifications = [
 					{ id: "id-1", message: "Notification 1" },
 					{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
 				];
 
-				expect(vm.sortNotificationsByDate(notifications)).toEqual([
+				expect(vm.sortNotificationsByDate(testNotifications)).toEqual([
 					{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
 					{ id: "id-1", message: "Notification 1" },
 				]);
@@ -404,12 +311,12 @@ describe("notification-handler", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notifications = [
+				const testNotifications = [
 					{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
 					{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
 				];
 
-				expect(vm.sortNotificationsByDate(notifications)).toEqual([
+				expect(vm.sortNotificationsByDate(testNotifications)).toEqual([
 					{ id: "id-2", message: "Notification 2", date: "2025-01-02" },
 					{ id: "id-1", message: "Notification 1", date: "2025-01-01" },
 				]);
@@ -421,37 +328,37 @@ describe("notification-handler", () => {
 				const wrapper = mount({ readNotificationCount: "not-a-number" });
 				const vm = wrapper.vm;
 
-				const notifications = [
+				const testNotifications = [
 					{ id: "id-1", message: "Notification 1", read: true },
 					{ id: "id-2", message: "Notification 2", read: false },
 				];
 
-				expect(vm.limitReadNotifications(notifications)).toEqual(notifications);
+				expect(vm.limitReadNotifications(testNotifications)).toEqual(testNotifications);
 			});
 
 			test("should return all notifications if `readNotificationCount` is undefined", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notifications = [
+				const testNotifications = [
 					{ id: "id-1", message: "Notification 1", read: true },
 					{ id: "id-2", message: "Notification 2", read: false },
 				];
 
-				expect(vm.limitReadNotifications(notifications)).toEqual(notifications);
+				expect(vm.limitReadNotifications(testNotifications)).toEqual(testNotifications);
 			});
 
 			test("should limit the number of read notifications to the value of `readNotificationCount`", () => {
 				const wrapper = mount({ readNotificationCount: 1 });
 				const vm = wrapper.vm;
 
-				const notifications = [
+				const testNotifications = [
 					{ id: "id-1", message: "Notification 1", read: true },
 					{ id: "id-2", message: "Notification 2", read: true },
 					{ id: "id-3", message: "Notification 3", read: false },
 				];
 
-				expect(vm.limitReadNotifications(notifications)).toEqual([
+				expect(vm.limitReadNotifications(testNotifications)).toEqual([
 					{ id: "id-1", message: "Notification 1", read: true },
 					{ id: "id-3", message: "Notification 3", read: false },
 				]);
@@ -461,12 +368,12 @@ describe("notification-handler", () => {
 				const wrapper = mount({ readNotificationCount: 1 });
 				const vm = wrapper.vm;
 
-				const notifications = [
+				const testNotifications = [
 					{ id: "id-1", message: "Notification 1", read: false },
 					{ id: "id-2", message: "Notification 2", read: false },
 				];
 
-				expect(vm.limitReadNotifications(notifications)).toEqual(notifications);
+				expect(vm.limitReadNotifications(testNotifications)).toEqual(testNotifications);
 			});
 
 			test("should handle an empty notifications array", () => {
@@ -480,12 +387,12 @@ describe("notification-handler", () => {
 				const wrapper = mount({ readNotificationCount: 0 });
 				const vm = wrapper.vm;
 
-				const notifications = [
+				const testNotifications = [
 					{ id: "id-1", message: "Notification 1", read: true },
 					{ id: "id-2", message: "Notification 2", read: false },
 				];
 
-				expect(vm.limitReadNotifications(notifications)).toEqual([
+				expect(vm.limitReadNotifications(testNotifications)).toEqual([
 					{ id: "id-2", message: "Notification 2", read: false },
 				]);
 			});
@@ -496,65 +403,50 @@ describe("notification-handler", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notification = { type: "danger" };
-
-				expect(vm.getNotificationSlotName(notification)).toEqual("notification-danger-template");
+				expect(vm.getNotificationSlotName({ type: "danger" })).toEqual(
+					"notification-danger-template",
+				);
 			});
 
 			test('should return "notification-warning-template" if the notification has type "warning"', () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notification = { type: "warning" };
-
-				expect(vm.getNotificationSlotName(notification)).toEqual("notification-warning-template");
+				expect(vm.getNotificationSlotName({ type: "warning" })).toEqual(
+					"notification-warning-template",
+				);
 			});
 
 			test("should return 'notification-read-template' if the notification is marked as read", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notification = { read: true };
-
-				expect(vm.getNotificationSlotName(notification)).toBe("notification-read-template");
+				expect(vm.getNotificationSlotName({ read: true })).toBe("notification-read-template");
 			});
 
 			test("should return 'notification-read-template' if the notification is marked as read, even if it has a type", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notification = { read: true, type: "danger" };
-
-				expect(vm.getNotificationSlotName(notification)).toBe("notification-read-template");
-			});
-
-			test("should return 'notification-read-template' if the notification has been marked as read since initialisation", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				const notification = { id: "notification-1", type: "danger" };
-
-				vm.notificationsMarkedAsRead = ["notification-1"];
-
-				expect(vm.getNotificationSlotName(notification)).toBe("notification-read-template");
+				expect(vm.getNotificationSlotName({ read: true, type: "danger" })).toBe(
+					"notification-read-template",
+				);
 			});
 
 			test("should return 'notification-info-template' if the notification is not marked as read", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notification = { read: false };
-
-				expect(vm.getNotificationSlotName(notification)).toBe("notification-info-template");
+				expect(vm.getNotificationSlotName({ read: false })).toBe("notification-info-template");
 			});
 
 			test("should return 'notification-info-template' if the notification does not have a 'read' property", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notification = { message: "Notification without read property" };
-
-				expect(vm.getNotificationSlotName(notification)).toBe("notification-info-template");
+				expect(vm.getNotificationSlotName({ message: "Notification without read property" })).toBe(
+					"notification-info-template",
+				);
 			});
 		});
 
@@ -563,50 +455,42 @@ describe("notification-handler", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notification = { type: "danger" };
-
-				expect(vm.getNotificationComponent(notification)).toEqual(NotificationDanger);
+				expect(vm.getNotificationComponent({ type: "danger" })).toEqual(NotificationDanger);
 			});
 
 			test('should return NotificationWarning if the notification has type "warning"', () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notification = { type: "warning" };
-
-				expect(vm.getNotificationComponent(notification)).toEqual(NotificationWarning);
+				expect(vm.getNotificationComponent({ type: "warning" })).toEqual(NotificationWarning);
 			});
 
 			test("should return NotificationRead if the notification is marked as read", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notification = { read: true };
-
-				expect(vm.getNotificationComponent(notification)).toEqual(NotificationRead);
+				expect(vm.getNotificationComponent({ read: true })).toEqual(NotificationRead);
 			});
 
 			test("should return NotificationInfo if the notification is not marked as read", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notification = { read: false };
-
-				expect(vm.getNotificationComponent(notification)).toEqual(NotificationInfo);
+				expect(vm.getNotificationComponent({ read: false })).toEqual(NotificationInfo);
 			});
 
 			test("should return NotificationInfo if the notification does not have a 'read' property", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				const notification = { message: "Notification without read property" };
-
-				expect(vm.getNotificationComponent(notification)).toEqual(NotificationInfo);
+				expect(
+					vm.getNotificationComponent({ message: "Notification without read property" }),
+				).toEqual(NotificationInfo);
 			});
 		});
 
 		describe("markNotificationRead", () => {
-			describe("should not emit if the provided ID is not a non-empty string", () => {
+			describe("should not mark anything for invalid ID input", () => {
 				test.for([
 					["boolean (true)", true],
 					["boolean (false)", false],
@@ -621,23 +505,24 @@ describe("notification-handler", () => {
 					["null", null],
 					["undefined", undefined],
 				])("%s", ([, id]) => {
-					const wrapper = mount({ notifications: [{ ...notification, id }] });
-					const vm = wrapper.vm;
+					add(notification);
 
-					vm.markNotificationRead(id);
+					const wrapper = mount();
 
-					expect(wrapper.emitted("notifications:read")).toBeUndefined();
+					wrapper.vm.markNotificationRead(id);
+
+					expect(notifications.value[0].read).toBe(false);
 				});
 			});
 
-			test("should emit a notification ID", () => {
+			test("should mark the notification as read in the registry", () => {
+				add(notification);
+
 				const wrapper = mount();
-				const vm = wrapper.vm;
 
-				vm.markNotificationRead(notification.id);
+				wrapper.vm.markNotificationRead("notification-1");
 
-				expect(wrapper.emitted("notifications:read")).toEqual([[["notification-1"]]]);
-				expect(vm.notificationsMarkedAsRead).toEqual(["notification-1"]);
+				expect(notifications.value[0].read).toBe(true);
 			});
 		});
 
@@ -662,132 +547,38 @@ describe("notification-handler", () => {
 		});
 
 		describe("markAllNotificationsRead", () => {
-			test("should not emit if there are no unread notifications", () => {
-				const wrapper = mount({ notifications: [] });
-				const vm = wrapper.vm;
-
-				vm.markAllNotificationsRead();
-
-				expect(wrapper.emitted("notifications:read")).toBeUndefined();
-				expect(vm.notificationsMarkedAsRead).toEqual([]);
-			});
-
-			test("should emit IDs of all unread notifications that are not pinned", () => {
-				const wrapper = mount({
-					notifications: [
-						{
-							id: "notification-1",
-							message: "Notification",
-							pinned: false,
-							read: false,
-						},
-						{
-							id: "notification-2",
-							message: "Notification",
-							pinned: true,
-							read: false,
-						},
-						{
-							id: "notification-3",
-							message: "Notification",
-							pinned: false,
-							read: false,
-						},
-					],
-				});
-
-				const vm = wrapper.vm;
-
-				vm.markAllNotificationsRead();
-
-				expect(wrapper.emitted("notifications:read")).toEqual([
-					[["notification-1", "notification-3"]],
-				]);
-				expect(vm.notificationsMarkedAsRead).toEqual(["notification-1", "notification-3"]);
-			});
-
-			test("should not emit IDs of notifications that are already marked as read", () => {
-				const wrapper = mount({
-					notifications: [
-						{
-							id: "notification-1",
-							message: "Notification",
-							pinned: false,
-							read: true,
-						},
-						{
-							id: "notification-2",
-							message: "Notification",
-							pinned: false,
-							read: false,
-						},
-					],
-				});
-
-				const vm = wrapper.vm;
-
-				vm.markAllNotificationsRead();
-
-				expect(wrapper.emitted("notifications:read")).toEqual([[["notification-2"]]]);
-				expect(vm.notificationsMarkedAsRead).toEqual(["notification-2"]);
-			});
-		});
-
-		describe("hasNotificationBeenMarkedAsRead", () => {
-			describe("should return false for anything but a non-empty string ID", () => {
-				test.for([
-					["boolean (true)", true],
-					["boolean (false)", false],
-					["number (positive)", 1],
-					["number (negative)", -1],
-					["number (NaN)", NaN],
-					["string (empty)", ""],
-					["object (non-empty)", { property: "value" }],
-					["object (empty)", {}],
-					["array (non-empty)", [1, 2, 3]],
-					["array (empty)", []],
-					["null", null],
-					["undefined", undefined],
-				])("%s", ([, input]) => {
-					const wrapper = mount();
-					const vm = wrapper.vm;
-
-					expect(vm.hasNotificationBeenMarkedAsRead(input)).toBe(false);
-				});
-			});
-
-			describe("should return false if notificationsMarkedAsRead is anything but a non-empty array", () => {
-				test.for([
-					["boolean (true)", true],
-					["boolean (false)", false],
-					["number (positive)", 1],
-					["number (negative)", -1],
-					["number (NaN)", NaN],
-					["string (non-empty)", "string"],
-					["string (empty)", ""],
-					["array (empty)", []],
-					["object (non-empty)", { property: "value" }],
-					["object (empty)", {}],
-					["null", null],
-					["undefined", undefined],
-				])("%s", ([, input]) => {
-					const wrapper = mount();
-					const vm = wrapper.vm;
-
-					vm.notificationsMarkedAsRead = input;
-
-					expect(vm.hasNotificationBeenMarkedAsRead("notification-1")).toBe(false);
-				});
-			});
-
-			test("should determine if a notification has been marked as read", () => {
+			test("should do nothing if there are no unread notifications", () => {
 				const wrapper = mount();
-				const vm = wrapper.vm;
 
-				vm.notificationsMarkedAsRead = ["notification-1"];
+				wrapper.vm.markAllNotificationsRead();
 
-				expect(vm.hasNotificationBeenMarkedAsRead("notification-1")).toBe(true);
-				expect(vm.hasNotificationBeenMarkedAsRead("notification-2")).toBe(false);
+				expect(notifications.value).toEqual([]);
+			});
+
+			test("should mark all unread non-pinned notifications as read", () => {
+				add({ id: "notification-1", message: "Notification", pinned: false, read: false });
+				add({ id: "notification-2", message: "Notification", pinned: true, read: false });
+				add({ id: "notification-3", message: "Notification", pinned: false, read: false });
+
+				const wrapper = mount();
+
+				wrapper.vm.markAllNotificationsRead();
+
+				expect(notifications.value.find((n) => n.id === "notification-1").read).toBe(true);
+				expect(notifications.value.find((n) => n.id === "notification-2").read).toBe(false);
+				expect(notifications.value.find((n) => n.id === "notification-3").read).toBe(true);
+			});
+
+			test("should not affect notifications that are already marked as read", () => {
+				add({ id: "notification-1", message: "Notification", read: true });
+				add({ id: "notification-2", message: "Notification", read: false });
+
+				const wrapper = mount();
+
+				wrapper.vm.markAllNotificationsRead();
+
+				expect(notifications.value.find((n) => n.id === "notification-1").read).toBe(true);
+				expect(notifications.value.find((n) => n.id === "notification-2").read).toBe(true);
 			});
 		});
 	});

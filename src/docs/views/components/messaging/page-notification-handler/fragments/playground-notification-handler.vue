@@ -11,19 +11,20 @@
 		</template>
 
 		<div class="flex justify-end">
-			<notification-handler v-bind="componentProps">
+			<notification-handler>
 				{{ textSlots.default?.value }}
 			</notification-handler>
 		</div>
 
 		<template #additional-code>
-			<code-block :code="`const notifications = ${JSON.stringify(notifications, null, '\t')};`" />
+			<code-block :code="composableSetup" />
 		</template>
 	</component-playground>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
+import { useNotifications } from "@/composables/use-notifications/use-notifications.js";
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
 // Our base text slots, available for the user to update.
@@ -58,7 +59,7 @@ const textSlots = ref({
 	},
 });
 
-const notifications = [
+const sampleNotifications = [
 	{
 		id: "f78e6fd5-a84a-49fa-8b6c-e30279ff805a",
 		type: "info",
@@ -105,19 +106,22 @@ const notifications = [
 	},
 ];
 
-// Props both for the template and for the component example itself.
-const props = ref({
-	notifications: {
-		label: "Notifications",
-		value: notifications,
-		type: "array",
-	},
+// Code snippet shown alongside the playground to illustrate composable usage.
+const composableSetup = `import { useNotifications } from "@lewishowles/components";
+
+const { add } = useNotifications();
+
+sampleNotifications.forEach(notification => add(notification));`;
+
+const { add, clear } = useNotifications();
+
+onMounted(() => {
+	sampleNotifications.forEach((notification) => add(notification));
 });
 
-// Convert our props into a format that can be passed directly to our component.
-const componentProps = computed(() => {
-	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
+onBeforeUnmount(() => {
+	clear();
 });
 
-const template = useTemplateGenerator("notification-handler", { slots: textSlots, props });
+const template = useTemplateGenerator("notification-handler", { slots: textSlots });
 </script>
