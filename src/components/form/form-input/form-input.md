@@ -72,10 +72,11 @@ Focus this input.
 
 ## Styling hooks
 
-| Attribute                     | Element | Notes                               |
-| ----------------------------- | ------- | ----------------------------------- |
-| `data-component="form-input"` | Root    | Scope styles to this component      |
-| `data-invalid`                | Root    | Present when the field has an error |
+| Attribute                     | Element         | Notes                               |
+| ----------------------------- | --------------- | ----------------------------------- |
+| `data-component="form-input"` | Root            | Scope styles to this component      |
+| `data-invalid`                | Root            | Present when the field has an error |
+| `data-part="field-wrapper"`   | Input container | Wraps the `<input>` element         |
 
 ## Examples
 

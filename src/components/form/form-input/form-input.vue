@@ -20,7 +20,7 @@
 		<div
 			class="my-1 flex transition-shadow"
 			:class="{ 'form-field--error': haveError }"
-			data-selector="form-field-wrapper"
+			data-part="field-wrapper"
 			data-test="form-input-wrapper"
 		>
 			<input

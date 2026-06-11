@@ -124,6 +124,15 @@
 				<template #attribute>data-invalid</template>
 				<p>Present on the root element when the field has an error.</p>
 			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-field-wrapper">
+				<template #attribute>data-part="field-wrapper"</template>
+				<p>
+					Present on the container that wraps the
+					<code>&lt;textarea&gt;</code>
+					element.
+				</p>
+			</component-styling-hook>
 		</component-styling-hooks>
 
 		<component-playgrounds>
