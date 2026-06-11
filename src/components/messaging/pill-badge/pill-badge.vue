@@ -15,6 +15,7 @@
 			:is="iconStartComponent"
 			v-if="haveIconStart"
 			class="stroke-current"
+			data-part="icon-start"
 			data-test="pill-badge-icon-start"
 		/>
 
@@ -24,6 +25,7 @@
 			:is="iconEndComponent"
 			v-if="haveIconEnd"
 			class="stroke-current"
+			data-part="icon-end"
 			data-test="pill-badge-icon-end"
 		/>
 	</span>

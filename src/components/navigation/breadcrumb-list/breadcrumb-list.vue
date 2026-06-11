@@ -6,7 +6,7 @@
 	</alert-message>
 
 	<nav v-else :aria-label="label" data-component="breadcrumb-list" data-test="breadcrumb-list">
-		<ol class="flex items-center gap-2" data-test="breadcrumb-list-list">
+		<ol class="flex items-center gap-2" data-part="list" data-test="breadcrumb-list-list">
 			<slot />
 		</ol>
 	</nav>

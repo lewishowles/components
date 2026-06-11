@@ -25,7 +25,7 @@
 				<slot />
 			</div>
 
-			<div v-if="showValue" class="ms-auto" data-test="progress-bar-value">
+			<div v-if="showValue" class="ms-auto" data-part="value" data-test="progress-bar-value">
 				<slot name="value" v-bind="{ current: internalValue, percentage: percentageValue }">
 					{{ percentageValue }}%
 				</slot>

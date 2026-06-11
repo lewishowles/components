@@ -97,10 +97,12 @@ Activate this tab programmatically. Useful when external code needs to change wh
 
 ## Styling hooks
 
-| Attribute                    | Element  | Notes                           |
-| ---------------------------- | -------- | ------------------------------- |
-| `data-component="tab-group"` | Root     | Scope styles to this component  |
-| `data-part="tab-list"`       | Tab list | The ordered list of tab buttons |
+| Attribute                    | Element   | Notes                                      |
+| ---------------------------- | --------- | ------------------------------------------ |
+| `data-component="tab-group"` | Root      | Scope styles to this component             |
+| `data-part="nav"`            | Nav shell | Wraps the tab list and overflow indicators |
+| `data-part="tab-list"`       | Tab list  | The ordered list of tab buttons            |
+| `data-part="tab"`            | Tab link  | Each individual tab button                 |
 
 ## Examples
 

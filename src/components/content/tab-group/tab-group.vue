@@ -8,7 +8,7 @@
 			ref="tabBarReference"
 			class="border-border mb-12 border-b"
 			:class="{ 'wrap-tabs': wrap }"
-			data-selector="tab-group-nav"
+			data-part="nav"
 		>
 			<ol
 				class="-mb-px flex items-end"
@@ -37,6 +37,7 @@
 							'hocus:border-border-strong hocus:text-content-strong dark:hocus:border-white/60 border-transparent text-current':
 								!tab.active,
 						}"
+						data-part="tab"
 						data-test="tab-group-tab"
 						@click.prevent="setActiveTabById(tab.tabId)"
 					>

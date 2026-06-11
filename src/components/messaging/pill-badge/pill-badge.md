@@ -31,9 +31,11 @@ The colour of this badge.
 
 ## Styling hooks
 
-| Attribute                     | Element | Notes                          |
-| ----------------------------- | ------- | ------------------------------ |
-| `data-component="pill-badge"` | Root    | Scope styles to this component |
+| Attribute                     | Element    | Notes                           |
+| ----------------------------- | ---------- | ------------------------------- |
+| `data-component="pill-badge"` | Root       | Scope styles to this component  |
+| `data-part="icon-start"`      | Start icon | Present when `iconStart` is set |
+| `data-part="icon-end"`        | End icon   | Present when `iconEnd` is set   |
 
 ## Examples
 

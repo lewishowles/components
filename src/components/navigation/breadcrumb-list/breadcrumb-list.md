@@ -22,6 +22,7 @@ Intended to contain one or more `breadcrumb-item` components.
 | Attribute                          | Element | Notes                          |
 | ---------------------------------- | ------- | ------------------------------ |
 | `data-component="breadcrumb-list"` | Root    | Scope styles to this component |
+| `data-part="list"`                 | `<ol>`  | The list of breadcrumb items   |
 
 ## Examples
 

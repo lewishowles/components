@@ -90,6 +90,7 @@ Override the default percentage display. Only rendered when `showValue` is true.
 | `data-part="label"`             | Label element    | Visible when `showLabel` is true |
 | `data-part="track"`             | Track background | —                                |
 | `data-part="bar"`               | Filled bar       | Also on the indeterminate bar    |
+| `data-part="value"`             | Value display    | Visible when `showValue` is true |
 | `data-indeterminate`            | Root             | Present when `current` is `null` |
 
 ## Examples

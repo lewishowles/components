@@ -15,12 +15,14 @@
 				'size-text': iconOnly && !showExternalIcon,
 				'me-1 size-[0.857em]': !iconOnly || showExternalIcon,
 			}"
+			data-part="icon-start"
 			data-test="link-tag-icon-start"
 		/>
 
 		<conditional-wrapper
 			v-bind="{ wrap: iconOnly, tag: 'span' }"
 			class="sr-only"
+			data-part="label"
 			data-test="link-tag-label"
 		>
 			<slot />
@@ -34,15 +36,22 @@
 				'size-text': iconOnly && !showExternalIcon,
 				'ms-1 size-[0.857em]': !iconOnly || showExternalIcon,
 			}"
+			data-part="icon-end"
 			data-test="link-tag-icon-end"
 		/>
 		<icon-external
 			v-else-if="haveExternalIcon"
 			class="ms-1 inline-block size-[0.857em] stroke-current"
+			data-part="icon-external"
 			data-test="link-tag-icon-external"
 		/>
 
-		<span v-if="external" class="sr-only" data-test="link-tag-external-suffix">
+		<span
+			v-if="external"
+			class="sr-only"
+			data-part="external-suffix"
+			data-test="link-tag-external-suffix"
+		>
 			<slot name="external-suffix">(opens in new tab)</slot>
 		</span>
 	</a>

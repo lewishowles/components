@@ -72,6 +72,7 @@ The component uses `role="meter"` with `aria-valuenow`, `aria-valuemin`, and `ar
 | `data-component="spark-bar"` | Root             | Scope styles to this component |
 | `data-part="track"`          | Track background | —                              |
 | `data-part="bar"`            | Filled bar       | —                              |
+| `data-part="value"`          | Value display    | —                              |
 
 ## Examples
 

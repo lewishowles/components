@@ -212,7 +212,7 @@
 	}
 }
 
-[data-selector="form-field-wrapper"] {
+[data-part="field-wrapper"] {
 	--ring-size: 1px;
 	--ring-colour: var(--color-grey-300);
 
@@ -239,8 +239,8 @@
 	}
 }
 
-[data-selector="form-prefix"],
-[data-selector="form-suffix"] {
+[data-part="prefix"],
+[data-part="suffix"] {
 	color: var(--content-muted);
 
 	& > svg {

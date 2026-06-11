@@ -59,10 +59,15 @@ Whether to only show an icon (and not the associated text). If true, the text is
 
 ## Styling hooks
 
-| Attribute                   | Element    | Notes                             |
-| --------------------------- | ---------- | --------------------------------- |
-| `data-component="link-tag"` | Root `<a>` | Scope styles to this component    |
-| `data-external`             | Root       | Present when `external` is `true` |
+| Attribute                     | Element       | Notes                                     |
+| ----------------------------- | ------------- | ----------------------------------------- |
+| `data-component="link-tag"`   | Root `<a>`    | Scope styles to this component            |
+| `data-external`               | Root          | Present when `external` is `true`         |
+| `data-part="icon-start"`      | Start icon    | Present when `iconStart` is set           |
+| `data-part="label"`           | Label         | The link text (always present)            |
+| `data-part="icon-end"`        | End icon      | Present when `iconEnd` is set             |
+| `data-part="icon-external"`   | External icon | Present when `external` and icon is shown |
+| `data-part="external-suffix"` | Hidden suffix | Present when `external` is `true`         |
 
 ## Examples
 

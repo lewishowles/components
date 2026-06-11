@@ -18,7 +18,7 @@
 			/>
 		</div>
 
-		<div :class="valueClasses" data-test="spark-bar-value">
+		<div :class="valueClasses" data-part="value" data-test="spark-bar-value">
 			<slot v-bind="{ current: internalValue, min, max, percentage: percentageValue }">
 				{{ percentageValue }}%
 			</slot>

@@ -84,10 +84,11 @@ Focus this select.
 
 ## Styling hooks
 
-| Attribute                      | Element | Notes                               |
-| ------------------------------ | ------- | ----------------------------------- |
-| `data-component="form-select"` | Root    | Scope styles to this component      |
-| `data-invalid`                 | Root    | Present when the field has an error |
+| Attribute                      | Element         | Notes                               |
+| ------------------------------ | --------------- | ----------------------------------- |
+| `data-component="form-select"` | Root            | Scope styles to this component      |
+| `data-invalid`                 | Root            | Present when the field has an error |
+| `data-part="field-wrapper"`    | Input container | Wraps the `<select>` element        |
 
 ## Examples
 
