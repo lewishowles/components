@@ -227,6 +227,19 @@
 
 	--border: var(--color-grey-200);
 	--border-strong: var(--color-grey-300);
+
+	/*
+	 * Chart palette (Okabe-Ito, colour-blind safe). Wraps at 8 — override any
+	 * token in your own :root to re-theme charts without touching components.
+	 */
+	--color-chart-1: #e69f00;
+	--color-chart-2: #56b4e9;
+	--color-chart-3: #009e73;
+	--color-chart-4: #e6be00;
+	--color-chart-5: #0072b2;
+	--color-chart-6: #d55e00;
+	--color-chart-7: #cc79a7;
+	--color-chart-8: #404040;
 }
 
 /*
@@ -263,6 +276,15 @@
 
 	--border: rgb(255 255 255 / 20%);
 	--border-strong: rgb(255 255 255 / 30%);
+
+	--color-chart-1: #ffb733;
+	--color-chart-2: #7dcbf5;
+	--color-chart-3: #00c98f;
+	--color-chart-4: #ffe033;
+	--color-chart-5: #2e9dd6;
+	--color-chart-6: #f07840;
+	--color-chart-7: #dc95be;
+	--color-chart-8: #aaaaaa;
 }
 
 /*
