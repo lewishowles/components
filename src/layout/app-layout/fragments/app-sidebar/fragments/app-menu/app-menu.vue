@@ -110,6 +110,7 @@
 					<app-menu-link to="/composables/use-combobox">useCombobox</app-menu-link>
 					<app-menu-link to="/composables/use-floating-position">useFloatingPosition</app-menu-link>
 					<app-menu-link to="/composables/use-flash-messages">useFlashMessages</app-menu-link>
+					<app-menu-link to="/composables/use-form-data">useFormData</app-menu-link>
 					<app-menu-link to="/composables/use-modal-dialog">useModalDialog</app-menu-link>
 				</app-menu-section>
 

@@ -1,5 +1,30 @@
 # Changelog
 
+## Unreleased
+
+### `useFormData()`
+
+A new composable for initialising form data from an async data source, such as the `data` ref from a Pinia Colada query. It populates the form once when the source first becomes available.
+
+```js
+import { useFormData } from "@lewishowles/components/composables";
+
+const { isReady, userDetails } = useUser(userId);
+
+const formData = useFormData(userDetails, (details) => ({
+	name: details.name,
+	email: details.email,
+}));
+```
+
+Gate the form on `isReady` so fields mount only after data is available:
+
+```html
+<form-wrapper v-if="isReady" v-model="formData" @submit="handleSubmit">
+	<!-- form fields -->
+</form-wrapper>
+```
+
 ## 2.1.0
 
 ### `useNotifications()`
