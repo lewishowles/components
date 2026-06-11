@@ -1,4 +1,4 @@
-import { createMount } from "@unit/support/mount";
+import { createMount, createDeepMount } from "@unit/support/mount";
 import { describe, expect, test, vi } from "vite-plus/test";
 
 import ButtonGroup from "@/components/form/button-group/button-group.vue";
@@ -17,6 +17,7 @@ const provide = {
 };
 
 const mount = createMount(FormField, { props: defaultProps, global: { provide } });
+const mountDeep = createDeepMount(FormField, { props: defaultProps, global: { provide } });
 
 describe("form-field", () => {
 	describe("Initialisation", () => {
@@ -38,7 +39,7 @@ describe("form-field", () => {
 		});
 
 		test("should register with the child's focusId when available", () => {
-			mount({ type: "date" });
+			mountDeep({ props: { type: "date", modelValue: { day: null, month: null, year: null } } });
 
 			const registeredId = registerFieldMock.mock.calls.at(-1)?.[0]?.id;
 
