@@ -122,7 +122,7 @@ A new `useFlashMessages` composable allows messages to registered for display, w
 ### Form wrapper
 
 - A new `fieldErrors` prop allows error messages to be passed directly to fields, and displayed in the same way validation errors are, including linked `error-summary`.
-- A new `fieldErrorsCallback` prop fires when an error is returned, allowing any field-specific errors to be extracted from the rejected Promise called by the form's submit method..
+- A new `submitErrorsCallback` prop fires when an error is returned, allowing any field-specific errors to be extracted from the rejected Promise called by the form's submit method.
 
 ### New components
 

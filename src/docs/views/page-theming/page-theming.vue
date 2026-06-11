@@ -82,10 +82,7 @@
 			</div>
 		</dl>
 
-		<p>
-			To copy a stylesheet into your project at the correct version, use the CLI (coming in a future
-			release):
-		</p>
+		<p>To copy a stylesheet into your project at the correct version, use the CLI:</p>
 
 		<code-block :code="copyCliExample" />
 

@@ -340,7 +340,6 @@ describe("notification-handler", () => {
 
 				cy.get("@vue").then((wrapper) => {
 					expect(wrapper.emitted("notifications:read")).to.have.length(1);
-					console.log(wrapper.emitted("notifications:read"));
 					expect(wrapper.emitted("notifications:read")[0][0]).to.deep.equal([
 						"notification-1",
 						"notification-2",
