@@ -25,7 +25,7 @@
 					<code>&lt;component :is=&quot;...&quot;&gt;</code>
 					, allowing the button to use icons it doesn't explicitly import. To be used in this way,
 					the icon must be globally registered. You can find
-					<router-link v-bind="{ to: 'icons' }">
+					<router-link v-bind="{ to: '/icons' }">
 						the list of available icons in this project
 					</router-link>
 					, or you can use one that is globally registered in your project.
@@ -56,7 +56,7 @@
 					<code>&lt;component :is=&quot;...&quot;&gt;</code>
 					, allowing the button to use icons it doesn't explicitly import. To be used in this way,
 					the icon must be globally registered. You can find
-					<router-link v-bind="{ to: 'icons' }">
+					<router-link v-bind="{ to: '/icons' }">
 						the list of available icons in this project
 					</router-link>
 					, or you can use one that is globally registered in your project.
@@ -139,12 +139,10 @@
 
 		<component-playgrounds>
 			<playground-pill-badge />
-			<playground-pill-badge-icon />
 		</component-playgrounds>
 	</component-page>
 </template>
 
 <script setup>
 import PlaygroundPillBadge from "./fragments/playground-pill-badge.vue";
-import PlaygroundPillBadgeIcon from "./fragments/playground-pill-badge-icon.vue";
 </script>

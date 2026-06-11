@@ -51,6 +51,7 @@ export const pillBadgeMetadata = {
 			name: "default",
 			label: "Default badge",
 			summary: "A text badge with a chosen colour.",
+			playground: true,
 			snippet: {
 				slots: {
 					default: {
@@ -72,23 +73,26 @@ export const pillBadgeMetadata = {
 			name: "icon-start",
 			label: "Start icon",
 			summary: "A badge with an icon before the label.",
+			playground: true,
 			snippet: {
 				slots: {
 					default: {
 						label: "Text",
-						value: "Increased",
+						value: "-8.5%",
 					},
 				},
 				props: {
 					colour: {
 						label: "Colour",
-						value: "green",
+						value: "red",
 						type: "text",
 						isInline: true,
 					},
-					iconStart: {
-						label: "Start icon",
-						value: "icon-arrow-up",
+					"icon-start": {
+						label: "Icon start",
+						value: "icon-arrow-down",
+						type: "text",
+						isInline: true,
 					},
 				},
 			},
@@ -97,6 +101,7 @@ export const pillBadgeMetadata = {
 			name: "icon-end",
 			label: "End icon",
 			summary: "A badge with an icon after the label.",
+			playground: true,
 			snippet: {
 				slots: {
 					default: {
@@ -111,9 +116,10 @@ export const pillBadgeMetadata = {
 						type: "text",
 						isInline: true,
 					},
-					iconEnd: {
+					"icon-end": {
 						label: "End icon",
 						value: "icon-arrow-down",
+						isInline: true,
 					},
 				},
 			},
