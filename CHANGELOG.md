@@ -41,9 +41,37 @@ Run `npx @lewishowles/components copy` with no arguments to see all available sh
 - A new `layout-classes` prop allows classes to be passed down to `form-layout`.
 - A new `messages` slot marks a place to provide generic form success or error messages, and appears below the primary actions.
 
+### `chart-legend`
+
+A new component that displays a colour-coded legend alongside any chart. Works alongside `useChartConfig` to pair each series entry's colour swatch, label, and optional formatted value. `orientation` controls whether entries flow in a row or column.
+
+```html
+<chart-legend v-bind="{ series }" />
+```
+
+### `useChartConfig`
+
+A new composable that maps raw segments to a typed series with colours drawn from the library's accessible Okabe-Ito chart palette. Pass the result directly to `donut-chart`, `chart-legend`, or any custom chart.
+
+```js
+const { series } = useChartConfig([
+	{ label: "North", value: 5 },
+	{ label: "South", value: 4 },
+]);
+```
+
+### `donut-chart`
+
+- A `segments` prop replaces `values`. Each segment carries a `label` (used in the accessible data table) alongside its `value`.
+- `values` and `colourful` props have been removed.
+
+### Styling hooks
+
+Components now expose `data-part` on more internal elements, providing additional stable CSS targets without relying on internal class names. See the styling hooks reference for the full list per component.
+
 ### New features
 
-- `breadcrumb-item` - A new `link` slot replaces the built-in link, useful for integrating with plugins like `vue-router`.
+- `breadcrumb-item` — A new `link` slot replaces the built-in link, useful for integrating with plugins like `vue-router`.
 
 ## 2.0.3
 
