@@ -26,6 +26,15 @@ describe("form-wrapper", () => {
 
 				expect(vm.formData).toEqual({ username: null });
 			});
+
+			test("should preserve an existing initial value", async () => {
+				const wrapper = mount({ props: { modelValue: { username: "wall-e" } } });
+				const vm = wrapper.vm;
+
+				await vm.registerField({ name: "username", validateField: () => true });
+
+				expect(vm.formData).toEqual({ username: "wall-e" });
+			});
 		});
 
 		describe("updateFieldValue", () => {
@@ -163,28 +172,22 @@ describe("form-wrapper", () => {
 				expect(wrapper.vm.resetSubmitButton).toBeTypeOf("function");
 			});
 
-			test("Resets isSubmitting to false", async () => {
+			test("Resets isSubmitting to false automatically after submit", async () => {
 				const onSubmit = vi.fn();
 				const wrapper = mount({ props: { onSubmit } });
 
 				await wrapper.vm.handleFormSubmit();
-
-				// isSubmitting is true after a non-Promise handler — the caller must
-				// reset it manually.
-				expect(wrapper.vm.isSubmitting).toBe(true);
-
-				wrapper.vm.resetSubmitButton();
 
 				expect(wrapper.vm.isSubmitting).toBe(false);
 			});
 		});
 	});
 
-	describe("fieldErrorsCallback", () => {
+	describe("submitErrorsCallback", () => {
 		describe("handleSubmitError", () => {
 			test("Maps a rejected error to a registered field", () => {
 				const wrapper = mount({
-					props: { fieldErrorsCallback: () => ({ email: "That email is taken" }) },
+					props: { submitErrorsCallback: () => ({ email: "That email is taken" }) },
 				});
 
 				const vm = wrapper.vm;
@@ -200,7 +203,7 @@ describe("form-wrapper", () => {
 
 			test("Normalises a list of messages for a field", () => {
 				const wrapper = mount({
-					props: { fieldErrorsCallback: () => ({ name: ["Too short", "Required"] }) },
+					props: { submitErrorsCallback: () => ({ name: ["Too short", "Required"] }) },
 				});
 
 				const vm = wrapper.vm;
@@ -217,32 +220,32 @@ describe("form-wrapper", () => {
 
 			test("Surfaces errors for unknown fields as general errors", () => {
 				const wrapper = mount({
-					props: { fieldErrorsCallback: () => ({ form: "Something went wrong" }) },
+					props: { submitErrorsCallback: () => ({ form: "Something went wrong" }) },
 				});
 
 				const vm = wrapper.vm;
 
 				vm.handleSubmitError(new Error("Request failed"));
 
-				expect(vm.apiGeneralErrors).toEqual(["Something went wrong"]);
+				expect(vm.generalSubmitErrors).toEqual(["Something went wrong"]);
 				expect(vm.errorSummary).toEqual([]);
 			});
 
-			test("Re-throws when the adapter returns nothing mappable", () => {
+			test("Re-throws when the adapter returns nothing mappable", async () => {
 				const error = new Error("Server error");
-				const wrapper = mount({ props: { fieldErrorsCallback: () => null } });
+				const wrapper = mount({ props: { submitErrorsCallback: () => null } });
 
 				const vm = wrapper.vm;
 
-				expect(() => vm.handleSubmitError(error)).toThrow(error);
-				expect(vm.apiGeneralErrors).toEqual([]);
+				await expect(vm.handleSubmitError(error)).rejects.toThrow(error);
+				expect(vm.generalSubmitErrors).toEqual([]);
 			});
 
-			test("Re-throws when no fieldErrorsCallback is provided", () => {
+			test("Re-throws when no submitErrorsCallback is provided", async () => {
 				const error = new Error("Server error");
 				const wrapper = mount();
 
-				expect(() => wrapper.vm.handleSubmitError(error)).toThrow(error);
+				await expect(wrapper.vm.handleSubmitError(error)).rejects.toThrow(error);
 			});
 		});
 
@@ -251,7 +254,7 @@ describe("form-wrapper", () => {
 				const wrapper = mount({
 					props: {
 						fieldErrors: { email: "Parent error" },
-						fieldErrorsCallback: () => ({ email: "API error" }),
+						submitErrorsCallback: () => ({ email: "API error" }),
 					},
 				});
 
@@ -271,7 +274,7 @@ describe("form-wrapper", () => {
 				const wrapper = mount({
 					props: {
 						onSubmit,
-						fieldErrorsCallback: () => ({ email: "That email is taken" }),
+						submitErrorsCallback: () => ({ email: "That email is taken" }),
 					},
 				});
 
@@ -297,7 +300,7 @@ describe("form-wrapper", () => {
 				const wrapper = mount({
 					props: {
 						onSubmit,
-						fieldErrorsCallback: () => ({ email: "That email is taken" }),
+						submitErrorsCallback: () => ({ email: "That email is taken" }),
 					},
 				});
 

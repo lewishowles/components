@@ -88,10 +88,14 @@ describe("form-wrapper", () => {
 			cy.getByData("tertiary-actions-slot-test").shouldBeVisible();
 		});
 
-		it("The `error` slot can be utilised", () => {
-			mount({ slots: { error: h("div", { "data-test": "error-slot-test" }, "Slot test") } });
+		it("The `submit-errors` slot can be utilised", () => {
+			mount({
+				slots: {
+					"submit-errors": h("div", { "data-test": "submit-errors-slot-test" }, "Slot test"),
+				},
+			});
 
-			cy.getByData("error-slot-test").shouldBeVisible();
+			cy.getByData("submit-errors-slot-test").shouldBeVisible();
 		});
 	});
 
@@ -124,14 +128,6 @@ describe("form-wrapper", () => {
 			cy.getByData("form-wrapper-submit-button").click();
 
 			cy.getByData("form-wrapper-submit-button").shouldNotHaveAttribute("aria-busy");
-		});
-
-		it("Stays in loading state when no Promise is returned", () => {
-			mount({ props: { onSubmit: () => {} } });
-
-			cy.getByData("form-wrapper-submit-button").click();
-
-			cy.getByData("form-wrapper-submit-button").shouldHaveAttribute("aria-busy", "true");
 		});
 	});
 

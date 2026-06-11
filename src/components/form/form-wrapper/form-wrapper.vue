@@ -32,7 +32,7 @@
 
 		<slot name="pre-form" />
 
-		<form-layout>
+		<form-layout v-bind="{ class: layoutClasses }">
 			<slot v-bind="{ isSubmitting, hasErrors: haveErrorSummary }" />
 
 			<form-actions>
@@ -66,9 +66,18 @@
 					<slot name="submit-button-label" />
 				</ui-button>
 
-				<alert-message v-if="haveErrorMessage || haveApiGeneralErrors" type="error">
-					<slot name="error" v-bind="{ errors: apiGeneralErrors }" />
+				<alert-message v-if="haveSubmitErrorsSlot || haveGeneralSubmitErrors" type="error">
+					<slot name="submit-errors" v-bind="{ errors: generalSubmitErrors }">
+						<ul v-if="generalSubmitErrors.length > 1" class="list-disc ps-4">
+							<li v-for="(error, index) in generalSubmitErrors" :key="index">
+								{{ error }}
+							</li>
+						</ul>
+						<p v-else>{{ generalSubmitErrors[0] }}</p>
+					</slot>
 				</alert-message>
+
+				<slot name="messages" />
 
 				<slot name="secondary-actions" />
 
@@ -108,14 +117,24 @@ const props = defineProps({
 	},
 
 	/**
-	 * An optional method that maps a rejected submit Promise into field errors,
-	 * keyed by field name, where each value is a message or a list of messages.
-	 * Return an empty value for errors that aren't field errors so that they
-	 * re-throw and reach the application's own handling.
+	 * An optional method that maps a rejected submit Promise into an errors
+	 * object. Keys matching registered fields are shown as field errors; other
+	 * keys are surfaced as general errors. Return an empty value for errors the
+	 * form should not handle — they are re-thrown.
 	 */
-	fieldErrorsCallback: {
+	submitErrorsCallback: {
 		type: Function,
 		default: null,
+	},
+
+	/**
+	 * Additional classes to pass to the inner form-layout, merged via `cn` to
+	 * resolve Tailwind conflicts. Useful for overriding the default gap on
+	 * compact forms.
+	 */
+	layoutClasses: {
+		type: String,
+		default: "",
 	},
 });
 
@@ -129,8 +148,8 @@ const submitButtonRef = ref(null);
 // Determine if we have a label. If not, show a warning to the user about
 // accessibility.
 const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button-label"]));
-// Determine if we have a general error message to show.
-const haveErrorMessage = computed(() => isNonEmptySlot(slots.error));
+// Whether a custom submit-errors slot has been provided.
+const haveSubmitErrorsSlot = computed(() => isNonEmptySlot(slots["submit-errors"]));
 // Whether a label has been provided for the actions group.
 const haveActionsLabel = computed(() => isNonEmptySlot(slots["actions-label"]));
 
@@ -146,9 +165,8 @@ const formFields = reactive({});
 const haveFormFields = computed(() => isNonEmptyObject(formFields));
 // A holding pot for any validation errors found during validation.
 const validationErrorSummary = ref([]);
-// Field errors produced by the `fieldErrorsCallback` from a rejected submit,
-// keyed by field name.
-const apiFieldErrors = ref({});
+// Errors produced by the `submitErrorsCallback` from a rejected submit.
+const submitErrors = ref({});
 
 // Parent-owned field errors formatted for the error summary.
 const externalErrorSummary = computed(() => {
@@ -167,28 +185,28 @@ const externalErrorSummary = computed(() => {
 	return errors;
 });
 
-// Parsed API errors whose field name doesn't match a registered field, surfaced
-// as general errors rather than in the field error summary.
-const apiGeneralErrors = computed(() => {
+// Parsed submit errors whose key doesn't match a registered field, surfaced as
+// general errors rather than field errors.
+const generalSubmitErrors = computed(() => {
 	const messages = [];
 
-	for (const fieldName in apiFieldErrors.value) {
-		if (!Object.hasOwn(apiFieldErrors.value, fieldName)) {
+	for (const key in submitErrors.value) {
+		if (!Object.hasOwn(submitErrors.value, key)) {
 			continue;
 		}
 
-		if (Object.hasOwn(formFields, fieldName)) {
+		if (Object.hasOwn(formFields, key)) {
 			continue;
 		}
 
-		messages.push(...normaliseFieldErrors(apiFieldErrors.value[fieldName]));
+		messages.push(...normaliseFieldErrors(submitErrors.value[key]));
 	}
 
 	return messages;
 });
 
-// Whether we have any general (non-field) API errors to show.
-const haveApiGeneralErrors = computed(() => isNonEmptyArray(apiGeneralErrors.value));
+// Whether we have any general (non-field) submit errors to show.
+const haveGeneralSubmitErrors = computed(() => isNonEmptyArray(generalSubmitErrors.value));
 
 // All field errors shown in the error summary.
 const errorSummary = computed(() => [
@@ -226,7 +244,7 @@ async function registerField(field) {
 		await nextTick();
 	}
 
-	if (Object.hasOwn(formData.value, field.name)) {
+	if (Object.hasOwn(formFields, field.name)) {
 		console.error(
 			"<form-wrapper>",
 			`Duplicate field name <${field.name}> detected. Only one field with a given name will be represented in form data.`,
@@ -234,7 +252,10 @@ async function registerField(field) {
 	}
 
 	formFields[field.name] = field;
-	formData.value[field.name] = null;
+
+	if (!Object.hasOwn(formData.value, field.name)) {
+		formData.value[field.name] = null;
+	}
 }
 
 /**
@@ -272,12 +293,12 @@ watch(
  * submitting the appropriate event if validation succeeds.
  */
 async function handleFormSubmit() {
-	// Clear any field errors from a previous submit so stale API errors don't
-	// block this attempt or linger in the summary.
-	apiFieldErrors.value = {};
+	// Clear any errors from a previous submit so stale errors don't block this
+	// attempt or linger in the summary.
+	submitErrors.value = {};
 
 	if (!haveFormFields.value) {
-		doSubmit();
+		await doSubmit();
 
 		return;
 	}
@@ -291,7 +312,7 @@ async function handleFormSubmit() {
 		return;
 	}
 
-	doSubmit();
+	await doSubmit();
 }
 
 /**
@@ -326,7 +347,7 @@ function validateFields() {
 
 /**
  * Get all error messages for a field, combining parent-owned errors with any
- * produced by the `fieldErrorsCallback`.
+ * produced by the `submitErrorsCallback`.
  *
  * @param  {string}  fieldName
  *     The field to retrieve error messages for.
@@ -334,7 +355,7 @@ function validateFields() {
 function getFieldErrors(fieldName) {
 	return [
 		...normaliseFieldErrors(props.fieldErrors?.[fieldName]),
-		...normaliseFieldErrors(apiFieldErrors.value?.[fieldName]),
+		...normaliseFieldErrors(submitErrors.value?.[fieldName]),
 	];
 }
 
@@ -371,16 +392,18 @@ async function focusErrorSummary() {
  * auto-reset the submit button when the async work settles. Mirrors the
  * loadingAuto pattern from ui-button.
  */
-function doSubmit() {
+async function doSubmit() {
 	isSubmitting.value = true;
 
 	const onSubmit = instance?.vnode.props?.onSubmit;
 	const handlers = Array.isArray(onSubmit) ? onSubmit : [onSubmit].filter(Boolean);
-	const results = handlers.map((handler) => handler(formData.value));
-	const promise = results.find((result) => result instanceof Promise);
 
-	if (promise) {
-		promise.catch(handleSubmitError).finally(resetSubmitButton);
+	try {
+		await Promise.all(handlers.map((handler) => handler(formData.value)));
+	} catch (error) {
+		await handleSubmitError(error);
+	} finally {
+		resetSubmitButton();
 	}
 }
 
@@ -392,20 +415,20 @@ function doSubmit() {
  * @param  {unknown}  error
  *     The error the submit Promise rejected with.
  */
-function handleSubmitError(error) {
-	if (!isFunction(props.fieldErrorsCallback)) {
+async function handleSubmitError(error) {
+	if (!isFunction(props.submitErrorsCallback)) {
 		throw error;
 	}
 
-	const parsedErrors = props.fieldErrorsCallback(error);
+	const parsedErrors = props.submitErrorsCallback(error);
 
 	if (!isNonEmptyObject(parsedErrors)) {
 		throw error;
 	}
 
-	apiFieldErrors.value = parsedErrors;
+	submitErrors.value = parsedErrors;
 
-	focusErrorSummary();
+	await focusErrorSummary();
 }
 
 /**
