@@ -1,79 +1,66 @@
 <template>
-	<span v-if="haveLabel" :id="labelId" class="sr-only">
-		<slot name="label" />
-	</span>
-
-	<svg
-		v-if="haveSlices"
-		v-bind="{
-			...$attrs,
-			role: 'img',
-			'aria-labelledby': haveLabel ? labelId : undefined,
-			'aria-describedby': haveDescription ? descId : undefined,
-			viewBox: `0 0 ${svgSize} ${svgSize}`,
-		}"
-		data-component="donut-chart"
-		data-test="donut-chart"
-	>
-		<desc v-if="haveDescription" :id="descId">
-			<slot name="description" />
-		</desc>
-
-		<path
-			v-for="(slice, index) in slices"
-			:key="slice.id"
-			class="animate-fade-in delay origin-center fill-current"
-			:class="getNextColour(index, computedChartColours)"
-			v-bind="{
-				d: slice.commands,
-				transform: `rotate(${slice.rotation})`,
-			}"
-			data-test="donut-chart-segment"
-		/>
-	</svg>
-
-	<table v-if="haveSlices" class="sr-only" data-test="donut-chart-data">
-		<caption>
+	<div v-if="haveSlices" data-component="donut-chart" data-test="donut-chart">
+		<span v-if="haveLabel" :id="labelId" class="sr-only">
 			<slot name="label" />
-		</caption>
+		</span>
 
-		<tbody>
-			<tr v-for="(value, index) in props.values" :key="index">
-				<th scope="row">Segment {{ index + 1 }}</th>
-				<td>{{ value }}</td>
-			</tr>
-		</tbody>
-	</table>
+		<svg
+			v-bind="{
+				...$attrs,
+				role: 'img',
+				'aria-labelledby': haveLabel ? labelId : undefined,
+				'aria-describedby': haveDescription ? descId : undefined,
+				viewBox: `0 0 ${svgSize} ${svgSize}`,
+			}"
+		>
+			<desc v-if="haveDescription" :id="descId">
+				<slot name="description" />
+			</desc>
+
+			<path
+				v-for="(slice, index) in slices"
+				:key="slice.id"
+				class="animate-fade-in delay origin-center"
+				:style="{ fill: series[index]?.color }"
+				v-bind="{
+					d: slice.commands,
+					transform: `rotate(${slice.rotation})`,
+				}"
+				data-test="donut-chart-segment"
+			/>
+		</svg>
+
+		<table class="sr-only" data-test="donut-chart-data">
+			<caption>
+				<slot name="label" />
+			</caption>
+
+			<tbody>
+				<tr v-for="(entry, index) in series" :key="index">
+					<th scope="row">{{ entry.label || `Segment ${index + 1}` }}</th>
+					<td>{{ entry.value }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </template>
 
 <script setup>
 import { computed, useId, useSlots } from "vue";
-import { brightColours, chartColours, getNextColour } from "@lewishowles/helpers/chart";
+import { useChartConfig } from "@/composables/use-chart-config/use-chart-config";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNumber } from "@lewishowles/helpers/number";
 
 const props = defineProps({
 	/**
-	 * The values to represent in this donut chart. Appropriate proportions will
-	 * be determined automatically based on the sum of these values.
-	 *
-	 * If any non-numbers, or negative numbers, appear in the list, a chart will
-	 * not be created.
+	 * The segments to display, each with a `label` and `value`. Appropriate
+	 * proportions are determined automatically from the sum of values. Preferred
+	 * over `values` as it enables labelled table rows in the accessible output.
 	 */
-	values: {
+	segments: {
 		type: Array,
-		required: true,
-	},
-
-	/**
-	 * Whether to use the brighter set of chart colours. Use with caution, as
-	 * depending on the number of slices, adjacent slices may not be
-	 * sufficiently distinct.
-	 */
-	colourful: {
-		type: Boolean,
-		default: false,
+		default: () => [],
 	},
 });
 
@@ -86,101 +73,79 @@ const labelId = useId();
 const descId = useId();
 // Whether a label slot has been provided.
 const haveLabel = computed(() => isNonEmptySlot(slots.label));
+// Whether a description slot has been provided for the SVG <desc> element.
+const haveDescription = computed(() => isNonEmptySlot(slots["description"]));
 // The size of the SVG viewbox.
 const svgSize = 100;
 // The centre point of the SVG based on its size.
 const svgCentre = svgSize / 2;
 // The radius of the circle.
 const radius = svgCentre;
-// The thickness of the donut.
+// The thickness of the doughnut.
 const borderSize = 20;
-// The inner radius for our donut hole.
+// The inner radius for our doughnut hole.
 const innerRadius = radius - borderSize;
+// Turn our segments into an appropriate series.
+const { series } = useChartConfig(props.segments);
+
 // Whether any slices exist to render.
 const haveSlices = computed(() => isNonEmptyArray(slices.value));
-// Whether a description slot has been provided for the SVG <desc> element.
-const haveDescription = computed(() => isNonEmptySlot(slots["description"]));
 
-// The total value, from which we determine the slice proportions. If any of the
-// provided values isn't a number, or is negative, we back out of creating the
-// chart.
+// The total value, from which we determine slice proportions. If any value
+// isn't a number or is negative, we back out of creating the chart.
 const total = computed(() => {
-	if (!isNonEmptyArray(props.values)) {
+	const values = series.value.map((entry) => entry.value);
+
+	if (!isNonEmptyArray(values)) {
 		return 0;
 	}
 
-	if (!props.values.every((value) => isNumber(value) && value >= 0)) {
+	if (!values.every((value) => isNumber(value) && value >= 0)) {
 		return 0;
 	}
 
-	return props.values.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+	return values.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 });
 
-// Determine our slices based on the provided values. If we couldn't determine a
-// total, there's no need to generate slices.
+// Slices based on the resolved values. Returns empty if total is zero.
 const slices = computed(() => {
 	if (total.value === 0) {
 		return [];
 	}
 
-	// For each of our values, we generate a slice based on its value compared
-	// to the total, and a rotation to place it in the correct place in the
-	// chart. For the rotation, we convert the cumulative percentage into a
-	// number of degrees of rotation (100 -> 360). We multiply by minus one
-	// because CSS rotation acts clockwise, but degrees move anti-clockwise.
 	let cumulativePercentage = 0;
 
-	return props.values.map((value) => {
+	return series.value.map((entry) => {
 		const slice = {
-			commands: getDrawCommandsForValue(value),
+			commands: getDrawCommandsForValue(entry.value),
 			rotation: cumulativePercentage * 3.6,
 			id: useId(),
 		};
 
-		cumulativePercentage += (value / total.value) * 100;
+		cumulativePercentage += (entry.value / total.value) * 100;
 
 		return slice;
 	});
 });
 
-// The chosen chart colours.
-const computedChartColours = computed(() => {
-	if (props.colourful) {
-		return brightColours;
-	}
-
-	return chartColours;
-});
-
 /**
- * For a given value, retrieve the commands to draw a slice of the donut chart.
+ * For a given value, retrieve the commands to draw a slice of the doughnut
+ * chart.
  *
  * @param  {number}  value
  *     The value for which to draw a slice.
  */
 function getDrawCommandsForValue(value) {
-	// Determine how much of the circle our value should take by converting the
-	// percentage it represents into an angle.
 	const angle = (value / total.value) * 360;
-	// For slices that are greater than half of the circle, we need to ask the
-	// arc to draw via the longest path, not the shortest path.
 	const longPathFlag = angle > 180 ? 1 : 0;
 
 	const commands = [];
 
-	// Start by moving to the correct position to start drawing.
 	commands.push(`M ${radius} 0`);
-
-	// Draw an arc around our circle circumference to the end point, as defined
-	// by our angle.
 	commands.push(
 		`A ${radius} ${radius} 0 ${longPathFlag} 1 ${getCircleCoordinateForAngle(angle, radius)}`,
 	);
-
-	// Draw a line back towards the centre, based on our donut size.
 	commands.push(`L ${getCircleCoordinateForAngle(angle, innerRadius)}`);
-
-	// Arc back to the equivalent point in relation to our starting point.
 	commands.push(`A ${innerRadius} ${innerRadius} 0 ${longPathFlag} 0 ${svgCentre} ${borderSize}`);
 
 	return commands.join(" ");

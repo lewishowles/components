@@ -2,7 +2,13 @@ import { createMount } from "@unit/support/mount";
 import { describe, expect, test, vi } from "vite-plus/test";
 import DonutChart from "./donut-chart.vue";
 
-const defaultProps = { values: [50, 25, 25] };
+const defaultSegments = [
+	{ label: "A", value: 50 },
+	{ label: "B", value: 25 },
+	{ label: "C", value: 25 },
+];
+
+const defaultProps = { segments: defaultSegments };
 const defaultSlots = { label: "Sales by region" };
 const mount = createMount(DonutChart, { props: defaultProps, slots: defaultSlots });
 
@@ -25,7 +31,7 @@ describe("donut-chart", () => {
 				expect(wrapper.vm.total).toBe(100);
 			});
 
-			describe("should disregard non-array values", () => {
+			describe("should disregard non-array segments", () => {
 				test.for([
 					["number (positive)", 1],
 					["number (negative)", -1],
@@ -36,21 +42,25 @@ describe("donut-chart", () => {
 					["object (empty)", {}],
 					["null", null],
 					["undefined", undefined],
-				])("%s", ([, values]) => {
-					const wrapper = mount({ values });
+				])("%s", ([, segments]) => {
+					const wrapper = mount({ segments });
 
 					expect(wrapper.vm.total).toBe(0);
 				});
 			});
 
-			test("should disregard values if a non-number is found", () => {
-				const wrapper = mount({ values: [5, 4, 3, "a"] });
+			test("should disregard segments if a non-number value is found", () => {
+				const wrapper = mount({
+					segments: [{ value: 5 }, { value: 4 }, { value: 3 }, { value: "a" }],
+				});
 
 				expect(wrapper.vm.total).toBe(0);
 			});
 
 			test("should disregard negative numbers", () => {
-				const wrapper = mount({ values: [5, 4, 3, -1] });
+				const wrapper = mount({
+					segments: [{ value: 5 }, { value: 4 }, { value: 3 }, { value: -1 }],
+				});
 
 				expect(wrapper.vm.total).toBe(0);
 			});
@@ -111,7 +121,7 @@ describe("donut-chart", () => {
 				]);
 			});
 
-			describe("should disregard non-array values", () => {
+			describe("should disregard non-array segments", () => {
 				test.for([
 					["number (positive)", 1],
 					["number (negative)", -1],
@@ -122,21 +132,25 @@ describe("donut-chart", () => {
 					["object (empty)", {}],
 					["null", null],
 					["undefined", undefined],
-				])("%s", ([, values]) => {
-					const wrapper = mount({ values });
+				])("%s", ([, segments]) => {
+					const wrapper = mount({ segments });
 
 					expect(wrapper.vm.slices).toEqual([]);
 				});
 			});
 
-			test("should disregard values if a non-number is found", () => {
-				const wrapper = mount({ values: [5, 4, 3, "a"] });
+			test("should disregard segments if a non-number value is found", () => {
+				const wrapper = mount({
+					segments: [{ value: 5 }, { value: 4 }, { value: 3 }, { value: "a" }],
+				});
 
 				expect(wrapper.vm.slices).toEqual([]);
 			});
 
 			test("should disregard negative numbers", () => {
-				const wrapper = mount({ values: [5, 4, 3, -1] });
+				const wrapper = mount({
+					segments: [{ value: 5 }, { value: 4 }, { value: 3 }, { value: -1 }],
+				});
 
 				expect(wrapper.vm.slices).toEqual([]);
 			});

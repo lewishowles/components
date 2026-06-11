@@ -1,6 +1,6 @@
 # `donut-chart`
 
-Create a donut chart from a set of values. The chart automatically determines proportions based on the total.
+Create a donut chart from a set of segments. The chart automatically determines proportions based on the total.
 
 A `label` slot is required. Use the `description` slot for additional context about the chart's findings.
 
@@ -16,19 +16,12 @@ Additional context about the chart's findings. Use this to describe trends rathe
 
 ## Props
 
-### `values`
+### `segments`
 
 - type: `array`
-- **required**
+- default: `[]`
 
-The values to display. If any value is not a number, or is negative, no chart will be generated.
-
-### `colourful`
-
-- type: `boolean`
-- default: `false`
-
-Whether to use the brighter set of chart colours. Use with caution; adjacent slices may not be sufficiently distinct depending on the number of segments.
+The segments to display. Each entry should have a `value` and an optional `label`. If any value is not a number, or is negative, no chart will be generated. The `label` is used in the accessible table output.
 
 ## Styling hooks
 
@@ -41,15 +34,25 @@ Whether to use the brighter set of chart colours. Use with caution; adjacent sli
 ### Basic chart
 
 ```html
-<donut-chart v-bind="{ values: [5, 4, 3, 2, 1] }">
+<donut-chart v-bind="{ segments }">
 	<template #label>Sales by region</template>
 </donut-chart>
+```
+
+```js
+const segments = [
+	{ label: "North", value: 5 },
+	{ label: "South", value: 4 },
+	{ label: "East", value: 3 },
+	{ label: "West", value: 2 },
+	{ label: "Central", value: 1 },
+];
 ```
 
 ### With description
 
 ```html
-<donut-chart v-bind="{ values: [5, 4, 3, 2, 1] }">
+<donut-chart v-bind="{ segments }">
 	<template #label>Sales by region</template>
 	<template #description>Northern region leads with 33%, followed by Southern at 27%.</template>
 </donut-chart>

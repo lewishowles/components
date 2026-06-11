@@ -1,7 +1,11 @@
 import DonutChart from "./donut-chart.vue";
 import { createMount } from "@cypress/support/mount";
 
-const defaultProps = { values: [10, 20, 30, 40], class: "size-40" };
+const defaultProps = {
+	segments: [{ value: 10 }, { value: 20 }, { value: 30 }, { value: 40 }],
+	class: "size-40",
+};
+
 const mount = createMount(DonutChart, { props: defaultProps });
 
 describe("donut-chart", () => {
@@ -12,7 +16,9 @@ describe("donut-chart", () => {
 	});
 
 	it("The correct number of segments appear", () => {
-		mount({ values: [5, 4, 3, 2, 1] });
+		mount({
+			segments: [{ value: 5 }, { value: 4 }, { value: 3 }, { value: 2 }, { value: 1 }],
+		});
 
 		cy.getByData("donut-chart").shouldBeVisible();
 		cy.getByData("donut-chart-segment").shouldHaveCount(5);
