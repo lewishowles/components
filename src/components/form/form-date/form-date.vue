@@ -21,7 +21,6 @@
 
 		<div class="mt-2 mb-1 flex gap-8">
 			<form-input
-				v-if="haveValidDate"
 				ref="dayInput"
 				v-model="date.day"
 				v-bind="{
@@ -35,7 +34,6 @@
 			</form-input>
 
 			<form-input
-				v-if="haveValidDate"
 				v-model="date.month"
 				v-bind="{
 					required,
@@ -48,7 +46,6 @@
 			</form-input>
 
 			<form-input
-				v-if="haveValidDate"
 				v-model="date.year"
 				v-bind="{
 					required,
@@ -219,10 +216,15 @@ function setDateFromIsoString(dateString) {
  * Trigger focus on the "day" input.
  */
 function triggerFocus() {
-	runComponentMethod(dayInput, "triggerFocus");
+	runComponentMethod(dayInput.value, "triggerFocus");
 }
 
+// The ID of the first focusable input, used by form-field to register the
+// correct anchor target for error summary links.
+const focusId = computed(() => `${inputId.value}-day`);
+
 defineExpose({
+	focusId,
 	toString,
 	setDateFromIsoString,
 	triggerFocus,

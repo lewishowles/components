@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { computed, inject, ref, watch } from "vue";
+import { computed, inject, onMounted, ref, watch } from "vue";
 import { deepMerge, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
@@ -246,15 +246,19 @@ watch(model, () => {
 	}
 });
 
-// If a parent `form-wrapper` is found, register this field with it.
-if (haveParentForm.value) {
-	registerField({
-		name: props.name,
-		id: inputId.value,
-		validateField,
-		triggerFocus,
-	});
-}
+// If a parent `form-wrapper` is found, register this field with it. We wait
+// until mounted so that composite fields (e.g. form-date) have had a chance
+// to render and expose their focusId.
+onMounted(() => {
+	if (haveParentForm.value) {
+		registerField({
+			name: props.name,
+			id: fieldRef.value?.focusId ?? inputId.value,
+			validateField,
+			triggerFocus,
+		});
+	}
+});
 
 /**
  * Validate this field for all provided validation rules. We also keep a record

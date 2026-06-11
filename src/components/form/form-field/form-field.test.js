@@ -29,7 +29,20 @@ describe("form-field", () => {
 		test("should register with a parent `form-wrapper`", () => {
 			mount();
 
-			expect(registerFieldMock).toHaveBeenCalled();
+			expect(registerFieldMock).toHaveBeenCalledWith(
+				expect.objectContaining({
+					name: "username",
+					id: expect.any(String),
+				}),
+			);
+		});
+
+		test("should register with the child's focusId when available", () => {
+			mount({ type: "date" });
+
+			const registeredId = registerFieldMock.mock.calls.at(-1)?.[0]?.id;
+
+			expect(registeredId).toMatch(/-day$/);
 		});
 	});
 
