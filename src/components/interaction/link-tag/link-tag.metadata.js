@@ -74,6 +74,7 @@ export const linkTagMetadata = {
 					href: {
 						label: "href",
 						value: "/",
+						isInline: true,
 					},
 				},
 			},
@@ -93,6 +94,7 @@ export const linkTagMetadata = {
 					href: {
 						label: "href",
 						value: "https://howles.dev",
+						isInline: true,
 					},
 					external: {
 						label: "External",
@@ -117,10 +119,12 @@ export const linkTagMetadata = {
 					href: {
 						label: "href",
 						value: "/user/create",
+						isInline: true,
 					},
 					iconStart: {
 						label: "Start icon",
 						value: "icon-plus",
+						isInline: true,
 					},
 				},
 			},
@@ -140,10 +144,12 @@ export const linkTagMetadata = {
 					href: {
 						label: "href",
 						value: "/next",
+						isInline: true,
 					},
 					iconEnd: {
 						label: "End icon",
 						value: "icon-arrow-right",
+						isInline: true,
 					},
 				},
 			},

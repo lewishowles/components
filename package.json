@@ -11,7 +11,9 @@
 	},
 	"files": [
 		"bin",
-		"dist"
+		"dist",
+		"src/components/component-metadata.js",
+		"src/components/**/*.metadata.js"
 	],
 	"type": "module",
 	"sideEffects": [

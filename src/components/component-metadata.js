@@ -1,6 +1,6 @@
-import { linkTagMetadata } from "@/components/interaction/link-tag/link-tag.metadata.js";
-import { pillBadgeMetadata } from "@/components/messaging/pill-badge/pill-badge.metadata.js";
-import { uiButtonMetadata } from "@/components/interaction/ui-button/ui-button.metadata.js";
+import { linkTagMetadata } from "./interaction/link-tag/link-tag.metadata.js";
+import { pillBadgeMetadata } from "./messaging/pill-badge/pill-badge.metadata.js";
+import { uiButtonMetadata } from "./interaction/ui-button/ui-button.metadata.js";
 
 // Components with shared metadata for docs, snippets, and future CLI commands.
 export const componentMetadata = [linkTagMetadata, pillBadgeMetadata, uiButtonMetadata];
