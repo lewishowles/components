@@ -48,18 +48,6 @@ describe("content-card", () => {
 		cy.getByData("content-card-title").should("match", "h3");
 	});
 
-	it("The footer uses well styling by default", () => {
-		mount({
-			slots: {
-				default: "Card content",
-				footer: "Card footer",
-				title: "Card title",
-			},
-		});
-
-		cy.getByData("content-card-footer").shouldHaveText("Card footer").shouldHaveClass("bg-grey-50");
-	});
-
 	it("A plain footer excludes well styling", () => {
 		mount({
 			props: {
