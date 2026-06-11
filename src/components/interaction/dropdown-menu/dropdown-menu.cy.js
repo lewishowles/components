@@ -215,7 +215,7 @@ describe("dropdown-menu", () => {
 			// "e" matches "Edit" — the first button starting with that character
 			cy.getByData("dropdown-menu-panel").trigger("keydown", { key: "e" });
 
-			cy.getByData("dropdown-menu-panel").find("button").contains("Edit").shouldHaveFocus();
+			cy.getByData("dropdown-menu-panel").contains("button", "Edit").shouldHaveFocus();
 		});
 
 		it("Type-ahead matches a multi-character prefix", () => {
@@ -228,7 +228,7 @@ describe("dropdown-menu", () => {
 			cy.getByData("dropdown-menu-panel").trigger("keydown", { key: "d" });
 			cy.getByData("dropdown-menu-panel").trigger("keydown", { key: "u" });
 
-			cy.getByData("dropdown-menu-panel").find("button").contains("Duplicate").shouldHaveFocus();
+			cy.getByData("dropdown-menu-panel").contains("button", "Duplicate").shouldHaveFocus();
 		});
 	});
 
