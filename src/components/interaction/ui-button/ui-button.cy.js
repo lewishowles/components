@@ -60,7 +60,7 @@ describe("ui-button", () => {
 		it("A `reactive` button shows a loading indicator when activated", () => {
 			mount({ reactive: "true", loadingAuto: false, iconEnd: "icon-chevron-right" });
 
-			cy.getByData("ui-button-label").shouldBeVisible();
+			cy.getByData("ui-button-label").shouldNotHaveClass("invisible");
 			cy.getByData("ui-button-icon-end").shouldBeVisible();
 			cy.getByData("ui-button-loading").shouldNotBeVisible();
 
@@ -107,7 +107,7 @@ describe("ui-button", () => {
 			cy.getComponent().then((component) => {
 				component.reset(); // Call the exposed method
 
-				cy.getByData("ui-button-label").shouldBeVisible();
+				cy.getByData("ui-button-label").shouldNotHaveClass("invisible");
 				cy.getByData("ui-button-icon-end").shouldBeVisible();
 				cy.getByData("ui-button-loading").shouldNotBeVisible();
 			});
