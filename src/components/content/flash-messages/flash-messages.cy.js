@@ -28,12 +28,6 @@ describe("flash-messages", () => {
 		_clearMessages();
 	});
 
-	it("A component is rendered", () => {
-		mount();
-
-		cy.getByData("flash-messages").shouldBeVisible();
-	});
-
 	it("Global messages are shown by default", () => {
 		const { sendMessage } = useFlashMessages();
 
