@@ -7,7 +7,7 @@
 		data-component="loading-indicator"
 		data-test="loading-indicator"
 	>
-		<loading-spinner :class="cn({ 'size-7': large }, spinnerClasses)" />
+		<loading-spinner :class="cn({ 'size-7': large }, 'text-content-muted', spinnerClasses)" />
 
 		<slot />
 	</div>
