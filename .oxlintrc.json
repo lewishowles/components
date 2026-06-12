@@ -70,7 +70,7 @@
 	},
 	"overrides": [
 		{
-			"files": ["bin/**/*.js"],
+			"files": ["bin/**/*.js", "src/cli/**/*.js"],
 			"env": {
 				"node": true
 			}

@@ -12,6 +12,7 @@
 	"files": [
 		"bin",
 		"dist",
+		"src/cli",
 		"src/components/component-metadata.js",
 		"src/components/**/*.metadata.js"
 	],
