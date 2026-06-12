@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2.2.0
+
 ### `useFormData()`
 
 A new composable for initialising form data from an async data source, such as the `data` ref from a Pinia Colada query. It populates the form once when the source first becomes available.
