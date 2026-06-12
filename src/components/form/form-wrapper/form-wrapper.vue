@@ -55,17 +55,6 @@
 					</p>
 				</alert-message>
 
-				<ui-button
-					v-if="haveSubmitButtonLabel"
-					ref="submitButtonRef"
-					type="submit"
-					v-bind="{ reactive: true }"
-					class="button--primary"
-					data-test="form-wrapper-submit-button"
-				>
-					<slot name="submit-button-label" />
-				</ui-button>
-
 				<alert-message v-if="haveSubmitErrorsSlot || haveGeneralSubmitErrors" type="error">
 					<slot name="submit-errors" v-bind="{ errors: generalSubmitErrors }">
 						<ul v-if="generalSubmitErrors.length > 1" class="list-disc ps-4">
@@ -78,6 +67,17 @@
 				</alert-message>
 
 				<slot name="messages" />
+
+				<ui-button
+					v-if="haveSubmitButtonLabel"
+					ref="submitButtonRef"
+					type="submit"
+					v-bind="{ reactive: true }"
+					class="button--primary"
+					data-test="form-wrapper-submit-button"
+				>
+					<slot name="submit-button-label" />
+				</ui-button>
 
 				<slot name="secondary-actions" />
 
