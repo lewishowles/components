@@ -70,6 +70,7 @@
 		"@lewishowles/testing": "^0.10.0",
 		"@tailwindcss/vite": "^4.3.0",
 		"@vueuse/core": "^14.3.0",
+		"cli-highlight": "^2.1.11",
 		"clsx": "^2.1.1",
 		"nanoid": "^5.1.11",
 		"tailwind-merge": "^3.6.0",

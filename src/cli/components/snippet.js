@@ -1,4 +1,6 @@
 import { PACKAGE_NAME } from "../utils/constants.js";
+import { highlight } from "cli-highlight";
+
 import {
 	buildTemplateAttributes,
 	componentMetadata,
@@ -82,11 +84,12 @@ export function generateSnippet(component, exampleName) {
 	const attributeString = attributes.length ? " " + attributes.join(" ") : "";
 	const slotContent = snippet.slots?.default?.value ?? null;
 
-	if (slotContent === null) {
-		return `<${component.name}${attributeString} />`;
-	}
+	const template =
+		slotContent === null
+			? `<${component.name}${attributeString} />`
+			: `<${component.name}${attributeString}>\n  ${slotContent}\n</${component.name}>`;
 
-	return `<${component.name}${attributeString}>\n  ${slotContent}\n</${component.name}>`;
+	return highlight(template, { language: "html", ignoreIllegals: true });
 }
 
 /**

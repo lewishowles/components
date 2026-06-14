@@ -1,6 +1,7 @@
 import { PACKAGE_NAME } from "../utils/constants.js";
 import { c } from "../utils/colour.js";
 import { cancel, intro, isCancel, select } from "@clack/prompts";
+import { highlight } from "cli-highlight";
 import { patterns, patternsByName } from "./patterns.js";
 
 export function getHelpSection() {
@@ -75,8 +76,9 @@ export function lookupPattern(name) {
  */
 export function generatePattern(pattern) {
 	const stabilityNote = `<!-- [${pattern.stability}] Adapt field names, labels, and validation to your requirements. -->`;
+	const template = highlight(pattern.template, { language: "html", ignoreIllegals: true });
 
-	return `\n${stabilityNote}\n${pattern.template}`;
+	return `\n${stabilityNote}\n${template}`;
 }
 
 /**
