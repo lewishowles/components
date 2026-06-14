@@ -1,4 +1,5 @@
-import { getHelpSection as getComponentsHelpSection } from "./components/snippet.js";
+import { getHelpSection as getPatternHelpSection } from "./components/pattern.js";
+import { getHelpSection as getSnippetHelpSection } from "./components/snippet.js";
 import { getHelpSection as getStylesheetsHelpSection } from "./stylesheets/index.js";
 
 /**
@@ -8,5 +9,12 @@ import { getHelpSection as getStylesheetsHelpSection } from "./stylesheets/index
  * @returns {object[]}
  */
 export function getHelpSections() {
-	return [getStylesheetsHelpSection(), getComponentsHelpSection()];
+	const stylesheets = getStylesheetsHelpSection();
+
+	const components = {
+		commands: [...getSnippetHelpSection().commands, ...getPatternHelpSection().commands],
+		group: "Components",
+	};
+
+	return [stylesheets, components];
 }

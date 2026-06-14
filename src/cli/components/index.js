@@ -126,13 +126,15 @@ function toKebabCase(str) {
 
 /**
  * Gets display-ready items from component metadata, sorted alphabetically by
- * name.
+ * name. Components with no examples are excluded; they exist in the registry
+ * for docs and compose use but have nothing to snippet.
  *
  * @param   {object[]}  components
  * @returns {{ examples: number, name: string, summary: string }[]}
  */
 function getComponentItems(components) {
 	return components
+		.filter((component) => component.examples?.length > 0)
 		.map((component) => ({
 			examples: component.examples.length,
 			name: component.name,

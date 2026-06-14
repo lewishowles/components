@@ -6,6 +6,7 @@ import { printHelp } from "../src/cli/help.js";
 import { runCopy } from "../src/cli/stylesheets/copy.js";
 import { runDiff } from "../src/cli/stylesheets/diff.js";
 import { getHelpSection as getStylesheetsHelpSection } from "../src/cli/stylesheets/index.js";
+import { runPattern } from "../src/cli/components/pattern.js";
 import { runSnippet } from "../src/cli/components/snippet.js";
 
 const [, , command, ...rest] = process.argv;
@@ -23,6 +24,8 @@ if (command === "stylesheet") {
 		console.error(`Usage: npx ${PACKAGE_NAME} stylesheet <copy|diff> [options]\n`);
 		process.exit(1);
 	}
+} else if (command === "pattern") {
+	await runPattern(rest);
 } else if (command === "snippet") {
 	runSnippet(rest);
 } else {

@@ -1,0 +1,72 @@
+// Metadata for docs and CLI consumers that need to describe or generate form-input usage.
+export const formInputMetadata = {
+	name: "form-input",
+	category: "form",
+	summary: "A text input with optional prefix, suffix, placeholder, and datalist suggestions.",
+	props: [
+		{
+			name: "id",
+			type: "string",
+			default: null,
+			summary: "ID for the input; auto-generated if omitted.",
+		},
+		{
+			name: "placeholder",
+			type: "string",
+			default: null,
+			summary: "Placeholder text — do not use for critical information.",
+		},
+		{
+			name: "required",
+			type: "boolean",
+			default: false,
+			summary: "Mark the field as required.",
+		},
+		{
+			name: "inputAttributes",
+			type: "object",
+			default: null,
+			summary:
+				"Additional attributes forwarded to the input element, such as autocomplete or type.",
+		},
+		{
+			name: "suggestions",
+			type: "array",
+			default: null,
+			summary: "Suggestions rendered as a datalist; users can select from them or type freely.",
+		},
+	],
+	slots: [
+		{
+			name: "default",
+			summary: "The field label.",
+		},
+		{
+			name: "introduction",
+			summary: "Introductory text shown above the input.",
+		},
+		{
+			name: "prefix",
+			summary: "Content placed before the input.",
+		},
+		{
+			name: "suffix",
+			summary: "Content placed after the input.",
+		},
+		{
+			name: "error",
+			summary: "Custom error content.",
+		},
+		{
+			name: "help",
+			summary: "Help text shown below the input.",
+		},
+	],
+	methods: [
+		{
+			name: "triggerFocus",
+			summary: "Move focus to the input.",
+		},
+	],
+	examples: [],
+};

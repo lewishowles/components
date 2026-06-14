@@ -31,6 +31,24 @@ describe("getComponentItems", () => {
 			},
 		]);
 	});
+
+	test("Excludes components with no examples", () => {
+		const items = getComponentItems([
+			{
+				name: "stub-component",
+				summary: "API-only stub.",
+				examples: [],
+			},
+			{
+				name: "snippet-component",
+				summary: "Has examples.",
+				examples: [{ name: "default" }],
+			},
+		]);
+
+		expect(items).toHaveLength(1);
+		expect(items[0].name).toBe("snippet-component");
+	});
 });
 
 describe("getExampleItems", () => {
