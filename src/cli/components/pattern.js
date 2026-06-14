@@ -1,6 +1,6 @@
 import { PACKAGE_NAME } from "../utils/constants.js";
 import { c } from "../utils/colour.js";
-import { createInterface } from "node:readline";
+import { cancel, intro, isCancel, select } from "@clack/prompts";
 import { patterns, patternsByName } from "./patterns.js";
 
 export function getHelpSection() {
@@ -150,52 +150,56 @@ export async function runPattern(rawArguments) {
 }
 
 /**
- * Shows a numbered list of patterns and prompts the user to pick one by name
- * or number. Resolves with the selected pattern name.
+ * Shows an interactive prompt to pick a pattern. When there are multiple
+ * categories, the user picks a category first, then a pattern within it.
+ * With a single category the category step is skipped.
  *
  * @returns {Promise<string>}
+ *     The selected pattern name.
  */
 async function promptPattern() {
 	const items = getPatternItems();
 	const grouped = groupByCategory(items);
+	const categories = Object.keys(grouped);
 
-	console.log(`\n${c.bold("Available patterns")}\n`);
+	intro(PACKAGE_NAME);
 
-	// Build a flat ordered list so number picks map back to names.
-	const ordered = [];
+	let selectedCategory;
 
-	let index = 1;
+	if (categories.length > 1) {
+		const categoryChoice = await select({
+			message: "What kind of pattern?",
+			options: categories.map((category) => ({
+				label: capitalise(category),
+				value: category,
+			})),
+		});
 
-	for (const [category, categoryItems] of Object.entries(grouped)) {
-		const width = Math.max(...categoryItems.map((item) => item.name.length));
-
-		console.log(`  ${c.bold(capitalise(category))}\n`);
-
-		for (const item of categoryItems) {
-			console.log(
-				`    ${c.dim(String(index).padStart(2))}  ${c.cyan(item.name.padEnd(width))}  ${item.summary}`,
-			);
-
-			ordered.push(item.name);
-			index++;
+		if (isCancel(categoryChoice)) {
+			cancel("Cancelled.");
+			process.exit(0);
 		}
 
-		console.log();
+		selectedCategory = categoryChoice;
+	} else {
+		selectedCategory = categories[0];
 	}
 
-	const rl = createInterface({ input: process.stdin, output: process.stdout });
-
-	return new Promise((resolve) => {
-		rl.question(`Pattern name or number: `, (answer) => {
-			rl.close();
-
-			const trimmed = answer.trim();
-			const byNumber = parseInt(trimmed, 10);
-			const isValidNumber = !isNaN(byNumber) && byNumber >= 1 && byNumber <= ordered.length;
-
-			resolve(isValidNumber ? ordered[byNumber - 1] : trimmed);
-		});
+	const patternChoice = await select({
+		message: `Choose a ${selectedCategory} pattern`,
+		options: grouped[selectedCategory].map((item) => ({
+			hint: item.summary,
+			label: item.name,
+			value: item.name,
+		})),
 	});
+
+	if (isCancel(patternChoice)) {
+		cancel("Cancelled.");
+		process.exit(0);
+	}
+
+	return patternChoice;
 }
 
 /**
