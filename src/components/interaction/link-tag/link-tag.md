@@ -33,7 +33,7 @@ Whether this is an external link. If so, `target="_blank"`, `rel="noopener noref
 ### `showExternalIcon`
 
 - type: `boolean`
-- default: `false`
+- default: `true`
 
 When `external` is true, but an external icon is not desired, `showExternalIcon` can be set to false.
 

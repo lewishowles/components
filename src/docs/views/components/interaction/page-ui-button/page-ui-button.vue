@@ -50,7 +50,7 @@
 
 				<template #default-value>null</template>
 
-				<p>An icon to display at the start of a button.</p>
+				<p>An icon to display at the end of a button.</p>
 
 				<p>
 					The icon is implemented using

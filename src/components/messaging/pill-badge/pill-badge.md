@@ -42,7 +42,7 @@ The colour of this badge.
 ### A basic badge
 
 ```html
-<pill-badge theme="green">Green</pill-badge>
+<pill-badge colour="green">Green</pill-badge>
 ```
 
 ### With an icon
