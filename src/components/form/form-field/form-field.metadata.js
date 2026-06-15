@@ -72,5 +72,60 @@ export const formFieldMetadata = {
 			summary: "Help text shown below the input.",
 		},
 	],
-	examples: [],
+	examples: [
+		{
+			name: "email",
+			label: "Email field",
+			summary: "A required email field wired into a form-wrapper.",
+			snippet: {
+				slots: {
+					default: {
+						label: "Field label",
+						value: "Email address",
+					},
+				},
+				props: {
+					name: {
+						label: "Field name",
+						value: "email",
+						isInline: true,
+					},
+					type: {
+						label: "Field type",
+						value: "email",
+						isInline: true,
+					},
+					validation: {
+						label: "Validation rules",
+						value: "[{ type: 'required' }, { type: 'email' }]",
+					},
+				},
+			},
+		},
+		{
+			name: "textarea",
+			label: "Textarea field",
+			summary: "A textarea field selected by type.",
+			snippet: {
+				slots: {
+					default: {
+						label: "Field label",
+						value: "Message",
+					},
+				},
+				props: {
+					name: {
+						label: "Field name",
+						value: "message",
+						isInline: true,
+					},
+					type: {
+						label: "Field type",
+						value: "textarea",
+						isInline: true,
+					},
+				},
+			},
+		},
+	],
 };

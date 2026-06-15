@@ -68,5 +68,51 @@ export const formInputMetadata = {
 			summary: "Move focus to the input.",
 		},
 	],
-	examples: [],
+	examples: [
+		{
+			name: "default",
+			label: "Default input",
+			summary: "A labelled text input.",
+			snippet: {
+				slots: {
+					default: {
+						label: "Field label",
+						value: "Email address",
+					},
+				},
+				props: {
+					placeholder: {
+						label: "Placeholder",
+						value: "name@example.com",
+						isInline: true,
+					},
+					required: {
+						label: "Required",
+						value: true,
+						type: "boolean",
+					},
+				},
+			},
+		},
+		{
+			name: "suggestions",
+			label: "Input with suggestions",
+			summary: "A text input backed by datalist suggestions.",
+			snippet: {
+				slots: {
+					default: {
+						label: "Field label",
+						value: "Company",
+					},
+				},
+				props: {
+					suggestions: {
+						label: "Suggestions",
+						value: "companySuggestions",
+						isVariable: true,
+					},
+				},
+			},
+		},
+	],
 };
