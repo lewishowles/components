@@ -1,5 +1,7 @@
 import { describe, expect, test } from "vite-plus/test";
-import { generateSnippet, parseSnippetArguments } from "./snippet.js";
+import { generateSnippet, parseSnippetArguments, _test } from "./snippet.js";
+
+const { resolveSnippetExample } = _test;
 
 describe("parseSnippetArguments", () => {
 	test("Returns null component, null example, and list false when no args are given", () => {
@@ -89,19 +91,45 @@ describe("generateSnippet", () => {
 		const output = generateSnippet(component, "with-slot");
 
 		expect(output).toBe(
-			'<test-component class="btn--primary" @click="handleClick">\n  Click me\n</test-component>',
+			'\n<test-component class="btn--primary" @click="handleClick">\n  Click me\n</test-component>',
 		);
 	});
 
 	test("Generates a self-closing tag when there is no default slot", () => {
 		const output = generateSnippet(component, "self-closing");
 
-		expect(output).toBe('<test-component class="spinner" />');
+		expect(output).toBe('\n<test-component class="spinner" />');
 	});
 
 	test("Generates a tag with no attributes when the snippet has none", () => {
 		const output = generateSnippet(component, "no-attrs");
 
-		expect(output).toBe("<test-component>\n  Label\n</test-component>");
+		expect(output).toBe("\n<test-component>\n  Label\n</test-component>");
+	});
+});
+
+describe("resolveSnippetExample", () => {
+	test("Returns the example name when the component has one example", () => {
+		const example = resolveSnippetExample({
+			examples: [{ name: "default" }],
+		});
+
+		expect(example).toBe("default");
+	});
+
+	test("Returns null when the component has multiple examples", () => {
+		const example = resolveSnippetExample({
+			examples: [{ name: "default" }, { name: "icon" }],
+		});
+
+		expect(example).toBe(null);
+	});
+
+	test("Returns null when the component has no examples", () => {
+		const example = resolveSnippetExample({
+			examples: [],
+		});
+
+		expect(example).toBe(null);
 	});
 });

@@ -1,4 +1,5 @@
 import { PACKAGE_NAME } from "../utils/constants.js";
+import { cancel, intro, isCancel, select } from "@clack/prompts";
 import { highlight } from "cli-highlight";
 
 import {
@@ -58,6 +59,8 @@ export function parseSnippetArguments(argv) {
 /**
  * Generates a copyable Vue template snippet for a named component example.
  * Exits with an error if the example is not found or has no snippet data.
+ * Starts with a blank line so output is visually separate from the terminal
+ * prompt.
  *
  * @param  {object}  component
  *     Component metadata record.
@@ -89,18 +92,19 @@ export function generateSnippet(component, exampleName) {
 			? `<${component.name}${attributeString} />`
 			: `<${component.name}${attributeString}>\n  ${slotContent}\n</${component.name}>`;
 
-	return highlight(template, { language: "html", ignoreIllegals: true });
+	return `\n${highlight(template, { language: "html", ignoreIllegals: true })}`;
 }
 
 /**
  * Discovers or generates component snippets. With --list, prints available
  * components or examples. With a component and example name, prints the
- * generated template code.
+ * generated template code. With no arguments and an interactive terminal,
+ * prompts the user to pick a component and example.
  *
  * @param  {string[]}  rawArguments
  *     Arguments following the `snippet` subcommand.
  */
-export function runSnippet(rawArguments) {
+export async function runSnippet(rawArguments) {
 	const { example, flags, name } = parseSnippetArguments(rawArguments);
 
 	if (flags.help) {
@@ -128,13 +132,97 @@ export function runSnippet(rawArguments) {
 	}
 
 	if (name !== null) {
-		printExamples(lookupComponent(name));
+		const component = lookupComponent(name);
+		const resolvedExample = resolveSnippetExample(component);
+
+		if (resolvedExample !== null) {
+			printSnippet(component, resolvedExample);
+
+			return;
+		}
+
+		printExamples(component);
 
 		return;
 	}
 
-	console.error(`Usage: npx ${PACKAGE_NAME} snippet [component] [example]\n`);
-	process.exit(1);
+	if (!process.stdin.isTTY) {
+		console.error(`Usage: npx ${PACKAGE_NAME} snippet [component] [example]\n`);
+		process.exit(1);
+	}
+
+	const selected = await promptSnippet();
+
+	if (selected === null) {
+		cancel("No snippet examples available.");
+		process.exit(1);
+	}
+
+	printSnippet(lookupComponent(selected.component), selected.example);
+}
+
+/**
+ * Returns the only available example for a component, or null when the user
+ * still needs to choose an example.
+ *
+ * @param   {object}  component
+ *     Component metadata record.
+ * @returns {string | null}
+ */
+function resolveSnippetExample(component) {
+	if (component.examples?.length === 1) {
+		return component.examples[0].name;
+	}
+
+	return null;
+}
+
+/**
+ * Shows interactive prompts to pick a component and snippet example.
+ *
+ * @returns {Promise<{ component: string, example: string } | null>}
+ *     The selected component and example names.
+ */
+async function promptSnippet() {
+	const components = componentMetadata.filter((component) => component.examples?.length > 0);
+
+	if (!components.length) {
+		return null;
+	}
+
+	intro(PACKAGE_NAME);
+
+	const componentChoice = await select({
+		message: "Choose a component",
+		options: components.map((component) => ({
+			hint: component.summary,
+			label: component.name,
+			value: component.name,
+		})),
+	});
+
+	if (isCancel(componentChoice)) {
+		cancel("Cancelled.");
+		process.exit(0);
+	}
+
+	const component = lookupComponent(componentChoice);
+
+	const exampleChoice = await select({
+		message: `Choose a ${component.name} example`,
+		options: component.examples.map((example) => ({
+			hint: example.summary,
+			label: example.name,
+			value: example.name,
+		})),
+	});
+
+	if (isCancel(exampleChoice)) {
+		cancel("Cancelled.");
+		process.exit(0);
+	}
+
+	return { component: component.name, example: exampleChoice };
 }
 
 /**
@@ -148,3 +236,5 @@ export function runSnippet(rawArguments) {
 function printSnippet(component, exampleName) {
 	console.log(generateSnippet(component, exampleName));
 }
+
+export const _test = { resolveSnippetExample };

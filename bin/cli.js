@@ -27,7 +27,7 @@ if (command === "stylesheet") {
 } else if (command === "pattern") {
 	await runPattern(rest);
 } else if (command === "snippet") {
-	runSnippet(rest);
+	await runSnippet(rest);
 } else {
 	printHelp(getHelpSections());
 }
