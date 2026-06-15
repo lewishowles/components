@@ -1,8 +1,8 @@
-[data-part="nav"] {
+[data-component="tab-group"] [data-part="nav"] {
 	position: relative;
 }
 
-[data-part="nav"] {
+[data-component="tab-group"] [data-part="nav"] {
 	&::before,
 	&::after {
 		content: "";
@@ -16,35 +16,35 @@
 	}
 }
 
-[data-part="nav"] {
+[data-component="tab-group"] [data-part="nav"] {
 	&.show-left::before,
 	&.show-right::after {
 		display: block;
 	}
 }
 
-[data-part="nav"].wrap-tabs {
+[data-component="tab-group"] [data-part="nav"].wrap-tabs {
 	&::before,
 	&::after {
 		display: none;
 	}
 }
 
-[data-part="nav"]::before {
+[data-component="tab-group"] [data-part="nav"]::before {
 	background: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
 	left: 0;
 }
 
-[data-part="nav"]:where(.dark, .dark *)::before {
+[data-component="tab-group"] [data-part="nav"]:where(.dark, .dark *)::before {
 	background: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
 }
 
-[data-part="nav"]::after {
+[data-component="tab-group"] [data-part="nav"]::after {
 	background: linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
 	right: 0;
 }
 
-[data-part="nav"]:where(.dark, .dark *)::after {
+[data-component="tab-group"] [data-part="nav"]:where(.dark, .dark *)::after {
 	background: linear-gradient(to left, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
 	right: 0;
 }
