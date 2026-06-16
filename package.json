@@ -63,6 +63,7 @@
 		"lint": "vp lint . --fix",
 		"lint:check": "vp lint .",
 		"test:unit": "vp test",
+		"publint": "publint",
 		"prepare": "vp config",
 		"dev": "vp dev"
 	},
@@ -93,6 +94,7 @@
 		"gh-pages": "^6.3.0",
 		"globals": "^17.6.0",
 		"happy-dom": "^20.10.1",
+		"publint": "^0.3.21",
 		"tailwindcss": "^4.3.0",
 		"tailwindcss-hocus": "^1.0.0",
 		"temporal-polyfill": "^0.3.2",

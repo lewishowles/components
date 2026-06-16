@@ -36,6 +36,12 @@ jobs:
       - name: Unit tests
         run: bun run test:unit:run
 
+      - name: Build package
+        run: bun run build
+
+      - name: Check package exports
+        run: bun run publint
+
       - name: Build docs
         run: bun run build:docs
 
