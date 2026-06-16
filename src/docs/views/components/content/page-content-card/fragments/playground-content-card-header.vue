@@ -9,25 +9,29 @@
 		<template #introduction>A card with an icon and additional header content.</template>
 
 		<content-card>
-			<template #icon>
-				<icon-users />
-			</template>
+			<content-card-header>
+				<template #icon>
+					<icon-users />
+				</template>
 
-			<template #title>
-				{{ slots.title.value }}
-			</template>
+				<template #title>
+					{{ slots.title.value }}
+				</template>
 
-			<template #header-additional>
-				<pill-badge>16 users</pill-badge>
-			</template>
+				<template #header-additional>
+					<pill-badge>16 users</pill-badge>
+				</template>
+			</content-card-header>
 
-			{{ slots.default.value }}
+			<content-card-section>
+				{{ slots.default.value }}
+			</content-card-section>
 		</content-card>
 	</component-playground>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
 const pillBadgeContent = useTemplateGenerator("pill-badge", {
@@ -39,7 +43,6 @@ const pillBadgeContent = useTemplateGenerator("pill-badge", {
 	indent: 1,
 });
 
-// Slots both for the template and for the component example itself.
 const slots = ref({
 	icon: {
 		label: "Icon",
@@ -60,5 +63,21 @@ const slots = ref({
 	},
 });
 
-const template = useTemplateGenerator("content-card", { slots });
+const headerTemplate = useTemplateGenerator("content-card-header", {
+	slots: computed(() => ({
+		icon: slots.value.icon,
+		title: slots.value.title,
+		"header-additional": slots.value["header-additional"],
+	})),
+	indent: 1,
+});
+
+const sectionTemplate = useTemplateGenerator("content-card-section", {
+	slots: computed(() => ({ default: slots.value.default })),
+	indent: 1,
+});
+
+const template = useTemplateGenerator("content-card", {
+	additionalContent: [headerTemplate, sectionTemplate],
+});
 </script>

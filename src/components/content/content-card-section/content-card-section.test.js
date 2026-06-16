@@ -1,11 +1,11 @@
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vite-plus/test";
 
-import ContentCard from "./content-card.vue";
+import ContentCardSection from "./content-card-section.vue";
 
-const mount = createMount(ContentCard);
+const mount = createMount(ContentCardSection, { slots: { default: "Section content" } });
 
-describe("content-card", () => {
+describe("content-card-section", () => {
 	describe("Initialisation", () => {
 		test("Exists as a Vue component", () => {
 			const wrapper = mount();

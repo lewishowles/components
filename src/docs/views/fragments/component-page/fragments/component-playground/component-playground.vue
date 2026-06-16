@@ -10,7 +10,9 @@
 				</template>
 			</section-title>
 
-			<slot name="introduction" />
+			<div>
+				<slot name="introduction" />
+			</div>
 		</div>
 
 		<div class="flex flex-col gap-8">

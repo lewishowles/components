@@ -8,30 +8,39 @@
 
 		<template #introduction>
 			Pass
-			<code>footerClasses</code>
-			to style the footer. The base structural styles (border, rounding, flex, padding) are always
-			applied; any classes you provide will be merged on top.
+			<code>class</code>
+			directly to
+			<code>content-card-footer</code>
+			to extend its styles. The base structural styles (border, rounding, flex, padding) are always
+			applied.
 		</template>
 
-		<content-card v-bind="{ footerClasses: props.footerClasses.value || null }">
-			<template #title>
-				{{ textSlots.title.value }}
-			</template>
+		<content-card>
+			<content-card-header v-bind="{ iconClasses: 'text-success' }">
+				<template #icon>
+					<icon-check-circled />
+				</template>
 
-			{{ textSlots.default.value }}
+				<template #title>
+					{{ textSlots.title.value }}
+				</template>
+			</content-card-header>
 
-			<template #footer>
+			<content-card-section>
+				{{ textSlots.default.value }}
+			</content-card-section>
+
+			<content-card-footer class="bg-grey-50">
 				{{ textSlots.footer.value }}
-			</template>
+			</content-card-footer>
 		</content-card>
 	</component-playground>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
-// Text slots both for the template and for the component example itself.
 const textSlots = ref({
 	title: {
 		label: "Title",
@@ -39,7 +48,7 @@ const textSlots = ref({
 	},
 	default: {
 		label: "Content",
-		value: "All sensors reported within the last minute.",
+		value: "All sensors reported recently.",
 		type: "textarea",
 	},
 	footer: {
@@ -48,14 +57,27 @@ const textSlots = ref({
 	},
 });
 
-// Props both for the template and for the component example itself.
-const props = ref({
-	footerClasses: {
-		label: "Footer classes",
-		value: "bg-grey-50",
-		type: "text",
-	},
+const headerTemplate = useTemplateGenerator("content-card-header", {
+	props: { iconClasses: { value: "text-success" } },
+	slots: computed(() => ({
+		icon: { value: "<icon-check-circled />" },
+		title: textSlots.value.title,
+	})),
+	indent: 1,
 });
 
-const template = useTemplateGenerator("content-card", { props, slots: textSlots });
+const sectionTemplate = useTemplateGenerator("content-card-section", {
+	slots: computed(() => ({ default: textSlots.value.default })),
+	indent: 1,
+});
+
+const footerTemplate = useTemplateGenerator("content-card-footer", {
+	props: { class: { value: "bg-grey-50", isInline: true } },
+	slots: computed(() => ({ default: textSlots.value.footer })),
+	indent: 1,
+});
+
+const template = useTemplateGenerator("content-card", {
+	additionalContent: [headerTemplate, sectionTemplate, footerTemplate],
+});
 </script>

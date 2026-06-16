@@ -2,57 +2,26 @@
 export const contentCardMetadata = {
 	name: "content-card",
 	category: "content",
-	summary: "A structured card with header, body, and footer regions.",
-	props: [
-		{
-			name: "headingLevel",
-			type: "number",
-			default: 2,
-			summary: "Heading level used for the title slot.",
-		},
-		{
-			name: "footerClasses",
-			type: "string | array | object",
-			default: null,
-			summary: "Classes applied to the footer region.",
-		},
-		{
-			name: "iconClasses",
-			type: "string | array | object",
-			default: null,
-			summary: "Classes applied to the icon region.",
-		},
-	],
+	summary:
+		"A structured card built from companion components: content-card-header, content-card-section, and content-card-footer.",
+	props: [],
 	slots: [
 		{
-			name: "title",
-			summary: "Card title.",
-		},
-		{
-			name: "icon",
-			summary: "Icon shown in the header.",
-		},
-		{
-			name: "header-additional",
-			summary: "Additional header content.",
-		},
-		{
-			name: "header",
-			summary: "Full custom header content.",
-		},
-		{
 			name: "default",
-			summary: "Card body content.",
-		},
-		{
-			name: "footer",
-			summary: "Footer content.",
+			summary: "Card contents, composed from companion components.",
 		},
 	],
-	parts: [
-		{ name: "header", summary: "Card header area." },
-		{ name: "body", summary: "Card body content area." },
-		{ name: "footer", summary: "Card footer area." },
+	parts: [],
+	companions: [
+		{
+			name: "content-card-header",
+			summary: "Header region with title, icon, and additional slots.",
+		},
+		{
+			name: "content-card-section",
+			summary: "A bordered body section. Multiple sections stack automatically.",
+		},
+		{ name: "content-card-footer", summary: "Footer region." },
 	],
 	examples: [],
 };

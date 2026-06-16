@@ -1,11 +1,11 @@
 import { createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vite-plus/test";
 
-import ContentCard from "./content-card.vue";
+import ContentCardFooter from "./content-card-footer.vue";
 
-const mount = createMount(ContentCard);
+const mount = createMount(ContentCardFooter, { slots: { default: "Footer content" } });
 
-describe("content-card", () => {
+describe("content-card-footer", () => {
 	describe("Initialisation", () => {
 		test("Exists as a Vue component", () => {
 			const wrapper = mount();

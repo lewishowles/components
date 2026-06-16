@@ -1,64 +1,70 @@
 # `content-card`
 
-`content-card` groups related content in a bordered card with optional header and footer areas.
+`content-card` groups related content in a bordered card. Build it up using the companion components:
 
-## Slots
+- `content-card-header`, a header with title, icon, and additional header slots
+- `content-card-section`, a bordered body section — use multiple sections to divide content
+- `content-card-footer`, a footer region
 
-### `title`
+## `content-card`
 
-The card title. Rendered inside the heading level set by `headingLevel`.
+No props. Accepts only a default slot containing companion components.
 
-### `icon`
+## `content-card-header`
 
-Optional icon content shown before the title in the default header layout.
+### Slots
 
-### `header-additional`
+#### `title`
+
+The card title, rendered inside the element set by `headingLevel`.
+
+#### `icon`
+
+Optional icon shown before the title.
+
+#### `header-additional`
 
 Optional content shown at the end of the default header layout.
 
-### `header`
+#### `header`
 
-Optional custom header content. This replaces the default header layout, but remains inside the styled header wrapper.
+Optional custom header content. Replaces the default title layout, but remains inside the styled header wrapper.
 
-### `default`
+### Props
 
-The main card content.
-
-### `footer`
-
-Optional footer content.
-
-## Props
-
-### `headingLevel`
+#### `headingLevel`
 
 - type: `string`
 - default: `h2`
 
 The heading level to use for the title.
 
-### `footerClasses`
-
-- type: `string` | `array` | `object`
-- default: `null`
-
-Additional classes to apply to the footer, merged on top of the base styles (border, rounding, flex, padding, text-sm). Any provided classes that conflict with base classes will override as necessary.
-
-### `iconClasses`
+#### `iconClasses`
 
 - type: `string` | `array` | `object`
 - default: `text-primary`
 
 Classes to apply around the icon slot.
 
+## `content-card-section`
+
+No props. Accepts a default slot for section content. Sections stack with collapsed borders and automatic rounding on the outermost edges.
+
+## `content-card-footer`
+
+No props. Pass `class` directly to override or extend the base styles (border, rounding, flex, padding, text-sm).
+
 ## Styling hooks
 
-| Attribute                       | Element | Notes                          |
-| ------------------------------- | ------- | ------------------------------ |
-| `data-component="content-card"` | Root    | Scope styles to this component |
-| `data-part="header"`            | Header  | The header region              |
-| `data-part="body"`              | Body    | The main body region           |
-| `data-part="footer"`            | Footer  | The footer region              |
+| Attribute                               | Element           | Notes                          |
+| --------------------------------------- | ----------------- | ------------------------------ |
+| `data-component="content-card"`         | Root              | Scope styles to this component |
+| `data-component="content-card-header"`  | Header companion  | —                              |
+| `data-component="content-card-section"` | Section companion | —                              |
+| `data-component="content-card-footer"`  | Footer companion  | —                              |
+| `data-part="header"`                    | Header            | —                              |
+| `data-part="section"`                   | Section           | —                              |
+| `data-part="footer"`                    | Footer            | —                              |
 
 ## Examples
 
@@ -66,9 +72,25 @@ Classes to apply around the icon slot.
 
 ```html
 <content-card>
-	<template #title>Card title</template>
+	<content-card-header>
+		<template #title>Card title</template>
+	</content-card-header>
 
-	Card content
+	<content-card-section>Card content</content-card-section>
+</content-card>
+```
+
+### Multiple sections
+
+```html
+<content-card>
+	<content-card-header>
+		<template #title>Card title</template>
+	</content-card-header>
+
+	<content-card-section>First section</content-card-section>
+
+	<content-card-section>Second section</content-card-section>
 </content-card>
 ```
 
@@ -76,11 +98,13 @@ Classes to apply around the icon slot.
 
 ```html
 <content-card>
-	<template #title>Card title</template>
+	<content-card-header>
+		<template #title>Card title</template>
+	</content-card-header>
 
-	Card content
+	<content-card-section>Card content</content-card-section>
 
-	<template #footer>Card footer</template>
+	<content-card-footer>Card footer</content-card-footer>
 </content-card>
 ```
 
@@ -88,8 +112,10 @@ Classes to apply around the icon slot.
 
 ```html
 <content-card>
-	<template #header>Custom header</template>
+	<content-card-header>
+		<template #header>Custom header</template>
+	</content-card-header>
 
-	Card content
+	<content-card-section>Card content</content-card-section>
 </content-card>
 ```

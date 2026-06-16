@@ -11,24 +11,28 @@
 		</template>
 
 		<content-card>
-			<template #header>
-				<div class="flex flex-col">
-					<p class="flex items-center gap-1 text-sm text-red-600">
-						<icon-warning />
-						Warning
-					</p>
+			<content-card-header>
+				<template #header>
+					<div class="flex flex-col">
+						<p class="flex items-center gap-1 text-sm text-red-600">
+							<icon-warning />
+							Warning
+						</p>
 
-					<p class="text-xl font-bold">Camera offline</p>
-				</div>
-			</template>
+						<h3 class="text-content-strong text-xl font-bold">Camera offline</h3>
+					</div>
+				</template>
+			</content-card-header>
 
-			{{ slots.default?.value }}
+			<content-card-section>
+				{{ slots.default?.value }}
+			</content-card-section>
 		</content-card>
 	</component-playground>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
 const warningTemplate = useTemplateGenerator("p", {
@@ -49,10 +53,10 @@ const warningTemplate = useTemplateGenerator("p", {
 	indent: 1,
 });
 
-const titleTemplate = useTemplateGenerator("p", {
+const titleTemplate = useTemplateGenerator("h3", {
 	props: {
 		class: {
-			value: "text-xl font-bold",
+			value: "text-content-strong text-xl font-bold",
 			isInline: true,
 		},
 	},
@@ -66,7 +70,7 @@ const titleTemplate = useTemplateGenerator("p", {
 	indent: 1,
 });
 
-const headerTemplate = useTemplateGenerator("div", {
+const headerInnerTemplate = useTemplateGenerator("div", {
 	props: {
 		class: {
 			value: "flex flex-col",
@@ -79,12 +83,14 @@ const headerTemplate = useTemplateGenerator("div", {
 	indent: 1,
 });
 
-// Slots both for the template and for the component example itself.
+const headerTemplate = useTemplateGenerator("content-card-header", {
+	slots: computed(() => ({
+		header: { value: headerInnerTemplate.value },
+	})),
+	indent: 1,
+});
+
 const slots = ref({
-	header: {
-		label: "Header",
-		value: headerTemplate.value,
-	},
 	default: {
 		label: "Content",
 		value: "The front door camera stopped reporting 2 minutes ago.",
@@ -92,5 +98,12 @@ const slots = ref({
 	},
 });
 
-const template = useTemplateGenerator("content-card", { slots });
+const sectionTemplate = useTemplateGenerator("content-card-section", {
+	slots: computed(() => ({ default: slots.value.default })),
+	indent: 1,
+});
+
+const template = useTemplateGenerator("content-card", {
+	additionalContent: [headerTemplate, sectionTemplate],
+});
 </script>

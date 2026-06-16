@@ -1,32 +1,36 @@
 import ContentCard from "./content-card.vue";
+import ContentCardFooter from "@/components/content/content-card-footer/content-card-footer.vue";
+import ContentCardHeader from "@/components/content/content-card-header/content-card-header.vue";
+import ContentCardSection from "@/components/content/content-card-section/content-card-section.vue";
 import IconCctvCamera from "@/components/icon/icon-cctv-camera/icon-cctv-camera.vue";
 import { createMount } from "@cypress/support/mount";
 import { h } from "vue";
 
-const defaultOptions = {
-	slots: {
-		default: "Card content",
-		title: "Card title",
-	},
-};
-
-const mount = createMount(ContentCard, defaultOptions);
+const mount = createMount(ContentCard);
 
 describe("content-card", () => {
 	it("Card content is rendered", () => {
-		mount();
+		mount({
+			slots: {
+				default: () => h(ContentCardSection, null, { default: () => "Card content" }),
+			},
+		});
 
 		cy.getByData("content-card").shouldBeVisible();
-		cy.getByData("content-card-body").shouldHaveText("Card content");
+		cy.getByData("content-card-section").shouldHaveText("Card content");
 	});
 
 	it("Header content is rendered", () => {
 		mount({
 			slots: {
-				default: "Card content",
-				"header-additional": "Card actions",
-				icon: () => h(IconCctvCamera, { "data-test": "card-example-icon" }),
-				title: "Card title",
+				default: () => [
+					h(ContentCardHeader, null, {
+						icon: () => h(IconCctvCamera, { "data-test": "card-example-icon" }),
+						title: () => "Card title",
+						"header-additional": () => "Card actions",
+					}),
+					h(ContentCardSection, null, { default: () => "Card content" }),
+				],
 			},
 		});
 
@@ -38,41 +42,39 @@ describe("content-card", () => {
 
 	it("Heading level is configurable", () => {
 		mount({
-			props: {
-				headingLevel: "h3",
-			},
 			slots: {
-				default: "Card content",
-				title: "Card title",
+				default: () => [
+					h(ContentCardHeader, { headingLevel: "h3" }, { title: () => "Card title" }),
+					h(ContentCardSection, null, { default: () => "Card content" }),
+				],
 			},
 		});
 
 		cy.getByData("content-card-title").should("match", "h3");
 	});
 
-	it("A plain footer excludes well styling", () => {
+	it("Multiple sections stack with collapsed borders", () => {
 		mount({
-			props: {
-				footerVariant: "plain",
-			},
 			slots: {
-				default: "Card content",
-				footer: "Card footer",
-				title: "Card title",
+				default: () => [
+					h(ContentCardSection, null, { default: () => "First section" }),
+					h(ContentCardSection, null, { default: () => "Second section" }),
+				],
 			},
 		});
 
-		cy.getByData("content-card-footer")
-			.shouldHaveText("Card footer")
-			.should("not.have.class", "bg-grey-50");
+		cy.getByData("content-card-section").should("have.length", 2);
 	});
 
 	it("Custom header content is rendered inside the header", () => {
 		mount({
 			slots: {
-				default: "Card content",
-				header: '<div data-test="custom-card-header">Custom header</div>',
-				title: "Card title",
+				default: () => [
+					h(ContentCardHeader, null, {
+						header: () => h("div", { "data-test": "custom-card-header" }, "Custom header"),
+					}),
+					h(ContentCardSection, null, { default: () => "Card content" }),
+				],
 			},
 		});
 
@@ -82,9 +84,22 @@ describe("content-card", () => {
 		cy.getByData("content-card-title").should("not.exist");
 	});
 
+	it("Footer content is rendered", () => {
+		mount({
+			slots: {
+				default: () => [
+					h(ContentCardSection, null, { default: () => "Card content" }),
+					h(ContentCardFooter, null, { default: () => "Card footer" }),
+				],
+			},
+		});
+
+		cy.getByData("content-card-footer").shouldHaveText("Card footer");
+	});
+
 	describe("Styling hooks", () => {
 		it("data-component is set on the root element", () => {
-			mount({ slots: { default: "Content" } });
+			mount();
 
 			cy.getByData("content-card").shouldHaveAttribute("data-component", "content-card");
 		});

@@ -9,20 +9,23 @@
 		<template #introduction>A simple card with a title and content.</template>
 
 		<content-card>
-			<template #title>
-				{{ textSlots.title.value }}
-			</template>
+			<content-card-header>
+				<template #title>
+					{{ textSlots.title.value }}
+				</template>
+			</content-card-header>
 
-			{{ textSlots.default.value }}
+			<content-card-section>
+				{{ textSlots.default.value }}
+			</content-card-section>
 		</content-card>
 	</component-playground>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
-// Text slots both for the template and for the component example itself.
 const textSlots = ref({
 	title: {
 		label: "Title",
@@ -35,5 +38,17 @@ const textSlots = ref({
 	},
 });
 
-const template = useTemplateGenerator("content-card", { slots: textSlots });
+const headerTemplate = useTemplateGenerator("content-card-header", {
+	slots: computed(() => ({ title: textSlots.value.title })),
+	indent: 1,
+});
+
+const sectionTemplate = useTemplateGenerator("content-card-section", {
+	slots: computed(() => ({ default: textSlots.value.default })),
+	indent: 1,
+});
+
+const template = useTemplateGenerator("content-card", {
+	additionalContent: [headerTemplate, sectionTemplate],
+});
 </script>
