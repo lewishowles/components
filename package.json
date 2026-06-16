@@ -41,7 +41,6 @@
 		"./styles/animation": "./dist/css/animation.css",
 		"./styles/buttons": "./dist/css/buttons.css",
 		"./styles/components": "./dist/css/components.css",
-		"./styles/font": "./dist/css/font.css",
 		"./styles/form": "./dist/css/form.css",
 		"./styles/main": "./dist/css/main.css",
 		"./styles/theme": "./dist/css/theme.css",

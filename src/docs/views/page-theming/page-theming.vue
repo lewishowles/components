@@ -67,6 +67,26 @@
 			and the entire app re-styles without touching CSS.
 		</p>
 
+		<h3>Typography</h3>
+
+		<p>
+			Components use two font stacks, both set as Tailwind theme variables in
+			<code>theme.css</code>
+			. Override either in your own
+			<code>@theme</code>
+			block after importing the library styles:
+		</p>
+
+		<code-block :code="fontExample" />
+
+		<p>
+			<code>--font-sans</code>
+			drives body text and UI elements;
+			<code>--font-mono</code>
+			drives code and monospace contexts. Both fall back through system fonts, so overriding just
+			the first entry is usually enough.
+		</p>
+
 		<h3>Fork a stylesheet</h3>
 
 		<p>
@@ -397,11 +417,6 @@ const stylesheets = [
 		description: "Form control styling.",
 	},
 	{
-		file: "font.css",
-		importPath: "@lewishowles/components/styles/font",
-		description: "Font faces and typography tokens.",
-	},
-	{
 		file: "animation.css",
 		importPath: "@lewishowles/components/styles/animation",
 		description: "Keyframes and animation helpers.",
@@ -412,6 +427,12 @@ const stylesheets = [
 		description: "Component-specific CSS that Tailwind utilities can't express.",
 	},
 ];
+
+// An example for overriding font stacks.
+const fontExample = `@theme {
+	--font-sans: "Funnel Sans", ui-sans-serif, system-ui, sans-serif;
+	--font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}`;
 
 // An example for overriding a token.
 const overrideExample = `:root {

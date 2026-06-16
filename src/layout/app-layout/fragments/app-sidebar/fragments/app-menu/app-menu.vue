@@ -6,8 +6,8 @@
 					<template #title>Introduction</template>
 
 					<app-menu-link to="/getting-started">Getting started</app-menu-link>
-					<app-menu-link to="/styling-hooks">Styling hooks</app-menu-link>
 					<app-menu-link to="/theming">Theming</app-menu-link>
+					<app-menu-link to="/styling-hooks">Styling hooks</app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>

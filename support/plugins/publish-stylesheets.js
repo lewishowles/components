@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from "node:fs";
 
 // Stylesheets that are only used in the docs site and should not be shipped in
 // the package distribution.
-const DOCS_ONLY_STYLESHEETS = ["docs.css"];
+const DOCS_ONLY_STYLESHEETS = ["docs.css", "font.css"];
 
 /**
  * Publish the library's stylesheets under `/css/`. Used in two contexts:
