@@ -3,11 +3,11 @@ import { cancel, intro, isCancel, select } from "@clack/prompts";
 import { highlight } from "cli-highlight";
 import { readFileSync } from "node:fs";
 
+import { printAllComponents } from "./list.js";
 import {
 	buildTemplateAttributes,
 	componentMetadata,
 	lookupComponent,
-	printComponents,
 	printExamples,
 } from "./index.js";
 
@@ -159,13 +159,13 @@ export async function runSnippet(rawArguments) {
 	const { example, flags, name } = parseSnippetArguments(rawArguments);
 
 	if (flags.help) {
-		printComponents(componentMetadata);
+		printAllComponents(componentMetadata);
 
 		return;
 	}
 
 	if (flags.list && name === null) {
-		printComponents(componentMetadata);
+		printAllComponents(componentMetadata);
 
 		return;
 	}

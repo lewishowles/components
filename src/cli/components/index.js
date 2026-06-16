@@ -65,33 +65,6 @@ export function buildTemplateAttributes(snippet) {
 }
 
 /**
- * Prints a list of all components that have snippet examples.
- *
- * @param  {object[]}  components
- *     Component metadata records.
- */
-export function printComponents(components) {
-	const items = getComponentItems(components);
-	const width = Math.max(...items.map((item) => item.name.length));
-
-	console.log(`\n${c.bold("Available snippet components")}\n`);
-
-	for (const item of items) {
-		const exampleText = item.examples === 1 ? "1 example" : `${item.examples} examples`;
-
-		console.log(
-			`  ${c.cyan(item.name.padEnd(width))}  ${item.summary} ${c.dim(`(${exampleText})`)}`,
-		);
-	}
-
-	console.log(`
-${c.bold("Usage")}
-
-  npx ${PACKAGE_NAME} snippet <component> --list
-`);
-}
-
-/**
  * Prints the list of snippet examples for one component.
  *
  * @param  {object}  component
@@ -125,25 +98,6 @@ function toKebabCase(str) {
 }
 
 /**
- * Gets display-ready items from component metadata, sorted alphabetically by
- * name. Components with no examples are excluded; they exist in the registry
- * for docs and compose use but have nothing to snippet.
- *
- * @param   {object[]}  components
- * @returns {{ examples: number, name: string, summary: string }[]}
- */
-function getComponentItems(components) {
-	return components
-		.filter((component) => component.examples?.length > 0)
-		.map((component) => ({
-			examples: component.examples.length,
-			name: component.name,
-			summary: component.summary,
-		}))
-		.sort((a, b) => a.name.localeCompare(b.name));
-}
-
-/**
  * Gets display-ready items from component examples.
  *
  * @param   {object}  component
@@ -156,4 +110,4 @@ function getExampleItems(component) {
 	}));
 }
 
-export const _test = { getComponentItems, getExampleItems };
+export const _test = { getExampleItems };

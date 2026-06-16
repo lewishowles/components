@@ -114,5 +114,6 @@ export const notificationHandlerMetadata = {
 			summary: "Emitted when the reload action is triggered.",
 		},
 	],
+	parts: [{ name: "list", summary: "Container holding all active notification items." }],
 	examples: [],
 };

@@ -51,5 +51,9 @@ export const starRatingMetadata = {
 			summary: "Move focus to the selected rating option, or the first option.",
 		},
 	],
+	parts: [
+		{ name: "option", summary: "Individual star rating option." },
+		{ name: "options", summary: "Container for all star rating options." },
+	],
 	examples: [],
 };

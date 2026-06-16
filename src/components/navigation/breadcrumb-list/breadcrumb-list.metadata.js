@@ -17,5 +17,6 @@ export const breadcrumbListMetadata = {
 			summary: "Breadcrumb items.",
 		},
 	],
+	parts: [{ name: "list", summary: "Ordered list containing all breadcrumb items." }],
 	examples: [],
 };

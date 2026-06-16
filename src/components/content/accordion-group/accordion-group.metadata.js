@@ -25,5 +25,6 @@ export const accordionGroupMetadata = {
 			summary: "Label for the hide-all control.",
 		},
 	],
+	parts: [{ name: "controls", summary: "Expand all and collapse all buttons." }],
 	examples: [],
 };

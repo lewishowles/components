@@ -48,5 +48,8 @@ export const userAvatarsMetadata = {
 			summary: "Outline classes applied to overlapping initials avatars.",
 		},
 	],
+	parts: [
+		{ name: "overflow", summary: "Avatar shown when there are more users than the display limit." },
+	],
 	examples: [],
 };

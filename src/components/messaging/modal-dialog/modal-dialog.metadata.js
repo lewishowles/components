@@ -59,5 +59,9 @@ export const modalDialogMetadata = {
 			summary: "Close the dialog.",
 		},
 	],
+	parts: [
+		{ name: "actions", summary: "Footer area containing action buttons." },
+		{ name: "title", summary: "Heading area at the top of the dialog." },
+	],
 	examples: [],
 };

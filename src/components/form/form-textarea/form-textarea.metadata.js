@@ -54,6 +54,7 @@ export const formTextareaMetadata = {
 			summary: "Move focus to the textarea.",
 		},
 	],
+	parts: [{ name: "field-wrapper", summary: "Wrapper around the textarea element." }],
 	examples: [
 		{
 			name: "default",

@@ -68,6 +68,12 @@ export const formInputMetadata = {
 			summary: "Move focus to the input.",
 		},
 	],
+	parts: [
+		{
+			name: "field-wrapper",
+			summary: "Wrapper around the input element and any prefix or suffix.",
+		},
+	],
 	examples: [
 		{
 			name: "default",

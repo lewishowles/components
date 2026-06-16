@@ -36,5 +36,10 @@ export const appPaginationMetadata = {
 			summary: "Navigate to a page number.",
 		},
 	],
+	parts: [
+		{ name: "next", summary: "Next page button." },
+		{ name: "page-list", summary: "List of page number buttons." },
+		{ name: "previous", summary: "Previous page button." },
+	],
 	examples: [],
 };

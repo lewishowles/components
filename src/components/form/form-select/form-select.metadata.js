@@ -76,6 +76,7 @@ export const formSelectMetadata = {
 			summary: "Move focus to the select.",
 		},
 	],
+	parts: [{ name: "field-wrapper", summary: "Wrapper around the select element." }],
 	examples: [
 		{
 			name: "default",

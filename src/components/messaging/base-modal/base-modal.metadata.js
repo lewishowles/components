@@ -72,5 +72,6 @@ export const baseModalMetadata = {
 			summary: "Return whether the dialog is currently open.",
 		},
 	],
+	parts: [{ name: "close-button", summary: "Button that dismisses the modal." }],
 	examples: [],
 };

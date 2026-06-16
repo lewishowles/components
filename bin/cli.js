@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
 import { PACKAGE_NAME } from "../src/cli/utils/constants.js";
+import { getHelpSection as getStylesheetsHelpSection } from "../src/cli/stylesheets/index.js";
 import { getHelpSections } from "../src/cli/registry.js";
 import { printHelp } from "../src/cli/help.js";
 import { runCopy } from "../src/cli/stylesheets/copy.js";
 import { runDiff } from "../src/cli/stylesheets/diff.js";
-import { getHelpSection as getStylesheetsHelpSection } from "../src/cli/stylesheets/index.js";
+import { runList } from "../src/cli/components/list.js";
 import { runPattern } from "../src/cli/components/pattern.js";
 import { runSnippet } from "../src/cli/components/snippet.js";
 
@@ -24,6 +25,8 @@ if (command === "stylesheet") {
 		console.error(`Usage: npx ${PACKAGE_NAME} stylesheet <copy|diff> [options]\n`);
 		process.exit(1);
 	}
+} else if (command === "list") {
+	runList(rest);
 } else if (command === "pattern") {
 	await runPattern(rest);
 } else if (command === "snippet") {

@@ -1,55 +1,7 @@
 import { describe, expect, test } from "vite-plus/test";
 import { _test, buildTemplateAttributes } from "./index.js";
 
-const { getComponentItems, getExampleItems } = _test;
-
-describe("getComponentItems", () => {
-	test("Returns sorted component items", () => {
-		const items = getComponentItems([
-			{
-				name: "z-component",
-				summary: "Last component.",
-				examples: [{ name: "default" }],
-			},
-			{
-				name: "a-component",
-				summary: "First component.",
-				examples: [{ name: "default" }, { name: "icon" }],
-			},
-		]);
-
-		expect(items).toEqual([
-			{
-				examples: 2,
-				name: "a-component",
-				summary: "First component.",
-			},
-			{
-				examples: 1,
-				name: "z-component",
-				summary: "Last component.",
-			},
-		]);
-	});
-
-	test("Excludes components with no examples", () => {
-		const items = getComponentItems([
-			{
-				name: "stub-component",
-				summary: "API-only stub.",
-				examples: [],
-			},
-			{
-				name: "snippet-component",
-				summary: "Has examples.",
-				examples: [{ name: "default" }],
-			},
-		]);
-
-		expect(items).toHaveLength(1);
-		expect(items[0].name).toBe("snippet-component");
-	});
-});
+const { getExampleItems } = _test;
 
 describe("getExampleItems", () => {
 	test("Returns example items for a component", () => {
