@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: Unit tests, lint, and docs build
@@ -23,7 +27,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: "26"
+          node-version: "24"
 
       - name: Write .npmrc for GitHub Packages auth
         run: |
@@ -52,6 +56,9 @@ jobs:
       - name: Smoke test exports
         run: bun run check:exports
 
+      - name: Check declarations
+        run: bun run check:declarations
+
       - name: Check types are correct
         run: bun run attw
 
@@ -70,6 +77,11 @@ jobs:
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
 
       - name: Write .npmrc for GitHub Packages auth
         run: |

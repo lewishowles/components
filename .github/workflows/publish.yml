@@ -5,9 +5,17 @@ on:
     tags:
       - "v*"
 
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   publish:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout code
@@ -19,7 +27,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: "26"
+          node-version: "24"
           registry-url: "https://npm.pkg.github.com"
 
       - name: Write .npmrc for GitHub Packages auth
@@ -34,11 +42,26 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
 
+      - name: Lint
+        run: bun run lint:check
+
       - name: Run unit tests
         run: bun run test:unit:run
 
       - name: Build package
         run: bun run build
+
+      - name: Check package exports
+        run: bun run publint
+
+      - name: Smoke test exports
+        run: bun run check:exports
+
+      - name: Check declarations
+        run: bun run check:declarations
+
+      - name: Check types are correct
+        run: bun run attw
 
       - name: Publish to GitHub Packages
         run: npm publish
