@@ -25,10 +25,12 @@
 	"module": "dist/components.js",
 	"exports": {
 		"./composables": {
+			"types": "./dist/composables.d.ts",
 			"require": "./dist/composables.js",
 			"import": "./dist/composables.js"
 		},
 		"./utilities": {
+			"types": "./dist/utilities.d.ts",
 			"require": "./dist/utilities.js",
 			"import": "./dist/utilities.js"
 		},
@@ -53,18 +55,19 @@
 		"registry": "https://npm.pkg.github.com/"
 	},
 	"scripts": {
-		"build": "vp build",
-		"deploy": "bun run build:docs; gh-pages -d dist-docs --cname components.howles.dev --dotfiles",
+		"dev": "vp dev",
 		"test:component": "cypress run --component",
 		"test:unit:run": "vp test run",
-		"build:docs": "vp build --config support/vite.config.docs.js",
-		"preview": "vp preview",
+		"test:unit": "vp test",
 		"lint": "vp lint . --fix",
 		"lint:check": "vp lint .",
-		"test:unit": "vp test",
 		"publint": "publint",
-		"prepare": "vp config",
-		"dev": "vp dev"
+		"build": "vp build",
+		"build:docs": "vp build --config support/vite.config.docs.js",
+		"deploy": "bun run build:docs; gh-pages -d dist-docs --cname components.howles.dev --dotfiles",
+		"preview": "vp preview",
+		"check:declarations": "node scripts/check-declarations.js",
+		"prepare": "vp config"
 	},
 	"dependencies": {
 		"@clack/prompts": "^1.5.1",

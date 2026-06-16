@@ -11,12 +11,14 @@ import vueDevTools from "vite-plugin-vue-devtools";
 import {
 	createComponentSource,
 	createNamedExports,
+	publishDeclarations,
 	publishStylesheets,
 } from "./support/plugins/index.js";
 
 export default defineConfig({
 	staged: {
 		"*": "vp check --fix",
+		"src/{composables,utilities}/**/*.js": "bun run check:declarations",
 	},
 	fmt,
 	lint,
@@ -26,6 +28,7 @@ export default defineConfig({
 		tailwindcss(),
 		createComponentSource(),
 		createNamedExports(),
+		publishDeclarations(),
 		publishStylesheets(),
 		vueDevTools(),
 	],
