@@ -68,6 +68,7 @@
 		"deploy": "bun run build:docs; gh-pages -d dist-docs --cname components.howles.dev --dotfiles",
 		"preview": "vp preview",
 		"check:declarations": "node scripts/check-declarations.js",
+		"check:exports": "node scripts/smoke-test-exports.js",
 		"attw": "attw --pack --exclude-entrypoints '.'",
 		"prepare": "vp config"
 	},
