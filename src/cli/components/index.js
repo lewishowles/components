@@ -16,8 +16,10 @@ export function lookupComponent(name) {
 	const component = componentMetadataByName[name];
 
 	if (!component) {
-		console.error(`Unknown component: ${name}`);
-		console.error(`Available: ${componentMetadata.map((component) => component.name).join(", ")}`);
+		console.error(`\n${c.red("Unknown component:")} ${name}\n`);
+		console.error(
+			`Available: ${componentMetadata.map((component) => component.name).join(", ")}\n`,
+		);
 		process.exit(1);
 	}
 

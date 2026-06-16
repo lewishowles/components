@@ -67,13 +67,13 @@ describe("normaliseSourceSnippet", () => {
 		expect(output).toBe("<ui-button>Save</ui-button>");
 	});
 
-	test("Returns the full source for an SFC with script setup", () => {
+	test("Returns the full source for an SFC with script setup, tabs converted to spaces", () => {
 		const source =
 			'<template>\n\t<form-wrapper />\n</template>\n\n<script setup>\nimport { ref } from "vue";\n</script>';
 
 		const output = normaliseSourceSnippet(source);
 
-		expect(output).toBe(source);
+		expect(output).toBe(source.replace(/\t/g, "  "));
 	});
 });
 

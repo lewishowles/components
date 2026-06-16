@@ -139,11 +139,9 @@ function normaliseSourceSnippet(source) {
 	const trimmedSource = source.trim();
 	const templateMatch = trimmedSource.match(/^<template>\s*([\s\S]*?)\s*<\/template>$/);
 
-	if (!templateMatch) {
-		return trimmedSource;
-	}
+	const result = templateMatch ? templateMatch[1].trim() : trimmedSource;
 
-	return templateMatch[1].trim();
+	return result.replace(/\t/g, "  ");
 }
 
 /**
@@ -192,7 +190,14 @@ export async function runSnippet(rawArguments) {
 			return;
 		}
 
-		printExamples(component);
+		if (!process.stdin.isTTY) {
+			console.error(`Usage: npx ${PACKAGE_NAME} snippet ${name} [example]\n`);
+			process.exit(1);
+		}
+
+		const exampleChoice = await promptExample(component);
+
+		printSnippet(component, exampleChoice);
 
 		return;
 	}
@@ -274,6 +279,34 @@ async function promptSnippet() {
 	}
 
 	return { component: component.name, example: exampleChoice };
+}
+
+/**
+ * Shows an interactive prompt to pick an example for a known component.
+ *
+ * @param   {object}  component
+ *     Component metadata record.
+ * @returns {Promise<string>}
+ *     The selected example name.
+ */
+async function promptExample(component) {
+	intro(PACKAGE_NAME);
+
+	const exampleChoice = await select({
+		message: `Choose a ${component.name} example`,
+		options: component.examples.map((example) => ({
+			hint: example.summary,
+			label: example.name,
+			value: example.name,
+		})),
+	});
+
+	if (isCancel(exampleChoice)) {
+		cancel("Cancelled.");
+		process.exit(0);
+	}
+
+	return exampleChoice;
 }
 
 /**

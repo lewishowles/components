@@ -7,5 +7,6 @@ export const c = {
 	cyan: (text) => (useColour ? `\x1b[36m${text}\x1b[0m` : text),
 	dim: (text) => (useColour ? `\x1b[2m${text}\x1b[0m` : text),
 	green: (text) => (useColour ? `\x1b[32m${text}\x1b[0m` : text),
+	red: (text) => (useColour ? `\x1b[31m${text}\x1b[0m` : text),
 	yellow: (text) => (useColour ? `\x1b[33m${text}\x1b[0m` : text),
 };

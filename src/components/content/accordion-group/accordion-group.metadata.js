@@ -14,7 +14,7 @@ export const accordionGroupMetadata = {
 	slots: [
 		{
 			name: "default",
-			summary: "Accordion panels.",
+			summary: "One or more accordion-panel components.",
 		},
 		{
 			name: "show-all-panels-label",

@@ -1,3 +1,4 @@
+import { getHelpSection as getInfoHelpSection } from "./components/info.js";
 import { getHelpSection as getListHelpSection } from "./components/list.js";
 import { getHelpSection as getPatternHelpSection } from "./components/pattern.js";
 import { getHelpSection as getSnippetHelpSection } from "./components/snippet.js";
@@ -14,6 +15,7 @@ export function getHelpSections() {
 
 	const components = {
 		commands: [
+			...getInfoHelpSection().commands,
 			...getListHelpSection().commands,
 			...getSnippetHelpSection().commands,
 			...getPatternHelpSection().commands,

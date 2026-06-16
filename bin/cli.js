@@ -6,6 +6,7 @@ import { getHelpSections } from "../src/cli/registry.js";
 import { printHelp } from "../src/cli/help.js";
 import { runCopy } from "../src/cli/stylesheets/copy.js";
 import { runDiff } from "../src/cli/stylesheets/diff.js";
+import { runInfo } from "../src/cli/components/info.js";
 import { runList } from "../src/cli/components/list.js";
 import { runPattern } from "../src/cli/components/pattern.js";
 import { runSnippet } from "../src/cli/components/snippet.js";
@@ -25,6 +26,8 @@ if (command === "stylesheet") {
 		console.error(`Usage: npx ${PACKAGE_NAME} stylesheet <copy|diff> [options]\n`);
 		process.exit(1);
 	}
+} else if (command === "info") {
+	runInfo(rest);
 } else if (command === "list") {
 	runList(rest);
 } else if (command === "pattern") {
