@@ -57,9 +57,9 @@
 	},
 	"scripts": {
 		"dev": "vp dev",
-		"test:component": "cypress run --component",
 		"test:unit:run": "vp test run",
 		"test:unit": "vp test",
+		"test:component": "cypress run --component",
 		"lint": "vp lint . --fix",
 		"lint:check": "vp lint .",
 		"publint": "publint",
