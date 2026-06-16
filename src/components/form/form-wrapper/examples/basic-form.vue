@@ -24,10 +24,8 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-
-// Current form values keyed by field name.
-const formData = ref({});
+// Current form values, exposed via v-model so a parent can observe submitted data.
+const formData = defineModel({ default: () => ({}) });
 
 // Validation rules run by form-wrapper before submit.
 const validation = {
