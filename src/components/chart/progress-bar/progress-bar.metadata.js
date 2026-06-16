@@ -54,5 +54,11 @@ export const progressBarMetadata = {
 		{ name: "default", summary: "Progress label." },
 		{ name: "value", summary: "Custom visible value content." },
 	],
+	parts: [
+		{ name: "track", summary: "Background track of the progress bar." },
+		{ name: "bar", summary: "Filled bar indicating progress." },
+		{ name: "label", summary: "Descriptive label for the progress bar." },
+		{ name: "value", summary: "Visible progress value text." },
+	],
 	examples: [],
 };

@@ -45,5 +45,10 @@ export const alertMessageMetadata = {
 			summary: "Custom icon content.",
 		},
 	],
+	parts: [
+		{ name: "icon", summary: "Icon displayed alongside the message." },
+		{ name: "title", summary: "Alert message title." },
+		{ name: "content", summary: "Alert message body content." },
+	],
 	examples: [],
 };

@@ -27,5 +27,9 @@ export const stepIndicatorMetadata = {
 			summary: "Custom current-step label.",
 		},
 	],
+	parts: [
+		{ name: "label", summary: "Step label text." },
+		{ name: "progress", summary: "Progress indicator between steps." },
+	],
 	examples: [],
 };

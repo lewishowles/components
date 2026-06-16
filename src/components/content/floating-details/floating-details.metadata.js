@@ -77,5 +77,9 @@ export const floatingDetailsMetadata = {
 		{ name: "openDetails", summary: "Open the panel." },
 		{ name: "closeDetails", summary: "Close the panel." },
 	],
+	parts: [
+		{ name: "summary", summary: "Summary control that opens the floating panel." },
+		{ name: "content", summary: "Floating panel content." },
+	],
 	examples: [],
 };

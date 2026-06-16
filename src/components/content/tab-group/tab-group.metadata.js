@@ -28,5 +28,10 @@ export const tabGroupMetadata = {
 		{ name: "default", summary: "Tab item panels." },
 		{ name: "label", summary: "Accessible label for the tab group." },
 	],
+	parts: [
+		{ name: "nav", summary: "Navigation wrapper containing the tab list." },
+		{ name: "tab-list", summary: "Container for tab buttons." },
+		{ name: "tab", summary: "Individual tab button." },
+	],
 	examples: [],
 };

@@ -58,6 +58,13 @@ export const linkTagMetadata = {
 			summary: "Move focus to the link.",
 		},
 	],
+	parts: [
+		{ name: "icon-start", summary: "Icon displayed before the label." },
+		{ name: "label", summary: "Link label text." },
+		{ name: "icon-end", summary: "Icon displayed after the label." },
+		{ name: "icon-external", summary: "Icon indicating an external link." },
+		{ name: "external-suffix", summary: "Accessible text suffix for external links." },
+	],
 	examples: [
 		{
 			name: "default",

@@ -49,6 +49,10 @@ export const formCheckboxMetadata = {
 			summary: "Move focus to the checkbox.",
 		},
 	],
+	parts: [
+		{ name: "indicator", summary: "The checkbox input element." },
+		{ name: "label", summary: "Label associated with the checkbox." },
+	],
 	examples: [
 		{
 			name: "default",

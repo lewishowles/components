@@ -16,5 +16,10 @@ export const copyContentMetadata = {
 		{ name: "copy-success-label", summary: "Success label shown and announced after copy." },
 		{ name: "copy-error-label", summary: "Error label shown and announced if copy fails." },
 	],
+	parts: [
+		{ name: "label", summary: "Default copy button label." },
+		{ name: "success", summary: "Success state shown after copying." },
+		{ name: "error", summary: "Error state shown when copying fails." },
+	],
 	examples: [],
 };

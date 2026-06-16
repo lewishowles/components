@@ -82,5 +82,6 @@ export const formInputGroupMetadata = {
 			summary: "Move focus to the selected option, or the first option if none is selected.",
 		},
 	],
+	parts: [{ name: "indicator", summary: "Radio or checkbox input element for each option." }],
 	examples: [],
 };

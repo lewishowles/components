@@ -49,5 +49,10 @@ export const contentCardMetadata = {
 			summary: "Footer content.",
 		},
 	],
+	parts: [
+		{ name: "header", summary: "Card header area." },
+		{ name: "body", summary: "Card body content area." },
+		{ name: "footer", summary: "Card footer area." },
+	],
 	examples: [],
 };

@@ -22,5 +22,9 @@ export const noneFoundMetadata = {
 		{ name: "default", summary: "Empty-state body content." },
 		{ name: "actions", summary: "Optional action controls." },
 	],
+	parts: [
+		{ name: "title", summary: "Heading displayed when no results are found." },
+		{ name: "actions", summary: "Container for action controls." },
+	],
 	examples: [],
 };

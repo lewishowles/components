@@ -102,5 +102,9 @@ export const summaryDetailsMetadata = {
 		{ name: "closeDetails", summary: "Close the details content." },
 		{ name: "toggleDetails", summary: "Toggle the details content." },
 	],
+	parts: [
+		{ name: "summary", summary: "Summary control that triggers the disclosure." },
+		{ name: "content", summary: "Disclosure content panel." },
+	],
 	examples: [],
 };

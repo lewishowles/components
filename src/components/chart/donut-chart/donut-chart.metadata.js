@@ -21,5 +21,6 @@ export const donutChartMetadata = {
 			summary: "Accessible chart description.",
 		},
 	],
+	parts: [{ name: "segment", summary: "Individual chart segment path." }],
 	examples: [],
 };

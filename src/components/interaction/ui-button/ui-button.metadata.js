@@ -80,6 +80,12 @@ export const uiButtonMetadata = {
 			summary: "Reset the reactive loading state.",
 		},
 	],
+	parts: [
+		{ name: "icon-start", summary: "Icon displayed before the label." },
+		{ name: "label", summary: "Button label text." },
+		{ name: "loading", summary: "Loading spinner shown while the button is loading." },
+		{ name: "icon-end", summary: "Icon displayed after the label." },
+	],
 	examples: [
 		{
 			name: "default",

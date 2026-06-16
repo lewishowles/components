@@ -32,5 +32,10 @@ export const sparkBarMetadata = {
 			summary: "Custom value content.",
 		},
 	],
+	parts: [
+		{ name: "track", summary: "Background track of the spark bar." },
+		{ name: "bar", summary: "Filled bar indicating the value." },
+		{ name: "value", summary: "Visible value text." },
+	],
 	examples: [],
 };

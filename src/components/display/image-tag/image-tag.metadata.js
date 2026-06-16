@@ -23,5 +23,6 @@ export const imageTagMetadata = {
 			summary: "Emitted when the image fails to load.",
 		},
 	],
+	parts: [{ name: "fallback", summary: "Fallback content shown when the image fails to load." }],
 	examples: [],
 };

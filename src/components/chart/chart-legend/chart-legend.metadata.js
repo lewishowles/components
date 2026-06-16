@@ -30,5 +30,10 @@ export const chartLegendMetadata = {
 			summary: "Legend layout direction.",
 		},
 	],
+	parts: [
+		{ name: "entry", summary: "Individual legend entry row." },
+		{ name: "label", summary: "Legend entry label." },
+		{ name: "value", summary: "Legend entry value." },
+	],
 	examples: [],
 };

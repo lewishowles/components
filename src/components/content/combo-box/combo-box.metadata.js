@@ -81,5 +81,10 @@ export const comboBoxMetadata = {
 			summary: "Move focus to the input.",
 		},
 	],
+	parts: [
+		{ name: "input", summary: "Text input field." },
+		{ name: "dropdown", summary: "Dropdown panel containing options." },
+		{ name: "option", summary: "Individual option item in the dropdown." },
+	],
 	examples: [],
 };

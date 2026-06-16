@@ -25,5 +25,9 @@ export const accordionPanelMetadata = {
 			summary: "Accessible label for collapsing the panel.",
 		},
 	],
+	parts: [
+		{ name: "trigger", summary: "Button that expands or collapses the panel." },
+		{ name: "content", summary: "Panel content area." },
+	],
 	examples: [],
 };

@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, expect, test } from "vite-plus/test";
 import { createCheckerByJson } from "vue-component-meta";
-import { readdirSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath, URL } from "node:url";
 import { join } from "node:path";
 import { componentMetadata } from "./component-metadata.js";
@@ -58,6 +58,36 @@ describe("component-metadata completeness", { timeout: 30000 }, () => {
 			expect(
 				missing,
 				`Props in ${component.name}.vue but not in metadata: ${missing.join(", ")}`,
+			).toEqual([]);
+		});
+	}
+});
+
+describe("component-metadata parts completeness", () => {
+	for (const component of componentMetadata) {
+		const filePath = componentFileMap[component.name];
+
+		if (!filePath) {
+			continue;
+		}
+
+		const source = readFileSync(filePath, "utf8");
+
+		const uniqueParts = [
+			...new Set([...source.matchAll(/data-part="([^"]+)"/g)].map((match) => match[1])),
+		];
+
+		if (uniqueParts.length === 0) {
+			continue;
+		}
+
+		test(`${component.name} — all data-part values documented`, () => {
+			const metadataPartNames = new Set((component.parts ?? []).map((part) => part.name));
+			const missing = uniqueParts.filter((name) => !metadataPartNames.has(name));
+
+			expect(
+				missing,
+				`data-part values in ${component.name}.vue not in metadata.parts: ${missing.join(", ")}`,
 			).toEqual([]);
 		});
 	}

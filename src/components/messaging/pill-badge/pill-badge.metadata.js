@@ -46,6 +46,10 @@ export const pillBadgeMetadata = {
 			summary: "The visible badge label.",
 		},
 	],
+	parts: [
+		{ name: "icon-start", summary: "Icon displayed before the badge content." },
+		{ name: "icon-end", summary: "Icon displayed after the badge content." },
+	],
 	examples: [
 		{
 			name: "default",
