@@ -15,30 +15,30 @@ describe("content-card-header", () => {
 	});
 
 	describe("Computed", () => {
-		test("Renders title when title slot is provided", () => {
-			const wrapper = mount({ slots: { title: "Card title" } });
+		test("Detects title text in the default slot", () => {
+			const wrapper = mount({ slots: { default: "Card title" } });
 
-			expect(wrapper.vm.haveTitle).toBe(true);
+			expect(wrapper.vm.haveDefault).toBe(true);
 			expect(wrapper.vm.haveTitleArea).toBe(true);
 		});
 
-		test("Renders icon when icon slot is provided", () => {
+		test("Detects icon slot", () => {
 			const wrapper = mount({ slots: { icon: "<span>Icon</span>" } });
 
 			expect(wrapper.vm.haveIcon).toBe(true);
 			expect(wrapper.vm.haveTitleArea).toBe(true);
 		});
 
-		test("Renders header-additional when provided", () => {
+		test("Detects header-additional slot", () => {
 			const wrapper = mount({ slots: { "header-additional": "Actions" } });
 
 			expect(wrapper.vm.haveHeaderAdditional).toBe(true);
 		});
 
-		test("haveTitleArea is false when neither title nor icon is provided", () => {
+		test("haveTitleArea is false when neither default nor icon slot is provided", () => {
 			const wrapper = mount();
 
-			expect(wrapper.vm.haveTitle).toBe(false);
+			expect(wrapper.vm.haveDefault).toBe(false);
 			expect(wrapper.vm.haveIcon).toBe(false);
 			expect(wrapper.vm.haveTitleArea).toBe(false);
 		});

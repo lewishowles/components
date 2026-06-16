@@ -10,22 +10,20 @@
 		</template>
 
 		<content-card>
-			<content-card-header>
-				<template #title>Camera overview</template>
-			</content-card-header>
+			<content-card-header>Camera overview</content-card-header>
 
 			<content-card-section>
-				<p class="text-content-strong font-medium">Front door</p>
+				<p class="text-content-strong font-semibold">Front door</p>
 				<p class="text-content-subtle text-sm">Online — last seen just now</p>
 			</content-card-section>
 
 			<content-card-section>
-				<p class="text-content-strong font-medium">Back garden</p>
+				<p class="text-content-strong font-semibold">Back garden</p>
 				<p class="text-content-subtle text-sm">Online — last seen 2 minutes ago</p>
 			</content-card-section>
 
 			<content-card-section>
-				<p class="text-content-strong font-medium">Garage</p>
+				<p class="text-content-strong font-semibold">Garage</p>
 				<p class="text-content-subtle text-sm text-red-600">Offline — last seen 4 hours ago</p>
 			</content-card-section>
 		</content-card>
@@ -36,7 +34,7 @@
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
 const headerTemplate = useTemplateGenerator("content-card-header", {
-	slots: { title: { value: "Camera overview" } },
+	slots: { default: { value: "Camera overview" } },
 	indent: 1,
 });
 

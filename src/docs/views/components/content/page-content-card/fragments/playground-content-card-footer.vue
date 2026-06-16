@@ -21,9 +21,7 @@
 					<icon-check-circled />
 				</template>
 
-				<template #title>
-					{{ textSlots.title.value }}
-				</template>
+				{{ textSlots.title.value }}
 			</content-card-header>
 
 			<content-card-section>
@@ -61,7 +59,7 @@ const headerTemplate = useTemplateGenerator("content-card-header", {
 	props: { iconClasses: { value: "text-success" } },
 	slots: computed(() => ({
 		icon: { value: "<icon-check-circled />" },
-		title: textSlots.value.title,
+		default: textSlots.value.title,
 	})),
 	indent: 1,
 });

@@ -10,9 +10,7 @@
 
 		<content-card>
 			<content-card-header>
-				<template #title>
-					{{ textSlots.title.value }}
-				</template>
+				{{ textSlots.title.value }}
 			</content-card-header>
 
 			<content-card-section>
@@ -39,7 +37,7 @@ const textSlots = ref({
 });
 
 const headerTemplate = useTemplateGenerator("content-card-header", {
-	slots: computed(() => ({ title: textSlots.value.title })),
+	slots: computed(() => ({ default: textSlots.value.title })),
 	indent: 1,
 });
 

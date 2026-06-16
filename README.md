@@ -48,6 +48,17 @@ Once the library is set up, you can use any component by tag anywhere in your ap
 <ui-button @click="doMagic">🪄 Bibbidi-Bobbidi-Boo</ui-button>
 ```
 
+## CLI
+
+The package ships a CLI for discovering and copying component examples without leaving the terminal.
+
+```bash
+npx @lewishowles/components snippet        # browse and copy a component example
+npx @lewishowles/components pattern        # browse and copy a multi-component UI pattern
+```
+
+Run any command with `--help` for usage details, or `--list` to see what's available.
+
 ## Available components
 
 Every component is documented, with live examples, on the [documentation site](https://components.howles.dev).

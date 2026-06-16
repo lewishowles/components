@@ -14,9 +14,7 @@
 					<icon-users />
 				</template>
 
-				<template #title>
-					{{ slots.title.value }}
-				</template>
+				{{ slots.title.value }}
 
 				<template #header-additional>
 					<pill-badge>16 users</pill-badge>
@@ -66,7 +64,7 @@ const slots = ref({
 const headerTemplate = useTemplateGenerator("content-card-header", {
 	slots: computed(() => ({
 		icon: slots.value.icon,
-		title: slots.value.title,
+		default: slots.value.title,
 		"header-additional": slots.value["header-additional"],
 	})),
 	indent: 1,

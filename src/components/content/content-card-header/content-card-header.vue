@@ -20,11 +20,11 @@
 
 					<component
 						:is="headingLevel"
-						v-if="haveTitle"
+						v-if="haveDefault"
 						class="text-content-strong text-xl font-bold"
 						data-test="content-card-title"
 					>
-						<slot name="title" />
+						<slot />
 					</component>
 				</div>
 
@@ -64,10 +64,14 @@ defineProps({
 const attributes = useAttrs();
 const slots = useSlots();
 
-const haveTitle = computed(() => isNonEmptySlot(slots.title));
+// Whether the default slot (title text) has been provided.
+const haveDefault = computed(() => isNonEmptySlot(slots.default));
+// Whether an icon has been provided.
 const haveIcon = computed(() => isNonEmptySlot(slots.icon));
+// Whether additional header content has been provided.
 const haveHeaderAdditional = computed(() => isNonEmptySlot(slots["header-additional"]));
-const haveTitleArea = computed(() => haveIcon.value || haveTitle.value);
+// Whether the title area (heading + icon) should be rendered.
+const haveTitleArea = computed(() => haveIcon.value || haveDefault.value);
 
 // All attributes except class, spread onto the root element separately so that
 // class can be handled via cn() without doubling up.

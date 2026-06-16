@@ -18,6 +18,12 @@
 					, a bordered body section — use multiple sections to divide content
 				</li>
 				<li>
+					<code>content-card-columns</code>
+					, a section variant that arranges
+					<code>content-card-section</code>
+					children as side-by-side columns
+				</li>
+				<li>
 					<code>content-card-footer</code>
 					, a footer region
 				</li>
@@ -53,11 +59,11 @@
 		</component-props>
 
 		<component-slots title="content-card-header slots">
-			<component-slot id="slot-title">
-				<template #name>title</template>
+			<component-slot id="slot-default">
+				<template #name>default</template>
 
 				<p>
-					The card title. Rendered inside the heading level set by
+					The title text, auto-wrapped in the element set by
 					<code>headingLevel</code>
 					.
 				</p>
@@ -66,7 +72,7 @@
 			<component-slot id="slot-icon">
 				<template #name>icon</template>
 
-				<p>Optional icon content shown before the title in the default header layout.</p>
+				<p>Optional icon shown before the title.</p>
 			</component-slot>
 
 			<component-slot id="slot-header-additional">
@@ -79,8 +85,8 @@
 				<template #name>header</template>
 
 				<p>
-					Optional custom header content. This replaces the default title layout, but remains inside
-					the styled header wrapper.
+					Custom content that replaces the entire default layout. Use when the standard
+					title/icon/additional structure isn't sufficient.
 				</p>
 			</component-slot>
 		</component-slots>
@@ -104,6 +110,12 @@
 				<p>Present on each section companion root.</p>
 			</component-styling-hook>
 
+			<component-styling-hook id="hook-data-component-columns">
+				<template #attribute>data-component="content-card-columns"</template>
+
+				<p>Present on the columns companion root.</p>
+			</component-styling-hook>
+
 			<component-styling-hook id="hook-data-component-footer">
 				<template #attribute>data-component="content-card-footer"</template>
 
@@ -122,6 +134,12 @@
 				<p>Each body section.</p>
 			</component-styling-hook>
 
+			<component-styling-hook id="hook-data-part-columns">
+				<template #attribute>data-part="columns"</template>
+
+				<p>The columns region.</p>
+			</component-styling-hook>
+
 			<component-styling-hook id="hook-data-part-footer">
 				<template #attribute>data-part="footer"</template>
 
@@ -132,6 +150,7 @@
 		<component-playgrounds>
 			<playground-content-card />
 			<playground-content-card-sections />
+			<playground-content-card-columns />
 			<playground-content-card-header />
 			<playground-content-card-footer />
 			<playground-content-card-custom-header />
@@ -144,5 +163,6 @@ import PlaygroundContentCard from "./fragments/playground-content-card.vue";
 import PlaygroundContentCardCustomHeader from "./fragments/playground-content-card-custom-header.vue";
 import PlaygroundContentCardFooter from "./fragments/playground-content-card-footer.vue";
 import PlaygroundContentCardHeader from "./fragments/playground-content-card-header.vue";
+import PlaygroundContentCardColumns from "./fragments/playground-content-card-columns.vue";
 import PlaygroundContentCardSections from "./fragments/playground-content-card-sections.vue";
 </script>

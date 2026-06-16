@@ -25,8 +25,8 @@ describe("content-card", () => {
 			slots: {
 				default: () => [
 					h(ContentCardHeader, null, {
+						default: () => "Card title",
 						icon: () => h(IconCctvCamera, { "data-test": "card-example-icon" }),
-						title: () => "Card title",
 						"header-additional": () => "Card actions",
 					}),
 					h(ContentCardSection, null, { default: () => "Card content" }),
@@ -44,7 +44,7 @@ describe("content-card", () => {
 		mount({
 			slots: {
 				default: () => [
-					h(ContentCardHeader, { headingLevel: "h3" }, { title: () => "Card title" }),
+					h(ContentCardHeader, { headingLevel: "h3" }, { default: () => "Card title" }),
 					h(ContentCardSection, null, { default: () => "Card content" }),
 				],
 			},
@@ -66,7 +66,7 @@ describe("content-card", () => {
 		cy.getByData("content-card-section").should("have.length", 2);
 	});
 
-	it("Custom header content is rendered inside the header", () => {
+	it("Custom title content replaces the default header layout", () => {
 		mount({
 			slots: {
 				default: () => [
