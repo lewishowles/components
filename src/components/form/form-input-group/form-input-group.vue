@@ -40,6 +40,7 @@
 							type="radio"
 							v-bind="{ id: option.id, value: option.value, name: fieldName }"
 							class="form-radio shrink-0"
+							data-part="indicator"
 						/>
 
 						<input
@@ -49,6 +50,7 @@
 							type="checkbox"
 							v-bind="{ id: option.id, value: option.value, name: fieldName }"
 							class="form-checkbox shrink-0"
+							data-part="indicator"
 						/>
 
 						<form-label v-bind="{ id: option.id, styled: false }" class="px-3 leading-6">

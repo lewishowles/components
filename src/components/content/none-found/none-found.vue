@@ -3,6 +3,7 @@
 		<component
 			:is="headingLevel"
 			:class="cn('text-content-strong text-2xl font-bold', titleClasses)"
+			data-part="title"
 			data-test="none-found-title"
 		>
 			<slot name="title" />
@@ -10,7 +11,12 @@
 
 		<slot />
 
-		<div v-if="haveActions" class="mt-7 flex gap-4" data-test="none-found-actions">
+		<div
+			v-if="haveActions"
+			class="mt-7 flex gap-4"
+			data-part="actions"
+			data-test="none-found-actions"
+		>
 			<slot name="actions" />
 		</div>
 	</div>

@@ -23,9 +23,14 @@
 					...inputAttributes,
 					type: 'checkbox',
 				}"
+				data-part="indicator"
 			/>
 
-			<form-label :class="{ 'sr-only': !displayLabel }" v-bind="{ id: inputId, styled: false }">
+			<form-label
+				:class="{ 'sr-only': !displayLabel }"
+				v-bind="{ id: inputId, styled: false }"
+				data-part="label"
+			>
 				<slot />
 			</form-label>
 		</div>

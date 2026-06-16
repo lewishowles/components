@@ -26,6 +26,7 @@
 					d: slice.commands,
 					transform: `rotate(${slice.rotation})`,
 				}"
+				data-part="segment"
 				data-test="donut-chart-segment"
 			/>
 		</svg>

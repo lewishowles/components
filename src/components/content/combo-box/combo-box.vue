@@ -10,6 +10,7 @@
 			ref="input"
 			v-model="query"
 			v-bind="{ id, placeholder, inputAttributes }"
+			data-part="input"
 			data-test="combo-box-input"
 			@keydown="handleKeydown"
 			@focusin="handleFocusin"
@@ -36,6 +37,7 @@
 			v-if="isOpen"
 			ref="dropdown"
 			:class="resolvedDropdownClasses"
+			data-part="dropdown"
 			data-test="combo-box-dropdown"
 		>
 			<loading-indicator v-show="loading" class="p-3" data-test="combo-box-loading">
@@ -56,6 +58,7 @@
 					:class="{ 'bg-grey-100 dark:bg-white/10': entry.id === activeId }"
 					class="cursor-pointer px-3 py-2"
 					role="option"
+					data-part="option"
 					data-test="combo-box-option"
 					@mousedown.prevent="selectOption(entry.id)"
 					@mouseenter="activeId = entry.id"
