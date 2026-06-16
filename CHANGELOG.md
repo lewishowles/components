@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.1
+
+Fixes an issue where package.json `exports` did not match the actual files distributed by the library.
+
 ## 2.3.0
 
 ### `content-card`
