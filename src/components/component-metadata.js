@@ -2,6 +2,7 @@ import { accordionGroupMetadata } from "./content/accordion-group/accordion-grou
 import { accordionPanelMetadata } from "./content/accordion-panel/accordion-panel.metadata.js";
 import { alertMessageMetadata } from "./messaging/alert-message/alert-message.metadata.js";
 import { appPaginationMetadata } from "./navigation/app-pagination/app-pagination.metadata.js";
+import { baseIconMetadata } from "./icon/base-icon/base-icon.metadata.js";
 import { baseModalMetadata } from "./messaging/base-modal/base-modal.metadata.js";
 import { breadcrumbItemMetadata } from "./navigation/breadcrumb-item/breadcrumb-item.metadata.js";
 import { breadcrumbListMetadata } from "./navigation/breadcrumb-list/breadcrumb-list.metadata.js";
@@ -30,6 +31,7 @@ import { formFieldMetadata } from "./form/form-field/form-field.metadata.js";
 import { formFieldsetMetadata } from "./form/form-fieldset/form-fieldset.metadata.js";
 import { formInputGroupMetadata } from "./form/form-input-group/form-input-group.metadata.js";
 import { formInputMetadata } from "./form/form-input/form-input.metadata.js";
+import { formLabelMetadata } from "./form/form-label/form-label.metadata.js";
 import { formLayoutMetadata } from "./form/form-layout/form-layout.metadata.js";
 import { formRadioGroupMetadata } from "./form/form-radio-group/form-radio-group.metadata.js";
 import { formSelectMetadata } from "./form/form-select/form-select.metadata.js";
@@ -71,6 +73,7 @@ const componentMetadataRecords = [
 	accordionPanelMetadata,
 	alertMessageMetadata,
 	appPaginationMetadata,
+	baseIconMetadata,
 	baseModalMetadata,
 	breadcrumbItemMetadata,
 	breadcrumbListMetadata,
@@ -99,6 +102,7 @@ const componentMetadataRecords = [
 	formFieldsetMetadata,
 	formInputGroupMetadata,
 	formInputMetadata,
+	formLabelMetadata,
 	formLayoutMetadata,
 	formRadioGroupMetadata,
 	formSelectMetadata,
