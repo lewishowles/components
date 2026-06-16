@@ -61,6 +61,7 @@
 		"build:docs": "vp build --config support/vite.config.docs.js",
 		"preview": "vp preview",
 		"lint": "vp lint . --fix",
+		"lint:check": "vp lint .",
 		"test:unit": "vp test",
 		"prepare": "vp config",
 		"dev": "vp dev"
