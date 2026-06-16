@@ -6,7 +6,7 @@ A library of beautiful, heavily-tested components with a focus on accessibility,
 
 ## Heavily tested?
 
-The goal is to test the components as thoroughly as possible, from unit tests for more complex computed properties, to Cypress simulating user interactions. The library currently sits at >800 Vitest unit tests and >400 Cypress component tests.
+The goal is to test the components as thoroughly as possible, from unit tests for more complex computed properties, to Cypress simulating user interactions. The library currently sits at >800 Vitest unit tests and >600 Cypress component tests.
 
 ## Why accessibility?
 
@@ -51,12 +51,3 @@ Once the library is set up, you can use any component by tag anywhere in your ap
 ## Available components
 
 Every component is documented, with live examples, on the [documentation site](https://components.howles.dev).
-
-## Roadmap
-
-There are a number of improvements and new components that could be made to improve flexibility.
-
-- Stepper - to show step-by-step information or a multi-page form
-  - "Allow progress" setting and method
-  - "Allow backtrack"
-- Create a new public-facing website to display components and variants
