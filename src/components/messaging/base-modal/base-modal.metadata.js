@@ -16,6 +16,31 @@ export const baseModalMetadata = {
 			default: true,
 			summary: "Move focus to the dialog when it opens.",
 		},
+		{
+			name: "dialogRole",
+			type: "string",
+			default: null,
+			summary:
+				"ARIA role override for the dialog element. Set to `alertdialog` for alert-style dialogs.",
+		},
+		{
+			name: "ariaLabelledby",
+			type: "string",
+			default: null,
+			summary: "ID of the element that labels this dialog, applied as aria-labelledby.",
+		},
+		{
+			name: "ariaDescribedby",
+			type: "string",
+			default: null,
+			summary: "ID of the element that describes this dialog, applied as aria-describedby.",
+		},
+		{
+			name: "inert",
+			type: "boolean",
+			default: false,
+			summary: "Make the dialog inert — visible but not interactive. Used when stacking modals.",
+		},
 	],
 	slots: [
 		{

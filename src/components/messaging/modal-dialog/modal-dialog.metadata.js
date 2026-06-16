@@ -16,6 +16,14 @@ export const modalDialogMetadata = {
 			default: true,
 			summary: "Move focus to the dialog when it opens.",
 		},
+		{
+			name: "variant",
+			type: "string",
+			default: "dialog",
+			values: ["dialog", "alert"],
+			summary:
+				'Dialog variant. `alert` renders role="alertdialog" for dialogs that require an immediate response.',
+		},
 	],
 	slots: [
 		{

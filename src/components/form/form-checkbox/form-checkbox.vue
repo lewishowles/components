@@ -78,15 +78,6 @@ const props = defineProps({
 	},
 
 	/**
-	 * Any placeholder to show in the input. Do not use a placeholder for
-	 * critical information. Always use the label and help text as priorities.
-	 */
-	placeholder: {
-		type: String,
-		default: null,
-	},
-
-	/**
 	 * Any additional attributes to pass to the input itself, such as aria
 	 * attributes.
 	 */

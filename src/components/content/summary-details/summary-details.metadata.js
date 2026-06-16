@@ -58,6 +58,13 @@ export const summaryDetailsMetadata = {
 		},
 		{ name: "align", type: "string", default: "left", summary: "Floating panel alignment." },
 		{
+			name: "placement",
+			type: "string",
+			default: "below",
+			values: ["below", "above"],
+			summary: "Whether the floating panel appears above or below the summary control.",
+		},
+		{
 			name: "summaryClasses",
 			type: "string | array | object",
 			default: null,

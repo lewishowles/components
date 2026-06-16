@@ -58,6 +58,18 @@ export const dataTableMetadata = {
 			default: null,
 			summary: "Classes applied to body cells.",
 		},
+		{
+			name: "headingLevel",
+			type: "string",
+			default: "h2",
+			summary: "HTML heading element used for the table title.",
+		},
+		{
+			name: "enablePagination",
+			type: "boolean",
+			default: true,
+			summary: "Enable pagination controls below the table.",
+		},
 	],
 	slots: [
 		{ name: "table-title", summary: "Table title content." },

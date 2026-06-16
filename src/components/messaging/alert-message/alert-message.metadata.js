@@ -17,6 +17,19 @@ export const alertMessageMetadata = {
 			default: true,
 			summary: "Show the default status icon.",
 		},
+		{
+			name: "live",
+			type: "boolean",
+			default: true,
+			summary:
+				"Render the alert as an aria-live region so assistive technology announces it automatically.",
+		},
+		{
+			name: "titleTag",
+			type: "string",
+			default: "h3",
+			summary: "HTML element used for the title slot.",
+		},
 	],
 	slots: [
 		{
