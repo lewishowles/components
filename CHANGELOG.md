@@ -2,6 +2,57 @@
 
 ## Unreleased
 
+### `content-card`
+
+`content-card` has been simplified with companion components. The card itself is now a container that can be built up with:
+
+- `content-card-header`: a header region with optional icon, and additional slots
+- `content-card-section`: a bordered body section, which can be stacked as required
+- `content-card-columns`: arranges `content-card-section` children as side-by-side columns with a vertical divider
+- `content-card-footer`: a footer region
+
+```html
+<content-card>
+	<content-card-header>Connection health</content-card-header>
+
+	<content-card-section>All sensors reported recently.</content-card-section>
+
+	<content-card-footer class="bg-grey-50">Last checked just now</content-card-footer>
+</content-card>
+```
+
+Borders are collapsed and rounded at each end regardless of composition.
+
+### CLI
+
+Two new commands are available for working with components from the terminal:
+
+- `snippet` — browse and copy a component example
+- `pattern` — browse and copy a multi-component UI pattern
+
+```
+npx @lewishowles/components snippet
+npx @lewishowles/components pattern
+```
+
+Run either command with `--list` to see what's available, or `--help` for usage details.
+
+### CSS theme utilities
+
+New utility classes for the library's design tokens are now generated alongside the theme. Use `surface-*`, `content-*`, and `border-*` classes to reference token colours directly in Tailwind.
+
+### Styling hooks
+
+`data-part` is now applied to more internal elements across the component library, providing additional stable CSS targets. See each component's styling hooks reference for the full list.
+
+### `loading-indicator`
+
+Styling has moved from `loading-spinner` to `loading-indicator`. The spinner now behaves like a regular icon and can be used independently.
+
+### `form-wrapper`
+
+Alert messages now appear above the primary action buttons.
+
 ## 2.2.0
 
 ### `useFormData()`
