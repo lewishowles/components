@@ -60,8 +60,13 @@ import { tabItemMetadata } from "./content/tab-item/tab-item.metadata.js";
 import { uiButtonMetadata } from "./interaction/ui-button/ui-button.metadata.js";
 import { userAvatarsMetadata } from "./display/user-avatars/user-avatars.metadata.js";
 
+// Components that resolve source-backed snippets from a component-local folder.
+const componentSourceBases = {
+	"form-wrapper": new URL("./form/form-wrapper/", import.meta.url),
+};
+
 // Components with shared metadata for docs, snippets, and future CLI commands.
-export const componentMetadata = [
+const componentMetadataRecords = [
 	accordionGroupMetadata,
 	accordionPanelMetadata,
 	alertMessageMetadata,
@@ -124,6 +129,11 @@ export const componentMetadata = [
 	uiButtonMetadata,
 	userAvatarsMetadata,
 ];
+
+export const componentMetadata = componentMetadataRecords.map((component) => ({
+	...component,
+	_sourceBaseUrl: componentSourceBases[component.name],
+}));
 
 // Components keyed by kebab-case tag name for direct lookup.
 export const componentMetadataByName = Object.fromEntries(

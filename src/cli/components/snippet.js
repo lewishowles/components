@@ -1,6 +1,7 @@
 import { PACKAGE_NAME } from "../utils/constants.js";
 import { cancel, intro, isCancel, select } from "@clack/prompts";
 import { highlight } from "cli-highlight";
+import { readFileSync } from "node:fs";
 
 import {
 	buildTemplateAttributes,
@@ -83,6 +84,14 @@ export function generateSnippet(component, exampleName) {
 	}
 
 	const { snippet } = example;
+
+	if (snippet.source) {
+		return `\n${highlight(readSourceSnippet(component, snippet.source), {
+			language: "html",
+			ignoreIllegals: true,
+		})}`;
+	}
+
 	const attributes = buildTemplateAttributes(snippet);
 	const attributeString = attributes.length ? " " + attributes.join(" ") : "";
 	const slotContent = snippet.slots?.default?.value ?? null;
@@ -93,6 +102,48 @@ export function generateSnippet(component, exampleName) {
 			: `<${component.name}${attributeString}>\n  ${slotContent}\n</${component.name}>`;
 
 	return `\n${highlight(template, { language: "html", ignoreIllegals: true })}`;
+}
+
+/**
+ * Reads a source-backed snippet and returns the copyable source. Template-only
+ * SFCs are reduced to their inner template content; richer SFCs are returned in
+ * full so script and style setup stay intact.
+ *
+ * @param   {object}  component
+ *     Component metadata record.
+ * @param   {string}  source
+ *     Source path relative to the component metadata base.
+ * @returns {string}
+ */
+function readSourceSnippet(component, source) {
+	if (!component._sourceBaseUrl) {
+		console.error(`Component "${component.name}" cannot resolve source snippets.`);
+		process.exit(1);
+	}
+
+	const sourceUrl = new URL(source, component._sourceBaseUrl);
+	const sourceContent = readFileSync(sourceUrl, "utf8").trim();
+
+	return normaliseSourceSnippet(sourceContent);
+}
+
+/**
+ * Returns inner template content for template-only SFCs, otherwise returns the
+ * original source unchanged.
+ *
+ * @param   {string}  source
+ *     Raw snippet source.
+ * @returns {string}
+ */
+function normaliseSourceSnippet(source) {
+	const trimmedSource = source.trim();
+	const templateMatch = trimmedSource.match(/^<template>\s*([\s\S]*?)\s*<\/template>$/);
+
+	if (!templateMatch) {
+		return trimmedSource;
+	}
+
+	return templateMatch[1].trim();
 }
 
 /**
@@ -237,4 +288,4 @@ function printSnippet(component, exampleName) {
 	console.log(generateSnippet(component, exampleName));
 }
 
-export const _test = { resolveSnippetExample };
+export const _test = { normaliseSourceSnippet, resolveSnippetExample };

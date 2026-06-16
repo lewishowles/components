@@ -68,5 +68,14 @@ export const formWrapperMetadata = {
 			summary: "Emitted when the form passes validation and the user activates the submit button.",
 		},
 	],
-	examples: [],
+	examples: [
+		{
+			name: "basic-form",
+			label: "Basic form",
+			summary: "A form wrapper with required fields, validation, and a submit label.",
+			snippet: {
+				source: "./examples/basic-form.vue",
+			},
+		},
+	],
 };

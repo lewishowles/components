@@ -1,7 +1,10 @@
 import { describe, expect, test } from "vite-plus/test";
+import { cwd } from "node:process";
+import { pathToFileURL } from "node:url";
+import { formWrapperMetadata } from "../../components/form/form-wrapper/form-wrapper.metadata.js";
 import { generateSnippet, parseSnippetArguments, _test } from "./snippet.js";
 
-const { resolveSnippetExample } = _test;
+const { normaliseSourceSnippet, resolveSnippetExample } = _test;
 
 describe("parseSnippetArguments", () => {
 	test("Returns null component, null example, and list false when no args are given", () => {
@@ -54,6 +57,39 @@ describe("parseSnippetArguments", () => {
 		const { example } = parseSnippetArguments(["ui-button"]);
 
 		expect(example).toBe(null);
+	});
+});
+
+describe("normaliseSourceSnippet", () => {
+	test("Returns inner content for a template-only SFC", () => {
+		const output = normaliseSourceSnippet("<template>\n\t<ui-button>Save</ui-button>\n</template>");
+
+		expect(output).toBe("<ui-button>Save</ui-button>");
+	});
+
+	test("Returns the full source for an SFC with script setup", () => {
+		const source =
+			'<template>\n\t<form-wrapper />\n</template>\n\n<script setup>\nimport { ref } from "vue";\n</script>';
+
+		const output = normaliseSourceSnippet(source);
+
+		expect(output).toBe(source);
+	});
+});
+
+describe("source-backed snippets", () => {
+	test("Generates a snippet from a component-local source file", () => {
+		const component = {
+			...formWrapperMetadata,
+			_sourceBaseUrl: new URL("src/components/form/form-wrapper/", pathToFileURL(`${cwd()}/`)),
+		};
+
+		const output = generateSnippet(component, "basic-form");
+
+		expect(output).toContain("\n<template>");
+		expect(output).toContain('<form-wrapper v-model="formData" @submit="saveProfile">');
+		expect(output).toContain("<template #submit-button-label>");
+		expect(output).toContain("<script setup>");
 	});
 });
 
