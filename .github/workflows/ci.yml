@@ -42,6 +42,9 @@ jobs:
       - name: Check package exports
         run: bun run publint
 
+      - name: Check types are correct
+        run: bun run attw
+
       - name: Build docs
         run: bun run build:docs
 

@@ -56,6 +56,8 @@ function generateBarrel(absolutePaths, groupDir) {
  * Co-located files are emitted at their path relative to the group source
  * directory. The barrel for each group is generated from the discovered files,
  * so it always stays in sync without manual maintenance.
+ *
+ * Single-file extras (e.g. `resolver.d.ts`) are emitted as-is.
  */
 export function publishDeclarations() {
 	const root = fileURLToPath(new URL("../..", import.meta.url));
@@ -64,6 +66,8 @@ export function publishDeclarations() {
 		{ dir: join(root, "src/composables"), entryName: "composables" },
 		{ dir: join(root, "src/utilities"), entryName: "utilities" },
 	];
+
+	const extras = [{ dest: "resolver.d.ts", src: "src/resolver.d.ts" }];
 
 	return {
 		name: "publish-declarations",
@@ -86,6 +90,14 @@ export function publishDeclarations() {
 					type: "asset",
 					fileName: `${entryName}.d.ts`,
 					source: generateBarrel(declarationFiles, dir),
+				});
+			}
+
+			for (const { dest, src } of extras) {
+				this.emitFile({
+					type: "asset",
+					fileName: dest,
+					source: readFileSync(join(root, src), "utf8"),
 				});
 			}
 		},
