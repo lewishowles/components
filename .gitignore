@@ -1,3 +1,6 @@
+# Secrets
+.env
+
 # npm
 node_modules
 .npmrc
@@ -6,9 +9,16 @@ node_modules
 dist
 dist-docs
 
+# macOS files
+.DS_Store
+
+# Editor directories and files
+.vscode/*
+
 # Tool caches (regenerated on demand)
 .vite
 .codebase-memory
 
-# macOS files
-.DS_Store
+# Test output
+test-results
+test/ct/.cache
