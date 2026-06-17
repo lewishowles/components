@@ -1,0 +1,72 @@
+{
+	"schema_version": 1,
+	"id": "playwright-test",
+	"display_name": "Playwright component test",
+	"description": "Creates a Playwright CT scaffold (.pw.js) for an existing component.",
+	"default_path": "src/components",
+	"fields": [
+		{
+			"token": "NAME",
+			"label": "Component name",
+			"description": "Used for the component folder, file name, component import name, and test names.",
+			"placeholder": "ui-button",
+			"hint": "Use at least two words in kebab-case.",
+			"validation": {
+				"min_length": 3,
+				"max_length": 80,
+				"pattern": "^[a-z][a-z0-9]+(-[a-z0-9]+)+$",
+				"message": "Use lowercase kebab-case with at least two words."
+			},
+			"required": true
+		},
+		{
+			"token": "CATEGORY",
+			"label": "Category",
+			"description": "Controls which component section the file is created in.",
+			"type": "select",
+			"options": [
+				{
+					"label": "Chart",
+					"value": "chart"
+				},
+				{
+					"label": "Content",
+					"value": "content"
+				},
+				{
+					"label": "Display",
+					"value": "display"
+				},
+				{
+					"label": "Form",
+					"value": "form"
+				},
+				{
+					"label": "General",
+					"value": "general"
+				},
+				{
+					"label": "Interaction",
+					"value": "interaction"
+				},
+				{
+					"label": "Messaging",
+					"value": "messaging"
+				},
+				{
+					"label": "Navigation",
+					"value": "navigation"
+				}
+			],
+			"default_value": "content",
+			"required": true
+		}
+	],
+	"files": [
+		{
+			"template": "component.pw.js",
+			"output_path": "{{ CATEGORY }}/{{ NAME | kebab }}/{{ NAME | kebab }}.pw.js",
+			"required": true
+		}
+	]
+}

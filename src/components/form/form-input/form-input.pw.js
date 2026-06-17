@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/experimental-ct-vue";
+import { testSupplementaryInfo } from "#test/ct/support/form-supplementary.js";
 import { createMount, slotSvg } from "#test/ct/support/mount.js";
 
 import FormInput from "./form-input.vue";
@@ -12,14 +13,16 @@ test.describe("form-input", () => {
 	test("a text input is rendered", async ({ mount, page }) => {
 		await mountFormInput(mount);
 
-		await expect(page.getByTestId("form-input")).toBeVisible();
+		const formInput = page.getByTestId("form-input");
 
-		const inputElement = page.getByTestId("form-input").locator("input");
+		await expect(formInput).toBeVisible();
+
+		const inputElement = formInput.locator("input");
 
 		await expect(inputElement).toHaveAttribute("id", "id-abc");
 		await expect(inputElement).not.toHaveAttribute("type");
 
-		const labelElement = page.getByTestId("form-input").getByTestId("form-label");
+		const labelElement = formInput.getByTestId("form-label");
 
 		await expect(labelElement).toHaveText("Your name");
 		await expect(labelElement).toHaveAttribute("for", "id-abc");
@@ -46,52 +49,8 @@ test.describe("form-input", () => {
 			await expect(introElement).toHaveText("Introductory text");
 		});
 
-		test("help can be supplied", async ({ mount, page }) => {
-			await mountFormInput(mount, { slots: { help: "Help text" } });
-
-			const helpElement = page.getByTestId("form-help");
-
-			await expect(helpElement).toBeVisible();
-			await expect(helpElement).toHaveText("Help text");
-			await expect(helpElement).toHaveAttribute("id", "id-abc-help");
-			await expect(page.getByTestId("form-input").locator("input")).toHaveAttribute(
-				"aria-describedby",
-				"id-abc-help",
-			);
-		});
-
-		test("an error can be supplied", async ({ mount, page }) => {
-			await mountFormInput(mount, { slots: { error: "Error text" } });
-
-			const errorElement = page.getByTestId("form-error");
-
-			await expect(errorElement).toBeVisible();
-			await expect(errorElement).toHaveText("Error text");
-			await expect(errorElement).toHaveAttribute("id", "id-abc-error");
-			await expect(page.getByTestId("form-input").locator("input")).toHaveAttribute(
-				"aria-describedby",
-				"id-abc-error",
-			);
-		});
-
-		test("both help and an error can be supplied", async ({ mount, page }) => {
-			await mountFormInput(mount, { slots: { error: "Error text", help: "Help text" } });
-
-			const helpElement = page.getByTestId("form-help");
-			const errorElement = page.getByTestId("form-error");
-
-			await expect(helpElement).toBeVisible();
-			await expect(helpElement).toHaveText("Help text");
-			await expect(helpElement).toHaveAttribute("id", "id-abc-help");
-
-			await expect(errorElement).toBeVisible();
-			await expect(errorElement).toHaveText("Error text");
-			await expect(errorElement).toHaveAttribute("id", "id-abc-error");
-
-			await expect(page.getByTestId("form-input").locator("input")).toHaveAttribute(
-				"aria-describedby",
-				"id-abc-help id-abc-error",
-			);
+		testSupplementaryInfo(mountFormInput, {
+			ariaTarget: (page) => page.getByTestId("form-input").locator("input"),
 		});
 	});
 
