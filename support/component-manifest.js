@@ -47,7 +47,7 @@ export function getComponentManifest() {
 				continue;
 			}
 
-			if (!entry.name.endsWith(".vue")) {
+			if (!entry.name.endsWith(".vue") || entry.name.endsWith(".fixture.vue")) {
 				continue;
 			}
 

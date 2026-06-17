@@ -13,7 +13,7 @@ export default mergeConfig(
 				["src/cli/**", "node"],
 			],
 			root: fileURLToPath(new URL("./", import.meta.url)),
-			include: ["bin/**/*.test.js", "src/**/*.test.js"],
+			include: ["bin/**/*.test.js", "src/**/*.test.js", "support/**/*.test.js"],
 		},
 	}),
 );
