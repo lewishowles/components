@@ -1,7 +1,7 @@
 <template>
 	<component
 		:is="tag"
-		class="flex flex-col"
+		class="flex flex-col gap-1"
 		:class="{ 'relative ps-5': haveError }"
 		data-test="field-wrapper"
 	>
