@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/experimental-ct-vue";
 import { createMount } from "#test/ct/support/mount.js";
+
 import DropdownMenuWithButtons from "./dropdown-menu.fixture.vue";
 
 // Mount the full integration fixture so that dropdown-menu-button's provide/inject

@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/experimental-ct-vue";
-import { createMount } from "#test/ct/support/mount.js";
+import { createMount, slotSvg } from "#test/ct/support/mount.js";
+
 import FormInput from "./form-input.vue";
 
 const mountFormInput = createMount(FormInput, {
@@ -116,7 +117,7 @@ test.describe("form-input", () => {
 	test.describe("decoration", () => {
 		test("an icon can be added to the start", async ({ mount, page }) => {
 			await mountFormInput(mount, {
-				slots: { prefix: "<svg width='24' height='24' viewBox='0 0 24 24'></svg>" },
+				slots: { prefix: slotSvg },
 			});
 
 			await expect(page.getByTestId("form-prefix").locator("svg")).toBeVisible();
@@ -124,7 +125,7 @@ test.describe("form-input", () => {
 
 		test("an icon can be added to the end", async ({ mount, page }) => {
 			await mountFormInput(mount, {
-				slots: { suffix: "<svg width='24' height='24' viewBox='0 0 24 24'></svg>" },
+				slots: { suffix: slotSvg },
 			});
 
 			await expect(page.getByTestId("form-suffix").locator("svg")).toBeVisible();
