@@ -13,7 +13,7 @@
 			class="inline-block stroke-current"
 			:class="{
 				'size-text': iconOnly && !showExternalIcon,
-				'me-1 size-[0.857em]': !iconOnly || showExternalIcon,
+				'me-2 size-[0.857em] align-[1px]': !iconOnly || showExternalIcon,
 			}"
 			data-part="icon-start"
 			data-test="link-tag-icon-start"
@@ -39,6 +39,7 @@
 			data-part="icon-end"
 			data-test="link-tag-icon-end"
 		/>
+
 		<icon-external
 			v-else-if="haveExternalIcon"
 			class="ms-1 inline-block size-[0.857em] stroke-current"
