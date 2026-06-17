@@ -1,5 +1,6 @@
 .link,
-.link--muted {
+.link--muted,
+.list--ghost {
 	text-decoration: underline;
 	text-decoration-skip-ink: auto;
 	text-underline-offset: 4px;
@@ -24,18 +25,20 @@
 }
 
 .link--muted {
-	color: var(--color-grey-500);
+	color: var(--content-muted);
 
 	&:is(:hover, :focus) {
-		color: var(--color-grey-700);
+		color: var(--content-strong);
 	}
+}
 
-	&:where(.dark, .dark *) {
-		color: rgb(255 255 255 / 60%);
+.link--ghost {
+	color: currentColor;
+	text-decoration: none;
 
-		&:is(:hover, :focus) {
-			color: rgb(255 255 255 / 90%);
-		}
+	&:is(:hover, :focus) {
+		color: var(--content-strong);
+		text-decoration: underline;
 	}
 }
 
@@ -72,7 +75,7 @@
 	--outline-colour: var(--primary-fill);
 
 	background-color: var(--background-colour);
-	color: white;
+	color: var(--primary-foreground);
 	font-weight: 500;
 	outline: 0;
 
@@ -103,7 +106,7 @@
 }
 
 .button--muted {
-	--background-colour: white;
+	--background-colour: var(--surface);
 	--colour: currentColor;
 	--border-colour: var(--color-grey-300);
 
@@ -147,7 +150,7 @@
 	text-decoration: none;
 
 	&:not([aria-pressed="true"]) {
-		--background-colour: white;
+		--background-colour: var(--surface);
 		--colour: currentColor;
 		--border-colour: var(--color-grey-300);
 
@@ -192,7 +195,7 @@
 		&:not([aria-pressed="true"]) {
 			--background-colour: rgb(255 255 255 / 20%);
 			--colour: currentColor;
-			--border-colour: rgb(255 255 255 / 20%);
+			--border-colour: var(--border);
 
 			background-color: var(--background-colour);
 			color: var(--colour);
@@ -270,7 +273,7 @@
 	--outline-colour: var(--danger-fill);
 
 	background-color: var(--background-colour);
-	color: white;
+	color: var(--danger-foreground);
 	font-weight: 500;
 	outline: 0;
 

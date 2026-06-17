@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### `styles`
+
+Added a new `.link--ghost` class to the default styles, which mimics surrounding text until hovered or focused.
+
 ## 2.3.1
 
 Fixes an issue where package.json `exports` did not match the actual files distributed by the library.
