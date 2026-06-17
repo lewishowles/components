@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### `data-table`
+
+Now only searches data with a defined column, avoiding searches looking into columns like `id`. To search a column without displaying it, set `column_key: { hidden: true }`.
+
 ### `styles`
 
 Added a new `.link--ghost` class to the default styles, which mimics surrounding text until hovered or focused.

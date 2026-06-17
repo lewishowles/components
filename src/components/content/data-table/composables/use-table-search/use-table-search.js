@@ -41,9 +41,12 @@ export default function useTableSearch(internalData, columns) {
 			}
 
 			const includesTerm = Object.entries(rowContent).some(([columnKey, cell]) => {
-				// We check against false here so that the developer can exclude
-				// this key and the column is searchable by default.
-				const searchableColumn = get(columns.value, `${columnKey}.searchable`) !== false;
+				// Only columns with an explicit definition are searched. Within
+				// those, `searchable: false` opts a column out.
+				const columnDefined = columnKey in (columns.value ?? {});
+
+				const searchableColumn =
+					columnDefined && get(columns.value, `${columnKey}.searchable`) !== false;
 
 				// If this column isn't searchable, we don't need to check it.
 				if (!searchableColumn) {

@@ -279,7 +279,8 @@ describe("data-table", () => {
 
 			test("should display a row matching the current search term, case insensitively", () => {
 				const secondRow = { id: "234", title: "Big Hero 6", release_year: "2014" };
-				const wrapper = mount({ data: [sampleRow, secondRow] });
+				const columns = { title: {}, release_year: {} };
+				const wrapper = mount({ data: [sampleRow, secondRow], columns });
 				const vm = wrapper.vm;
 
 				vm.searchQuery = "big hero";
@@ -298,7 +299,8 @@ describe("data-table", () => {
 			});
 
 			test("should only match a phrase against a single cell", () => {
-				const wrapper = mount();
+				const columns = { title: {}, release_year: {} };
+				const wrapper = mount({ columns });
 				const vm = wrapper.vm;
 
 				vm.searchQuery = "story 1995";
@@ -334,7 +336,10 @@ describe("data-table", () => {
 					}
 				};
 
-				const wrapper = mount({ columns: { title: { searchableContentCallback } } });
+				const wrapper = mount({
+					columns: { title: { searchableContentCallback }, release_year: {} },
+				});
+
 				const vm = wrapper.vm;
 
 				vm.searchQuery = "abcdef";
@@ -490,7 +495,7 @@ describe("data-table", () => {
 			});
 
 			test("should return true if a search produces a result", () => {
-				const wrapper = mount();
+				const wrapper = mount({ columns: { title: {} } });
 				const vm = wrapper.vm;
 
 				vm.searchQuery = "toy";

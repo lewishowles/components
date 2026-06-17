@@ -46,7 +46,8 @@ describe("useTableSearch", () => {
 	describe("filteredRows", () => {
 		test("Keeps only rows whose searchable content includes the term", () => {
 			const rows = [createRow({ name: "alice" }), createRow({ name: "bob" })];
-			const { filteredRows, searchQuery } = createComposable({ rows });
+			const columns = { name: {} };
+			const { filteredRows, searchQuery } = createComposable({ rows, columns });
 
 			searchQuery.value = "ali";
 
@@ -55,11 +56,21 @@ describe("useTableSearch", () => {
 
 		test("Matches case-insensitively", () => {
 			const rows = [createRow({ name: "alice" })];
-			const { filteredRows, searchQuery } = createComposable({ rows });
+			const columns = { name: {} };
+			const { filteredRows, searchQuery } = createComposable({ rows, columns });
 
 			searchQuery.value = "ALICE";
 
 			expect(filteredRows.value).toEqual([rows[0]]);
+		});
+
+		test("Does not search columns without a definition", () => {
+			const rows = [createRow({ name: "alice" }), createRow({ name: "bob" })];
+			const { filteredRows, searchQuery } = createComposable({ rows });
+
+			searchQuery.value = "ali";
+
+			expect(filteredRows.value).toEqual([]);
 		});
 
 		test("Ignores columns marked as not searchable", () => {
