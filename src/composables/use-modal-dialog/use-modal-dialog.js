@@ -8,8 +8,7 @@ let modalId = 0;
 /**
  * `useModalDialog` allows for components to request a modal dialog be
  * displayed. The display of these dialogs should be controlled by
- * `modal-dialog-controller`, which will display the most recently requested
- * dialog.
+ * `modal-controller`, which will display the most recently requested dialog.
  */
 export function useModalDialog() {
 	/**

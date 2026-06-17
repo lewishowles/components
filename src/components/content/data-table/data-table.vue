@@ -273,6 +273,7 @@
 <script setup>
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed, provide, ref, toRef, useId, useSlots, watch } from "vue";
+import { getRawRow, getRowContent, getRowId } from "./utilities/row.js";
 import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useResizeObserver } from "@vueuse/core";
@@ -288,7 +289,6 @@ import useTablePagination from "./composables/use-table-pagination/use-table-pag
 import useTableSearch from "./composables/use-table-search/use-table-search.js";
 import useTableSelection from "./composables/use-table-selection/use-table-selection.js";
 import useTableSort, { sortDirections } from "./composables/use-table-sort/use-table-sort.js";
-import { getRawRow, getRowContent, getRowId } from "./utilities/row.js";
 
 const props = defineProps({
 	/**
