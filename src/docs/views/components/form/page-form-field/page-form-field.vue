@@ -28,6 +28,7 @@
 					<li><code>textarea</code></li>
 					<li><code>select</code></li>
 					<li><code>checkbox</code></li>
+					<li><code>checkbox-group</code></li>
 					<li><code>radio-group</code></li>
 					<li><code>button-group</code></li>
 					<li><code>date</code></li>
@@ -241,6 +242,57 @@
 					<code>default</code>
 					slot generally contains the label for the form element.
 				</p>
+			</component-slot>
+
+			<component-slot id="slot-introduction">
+				<template #name>introduction</template>
+
+				<p>Introductory text shown above the input, beneath the label.</p>
+			</component-slot>
+
+			<component-slot id="slot-prefix">
+				<template #name>prefix</template>
+
+				<p>Content placed visually before the input, such as a currency symbol or URL scheme.</p>
+			</component-slot>
+
+			<component-slot id="slot-suffix">
+				<template #name>suffix</template>
+
+				<p>Content placed visually after the input, such as a unit or domain suffix.</p>
+			</component-slot>
+
+			<component-slot id="slot-options">
+				<template #name>options</template>
+
+				<p>
+					Options passed through to option-bearing controls:
+					<code>select</code>
+					,
+					<code>radio-group</code>
+					,
+					<code>checkbox-group</code>
+					, and
+					<code>button-group</code>
+					.
+				</p>
+			</component-slot>
+
+			<component-slot id="slot-error">
+				<template #name>error</template>
+
+				<p>
+					Custom error content. When provided, this replaces the default validation message list
+					rendered by
+					<code>form-field</code>
+					.
+				</p>
+			</component-slot>
+
+			<component-slot id="slot-help">
+				<template #name>help</template>
+
+				<p>Help text shown below the input, providing additional context or guidance.</p>
 			</component-slot>
 		</component-slots>
 

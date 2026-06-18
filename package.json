@@ -56,7 +56,6 @@
 	},
 	"scripts": {
 		"dev": "vp dev",
-		"test:unit:run": "vp test run",
 		"test:unit": "vp test",
 		"test:component": "playwright test -c test/playwright-ct.config.js --project=chromium",
 		"lint": "vp lint . --fix",
