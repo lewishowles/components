@@ -110,7 +110,7 @@ test.describe("floating-details", () => {
 				});
 
 				await page.getByTestId("floating-details-summary").click();
-				await page.getByTestId("focusable-content").focus();
+				await page.getByTestId("focusable-content").click();
 				await expect(page.getByTestId("focusable-content")).toBeFocused();
 
 				await page.keyboard.press("Escape");
