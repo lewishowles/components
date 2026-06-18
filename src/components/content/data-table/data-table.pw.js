@@ -2,14 +2,10 @@ import { expect, test } from "@playwright/experimental-ct-vue";
 import { createMount } from "#test/ct/support/mount.js";
 
 import DataTable from "./data-table.vue";
-import DataTableDensityFixture from "./data-table-density.fixture.vue";
-import DataTableFooter from "./fragments/data-table-footer/data-table-footer.vue";
-import DataTableHeader from "./fragments/data-table-header/data-table-header.vue";
 import DataTableSearchCallbackFixture from "./data-table-search-callback.fixture.vue";
 import DataTableSearchableContentFixture from "./data-table-searchable-content.fixture.vue";
 import DataTableShowingItemsFixture from "./data-table-showing-items.fixture.vue";
 import DataTableSortableContentFixture from "./data-table-sortable-content.fixture.vue";
-import DataTableStatus, { statusTypes } from "./fragments/data-table-status/data-table-status.vue";
 import DataTableToolbarFixture from "./data-table-toolbar.fixture.vue";
 
 const columns = {
@@ -121,14 +117,6 @@ const mountDataTable = createMount(DataTable, { props: { data, columns } });
 // Mount data-table without merged defaults, for tests that need a clean column order.
 const mountDataTableRaw = createMount(DataTable);
 
-const mountDataTableDensity = createMount(DataTableDensityFixture);
-
-const mountDataTableFooter = createMount(DataTableFooter, {
-	props: { totalCount: 25, haveDataToDisplay: true },
-});
-
-const mountDataTableHeader = createMount(DataTableHeader);
-const mountDataTableStatus = createMount(DataTableStatus);
 const mountDataTableToolbar = createMount(DataTableToolbarFixture);
 
 test.describe("data-table", () => {
@@ -748,110 +736,10 @@ test.describe("data-table", () => {
 			await expect(page.getByTestId("data-table-status")).toHaveText("All rows deselected");
 		});
 	});
-
-	test.describe("styling hooks", () => {
-		test("data-component is set on the root element", async ({ mount, page }) => {
-			await mountDataTable(mount);
-
-			await expect(page.getByTestId("data-table")).toHaveAttribute("data-component", "data-table");
-		});
-	});
 });
 
 test.describe("data-table fragments", () => {
-	test.describe("data-table-density", () => {
-		test.afterEach(async ({ page }) => {
-			await page.evaluate(() => localStorage.removeItem("data-table:sample-table:density"));
-		});
-
-		test("a custom density is retrieved from localStorage", async ({ mount, page }) => {
-			await page.evaluate(() => localStorage.setItem("data-table:sample-table:density", "compact"));
-
-			await mountDataTableDensity(mount);
-
-			await expect(page.getByTestId("data-table-density-compact")).toHaveClass(/text-primary/);
-		});
-
-		test("a change in chosen density is stored in localStorage", async ({ mount, page }) => {
-			await mountDataTableDensity(mount);
-
-			await page.getByTestId("data-table-density-compact").click();
-
-			await expect(page.getByTestId("data-table-density-compact")).toHaveClass(/text-primary/);
-
-			const stored = await page.evaluate(() =>
-				localStorage.getItem("data-table:sample-table:density"),
-			);
-
-			expect(stored).toBe("compact");
-		});
-	});
-
-	test.describe("data-table-footer", () => {
-		test("shows the selected row count when selection is enabled", async ({ mount, page }) => {
-			await mountDataTableFooter(mount, { props: { enableSelection: true, selectedCount: 4 } });
-
-			await expect(page.getByTestId("data-table-footer-selection")).toHaveText("4 rows selected");
-		});
-
-		test("allows the no-results message to be customised", async ({ mount, page }) => {
-			await mountDataTableFooter(mount, {
-				props: { haveDataToDisplay: false },
-				slots: { "no-results-message": "Nothing here" },
-			});
-
-			await expect(page.getByTestId("data-table-no-results")).toHaveText("Nothing here");
-		});
-	});
-
-	test.describe("data-table-header", () => {
-		test("renders nothing when no slots are provided", async ({ mount, page }) => {
-			await mountDataTableHeader(mount);
-
-			await expect(page.getByTestId("data-table-header")).not.toBeAttached();
-		});
-
-		test("renders a title at the default heading level", async ({ mount, page }) => {
-			await mountDataTableHeader(mount, { slots: { "table-title": "Movies" } });
-
-			await expect(page.getByTestId("data-table-header")).toBeVisible();
-			await expect(page.locator("h2")).toHaveText("Movies");
-		});
-
-		test("renders a title at a custom heading level", async ({ mount, page }) => {
-			await mountDataTableHeader(mount, {
-				props: { headingLevel: "h3" },
-				slots: { "table-title": "Movies" },
-			});
-
-			await expect(page.locator("h3")).toHaveText("Movies");
-		});
-
-		test("renders an introduction", async ({ mount, page }) => {
-			await mountDataTableHeader(mount, { slots: { "table-introduction": "About the data" } });
-
-			await expect(page.getByTestId("data-table-header")).toHaveText("About the data");
-		});
-	});
-
-	test.describe("data-table-status", () => {
-		test("allows the sort announcement to be customised", async ({ mount, page }) => {
-			await mountDataTableStatus(mount, {
-				props: { type: statusTypes.SORT, sortColumn: "Title", ascending: true },
-				slots: { "sort-status": "Custom sort message" },
-			});
-
-			await expect(page.getByTestId("data-table-status")).toHaveText("Custom sort message");
-		});
-	});
-
 	test.describe("data-table-toolbar", () => {
-		test("hides the search input when search is disabled", async ({ mount, page }) => {
-			await mountDataTableToolbar(mount, { props: { enableSearch: false } });
-
-			await expect(page.getByTestId("data-table-search")).not.toBeAttached();
-		});
-
 		test("allows the configure label to be customised", async ({ mount, page }) => {
 			await mountDataTableToolbar(mount, { slots: { "configure-label": "Options" } });
 

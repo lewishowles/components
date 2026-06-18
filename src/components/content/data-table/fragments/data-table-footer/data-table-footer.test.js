@@ -1,8 +1,9 @@
-import { createMount } from "@unit/support/mount";
+import { createDeepMount, createMount } from "@unit/support/mount";
 import { describe, expect, test } from "vite-plus/test";
 import DataTableFooter from "./data-table-footer.vue";
 
 const mount = createMount(DataTableFooter);
+const deepMount = createDeepMount(DataTableFooter);
 
 describe("data-table-footer", () => {
 	describe("Initialisation", () => {
@@ -26,6 +27,17 @@ describe("data-table-footer", () => {
 
 			expect(selection.exists()).toBe(true);
 			expect(selection.text()).toContain("3 rows selected");
+		});
+	});
+
+	describe("Render contracts", () => {
+		test("should allow the no-results message to be customised", () => {
+			const wrapper = deepMount({
+				props: { haveDataToDisplay: false },
+				slots: { "no-results-message": "Nothing here" },
+			});
+
+			expect(wrapper.find("[data-test=data-table-no-results]").text()).toContain("Nothing here");
 		});
 	});
 });

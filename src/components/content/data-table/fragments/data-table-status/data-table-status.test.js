@@ -30,6 +30,15 @@ describe("data-table-status", () => {
 			expect(wrapper.text()).toContain("Sorted by Title ascending");
 		});
 
+		test("should allow the sort announcement to be customised", () => {
+			const wrapper = mount({
+				props: { type: statusTypes.SORT, sortColumn: "Title", ascending: true },
+				slots: { "sort-status": "Custom sort message" },
+			});
+
+			expect(wrapper.text()).toContain("Custom sort message");
+		});
+
 		test("should announce a descending sort", () => {
 			const wrapper = mount({ type: statusTypes.SORT, sortColumn: "Title", ascending: false });
 

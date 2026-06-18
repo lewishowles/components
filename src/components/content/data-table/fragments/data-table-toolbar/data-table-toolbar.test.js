@@ -37,4 +37,12 @@ describe("data-table-toolbar", () => {
 			});
 		});
 	});
+
+	describe("Render contracts", () => {
+		test("should hide the search input when search is disabled", () => {
+			const wrapper = mountWithName({ enableSearch: false });
+
+			expect(wrapper.find("[data-test=data-table-search]").exists()).toBe(false);
+		});
+	});
 });

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import { createMount } from "@unit/support/mount";
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import DataTableDensity from "./data-table-density.vue";
 
 const global = {
@@ -17,7 +17,19 @@ const mount = createMount(DataTableDensity, { global });
 
 describe("data-table-density", () => {
 	afterEach(() => {
-		localStorage.removeItem("data-table:sample-table:density");
+		localStorage.getItem.mockReturnValue(null);
+		localStorage.removeItem.mockClear();
+		localStorage.setItem.mockClear();
+	});
+
+	describe("Render contracts", () => {
+		test("should retrieve a custom density from localStorage", () => {
+			localStorage.getItem.mockReturnValue("compact");
+
+			const wrapper = mount();
+
+			expect(wrapper.emitted("update:modelValue")[0]).toEqual(["compact"]);
+		});
 	});
 
 	describe("Methods", () => {
@@ -68,6 +80,19 @@ describe("data-table-density", () => {
 
 					expect(wrapper.emitted("update:modelValue")[1]).toBeUndefined();
 				});
+			});
+
+			test("should store the selected table density", async () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.setTableDensity("compact");
+				await nextTick();
+
+				expect(localStorage.setItem).toHaveBeenCalledWith(
+					"data-table:sample-table:density",
+					"compact",
+				);
 			});
 		});
 	});

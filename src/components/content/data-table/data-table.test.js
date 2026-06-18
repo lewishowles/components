@@ -52,6 +52,14 @@ describe("data-table", () => {
 		});
 	});
 
+	describe("Render contracts", () => {
+		test("should expose the component styling hook", () => {
+			const wrapper = mount();
+
+			expect(wrapper.attributes("data-component")).toBe("data-table");
+		});
+	});
+
 	describe("Computed", () => {
 		describe("columnDefinitions", () => {
 			test("should handle there being no data present", () => {

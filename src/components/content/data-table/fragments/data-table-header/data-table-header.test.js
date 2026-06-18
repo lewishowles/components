@@ -31,6 +31,21 @@ describe("data-table-header", () => {
 
 			expect(wrapper.find("[data-test=data-table-header]").exists()).toBe(true);
 		});
+
+		test("should render a title at the default heading level", () => {
+			const wrapper = mount({ slots: { "table-title": "Movies" } });
+
+			expect(wrapper.find("h2").text()).toBe("Movies");
+		});
+
+		test("should render a title at a custom heading level", () => {
+			const wrapper = mount({
+				props: { headingLevel: "h3" },
+				slots: { "table-title": "Movies" },
+			});
+
+			expect(wrapper.find("h3").text()).toBe("Movies");
+		});
 	});
 
 	describe("Computed", () => {
