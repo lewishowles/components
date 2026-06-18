@@ -83,18 +83,16 @@ test.describe("floating-details", () => {
 			await expect(page.getByTestId("floating-details-content")).toHaveClass(/top-full/);
 		});
 
-		// Viewport-flip behaviour is covered by useFloatingPosition unit tests and
-		// Cypress. In CT the fixed-position trick causes the composable to measure
-		// spaceBelow === panelHeight (the details element expands upward to fit its
-		// own content), so the flip condition is never satisfied.
-		test.skip("flips above when the trigger is near the bottom of the viewport", async ({
+		test("flips above when the trigger is near the bottom of the viewport", async ({
 			mount,
 			page,
 		}) => {
 			await mountFloatingDetails(mount);
 
+			// margin-top in normal flow pushes the summary to near the viewport
+			// bottom, so spaceBelow < panelHeight and the composable flips to above.
 			await page.getByTestId("floating-details").evaluate((el) => {
-				el.setAttribute("style", "position:fixed;bottom:0;left:0;");
+				el.style.marginTop = "calc(100vh - 80px)";
 			});
 
 			await page.getByTestId("floating-details-summary").click();
