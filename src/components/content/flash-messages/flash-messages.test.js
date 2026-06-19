@@ -1,4 +1,4 @@
-import { createMount } from "@unit/support/mount";
+import { createMount } from "@lewishowles/testing/vue";
 import { useFlashMessages } from "@/composables";
 import { afterEach, describe, expect, test } from "vite-plus/test";
 

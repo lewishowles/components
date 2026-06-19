@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
-import { createMount } from "@unit/support/mount";
+import { createMount } from "@lewishowles/testing/vue";
 import { nextTick, ref } from "vue";
 import DataTableDensity from "./data-table-density.vue";
 

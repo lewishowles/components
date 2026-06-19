@@ -1,4 +1,4 @@
-import { createDeepMount } from "@unit/support/mount";
+import { createDeepMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
 import ModalDialog from "./modal-dialog.vue";
 

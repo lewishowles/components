@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/experimental-ct-vue";
-import { createMount } from "#test/ct/support/mount.js";
+import { createMount } from "@lewishowles/testing/playwright";
 
 import SearchableListFixture from "./searchable-list.fixture.vue";
 import SearchableListCustomSearchFixture from "./searchable-list-custom-search.fixture.vue";

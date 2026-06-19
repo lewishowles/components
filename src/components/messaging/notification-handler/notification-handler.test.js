@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
-import { createMount } from "@unit/support/mount";
+import { createMount } from "@lewishowles/testing/vue";
 import { useNotifications } from "@/composables/use-notifications/use-notifications.js";
 import NotificationDanger from "./fragments/notification-danger/notification-danger.vue";
 import NotificationInfo from "./fragments/notification-info/notification-info.vue";

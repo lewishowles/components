@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/experimental-ct-vue";
-import { createMount } from "#test/ct/support/mount.js";
+import { createMount } from "@lewishowles/testing/playwright";
 
 import NotificationHandlerDangerMarkReadFixture from "./notification-handler-danger-mark-read.fixture.vue";
 import NotificationHandlerFixture from "./notification-handler.fixture.vue";

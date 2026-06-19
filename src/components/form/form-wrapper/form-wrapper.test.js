@@ -1,4 +1,4 @@
-import { createMount } from "@unit/support/mount";
+import { createMount } from "@lewishowles/testing/vue";
 import { flushPromises } from "@vue/test-utils";
 import { describe, expect, test, vi } from "vite-plus/test";
 import FormWrapper from "./form-wrapper.vue";

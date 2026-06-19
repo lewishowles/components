@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/experimental-ct-vue";
 import { testSupplementaryInfo } from "#test/ct/support/form-supplementary.js";
-import { createMount } from "#test/ct/support/mount.js";
+import { createMount } from "@lewishowles/testing/playwright";
 
 import FormCheckbox from "./form-checkbox.vue";
 

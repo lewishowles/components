@@ -1,4 +1,4 @@
-import { createMount, createDeepMount } from "@unit/support/mount";
+import { createMount, createDeepMount } from "@lewishowles/testing/vue";
 import { describe, expect, test, vi } from "vite-plus/test";
 
 import ButtonGroup from "@/components/form/button-group/button-group.vue";

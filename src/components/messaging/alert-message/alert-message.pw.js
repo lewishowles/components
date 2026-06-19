@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/experimental-ct-vue";
-import { createMount, slotSvg } from "#test/ct/support/mount.js";
+import { createMount, slotSvg } from "@lewishowles/testing/playwright";
 
 import AlertMessage from "./alert-message.vue";
 

@@ -1,4 +1,4 @@
-import { createMount } from "@unit/support/mount";
+import { createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
 import IconChevronDownCircled from "./icon-chevron-down-circled.vue";
 

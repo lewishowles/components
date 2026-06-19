@@ -1,4 +1,4 @@
-import { createDeepMount, createMount } from "@unit/support/mount";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
 import DataTableFooter from "./data-table-footer.vue";
 

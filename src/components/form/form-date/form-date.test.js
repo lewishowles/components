@@ -1,4 +1,4 @@
-import { createMount } from "@unit/support/mount";
+import { createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test, vi } from "vite-plus/test";
 import FormDate from "./form-date.vue";
 

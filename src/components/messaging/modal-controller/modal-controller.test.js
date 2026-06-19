@@ -1,4 +1,4 @@
-import { createMount } from "@unit/support/mount";
+import { createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
 import { useModalDialog } from "@/composables/use-modal-dialog/use-modal-dialog.js";
 import ModalController from "./modal-controller.vue";

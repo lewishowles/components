@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/experimental-ct-vue";
-import { createMount } from "#test/ct/support/mount.js";
+import { createMount } from "@lewishowles/testing/playwright";
 
 import FormWrapper from "./form-wrapper.vue";
 import FormWrapperFixture from "./form-wrapper.fixture.vue";

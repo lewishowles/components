@@ -1,7 +1,8 @@
 import { alias } from "../support/aliases.js";
+import { chromiumProject, sharedUse } from "@lewishowles/testing/playwright";
 import { componentAutoImports } from "../support/plugins/component-auto-imports.js";
 import { createNamedExports } from "../support/plugins/create-named-exports.js";
-import { defineConfig, devices } from "@playwright/experimental-ct-vue";
+import { defineConfig } from "@playwright/experimental-ct-vue";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
@@ -17,7 +18,7 @@ export default defineConfig({
 	fullyParallel: true,
 	workers: process.env.CI ? 2 : undefined,
 	use: {
-		testIdAttribute: "data-test",
+		...sharedUse,
 		ctPort: 3100,
 		ctTemplateDir: "ct",
 		ctViteConfig: {
@@ -25,10 +26,5 @@ export default defineConfig({
 			resolve: { alias },
 		},
 	},
-	projects: [
-		{
-			name: "chromium",
-			use: { ...devices["Desktop Chrome"] },
-		},
-	],
+	projects: [chromiumProject],
 });

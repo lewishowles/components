@@ -1,5 +1,5 @@
 import DataTable from "./data-table.vue";
-import { createMount } from "@unit/support/mount";
+import { createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
 import { get } from "@lewishowles/helpers/object";
 import { nextTick } from "vue";

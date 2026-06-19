@@ -1,4 +1,4 @@
-import { createMount } from "@unit/support/mount";
+import { createMount } from "@lewishowles/testing/vue";
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, test, vi } from "vite-plus/test";
 
