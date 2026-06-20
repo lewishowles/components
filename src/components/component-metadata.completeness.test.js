@@ -63,6 +63,43 @@ describe("component-metadata completeness", { timeout: 30000 }, () => {
 	}
 });
 
+describe("component-metadata shape", () => {
+	for (const component of componentMetadata) {
+		test(`${component.name} — shape is valid`, () => {
+			for (const key of ["name", "category", "summary"]) {
+				expect(
+					typeof component[key] === "string" && component[key].length > 0,
+					`${component.name}: ${key} must be a non-empty string`,
+				).toBe(true);
+			}
+
+			if (component.props !== undefined) {
+				validateItems(component, "props", ["name", "type", "summary"]);
+			}
+
+			if (component.slots !== undefined) {
+				validateItems(component, "slots", ["name", "summary"]);
+			}
+
+			if (component.methods !== undefined) {
+				validateItems(component, "methods", ["name", "summary"]);
+			}
+
+			if (component.events !== undefined) {
+				validateItems(component, "events", ["name", "summary"]);
+			}
+
+			if (component.parts !== undefined) {
+				validateItems(component, "parts", ["name", "summary"]);
+			}
+
+			if (component.examples !== undefined) {
+				validateItems(component, "examples", ["name", "label", "summary"]);
+			}
+		});
+	}
+});
+
 describe("component-metadata parts completeness", () => {
 	for (const component of componentMetadata) {
 		const filePath = componentFileMap[component.name];
@@ -92,6 +129,32 @@ describe("component-metadata parts completeness", () => {
 		});
 	}
 });
+
+/**
+ * Assert that a metadata array field exists, is an array, and that every item
+ * contains non-empty string values for each of the given keys.
+ *
+ * @param  {object}  component
+ *     The component metadata entry being validated.
+ * @param  {string}  field
+ *     The name of the array field to check, e.g. "props" or "slots".
+ * @param  {string[]}  requiredKeys
+ *     The keys each item must have as a non-empty string.
+ */
+function validateItems(component, field, requiredKeys) {
+	expect(Array.isArray(component[field]), `${component.name}: ${field} must be an array`).toBe(
+		true,
+	);
+
+	for (const [index, item] of component[field].entries()) {
+		for (const key of requiredKeys) {
+			expect(
+				typeof item[key] === "string" && item[key].length > 0,
+				`${component.name}: ${field}[${index}].${key} must be a non-empty string`,
+			).toBe(true);
+		}
+	}
+}
 
 /**
  * Recursively scan a directory for .vue files, returning a map of component
