@@ -20,6 +20,7 @@
 					'aria-describedby': describedBy,
 					'aria-errormessage': haveError ? errorId : undefined,
 					'aria-invalid': haveError ? 'true' : undefined,
+					required: required || undefined,
 					...inputAttributes,
 					type: 'checkbox',
 				}"
@@ -28,7 +29,7 @@
 
 			<form-label
 				:class="{ 'sr-only': !displayLabel }"
-				v-bind="{ id: inputId, styled: false }"
+				v-bind="{ id: inputId, styled: false, required }"
 				data-part="label"
 			>
 				<slot />
@@ -89,6 +90,14 @@ const props = defineProps({
 	inputAttributes: {
 		type: Object,
 		default: null,
+	},
+
+	/**
+	 * Whether this field is required.
+	 */
+	required: {
+		type: Boolean,
+		default: false,
 	},
 
 	/**

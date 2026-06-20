@@ -1,9 +1,10 @@
-import { createMount } from "@lewishowles/testing/vue";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test, vi } from "vite-plus/test";
 import FormInputGroup from "./form-input-group.vue";
 
 const defaultProps = { options: ["pineapple", "banana", "coconut"] };
 const mount = createMount(FormInputGroup, { props: defaultProps });
+const deepMount = createDeepMount(FormInputGroup, { props: defaultProps });
 
 describe("form-input-group", () => {
 	console.warn = vi.fn();
@@ -183,6 +184,20 @@ describe("form-input-group", () => {
 				const vm = wrapper.vm;
 
 				expect(vm.internalOptions).toEqual([]);
+			});
+		});
+
+		describe("required", () => {
+			test("passes required to the legend label", () => {
+				const wrapper = deepMount({ props: { required: true } });
+
+				expect(wrapper.findComponent({ name: "FormLabel" }).props("required")).toBe(true);
+			});
+
+			test("does not mark the legend label as required by default", () => {
+				const wrapper = deepMount();
+
+				expect(wrapper.findComponent({ name: "FormLabel" }).props("required")).toBe(false);
 			});
 		});
 	});

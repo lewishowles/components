@@ -2,7 +2,7 @@
 	<form-input-group
 		ref="input-group"
 		v-model="internalModel"
-		v-bind="{ type: 'radio' }"
+		v-bind="{ type: 'radio', required }"
 		data-component="form-radio-group"
 		data-test="form-radio-group"
 	>
@@ -41,6 +41,14 @@ const props = defineProps({
 	modelValue: {
 		type: [String, Number],
 		default: null,
+	},
+
+	/**
+	 * Whether this field is required.
+	 */
+	required: {
+		type: Boolean,
+		default: false,
 	},
 });
 

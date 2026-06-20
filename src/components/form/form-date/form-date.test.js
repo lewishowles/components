@@ -1,8 +1,9 @@
-import { createMount } from "@lewishowles/testing/vue";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test, vi } from "vite-plus/test";
 import FormDate from "./form-date.vue";
 
 const mount = createMount(FormDate);
+const deepMount = createDeepMount(FormDate);
 
 const standardDate = { day: "01", month: "02", year: "2000" };
 
@@ -278,6 +279,30 @@ describe("form-date", () => {
 				vm.setDateFromIsoString("invalid date");
 
 				expect(vm.date).toEqual(standardDate);
+			});
+		});
+	});
+
+	describe("Props", () => {
+		describe("required", () => {
+			test("passes required to all date sub-inputs", () => {
+				const wrapper = deepMount({ props: { required: true } });
+
+				const inputs = wrapper.findAllComponents({ name: "FormInput" });
+
+				expect(inputs.length).toBeGreaterThan(0);
+
+				for (const input of inputs) {
+					expect(input.props("required")).toBe(true);
+				}
+			});
+
+			test("does not mark date sub-inputs as required by default", () => {
+				const wrapper = deepMount();
+
+				for (const input of wrapper.findAllComponents({ name: "FormInput" })) {
+					expect(input.props("required")).toBe(false);
+				}
 			});
 		});
 	});

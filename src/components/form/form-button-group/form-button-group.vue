@@ -1,5 +1,5 @@
 <template>
-	<form-radio-group data-test="form-button-group">
+	<form-radio-group v-bind="{ required }" data-test="form-button-group">
 		<slot />
 
 		<template #options="{ options, name }">
@@ -57,6 +57,16 @@ import { runComponentMethod } from "@lewishowles/helpers/vue";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
 import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
+
+defineProps({
+	/**
+	 * Whether this field is required.
+	 */
+	required: {
+		type: Boolean,
+		default: false,
+	},
+});
 
 const model = defineModel({
 	type: [String, Number],

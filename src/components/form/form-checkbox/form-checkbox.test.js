@@ -36,4 +36,20 @@ describe("form-checkbox", () => {
 			expect(input.indeterminate).toBe(false);
 		});
 	});
+
+	describe("Props", () => {
+		describe("required", () => {
+			test("sets the required attribute on the input when required", () => {
+				const wrapper = mount({ props: { required: true } });
+
+				expect(wrapper.find("input").attributes("required")).toBeDefined();
+			});
+
+			test("does not set the required attribute on the input by default", () => {
+				const wrapper = mount();
+
+				expect(wrapper.find("input").attributes("required")).toBeUndefined();
+			});
+		});
+	});
 });

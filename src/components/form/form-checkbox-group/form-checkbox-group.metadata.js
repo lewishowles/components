@@ -10,6 +10,12 @@ export const formCheckboxGroupMetadata = {
 			default: "[]",
 			summary: "Selected option values.",
 		},
+		{
+			name: "required",
+			type: "boolean",
+			default: false,
+			summary: "Whether this field is required.",
+		},
 	],
 	slots: [
 		{

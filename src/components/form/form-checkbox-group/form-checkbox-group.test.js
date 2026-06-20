@@ -41,4 +41,20 @@ describe("form-checkbox-group", () => {
 			"strawberry",
 		]);
 	});
+
+	describe("Props", () => {
+		describe("required", () => {
+			test("passes required to the input group", () => {
+				const wrapper = mount({ props: { required: true } });
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("required")).toBe(true);
+			});
+
+			test("does not mark the input group as required by default", () => {
+				const wrapper = mount();
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("required")).toBe(false);
+			});
+		});
+	});
 });

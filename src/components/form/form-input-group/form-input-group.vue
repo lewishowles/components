@@ -14,7 +14,7 @@
 		data-test="form-input-group"
 	>
 		<div class="flex flex-col">
-			<form-label v-bind="{ tag: 'legend' }">
+			<form-label v-bind="{ tag: 'legend', required }">
 				<slot />
 			</form-label>
 

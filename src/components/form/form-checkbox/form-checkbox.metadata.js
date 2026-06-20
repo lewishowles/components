@@ -23,6 +23,12 @@ export const formCheckboxMetadata = {
 			summary: "Additional attributes forwarded to the checkbox input.",
 		},
 		{
+			name: "required",
+			type: "boolean",
+			default: false,
+			summary: "Whether this field is required.",
+		},
+		{
 			name: "indeterminate",
 			type: "boolean",
 			default: false,

@@ -10,7 +10,7 @@
 		data-test="form-date"
 	>
 		<div class="flex flex-col">
-			<form-label tag="legend">
+			<form-label v-bind="{ tag: 'legend', required }">
 				<slot />
 			</form-label>
 

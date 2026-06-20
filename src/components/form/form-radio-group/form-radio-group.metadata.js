@@ -11,6 +11,12 @@ export const formRadioGroupMetadata = {
 			default: null,
 			summary: "Selected option value.",
 		},
+		{
+			name: "required",
+			type: "boolean",
+			default: false,
+			summary: "Whether this field is required.",
+		},
 	],
 	slots: [
 		{

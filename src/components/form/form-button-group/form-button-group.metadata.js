@@ -3,6 +3,14 @@ export const formButtonGroupMetadata = {
 	name: "form-button-group",
 	category: "form",
 	summary: "A radio group rendered as joined buttons with optional icons.",
+	props: [
+		{
+			name: "required",
+			type: "boolean",
+			default: false,
+			summary: "Whether this field is required.",
+		},
+	],
 	slots: [
 		{
 			name: "default",

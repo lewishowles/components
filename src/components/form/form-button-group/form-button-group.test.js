@@ -13,4 +13,20 @@ describe("form-button-group", () => {
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
 	});
+
+	describe("Props", () => {
+		describe("required", () => {
+			test("passes required to the radio group", () => {
+				const wrapper = mount({ props: { required: true } });
+
+				expect(wrapper.findComponent({ name: "FormRadioGroup" }).props("required")).toBe(true);
+			});
+
+			test("does not mark the radio group as required by default", () => {
+				const wrapper = mount();
+
+				expect(wrapper.findComponent({ name: "FormRadioGroup" }).props("required")).toBe(false);
+			});
+		});
+	});
 });
