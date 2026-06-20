@@ -1,6 +1,6 @@
-# `button-group`
+# `form-button-group`
 
-`button-group` is an extension of [`form-radio-group`](../form-radio-group/form-radio-group.md), styled as a group of buttons.
+`form-button-group` is an extension of [`form-radio-group`](../form-radio-group/form-radio-group.md), styled as a group of buttons.
 
 Supports `v-model` to bind the currently selected item's value.
 
@@ -65,7 +65,7 @@ Focus this button group.
 ### Basic usage
 
 ```html
-<button-group v-model="theme" v-bind="{ options }">Theme</button-group>
+<form-button-group v-model="theme" v-bind="{ options }">Theme</form-button-group>
 ```
 
 ```javascript
@@ -79,11 +79,11 @@ const options = [
 ### With help
 
 ```html
-<button-group v-model="accountType" v-bind="{ inline: true }">
+<form-button-group v-model="accountType" v-bind="{ inline: true }">
 	Account type
 
 	<template #help>You can change the account type from the user screen later.</template>
-</button-group>
+</form-button-group>
 ```
 
 ```javascript

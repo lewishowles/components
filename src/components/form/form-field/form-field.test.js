@@ -1,7 +1,7 @@
 import { createMount, createDeepMount } from "@lewishowles/testing/vue";
 import { describe, expect, test, vi } from "vite-plus/test";
 
-import ButtonGroup from "@/components/form/button-group/button-group.vue";
+import FormButtonGroup from "@/components/form/form-button-group/form-button-group.vue";
 import FormCheckbox from "@/components/form/form-checkbox/form-checkbox.vue";
 import FormField from "./form-field.vue";
 import FormInput from "@/components/form/form-input/form-input.vue";
@@ -64,7 +64,7 @@ describe("form-field", () => {
 					["textarea", {}],
 					["checkbox", {}],
 					["radio-group", { options: [] }],
-					["button-group", { options: [] }],
+					["form-button-group", { options: [] }],
 				])("%s", ([type, props]) => {
 					const wrapper = mount({ type, ...props });
 					const vm = wrapper.vm;
@@ -90,7 +90,7 @@ describe("form-field", () => {
 					[{ type: "textarea" }, FormTextarea],
 					[{ type: "checkbox" }, FormCheckbox],
 					[{ type: "radio-group", options: [] }, FormRadioGroup],
-					[{ type: "button-group", options: [] }, ButtonGroup],
+					[{ type: "form-button-group", options: [] }, FormButtonGroup],
 				])("%s", ([props, component]) => {
 					const wrapper = mount({ props });
 					const vm = wrapper.vm;

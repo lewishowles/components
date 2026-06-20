@@ -2,19 +2,19 @@ import { expect, test } from "@playwright/experimental-ct-vue";
 import { testSupplementaryInfo } from "#test/ct/support/form-supplementary.js";
 import { createMount } from "@lewishowles/testing/playwright";
 
-import ButtonGroup from "./button-group.vue";
+import ButtonGroup from "./form-button-group.vue";
 
-// Mount button-group with sensible defaults for testing.
+// Mount form-button-group with sensible defaults for testing.
 const mountButtonGroup = createMount(ButtonGroup, {
 	props: { id: "id-abc", options: ["Pineapple", "Banana", "Coconut"] },
 	slots: { default: "Best smoothie" },
 });
 
-test.describe("button-group", () => {
+test.describe("form-button-group", () => {
 	test("a button group is rendered", async ({ mount, page }) => {
 		await mountButtonGroup(mount);
 
-		const buttonGroup = page.getByTestId("button-group");
+		const buttonGroup = page.getByTestId("form-button-group");
 
 		await expect(buttonGroup).toBeVisible();
 
@@ -38,7 +38,7 @@ test.describe("button-group", () => {
 		});
 
 		testSupplementaryInfo(mountButtonGroup, {
-			ariaTarget: (page) => page.getByTestId("button-group"),
+			ariaTarget: (page) => page.getByTestId("form-button-group"),
 		});
 	});
 });

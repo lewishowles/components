@@ -51,7 +51,7 @@ import { validateField as validateFormField } from "@lewishowles/helpers/form";
 
 import useInputId from "@/components/form/composables/use-input-id/use-input-id";
 
-import ButtonGroup from "@/components/form/button-group/button-group.vue";
+import FormButtonGroup from "@/components/form/form-button-group/form-button-group.vue";
 import FormCheckbox from "@/components/form/form-checkbox/form-checkbox.vue";
 import FormCheckboxGroup from "@/components/form/form-checkbox-group/form-checkbox-group.vue";
 import FormDate from "@/components/form/form-date/form-date.vue";
@@ -71,7 +71,7 @@ const props = defineProps({
 	 * checkbox
 	 * radio-group
 	 * checkbox-group
-	 * button-group
+	 * form-button-group
 	 */
 	type: {
 		type: String,
@@ -150,7 +150,7 @@ const defaultComponent = FormInput;
 // Field controls bundled with `form-field`, so automatic imports do not depend
 // on global registration.
 const fieldComponents = {
-	"button-group": ButtonGroup,
+	"form-button-group": FormButtonGroup,
 	checkbox: FormCheckbox,
 	"checkbox-group": FormCheckboxGroup,
 	date: FormDate,
@@ -169,7 +169,7 @@ const fieldTypes = {
 	checkbox: {},
 	"checkbox-group": {},
 	"radio-group": {},
-	"button-group": {},
+	"form-button-group": {},
 	select: {},
 };
 

@@ -17,7 +17,7 @@ const fieldTypes = [
 	[{ type: "checkbox" }, "form-checkbox"],
 	[{ type: "radio-group", options: [] }, "form-radio-group"],
 	[{ type: "checkbox-group", options: [] }, "form-checkbox-group"],
-	[{ type: "button-group", options: [] }, "button-group"],
+	[{ type: "form-button-group", options: [] }, "form-button-group"],
 ];
 
 test.describe("form-field", () => {

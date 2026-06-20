@@ -23,7 +23,7 @@
 					<app-menu-link to="/form/form-checkbox">form-checkbox</app-menu-link>
 					<app-menu-link to="/form/form-checkbox-group">form-checkbox-group</app-menu-link>
 					<app-menu-link to="/form/form-radio-group">form-radio-group</app-menu-link>
-					<app-menu-link to="/form/button-group">button-group</app-menu-link>
+					<app-menu-link to="/form/form-button-group">form-button-group</app-menu-link>
 					<app-menu-link to="/form/form-date">form-date</app-menu-link>
 					<app-menu-link to="/form/form-select">form-select</app-menu-link>
 				</app-menu-section>

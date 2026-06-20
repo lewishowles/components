@@ -1,12 +1,12 @@
 <template>
 	<component-playground
 		v-bind="{ copy: template, componentModel }"
-		id="playground-button-group"
+		id="playground-form-button-group"
 		v-model="textSlots"
 	>
 		<template #title>Button group</template>
 
-		<button-group v-bind="componentProps" v-model="componentModel">
+		<form-button-group v-bind="componentProps" v-model="componentModel">
 			{{ textSlots.default?.value }}
 
 			<template #introduction>
@@ -20,7 +20,7 @@
 			<template #error>
 				{{ textSlots.error?.value }}
 			</template>
-		</button-group>
+		</form-button-group>
 	</component-playground>
 </template>
 
@@ -68,5 +68,5 @@ const componentProps = computed(() => {
 	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
-const template = useTemplateGenerator("button-group", { slots: textSlots, props });
+const template = useTemplateGenerator("form-button-group", { slots: textSlots, props });
 </script>

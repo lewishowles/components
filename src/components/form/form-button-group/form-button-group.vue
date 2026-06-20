@@ -1,5 +1,5 @@
 <template>
-	<form-radio-group data-test="button-group">
+	<form-radio-group data-test="form-button-group">
 		<slot />
 
 		<template #options="{ options, name }">
@@ -16,11 +16,11 @@
 
 						<form-label
 							v-bind="{ id: option.id, styled: false }"
-							class="button-group flex items-center gap-2"
+							class="form-button-group flex items-center gap-2"
 							:class="{
-								'button-group--middle': !option.first,
-								'button-group--first': option.first,
-								'button-group--last': option.last,
+								'form-button-group--middle': !option.first,
+								'form-button-group--first': option.first,
+								'form-button-group--last': option.last,
 							}"
 						>
 							<component :is="resolveIconComponent(option.icon)" v-if="option.icon" />
@@ -48,7 +48,7 @@
 /**
  * Create a group of radio buttons styled as buttons, based on provided options.
  *
- * `button-group` allows options to be provided in a few different formats for
+ * `form-button-group` allows options to be provided in a few different formats for
  * simplicity.
  */
 import { head, isNonEmptyArray } from "@lewishowles/helpers/array";

@@ -6,7 +6,7 @@ import { baseIconMetadata } from "./icon/base-icon/base-icon.metadata.js";
 import { baseModalMetadata } from "./messaging/base-modal/base-modal.metadata.js";
 import { breadcrumbItemMetadata } from "./navigation/breadcrumb-item/breadcrumb-item.metadata.js";
 import { breadcrumbListMetadata } from "./navigation/breadcrumb-list/breadcrumb-list.metadata.js";
-import { buttonGroupMetadata } from "./form/button-group/button-group.metadata.js";
+import { formButtonGroupMetadata } from "./form/form-button-group/form-button-group.metadata.js";
 import { chartLegendMetadata } from "./chart/chart-legend/chart-legend.metadata.js";
 import { comboBoxMetadata } from "./content/combo-box/combo-box.metadata.js";
 import { conditionalWrapperMetadata } from "./general/conditional-wrapper/conditional-wrapper.metadata.js";
@@ -77,7 +77,7 @@ const componentMetadataRecords = [
 	baseModalMetadata,
 	breadcrumbItemMetadata,
 	breadcrumbListMetadata,
-	buttonGroupMetadata,
+	formButtonGroupMetadata,
 	chartLegendMetadata,
 	comboBoxMetadata,
 	conditionalWrapperMetadata,

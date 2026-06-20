@@ -1,7 +1,7 @@
 <template>
 	<component-playground
 		v-bind="{ copy: template, componentModel }"
-		id="playground-form-field-button-group"
+		id="playground-form-field-form-button-group"
 		v-model="textSlots"
 	>
 		<template #title>Button group</template>
@@ -65,7 +65,7 @@ const textSlots = ref({
 const props = ref({
 	type: {
 		label: "Type",
-		value: "button-group",
+		value: "form-button-group",
 		type: "text",
 	},
 	options: {

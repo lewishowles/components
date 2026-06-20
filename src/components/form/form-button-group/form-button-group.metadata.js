@@ -1,6 +1,6 @@
-// Metadata for docs and CLI consumers that need to describe or generate button-group usage.
-export const buttonGroupMetadata = {
-	name: "button-group",
+// Metadata for docs and CLI consumers that need to describe or generate form-button-group usage.
+export const formButtonGroupMetadata = {
+	name: "form-button-group",
 	category: "form",
 	summary: "A radio group rendered as joined buttons with optional icons.",
 	slots: [

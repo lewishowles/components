@@ -100,7 +100,7 @@
 	border-radius: 9999px;
 }
 
-.button-group {
+.form-button-group {
 	appearance: none;
 	background-color: white;
 	border: 1px solid var(--border-strong);
@@ -188,16 +188,16 @@
 	}
 }
 
-.button-group--first {
+.form-button-group--first {
 	border-start-start-radius: var(--radius-lg);
 	border-end-start-radius: var(--radius-lg);
 }
 
-.button-group--middle {
+.form-button-group--middle {
 	border-inline-start-width: 0;
 }
 
-.button-group--last {
+.form-button-group--last {
 	border-start-end-radius: var(--radius-lg);
 	border-end-end-radius: var(--radius-lg);
 }

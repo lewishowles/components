@@ -30,7 +30,7 @@
 					<li><code>checkbox</code></li>
 					<li><code>checkbox-group</code></li>
 					<li><code>radio-group</code></li>
-					<li><code>button-group</code></li>
+					<li><code>form-button-group</code></li>
 					<li><code>date</code></li>
 				</ul>
 
@@ -273,7 +273,7 @@
 					,
 					<code>checkbox-group</code>
 					, and
-					<code>button-group</code>
+					<code>form-button-group</code>
 					.
 				</p>
 			</component-slot>
@@ -316,7 +316,7 @@
 			<playground-form-field-checkbox />
 			<playground-form-field-checkbox-group />
 			<playground-form-field-radio-group />
-			<playground-form-field-button-group />
+			<playground-form-field-form-button-group />
 			<playground-form-field-date />
 			<playground-form-field-select />
 		</component-playgrounds>
@@ -324,7 +324,7 @@
 </template>
 
 <script setup>
-import PlaygroundFormFieldButtonGroup from "./fragments/playground-form-field-button-group.vue";
+import PlaygroundFormFieldFormButtonGroup from "./fragments/playground-form-field-form-button-group.vue";
 import PlaygroundFormFieldCheckbox from "./fragments/playground-form-field-checkbox.vue";
 import PlaygroundFormFieldCheckboxGroup from "./fragments/playground-form-field-checkbox-group.vue";
 import PlaygroundFormFieldDate from "./fragments/playground-form-field-date.vue";

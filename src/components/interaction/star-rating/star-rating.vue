@@ -121,7 +121,7 @@
 /**
  * Create a group of radio buttons styled as buttons, based on provided options.
  *
- * `button-group` allows options to be provided in a few different formats for
+ * `form-button-group` allows options to be provided in a few different formats for
  * simplicity.
  */
 import { computed, ref, useId, useSlots } from "vue";

@@ -4,7 +4,7 @@
 
 		<template #introduction>
 			<p>
-				<code>button-group</code>
+				<code>form-button-group</code>
 				is an extension of
 				<router-link v-bind="{ to: '/forms/form-radio-group' }">
 					<code>form-radio-group</code>
@@ -144,11 +144,11 @@
 		</component-methods>
 
 		<component-playgrounds>
-			<playground-button-group />
+			<playground-form-button-group />
 		</component-playgrounds>
 	</component-page>
 </template>
 
 <script setup>
-import PlaygroundButtonGroup from "./fragments/playground-button-group.vue";
+import PlaygroundFormButtonGroup from "./fragments/playground-form-button-group.vue";
 </script>

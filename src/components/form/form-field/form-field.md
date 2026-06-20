@@ -24,7 +24,7 @@ The type of field. Known types include:
 - `select`
 - `checkbox`
 - `radio-group`
-- `button-group`
+- `form-button-group`
 - `date`
 
 Any unknown type will default to `text`.
