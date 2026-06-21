@@ -244,6 +244,16 @@
 				</p>
 			</component-slot>
 
+			<component-slot id="slot-optional-indicator">
+				<template #name>optional-indicator</template>
+
+				<p>
+					Content shown after the label text when the field is not required. Defaults to
+					<code>(optional)</code>
+					.
+				</p>
+			</component-slot>
+
 			<component-slot id="slot-introduction">
 				<template #name>introduction</template>
 

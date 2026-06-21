@@ -13,6 +13,9 @@
 
 		<!-- For now, we're listing out slots manually, as one way to
 		automatically retrieve them uses Vue internals and seems fragile -->
+		<template #optional-indicator>
+			<slot name="optional-indicator" />
+		</template>
 		<template #introduction>
 			<slot name="introduction" />
 		</template>

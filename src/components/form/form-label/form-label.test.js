@@ -13,4 +13,30 @@ describe("form-label", () => {
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
 	});
+
+	describe("Render contracts", () => {
+		test("shows the optional indicator when not required", () => {
+			const wrapper = mount();
+
+			expect(wrapper.find('[data-test="form-label-optional-indicator"]').exists()).toBe(true);
+		});
+
+		test("hides the optional indicator when required", () => {
+			const wrapper = mount({ props: { required: true } });
+
+			expect(wrapper.find('[data-test="form-label-optional-indicator"]').exists()).toBe(false);
+		});
+
+		test("renders the default optional indicator text", () => {
+			const wrapper = mount();
+
+			expect(wrapper.find('[data-test="form-label-optional-indicator"]').text()).toBe("(optional)");
+		});
+
+		test("renders custom optional indicator content when the slot is provided", () => {
+			const wrapper = mount({ slots: { "optional-indicator": "Optional" } });
+
+			expect(wrapper.find('[data-test="form-label-optional-indicator"]').text()).toBe("Optional");
+		});
+	});
 });

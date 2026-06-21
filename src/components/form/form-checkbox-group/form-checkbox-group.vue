@@ -8,6 +8,10 @@
 	>
 		<slot />
 
+		<template #optional-indicator>
+			<slot name="optional-indicator" />
+		</template>
+
 		<template #introduction>
 			<slot name="introduction" />
 		</template>

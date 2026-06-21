@@ -17,6 +17,11 @@ export const formButtonGroupMetadata = {
 			summary: "The group legend.",
 		},
 		{
+			name: "optional-indicator",
+			summary:
+				"Content shown after the label when the field is not required. Defaults to (optional).",
+		},
+		{
 			name: "options",
 			summary: "Custom rendering for options. Scoped with options and name.",
 		},

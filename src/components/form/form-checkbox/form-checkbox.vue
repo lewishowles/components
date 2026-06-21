@@ -33,6 +33,10 @@
 				data-part="label"
 			>
 				<slot />
+
+				<template #optional-indicator>
+					<slot name="optional-indicator" />
+				</template>
 			</form-label>
 		</div>
 

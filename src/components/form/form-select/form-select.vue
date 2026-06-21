@@ -7,6 +7,10 @@
 		<div class="flex flex-col">
 			<form-label v-bind="{ id: inputId, required }">
 				<slot />
+
+				<template #optional-indicator>
+					<slot name="optional-indicator" />
+				</template>
 			</form-label>
 
 			<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }">

@@ -8,6 +8,10 @@ A general form component for use in [form-wrapper](/src/components/form/form-wra
 
 Passed through to the `default` slot of the relevant form field, the `default` slot generally contains the label for the form element.
 
+### `optional-indicator`
+
+Content shown after the label text when the field is not required. Defaults to `(optional)`.
+
 ## Props
 
 ### `type`

@@ -28,6 +28,14 @@
 		data-test="form-label"
 	>
 		<slot />
+
+		<span
+			v-if="haveOptionalIndicator"
+			class="text-content-subtle ms-1 text-sm font-normal"
+			data-test="form-label-optional-indicator"
+		>
+			<slot name="optional-indicator">(optional)</slot>
+		</span>
 	</component>
 </template>
 
@@ -93,6 +101,8 @@ const haveLabel = computed(() => isNonEmptySlot(slots.default));
 // Determine if we have an ID and if one is necessary. If not, show a warning to
 // the user about accessibility.
 const missingId = computed(() => props.tag === "label" && !isNonEmptyString(props.id));
+// Whether to show the optional indicator. Shown when the field is not required.
+const haveOptionalIndicator = computed(() => !props.required);
 </script>
 
 <script>

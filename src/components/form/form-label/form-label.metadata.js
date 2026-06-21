@@ -41,6 +41,11 @@ export const formLabelMetadata = {
 			name: "default",
 			summary: "The visible label text.",
 		},
+		{
+			name: "optional-indicator",
+			summary:
+				"Content shown after the label when the field is not required. Defaults to (optional).",
+		},
 	],
 	examples: [],
 };

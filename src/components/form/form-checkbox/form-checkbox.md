@@ -10,6 +10,10 @@ Supports `v-model` to bind the input's current value.
 
 The default slot contains the label of the checkbox, which appears beside it.
 
+### `optional-indicator`
+
+Content shown after the label text when the field is not required. Defaults to `(optional)`.
+
 ### `error`
 
 Any error text to display below the input.

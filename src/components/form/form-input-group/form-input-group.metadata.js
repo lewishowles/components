@@ -60,6 +60,11 @@ export const formInputGroupMetadata = {
 			summary: "The group legend.",
 		},
 		{
+			name: "optional-indicator",
+			summary:
+				"Content shown after the label when the field is not required. Defaults to (optional).",
+		},
+		{
 			name: "introduction",
 			summary: "Introductory text shown above the options.",
 		},

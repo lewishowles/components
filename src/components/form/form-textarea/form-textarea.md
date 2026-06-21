@@ -12,6 +12,10 @@ The default slot contains the label of the textarea.
 
 _Note that a label is always required, even if a label is not shown to the user, as it will be critical for screen readers. This component will show an error if no label is provided._
 
+### `optional-indicator`
+
+Content shown after the label text when the field is not required. Defaults to `(optional)`.
+
 ### `introduction`
 
 Any additional text to introduce this textarea, which appears between the label and the input.

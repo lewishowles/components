@@ -2,6 +2,10 @@
 	<form-radio-group v-bind="{ required }" data-test="form-button-group">
 		<slot />
 
+		<template #optional-indicator>
+			<slot name="optional-indicator" />
+		</template>
+
 		<template #options="{ options, name }">
 			<slot name="options" v-bind="{ options, name }">
 				<div ref="optionsWrapperElement" class="mt-3 flex">
