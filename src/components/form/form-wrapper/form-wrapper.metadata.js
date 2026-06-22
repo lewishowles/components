@@ -22,6 +22,13 @@ export const formWrapperMetadata = {
 			default: '""',
 			summary: "Additional classes merged onto the inner form-layout.",
 		},
+		{
+			name: "rules",
+			type: "object",
+			default: "{}",
+			summary:
+				"Form-level validation rules, keyed by field name. Each value is an array of rules in the same shape as `form-field`'s own `validation`, but run against the full form data on submit. Field-local rules run first; form-level errors map to the named field so they display beside the field and in the error summary.",
+		},
 	],
 	slots: [
 		{

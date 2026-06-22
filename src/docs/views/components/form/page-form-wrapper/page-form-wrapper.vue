@@ -96,6 +96,32 @@
 					.
 				</p>
 			</component-prop>
+
+			<component-prop id="prop-rules">
+				<template #name>rules</template>
+
+				<template #type>Object</template>
+
+				<template #default-value>{}</template>
+
+				<p>
+					Form-level validation rules, keyed by field name. Each value is an array of rules in the
+					same shape as
+					<code>form-field</code>
+					's own `validation`, but run against the full form data on submit. This is useful both for
+					keeping validation contained and not spread across fields, but it also allows validation
+					that relies on other fields.
+				</p>
+
+				<code-block v-bind="{ code: rulesExample }" />
+
+				<p>
+					Field-local rules run first. Form-level errors map to the named field, so they display
+					beside the field and appear in the error summary exactly like field-local errors — the
+					error summary link still focuses the correct field. Form-level rules re-run on every
+					submit, so resolved errors clear automatically.
+				</p>
+			</component-prop>
 		</component-props>
 
 		<component-slots>
@@ -388,4 +414,14 @@
 
 <script setup>
 import PlaygroundFormWrapper from "./fragments/playground-form-wrapper.vue";
+
+const rulesExample = `const rules = {
+	confirmPassword: [{ rule: "same", field: "password", message: "Passwords must match" }],
+	endDate: [{ rule: "custom", validate: (value, formData) => !value || !formData.startDate || value > formData.startDate, message: "End date must be after the start date" }],
+};
+
+<form-wrapper :rules>
+
+</form-wrapper>;
+`;
 </script>

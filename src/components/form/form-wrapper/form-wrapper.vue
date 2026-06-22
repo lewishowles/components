@@ -106,6 +106,7 @@ import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
+import { validateField as validateFormField } from "@lewishowles/helpers/form";
 
 const props = defineProps({
 	/**
@@ -136,6 +137,18 @@ const props = defineProps({
 	layoutClasses: {
 		type: String,
 		default: "",
+	},
+
+	/**
+	 * Form-level validation rules, keyed by field name. Each value is an array
+	 * of rules in the same shape as `form-field`'s own `validation`, but run
+	 * against the full form data on submit. This is useful both for keeping
+	 * validation contained and not spread across fields, but it also allows
+	 * validation that relies on other fields.
+	 */
+	rules: {
+		type: Object,
+		default: () => ({}),
 	},
 });
 
@@ -168,6 +181,10 @@ const haveFormFields = computed(() => isNonEmptyObject(formFields));
 const validationErrorSummary = ref([]);
 // Errors produced by the `submitErrorsCallback` from a rejected submit.
 const submitErrors = ref({});
+// Errors produced by form-level `rules`, keyed by field name. Populated on
+// submit and surfaced through `getFieldErrors` so they display beside the field
+// and in the error summary.
+const formLevelErrors = ref({});
 
 // Parent-owned field errors formatted for the error summary.
 const externalErrorSummary = computed(() => {
@@ -305,6 +322,7 @@ async function handleFormSubmit() {
 	}
 
 	validateFields();
+	validateFormLevelRules();
 
 	if (haveErrorSummary.value) {
 		resetSubmitButton();
@@ -347,8 +365,40 @@ function validateFields() {
 }
 
 /**
+ * Validate the form-level `rules` against the current form data, mapping any
+ * errors to their field name. Field-local validation runs first, so these
+ * append after a field's own messages in both the field display and the error
+ * summary. Re-runs from scratch on each submit so resolved errors clear.
+ */
+function validateFormLevelRules() {
+	const errors = {};
+
+	if (isNonEmptyObject(props.rules)) {
+		for (const fieldName in props.rules) {
+			if (!Object.hasOwn(props.rules, fieldName)) {
+				continue;
+			}
+
+			const fieldRules = props.rules[fieldName];
+
+			if (!isNonEmptyArray(fieldRules)) {
+				continue;
+			}
+
+			const { errors: fieldErrors } = validateFormField(fieldName, fieldRules, formData.value);
+
+			if (isNonEmptyArray(fieldErrors)) {
+				errors[fieldName] = fieldErrors;
+			}
+		}
+	}
+
+	formLevelErrors.value = errors;
+}
+
+/**
  * Get all error messages for a field, combining parent-owned errors with any
- * produced by the `submitErrorsCallback`.
+ * produced by the `submitErrorsCallback` or by form-level `rules`.
  *
  * @param  {string}  fieldName
  *     The field to retrieve error messages for.
@@ -357,6 +407,7 @@ function getFieldErrors(fieldName) {
 	return [
 		...normaliseFieldErrors(props.fieldErrors?.[fieldName]),
 		...normaliseFieldErrors(submitErrors.value?.[fieldName]),
+		...normaliseFieldErrors(formLevelErrors.value?.[fieldName]),
 	];
 }
 

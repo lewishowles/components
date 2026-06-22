@@ -14,6 +14,247 @@ describe("form-wrapper", () => {
 		});
 	});
 
+	describe("Props", () => {
+		describe("submitErrorsCallback", () => {
+			describe("handleSubmitError", () => {
+				test("Maps a rejected error to a registered field", () => {
+					const wrapper = mount({
+						props: { submitErrorsCallback: () => ({ email: "That email is taken" }) },
+					});
+
+					const vm = wrapper.vm;
+
+					vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+
+					vm.handleSubmitError(new Error("Request failed"));
+
+					expect(vm.errorSummary).toEqual([
+						{ fieldName: "email", id: "email-id", message: "That email is taken" },
+					]);
+				});
+
+				test("Normalises a list of messages for a field", () => {
+					const wrapper = mount({
+						props: { submitErrorsCallback: () => ({ name: ["Too short", "Required"] }) },
+					});
+
+					const vm = wrapper.vm;
+
+					vm.registerField({ name: "name", id: "name-id", validateField: () => true });
+
+					vm.handleSubmitError(new Error("Request failed"));
+
+					expect(vm.errorSummary).toEqual([
+						{ fieldName: "name", id: "name-id", message: "Too short" },
+						{ fieldName: "name", id: "name-id", message: "Required" },
+					]);
+				});
+
+				test("Surfaces errors for unknown fields as general errors", () => {
+					const wrapper = mount({
+						props: { submitErrorsCallback: () => ({ form: "Something went wrong" }) },
+					});
+
+					const vm = wrapper.vm;
+
+					vm.handleSubmitError(new Error("Request failed"));
+
+					expect(vm.generalSubmitErrors).toEqual(["Something went wrong"]);
+					expect(vm.errorSummary).toEqual([]);
+				});
+
+				test("Re-throws when the adapter returns nothing mappable", async () => {
+					const error = new Error("Server error");
+					const wrapper = mount({ props: { submitErrorsCallback: () => null } });
+
+					const vm = wrapper.vm;
+
+					await expect(vm.handleSubmitError(error)).rejects.toThrow(error);
+					expect(vm.generalSubmitErrors).toEqual([]);
+				});
+
+				test("Re-throws when no submitErrorsCallback is provided", async () => {
+					const error = new Error("Server error");
+					const wrapper = mount();
+
+					await expect(wrapper.vm.handleSubmitError(error)).rejects.toThrow(error);
+				});
+			});
+
+			describe("getFieldErrors", () => {
+				test("Combines parent-owned and adapter errors", () => {
+					const wrapper = mount({
+						props: {
+							fieldErrors: { email: "Parent error" },
+							submitErrorsCallback: () => ({ email: "API error" }),
+						},
+					});
+
+					const vm = wrapper.vm;
+
+					vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+					vm.handleSubmitError(new Error("Request failed"));
+
+					expect(vm.getFieldErrors("email")).toEqual(["Parent error", "API error"]);
+				});
+			});
+
+			describe("Async submit", () => {
+				test("Maps a rejected submit and resets the submitting state", async () => {
+					const onSubmit = vi.fn(() => Promise.reject(new Error("Request failed")));
+
+					const wrapper = mount({
+						props: {
+							onSubmit,
+							submitErrorsCallback: () => ({ email: "That email is taken" }),
+						},
+					});
+
+					const vm = wrapper.vm;
+
+					vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+
+					await vm.handleFormSubmit();
+					await flushPromises();
+
+					expect(vm.errorSummary).toEqual([
+						{ fieldName: "email", id: "email-id", message: "That email is taken" },
+					]);
+					expect(vm.isSubmitting).toBe(false);
+				});
+
+				test("Clears stale field errors on a new submit", async () => {
+					const onSubmit = vi
+						.fn()
+						.mockReturnValueOnce(Promise.reject(new Error("Request failed")))
+						.mockReturnValueOnce(Promise.resolve());
+
+					const wrapper = mount({
+						props: {
+							onSubmit,
+							submitErrorsCallback: () => ({ email: "That email is taken" }),
+						},
+					});
+
+					const vm = wrapper.vm;
+
+					vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+
+					await vm.handleFormSubmit();
+					await flushPromises();
+
+					expect(vm.errorSummary).toHaveLength(1);
+
+					await vm.handleFormSubmit();
+
+					expect(vm.errorSummary).toEqual([]);
+
+					await flushPromises();
+				});
+			});
+		});
+
+		describe("rules", () => {
+			const rules = {
+				confirmPassword: [{ rule: "same", field: "password", message: "Passwords must match" }],
+			};
+
+			test("Maps a failing form-level rule to its field in the error summary", async () => {
+				const onSubmit = vi.fn();
+				const wrapper = mount({ props: { rules, onSubmit } });
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "password", id: "password-id", validateField: () => true });
+				vm.registerField({ name: "confirmPassword", id: "confirm-id", validateField: () => true });
+
+				vm.updateFieldValue("password", "wall-e");
+				vm.updateFieldValue("confirmPassword", "eve");
+
+				await vm.handleFormSubmit();
+
+				expect(vm.errorSummary).toEqual([
+					{ fieldName: "confirmPassword", id: "confirm-id", message: "Passwords must match" },
+				]);
+				expect(onSubmit).not.toHaveBeenCalled();
+			});
+
+			test("Submits when form-level rules pass", async () => {
+				const onSubmit = vi.fn();
+				const wrapper = mount({ props: { rules, onSubmit } });
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "password", id: "password-id", validateField: () => true });
+				vm.registerField({ name: "confirmPassword", id: "confirm-id", validateField: () => true });
+
+				vm.updateFieldValue("password", "wall-e");
+				vm.updateFieldValue("confirmPassword", "wall-e");
+
+				await vm.handleFormSubmit();
+
+				expect(onSubmit).toHaveBeenCalledWith({ password: "wall-e", confirmPassword: "wall-e" });
+			});
+
+			test("Runs field-local rules before form-level rules in the summary", async () => {
+				const wrapper = mount({ props: { rules } });
+				const vm = wrapper.vm;
+
+				vm.registerField({
+					name: "password",
+					id: "password-id",
+					validateField: () => ["Password required"],
+				});
+				vm.registerField({ name: "confirmPassword", id: "confirm-id", validateField: () => true });
+
+				vm.updateFieldValue("confirmPassword", "eve");
+
+				await vm.handleFormSubmit();
+
+				expect(vm.errorSummary).toEqual([
+					{ fieldName: "password", id: "password-id", message: "Password required" },
+					{ fieldName: "confirmPassword", id: "confirm-id", message: "Passwords must match" },
+				]);
+			});
+
+			test("Clears resolved form-level errors on resubmit", async () => {
+				const onSubmit = vi.fn();
+				const wrapper = mount({ props: { rules, onSubmit } });
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "password", id: "password-id", validateField: () => true });
+				vm.registerField({ name: "confirmPassword", id: "confirm-id", validateField: () => true });
+
+				vm.updateFieldValue("password", "wall-e");
+				vm.updateFieldValue("confirmPassword", "eve");
+
+				await vm.handleFormSubmit();
+
+				expect(vm.errorSummary).toHaveLength(1);
+
+				vm.updateFieldValue("confirmPassword", "wall-e");
+
+				await vm.handleFormSubmit();
+
+				expect(vm.errorSummary).toEqual([]);
+				expect(onSubmit).toHaveBeenCalled();
+			});
+
+			test("Includes form-level errors in getFieldErrors so they display beside the field", async () => {
+				const wrapper = mount({ props: { rules } });
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "password", id: "password-id", validateField: () => true });
+				vm.registerField({ name: "confirmPassword", id: "confirm-id", validateField: () => true });
+
+				vm.updateFieldValue("password", "wall-e");
+				vm.updateFieldValue("confirmPassword", "eve");
+
+				await vm.handleFormSubmit();
+
+				expect(vm.getFieldErrors("confirmPassword")).toEqual(["Passwords must match"]);
+			});
+		});
+	});
+
 	describe("Methods", () => {
 		describe("registerField", () => {
 			test("should initialise a field's value", () => {
@@ -179,145 +420,6 @@ describe("form-wrapper", () => {
 				await wrapper.vm.handleFormSubmit();
 
 				expect(wrapper.vm.isSubmitting).toBe(false);
-			});
-		});
-	});
-
-	describe("submitErrorsCallback", () => {
-		describe("handleSubmitError", () => {
-			test("Maps a rejected error to a registered field", () => {
-				const wrapper = mount({
-					props: { submitErrorsCallback: () => ({ email: "That email is taken" }) },
-				});
-
-				const vm = wrapper.vm;
-
-				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
-
-				vm.handleSubmitError(new Error("Request failed"));
-
-				expect(vm.errorSummary).toEqual([
-					{ fieldName: "email", id: "email-id", message: "That email is taken" },
-				]);
-			});
-
-			test("Normalises a list of messages for a field", () => {
-				const wrapper = mount({
-					props: { submitErrorsCallback: () => ({ name: ["Too short", "Required"] }) },
-				});
-
-				const vm = wrapper.vm;
-
-				vm.registerField({ name: "name", id: "name-id", validateField: () => true });
-
-				vm.handleSubmitError(new Error("Request failed"));
-
-				expect(vm.errorSummary).toEqual([
-					{ fieldName: "name", id: "name-id", message: "Too short" },
-					{ fieldName: "name", id: "name-id", message: "Required" },
-				]);
-			});
-
-			test("Surfaces errors for unknown fields as general errors", () => {
-				const wrapper = mount({
-					props: { submitErrorsCallback: () => ({ form: "Something went wrong" }) },
-				});
-
-				const vm = wrapper.vm;
-
-				vm.handleSubmitError(new Error("Request failed"));
-
-				expect(vm.generalSubmitErrors).toEqual(["Something went wrong"]);
-				expect(vm.errorSummary).toEqual([]);
-			});
-
-			test("Re-throws when the adapter returns nothing mappable", async () => {
-				const error = new Error("Server error");
-				const wrapper = mount({ props: { submitErrorsCallback: () => null } });
-
-				const vm = wrapper.vm;
-
-				await expect(vm.handleSubmitError(error)).rejects.toThrow(error);
-				expect(vm.generalSubmitErrors).toEqual([]);
-			});
-
-			test("Re-throws when no submitErrorsCallback is provided", async () => {
-				const error = new Error("Server error");
-				const wrapper = mount();
-
-				await expect(wrapper.vm.handleSubmitError(error)).rejects.toThrow(error);
-			});
-		});
-
-		describe("getFieldErrors", () => {
-			test("Combines parent-owned and adapter errors", () => {
-				const wrapper = mount({
-					props: {
-						fieldErrors: { email: "Parent error" },
-						submitErrorsCallback: () => ({ email: "API error" }),
-					},
-				});
-
-				const vm = wrapper.vm;
-
-				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
-				vm.handleSubmitError(new Error("Request failed"));
-
-				expect(vm.getFieldErrors("email")).toEqual(["Parent error", "API error"]);
-			});
-		});
-
-		describe("Async submit", () => {
-			test("Maps a rejected submit and resets the submitting state", async () => {
-				const onSubmit = vi.fn(() => Promise.reject(new Error("Request failed")));
-
-				const wrapper = mount({
-					props: {
-						onSubmit,
-						submitErrorsCallback: () => ({ email: "That email is taken" }),
-					},
-				});
-
-				const vm = wrapper.vm;
-
-				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
-
-				await vm.handleFormSubmit();
-				await flushPromises();
-
-				expect(vm.errorSummary).toEqual([
-					{ fieldName: "email", id: "email-id", message: "That email is taken" },
-				]);
-				expect(vm.isSubmitting).toBe(false);
-			});
-
-			test("Clears stale field errors on a new submit", async () => {
-				const onSubmit = vi
-					.fn()
-					.mockReturnValueOnce(Promise.reject(new Error("Request failed")))
-					.mockReturnValueOnce(Promise.resolve());
-
-				const wrapper = mount({
-					props: {
-						onSubmit,
-						submitErrorsCallback: () => ({ email: "That email is taken" }),
-					},
-				});
-
-				const vm = wrapper.vm;
-
-				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
-
-				await vm.handleFormSubmit();
-				await flushPromises();
-
-				expect(vm.errorSummary).toHaveLength(1);
-
-				await vm.handleFormSubmit();
-
-				expect(vm.errorSummary).toEqual([]);
-
-				await flushPromises();
 			});
 		});
 	});

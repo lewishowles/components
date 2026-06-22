@@ -3,9 +3,12 @@ import { createMount } from "@lewishowles/testing/playwright";
 
 import FormWrapper from "./form-wrapper.vue";
 import FormWrapperFixture from "./form-wrapper.fixture.vue";
+import FormWrapperRulesFixture from "./form-wrapper-rules.fixture.vue";
 
 // Mount form-wrapper via fixture to supply a form-field with submit-button-label.
 const mountFormWrapper = createMount(FormWrapperFixture);
+// Mount form-wrapper with a cross-field form-level rule (password confirmation).
+const mountFormWrapperRules = createMount(FormWrapperRulesFixture);
 
 test.describe("form-wrapper", () => {
 	test("renders a form-wrapper", async ({ mount, page }) => {
@@ -14,6 +17,60 @@ test.describe("form-wrapper", () => {
 		await expect(page.getByTestId("form-wrapper")).toBeVisible();
 		await expect(page.getByTestId("form-input")).toBeVisible();
 		await expect(page.getByTestId("form-wrapper-submit-button")).toBeVisible();
+	});
+
+	test.describe("Props", () => {
+		test.describe("rules", () => {
+			test("shows a failing form-level rule beside the field and in the error summary", async ({
+				mount,
+				page,
+			}) => {
+				await mountFormWrapperRules(mount);
+
+				await page.getByLabel("Password", { exact: true }).fill("wall-e");
+				await page.getByLabel("Confirm password", { exact: true }).fill("eve");
+				await page.getByTestId("form-wrapper-submit-button").click();
+
+				await expect(page.getByTestId("form-wrapper-error-summary")).toContainText(
+					"Passwords must match",
+				);
+				await expect(
+					page.getByTestId("form-error").filter({ hasText: "Passwords must match" }),
+				).toBeVisible();
+			});
+
+			test("the error summary link focuses the correct field", async ({ mount, page }) => {
+				await mountFormWrapperRules(mount);
+
+				await page.getByLabel("Password", { exact: true }).fill("wall-e");
+				await page.getByLabel("Confirm password", { exact: true }).fill("eve");
+				await page.getByTestId("form-wrapper-submit-button").click();
+
+				await page
+					.getByTestId("form-wrapper-error-summary-message")
+					.filter({ hasText: "Passwords must match" })
+					.click();
+
+				await expect(page.getByLabel("Confirm password", { exact: true })).toBeFocused();
+			});
+
+			test("clears a resolved form-level error on resubmit", async ({ mount, page }) => {
+				await mountFormWrapperRules(mount);
+
+				await page.getByLabel("Password", { exact: true }).fill("wall-e");
+				await page.getByLabel("Confirm password", { exact: true }).fill("eve");
+				await page.getByTestId("form-wrapper-submit-button").click();
+
+				await expect(page.getByTestId("form-wrapper-error-summary")).toContainText(
+					"Passwords must match",
+				);
+
+				await page.getByLabel("Confirm password", { exact: true }).fill("wall-e");
+				await page.getByTestId("form-wrapper-submit-button").click();
+
+				await expect(page.getByTestId("form-wrapper-error-summary")).toBeHidden();
+			});
+		});
 	});
 
 	test.describe("Slots", () => {
@@ -85,26 +142,26 @@ test.describe("form-wrapper", () => {
 		});
 	});
 
-	test.describe("Submit button loading state", () => {
-		test("resets when validation fails", async ({ mount, page }) => {
+	test.describe("Interaction", () => {
+		test("Submit button loading state resets when validation fails", async ({ mount, page }) => {
 			await mountFormWrapper(mount);
 
 			await page.getByTestId("form-wrapper-submit-button").click();
 
 			await expect(page.getByTestId("form-wrapper-submit-button")).not.toHaveAttribute("aria-busy");
 		});
-	});
 
-	test("an error summary is shown on submit when a field is invalid", async ({ mount, page }) => {
-		await mountFormWrapper(mount);
+		test("an error summary is shown on submit when a field is invalid", async ({ mount, page }) => {
+			await mountFormWrapper(mount);
 
-		await page.getByTestId("form-wrapper-submit-button").click();
+			await page.getByTestId("form-wrapper-submit-button").click();
 
-		const errorSummary = page.getByTestId("form-wrapper-error-summary");
+			const errorSummary = page.getByTestId("form-wrapper-error-summary");
 
-		await expect(errorSummary).toBeVisible();
-		await expect(errorSummary).toContainText("There is a problem");
-		await expect(errorSummary).toContainText("Enter your username");
-		await expect(page.getByTestId("form-wrapper-error-summary-message")).toHaveCount(1);
+			await expect(errorSummary).toBeVisible();
+			await expect(errorSummary).toContainText("There is a problem");
+			await expect(errorSummary).toContainText("Enter your username");
+			await expect(page.getByTestId("form-wrapper-error-summary-message")).toHaveCount(1);
+		});
 	});
 });

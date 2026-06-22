@@ -54,6 +54,34 @@ Additional classes passed to the inner `form-layout`.
 <form-wrapper layout-classes="gap-y-4">…</form-wrapper>
 ```
 
+### `rules`
+
+- type: `object`
+- default: `{}`
+
+Form-level validation rules, keyed by field name. Each value is an array of rules in the same shape as `form-field`'s own `validation`, but run against the full form data on submit. This is useful both for keeping validation contained and not spread across fields, but it also allows validation that relies on other fields.
+
+```js
+const rules = {
+	confirmPassword: [{ rule: "same", field: "password", message: "Passwords must match" }],
+	endDate: [
+		{
+			rule: "custom",
+			validate: (value, formData) => !value || !formData.startDate || value > formData.startDate,
+			message: "End date must be after the start date",
+		},
+	],
+};
+```
+
+```html
+<form-wrapper :rules>…</form-wrapper>
+```
+
+#### Rule precedence and error order
+
+Each field's own `validation` runs first, and form-level `rules` run afterwards. A form-level error is mapped to its named field, so it displays beside that field and appears in the error summary exactly like a field-local error. Within a field, its own validation messages come first, followed by any form-level message. Form-level rules re-run on every submit.
+
 ## Slots
 
 ### `pre-form`
