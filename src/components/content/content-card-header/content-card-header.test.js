@@ -32,7 +32,7 @@ describe("content-card-header", () => {
 		test("Detects additional slot", () => {
 			const wrapper = mount({ slots: { additional: "Actions" } });
 
-			expect(wrapper.vm.haveHeaderAdditional).toBe(true);
+			expect(wrapper.vm.haveAdditional).toBe(true);
 		});
 
 		test("haveTitleArea is false when neither default nor icon slot is provided", () => {
