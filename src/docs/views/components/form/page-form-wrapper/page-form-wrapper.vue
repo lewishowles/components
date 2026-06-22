@@ -422,6 +422,6 @@ const rulesExample = `const rules = {
 
 <form-wrapper :rules>
 
-</form-wrapper>;
+</form-wrapper>
 `;
 </script>
