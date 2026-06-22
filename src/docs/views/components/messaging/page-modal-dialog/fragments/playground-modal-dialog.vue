@@ -33,7 +33,7 @@
 
 			<code-block
 				code='function openDialog() {
-	runComponentMethod(deleteUserDialog.value, "open");
+	callComponentMethod(deleteUserDialog.value, "open");
 }'
 			/>
 		</template>
@@ -42,7 +42,7 @@
 
 <script setup>
 import { computed, ref, useTemplateRef } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
 // Props both for the template and for the component example itself.
@@ -87,6 +87,6 @@ const template = useTemplateGenerator("modal-dialog", { slots: slots.value, prop
  * Open our demonstration dialog.
  */
 function openDialog() {
-	runComponentMethod(deleteUserDialog.value, "open");
+	callComponentMethod(deleteUserDialog.value, "open");
 }
 </script>

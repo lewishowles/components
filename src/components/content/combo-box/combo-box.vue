@@ -102,7 +102,7 @@ import { arrayLength } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
 import { onClickOutside } from "@vueuse/core";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { useCombobox, useFloatingPosition } from "@/composables";
 import { cn } from "@/utilities/cn.js";
 
@@ -324,7 +324,7 @@ function handleFocusout(event) {
  * Move focus to the input.
  */
 function triggerFocus() {
-	runComponentMethod(inputComponent.value, "triggerFocus");
+	callComponentMethod(inputComponent.value, "triggerFocus");
 }
 
 defineExpose({

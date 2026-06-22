@@ -27,7 +27,7 @@
 <script setup>
 import { cn } from "@/utilities/cn.js";
 import { computed, toRef, useTemplateRef } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { useFloatingPosition } from "@/composables";
 
 const props = defineProps({
@@ -104,14 +104,14 @@ const resolvedDetailsClasses = computed(() =>
  * Open the details element.
  */
 function openDetails() {
-	runComponentMethod(summaryDetailsReference.value, "openDetails");
+	callComponentMethod(summaryDetailsReference.value, "openDetails");
 }
 
 /**
  * Close the details element.
  */
 function closeDetails() {
-	runComponentMethod(summaryDetailsReference.value, "closeDetails");
+	callComponentMethod(summaryDetailsReference.value, "closeDetails");
 }
 
 defineExpose({

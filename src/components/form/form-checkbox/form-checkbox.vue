@@ -61,7 +61,7 @@
  * slots exist for additional descriptive text.
  */
 import { useTemplateRef, watch } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
@@ -140,7 +140,7 @@ watch(
  * Focus on our input.
  */
 function triggerFocus() {
-	runComponentMethod(inputElement.value, "focus");
+	callComponentMethod(inputElement.value, "focus");
 }
 
 defineExpose({

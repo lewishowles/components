@@ -105,7 +105,7 @@ import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
+import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -385,7 +385,7 @@ function normaliseFieldErrors(value) {
 async function focusErrorSummary() {
 	await nextTick();
 
-	runComponentMethod(errorSummaryElement.value, "focus");
+	callComponentMethod(errorSummaryElement.value, "focus");
 }
 
 /**
@@ -440,7 +440,7 @@ async function handleSubmitError(error) {
 function resetSubmitButton() {
 	isSubmitting.value = false;
 
-	runComponentMethod(submitButtonRef.value, "reset");
+	callComponentMethod(submitButtonRef.value, "reset");
 }
 
 /**
@@ -454,7 +454,7 @@ function focusField(fieldName) {
 		return;
 	}
 
-	runComponentMethod(formFields[fieldName], "triggerFocus");
+	callComponentMethod(formFields[fieldName], "triggerFocus");
 }
 
 defineExpose({ isSubmitting, resetSubmitButton });

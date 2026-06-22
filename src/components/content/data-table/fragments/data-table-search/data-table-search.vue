@@ -32,7 +32,7 @@
 <script setup>
 import { computed, inject, ref } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 
 const { searchPlaceholder } = inject("data-table", {});
 
@@ -51,7 +51,7 @@ const haveSearchQuery = computed(() => isNonEmptyString(searchQuery.value));
  * Focus on the search input.
  */
 function triggerFocus() {
-	runComponentMethod(searchQueryInput.value, "triggerFocus");
+	callComponentMethod(searchQueryInput.value, "triggerFocus");
 }
 
 /**

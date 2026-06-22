@@ -57,7 +57,7 @@ import { computed, nextTick, onMounted, provide, ref, useId, useSlots, watch } f
 import { getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onKeyStroke, useFocusWithin } from "@vueuse/core";
-import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
+import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -350,7 +350,7 @@ async function focusTabByIndex(tabIndex) {
 
 	await nextTick();
 
-	runComponentMethod(tabAnchors.value[tabIndex], "triggerFocus");
+	callComponentMethod(tabAnchors.value[tabIndex], "triggerFocus");
 }
 
 /**

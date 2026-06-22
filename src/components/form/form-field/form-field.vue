@@ -49,7 +49,7 @@ import { deepMerge, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { validateField as validateFormField } from "@lewishowles/helpers/form";
 
 import useInputId from "@/components/form/composables/use-input-id/use-input-id";
@@ -280,7 +280,9 @@ function validateField(fieldName, formData) {
 		return true;
 	}
 
-	validationMessages.value = validateFormField(fieldName, props.validation, formData);
+	const { errors } = validateFormField(fieldName, props.validation, formData);
+
+	validationMessages.value = errors;
 
 	return validationMessages.value;
 }
@@ -289,7 +291,7 @@ function validateField(fieldName, formData) {
  * Trigger focus on the field.
  */
 function triggerFocus() {
-	runComponentMethod(fieldRef.value, "triggerFocus");
+	callComponentMethod(fieldRef.value, "triggerFocus");
 }
 
 defineExpose({

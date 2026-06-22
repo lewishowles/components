@@ -85,7 +85,7 @@
 
 <script setup>
 import { computed, useSlots } from "vue";
-import { get } from "@lewishowles/helpers/object";
+import { getPathValue } from "@lewishowles/helpers/object";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
@@ -188,25 +188,28 @@ const props = defineProps({
 const emit = defineEmits(["notification:read"]);
 const slots = useSlots();
 // The ID for this notification, used to mark it as read.
-const notificationId = computed(() => get(props, "notification.id"));
+const notificationId = computed(() => getPathValue(props, "notification.id"));
 // Whether this notification has an ID.
 const hasId = computed(() => isNonEmptyString(notificationId.value));
 // Whether this notification has a title.
-const hasTitle = computed(() => isNonEmptyString(get(props, "notification.title")));
+const hasTitle = computed(() => isNonEmptyString(getPathValue(props, "notification.title")));
 // Whether this notification has a date.
-const hasDate = computed(() => isNonEmptyString(get(props, "notification.date")));
+const hasDate = computed(() => isNonEmptyString(getPathValue(props, "notification.date")));
 // Whether this notification has an image to display.
-const hasImage = computed(() => isNonEmptyString(get(props, "notification.image_url")));
+const hasImage = computed(() => isNonEmptyString(getPathValue(props, "notification.image_url")));
 // Whether this notification has an icon to display.
-const hasIcon = computed(() => isNonEmptyString(get(props, "notification.icon")));
+const hasIcon = computed(() => isNonEmptyString(getPathValue(props, "notification.icon")));
 
 // The resolved component for this notification's icon.
 const notificationIconComponent = computed(() =>
-	resolveIconComponent(get(props, "notification.icon")),
+	resolveIconComponent(getPathValue(props, "notification.icon")),
 );
 
 // Whether this notification a URL to view more information.
-const hasMoreInformationUrl = computed(() => isNonEmptyString(get(props, "notification.url")));
+const hasMoreInformationUrl = computed(() =>
+	isNonEmptyString(getPathValue(props, "notification.url")),
+);
+
 // Whether actions have been provided for this notification.
 const haveActions = computed(() => isNonEmptySlot(slots.actions));
 // Whether this notification can be marked as read, which requires an ID and

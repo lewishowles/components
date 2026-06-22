@@ -274,7 +274,7 @@
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed, provide, ref, toRef, useId, useSlots, watch } from "vue";
 import { getRawRow, getRowContent, getRowId } from "./utilities/row.js";
-import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
+import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useResizeObserver } from "@vueuse/core";
 
@@ -550,7 +550,7 @@ function setSearchQuery(value) {
 
 	searchQuery.value = value;
 
-	runComponentMethod(dataTableToolbar.value, "triggerSearchFocus");
+	callComponentMethod(dataTableToolbar.value, "triggerSearchFocus");
 }
 
 provide("data-table", {

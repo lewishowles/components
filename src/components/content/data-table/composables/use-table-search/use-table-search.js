@@ -1,7 +1,7 @@
 import { computed, ref } from "vue";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isFunction } from "@lewishowles/helpers/general";
-import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { getPathValue, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 /**
@@ -34,7 +34,7 @@ export default function useTableSearch(internalData, columns) {
 		const searchTerm = searchQuery.value.toLowerCase();
 
 		return internalData.value.reduce((rows, row) => {
-			const rowContent = get(row, "content");
+			const rowContent = getPathValue(row, "content");
 
 			if (!isNonEmptyObject(rowContent)) {
 				return rows;
@@ -46,14 +46,14 @@ export default function useTableSearch(internalData, columns) {
 				const columnDefined = columnKey in (columns.value ?? {});
 
 				const searchableColumn =
-					columnDefined && get(columns.value, `${columnKey}.searchable`) !== false;
+					columnDefined && getPathValue(columns.value, `${columnKey}.searchable`) !== false;
 
 				// If this column isn't searchable, we don't need to check it.
 				if (!searchableColumn) {
 					return false;
 				}
 
-				const searchableContent = get(cell, "configuration.searchable");
+				const searchableContent = getPathValue(cell, "configuration.searchable");
 
 				// If the column has a custom search callback, use that over our
 				// default match rule.

@@ -1,4 +1,4 @@
-import { get } from "@lewishowles/helpers/object";
+import { getPathValue } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber } from "@lewishowles/helpers/number";
 
@@ -16,7 +16,7 @@ import { isNumber } from "@lewishowles/helpers/number";
  *     The standardised row data.
  */
 export function getRowId(row) {
-	return get(row, "configuration.id");
+	return getPathValue(row, "configuration.id", null);
 }
 
 /**
@@ -27,7 +27,7 @@ export function getRowId(row) {
  *     The standardised row data.
  */
 export function getRawRow(row) {
-	return get(row, "raw");
+	return getPathValue(row, "raw", null);
 }
 
 /**
@@ -40,7 +40,7 @@ export function getRawRow(row) {
  *     The key for the column.
  */
 export function getRowContent(row, columnKey) {
-	const cell = get(row, `content.${columnKey}.content`);
+	const cell = getPathValue(row, `content.${columnKey}.content`);
 
 	if (!isNonEmptyString(cell) && !isNumber(cell)) {
 		return "";

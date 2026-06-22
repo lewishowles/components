@@ -82,7 +82,7 @@
  */
 import { computed, useId, useSlots, useTemplateRef } from "vue";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
-import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
+import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
@@ -164,7 +164,7 @@ const haveSuffix = computed(() => isNonEmptySlot(slots.suffix));
  * Focus on our input.
  */
 function triggerFocus() {
-	runComponentMethod(inputElement.value, "focus");
+	callComponentMethod(inputElement.value, "focus");
 }
 
 defineExpose({

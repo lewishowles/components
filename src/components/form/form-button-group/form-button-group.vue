@@ -57,7 +57,7 @@
  */
 import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { ref } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
 import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
@@ -97,7 +97,7 @@ function triggerFocus() {
 	const selectedOption = optionsWrapperElement.value.querySelector(":checked");
 
 	if (selectedOption) {
-		runComponentMethod(selectedOption, "focus");
+		callComponentMethod(selectedOption, "focus");
 
 		return;
 	}
@@ -111,7 +111,7 @@ function triggerFocus() {
 function focusFirstInput() {
 	const input = head(inputReferences.value);
 
-	runComponentMethod(input, "focus");
+	callComponentMethod(input, "focus");
 }
 
 defineExpose({

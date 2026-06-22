@@ -72,7 +72,7 @@
 import { computed, useTemplateRef } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -157,7 +157,7 @@ const attributes = computed(() => {
  * Trigger focus on this link.
  */
 function triggerFocus() {
-	runComponentMethod(anchorElement.value, "focus");
+	callComponentMethod(anchorElement.value, "focus");
 }
 
 defineExpose({

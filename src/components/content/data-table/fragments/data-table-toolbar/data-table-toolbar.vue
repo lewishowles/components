@@ -61,7 +61,7 @@
 
 <script setup>
 import { computed, inject, ref } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 
 import DataTableColumns from "../data-table-columns/data-table-columns.vue";
 import DataTableDensity from "../data-table-density/data-table-density.vue";
@@ -103,7 +103,7 @@ const showUserConfiguration = computed(() => Boolean(haveTableName?.value));
  * Focus the search input via the underlying search component.
  */
 function triggerSearchFocus() {
-	runComponentMethod(searchComponent.value, "triggerFocus");
+	callComponentMethod(searchComponent.value, "triggerFocus");
 }
 
 defineExpose({

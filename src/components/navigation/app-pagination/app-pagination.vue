@@ -100,7 +100,7 @@
 
 <script setup>
 import { computed, useId, watch } from "vue";
-import { getUrlParameter, updateUrlParameter } from "@lewishowles/helpers/url";
+import { getCurrentUrlParameter, updateCurrentUrlParameter } from "@lewishowles/helpers/url";
 import { isNumber } from "@lewishowles/helpers/number";
 
 const props = defineProps({
@@ -128,7 +128,7 @@ const internalId = useId();
 
 // The page number from the URL parameter, read at setup time so that the
 // immediate watcher does not overwrite it before onMounted can read it.
-const urlPageParam = parseInt(getUrlParameter("page"));
+const urlPageParam = parseInt(getCurrentUrlParameter("page"));
 // The initial page, derived from the URL parameter when valid.
 const initialPage = isNumber(urlPageParam) && urlPageParam > 0 ? urlPageParam : 1;
 
@@ -149,7 +149,7 @@ const pageCount = computed(() => {
 });
 
 // Initialise currentPage from the URL parameter now, before the immediate
-// watcher fires — otherwise the watcher would call updateUrlParameter("page", 1)
+// watcher fires — otherwise the watcher would call updateCurrentUrlParameter("page", 1)
 // and overwrite the URL before onMounted can read it.
 if (initialPage > 1 && initialPage <= pageCount.value) {
 	currentPage.value = initialPage;
@@ -288,7 +288,7 @@ watch(
 		emit("update:page", currentPage.value);
 
 		if (currentPage.value >= 1) {
-			updateUrlParameter("page", currentPage.value);
+			updateCurrentUrlParameter("page", currentPage.value);
 		}
 	},
 	{ immediate: true },

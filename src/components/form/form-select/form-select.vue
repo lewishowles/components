@@ -67,8 +67,8 @@
  */
 import { useTemplateRef } from "vue";
 import { firstDefined } from "@lewishowles/helpers/array";
-import { get } from "@lewishowles/helpers/object";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { getPathValue } from "@lewishowles/helpers/object";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 import useOptions from "@/components/form/composables/use-options/use-options";
 
@@ -164,14 +164,14 @@ const { inputId, errorId, describedBy, haveIntroduction, haveHelp, haveError } =
 // When initialising, if we are not allowed an empty option, select the first
 // option in the list.
 if (props.allowEmpty !== true) {
-	model.value = get(firstDefined(internalOptions.value), "value");
+	model.value = getPathValue(firstDefined(internalOptions.value), "value");
 }
 
 /**
  * Focus on our input.
  */
 function triggerFocus() {
-	runComponentMethod(selectElement.value, "focus");
+	callComponentMethod(selectElement.value, "focus");
 }
 
 defineExpose({

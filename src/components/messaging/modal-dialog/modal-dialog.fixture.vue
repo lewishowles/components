@@ -1,18 +1,18 @@
 <script setup>
 // A fixture for testing modal-dialog open/close flows and focus management.
 import { useTemplateRef } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 
 import ModalDialog from "./modal-dialog.vue";
 
 const dialogComponent = useTemplateRef("dialogComponent");
 
 function openDialog() {
-	runComponentMethod(dialogComponent.value, "open");
+	callComponentMethod(dialogComponent.value, "open");
 }
 
 function closeDialog() {
-	runComponentMethod(dialogComponent.value, "close");
+	callComponentMethod(dialogComponent.value, "close");
 }
 </script>
 

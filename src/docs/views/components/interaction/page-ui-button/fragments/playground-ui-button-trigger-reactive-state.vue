@@ -24,7 +24,7 @@
 
 <script setup>
 import { useTemplateRef } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { uiButtonMetadata } from "@/components/interaction/ui-button/ui-button.metadata.js";
 
 import { useComponentPlayground } from "@/docs/views/components/composables/use-component-playground/use-component-playground";
@@ -41,6 +41,6 @@ const { componentProps, example, template, textSlots } = useComponentPlayground(
  * Trigger the reactive state on our button.
  */
 function triggerReactiveState() {
-	runComponentMethod(buttonElement.value, "react");
+	callComponentMethod(buttonElement.value, "react");
 }
 </script>

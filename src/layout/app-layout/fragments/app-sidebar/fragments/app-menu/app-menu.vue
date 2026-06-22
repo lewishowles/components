@@ -149,7 +149,7 @@
  */
 import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
 import { createReusableTemplate } from "@vueuse/core";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { useRoute } from "vue-router";
 import { useTemplateRef, watch } from "vue";
 
@@ -171,7 +171,7 @@ const showFullMenu = breakpoints.greaterOrEqual("lg");
 watch(
 	() => route.fullPath,
 	() => {
-		runComponentMethod(floatingDetailsComponent.value, "closeDetails");
+		callComponentMethod(floatingDetailsComponent.value, "closeDetails");
 	},
 );
 </script>

@@ -126,7 +126,7 @@
  */
 import { computed, ref, useId, useSlots } from "vue";
 import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
-import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
+import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
 
@@ -272,7 +272,7 @@ function triggerFocus() {
 	const selectedOption = optionsWrapperElement.value.querySelector(":checked");
 
 	if (selectedOption) {
-		runComponentMethod(selectedOption, "focus");
+		callComponentMethod(selectedOption, "focus");
 
 		return;
 	}
@@ -286,7 +286,7 @@ function triggerFocus() {
 function focusFirstInput() {
 	const input = head(inputReferences.value);
 
-	runComponentMethod(input, "focus");
+	callComponentMethod(input, "focus");
 }
 
 defineExpose({

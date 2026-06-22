@@ -23,7 +23,7 @@
  * focus-management and close flows can be verified.
  */
 import { useTemplateRef } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 
 import ModalDialog from "../modal-dialog.vue";
 
@@ -35,13 +35,13 @@ const dialogComponent = useTemplateRef("dialogComponent");
  * Open the modal dialog.
  */
 function openDialog() {
-	runComponentMethod(dialogComponent.value, "open");
+	callComponentMethod(dialogComponent.value, "open");
 }
 
 /**
  * Close the modal dialog.
  */
 function closeDialog() {
-	runComponentMethod(dialogComponent.value, "close");
+	callComponentMethod(dialogComponent.value, "close");
 }
 </script>

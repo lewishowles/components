@@ -67,7 +67,7 @@
  * remove some of the benefits of inheritance.
  */
 import { useTemplateRef } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
@@ -127,7 +127,7 @@ const { inputId, errorId, describedBy, haveIntroduction, haveHelp, haveError } =
  * Focus on our input.
  */
 function triggerFocus() {
-	runComponentMethod(inputElement.value, "focus");
+	callComponentMethod(inputElement.value, "focus");
 }
 
 defineExpose({

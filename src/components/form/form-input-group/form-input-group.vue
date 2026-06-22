@@ -86,7 +86,7 @@
  */
 import { computed, ref } from "vue";
 import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 import useOptions from "@/components/form/composables/use-options/use-options";
 
@@ -216,7 +216,7 @@ function triggerFocus() {
 	const selectedIndex = internalOptions.value.findIndex((option) => option.value === model.value);
 
 	if (selectedIndex !== -1) {
-		runComponentMethod(inputReferences.value[selectedIndex], "focus");
+		callComponentMethod(inputReferences.value[selectedIndex], "focus");
 
 		return;
 	}
@@ -230,7 +230,7 @@ function triggerFocus() {
 function focusFirstInput() {
 	const input = head(inputReferences.value);
 
-	runComponentMethod(input, "focus");
+	callComponentMethod(input, "focus");
 }
 
 defineExpose({

@@ -66,7 +66,7 @@ import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed, unref, useTemplateRef } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { objectContains } from "@lewishowles/helpers/object";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -189,7 +189,7 @@ function resetSearch() {
  * Trigger focus on the search field.
  */
 function triggerFocus() {
-	runComponentMethod(searchField.value, "triggerFocus");
+	callComponentMethod(searchField.value, "triggerFocus");
 }
 
 defineExpose({

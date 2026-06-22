@@ -1,7 +1,7 @@
 import DataTable from "./data-table.vue";
 import { createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
-import { get } from "@lewishowles/helpers/object";
+import { getPathValue } from "@lewishowles/helpers/object";
 import { nextTick } from "vue";
 
 const sampleRow = { id: "123", title: "Toy Story", release_year: "1995" };
@@ -693,7 +693,7 @@ describe("data-table", () => {
  * value.
  */
 function expectToHaveRowWith(vm, key, value) {
-	const row = vm.internalData.find((row) => get(row, `content.${key}.content`) === value);
+	const row = vm.internalData.find((row) => getPathValue(row, `content.${key}.content`) === value);
 
 	return expect(row).toBeDefined();
 }

@@ -40,7 +40,7 @@
 
 <script setup>
 import { onMounted, ref, useTemplateRef } from "vue";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -131,7 +131,7 @@ function openDialog() {
 		return;
 	}
 
-	runComponentMethod(dialog.value, "showModal");
+	callComponentMethod(dialog.value, "showModal");
 
 	isOpen.value = true;
 
@@ -139,7 +139,7 @@ function openDialog() {
 		return;
 	}
 
-	runComponentMethod(dialog.value, "focus");
+	callComponentMethod(dialog.value, "focus");
 }
 
 /**
@@ -150,7 +150,7 @@ function closeDialog() {
 		return;
 	}
 
-	runComponentMethod(dialog.value, "close");
+	callComponentMethod(dialog.value, "close");
 
 	isOpen.value = false;
 

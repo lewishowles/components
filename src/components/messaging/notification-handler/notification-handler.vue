@@ -125,7 +125,7 @@
 import { arrayLength, isNonEmptyArray, pluck } from "@lewishowles/helpers/array";
 import { computed, ref, watch } from "vue";
 import { createReusableTemplate } from "@vueuse/core";
-import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { getPathValue, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber } from "@lewishowles/helpers/number";
 import { useNotifications } from "@/composables/use-notifications/use-notifications.js";
@@ -248,7 +248,7 @@ const internalNotifications = computed(() => {
 	let notifs = [...notifications.value];
 
 	if (props.hideNotificationsWhenRead) {
-		notifs = notifs.filter((n) => get(n, "read") !== true);
+		notifs = notifs.filter((n) => getPathValue(n, "read") !== true);
 	}
 
 	notifs = sortNotificationsByDate(notifs);
@@ -266,7 +266,9 @@ const unreadNotifications = computed(() => {
 		return [];
 	}
 
-	return internalNotifications.value.filter((notification) => get(notification, "read") !== true);
+	return internalNotifications.value.filter(
+		(notification) => getPathValue(notification, "read") !== true,
+	);
 });
 
 // How many unread notifications are present.
@@ -289,7 +291,9 @@ const canMarkAllNotificationsRead = computed(
 
 // Notifications that have been pinned, allowing us to display them separately.
 const pinnedNotifications = computed(() =>
-	internalNotifications.value.filter((notification) => get(notification, "pinned") === true),
+	internalNotifications.value.filter(
+		(notification) => getPathValue(notification, "pinned") === true,
+	),
 );
 
 // Whether any pinned notifications exist.
@@ -297,7 +301,9 @@ const havePinnedNotifications = computed(() => isNonEmptyArray(pinnedNotificatio
 
 // Notifications that have not been pinned.
 const unpinnedNotifications = computed(() =>
-	internalNotifications.value.filter((notification) => get(notification, "pinned") !== true),
+	internalNotifications.value.filter(
+		(notification) => getPathValue(notification, "pinned") !== true,
+	),
 );
 
 // Whether any unpinned notifications exist.
@@ -320,8 +326,8 @@ watch(unreadNotificationCount, (newCount, oldCount) => {
  */
 function sortNotificationsByDate(notifications) {
 	return notifications.sort((a, b) => {
-		const dateA = get(a, "date");
-		const dateB = get(b, "date");
+		const dateA = getPathValue(a, "date", null);
+		const dateB = getPathValue(b, "date", null);
 
 		if (dateA === null && dateB === null) {
 			return 0;
@@ -358,7 +364,7 @@ function limitReadNotifications(notifications) {
 	let readCount = 0;
 
 	return notifications.filter((notification) => {
-		if (get(notification, "read") !== true) {
+		if (getPathValue(notification, "read") !== true) {
 			return true;
 		}
 
@@ -398,15 +404,15 @@ function announce(message) {
  *     The details of the notification to display.
  */
 function getNotificationSlotName(notification) {
-	if (get(notification, "read") === true) {
+	if (getPathValue(notification, "read") === true) {
 		return "notification-read-template";
 	}
 
-	if (get(notification, "type") === "danger") {
+	if (getPathValue(notification, "type") === "danger") {
 		return "notification-danger-template";
 	}
 
-	if (get(notification, "type") === "warning") {
+	if (getPathValue(notification, "type") === "warning") {
 		return "notification-warning-template";
 	}
 
@@ -421,19 +427,19 @@ function getNotificationSlotName(notification) {
  *     The details of the notification to display.
  */
 function getNotificationComponent(notification) {
-	if (get(notification, "pinned") === true) {
+	if (getPathValue(notification, "pinned") === true) {
 		return NotificationPinned;
 	}
 
-	if (get(notification, "read") === true) {
+	if (getPathValue(notification, "read") === true) {
 		return NotificationRead;
 	}
 
-	if (get(notification, "type") === "danger") {
+	if (getPathValue(notification, "type") === "danger") {
 		return NotificationDanger;
 	}
 
-	if (get(notification, "type") === "warning") {
+	if (getPathValue(notification, "type") === "warning") {
 		return NotificationWarning;
 	}
 

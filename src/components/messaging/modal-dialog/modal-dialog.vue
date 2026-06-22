@@ -25,7 +25,7 @@
 
 <script setup>
 import { computed, onMounted, provide, useAttrs, useId, useSlots, useTemplateRef } from "vue";
-import { isNonEmptySlot, runComponentMethod } from "@lewishowles/helpers/vue";
+import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
 
 import ConditionalWrapper from "@/components/general/conditional-wrapper/conditional-wrapper.vue";
 
@@ -110,14 +110,14 @@ onMounted(() => {
  * Open the dialog.
  */
 function openDialog() {
-	runComponentMethod(dialog.value, "open");
+	callComponentMethod(dialog.value, "open");
 }
 
 /**
  * Close the dialog.
  */
 function closeDialog() {
-	runComponentMethod(dialog.value, "close");
+	callComponentMethod(dialog.value, "close");
 }
 
 defineExpose({

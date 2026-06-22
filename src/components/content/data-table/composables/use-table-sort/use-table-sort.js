@@ -1,6 +1,6 @@
 import { computed, ref } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { sortObjectsByProperty } from "@lewishowles/helpers/array";
+import { sortByProperty } from "@lewishowles/helpers/array";
 
 // The directions a column can be sorted in. The values double as the `aria-sort`
 // token for the sorted column.
@@ -31,7 +31,7 @@ export default function useTableSort(filteredRows, columnDefinitions) {
 			return filteredRows.value;
 		}
 
-		return sortObjectsByProperty(
+		return sortByProperty(
 			filteredRows.value,
 			`content.${sortedColumn.value}.configuration.sortable`,
 			{ ascending: isAscending.value },

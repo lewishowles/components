@@ -1,6 +1,6 @@
 import { computed, ref, watch } from "vue";
 import { cn } from "@/utilities/cn.js";
-import { get, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
+import { getPathValue, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useStorage } from "@vueuse/core";
@@ -63,10 +63,10 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 		}
 
 		const definitions = keys(columns.value).reduce((definitions, columnKey) => {
-			const userConfiguration = get(columns.value, columnKey) || {};
+			const userConfiguration = getPathValue(columns.value, columnKey) || {};
 
 			// If this column is hidden by configuration, we don't add it at all.
-			const hiddenByConfiguration = get(userConfiguration, "hidden") === true;
+			const hiddenByConfiguration = getPathValue(userConfiguration, "hidden") === true;
 
 			if (hiddenByConfiguration) {
 				return definitions;
@@ -76,7 +76,7 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 			// to add it (as that preference may change, and we want to show the
 			// checkbox), but we want to mark it as hidden.
 
-			const hiddenByPreference = get(columnVisibility.value, columnKey) === false;
+			const hiddenByPreference = getPathValue(columnVisibility.value, columnKey) === false;
 
 			definitions[columnKey] = {
 				label: columnKey,
@@ -137,8 +137,8 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 		const visibility = {};
 
 		for (const columnKey of keys(columns.value)) {
-			const userConfiguration = get(columns.value, columnKey) || {};
-			const hiddenByConfiguration = get(userConfiguration, "hidden") === true;
+			const userConfiguration = getPathValue(columns.value, columnKey) || {};
+			const hiddenByConfiguration = getPathValue(userConfiguration, "hidden") === true;
 
 			if (hiddenByConfiguration) {
 				continue;
@@ -189,7 +189,7 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 	 *     The column key to retrieve the label for.
 	 */
 	function getColumnLabel(columnKey) {
-		return get(columnDefinitions.value, `${columnKey}.label`);
+		return getPathValue(columnDefinitions.value, `${columnKey}.label`);
 	}
 
 	/**

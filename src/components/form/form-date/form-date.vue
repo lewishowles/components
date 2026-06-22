@@ -75,10 +75,10 @@
 
 <script setup>
 import { computed, useTemplateRef } from "vue";
-import { get, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { getPathValue, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber, isNumeric } from "@lewishowles/helpers/number";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { Temporal } from "temporal-polyfill";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
@@ -164,7 +164,7 @@ function initialise() {
  *	 The name of the part being initialised, e.g. "day".
  */
 function initialiseDatePart(part) {
-	const partValue = get(date.value, part);
+	const partValue = getPathValue(date.value, part);
 
 	const isNumericString = isNonEmptyString(partValue) && isNumeric(partValue);
 	const isPositiveNumber = isNumber(partValue) && partValue > 0;
@@ -220,7 +220,7 @@ function setDateFromIsoString(dateString) {
  * Trigger focus on the "day" input.
  */
 function triggerFocus() {
-	runComponentMethod(dayInput.value, "triggerFocus");
+	callComponentMethod(dayInput.value, "triggerFocus");
 }
 
 // The ID of the first focusable input, used by form-field to register the

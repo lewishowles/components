@@ -35,7 +35,7 @@
 
 <script setup>
 import { computed, isRef, provide, ref, useSlots } from "vue";
-import { getSlotText, runComponentMethod } from "@lewishowles/helpers/vue";
+import { getSlotText, callComponentMethod } from "@lewishowles/helpers/vue";
 import { isFunction } from "@lewishowles/helpers/general";
 import { arrayLength, getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 
@@ -81,7 +81,7 @@ function showAllPanels() {
 	}
 
 	for (const panel of panels.value) {
-		runComponentMethod(panel, "show");
+		callComponentMethod(panel, "show");
 	}
 }
 
@@ -94,7 +94,7 @@ function hideAllPanels() {
 	}
 
 	for (const panel of panels.value) {
-		runComponentMethod(panel, "hide");
+		callComponentMethod(panel, "hide");
 	}
 }
 

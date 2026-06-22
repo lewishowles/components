@@ -35,7 +35,7 @@ import { computed, ref, useTemplateRef, watch } from "vue";
 import { firstDefined } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, keys, unwrap } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { runComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**
@@ -103,7 +103,7 @@ watch(
 );
 
 function triggerFocus() {
-	runComponentMethod(inputGroupRef.value, "triggerFocus");
+	callComponentMethod(inputGroupRef.value, "triggerFocus");
 }
 
 defineExpose({
