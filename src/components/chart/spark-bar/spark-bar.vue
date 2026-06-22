@@ -1,24 +1,16 @@
 <template>
 	<div
-		v-bind="{
-			'aria-valuenow': internalValue,
-			'aria-valuemin': min,
-			'aria-valuemax': max,
-		}"
-		class="flex items-center gap-4"
+		v-bind="rootAttributes"
+		:class="rootClasses"
 		role="meter"
 		data-component="spark-bar"
 		data-test="spark-bar"
 	>
-		<div :class="cn('grow', trackClasses)" data-part="track">
-			<div
-				:class="cn('transition-all ease-out', barClasses)"
-				data-part="bar"
-				:style="{ width: `${percentageValue}%` }"
-			/>
+		<div :class="trackMergedClasses" data-part="track">
+			<div :class="barMergedClasses" data-part="bar" :style="{ width: `${percentageValue}%` }" />
 		</div>
 
-		<div :class="valueClasses" data-part="value" data-test="spark-bar-value">
+		<div :class="valueMergedClasses" data-part="value" data-test="spark-bar-value">
 			<slot v-bind="{ current: internalValue, min, max, percentage: percentageValue }">
 				{{ percentageValue }}%
 			</slot>
@@ -28,8 +20,10 @@
 
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
-import { computed } from "vue";
+import { computed, useAttrs } from "vue";
 import { cn } from "@/utilities/cn.js";
+
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
 	/**
@@ -63,7 +57,7 @@ const props = defineProps({
 	 */
 	trackClasses: {
 		type: [String, Array, Object],
-		default: "h-1 rounded-full bg-grey-200 dark:bg-white/20",
+		default: undefined,
 	},
 
 	/**
@@ -71,7 +65,7 @@ const props = defineProps({
 	 */
 	barClasses: {
 		type: [String, Array, Object],
-		default: "h-full rounded-full bg-primary",
+		default: undefined,
 	},
 
 	/**
@@ -79,9 +73,42 @@ const props = defineProps({
 	 */
 	valueClasses: {
 		type: [String, Array, Object],
-		default: "text-sm",
+		default: undefined,
 	},
 });
+
+const attributes = useAttrs();
+
+// Classes for the root meter element.
+const rootClasses = computed(() => cn("flex items-center gap-4", attributes.class));
+
+// The attributes to forward to the root, without duplicate class handling.
+const attrsWithoutClass = computed(() => {
+	const { class: _omitted, ...rest } = attributes;
+
+	return rest;
+});
+
+// Attributes applied to the root meter element.
+const rootAttributes = computed(() => ({
+	...attrsWithoutClass.value,
+	"aria-valuenow": internalValue.value,
+	"aria-valuemin": props.min,
+	"aria-valuemax": props.max,
+}));
+
+// Classes for the track behind the bar.
+const trackMergedClasses = computed(() =>
+	cn("grow h-1 rounded-full bg-grey-200 dark:bg-white/20", props.trackClasses),
+);
+
+// Classes for the bar showing the current value.
+const barMergedClasses = computed(() =>
+	cn("h-full rounded-full bg-primary transition-all ease-out", props.barClasses),
+);
+
+// Classes for the visible value.
+const valueMergedClasses = computed(() => cn("text-sm", props.valueClasses));
 
 // The internal current value, clamped between min and max.
 const internalValue = computed(() => clamp(props.current, props.min, props.max));
