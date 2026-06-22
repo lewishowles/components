@@ -75,8 +75,8 @@
 				<p>Optional icon shown before the title.</p>
 			</component-slot>
 
-			<component-slot id="slot-header-additional">
-				<template #name>header-additional</template>
+			<component-slot id="slot-additional">
+				<template #name>additional</template>
 
 				<p>Optional content shown at the end of the default header layout.</p>
 			</component-slot>

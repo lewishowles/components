@@ -16,7 +16,7 @@
 
 				{{ slots.title.value }}
 
-				<template #header-additional>
+				<template #additional>
 					<pill-badge>16 users</pill-badge>
 				</template>
 			</content-card-header>
@@ -50,7 +50,7 @@ const slots = ref({
 		label: "Title",
 		value: "Recent users",
 	},
-	"header-additional": {
+	additional: {
 		label: "Header additional",
 		value: pillBadgeContent.value,
 	},
@@ -65,7 +65,7 @@ const headerTemplate = useTemplateGenerator("content-card-header", {
 	slots: computed(() => ({
 		icon: slots.value.icon,
 		default: slots.value.title,
-		"header-additional": slots.value["header-additional"],
+		additional: slots.value.additional,
 	})),
 	indent: 1,
 });

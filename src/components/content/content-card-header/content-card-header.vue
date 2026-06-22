@@ -28,8 +28,8 @@
 					</component>
 				</div>
 
-				<div v-if="haveHeaderAdditional" data-test="content-card-header-additional">
-					<slot name="header-additional" />
+				<div v-if="haveAdditional" data-test="content-card-header-additional">
+					<slot name="additional" />
 				</div>
 			</div>
 		</slot>
@@ -69,7 +69,7 @@ const haveDefault = computed(() => isNonEmptySlot(slots.default));
 // Whether an icon has been provided.
 const haveIcon = computed(() => isNonEmptySlot(slots.icon));
 // Whether additional header content has been provided.
-const haveHeaderAdditional = computed(() => isNonEmptySlot(slots["header-additional"]));
+const haveAdditional = computed(() => isNonEmptySlot(slots.additional));
 // Whether the title area (heading + icon) should be rendered.
 const haveTitleArea = computed(() => haveIcon.value || haveDefault.value);
 

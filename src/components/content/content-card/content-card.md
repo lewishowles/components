@@ -23,7 +23,7 @@ The title text, auto-wrapped in the element set by `headingLevel`.
 
 Optional icon shown before the title.
 
-#### `header-additional`
+#### `additional`
 
 Optional content shown at the end of the default header layout.
 

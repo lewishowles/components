@@ -20,7 +20,7 @@ export const contentCardHeaderMetadata = {
 	slots: [
 		{ name: "title", summary: "Card title." },
 		{ name: "icon", summary: "Icon shown before the title." },
-		{ name: "header-additional", summary: "Additional content at the end of the header." },
+		{ name: "additional", summary: "Additional content at the end of the header." },
 		{ name: "header", summary: "Full custom header content, replacing the default layout." },
 	],
 	parts: [{ name: "header", summary: "The header region." }],

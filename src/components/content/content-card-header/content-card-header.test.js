@@ -29,8 +29,8 @@ describe("content-card-header", () => {
 			expect(wrapper.vm.haveTitleArea).toBe(true);
 		});
 
-		test("Detects header-additional slot", () => {
-			const wrapper = mount({ slots: { "header-additional": "Actions" } });
+		test("Detects additional slot", () => {
+			const wrapper = mount({ slots: { additional: "Actions" } });
 
 			expect(wrapper.vm.haveHeaderAdditional).toBe(true);
 		});

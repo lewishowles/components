@@ -16,7 +16,7 @@ defineProps({
 		<content-card-header>
 			<template #default>Card title</template>
 			<template #icon><svg data-test="card-example-icon" /></template>
-			<template #header-additional>Card actions</template>
+			<template #additional>Card actions</template>
 		</content-card-header>
 		<content-card-section>Card content</content-card-section>
 	</content-card>
