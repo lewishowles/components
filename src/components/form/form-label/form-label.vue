@@ -85,6 +85,14 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether to show optional text when the field is not required.
+	 */
+	showOptionalIndicator: {
+		type: Boolean,
+		default: true,
+	},
+
+	/**
 	 * Whether to apply styling to the label. This is most useful when using the
 	 * label for things like radio labels, where the styling is different.
 	 */
@@ -102,7 +110,7 @@ const haveLabel = computed(() => isNonEmptySlot(slots.default));
 // the user about accessibility.
 const missingId = computed(() => props.tag === "label" && !isNonEmptyString(props.id));
 // Whether to show the optional indicator. Shown when the field is not required.
-const haveOptionalIndicator = computed(() => !props.required);
+const haveOptionalIndicator = computed(() => props.showOptionalIndicator && !props.required);
 </script>
 
 <script>

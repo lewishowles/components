@@ -27,6 +27,12 @@ describe("form-label", () => {
 			expect(wrapper.find('[data-test="form-label-optional-indicator"]').exists()).toBe(false);
 		});
 
+		test("hides the optional indicator when disabled", () => {
+			const wrapper = mount({ props: { showOptionalIndicator: false } });
+
+			expect(wrapper.find('[data-test="form-label-optional-indicator"]').exists()).toBe(false);
+		});
+
 		test("renders the default optional indicator text", () => {
 			const wrapper = mount();
 

@@ -19,7 +19,7 @@
 						/>
 
 						<form-label
-							v-bind="{ id: option.id, styled: false }"
+							v-bind="{ id: option.id, styled: false, showOptionalIndicator: false }"
 							class="form-button-group flex items-center gap-2"
 							:class="{
 								'form-button-group--middle': !option.first,

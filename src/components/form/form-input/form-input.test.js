@@ -42,4 +42,15 @@ describe("form-input", () => {
 			});
 		});
 	});
+
+	describe("Render contracts", () => {
+		test("hides the optional indicator when disabled", () => {
+			const wrapper = mount({
+				props: { showOptionalIndicator: false },
+				slots: { default: "Email address" },
+			});
+
+			expect(wrapper.find('[data-test="form-label-optional-indicator"]').exists()).toBe(false);
+		});
+	});
 });

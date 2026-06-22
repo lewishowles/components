@@ -30,6 +30,12 @@ export const formLabelMetadata = {
 			summary: "Visually hide the label while keeping it available to screen readers.",
 		},
 		{
+			name: "showOptionalIndicator",
+			type: "boolean",
+			default: true,
+			summary: "Show optional text when the field is not required.",
+		},
+		{
 			name: "styled",
 			type: "boolean",
 			default: true,

@@ -57,7 +57,10 @@
 							data-part="indicator"
 						/>
 
-						<form-label v-bind="{ id: option.id, styled: false }" class="px-3 leading-6">
+						<form-label
+							v-bind="{ id: option.id, styled: false, showOptionalIndicator: false }"
+							class="px-3 leading-6"
+						>
 							{{ option.label }}
 						</form-label>
 					</div>

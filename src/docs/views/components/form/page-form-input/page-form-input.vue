@@ -55,6 +55,16 @@
 				</p>
 			</component-prop>
 
+			<component-prop id="prop-show-optional-indicator">
+				<template #name>showOptionalIndicator</template>
+
+				<template #type>Boolean</template>
+
+				<template #default-value>true</template>
+
+				<p>Whether to show optional text when the field is not required.</p>
+			</component-prop>
+
 			<component-prop id="prop-suggestions">
 				<template #name>suggestions</template>
 

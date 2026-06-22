@@ -23,6 +23,12 @@ export const formInputMetadata = {
 			summary: "Mark the field as required.",
 		},
 		{
+			name: "showOptionalIndicator",
+			type: "boolean",
+			default: true,
+			summary: "Show optional text when the field is not required.",
+		},
+		{
 			name: "inputAttributes",
 			type: "object",
 			default: null,

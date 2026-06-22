@@ -5,7 +5,7 @@
 		data-test="form-input"
 	>
 		<div class="flex flex-col">
-			<form-label v-bind="{ id: inputId, required }">
+			<form-label v-bind="{ id: inputId, required, showOptionalIndicator }">
 				<slot />
 
 				<template #optional-indicator>
@@ -126,6 +126,14 @@ const props = defineProps({
 	required: {
 		type: Boolean,
 		default: false,
+	},
+
+	/**
+	 * Whether to show optional text when the field is not required.
+	 */
+	showOptionalIndicator: {
+		type: Boolean,
+		default: true,
 	},
 
 	/**

@@ -20,6 +20,7 @@ test.describe("form-date", () => {
 		await expect(page.getByTestId("form-date-month")).toBeVisible();
 		await expect(page.getByTestId("form-date-year")).toBeVisible();
 		await expect(page.getByTestId("form-label")).toHaveCount(4);
+		await expect(formDate.getByTestId("form-label-optional-indicator")).toHaveCount(1);
 	});
 
 	test("a required parameter is passed to the date fields", async ({ mount, page }) => {

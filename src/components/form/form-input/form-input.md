@@ -55,6 +55,13 @@ Any placeholder to show in the field. Do not use a placeholder for critical info
 
 Any additional attributes to pass to the field itself, such as `required` or `autocomplete`. This can also be used to change the type of the field, such as to `email`.
 
+### `showOptionalIndicator`
+
+- type: `boolean`
+- default: `true`
+
+Whether to show optional text when the field is not required.
+
 ### `suggestions`
 
 - type: `string[]`

@@ -21,10 +21,11 @@ test.describe("form-button-group", () => {
 		const labels = buttonGroup.getByTestId("form-label");
 
 		await expect(labels).toHaveCount(4);
-		await expect(labels.nth(0)).toHaveText("Best smoothie");
+		await expect(labels.nth(0)).toHaveText("Best smoothie(optional)");
 		await expect(labels.nth(1)).toHaveText("Pineapple");
 		await expect(labels.nth(2)).toHaveText("Banana");
 		await expect(labels.nth(3)).toHaveText("Coconut");
+		await expect(buttonGroup.getByTestId("form-label-optional-indicator")).toHaveCount(1);
 	});
 
 	test.describe("supplementary information", () => {
