@@ -14,17 +14,17 @@
 
 			<content-card-section>
 				<p class="text-content-strong font-semibold">Front door</p>
-				<p class="text-content-subtle text-sm">Online — last seen just now</p>
+				<p class="text-content-muted text-sm">Online — last seen just now</p>
 			</content-card-section>
 
 			<content-card-section>
 				<p class="text-content-strong font-semibold">Back garden</p>
-				<p class="text-content-subtle text-sm">Online — last seen 2 minutes ago</p>
+				<p class="text-content-muted text-sm">Online — last seen 2 minutes ago</p>
 			</content-card-section>
 
 			<content-card-section>
 				<p class="text-content-strong font-semibold">Garage</p>
-				<p class="text-content-subtle text-sm text-red-600">Offline — last seen 4 hours ago</p>
+				<p class="text-content-muted text-sm text-red-600">Offline — last seen 4 hours ago</p>
 			</content-card-section>
 		</content-card>
 	</component-playground>

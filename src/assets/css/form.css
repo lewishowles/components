@@ -13,7 +13,7 @@
 }
 
 .form-input {
-	padding-block: calc(var(--spacing) * 2);
+	padding-block: 0.375em;
 	padding-inline: calc(var(--spacing) * 3);
 }
 
@@ -23,7 +23,7 @@
 	background-position: right 0.5rem center;
 	background-repeat: no-repeat;
 	background-size: 1.5em 1.5em;
-	padding-block: calc(var(--spacing) * 2);
+	padding-block: 0.375em;
 	padding-inline-end: 2.5em;
 	padding-inline-start: calc(var(--spacing) * 3);
 
@@ -108,7 +108,7 @@
 	cursor: pointer;
 	display: inline-block;
 	outline: 0;
-	padding-block: 0.5em;
+	padding-block: calc(0.375em - 1px);
 	padding-inline: 1em;
 	text-decoration: none;
 	transition-duration: var(--default-transition-duration);

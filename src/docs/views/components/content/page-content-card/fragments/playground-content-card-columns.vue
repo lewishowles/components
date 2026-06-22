@@ -16,17 +16,17 @@
 
 			<content-card-columns>
 				<content-card-section>
-					<h3 class="text-content-subtle text-sm">Cameras online</h3>
+					<h3 class="text-content-muted text-sm">Cameras online</h3>
 					<p class="text-content-strong text-2xl font-bold">12</p>
 				</content-card-section>
 
 				<content-card-section>
-					<h3 class="text-content-subtle text-sm">Alerts today</h3>
+					<h3 class="text-content-muted text-sm">Alerts today</h3>
 					<p class="text-content-strong text-2xl font-bold">3</p>
 				</content-card-section>
 
 				<content-card-section>
-					<h3 class="text-content-subtle text-sm">Storage used</h3>
+					<h3 class="text-content-muted text-sm">Storage used</h3>
 					<p class="text-content-strong text-2xl font-bold">68%</p>
 				</content-card-section>
 			</content-card-columns>

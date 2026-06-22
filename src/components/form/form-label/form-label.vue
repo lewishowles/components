@@ -31,7 +31,7 @@
 
 		<span
 			v-if="haveOptionalIndicator"
-			class="text-content-subtle ms-1 text-sm font-normal"
+			class="text-content-muted font-normal"
 			data-test="form-label-optional-indicator"
 		>
 			<slot name="optional-indicator">(optional)</slot>

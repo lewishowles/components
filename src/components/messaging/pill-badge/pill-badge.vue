@@ -2,7 +2,7 @@
 	<span
 		:class="
 			cn(
-				'inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
+				'inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset',
 				themeClasses,
 				attributes.class,
 			)
