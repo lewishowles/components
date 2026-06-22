@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import { computed, useTemplateRef } from "vue";
+import { computed, ref, useTemplateRef, watch } from "vue";
 import { getPathValue, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber, isNumeric } from "@lewishowles/helpers/number";
@@ -106,17 +106,18 @@ const props = defineProps({
 	},
 });
 
-// The current value of our date.
-const date = defineModel({
+const { inputId, haveIntroduction, haveError } = useFormField({ id: props.id });
+
+// The external model, used for initialisation and updated when our internal
+// model changes.
+const model = defineModel({
 	type: [Object, String],
 });
 
+// Our internal representation of the date, which the inputs bind to.
+const date = ref({ day: "", month: "", year: "" });
 // A reference to the day input, which we will use to focus this field.
 const dayInput = useTemplateRef("dayInput");
-
-const { inputId, haveIntroduction, haveError } = useFormField({ id: props.id });
-
-initialise();
 
 // Whether we have a valid date. We use this to hide inputs and avoid errors if
 // the provided model date is invalid. By "valid", we don't mean a valid date,
@@ -136,20 +137,38 @@ const haveValidDate = computed(() => {
 	});
 });
 
+initialise();
+
+// Reflect changes to our internal date back to the model. Declared after
+// initialise() so the initial seeding doesn't emit a value.
+watch(
+	date,
+	() => {
+		model.value = { ...date.value };
+	},
+	{ deep: true },
+);
+
 /**
  * Initialise our date, either by setting a default value for our model, or
  * copying the provided values to our internal date object.
  */
 function initialise() {
-	if (isNonEmptyString(date.value)) {
-		setDateFromIsoString(date.value);
-	}
-
-	if (!isNonEmptyObject(date.value)) {
-		date.value = { day: "", month: "", year: "" };
+	// An ISO string is parsed directly into our internal date parts.
+	if (isNonEmptyString(model.value)) {
+		setDateFromIsoString(model.value);
 
 		return;
 	}
+
+	// Anything that isn't a usable object leaves the internal date at its empty
+	// default.
+	if (!isNonEmptyObject(model.value)) {
+		return;
+	}
+
+	// Seed our internal date from the provided model, then normalise each part.
+	date.value = { ...model.value };
 
 	date.value.day = initialiseDatePart("day");
 	date.value.month = initialiseDatePart("month");
@@ -165,7 +184,6 @@ function initialise() {
  */
 function initialiseDatePart(part) {
 	const partValue = getPathValue(date.value, part);
-
 	const isNumericString = isNonEmptyString(partValue) && isNumeric(partValue);
 	const isPositiveNumber = isNumber(partValue) && partValue > 0;
 
