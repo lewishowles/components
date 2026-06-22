@@ -1,8 +1,6 @@
 <template>
 	<div class="prose dark:prose-invert relative max-w-none">
-		<pre
-			class="peer mb-0 overflow-x-auto rounded-md bg-neutral-950 p-4 text-sm leading-relaxed whitespace-pre-wrap text-neutral-100"
-		><code v-bind="{ class: languageClass }">{{ textToDisplay }}</code></pre>
+		<div class="peer" v-html="codeHtml" />
 
 		<copy-content
 			v-bind="{ content: textToDisplay }"
@@ -14,9 +12,9 @@
 </template>
 
 <script setup>
-import { computed, useSlots } from "vue";
+import { computed, ref, useSlots, watch } from "vue";
 import { getSlotText } from "@lewishowles/helpers/vue";
-import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { normaliseCodeText, renderCodeHtml } from "@/docs/helpers/code-highlighter.js";
 
 const props = defineProps({
 	/**
@@ -37,82 +35,45 @@ const props = defineProps({
 });
 
 const slots = useSlots();
+const codeHtml = ref("");
 
 // The text from the default slot.
 const defaultText = computed(() => getSlotText(slots.default));
 // Whether default text has been provided.
-const haveDefaultText = computed(() => isNonEmptyString(defaultText.value));
+const haveDefaultText = computed(() => defaultText.value.trim().length > 0);
 
 // The text to display, and allow the user to copy.
 const textToDisplay = computed(() =>
 	normaliseCodeText(haveDefaultText.value ? defaultText.value : props.code),
 );
 
-// The language to expose on the code element.
-const resolvedLanguage = computed(() => resolveLanguage(textToDisplay.value, props.language));
-// The language class exposed for user-agent tooling and future styling.
-const languageClass = computed(() => `language-${resolvedLanguage.value}`);
+let highlightRequestId = 0;
 
-/**
- * Remove template indentation from code samples without changing internal
- * formatting.
- *
- * @param  {string|null}  code
- *     The code sample to normalise.
- * @returns {string}
- */
-function normaliseCodeText(code) {
-	if (!isNonEmptyString(code)) {
-		return "";
-	}
+// Re-render when the displayed code or language changes.
+watch(
+	[textToDisplay, () => props.language],
+	async ([code, language]) => {
+		const requestId = (highlightRequestId += 1);
+		const html = await renderCodeHtml(code, language);
 
-	const lines = code.replace(/\r\n/g, "\n").split("\n");
+		if (requestId !== highlightRequestId) {
+			return;
+		}
 
-	while (lines[0]?.trim() === "") {
-		lines.shift();
-	}
-
-	while (lines.at(-1)?.trim() === "") {
-		lines.pop();
-	}
-
-	const indentation = lines
-		.filter((line) => line.trim() !== "")
-		.map((line) => line.match(/^\s*/)[0].length)
-		.reduce((minimum, length) => Math.min(minimum, length), Infinity);
-
-	if (!Number.isFinite(indentation) || indentation === 0) {
-		return lines.join("\n");
-	}
-
-	return lines.map((line) => line.slice(indentation)).join("\n");
-}
-
-/**
- * Resolve the code language from an explicit prop or a small set of common
- * examples.
- *
- * @param  {string}  code
- *     The code sample to inspect.
- * @param  {string|null}  language
- *     The explicitly provided language.
- * @returns {string}
- */
-function resolveLanguage(code, language) {
-	if (isNonEmptyString(language)) {
-		return language.toLowerCase();
-	}
-
-	const trimmedCode = code.trim();
-
-	if (trimmedCode.startsWith("<")) {
-		return "html";
-	}
-
-	if (/^(const|let|var|function|import|export|\[|\{)/.test(trimmedCode)) {
-		return "javascript";
-	}
-
-	return "text";
-}
+		codeHtml.value = html;
+	},
+	{ immediate: true },
+);
 </script>
+
+<style scoped>
+:deep(.shiki) {
+	margin-block-end: 0;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	border-radius: var(--radius-md);
+	padding: 1rem;
+	font-size: var(--text-sm);
+	line-height: 1.625;
+}
+</style>

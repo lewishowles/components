@@ -1,5 +1,5 @@
 <template>
-	<form-wrapper :rules="rules">
+	<form-wrapper v-bind="{ rules }">
 		<form-field
 			v-bind="{
 				name: 'password',

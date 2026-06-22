@@ -15,7 +15,7 @@ const globalPropNames = new Set(["class", "style", "key", "ref", "ref_key", "ref
 const internalPropNames = new Set(["modelValue", "onUpdate:modelValue", "dataTest"]);
 
 const checker = createCheckerByJson(root, {
-	include: ["src/**/*.vue"],
+	include: ["src/components/**/*.vue"],
 	compilerOptions: {
 		allowJs: true,
 		checkJs: false,

@@ -75,7 +75,7 @@ const rules = {
 ```
 
 ```html
-<form-wrapper :rules>…</form-wrapper>
+<form-wrapper v-bind="{ rules }"></form-wrapper>
 ```
 
 #### Rule precedence and error order

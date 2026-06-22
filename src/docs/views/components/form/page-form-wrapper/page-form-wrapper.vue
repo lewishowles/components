@@ -420,7 +420,7 @@ const rulesExample = `const rules = {
 	endDate: [{ rule: "custom", validate: (value, formData) => !value || !formData.startDate || value > formData.startDate, message: "End date must be after the start date" }],
 };
 
-<form-wrapper :rules>
+<form-wrapper v-bind="{ rules }">
 
 </form-wrapper>
 `;
