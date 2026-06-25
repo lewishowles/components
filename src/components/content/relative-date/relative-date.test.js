@@ -60,14 +60,14 @@ describe("relative-date", () => {
 				const wrapper = mount({ date: "2025-03-28T13:14:20" });
 				const vm = wrapper.vm;
 
-				expect(vm.relativeDate).toBe("1 day ago");
+				expect(vm.relativeDate).toBe("yesterday");
 			});
 
 			test("Does not round one day ago up to two days ago", () => {
 				const wrapper = mount({ date: "2025-03-27T13:16:20" });
 				const vm = wrapper.vm;
 
-				expect(vm.relativeDate).toBe("1 day ago");
+				expect(vm.relativeDate).toBe("yesterday");
 			});
 
 			test("Returns two days ago after 48 hours", () => {
@@ -81,14 +81,14 @@ describe("relative-date", () => {
 				const wrapper = mount({ date: "2025-02-27T13:15:20" });
 				const vm = wrapper.vm;
 
-				expect(vm.relativeDate).toBe("1 month ago");
+				expect(vm.relativeDate).toBe("last month");
 			});
 
 			test("Returns years ago after 365 days", () => {
 				const wrapper = mount({ date: "2024-03-29T13:15:20" });
 				const vm = wrapper.vm;
 
-				expect(vm.relativeDate).toBe("1 year ago");
+				expect(vm.relativeDate).toBe("last year");
 			});
 
 			test("Returns future relative dates", () => {

@@ -21,12 +21,12 @@ describe("display-date", () => {
 
 	describe("Computed", () => {
 		describe("temporalDate", () => {
-			test("should convert a Date instance to a PlainDateTime", () => {
+			test("should convert a Date instance to an Instant", () => {
 				const wrapper = mount({ date: new Date(2025, 2, 29, 13, 15, 20) });
 				const vm = wrapper.vm;
 
-				expect(vm.temporalDate).toBeInstanceOf(Temporal.PlainDateTime);
-				expect(vm.temporalDate.toString()).toBe("2025-03-29T13:15:20");
+				expect(vm.temporalDate).toBeInstanceOf(Temporal.Instant);
+				expect(vm.temporalDate.toString()).toBe("2025-03-29T13:15:20Z");
 			});
 
 			describe("should return null for unsupported values", () => {
@@ -78,20 +78,20 @@ describe("display-date", () => {
 				expect(vm.temporalDate).toBe(date);
 			});
 
-			test("should convert a Temporal instant to a PlainDateTime", () => {
+			test("should return a Temporal instant unchanged", () => {
 				const wrapper = mount({ date: Temporal.Instant.from("2025-03-29T13:15:20.000Z") });
 				const vm = wrapper.vm;
 
-				expect(vm.temporalDate).toBeInstanceOf(Temporal.PlainDateTime);
-				expect(vm.temporalDate.toString()).toBe("2025-03-29T13:15:20");
+				expect(vm.temporalDate).toBeInstanceOf(Temporal.Instant);
+				expect(vm.temporalDate.toString()).toBe("2025-03-29T13:15:20Z");
 			});
 
-			test("should convert a timestamp to a PlainDateTime", () => {
+			test("should convert a timestamp to an Instant", () => {
 				const wrapper = mount({ date: 1743254120000 });
 				const vm = wrapper.vm;
 
-				expect(vm.temporalDate).toBeInstanceOf(Temporal.PlainDateTime);
-				expect(vm.temporalDate.toString()).toBe("2025-03-29T13:15:20");
+				expect(vm.temporalDate).toBeInstanceOf(Temporal.Instant);
+				expect(vm.temporalDate.toString()).toBe("2025-03-29T13:15:20Z");
 			});
 		});
 
@@ -134,63 +134,63 @@ describe("display-date", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.displayDate).toBe("29/03/2025");
+				expect(vm.displayDate).toBe("29 Mar 2025");
 			});
 
 			test("should format a time-zoned date", () => {
 				const wrapper = mount({ date: "2025-03-29[America/New_York]" });
 				const vm = wrapper.vm;
 
-				expect(vm.displayDate).toBe("29/03/2025, 0:00:00 GMT-4");
+				expect(vm.displayDate).toBe("29 Mar 2025, 04:00");
 			});
 
 			test("should format a date time", () => {
 				const wrapper = mount({ date: "2025-03-29T13:15:20" });
 				const vm = wrapper.vm;
 
-				expect(vm.displayDate).toBe("29/03/2025, 13:15:20");
+				expect(vm.displayDate).toBe("29 Mar 2025, 13:15");
 			});
 
 			test("should format a Date instance", () => {
 				const wrapper = mount({ date: new Date(2025, 2, 29, 13, 15, 20) });
 				const vm = wrapper.vm;
 
-				expect(vm.displayDate).toBe("29/03/2025, 13:15:20");
+				expect(vm.displayDate).toBe("29 Mar 2025, 13:15");
 			});
 
 			test("should format a timestamp", () => {
 				const wrapper = mount({ date: 1743254120000 });
 				const vm = wrapper.vm;
 
-				expect(vm.displayDate).toBe("29/03/2025, 13:15:20");
+				expect(vm.displayDate).toBe("29 Mar 2025, 13:15");
 			});
 
 			test("should format an ISO instant string", () => {
 				const wrapper = mount({ date: "2025-03-29T13:15:20.000Z" });
 				const vm = wrapper.vm;
 
-				expect(vm.displayDate).toBe("29/03/2025, 13:15:20");
+				expect(vm.displayDate).toBe("29 Mar 2025, 13:15");
 			});
 
 			test("should format a Temporal date object", () => {
 				const wrapper = mount({ date: Temporal.PlainDate.from("2025-03-29") });
 				const vm = wrapper.vm;
 
-				expect(vm.displayDate).toBe("29/03/2025");
+				expect(vm.displayDate).toBe("29 Mar 2025");
 			});
 
 			test("should format a Temporal instant object", () => {
 				const wrapper = mount({ date: Temporal.Instant.from("2025-03-29T13:15:20.000Z") });
 				const vm = wrapper.vm;
 
-				expect(vm.displayDate).toBe("29/03/2025, 13:15:20");
+				expect(vm.displayDate).toBe("29 Mar 2025, 13:15");
 			});
 
 			test("should allow a custom locale to be provided", () => {
 				const wrapper = mount({ locale: "de-DE" });
 				const vm = wrapper.vm;
 
-				expect(vm.displayDate).toBe("29.3.2025");
+				expect(vm.displayDate).toBe("29.03.2025");
 			});
 
 			test("should allow custom formatting options to be provided", () => {

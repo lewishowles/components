@@ -1,6 +1,6 @@
 # `relative-date`
 
-`relative-date` displays a date relative to another date, such as `30 seconds ago`, `2 minutes ago`, or `1 day ago`.
+`relative-date` displays a date relative to another date, such as `30 seconds ago`, `2 minutes ago`, or `yesterday`.
 
 ## Props
 

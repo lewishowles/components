@@ -18,9 +18,10 @@ export const displayDateMetadata = {
 		},
 		{
 			name: "format",
-			type: "object",
+			type: "string | object",
 			default: undefined,
-			summary: "Intl date formatting options.",
+			summary:
+				'Named format string (e.g. "date", "dateTime", "shortDate"), Day.js token string, or Intl.DateTimeFormat options. Defaults to "date" for date-only inputs and "dateTime" for inputs with time.',
 		},
 	],
 	examples: [],

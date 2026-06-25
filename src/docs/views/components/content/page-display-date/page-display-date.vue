@@ -28,16 +28,16 @@
 				<code>Z</code>
 				or an offset such as
 				<code>+01:00</code>
-				is converted to a local
-				<code>PlainDateTime</code>
+				is converted to an
+				<code>Instant</code>
 				; a string containing
 				<code>T</code>
 				is treated as a
 				<code>PlainDateTime</code>
 				; otherwise a
 				<code>PlainDate</code>
-				is used. Timestamps, Date instances, and Temporal instants are also converted to local
-				<code>PlainDateTime</code>
+				is used. Timestamps, Date instances, and Temporal instants are also converted to
+				<code>Instant</code>
 				values.
 			</p>
 		</template>
@@ -62,6 +62,11 @@
 					>
 						RFC 9557 format
 					</link-tag>
+					options object. By default,
+					<code>"date"</code>
+					is used for date-only inputs and
+					<code>"dateTime"</code>
+					for inputs with time information.
 				</p>
 			</component-prop>
 
@@ -78,18 +83,31 @@
 			<component-prop id="prop-format">
 				<template #name>format</template>
 
-				<template #type>Object</template>
+				<template #type>String | Object</template>
 
 				<template #default-value>undefined</template>
 
 				<p>
-					The formatting options to apply to the displayed date, as defined by
+					The formatting to apply to the displayed date. Accepts a named format string (e.g.
+					<code>"date"</code>
+					,
+					<code>"dateTime"</code>
+					,
+					<code>"shortDate"</code>
+					), a Day.js-style token string (e.g.
+					<code>"DD/MM/YYYY"</code>
+					), or an
 					<link-tag
 						href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat#using_options"
 						:external="true"
 					>
 						Intl.DateTimeFormat
 					</link-tag>
+					options object. By default,
+					<code>"date"</code>
+					is used for date-only inputs and
+					<code>"dateTime"</code>
+					for inputs with time information.
 				</p>
 			</component-prop>
 		</component-props>

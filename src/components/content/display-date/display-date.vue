@@ -4,7 +4,8 @@
 
 <script setup>
 import { computed } from "vue";
-import { normaliseDate } from "@/helpers/date/normalise-date";
+import { Temporal } from "temporal-polyfill";
+import { parseDate, formatDate } from "@lewishowles/helpers/date";
 
 const props = defineProps({
 	/**
@@ -18,8 +19,8 @@ const props = defineProps({
 	},
 
 	/**
-	 * The locale to use when formatting dates. By default, the user's locale is
-	 * used.
+	 * The locale to use when formatting dates. By default, the user's locale
+	 * is used.
 	 */
 	locale: {
 		type: String,
@@ -27,19 +28,23 @@ const props = defineProps({
 	},
 
 	/**
-	 * The formatting options to apply to the displayed date, as defined by
+	 * The formatting options to apply to the displayed date. Accepts a named
+	 * format string (e.g. "date", "dateTime", "shortDate"), a Day.js-style
+	 * token string (e.g. "DD/MM/YYYY"), or an Intl.DateTimeFormat options
+	 * object. By default, "date" is used for date-only inputs and "dateTime"
+	 * for inputs with time information.
 	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat#using_options
 	 */
 	format: {
-		type: Object,
-		default: () => undefined,
+		type: [String, Object],
+		default: undefined,
 	},
 });
 
-// The Temporal date object used for display.
+// The parsed Temporal date object used for display.
 const temporalDate = computed(() => {
 	try {
-		return normaliseDate(props.date);
+		return parseDate(props.date);
 	} catch (error) {
 		console.error("date-display[temporalDate]", error);
 
@@ -53,6 +58,14 @@ const displayDate = computed(() => {
 		return null;
 	}
 
-	return temporalDate.value.toLocaleString(props.locale, props.format ?? undefined);
+	// If the user provided an explicit format, use it directly.
+	if (props.format !== undefined) {
+		return formatDate(props.date, props.format, { locale: props.locale });
+	}
+
+	// Auto-detect: PlainDate has no time component, everything else does.
+	const formatName = temporalDate.value instanceof Temporal.PlainDate ? "date" : "dateTime";
+
+	return formatDate(props.date, formatName, { locale: props.locale });
 });
 </script>

@@ -2,11 +2,23 @@
 
 ## Unreleased
 
+### `display-date`
+
+Now uses date helpers from `@lewishowles/helpers` v1.1.0. The `format` prop accepts a named format string (`"date"`, `"dateTime"`, `"shortDate"`), a Day.js-style token string, or an `Intl.DateTimeFormat` options object. By default, `"date"` is used for date-only inputs and `"dateTime"` for inputs with time information.
+
+Default formatting changed from `toLocaleString` (e.g. `29/03/2025`) to `dateStyle: "medium"` (e.g. `29 Mar 2025`). Date/timestamp/instant inputs now parse to `Temporal.Instant` instead of `Temporal.PlainDateTime`.
+
+### `relative-date`
+
+Now uses date helpers from `@lewishowles/helpers` v1.1.0. Relative dates use `numeric: "auto"` for more natural phrasing (e.g. `yesterday` instead of `1 day ago`, `last month` instead of `1 month ago`). Dates 7–29 days apart now display as weeks (e.g. `2 weeks ago`).
+
 ### `form-field`
 
 Validation rules now support function shorthand alongside the existing object rules. Each entry can be a function `(value, formData)` that returns `true` for valid, a string for a single error, or an array of strings for multiple errors. This is an escape hatch for custom logic not covered by the built-in rules.
 
 Added a `required` boolean prop, allowing explicit control over the field's required state. This is also set automatically when a `required` validation rule is present.
+
+Validation rule normalisation moved to `@lewishowles/helpers` `validateField`. The local `normalise-validation.js` has been removed; `form-field` and `form-wrapper` now pass raw validation arrays directly to the helper.
 
 ### `data-table`
 

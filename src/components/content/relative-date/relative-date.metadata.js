@@ -25,7 +25,7 @@ export const relativeDateMetadata = {
 		{
 			name: "refreshInterval",
 			type: "number",
-			default: 60000,
+			default: 1000,
 			summary: "Interval in milliseconds for refreshing the label.",
 		},
 	],

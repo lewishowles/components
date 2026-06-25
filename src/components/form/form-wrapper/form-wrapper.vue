@@ -101,11 +101,6 @@ import {
 	watch,
 } from "vue";
 
-import {
-	normaliseValidation,
-	validateFunctionRules,
-} from "@/components/form/form-field/normalise-validation.js";
-
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
@@ -390,16 +385,7 @@ function validateFormLevelRules() {
 				continue;
 			}
 
-			const { objectRules, functionRules } = normaliseValidation(fieldRules);
-			const { errors: objectErrors } = validateFormField(fieldName, objectRules, formData.value);
-
-			const functionRuleErrors = validateFunctionRules(
-				functionRules,
-				formData.value[fieldName],
-				formData.value,
-			);
-
-			const fieldErrors = [...objectErrors, ...functionRuleErrors];
+			const { errors: fieldErrors } = validateFormField(fieldName, fieldRules, formData.value);
 
 			if (isNonEmptyArray(fieldErrors)) {
 				errors[fieldName] = fieldErrors;

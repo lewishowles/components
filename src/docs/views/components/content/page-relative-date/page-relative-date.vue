@@ -10,16 +10,17 @@
 				,
 				<code>2 minutes ago</code>
 				, or
-				<code>1 day ago</code>
+				<code>yesterday</code>
 				.
 			</p>
 
 			<p>
-				Relative values round up through seconds, minutes, and hours. Day values do not round from
-				<code>1 day ago</code>
+				Relative values round up through seconds, minutes, hours, and days. Day values do not round
+				from
+				<code>yesterday</code>
 				to
 				<code>2 days ago</code>
-				until a full 48 hours has elapsed.
+				until a full 48 hours has elapsed. Dates 7–29 days apart are shown as weeks.
 			</p>
 		</template>
 

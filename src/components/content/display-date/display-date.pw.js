@@ -19,25 +19,25 @@ test.describe("display-date", () => {
 		test("default formatting is applied", async ({ mount, page }) => {
 			await mountDisplayDate(mount);
 
-			await expect(page.getByTestId("display-date")).toHaveText("29/03/2025");
+			await expect(page.getByTestId("display-date")).toHaveText("29 Mar 2025");
 		});
 
 		test("a time-zoned date is formatted", async ({ mount, page }) => {
 			await mountDisplayDate(mount, { props: { date: "2025-03-29[America/New_York]" } });
 
-			await expect(page.getByTestId("display-date")).toHaveText("29/03/2025, 0:00:00 GMT-4");
+			await expect(page.getByTestId("display-date")).toHaveText("29 Mar 2025, 04:00");
 		});
 
 		test("a date with a time component is formatted", async ({ mount, page }) => {
 			await mountDisplayDate(mount, { props: { date: "2025-03-29T13:15:20" } });
 
-			await expect(page.getByTestId("display-date")).toHaveText("29/03/2025, 13:15:20");
+			await expect(page.getByTestId("display-date")).toHaveText("29 Mar 2025, 13:15");
 		});
 
 		test("a custom locale can be provided", async ({ mount, page }) => {
 			await mountDisplayDate(mount, { props: { locale: "de-DE" } });
 
-			await expect(page.getByTestId("display-date")).toHaveText("29.3.2025");
+			await expect(page.getByTestId("display-date")).toHaveText("29.03.2025");
 		});
 	});
 
