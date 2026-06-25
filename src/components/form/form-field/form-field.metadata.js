@@ -42,6 +42,13 @@ export const formFieldMetadata = {
 			default: null,
 			summary: "Additional attributes forwarded to the underlying input, such as autocomplete.",
 		},
+		{
+			name: "required",
+			type: "boolean",
+			default: false,
+			summary:
+				"Whether this field is required. Also set automatically when a required validation rule is present, but the prop allows explicit control.",
+		},
 	],
 	slots: [
 		{

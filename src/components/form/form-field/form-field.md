@@ -109,6 +109,13 @@ Ensure that the provided value matches `regexp`.
 
 Each entry can also be a function `(value, formData)` instead of an object rule. This is an escape hatch for custom logic not covered by the built-in rules. Unlike object rules, function shorthand does not auto-detect the `required` attribute; set the `required` prop on `form-field` if needed.
 
+### `required`
+
+- type: `boolean`
+- default: `false`
+
+Whether this field is required. When `true`, the `required` attribute is added to the underlying input. This is also set automatically when a `required` validation rule is present.
+
 The return value determines the outcome:
 
 - `true` or any truthy non-string — valid.
@@ -116,6 +123,20 @@ The return value determines the outcome:
 - A non-empty array of strings — invalid; each string becomes an error message.
 
 Always return meaningful error messages.
+
+### `inputAttributes`
+
+- type: `object`
+- default: `null`
+
+Any additional attributes to pass to the input itself, such as `autocomplete` or `aria-labelledby`.
+
+### `required`
+
+- type: `boolean`
+- default: `false`
+
+Whether this field is required. When `true`, the `required` attribute is added to the underlying input and the label's required indicator is shown. This is also set automatically when a `required` validation rule is present, but the prop allows explicit control — useful when using function shorthand or when validation rules don't include `required`.
 
 ### Additional props
 

@@ -112,6 +112,16 @@ const props = defineProps({
 		type: Object,
 		default: null,
 	},
+
+	/**
+	 * Whether this field is required. When `true`, the `required` attribute is
+	 * added to the underlying input. This is also set automatically when a
+	 * `required` validation rule is present.
+	 */
+	required: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 const model = defineModel();
@@ -213,21 +223,21 @@ const fieldProps = computed(() => {
 // Any additional props to provide to the input based on current validation
 // rules.
 const propsForValidation = computed(() => {
-	if (!isNonEmptyArray(props.validation)) {
-		return {};
-	}
-
 	const additionalProps = {};
 
-	props.validation.forEach((rule) => {
-		switch (rule.rule) {
-			case "required":
-				additionalProps.required = true;
-				additionalProps.inputAttributes = { required: true };
+	// Explicit `required` prop takes effect directly.
+	if (props.required) {
+		additionalProps.required = true;
+	}
 
-				break;
-		}
-	});
+	// Auto-detect `required` from validation rules.
+	if (isNonEmptyArray(props.validation)) {
+		props.validation.forEach((rule) => {
+			if (rule.rule === "required") {
+				additionalProps.required = true;
+			}
+		});
+	}
 
 	return additionalProps;
 });

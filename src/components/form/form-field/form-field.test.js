@@ -128,7 +128,6 @@ describe("form-field", () => {
 				expect(vm.fieldProps).toEqual({
 					required: true,
 					id: expect.any(String),
-					inputAttributes: { required: true },
 				});
 			});
 
@@ -143,7 +142,7 @@ describe("form-field", () => {
 				expect(vm.fieldProps).toEqual({
 					required: true,
 					id: expect.any(String),
-					inputAttributes: { required: true, type: "email" },
+					inputAttributes: { type: "email" },
 				});
 			});
 
@@ -159,7 +158,7 @@ describe("form-field", () => {
 				expect(vm.fieldProps).toEqual({
 					required: true,
 					id: expect.any(String),
-					inputAttributes: { required: true, type: "email", "aria-labelledby": "id-123" },
+					inputAttributes: { type: "email", "aria-labelledby": "id-123" },
 				});
 			});
 		});
@@ -181,8 +180,42 @@ describe("form-field", () => {
 
 				expect(vm.propsForValidation).toEqual({
 					required: true,
-					inputAttributes: { required: true },
 				});
+			});
+
+			test("should add props for `required` prop", () => {
+				const wrapper = mount({
+					required: true,
+				});
+
+				const vm = wrapper.vm;
+
+				expect(vm.propsForValidation).toEqual({
+					required: true,
+				});
+			});
+
+			test("should add props when both `required` prop and validation rule are present", () => {
+				const wrapper = mount({
+					required: true,
+					validation: [{ rule: "required", message: "Validation message" }],
+				});
+
+				const vm = wrapper.vm;
+
+				expect(vm.propsForValidation).toEqual({
+					required: true,
+				});
+			});
+
+			test("should not add required props when `required` prop is false and no validation rule", () => {
+				const wrapper = mount({
+					required: false,
+				});
+
+				const vm = wrapper.vm;
+
+				expect(vm.propsForValidation).toEqual({});
 			});
 		});
 

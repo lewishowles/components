@@ -226,6 +226,24 @@
 
 				<code-block v-bind="{ code: validationFunction }" />
 
+				<component-prop id="prop-required">
+					<template #name>required</template>
+
+					<template #type>Boolean</template>
+
+					<template #default-value>false</template>
+
+					<p>
+						Whether this field is required. When
+						<code>true</code>
+						, the
+						<code>required</code>
+						attribute is added to the underlying input. This is also set automatically when a
+						<code>required</code>
+						validation rule is present.
+					</p>
+				</component-prop>
+
 				<h3>Additional props</h3>
 
 				<p>
