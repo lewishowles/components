@@ -103,9 +103,7 @@
 					attribute to the field automatically.
 				</p>
 
-				<code-block>
-					[{ rule: "required", message: "Enter your name so we know what to call you" }]
-				</code-block>
+				<code-block v-bind="{ code: validationRequired }" />
 
 				<h4 id="validation-email">email</h4>
 
@@ -116,9 +114,7 @@
 					email address is through verification.
 				</p>
 
-				<code-block>
-					[{ rule: "email", message: "We need an email address to set up your account" }]
-				</code-block>
+				<code-block v-bind="{ code: validationEmail }" />
 
 				<h4 id="validation-size">size</h4>
 
@@ -130,9 +126,7 @@
 					strings the integer value of the string is used.
 				</p>
 
-				<code-block>
-					[{ rule: "size", size: 11, message: "Your phone number should be 11 digits long" }]
-				</code-block>
+				<code-block v-bind="{ code: validationSize }" />
 
 				<h4 id="validation-min">min</h4>
 
@@ -144,9 +138,7 @@
 					rule.
 				</p>
 
-				<code-block>
-					[{ rule: "min", min: 11, message: "Your phone number should be at least 11 digits long" }]
-				</code-block>
+				<code-block v-bind="{ code: validationMin }" />
 
 				<h4 id="validation-max">max</h4>
 
@@ -158,10 +150,7 @@
 					rule.
 				</p>
 
-				<code-block>
-					[{ rule: "max", max: 11, message: "Your phone number should be no more than 11 digits
-					long" }]
-				</code-block>
+				<code-block v-bind="{ code: validationMax }" />
 
 				<h4 id="validation-max">between</h4>
 
@@ -175,10 +164,7 @@
 					rule.
 				</p>
 
-				<code-block>
-					[{ rule: "between", min: 5, max: 8, message: "Your post code should be between 5 and 8
-					characters" }]
-				</code-block>
+				<code-block v-bind="{ code: validationBetween }" />
 
 				<h4 id="validation-in">in</h4>
 
@@ -188,9 +174,7 @@
 					.
 				</p>
 
-				<code-block>
-					[{ rule: "in", options: ["a", "b", "c"], message: "Your choice should be a, b, or c" }]
-				</code-block>
+				<code-block v-bind="{ code: validationIn }" />
 
 				<h4 id="validation-not-in">not_in</h4>
 
@@ -200,10 +184,7 @@
 					.
 				</p>
 
-				<code-block>
-					[{ rule: "not_in", options: ["a", "b", "c"], message: "Your choice should not include a,
-					b, or c" }]
-				</code-block>
+				<code-block v-bind="{ code: validationNotIn }" />
 
 				<h4 id="validation-regexp">regexp</h4>
 
@@ -213,10 +194,7 @@
 					.
 				</p>
 
-				<code-block>
-					[{ rule: "regexp", regexp: /[abc]+/, message: "Your ID should only contain the letters a,
-					b, and c" }]
-				</code-block>
+				<code-block v-bind="{ code: validationRegexp }" />
 
 				<h3>Additional props</h3>
 
@@ -344,4 +322,14 @@ import PlaygroundFormFieldRadioGroup from "./fragments/playground-form-field-rad
 import PlaygroundFormFieldSelect from "./fragments/playground-form-field-select.vue";
 import PlaygroundFormFieldText from "./fragments/playground-form-field-text.vue";
 import PlaygroundFormFieldTextarea from "./fragments/playground-form-field-textarea.vue";
+
+const validationRequired = `[{ rule: "required", message: "Enter your name so we know what to call you" }]`;
+const validationEmail = `[{ rule: "email", message: "We need an email address to set up your account" }]`;
+const validationSize = `[{ rule: "size", size: 11, message: "Your phone number should be 11 digits long" }]`;
+const validationMin = `[{ rule: "min", min: 11, message: "Your phone number should be at least 11 digits long" }]`;
+const validationMax = `[{ rule: "max", max: 11, message: "Your phone number should be no more than 11 digits long" }]`;
+const validationBetween = `[{ rule: "between", min: 5, max: 8, message: "Your post code should be between 5 and 8 characters" }]`;
+const validationIn = `[{ rule: "in", options: ["a", "b", "c"], message: "Your choice should be a, b, or c" }]`;
+const validationNotIn = `[{ rule: "not_in", options: ["a", "b", "c"], message: "Your choice should not include a, b, or c" }]`;
+const validationRegexp = `[{ rule: "regexp", regexp: /[abc]+/, message: "Your ID should only contain the letters a, b, and c" }]`;
 </script>

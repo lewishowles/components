@@ -31,7 +31,9 @@
 		<p>
 			The styles are built with Tailwind, so your project needs Tailwind (version 4) as well. Import
 			the library styles so component CSS and generated utility classes are available in your
-			Tailwind entry stylesheet:
+			Tailwind entry stylesheet.
+			<strong>At its simplest, with no custom CSS, this is all you need</strong>
+			:
 		</p>
 
 		<code-block :code="sourceExample" />

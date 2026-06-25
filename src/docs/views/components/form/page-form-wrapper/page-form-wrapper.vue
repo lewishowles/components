@@ -52,10 +52,7 @@
 					not cleared automatically when field values change.
 				</p>
 
-				<code-block>
-					const fieldErrors = { date: "The date must be in the future", email: ["The email address
-					provided already exists"], };
-				</code-block>
+				<code-block v-bind="{ code: fieldErrorsExample }" />
 			</component-prop>
 
 			<component-prop id="prop-submit-errors-callback">
@@ -414,6 +411,8 @@
 
 <script setup>
 import PlaygroundFormWrapper from "./fragments/playground-form-wrapper.vue";
+
+const fieldErrorsExample = `const fieldErrors = { date: "The date must be in the future", email: ["The email address provided already exists"], };`;
 
 const rulesExample = `const rules = {
 	confirmPassword: [{ rule: "same", field: "password", message: "Passwords must match" }],

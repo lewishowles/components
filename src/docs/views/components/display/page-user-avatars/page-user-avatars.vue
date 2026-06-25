@@ -23,10 +23,7 @@
 					follows:
 				</p>
 
-				<code-block>
-					[{ name: &quot;Sophie Wardhaugh&quot;, initials: &quot;SW&quot;, avatar:
-					&quot;/absolute/path/to/avatar&quot; }]
-				</code-block>
+				<code-block v-bind="{ code: usersExample }" />
 
 				<p>
 					Any of the information can be omitted, and the component will do its best to compensate.
@@ -153,4 +150,6 @@
 import PlaygroundUserAvatars from "./fragments/playground-user-avatars.vue";
 import PlaygroundUserAvatarsNoImages from "./fragments/playground-user-avatars-no-images.vue";
 import PlaygroundUserAvatarsLimit from "./fragments/playground-user-avatars-limit.vue";
+
+const usersExample = `[{ name: "Sophie Wardhaugh", initials: "SW", avatar: "/absolute/path/to/avatar" }]`;
 </script>
