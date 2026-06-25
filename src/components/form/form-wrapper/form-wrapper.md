@@ -59,7 +59,7 @@ Additional classes passed to the inner `form-layout`.
 - type: `object`
 - default: `{}`
 
-Form-level validation rules, keyed by field name. Each value is an array of rules in the same shape as `form-field`'s own `validation`, but run against the full form data on submit. This is useful both for keeping validation contained and not spread across fields, but it also allows validation that relies on other fields.
+Form-level validation rules, keyed by field name. Each value is an array of rules in the same shape as `form-field`'s own `validation`, supporting both object rules and function shorthand, but run against the full form data on submit. This is useful both for keeping validation contained and not spread across fields, but it also allows validation that relies on other fields.
 
 ```js
 const rules = {

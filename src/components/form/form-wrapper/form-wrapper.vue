@@ -101,11 +101,16 @@ import {
 	watch,
 } from "vue";
 
+import {
+	normaliseValidation,
+	validateFunctionRules,
+} from "@/components/form/form-field/normalise-validation.js";
+
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
-import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { validateField as validateFormField } from "@lewishowles/helpers/form";
 
 const props = defineProps({
@@ -385,7 +390,16 @@ function validateFormLevelRules() {
 				continue;
 			}
 
-			const { errors: fieldErrors } = validateFormField(fieldName, fieldRules, formData.value);
+			const { objectRules, functionRules } = normaliseValidation(fieldRules);
+			const { errors: objectErrors } = validateFormField(fieldName, objectRules, formData.value);
+
+			const functionRuleErrors = validateFunctionRules(
+				functionRules,
+				formData.value[fieldName],
+				formData.value,
+			);
+
+			const fieldErrors = [...objectErrors, ...functionRuleErrors];
 
 			if (isNonEmptyArray(fieldErrors)) {
 				errors[fieldName] = fieldErrors;

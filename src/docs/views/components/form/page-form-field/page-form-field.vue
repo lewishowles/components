@@ -196,6 +196,36 @@
 
 				<code-block v-bind="{ code: validationRegexp }" />
 
+				<h4 id="validation-function">Function shorthand</h4>
+
+				<p>
+					Each validation entry can also be a function
+					<code>(value, formData)</code>
+					instead of an object rule. This is an escape hatch for custom logic not covered by the
+					built-in rules. Unlike object rules, function shorthand does not auto-detect the
+					<code>required</code>
+					attribute; set the
+					<code>required</code>
+					prop on
+					<code>form-field</code>
+					if needed.
+				</p>
+
+				<p>The return value determines the outcome:</p>
+
+				<ul>
+					<li>
+						<code>true</code>
+						or any truthy non-string: valid.
+					</li>
+					<li>A non-empty string: invalid; the string is used as the error message.</li>
+					<li>A non-empty array of strings: invalid; each string becomes an error message.</li>
+				</ul>
+
+				<p>Always return meaningful error messages.</p>
+
+				<code-block v-bind="{ code: validationFunction }" />
+
 				<h3>Additional props</h3>
 
 				<p>
@@ -332,4 +362,9 @@ const validationBetween = `[{ rule: "between", min: 5, max: 8, message: "Your po
 const validationIn = `[{ rule: "in", options: ["a", "b", "c"], message: "Your choice should be a, b, or c" }]`;
 const validationNotIn = `[{ rule: "not_in", options: ["a", "b", "c"], message: "Your choice should not include a, b, or c" }]`;
 const validationRegexp = `[{ rule: "regexp", regexp: /[abc]+/, message: "Your ID should only contain the letters a, b, and c" }]`;
+
+const validationFunction = `[
+	(v) => !!v || "Enter your name",
+	(v) => /^[a-z]+$/i.test(v) || "Name must only contain letters",
+]`;
 </script>

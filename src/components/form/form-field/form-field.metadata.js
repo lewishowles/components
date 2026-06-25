@@ -34,7 +34,7 @@ export const formFieldMetadata = {
 			type: "array",
 			default: "[]",
 			summary:
-				"Validation rules applied on submit. Each entry is { rule, message?, ...ruleOptions }.",
+				"Validation rules applied on submit. Each entry is either { rule, message?, ...ruleOptions } or a function (value, formData) returning true for valid, false or a string for invalid.",
 		},
 		{
 			name: "inputAttributes",

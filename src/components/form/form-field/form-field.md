@@ -47,7 +47,7 @@ The name of the field. This is required when used within a `form-wrapper` compon
 
 Any validation to apply to the field. This is used with the externally-facing `validate` function, as well as applying attributes to the field as necessary, such as `required`.
 
-Each entry in validation requires at least a `rule`, outlining the type of validation, and a `message`, which is used if validation fails. Available rules and properties include:
+Each entry can be either an object `{ rule, message?, ...ruleOptions }` or a function `(value, formData)` (see Function shorthand below). Available object rules include:
 
 #### `required`
 
@@ -102,6 +102,20 @@ Ensure that the given value is not included within `options`.
 `[{ rule: "regexp", regexp: /[abc]+/, message: "Your ID should only contain the letters a, b, and c" }]`
 
 Ensure that the provided value matches `regexp`.
+
+#### Function shorthand
+
+`[(value) => isNonEmptyString(value) || "Enter your name"]`
+
+Each entry can also be a function `(value, formData)` instead of an object rule. This is an escape hatch for custom logic not covered by the built-in rules. Unlike object rules, function shorthand does not auto-detect the `required` attribute; set the `required` prop on `form-field` if needed.
+
+The return value determines the outcome:
+
+- `true` or any truthy non-string — valid.
+- A non-empty string — invalid; the string is used as the error message.
+- A non-empty array of strings — invalid; each string becomes an error message.
+
+Always return meaningful error messages.
 
 ### Additional props
 

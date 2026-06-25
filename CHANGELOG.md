@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### `form-field`
+
+Validation rules now support function shorthand alongside the existing object rules. Each entry can be a function `(value, formData)` that returns `true` for valid, a string for a single error, or an array of strings for multiple errors. This is an escape hatch for custom logic not covered by the built-in rules.
+
 ### `data-table`
 
 Now only searches data with a defined column, avoiding searches looking into columns like `id`. To search a column without displaying it, set `column_key: { hidden: true }`.

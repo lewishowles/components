@@ -51,6 +51,7 @@ import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { validateField as validateFormField } from "@lewishowles/helpers/form";
+import { normaliseValidation, validateFunctionRules } from "./normalise-validation.js";
 
 import useInputId from "@/components/form/composables/use-input-id/use-input-id";
 
@@ -280,9 +281,11 @@ function validateField(fieldName, formData) {
 		return true;
 	}
 
-	const { errors } = validateFormField(fieldName, props.validation, formData);
+	const { objectRules, functionRules } = normaliseValidation(props.validation);
+	const { errors } = validateFormField(fieldName, objectRules, formData);
+	const functionRuleErrors = validateFunctionRules(functionRules, formData[fieldName], formData);
 
-	validationMessages.value = errors;
+	validationMessages.value = [...errors, ...functionRuleErrors];
 
 	return validationMessages.value;
 }
