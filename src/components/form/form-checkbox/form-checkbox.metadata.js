@@ -29,6 +29,12 @@ export const formCheckboxMetadata = {
 			summary: "Whether this field is required.",
 		},
 		{
+			name: "showOptionalIndicator",
+			type: "boolean",
+			default: true,
+			summary: "Whether to show optional text when the field is not required.",
+		},
+		{
 			name: "indeterminate",
 			type: "boolean",
 			default: false,
