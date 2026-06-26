@@ -113,7 +113,11 @@
 							<tr class="border-border-strong border-b">
 								<th v-if="enableSelection" scope="col" class="w-px px-4">
 									<form-checkbox
-										v-bind="{ displayLabel: false, indeterminate: selectAllIndeterminate }"
+										v-bind="{
+											displayLabel: false,
+											indeterminate: selectAllIndeterminate,
+											showOptionalIndicator: false,
+										}"
 										v-model="selectAllRows"
 										class="shrink"
 										data-test="data-table-select-all-rows"
@@ -195,7 +199,11 @@
 							>
 								<td v-if="enableSelection" class="px-4">
 									<form-checkbox
-										v-bind="{ displayLabel: false, inputAttributes: { value: getRowId(row) } }"
+										v-bind="{
+											displayLabel: false,
+											inputAttributes: { value: getRowId(row) },
+											showOptionalIndicator: false,
+										}"
 										v-model="selectedRowIds"
 										class="shrink"
 										data-test="data-table-select-row"

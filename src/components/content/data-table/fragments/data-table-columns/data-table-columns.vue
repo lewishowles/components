@@ -4,6 +4,7 @@
 			v-for="column in columns"
 			:key="column.key"
 			v-model="columnVisibility[column.key]"
+			:show-optional-indicator="false"
 			class="px-4 py-1"
 			data-test="data-table-columns-checkbox"
 		>

@@ -24,7 +24,7 @@ test.describe("form-input", () => {
 
 		const labelElement = formInput.getByTestId("form-label");
 
-		await expect(labelElement).toHaveText("Your name");
+		await expect(labelElement).toHaveText("Your name(optional)");
 		await expect(labelElement).toHaveAttribute("for", "id-abc");
 	});
 

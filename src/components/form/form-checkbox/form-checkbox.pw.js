@@ -24,7 +24,7 @@ test.describe("form-checkbox", () => {
 
 		await expect(inputElement).toHaveAttribute("id", "id-abc");
 		await expect(inputElement).toHaveAttribute("type", "checkbox");
-		await expect(labelElement).toHaveText("Your name");
+		await expect(labelElement).toHaveText("Your name(optional)");
 		await expect(labelElement).toHaveAttribute("for", "id-abc");
 	});
 

@@ -19,7 +19,7 @@ test.describe("star-rating", () => {
 
 		await expect(starRating).toBeVisible();
 		await expect(labels).toHaveCount(6);
-		await expect(labels.nth(0)).toHaveText("Rate your experience");
+		await expect(labels.nth(0)).toHaveText("Rate your experience(optional)");
 		await expect(labels.nth(1)).toContainText("1");
 		await expect(labels.nth(2)).toContainText("2");
 		await expect(labels.nth(3)).toContainText("3");

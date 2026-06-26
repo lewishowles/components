@@ -2,7 +2,7 @@
 	<div class="flex items-end gap-4" data-test="data-table-search">
 		<form-input
 			ref="searchQueryInput"
-			v-bind="{ placeholder: searchPlaceholder }"
+			v-bind="{ placeholder: searchPlaceholder, showOptionalIndicator: false }"
 			v-model="searchQuery"
 			class="w-full max-w-sm"
 			data-test="data-table-search-input"

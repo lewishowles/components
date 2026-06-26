@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Explicitly scan src/ for class names. In Playwright CT, the module graph
+ * only includes the CSS entry at first — component .vue files are imported
+ * dynamically by the mount mechanism, so Tailwind's auto-detection misses them. */
+@source "../../";
+
 @import "./theme.css";
 @import "./buttons.css";
 @import "./form.css";

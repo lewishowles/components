@@ -29,7 +29,7 @@
 
 			<form-label
 				:class="{ 'sr-only': !displayLabel }"
-				v-bind="{ id: inputId, styled: false, required }"
+				v-bind="{ id: inputId, styled: false, required, showOptionalIndicator }"
 				data-part="label"
 			>
 				<slot />
@@ -102,6 +102,14 @@ const props = defineProps({
 	required: {
 		type: Boolean,
 		default: false,
+	},
+
+	/**
+	 * Whether to show optional text when the field is not required.
+	 */
+	showOptionalIndicator: {
+		type: Boolean,
+		default: true,
 	},
 
 	/**

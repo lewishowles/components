@@ -94,7 +94,7 @@ test.describe("notification fragments", () => {
 					});
 
 					await expect(page.getByTestId(`${fragment.name}-date`)).toBeVisible();
-					await expect(page.getByTestId(`${fragment.name}-date`)).toHaveText("29/03/2025");
+					await expect(page.getByTestId(`${fragment.name}-date`)).toHaveText("29 Mar 2025");
 				});
 
 				test("the date format can be customised", async ({ mount, page }) => {
@@ -117,7 +117,7 @@ test.describe("notification fragments", () => {
 						},
 					});
 
-					await expect(page.getByTestId(`${fragment.name}-date`)).toHaveText("29.3.2025");
+					await expect(page.getByTestId(`${fragment.name}-date`)).toHaveText("29.03.2025");
 				});
 			});
 

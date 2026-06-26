@@ -22,7 +22,7 @@ test.describe("form-textarea", () => {
 		const labelElement = formTextarea.getByTestId("form-label");
 
 		await expect(textareaElement).toHaveAttribute("id", "id-abc");
-		await expect(labelElement).toHaveText("Your name");
+		await expect(labelElement).toHaveText("Your name(optional)");
 		await expect(labelElement).toHaveAttribute("for", "id-abc");
 	});
 
