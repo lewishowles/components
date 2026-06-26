@@ -209,6 +209,12 @@ const fieldProps = computed(() => {
 
 	const attributeGroups = [baseProps, propsForValidation.value];
 
+	// Pass the field name through to group components that need it for
+	// pre-fill behaviour and input naming.
+	if (["radio-group", "checkbox-group"].includes(fieldType.value) && isNonEmptyString(props.name)) {
+		attributeGroups.push({ name: props.name });
+	}
+
 	if (props.inputAttributes) {
 		attributeGroups.push({ inputAttributes: props.inputAttributes });
 	}

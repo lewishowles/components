@@ -15,6 +15,14 @@ describe("form-radio-group", () => {
 		});
 	});
 
+	test("should pre-fill the internal model when provided an initial model value and name", () => {
+		const wrapper = mount({
+			props: { name: "flavour", modelValue: "chocolate" },
+		});
+
+		expect(wrapper.vm.internalModel).toEqual({ flavour: "chocolate" });
+	});
+
 	test("should update the internal model when provided a new model value", async () => {
 		const wrapper = mount();
 		const vm = wrapper.vm;
@@ -41,6 +49,14 @@ describe("form-radio-group", () => {
 	});
 
 	describe("Props", () => {
+		describe("name", () => {
+			test("passes name to the input group", () => {
+				const wrapper = mount({ props: { name: "flavour" } });
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("name")).toBe("flavour");
+			});
+		});
+
 		describe("required", () => {
 			test("passes required to the input group", () => {
 				const wrapper = mount({ props: { required: true } });

@@ -16,6 +16,12 @@ export const formCheckboxGroupMetadata = {
 			default: false,
 			summary: "Whether this field is required.",
 		},
+		{
+			name: "name",
+			type: "string",
+			default: null,
+			summary: "A name for this checkbox group. If not set, the input ID is used.",
+		},
 	],
 	slots: [
 		{

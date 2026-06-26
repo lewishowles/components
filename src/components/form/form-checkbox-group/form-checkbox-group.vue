@@ -2,7 +2,7 @@
 	<form-input-group
 		ref="input-group"
 		v-model="internalModel"
-		v-bind="{ type: 'checkbox', required }"
+		v-bind="{ type: 'checkbox', required, name }"
 		data-component="form-checkbox-group"
 		data-test="form-checkbox-group"
 	>
@@ -49,6 +49,14 @@ const props = defineProps({
 	required: {
 		type: Boolean,
 		default: false,
+	},
+
+	/**
+	 * A name for this checkbox group. If not set, the input ID is used.
+	 */
+	name: {
+		type: String,
+		default: null,
 	},
 });
 

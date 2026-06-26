@@ -2,7 +2,7 @@
 	<form-input-group
 		ref="input-group"
 		v-model="internalModel"
-		v-bind="{ type: 'radio', required }"
+		v-bind="{ type: 'radio', required, name }"
 		data-component="form-radio-group"
 		data-test="form-radio-group"
 	>
@@ -54,6 +54,14 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+
+	/**
+	 * A name for this radio group. If not set, the input ID is used.
+	 */
+	name: {
+		type: String,
+		default: null,
+	},
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -61,8 +69,13 @@ const inputGroupRef = useTemplateRef("input-group");
 // The model provided by the input group, which we intend to transform.
 const internalModel = ref({});
 
-// The field name of our input, determined by the model provided by the parent.
+// The field name of our input, preferring the provided name prop, falling
+// back to deriving it from the internal model's keys.
 const fieldName = computed(() => {
+	if (isNonEmptyString(props.name)) {
+		return props.name;
+	}
+
 	if (!isNonEmptyObject(internalModel.value)) {
 		return null;
 	}
@@ -100,6 +113,7 @@ watch(
 
 		internalModel.value = { [fieldName.value]: props.modelValue };
 	},
+	{ immediate: true },
 );
 
 function triggerFocus() {
