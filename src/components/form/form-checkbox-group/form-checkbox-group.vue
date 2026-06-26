@@ -105,6 +105,7 @@ watch(
 
 		internalModel.value = objectValues;
 	},
+	{ immediate: true },
 );
 
 function triggerFocus() {

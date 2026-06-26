@@ -26,6 +26,14 @@ describe("form-checkbox-group", () => {
 		expect(vm.internalModel).toEqual({ chocolate: true, banana: true, strawberry: true });
 	});
 
+	test("should initialise the internal model when provided an initial model value", () => {
+		const wrapper = mount({
+			props: { modelValue: ["banana", "coconut"] },
+		});
+
+		expect(wrapper.vm.internalModel).toEqual({ banana: true, coconut: true });
+	});
+
 	test("should emit a new model value when the internal model updates", async () => {
 		const wrapper = mount();
 		const vm = wrapper.vm;
