@@ -73,6 +73,79 @@ test.describe("form-wrapper", () => {
 		});
 	});
 
+	test.describe("status", () => {
+		test("renders a success status message", async ({ mount, page }) => {
+			await mount(FormWrapper, {
+				props: {
+					status: { type: "success", message: "Settings saved." },
+				},
+				slots: { "submit-button-label": "Save" },
+			});
+
+			const statusElement = page.getByTestId("form-wrapper-status");
+
+			await expect(statusElement).toBeVisible();
+			await expect(statusElement).toHaveAttribute("data-state", "success");
+			await expect(statusElement).toContainText("Settings saved.");
+		});
+
+		test("renders an error status message", async ({ mount, page }) => {
+			await mount(FormWrapper, {
+				props: {
+					status: { type: "error", message: "You do not have permission." },
+				},
+				slots: { "submit-button-label": "Save" },
+			});
+
+			const statusElement = page.getByTestId("form-wrapper-status");
+
+			await expect(statusElement).toBeVisible();
+			await expect(statusElement).toHaveAttribute("data-state", "error");
+			await expect(statusElement).toContainText("You do not have permission.");
+		});
+
+		test("renders an info status message", async ({ mount, page }) => {
+			await mount(FormWrapper, {
+				props: {
+					status: { type: "info", message: "Checking availability…" },
+				},
+				slots: { "submit-button-label": "Save" },
+			});
+
+			const statusElement = page.getByTestId("form-wrapper-status");
+
+			await expect(statusElement).toBeVisible();
+			await expect(statusElement).toHaveAttribute("data-state", "info");
+			await expect(statusElement).toContainText("Checking availability…");
+		});
+
+		test("renders multiple status messages", async ({ mount, page }) => {
+			await mount(FormWrapper, {
+				props: {
+					status: {
+						type: "error",
+						message: ["Name is required.", "Email is invalid."],
+					},
+				},
+				slots: { "submit-button-label": "Save" },
+			});
+
+			const statusElement = page.getByTestId("form-wrapper-status");
+
+			await expect(statusElement).toBeVisible();
+			await expect(statusElement).toContainText("Name is required.");
+			await expect(statusElement).toContainText("Email is invalid.");
+		});
+
+		test("does not render when status is not provided", async ({ mount, page }) => {
+			await mount(FormWrapper, {
+				slots: { "submit-button-label": "Save" },
+			});
+
+			await expect(page.getByTestId("form-wrapper-status")).not.toBeAttached();
+		});
+	});
+
 	test.describe("Slots", () => {
 		test("the default slot can be utilised", async ({ mount, page }) => {
 			await mount(FormWrapper, {

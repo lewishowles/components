@@ -14,11 +14,21 @@ Now uses date helpers from `@lewishowles/helpers` v1.1.0. Relative dates use `nu
 
 ### `form-field`
 
-Validation rules now support function shorthand alongside the existing object rules. Each entry can be a function `(value, formData)` that returns `true` for valid, a string for a single error, or an array of strings for multiple errors. This is an escape hatch for custom logic not covered by the built-in rules.
+Validation rules have been moved to `form-wrapper`.
 
 Added a `required` boolean prop, allowing explicit control over the field's required state. This is also set automatically when a `required` validation rule is present.
 
-Validation rule normalisation moved to `@lewishowles/helpers` `validateField`. The local `normalise-validation.js` has been removed; `form-field` and `form-wrapper` now pass raw validation arrays directly to the helper.
+### `form-wrapper`
+
+The `messages` slot has been removed. Use the new `status` prop for success confirmations, permission errors, or session-expiry notices, or the `submit-errors` slot for general submission errors.
+
+Added a `status` prop for form-wide feedback. Accepts `{ type: 'success' | 'error' | 'info', message: string | string[] }` and renders via `alert-message`.
+
+Added `updatePageTitleOnError` (default `true`) and `pageTitleErrorPrefix` (default `"Error:"`) to prefix `document.title` on validation failure. The prefix is removed automatically on a successful submit.
+
+Submission and validation errors now clear on re-submit rather than persisting between attempts.
+
+When only general errors exist (no field-specific errors), focus now moves to the general errors container so screen-reader users always land on visible error content.
 
 ### `data-table`
 

@@ -132,25 +132,22 @@ const { inputId } = useInputId(props.id);
 // case it isn't provided.
 const formWrapperInject = inject("form-wrapper", {});
 // The injection may not be defined, so we get its properties in a safe way.
-const getFieldErrors = formWrapperInject?.getFieldErrors;
+const fieldErrorsFor = formWrapperInject?.fieldErrorsFor;
 const registerField = formWrapperInject?.registerField;
 const updateFieldValue = formWrapperInject?.updateFieldValue;
 // Whether any validation has been provided for this field.
 const haveValidation = computed(() => isNonEmptyArray(props.validation));
-// Any validation messages as a result of the latest validation run.
-const validationMessages = ref([]);
 
-// Parent-owned error messages provided by the form wrapper.
-const externalMessages = computed(() => {
-	if (!isFunction(getFieldErrors)) {
+// All error messages for this field, sourced from the wrapper's single merge
+// point. Returns an empty array when the field is used outside form-wrapper.
+const fieldMessages = computed(() => {
+	if (!isFunction(fieldErrorsFor)) {
 		return [];
 	}
 
-	return getFieldErrors(props.name);
+	return fieldErrorsFor(props.name);
 });
 
-// All messages to show for this field.
-const fieldMessages = computed(() => [...validationMessages.value, ...externalMessages.value]);
 // Whether we have any field messages to show.
 const haveFieldMessages = computed(() => isNonEmptyArray(fieldMessages.value));
 // A reference to the field being rendered.
@@ -274,8 +271,8 @@ onMounted(() => {
 });
 
 /**
- * Validate this field for all provided validation rules. We also keep a record
- * of validation messages so that they can be passed down to the field.
+ * Validate this field for all provided validation rules. Returns the error
+ * messages so form-wrapper can store them centrally.
  *
  * @param  {string}  fieldName
  *     The name of the field to validate, allowing us to retrieve its value from
@@ -284,17 +281,13 @@ onMounted(() => {
  *     The current values of each form field.
  */
 function validateField(fieldName, formData) {
-	validationMessages.value = [];
-
 	if (!haveValidation.value) {
 		return true;
 	}
 
 	const { errors } = validateFormField(fieldName, props.validation, formData);
 
-	validationMessages.value = errors;
-
-	return validationMessages.value;
+	return errors;
 }
 
 /**

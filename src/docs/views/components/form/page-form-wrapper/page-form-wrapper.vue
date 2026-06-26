@@ -230,15 +230,6 @@
 				</table>
 			</component-slot>
 
-			<component-slot id="slot-messages">
-				<template #name>messages</template>
-
-				<p>
-					A placement slot for general form feedback, such as success messages, flash messages, or
-					anything that belongs near the submit button but isn't tied to a specific error state.
-				</p>
-			</component-slot>
-
 			<component-slot id="slot-error-summary-title">
 				<template #name>error-summary-title</template>
 

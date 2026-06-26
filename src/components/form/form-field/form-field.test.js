@@ -8,12 +8,12 @@ import FormInput from "@/components/form/form-input/form-input.vue";
 import FormRadioGroup from "@/components/form/form-radio-group/form-radio-group.vue";
 import FormTextarea from "@/components/form/form-textarea/form-textarea.vue";
 
-const getFieldErrorsMock = vi.fn(() => []);
+const fieldErrorsForMock = vi.fn(() => []);
 const registerFieldMock = vi.fn();
 const defaultProps = { name: "username" };
 
 const provide = {
-	"form-wrapper": { getFieldErrors: getFieldErrorsMock, registerField: registerFieldMock },
+	"form-wrapper": { fieldErrorsFor: fieldErrorsForMock, registerField: registerFieldMock },
 };
 
 const mount = createMount(FormField, { props: defaultProps, global: { provide } });
@@ -259,12 +259,12 @@ describe("form-field", () => {
 		});
 
 		describe("fieldMessages", () => {
-			test("should include parent-owned field errors from the form wrapper", () => {
+			test("should include field errors from the form wrapper", () => {
 				const wrapper = mount({
 					global: {
 						provide: {
 							"form-wrapper": {
-								getFieldErrors: () => ["Enter a different username"],
+								fieldErrorsFor: () => ["Enter a different username"],
 								registerField: registerFieldMock,
 							},
 						},
@@ -274,6 +274,16 @@ describe("form-field", () => {
 				const vm = wrapper.vm;
 
 				expect(vm.fieldMessages).toEqual(["Enter a different username"]);
+			});
+
+			test("should return an empty array when used outside form-wrapper", () => {
+				const wrapper = mount({
+					global: { provide: { "form-wrapper": {} } },
+				});
+
+				const vm = wrapper.vm;
+
+				expect(vm.fieldMessages).toEqual([]);
 			});
 		});
 	});

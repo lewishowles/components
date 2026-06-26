@@ -81,7 +81,7 @@ describe("form-wrapper", () => {
 				});
 			});
 
-			describe("getFieldErrors", () => {
+			describe("fieldErrorsFor", () => {
 				test("Combines parent-owned and adapter errors", () => {
 					const wrapper = mount({
 						props: {
@@ -95,7 +95,38 @@ describe("form-wrapper", () => {
 					vm.registerField({ name: "email", id: "email-id", validateField: () => true });
 					vm.handleSubmitError(new Error("Request failed"));
 
-					expect(vm.getFieldErrors("email")).toEqual(["Parent error", "API error"]);
+					expect(vm.fieldErrorsFor("email")).toEqual(["Parent error", "API error"]);
+				});
+
+				test("Deduplicates identical messages from multiple sources", () => {
+					const wrapper = mount({
+						props: {
+							fieldErrors: { email: "Already taken" },
+							submitErrorsCallback: () => ({ email: "Already taken" }),
+						},
+					});
+
+					const vm = wrapper.vm;
+
+					vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+					vm.handleSubmitError(new Error("Request failed"));
+
+					expect(vm.fieldErrorsFor("email")).toEqual(["Already taken"]);
+				});
+
+				test("Includes field-local validation errors", async () => {
+					const wrapper = mount();
+					const vm = wrapper.vm;
+
+					vm.registerField({
+						name: "email",
+						id: "email-id",
+						validateField: () => ["Enter your email"],
+					});
+
+					await vm.handleFormSubmit();
+
+					expect(vm.fieldErrorsFor("email")).toEqual(["Enter your email"]);
 				});
 			});
 
@@ -123,7 +154,7 @@ describe("form-wrapper", () => {
 					expect(vm.isSubmitting).toBe(false);
 				});
 
-				test("Clears stale field errors on a new submit", async () => {
+				test("Clears all wrapper-owned errors on a new submit", async () => {
 					const onSubmit = vi
 						.fn()
 						.mockReturnValueOnce(Promise.reject(new Error("Request failed")))
@@ -148,6 +179,9 @@ describe("form-wrapper", () => {
 					await vm.handleFormSubmit();
 
 					expect(vm.errorSummary).toEqual([]);
+					expect(vm.fieldValidationErrors).toEqual({});
+					expect(vm.submitErrors).toEqual({});
+					expect(vm.formLevelErrors).toEqual({});
 
 					await flushPromises();
 				});
@@ -238,7 +272,7 @@ describe("form-wrapper", () => {
 				expect(onSubmit).toHaveBeenCalled();
 			});
 
-			test("Includes form-level errors in getFieldErrors so they display beside the field", async () => {
+			test("Includes form-level errors in fieldErrorsFor so they display beside the field", async () => {
 				const wrapper = mount({ props: { rules } });
 				const vm = wrapper.vm;
 
@@ -250,7 +284,22 @@ describe("form-wrapper", () => {
 
 				await vm.handleFormSubmit();
 
-				expect(vm.getFieldErrors("confirmPassword")).toEqual(["Passwords must match"]);
+				expect(vm.fieldErrorsFor("confirmPassword")).toEqual(["Passwords must match"]);
+			});
+
+			test("Exposes fieldValidationErrors via defineExpose", async () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.registerField({
+					name: "email",
+					id: "email-id",
+					validateField: () => ["Enter your email"],
+				});
+
+				await vm.handleFormSubmit();
+
+				expect(vm.fieldValidationErrors).toEqual({ email: ["Enter your email"] });
 			});
 		});
 	});
@@ -345,7 +394,7 @@ describe("form-wrapper", () => {
 		});
 
 		describe("validateFields", () => {
-			test("should not populate `errorSummary` if validation succeeds", () => {
+			test("should not populate errorSummary if validation succeeds", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
@@ -355,9 +404,10 @@ describe("form-wrapper", () => {
 				vm.validateFields();
 
 				expect(vm.errorSummary).toEqual([]);
+				expect(vm.fieldValidationErrors).toEqual({});
 			});
 
-			test("should populate `errorSummary` if validation fails", () => {
+			test("should populate errorSummary if validation fails", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
@@ -366,12 +416,13 @@ describe("form-wrapper", () => {
 
 				vm.validateFields();
 
+				expect(vm.fieldValidationErrors).toEqual({ email: ["Error message"] });
 				expect(vm.errorSummary).toEqual([
 					{ fieldName: "email", id: "email-id", message: "Error message" },
 				]);
 			});
 
-			test("should include parent-owned field errors in `errorSummary`", () => {
+			test("should include parent-owned field errors in errorSummary", () => {
 				const wrapper = mount({
 					props: {
 						fieldErrors: {

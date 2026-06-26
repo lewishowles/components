@@ -43,6 +43,45 @@ function parseApiSubmitErrors(error) {
 }
 ```
 
+### `status`
+
+- type: `object`
+- default: `null`
+
+Form-wide status feedback shown near the submit button in an accessible live region. Use for overall form state such as success confirmation, permission errors, or session expiry. For specific submission failures, use `submitErrorsCallback`.
+
+Shape: `{ type: 'success' | 'error' | 'info', message: string | string[] }`
+
+`message` can be a single string or an array of strings. `success` and `info` use `aria-live="polite"`; `error` uses `role="alert"` for assertive announcement.
+
+```js
+const status = ref(null);
+
+// After a successful save:
+status.value = { type: "success", message: "Settings saved." };
+
+// After a permission error:
+status.value = { type: "error", message: "You do not have permission to do that." };
+```
+
+```html
+<form-wrapper v-bind="{ status }">…</form-wrapper>
+```
+
+### `updatePageTitleOnError`
+
+- type: `boolean`
+- default: `true`
+
+Whether failed validation prefixes `document.title` with `pageTitleErrorPrefix`. Disable this when using router-managed or app-level title handling.
+
+### `pageTitleErrorPrefix`
+
+- type: `string`
+- default: `"Error:"`
+
+Localisable prefix added to `document.title` after failed validation. The prefix is removed automatically on a successful submit.
+
 ### `layoutClasses`
 
 - type: `string`
@@ -117,16 +156,6 @@ Overrides the default general error display near the form's actions. If not prov
 | --------- | ---------- | --------------------------------------------------------------------------------- |
 | `errors`  | `string[]` | General errors produced by `submitErrorsCallback` whose keys don't match a field. |
 
-### `messages`
-
-A placement slot for general form feedback, such as success messages, flash messages, or anything that belongs near the submit button but isn't tied to a specific error state.
-
-```html
-<template #messages>
-	<flash-messages :namespace="FORM_MESSAGES" />
-</template>
-```
-
 ### `error-summary-title`
 
 - default: "There is a problem"
@@ -155,7 +184,15 @@ Resets the submit button's loading state. Call this after your `@submit` handler
 
 ## Provide
 
-Two methods are provided by `form-wrapper` under the "form-wrapper" namespace to allow a field to communicate and update its value.
+Three methods are provided by `form-wrapper` under the "form-wrapper" namespace.
+
+### `fieldErrorsFor(fieldName)`
+
+Returns all error messages for a field, deduplicating identical messages. Combines field-local validation, parent-owned `fieldErrors`, submit callback errors, and form-level `rules` errors into a single array. Used by `form-field` for its error display.
+
+| Parameter   | Type     | Description                       |
+| ----------- | -------- | --------------------------------- |
+| `fieldName` | `string` | The name of the registered field. |
 
 ### `registerField(field)`
 

@@ -29,6 +29,26 @@ export const formWrapperMetadata = {
 			summary:
 				"Form-level validation rules, keyed by field name. Each value is an array of rules in the same shape as `form-field`'s own `validation`, but run against the full form data on submit. Field-local rules run first; form-level errors map to the named field so they display beside the field and in the error summary.",
 		},
+		{
+			name: "status",
+			type: "object",
+			default: null,
+			summary:
+				"Form-wide status feedback shown near the submit button in an accessible live region. Shape: { type: 'success' | 'error' | 'info', message: string | string[] }. Use for overall form state (success confirmation, permission errors, session expiry). For specific submission failures, use submitErrorsCallback.",
+		},
+		{
+			name: "updatePageTitleOnError",
+			type: "boolean",
+			default: true,
+			summary:
+				"Whether failed validation prefixes document.title with pageTitleErrorPrefix. Disable for router-managed or app-level title handling.",
+		},
+		{
+			name: "pageTitleErrorPrefix",
+			type: "string",
+			default: '"Error:"',
+			summary: "Localisable prefix added to document.title after failed validation.",
+		},
 	],
 	slots: [
 		{
@@ -57,11 +77,8 @@ export const formWrapperMetadata = {
 		},
 		{
 			name: "submit-errors",
-			summary: "Custom rendering for general submit errors.",
-		},
-		{
-			name: "messages",
-			summary: "Arbitrary status messages rendered in the actions area.",
+			summary:
+				"Custom rendering for general submit errors. Scoped with errors: string[] — all general errors from submitErrorsCallback.",
 		},
 		{
 			name: "error-summary-title",

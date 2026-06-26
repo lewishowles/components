@@ -55,7 +55,12 @@
 					</p>
 				</alert-message>
 
-				<alert-message v-if="haveSubmitErrorsSlot || haveGeneralSubmitErrors" type="error">
+				<alert-message
+					v-if="haveSubmitErrorsSlot || haveGeneralSubmitErrors"
+					ref="generalErrorsElement"
+					type="error"
+					data-test="form-wrapper-general-errors"
+				>
 					<slot name="submit-errors" v-bind="{ errors: generalSubmitErrors }">
 						<ul v-if="generalSubmitErrors.length > 1" class="list-disc ps-4">
 							<li v-for="(error, index) in generalSubmitErrors" :key="index">
@@ -66,7 +71,19 @@
 					</slot>
 				</alert-message>
 
-				<slot name="messages" />
+				<alert-message
+					v-if="status"
+					v-bind="{ type: status.type, showIcon: false }"
+					class="mb-4"
+					data-test="form-wrapper-status"
+				>
+					<template v-if="Array.isArray(status.message)">
+						<p v-for="(message, index) in status.message" :key="index">{{ message }}</p>
+					</template>
+					<template v-else>
+						{{ status.message }}
+					</template>
+				</alert-message>
 
 				<ui-button
 					v-if="haveSubmitButtonLabel"
@@ -150,6 +167,36 @@ const props = defineProps({
 		type: Object,
 		default: () => ({}),
 	},
+
+	/**
+	 * Form-wide status feedback displayed near the submit button in an
+	 * accessible live region. Use for overall form state such as success
+	 * confirmation, permission errors, or session expiry. For specific
+	 * submission failures, use submitErrorsCallback.
+	 */
+	status: {
+		type: Object,
+		default: null,
+		// Shape: { type: 'success' | 'error' | 'info', message: string | string[] }
+	},
+
+	/**
+	 * Whether failed validation prefixes the page title with
+	 * pageTitleErrorPrefix. Disable when using router-managed or app-level
+	 * title handling.
+	 */
+	updatePageTitleOnError: {
+		type: Boolean,
+		default: true,
+	},
+
+	/**
+	 * Prefix added to document.title after failed validation. Localisable.
+	 */
+	pageTitleErrorPrefix: {
+		type: String,
+		default: "Error:",
+	},
 });
 
 defineEmits(["submit"]);
@@ -177,31 +224,16 @@ const formData = defineModel({
 const formFields = reactive({});
 // Whether we have any form fields registered to the form.
 const haveFormFields = computed(() => isNonEmptyObject(formFields));
-// A holding pot for any validation errors found during validation.
-const validationErrorSummary = ref([]);
+// Field-local validation errors, keyed by field name. Each value is an array
+// of error message strings. Populated during submit from each field's
+// validateField method.
+const fieldValidationErrors = ref({});
 // Errors produced by the `submitErrorsCallback` from a rejected submit.
 const submitErrors = ref({});
 // Errors produced by form-level `rules`, keyed by field name. Populated on
-// submit and surfaced through `getFieldErrors` so they display beside the field
+// submit and surfaced through `fieldErrorsFor` so they display beside the field
 // and in the error summary.
 const formLevelErrors = ref({});
-
-// Parent-owned field errors formatted for the error summary.
-const externalErrorSummary = computed(() => {
-	const errors = [];
-
-	for (const fieldName in formFields) {
-		if (!Object.hasOwn(formFields, fieldName)) {
-			continue;
-		}
-
-		getFieldErrors(fieldName).forEach((message) => {
-			errors.push({ fieldName, id: formFields[fieldName].id, message });
-		});
-	}
-
-	return errors;
-});
 
 // Parsed submit errors whose key doesn't match a registered field, surfaced as
 // general errors rather than field errors.
@@ -226,16 +258,35 @@ const generalSubmitErrors = computed(() => {
 // Whether we have any general (non-field) submit errors to show.
 const haveGeneralSubmitErrors = computed(() => isNonEmptyArray(generalSubmitErrors.value));
 
-// All field errors shown in the error summary.
-const errorSummary = computed(() => [
-	...validationErrorSummary.value,
-	...externalErrorSummary.value,
-]);
+// The stored prefixed page title so the wrapper can restore it after a
+// successful submit.
+const prefixedPageTitle = ref(null);
+
+// All field errors shown in the error summary, computed from a single merge
+// point per field.
+const errorSummary = computed(() => {
+	const errors = [];
+
+	for (const fieldName in formFields) {
+		if (!Object.hasOwn(formFields, fieldName)) {
+			continue;
+		}
+
+		fieldErrorsFor(fieldName).forEach((message) => {
+			errors.push({ fieldName, id: formFields[fieldName].id, message });
+		});
+	}
+
+	return errors;
+});
 
 // Whether our error summary contains any errors.
 const haveErrorSummary = computed(() => isNonEmptyArray(errorSummary.value));
 // The error summary element, allowing us to focus it.
 const errorSummaryElement = ref(null);
+// The general errors container, allowing us to focus it when only general
+// errors are present.
+const generalErrorsElement = ref(null);
 // Whether a form submission is currently in progress.
 const isSubmitting = ref(false);
 
@@ -289,7 +340,7 @@ async function updateFieldValue(name, value) {
 }
 
 provide("form-wrapper", {
-	getFieldErrors,
+	fieldErrorsFor,
 	registerField,
 	updateFieldValue,
 });
@@ -297,7 +348,7 @@ provide("form-wrapper", {
 watch(
 	() => props.fieldErrors,
 	async () => {
-		if (!isNonEmptyArray(externalErrorSummary.value)) {
+		if (!isNonEmptyArray(errorSummary.value)) {
 			return;
 		}
 
@@ -311,9 +362,11 @@ watch(
  * submitting the appropriate event if validation succeeds.
  */
 async function handleFormSubmit() {
-	// Clear any errors from a previous submit so stale errors don't block this
-	// attempt or linger in the summary.
+	// Clear all wrapper-owned errors so stale errors don't block this attempt
+	// or linger in the summary.
 	submitErrors.value = {};
+	fieldValidationErrors.value = {};
+	formLevelErrors.value = {};
 
 	if (!haveFormFields.value) {
 		await doSubmit();
@@ -326,7 +379,8 @@ async function handleFormSubmit() {
 
 	if (haveErrorSummary.value) {
 		resetSubmitButton();
-		await focusErrorSummary();
+		updatePageTitle();
+		await focusAfterFailedSubmit();
 
 		return;
 	}
@@ -335,11 +389,11 @@ async function handleFormSubmit() {
 }
 
 /**
- * Validate each field based on its provided validation function. If any errors
- * are encountered, populate the `errorSummary`.
+ * Validate each field based on its provided validation function, storing
+ * results in fieldValidationErrors keyed by field name.
  */
 function validateFields() {
-	validationErrorSummary.value = [];
+	const errors = {};
 
 	for (const fieldName in formFields) {
 		if (!Object.hasOwn(formFields, fieldName)) {
@@ -358,10 +412,10 @@ function validateFields() {
 			continue;
 		}
 
-		validationResult.forEach((message) => {
-			validationErrorSummary.value.push({ fieldName, id: field.id, message });
-		});
+		errors[fieldName] = validationResult;
 	}
+
+	fieldValidationErrors.value = errors;
 }
 
 /**
@@ -397,18 +451,30 @@ function validateFormLevelRules() {
 }
 
 /**
- * Get all error messages for a field, combining parent-owned errors with any
- * produced by the `submitErrorsCallback` or by form-level `rules`.
+ * Get all error messages for a field, combining field-local validation,
+ * parent-owned, submit callback, and form-level rule errors with deduplication.
+ * This is the single merge point for all field error sources.
  *
  * @param  {string}  fieldName
  *     The field to retrieve error messages for.
  */
-function getFieldErrors(fieldName) {
+function fieldErrorsFor(fieldName) {
+	const seen = new Set();
+
 	return [
+		...normaliseFieldErrors(fieldValidationErrors.value[fieldName]),
 		...normaliseFieldErrors(props.fieldErrors?.[fieldName]),
 		...normaliseFieldErrors(submitErrors.value?.[fieldName]),
-		...normaliseFieldErrors(formLevelErrors.value?.[fieldName]),
-	];
+		...normaliseFieldErrors(formLevelErrors.value[fieldName]),
+	].filter((message) => {
+		if (seen.has(message)) {
+			return false;
+		}
+
+		seen.add(message);
+
+		return true;
+	});
 }
 
 /**
@@ -440,6 +506,60 @@ async function focusErrorSummary() {
 }
 
 /**
+ * Focus the general errors container so keyboard users land at the feedback
+ * after a failed submit with no field errors.
+ */
+async function focusGeneralErrors() {
+	await nextTick();
+
+	callComponentMethod(generalErrorsElement.value, "focus");
+}
+
+/**
+ * After a failed submit, focus the error summary when field errors are
+ * present, or the general errors container when only general errors exist.
+ */
+async function focusAfterFailedSubmit() {
+	if (haveErrorSummary.value) {
+		await focusErrorSummary();
+	} else if (haveGeneralSubmitErrors.value) {
+		await focusGeneralErrors();
+	}
+}
+
+/**
+ * Add the error prefix to the page title after a failed submit. Does not
+ * duplicate an existing prefix.
+ */
+function updatePageTitle() {
+	if (!props.updatePageTitleOnError) {
+		return;
+	}
+
+	const prefix = `${props.pageTitleErrorPrefix} `;
+
+	if (document.title.startsWith(prefix)) {
+		return;
+	}
+
+	prefixedPageTitle.value = `${prefix}${document.title}`;
+	document.title = prefixedPageTitle.value;
+}
+
+/**
+ * Remove the error prefix the wrapper added. Called automatically on
+ * successful submit.
+ */
+function clearPageTitle() {
+	if (!prefixedPageTitle.value) {
+		return;
+	}
+
+	document.title = document.title.slice(props.pageTitleErrorPrefix.length + 1);
+	prefixedPageTitle.value = null;
+}
+
+/**
  * Call the parent's submit handlers directly, tracking any returned Promise to
  * auto-reset the submit button when the async work settles. Mirrors the
  * loadingAuto pattern from ui-button.
@@ -452,6 +572,7 @@ async function doSubmit() {
 
 	try {
 		await Promise.all(handlers.map((handler) => handler(formData.value)));
+		clearPageTitle();
 	} catch (error) {
 		await handleSubmitError(error);
 	} finally {
@@ -460,8 +581,8 @@ async function doSubmit() {
 }
 
 /**
- * Handle a rejected submit Promise. If a `fieldErrorsCallback` is provided and
- * can map the error to field errors, surface those; otherwise re-throw so
+ * Handle a rejected submit Promise. If a `submitErrorsCallback` is provided
+ * and can map the error to field errors, surface those; otherwise re-throw so
  * general failures still reach the parent app.
  *
  * @param  {unknown}  error
@@ -480,7 +601,7 @@ async function handleSubmitError(error) {
 
 	submitErrors.value = parsedErrors;
 
-	await focusErrorSummary();
+	await focusAfterFailedSubmit();
 }
 
 /**
@@ -508,5 +629,5 @@ function focusField(fieldName) {
 	callComponentMethod(formFields[fieldName], "triggerFocus");
 }
 
-defineExpose({ isSubmitting, resetSubmitButton });
+defineExpose({ isSubmitting, resetSubmitButton, fieldValidationErrors });
 </script>
