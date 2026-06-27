@@ -161,6 +161,33 @@ describe("form-field", () => {
 					inputAttributes: { type: "email", "aria-labelledby": "id-123" },
 				});
 			});
+
+			test("should add readonly prop when form-wrapper provides readonly", () => {
+				const wrapper = mount({
+					global: {
+						provide: {
+							"form-wrapper": {
+								fieldErrorsFor: fieldErrorsForMock,
+								registerField: registerFieldMock,
+								isReadonly: { value: true },
+							},
+						},
+					},
+				});
+
+				expect(wrapper.vm.fieldProps).toEqual({
+					id: expect.any(String),
+					readonly: true,
+				});
+			});
+
+			test("should not add readonly prop when form-wrapper does not provide readonly", () => {
+				const wrapper = mount();
+
+				expect(wrapper.vm.fieldProps).toEqual({
+					id: expect.any(String),
+				});
+			});
 		});
 
 		describe("propsForValidation", () => {

@@ -481,5 +481,33 @@ describe("form-wrapper", () => {
 
 			expect(wrapper.vm.isSubmitting).toBe(false);
 		});
+
+		test("exposes readonly", () => {
+			const wrapper = mount({ props: { readonly: true } });
+
+			expect(wrapper.vm.readonly).toBe(true);
+		});
+	});
+
+	describe("aria-busy", () => {
+		test("aria-busy reflects isSubmitting", async () => {
+			const wrapper = mount();
+
+			expect(wrapper.attributes("aria-busy")).toBe("false");
+
+			wrapper.vm.isSubmitting = true;
+			await wrapper.vm.$nextTick();
+
+			expect(wrapper.attributes("aria-busy")).toBe("true");
+		});
+
+		test("aria-busy resets after submit completes", async () => {
+			const onSubmit = vi.fn();
+			const wrapper = mount({ props: { onSubmit } });
+
+			await wrapper.vm.handleFormSubmit();
+
+			expect(wrapper.attributes("aria-busy")).toBe("false");
+		});
 	});
 });

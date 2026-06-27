@@ -3,6 +3,7 @@
 		novalidate
 		data-component="form-wrapper"
 		data-test="form-wrapper"
+		:aria-busy="isSubmitting"
 		@submit.prevent="handleFormSubmit"
 	>
 		<div
@@ -197,6 +198,15 @@ const props = defineProps({
 		type: String,
 		default: "Error:",
 	},
+
+	/**
+	 * When true, all child form-field components become readonly. Use for
+	 * review-mode or read-only forms where the user should not edit values.
+	 */
+	readonly: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 defineEmits(["submit"]);
@@ -289,6 +299,8 @@ const errorSummaryElement = ref(null);
 const generalErrorsElement = ref(null);
 // Whether a form submission is currently in progress.
 const isSubmitting = ref(false);
+// Whether child fields should be readonly, derived from the readonly prop.
+const isReadonly = computed(() => props.readonly);
 
 /**
  * Allow a field to register itself with the form.
@@ -343,6 +355,7 @@ provide("form-wrapper", {
 	fieldErrorsFor,
 	registerField,
 	updateFieldValue,
+	isReadonly,
 });
 
 watch(

@@ -135,6 +135,7 @@ const formWrapperInject = inject("form-wrapper", {});
 const fieldErrorsFor = formWrapperInject?.fieldErrorsFor;
 const registerField = formWrapperInject?.registerField;
 const updateFieldValue = formWrapperInject?.updateFieldValue;
+const isReadonly = formWrapperInject?.isReadonly;
 // Whether any validation has been provided for this field.
 const haveValidation = computed(() => isNonEmptyArray(props.validation));
 
@@ -217,6 +218,11 @@ const fieldProps = computed(() => {
 
 	if (props.inputAttributes) {
 		attributeGroups.push({ inputAttributes: props.inputAttributes });
+	}
+
+	// Cascade form-wrapper readonly to child fields.
+	if (isReadonly?.value) {
+		attributeGroups.push({ readonly: true });
 	}
 
 	return deepMerge(...attributeGroups);
