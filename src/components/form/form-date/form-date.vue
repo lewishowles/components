@@ -132,7 +132,7 @@ const haveValidDate = computed(() => {
 
 	return ["day", "month", "year"].every((part) => {
 		const partValue = date.value[part];
-		const isStringPart = typeof partValue === "string";
+		const isStringPart = isNonEmptyString(partValue);
 		const isNumberPart = isNumber(partValue);
 		const isPositivePart = partValue > 0;
 

@@ -128,8 +128,16 @@ describe("form-date", () => {
 				expect(vm.haveValidDate).toBe(true);
 			});
 
+			test("should reject the default empty date", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.haveValidDate).toBe(false);
+			});
+
 			describe("should reject invalid date part values", () => {
 				test.for([
+					["string (empty)", ""],
 					["boolean (true)", true],
 					["boolean (false)", false],
 					["number (negative)", -1],
@@ -247,6 +255,13 @@ describe("form-date", () => {
 
 			test("should return nothing if the date is invalid", () => {
 				const wrapper = mount({ modelValue: { day: "nine", month: "four", year: "9999" } });
+				const vm = wrapper.vm;
+
+				expect(vm.toString()).toBe("");
+			});
+
+			test("should return nothing for the default empty date", () => {
+				const wrapper = mount();
 				const vm = wrapper.vm;
 
 				expect(vm.toString()).toBe("");
