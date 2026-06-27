@@ -125,7 +125,7 @@
  * simplicity.
  */
 import { computed, ref, useId, useSlots } from "vue";
-import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
+import { head, isNonEmptyArray, range } from "@lewishowles/helpers/array";
 import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
@@ -170,7 +170,7 @@ const readOnlyLabelId = useId();
 // highlighting.
 const highlightedValue = ref(null);
 // The selectable rating options, derived from the maximum value.
-const ratingOptions = computed(() => Array.from({ length: props.max }, (_, i) => i + 1));
+const ratingOptions = computed(() => range(1, props.max));
 // A reference to the inputs, allowing us to trigger focus.
 const inputReferences = ref([]);
 // The element wrapping our options template, which allows us to determine which

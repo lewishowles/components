@@ -122,11 +122,10 @@
 </template>
 
 <script setup>
-import { arrayLength, isNonEmptyArray, pluck } from "@lewishowles/helpers/array";
+import { arrayLength, isNonEmptyArray, partition, pluck } from "@lewishowles/helpers/array";
 import { computed, ref, watch } from "vue";
 import { createReusableTemplate } from "@vueuse/core";
-import { getPathValue, isNonEmptyObject } from "@lewishowles/helpers/object";
-import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { getPathValue } from "@lewishowles/helpers/object";
 import { isNumber } from "@lewishowles/helpers/number";
 import { useNotifications } from "@/composables/use-notifications/use-notifications.js";
 
@@ -289,22 +288,22 @@ const canMarkAllNotificationsRead = computed(
 	() => props.allowMarkAllRead && haveUnreadNotifications.value,
 );
 
-// Notifications that have been pinned, allowing us to display them separately.
-const pinnedNotifications = computed(() =>
-	internalNotifications.value.filter(
+// Notifications split by whether they should be displayed in the pinned section.
+const partitionedNotifications = computed(() =>
+	partition(
+		internalNotifications.value,
 		(notification) => getPathValue(notification, "pinned") === true,
 	),
 );
+
+// Notifications that have been pinned, allowing us to display them separately.
+const pinnedNotifications = computed(() => partitionedNotifications.value[0]);
 
 // Whether any pinned notifications exist.
 const havePinnedNotifications = computed(() => isNonEmptyArray(pinnedNotifications.value));
 
 // Notifications that have not been pinned.
-const unpinnedNotifications = computed(() =>
-	internalNotifications.value.filter(
-		(notification) => getPathValue(notification, "pinned") !== true,
-	),
-);
+const unpinnedNotifications = computed(() => partitionedNotifications.value[1]);
 
 // Whether any unpinned notifications exist.
 const haveUnpinnedNotifications = computed(() => isNonEmptyArray(unpinnedNotifications.value));

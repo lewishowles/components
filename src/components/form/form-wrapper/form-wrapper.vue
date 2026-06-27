@@ -123,7 +123,7 @@ import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
 import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { validateField as validateFormField } from "@lewishowles/helpers/form";
+import { validateForm } from "@lewishowles/helpers/form";
 
 const props = defineProps({
 	/**
@@ -425,29 +425,24 @@ async function validateFields() {
  * summary. Re-runs from scratch on each submit so resolved errors clear.
  */
 async function validateFormLevelRules() {
+	if (!isNonEmptyObject(props.rules)) {
+		formLevelErrors.value = {};
+
+		return;
+	}
+
+	const { results } = await validateForm(props.rules, formData.value);
 	const errors = {};
 
-	if (isNonEmptyObject(props.rules)) {
-		for (const fieldName in props.rules) {
-			if (!Object.hasOwn(props.rules, fieldName)) {
-				continue;
-			}
+	for (const fieldName in results) {
+		if (!Object.hasOwn(results, fieldName)) {
+			continue;
+		}
 
-			const fieldRules = props.rules[fieldName];
+		const fieldErrors = results[fieldName].errors;
 
-			if (!isNonEmptyArray(fieldRules)) {
-				continue;
-			}
-
-			const { errors: fieldErrors } = await validateFormField(
-				fieldName,
-				fieldRules,
-				formData.value,
-			);
-
-			if (isNonEmptyArray(fieldErrors)) {
-				errors[fieldName] = fieldErrors;
-			}
+		if (isNonEmptyArray(fieldErrors)) {
+			errors[fieldName] = fieldErrors;
 		}
 	}
 

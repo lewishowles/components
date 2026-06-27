@@ -71,7 +71,7 @@
 	},
 	"dependencies": {
 		"@clack/prompts": "^1.5.1",
-		"@lewishowles/helpers": "^1.1.0",
+		"@lewishowles/helpers": "^1.4.1",
 		"@vueuse/core": "^14.3.0",
 		"cli-highlight": "^2.1.11",
 		"clsx": "^2.1.1",
@@ -82,7 +82,7 @@
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.3",
 		"@eslint/js": "^10.0.1",
-		"@lewishowles/testing": "^1.0.0",
+		"@lewishowles/testing": "^1.1.0",
 		"@playwright/experimental-ct-vue": "^1.61.0",
 		"@stylistic/eslint-plugin": "^5.10.0",
 		"@tailwindcss/container-queries": "^0.1.1",

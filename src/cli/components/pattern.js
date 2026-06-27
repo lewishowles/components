@@ -1,6 +1,7 @@
 import { PACKAGE_NAME } from "../utils/constants.js";
 import { c } from "../utils/colour.js";
 import { cancel, intro, isCancel, select } from "@clack/prompts";
+import { groupBy } from "@lewishowles/helpers/array";
 import { highlight } from "cli-highlight";
 import { patterns, patternsByName } from "./patterns.js";
 
@@ -94,7 +95,7 @@ export function printPatterns() {
 		return;
 	}
 
-	const grouped = groupByCategory(items);
+	const grouped = groupBy(items, "category");
 
 	console.log(`\n${c.bold("Available patterns")}\n`);
 
@@ -161,7 +162,7 @@ export async function runPattern(rawArguments) {
  */
 async function promptPattern() {
 	const items = getPatternItems();
-	const grouped = groupByCategory(items);
+	const grouped = groupBy(items, "category");
 	const categories = Object.keys(grouped);
 
 	intro(PACKAGE_NAME);
@@ -221,27 +222,6 @@ function getPatternItems() {
 }
 
 /**
- * Groups an array of items by their category, preserving insertion order of
- * categories.
- *
- * @param   {{ category: string }[]}  items
- * @returns {Record<string, object[]>}
- */
-function groupByCategory(items) {
-	const groups = {};
-
-	for (const item of items) {
-		if (!groups[item.category]) {
-			groups[item.category] = [];
-		}
-
-		groups[item.category].push(item);
-	}
-
-	return groups;
-}
-
-/**
  * Capitalises the first character of a string.
  *
  * @param   {string}  string
@@ -251,4 +231,4 @@ function capitalise(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export const _test = { getPatternItems, groupByCategory };
+export const _test = { getPatternItems };

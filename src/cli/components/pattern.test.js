@@ -2,7 +2,7 @@ import { describe, expect, test } from "vite-plus/test";
 import { generatePattern, lookupPattern, parsePatternArguments, _test } from "./pattern.js";
 import { patterns } from "./patterns.js";
 
-const { getPatternItems, groupByCategory } = _test;
+const { getPatternItems } = _test;
 
 describe("parsePatternArguments", () => {
 	test("Returns null name and both flags false when no args are given", () => {
@@ -114,31 +114,5 @@ describe("getPatternItems", () => {
 			expect(item).toHaveProperty("category");
 			expect(item).toHaveProperty("summary");
 		}
-	});
-});
-
-describe("groupByCategory", () => {
-	test("Groups items under their category key", () => {
-		const items = [
-			{ category: "form", name: "login-form", summary: "A login form." },
-			{ category: "form", name: "contact-form", summary: "A contact form." },
-			{ category: "display", name: "stat-card", summary: "A stat card." },
-		];
-
-		const grouped = groupByCategory(items);
-
-		expect(grouped.form).toHaveLength(2);
-		expect(grouped.display).toHaveLength(1);
-	});
-
-	test("Preserves insertion order of categories", () => {
-		const items = [
-			{ category: "form", name: "a", summary: "" },
-			{ category: "display", name: "b", summary: "" },
-		];
-
-		const grouped = groupByCategory(items);
-
-		expect(Object.keys(grouped)).toEqual(["form", "display"]);
 	});
 });

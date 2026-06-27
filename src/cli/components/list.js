@@ -1,5 +1,6 @@
 import { PACKAGE_NAME } from "../utils/constants.js";
 import { c } from "../utils/colour.js";
+import { groupBy } from "@lewishowles/helpers/array";
 import { componentMetadata } from "./index.js";
 
 export function getHelpSection() {
@@ -63,8 +64,6 @@ export function printAllComponents(components) {
  * @returns {Map<string, { name: string, summary: string }[]>}
  */
 function groupByCategory(components) {
-	const map = new Map();
-
 	const sorted = [...components].sort((a, b) => {
 		const categoryOrder = a.category.localeCompare(b.category);
 
@@ -75,17 +74,14 @@ function groupByCategory(components) {
 		return a.name.localeCompare(b.name);
 	});
 
-	for (const component of sorted) {
-		const { category, name, summary } = component;
+	const grouped = groupBy(sorted, "category");
 
-		if (!map.has(category)) {
-			map.set(category, []);
-		}
-
-		map.get(category).push({ name, summary });
-	}
-
-	return map;
+	return new Map(
+		Object.entries(grouped).map(([category, items]) => [
+			category,
+			items.map(({ name, summary }) => ({ name, summary })),
+		]),
+	);
 }
 
 export const _test = { groupByCategory };
