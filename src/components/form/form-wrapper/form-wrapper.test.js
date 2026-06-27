@@ -394,27 +394,27 @@ describe("form-wrapper", () => {
 		});
 
 		describe("validateFields", () => {
-			test("should not populate errorSummary if validation succeeds", () => {
+			test("should not populate errorSummary if validation succeeds", async () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
 				vm.registerField({ name: "name", id: "name-id", validateField: () => true });
 				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
 
-				vm.validateFields();
+				await vm.validateFields();
 
 				expect(vm.errorSummary).toEqual([]);
 				expect(vm.fieldValidationErrors).toEqual({});
 			});
 
-			test("should populate errorSummary if validation fails", () => {
+			test("should populate errorSummary if validation fails", async () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
 				vm.registerField({ name: "name", id: "name-id", validateField: () => true });
 				vm.registerField({ name: "email", id: "email-id", validateField: () => ["Error message"] });
 
-				vm.validateFields();
+				await vm.validateFields();
 
 				expect(vm.fieldValidationErrors).toEqual({ email: ["Error message"] });
 				expect(vm.errorSummary).toEqual([

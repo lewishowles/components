@@ -374,8 +374,8 @@ async function handleFormSubmit() {
 		return;
 	}
 
-	validateFields();
-	validateFormLevelRules();
+	await validateFields();
+	await validateFormLevelRules();
 
 	if (haveErrorSummary.value) {
 		resetSubmitButton();
@@ -392,7 +392,7 @@ async function handleFormSubmit() {
  * Validate each field based on its provided validation function, storing
  * results in fieldValidationErrors keyed by field name.
  */
-function validateFields() {
+async function validateFields() {
 	const errors = {};
 
 	for (const fieldName in formFields) {
@@ -406,7 +406,7 @@ function validateFields() {
 			continue;
 		}
 
-		const validationResult = field.validateField(fieldName, formData.value);
+		const validationResult = await field.validateField(fieldName, formData.value);
 
 		if (!isNonEmptyArray(validationResult)) {
 			continue;
@@ -424,7 +424,7 @@ function validateFields() {
  * append after a field's own messages in both the field display and the error
  * summary. Re-runs from scratch on each submit so resolved errors clear.
  */
-function validateFormLevelRules() {
+async function validateFormLevelRules() {
 	const errors = {};
 
 	if (isNonEmptyObject(props.rules)) {
@@ -439,7 +439,11 @@ function validateFormLevelRules() {
 				continue;
 			}
 
-			const { errors: fieldErrors } = validateFormField(fieldName, fieldRules, formData.value);
+			const { errors: fieldErrors } = await validateFormField(
+				fieldName,
+				fieldRules,
+				formData.value,
+			);
 
 			if (isNonEmptyArray(fieldErrors)) {
 				errors[fieldName] = fieldErrors;

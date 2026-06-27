@@ -286,12 +286,12 @@ onMounted(() => {
  * @param  {object}  formData
  *     The current values of each form field.
  */
-function validateField(fieldName, formData) {
+async function validateField(fieldName, formData) {
 	if (!haveValidation.value) {
 		return true;
 	}
 
-	const { errors } = validateFormField(fieldName, props.validation, formData);
+	const { errors } = await validateFormField(fieldName, props.validation, formData);
 
 	return errors;
 }

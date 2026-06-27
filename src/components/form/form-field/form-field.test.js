@@ -290,11 +290,11 @@ describe("form-field", () => {
 
 	describe("Methods", () => {
 		describe("validateField", () => {
-			test("should pass if no validation is provided", () => {
+			test("should pass if no validation is provided", async () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.validateField()).toBe(true);
+				expect(await vm.validateField()).toBe(true);
 			});
 		});
 	});
