@@ -119,6 +119,27 @@
 					submit, so resolved errors clear automatically.
 				</p>
 			</component-prop>
+
+			<component-prop id="prop-readonly">
+				<template #name>readonly</template>
+
+				<template #type>Boolean</template>
+
+				<template #default-value>false</template>
+
+				<p>
+					When
+					<code>true</code>
+					, all child
+					<code>form-field</code>
+					components become readonly. The
+					<code>readonly</code>
+					attribute is passed through to each field's underlying control. Use for review-mode or
+					read-only forms where the user should not edit values.
+				</p>
+
+				<code-block v-bind="{ code: readonlyExample }" />
+			</component-prop>
 		</component-props>
 
 		<component-slots>
@@ -280,7 +301,7 @@
 		<component-provides>
 			<template #introduction>
 				<p>
-					Two methods are provided by
+					Methods and data are provided by
 					<code>form-wrapper</code>
 					under the
 					<code>form-wrapper</code>
@@ -357,6 +378,20 @@
 					</tbody>
 				</table>
 			</component-provide>
+
+			<component-provide id="provide-is-readonly">
+				<template #name>
+					<code>isReadonly</code>
+				</template>
+
+				<p>
+					A reactive boolean that reflects the
+					<code>readonly</code>
+					prop. Used by
+					<code>form-field</code>
+					to cascade readonly state to underlying controls. Not intended for direct consumer use.
+				</p>
+			</component-provide>
 		</component-provides>
 
 		<component-methods>
@@ -404,6 +439,8 @@
 import PlaygroundFormWrapper from "./fragments/playground-form-wrapper.vue";
 
 const fieldErrorsExample = `const fieldErrors = { date: "The date must be in the future", email: ["The email address provided already exists"], };`;
+
+const readonlyExample = `<form-wrapper v-bind="{ readonly: true }">…</form-wrapper>`;
 
 const rulesExample = `const rules = {
 	confirmPassword: [{ rule: "same", field: "password", message: "Passwords must match" }],

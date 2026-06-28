@@ -114,9 +114,9 @@ Each entry can also be a function `(value, formData)` instead of an object rule.
 - type: `boolean`
 - default: `false`
 
-Whether this field is required. When `true`, the `required` attribute is added to the underlying input. This is also set automatically when a `required` validation rule is present.
+Whether this field is required. When `true`, the `required` attribute is added to the underlying input. This is also set automatically when a `required` validation rule is present, but the prop allows explicit control — useful when using function shorthand or when validation rules don't include `required`.
 
-The return value determines the outcome:
+For function shorthand, the return value determines the outcome:
 
 - `true` or any truthy non-string — valid.
 - A non-empty string — invalid; the string is used as the error message.
@@ -130,13 +130,6 @@ Always return meaningful error messages.
 - default: `null`
 
 Any additional attributes to pass to the input itself, such as `autocomplete` or `aria-labelledby`.
-
-### `required`
-
-- type: `boolean`
-- default: `false`
-
-Whether this field is required. When `true`, the `required` attribute is added to the underlying input and the label's required indicator is shown. This is also set automatically when a `required` validation rule is present, but the prop allows explicit control — useful when using function shorthand or when validation rules don't include `required`.
 
 ### Additional props
 

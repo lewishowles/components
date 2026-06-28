@@ -82,6 +82,17 @@ Whether failed validation prefixes `document.title` with `pageTitleErrorPrefix`.
 
 Localisable prefix added to `document.title` after failed validation. The prefix is removed automatically on a successful submit.
 
+### `readonly`
+
+- type: `boolean`
+- default: `false`
+
+When `true`, all child `form-field` components become readonly. Use for review-mode or read-only forms where the user should not edit values. The `readonly` attribute is passed through to each field's underlying control.
+
+```html
+<form-wrapper v-bind="{ readonly: true }">…</form-wrapper>
+```
+
 ### `layoutClasses`
 
 - type: `string`
@@ -184,7 +195,7 @@ Resets the submit button's loading state. Call this after your `@submit` handler
 
 ## Provide
 
-Three methods are provided by `form-wrapper` under the "form-wrapper" namespace.
+Four values are provided by `form-wrapper` under the "form-wrapper" namespace.
 
 ### `fieldErrorsFor(fieldName)`
 
@@ -213,6 +224,10 @@ Allow a field to update its value in the form.
 | --------- | --------- | -------------------------------- |
 | `name`    | `string`  | The name of the field to update. |
 | `value`   | `unknown` | The value to set.                |
+
+### `isReadonly`
+
+A reactive boolean that reflects the `readonly` prop. Used by `form-field` to cascade readonly state to underlying controls. Not intended for direct consumer use.
 
 ## Styling hooks
 

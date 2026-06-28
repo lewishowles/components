@@ -14,9 +14,13 @@ Now uses date helpers from `@lewishowles/helpers` v1.1.0. Relative dates use `nu
 
 ### `form-field`
 
-Validation rules have been moved to `form-wrapper`.
-
 Added a `required` boolean prop, allowing explicit control over the field's required state. This is also set automatically when a `required` validation rule is present.
+
+Validation entries now support a function shorthand: pass `(value, formData)` directly in the `validation` array. Return `true` for valid, a string for invalid, or `false` for a generic "Invalid" message.
+
+The validation chain is now fully async, making it compatible with Standard Schema validators and async custom rules in a future release. All built-in rules remain synchronous.
+
+When the parent `form-wrapper` has `readonly`, the field automatically passes `readonly` through to its underlying control.
 
 ### `form-wrapper`
 
@@ -29,6 +33,12 @@ Added `updatePageTitleOnError` (default `true`) and `pageTitleErrorPrefix` (defa
 Submission and validation errors now clear on re-submit rather than persisting between attempts.
 
 When only general errors exist (no field-specific errors), focus now moves to the general errors container so screen-reader users always land on visible error content.
+
+Added `:aria-busy="isSubmitting"` on the `<form>` element so assistive technology can detect when a submission is in progress.
+
+Added a `readonly` prop (default `false`) that cascades to all child `form-field` components. Use for review-mode or read-only forms. When `true`, every `form-field` passes `readonly` through to its underlying control.
+
+The validation chain is now fully async, making it compatible with Standard Schema validators and async custom rules in a future release.
 
 ### `data-table`
 

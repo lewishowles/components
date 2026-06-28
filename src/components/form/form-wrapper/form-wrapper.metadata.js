@@ -49,6 +49,13 @@ export const formWrapperMetadata = {
 			default: '"Error:"',
 			summary: "Localisable prefix added to document.title after failed validation.",
 		},
+		{
+			name: "readonly",
+			type: "boolean",
+			default: false,
+			summary:
+				"When true, all child form-field components become readonly. Use for review-mode or read-only forms.",
+		},
 	],
 	slots: [
 		{

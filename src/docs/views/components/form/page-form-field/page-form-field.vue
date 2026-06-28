@@ -9,6 +9,19 @@
 				<code>form-wrapper</code>
 				, allowing a form to be built up quickly and simply.
 			</p>
+
+			<p>
+				When the parent
+				<code>form-wrapper</code>
+				has
+				<code>readonly</code>
+				set to
+				<code>true</code>
+				, the field automatically passes
+				<code>readonly</code>
+				through to its underlying control. This lets you build review-mode or read-only forms
+				without managing each field individually.
+			</p>
 		</template>
 
 		<component-props>
