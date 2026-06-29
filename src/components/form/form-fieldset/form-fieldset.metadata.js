@@ -10,6 +10,12 @@ export const formFieldsetMetadata = {
 			default: "h2",
 			summary: "Heading tag used for the section title.",
 		},
+		{
+			name: "titleClasses",
+			type: "string | array | object",
+			default: "null",
+			summary: "Additional classes merged onto the title element.",
+		},
 	],
 	slots: [
 		{

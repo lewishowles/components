@@ -1,7 +1,7 @@
 <template>
 	<div data-component="form-fieldset" data-test="form-fieldset">
 		<div class="border-border mb-6 flex flex-col gap-4 border-b pb-6">
-			<component :is="headingLevel" class="text-content-strong text-3xl font-bold">
+			<component :is="headingLevel" :class="resolvedTitleClasses">
 				<slot name="title" />
 			</component>
 
@@ -15,7 +15,10 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from "vue";
+import { cn } from "@/utilities/cn.js";
+
+const props = defineProps({
 	/**
 	 * The heading level to use for this fieldset.
 	 */
@@ -23,5 +26,21 @@ defineProps({
 		type: String,
 		default: "h2",
 	},
+
+	/**
+	 * Additional classes to apply to the title, merged on top of the title's
+	 * base styles. Any provided classes that conflict with base classes will
+	 * override as necessary.
+	 */
+	titleClasses: {
+		type: [String, Array, Object],
+		default: null,
+	},
 });
+
+// The resolved title classes, merging the base title styles with any user
+// overrides.
+const resolvedTitleClasses = computed(() =>
+	cn("text-content-strong text-3xl font-bold", props.titleClasses),
+);
 </script>

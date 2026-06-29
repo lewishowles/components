@@ -13,6 +13,21 @@ test.describe("form-fieldset", () => {
 		await expect(page.getByTestId("form-fieldset")).toBeVisible();
 	});
 
+	test.describe("titleClasses", () => {
+		test("merges user-provided titleClasses with defaults", async ({ mount, page }) => {
+			await mountFormFieldset(mount, {
+				props: { titleClasses: "text-4xl text-blue-500" },
+				slots: { title: "Section title" },
+			});
+
+			const heading = page.getByTestId("form-fieldset").locator("h2");
+
+			await expect(heading).toHaveClass(/text-4xl/);
+			await expect(heading).toHaveClass(/text-blue-500/);
+			await expect(heading).not.toHaveClass(/text-3xl/);
+		});
+	});
+
 	test.describe("Styling hooks", () => {
 		test("data-component is set on the root element", async ({ mount, page }) => {
 			await mountFormFieldset(mount);

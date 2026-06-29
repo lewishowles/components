@@ -29,6 +29,13 @@ The content of the fieldset, which will be wrapped in a [form-layout](/src/compo
 
 The heading level to use this fieldset.
 
+### `titleClasses`
+
+- type: `string | array | object`
+- default: `null`
+
+Additional classes to apply to the title, merged on top of the title's base styles. Any provided classes that conflict with base classes will override as necessary.
+
 ## Styling hooks
 
 | Attribute                        | Element | Notes                          |
