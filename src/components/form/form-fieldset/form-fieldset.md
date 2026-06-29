@@ -36,6 +36,13 @@ The heading level to use this fieldset.
 
 Additional classes to apply to the title, merged on top of the title's base styles. Any provided classes that conflict with base classes will override as necessary.
 
+### `layoutClasses`
+
+- type: `string`
+- default: `""`
+
+Additional classes to pass to the inner form-layout, merged via `cn` to resolve Tailwind conflicts. Useful for overriding the default gap.
+
 ## Styling hooks
 
 | Attribute                        | Element | Notes                          |

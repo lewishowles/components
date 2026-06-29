@@ -28,6 +28,20 @@ test.describe("form-fieldset", () => {
 		});
 	});
 
+	test.describe("layoutClasses", () => {
+		test("passes layoutClasses through to the inner form-layout", async ({ mount, page }) => {
+			await mountFormFieldset(mount, {
+				props: { layoutClasses: "gap-y-4" },
+				slots: { default: "Content" },
+			});
+
+			const layout = page.getByTestId("form-layout");
+
+			await expect(layout).toHaveClass(/gap-y-4/);
+			await expect(layout).not.toHaveClass(/gap-y-8/);
+		});
+	});
+
 	test.describe("Styling hooks", () => {
 		test("data-component is set on the root element", async ({ mount, page }) => {
 			await mountFormFieldset(mount);

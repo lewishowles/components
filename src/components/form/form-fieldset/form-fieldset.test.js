@@ -1,8 +1,11 @@
-import { createMount } from "@lewishowles/testing/vue";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
 import FormFieldset from "./form-fieldset.vue";
 
 const mount = createMount(FormFieldset);
+// Deep mount renders child components fully, needed for layoutClasses tests
+// that assert against the inner form-layout's real DOM.
+const mountDeep = createDeepMount(FormFieldset);
 
 describe("form-fieldset", () => {
 	describe("Initialisation", () => {
@@ -34,6 +37,20 @@ describe("form-fieldset", () => {
 			expect(heading.classes()).toContain("text-4xl");
 			expect(heading.classes()).toContain("text-blue-500");
 			expect(heading.classes()).not.toContain("text-3xl");
+		});
+	});
+
+	describe("layoutClasses", () => {
+		test("passes layoutClasses through to the inner form-layout", () => {
+			const wrapper = mountDeep({
+				props: { layoutClasses: "gap-y-4" },
+				slots: { default: "Content" },
+			});
+
+			const layout = wrapper.find('[data-test="form-layout"]');
+
+			expect(layout.classes()).toContain("gap-y-4");
+			expect(layout.classes()).not.toContain("gap-y-8");
 		});
 	});
 });

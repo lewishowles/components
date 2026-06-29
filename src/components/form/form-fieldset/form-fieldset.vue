@@ -8,7 +8,7 @@
 			<slot name="introduction" />
 		</div>
 
-		<form-layout>
+		<form-layout v-bind="{ class: layoutClasses }">
 			<slot />
 		</form-layout>
 	</div>
@@ -35,6 +35,15 @@ const props = defineProps({
 	titleClasses: {
 		type: [String, Array, Object],
 		default: null,
+	},
+
+	/**
+	 * Additional classes to pass to the inner form-layout, merged via `cn` to
+	 * resolve Tailwind conflicts. Useful for overriding the default gap.
+	 */
+	layoutClasses: {
+		type: String,
+		default: "",
 	},
 });
 

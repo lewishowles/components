@@ -16,6 +16,12 @@ export const formFieldsetMetadata = {
 			default: "null",
 			summary: "Additional classes merged onto the title element.",
 		},
+		{
+			name: "layoutClasses",
+			type: "string",
+			default: "",
+			summary: "Additional classes passed to the inner form-layout.",
+		},
 	],
 	slots: [
 		{
