@@ -4,12 +4,7 @@
 		class="flex items-end gap-4"
 		data-test="data-table-toolbar"
 	>
-		<data-table-search
-			v-if="enableSearch"
-			ref="searchComponent"
-			v-model="searchQuery"
-			class="w-full"
-		>
+		<data-table-search v-if="enableSearch" ref="searchComponent" v-model="searchQuery" class="grow">
 			<template #search-label>
 				<slot name="search-label" />
 			</template>
@@ -30,7 +25,6 @@
 		<floating-details
 			v-if="showUserConfiguration"
 			align="end"
-			class="ms-auto"
 			details-classes="min-w-3xs py-2 rounded-lg border"
 			data-test="data-table-display-options"
 		>
