@@ -15,7 +15,7 @@ jobs:
 
     permissions:
       contents: read
-      packages: write
+      id-token: write
 
     steps:
       - name: Checkout code
@@ -28,25 +28,13 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: "24"
-          registry-url: "https://npm.pkg.github.com"
-
-      - name: Write .npmrc for GitHub Packages auth
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
-          echo "@lewishowles:registry=https://npm.pkg.github.com" >> .npmrc
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-
-      - name: Install dependencies
-        run: bun install
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+          registry-url: "https://registry.npmjs.org"
 
       - name: Lint
-        run: bun run lint:check
+        run: bun run lint
 
       - name: Run unit tests
-        run: bun run test:unit:run
+        run: bun run test:unit
 
       - name: Build package
         run: bun run build
@@ -63,7 +51,5 @@ jobs:
       - name: Check types are correct
         run: bun run attw
 
-      - name: Publish to GitHub Packages
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+      - name: Publish to npm
+        run: npm publish --access public

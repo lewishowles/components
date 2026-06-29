@@ -52,18 +52,19 @@
 		"./styles/theme": "./dist/css/theme.css"
 	},
 	"publishConfig": {
-		"registry": "https://npm.pkg.github.com/"
+		"access": "public"
 	},
 	"scripts": {
 		"dev": "vp dev",
 		"test:unit": "vp test",
 		"test:component": "playwright test -c test/playwright-ct.config.js --project=chromium",
-		"publint": "publint",
 		"build": "vp build",
 		"build:docs": "vp build --config support/vite.config.docs.js",
 		"deploy": "bun run build:docs; gh-pages -d dist-docs --cname components.howles.dev --dotfiles",
 		"preview": "vp preview",
-		"check": "vp check --fix",
+		"publint": "publint",
+		"lint": "vp check",
+		"lint:fix": "vp check --fix",
 		"check:declarations": "node scripts/check-declarations.js",
 		"check:exports": "node scripts/smoke-test-exports.js",
 		"attw": "attw --pack --profile esm-only --exclude-entrypoints '.' './source' './styles' './styles/animation' './styles/buttons' './styles/components' './styles/form' './styles/main' './styles/theme'",
