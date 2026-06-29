@@ -48,6 +48,8 @@ Added a `readonly` prop (default `false`) that cascades to all child `form-field
 
 The validation chain is now fully async, making it compatible with Standard Schema validators and async custom rules in a future release.
 
+Added a `rules` prop for form-level validation. Accepts an object keyed by field name, where each value is an array of rules in the same shape as `form-field`'s `validation`. Rules run against the full form data on submit, making them suitable for cross-field validation (e.g. password confirmation).
+
 ### `data-table`
 
 Now only searches data with a defined column, avoiding searches looking into columns like `id`. To search a column without displaying it, set `column_key: { hidden: true }`.
