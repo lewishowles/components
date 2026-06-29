@@ -73,7 +73,7 @@
 	},
 	"dependencies": {
 		"@clack/prompts": "^1.6.0",
-		"@lewishowles/helpers": "^1.4.2",
+		"@lewishowles/helpers": "^1.4.3",
 		"@vueuse/core": "^14.3.0",
 		"cli-highlight": "^2.1.11",
 		"clsx": "^2.1.1",
