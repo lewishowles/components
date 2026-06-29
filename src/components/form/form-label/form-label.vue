@@ -44,7 +44,7 @@
  * A label for a form element. This component will show a warning if no label is
  * provided.
  */
-import { computed, useSlots } from "vue";
+import { computed, inject, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
@@ -109,8 +109,17 @@ const haveLabel = computed(() => isNonEmptySlot(slots.default));
 // Determine if we have an ID and if one is necessary. If not, show a warning to
 // the user about accessibility.
 const missingId = computed(() => props.tag === "label" && !isNonEmptyString(props.id));
-// Whether to show the optional indicator. Shown when the field is not required.
-const haveOptionalIndicator = computed(() => props.showOptionalIndicator && !props.required);
+// The optional indicator is only meaningful inside a form-wrapper, where
+// required/optional is a form-submission concept. Standalone fields (search,
+// filters) suppress the indicator even when not required.
+const formContext = inject("form-wrapper", null);
+const haveFormContext = computed(() => formContext !== null);
+
+// Whether to show the optional indicator. Shown when the field is not required,
+// inside a form-wrapper, and showOptionalIndicator is not disabled.
+const haveOptionalIndicator = computed(
+	() => props.showOptionalIndicator && !props.required && haveFormContext.value,
+);
 </script>
 
 <script>

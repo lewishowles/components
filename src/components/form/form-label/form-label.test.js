@@ -5,6 +5,15 @@ import FormLabel from "./form-label.vue";
 const defaultProps = { id: "id-abc" };
 const mount = createMount(FormLabel, { props: defaultProps });
 
+// Provide a minimal form-wrapper context so the optional indicator renders
+// inside a form. Use an empty object — form-label only checks for presence.
+const formWrapperContext = {};
+
+const mountInForm = createMount(FormLabel, {
+	props: defaultProps,
+	global: { provide: { "form-wrapper": formWrapperContext } },
+});
+
 describe("form-label", () => {
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
@@ -15,10 +24,16 @@ describe("form-label", () => {
 	});
 
 	describe("Render contracts", () => {
-		test("shows the optional indicator when not required", () => {
-			const wrapper = mount();
+		test("shows the optional indicator when inside a form-wrapper and not required", () => {
+			const wrapper = mountInForm();
 
 			expect(wrapper.find('[data-test="form-label-optional-indicator"]').exists()).toBe(true);
+		});
+
+		test("hides the optional indicator when outside a form-wrapper", () => {
+			const wrapper = mount();
+
+			expect(wrapper.find('[data-test="form-label-optional-indicator"]').exists()).toBe(false);
 		});
 
 		test("hides the optional indicator when required", () => {
@@ -34,13 +49,13 @@ describe("form-label", () => {
 		});
 
 		test("renders the default optional indicator text", () => {
-			const wrapper = mount();
+			const wrapper = mountInForm();
 
 			expect(wrapper.find('[data-test="form-label-optional-indicator"]').text()).toBe("(optional)");
 		});
 
 		test("renders custom optional indicator content when the slot is provided", () => {
-			const wrapper = mount({ slots: { "optional-indicator": "Optional" } });
+			const wrapper = mountInForm({ slots: { "optional-indicator": "Optional" } });
 
 			expect(wrapper.find('[data-test="form-label-optional-indicator"]').text()).toBe("Optional");
 		});

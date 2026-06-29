@@ -5,6 +5,7 @@
 ### Fixes
 
 - `form-wrapper`: `required` rules now correctly pass down the required prop to individual fields.
+- `form-label`: `optional` indicator only shows when a field is inside a `form-wrapper`.
 
 ## 2.4.1 — 2026-06-29
 
