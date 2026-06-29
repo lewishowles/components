@@ -13,4 +13,22 @@ describe("modal-dialog-title", () => {
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
 	});
+
+	describe("Subtitle", () => {
+		test("should render a subtitle when the subtitle slot is provided", () => {
+			const wrapper = mount({
+				slots: { default: "Title", subtitle: "Additional context" },
+			});
+
+			expect(wrapper.text()).toContain("Additional context");
+		});
+
+		test("should not render a subtitle when the subtitle slot is empty", () => {
+			const wrapper = mount({
+				slots: { default: "Title", subtitle: "" },
+			});
+
+			expect(wrapper.find('[data-test="modal-dialog-title"] > div').exists()).toBe(false);
+		});
+	});
 });

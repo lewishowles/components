@@ -16,6 +16,10 @@ export const modalDialogTitleMetadata = {
 			name: "default",
 			summary: "Dialog title text.",
 		},
+		{
+			name: "subtitle",
+			summary: "Optional explanatory text below the title.",
+		},
 	],
 	examples: [],
 };

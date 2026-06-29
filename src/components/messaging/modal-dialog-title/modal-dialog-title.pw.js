@@ -38,4 +38,14 @@ test.describe("modal-dialog-title", () => {
 
 		await expect(page.getByTestId("modal-dialog-title")).toHaveAttribute("id", "custom-title-id");
 	});
+
+	test("renders a subtitle when the subtitle slot is provided", async ({ mount, page }) => {
+		await mountModalDialogTitle(mount, {
+			slots: { default: "Title", subtitle: "Additional context" },
+		});
+
+		await expect(page.getByTestId("modal-dialog-title").locator("> div")).toContainText(
+			"Additional context",
+		);
+	});
 });

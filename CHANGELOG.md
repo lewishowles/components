@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### `modal-dialog-title`
+
+Now has an optional `subtitle` slot to display information below its title.
+
 ## 2.4.2 - 2026-06-29
 
 ### Fixes
