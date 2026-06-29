@@ -24,14 +24,18 @@
 	<component
 		:is="tag"
 		v-bind="{ for: id, ...$attrs }"
-		:class="{ 'sr-only': hidden, 'text-content-strong font-semibold': styled }"
+		:class="{
+			'sr-only': hidden,
+			'text-content-strong font-semibold': styled,
+			'inline-flex gap-2': haveOptionalIndicator,
+		}"
 		data-test="form-label"
 	>
 		<slot />
 
 		<span
 			v-if="haveOptionalIndicator"
-			class="text-content-muted ms-2 font-normal"
+			class="text-content-muted font-normal"
 			data-test="form-label-optional-indicator"
 		>
 			<slot name="optional-indicator">(optional)</slot>
