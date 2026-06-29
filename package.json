@@ -1,6 +1,6 @@
 {
 	"name": "@lewishowles/components",
-	"version": "2.4.0",
+	"version": "2.4.1",
 	"description": "A library of beautiful components, promoting rapid development, while ensuring that usability and accessibility are at the fore.",
 	"license": "MIT",
 	"repository": {
@@ -12,6 +12,7 @@
 	},
 	"files": [
 		"bin",
+		"CHANGELOG.md",
 		"dist",
 		"src/cli",
 		"src/components/component-metadata.js",

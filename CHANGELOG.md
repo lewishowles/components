@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 2.4.1 — 2026-06-29
+
+### Fixes
+
+- `CHANGELOG.md` is now included in the published npm package.
+
 ## 2.4.0
 
 ### `display-date`
