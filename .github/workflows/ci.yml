@@ -42,7 +42,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
 
       - name: Lint
-        run: bun run lint:check
+        run: bun run check
 
       - name: Unit tests
         run: bun run test:unit

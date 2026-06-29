@@ -17,7 +17,7 @@ import {
 
 export default defineConfig({
 	staged: {
-		"*": "vp check --fix",
+		"*": "bun run lint:fix",
 		"src/{composables,utilities}/**/*.js": "bun run check:declarations",
 	},
 	fmt,
