@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2.4.0
+
 ### `display-date`
 
 Now uses date helpers from `@lewishowles/helpers` v1.1.0. The `format` prop accepts a named format string (`"date"`, `"dateTime"`, `"shortDate"`), a Day.js-style token string, or an `Intl.DateTimeFormat` options object. By default, `"date"` is used for date-only inputs and `"dateTime"` for inputs with time information.

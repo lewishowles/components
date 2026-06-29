@@ -59,6 +59,10 @@ export const formWrapperMetadata = {
 	],
 	slots: [
 		{
+			name: "pre-form",
+			summary: "Content rendered above the form fields and outside the form-layout wrapper.",
+		},
+		{
 			name: "default",
 			summary: "Form fields. Scoped with isSubmitting and hasErrors.",
 		},
@@ -66,10 +70,7 @@ export const formWrapperMetadata = {
 			name: "submit-button-label",
 			summary: "Required. Label for the submit button.",
 		},
-		{
-			name: "pre-form",
-			summary: "Content rendered above the field list.",
-		},
+
 		{
 			name: "secondary-actions",
 			summary: "Secondary buttons placed beside the submit button.",

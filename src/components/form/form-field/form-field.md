@@ -27,6 +27,7 @@ The type of field. Known types include:
 - `textarea`
 - `select`
 - `checkbox`
+- `checkbox-group`
 - `radio-group`
 - `form-button-group`
 - `date`
