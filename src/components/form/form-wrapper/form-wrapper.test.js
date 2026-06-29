@@ -24,7 +24,7 @@ describe("form-wrapper", () => {
 
 					const vm = wrapper.vm;
 
-					vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+					vm.registerField({ name: "email", id: "email-id" });
 
 					vm.handleSubmitError(new Error("Request failed"));
 
@@ -40,7 +40,7 @@ describe("form-wrapper", () => {
 
 					const vm = wrapper.vm;
 
-					vm.registerField({ name: "name", id: "name-id", validateField: () => true });
+					vm.registerField({ name: "name", id: "name-id" });
 
 					vm.handleSubmitError(new Error("Request failed"));
 
@@ -92,7 +92,7 @@ describe("form-wrapper", () => {
 
 					const vm = wrapper.vm;
 
-					vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+					vm.registerField({ name: "email", id: "email-id" });
 					vm.handleSubmitError(new Error("Request failed"));
 
 					expect(vm.fieldErrorsFor("email")).toEqual(["Parent error", "API error"]);
@@ -108,25 +108,10 @@ describe("form-wrapper", () => {
 
 					const vm = wrapper.vm;
 
-					vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+					vm.registerField({ name: "email", id: "email-id" });
 					vm.handleSubmitError(new Error("Request failed"));
 
 					expect(vm.fieldErrorsFor("email")).toEqual(["Already taken"]);
-				});
-
-				test("Includes field-local validation errors", async () => {
-					const wrapper = mount();
-					const vm = wrapper.vm;
-
-					vm.registerField({
-						name: "email",
-						id: "email-id",
-						validateField: () => ["Enter your email"],
-					});
-
-					await vm.handleFormSubmit();
-
-					expect(vm.fieldErrorsFor("email")).toEqual(["Enter your email"]);
 				});
 			});
 
@@ -143,7 +128,7 @@ describe("form-wrapper", () => {
 
 					const vm = wrapper.vm;
 
-					vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+					vm.registerField({ name: "email", id: "email-id" });
 
 					await vm.handleFormSubmit();
 					await flushPromises();
@@ -169,7 +154,7 @@ describe("form-wrapper", () => {
 
 					const vm = wrapper.vm;
 
-					vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+					vm.registerField({ name: "email", id: "email-id" });
 
 					await vm.handleFormSubmit();
 					await flushPromises();
@@ -179,7 +164,6 @@ describe("form-wrapper", () => {
 					await vm.handleFormSubmit();
 
 					expect(vm.errorSummary).toEqual([]);
-					expect(vm.fieldValidationErrors).toEqual({});
 					expect(vm.submitErrors).toEqual({});
 					expect(vm.formLevelErrors).toEqual({});
 
@@ -198,8 +182,8 @@ describe("form-wrapper", () => {
 				const wrapper = mount({ props: { rules, onSubmit } });
 				const vm = wrapper.vm;
 
-				vm.registerField({ name: "password", id: "password-id", validateField: () => true });
-				vm.registerField({ name: "confirmPassword", id: "confirm-id", validateField: () => true });
+				vm.registerField({ name: "password", id: "password-id" });
+				vm.registerField({ name: "confirmPassword", id: "confirm-id" });
 
 				vm.updateFieldValue("password", "wall-e");
 				vm.updateFieldValue("confirmPassword", "eve");
@@ -217,8 +201,8 @@ describe("form-wrapper", () => {
 				const wrapper = mount({ props: { rules, onSubmit } });
 				const vm = wrapper.vm;
 
-				vm.registerField({ name: "password", id: "password-id", validateField: () => true });
-				vm.registerField({ name: "confirmPassword", id: "confirm-id", validateField: () => true });
+				vm.registerField({ name: "password", id: "password-id" });
+				vm.registerField({ name: "confirmPassword", id: "confirm-id" });
 
 				vm.updateFieldValue("password", "wall-e");
 				vm.updateFieldValue("confirmPassword", "wall-e");
@@ -228,34 +212,13 @@ describe("form-wrapper", () => {
 				expect(onSubmit).toHaveBeenCalledWith({ password: "wall-e", confirmPassword: "wall-e" });
 			});
 
-			test("Runs field-local rules before form-level rules in the summary", async () => {
-				const wrapper = mount({ props: { rules } });
-				const vm = wrapper.vm;
-
-				vm.registerField({
-					name: "password",
-					id: "password-id",
-					validateField: () => ["Password required"],
-				});
-				vm.registerField({ name: "confirmPassword", id: "confirm-id", validateField: () => true });
-
-				vm.updateFieldValue("confirmPassword", "eve");
-
-				await vm.handleFormSubmit();
-
-				expect(vm.errorSummary).toEqual([
-					{ fieldName: "password", id: "password-id", message: "Password required" },
-					{ fieldName: "confirmPassword", id: "confirm-id", message: "Passwords must match" },
-				]);
-			});
-
 			test("Clears resolved form-level errors on resubmit", async () => {
 				const onSubmit = vi.fn();
 				const wrapper = mount({ props: { rules, onSubmit } });
 				const vm = wrapper.vm;
 
-				vm.registerField({ name: "password", id: "password-id", validateField: () => true });
-				vm.registerField({ name: "confirmPassword", id: "confirm-id", validateField: () => true });
+				vm.registerField({ name: "password", id: "password-id" });
+				vm.registerField({ name: "confirmPassword", id: "confirm-id" });
 
 				vm.updateFieldValue("password", "wall-e");
 				vm.updateFieldValue("confirmPassword", "eve");
@@ -276,8 +239,8 @@ describe("form-wrapper", () => {
 				const wrapper = mount({ props: { rules } });
 				const vm = wrapper.vm;
 
-				vm.registerField({ name: "password", id: "password-id", validateField: () => true });
-				vm.registerField({ name: "confirmPassword", id: "confirm-id", validateField: () => true });
+				vm.registerField({ name: "password", id: "password-id" });
+				vm.registerField({ name: "confirmPassword", id: "confirm-id" });
 
 				vm.updateFieldValue("password", "wall-e");
 				vm.updateFieldValue("confirmPassword", "eve");
@@ -285,21 +248,6 @@ describe("form-wrapper", () => {
 				await vm.handleFormSubmit();
 
 				expect(vm.fieldErrorsFor("confirmPassword")).toEqual(["Passwords must match"]);
-			});
-
-			test("Exposes fieldValidationErrors via defineExpose", async () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				vm.registerField({
-					name: "email",
-					id: "email-id",
-					validateField: () => ["Enter your email"],
-				});
-
-				await vm.handleFormSubmit();
-
-				expect(vm.fieldValidationErrors).toEqual({ email: ["Enter your email"] });
 			});
 		});
 	});
@@ -312,7 +260,7 @@ describe("form-wrapper", () => {
 
 				expect(vm.formData).toEqual({});
 
-				vm.registerField({ name: "username", validateField: () => true });
+				vm.registerField({ name: "username" });
 
 				expect(vm.formData).toEqual({ username: null });
 			});
@@ -321,7 +269,7 @@ describe("form-wrapper", () => {
 				const wrapper = mount({ props: { modelValue: { username: "wall-e" } } });
 				const vm = wrapper.vm;
 
-				await vm.registerField({ name: "username", validateField: () => true });
+				await vm.registerField({ name: "username" });
 
 				expect(vm.formData).toEqual({ username: "wall-e" });
 			});
@@ -354,23 +302,11 @@ describe("form-wrapper", () => {
 				const onSubmit = vi.fn();
 				const wrapper = mount({ props: { onSubmit } });
 
-				wrapper.vm.registerField({ name: "name", validateField: () => true });
+				wrapper.vm.registerField({ name: "name" });
 
 				await wrapper.vm.handleFormSubmit();
 
 				expect(onSubmit).toHaveBeenCalledWith({ name: null });
-			});
-
-			test("Does not call the submit handler if validation fails", async () => {
-				const onSubmit = vi.fn();
-				const wrapper = mount({ props: { onSubmit } });
-
-				wrapper.vm.registerField({ name: "name", validateField: () => true });
-				wrapper.vm.registerField({ name: "email", validateField: () => ["Error message"] });
-
-				await wrapper.vm.handleFormSubmit();
-
-				expect(onSubmit).not.toHaveBeenCalled();
 			});
 
 			test("Does not call the submit handler if parent-owned field errors are present", async () => {
@@ -385,7 +321,7 @@ describe("form-wrapper", () => {
 					},
 				});
 
-				wrapper.vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+				wrapper.vm.registerField({ name: "email", id: "email-id" });
 
 				await wrapper.vm.handleFormSubmit();
 
@@ -393,35 +329,7 @@ describe("form-wrapper", () => {
 			});
 		});
 
-		describe("validateFields", () => {
-			test("should not populate errorSummary if validation succeeds", async () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				vm.registerField({ name: "name", id: "name-id", validateField: () => true });
-				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
-
-				await vm.validateFields();
-
-				expect(vm.errorSummary).toEqual([]);
-				expect(vm.fieldValidationErrors).toEqual({});
-			});
-
-			test("should populate errorSummary if validation fails", async () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				vm.registerField({ name: "name", id: "name-id", validateField: () => true });
-				vm.registerField({ name: "email", id: "email-id", validateField: () => ["Error message"] });
-
-				await vm.validateFields();
-
-				expect(vm.fieldValidationErrors).toEqual({ email: ["Error message"] });
-				expect(vm.errorSummary).toEqual([
-					{ fieldName: "email", id: "email-id", message: "Error message" },
-				]);
-			});
-
+		describe("errorSummary", () => {
 			test("should include parent-owned field errors in errorSummary", () => {
 				const wrapper = mount({
 					props: {
@@ -434,8 +342,8 @@ describe("form-wrapper", () => {
 
 				const vm = wrapper.vm;
 
-				vm.registerField({ name: "name", id: "name-id", validateField: () => true });
-				vm.registerField({ name: "email", id: "email-id", validateField: () => true });
+				vm.registerField({ name: "name", id: "name-id" });
+				vm.registerField({ name: "email", id: "email-id" });
 
 				expect(vm.errorSummary).toEqual([
 					{ fieldName: "name", id: "name-id", message: "Enter your full name" },

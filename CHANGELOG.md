@@ -10,6 +10,8 @@ Now has an optional `subtitle` slot to display information below its title.
 
 A new `titleClasses` prop allows custom classes to be applied to fieldset titles.
 
+A new `layoutClasses` prop allows classes to be applied to the inner `form-layout`.
+
 ## 2.4.2 - 2026-06-29
 
 ### Fixes

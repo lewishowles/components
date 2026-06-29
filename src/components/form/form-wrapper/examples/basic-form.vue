@@ -1,6 +1,6 @@
 <template>
-	<form-wrapper v-model="formData" @submit="saveProfile">
-		<form-field name="name" v-bind="{ validation: validation.name }">
+	<form-wrapper v-model="formData" v-bind="{ rules }" @submit="saveProfile">
+		<form-field name="name">
 			Full name
 
 			<template #help>Use the name you want shown on your account.</template>
@@ -13,7 +13,6 @@
 				inputAttributes: {
 					autocomplete: 'email',
 				},
-				validation: validation.email,
 			}"
 		>
 			Email address
@@ -27,8 +26,8 @@
 // Current form values, exposed via v-model so a parent can observe submitted data.
 const formData = defineModel({ default: () => ({}) });
 
-// Validation rules run by form-wrapper before submit.
-const validation = {
+// Form-level validation rules, keyed by field name, run by form-wrapper before submit.
+const rules = {
 	name: [{ rule: "required", message: "Enter your full name." }],
 	email: [{ rule: "required", message: "Enter your email address." }],
 };

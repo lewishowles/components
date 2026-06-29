@@ -118,10 +118,8 @@ describe("form-field", () => {
 				});
 			});
 
-			test("should add props for `required` validation rule", () => {
-				const wrapper = mount({
-					validation: [{ rule: "required", message: "Validation message" }],
-				});
+			test("should add props for the `required` prop", () => {
+				const wrapper = mount({ required: true });
 
 				const vm = wrapper.vm;
 
@@ -131,10 +129,10 @@ describe("form-field", () => {
 				});
 			});
 
-			test("should combine type and validation props", () => {
+			test("should combine type and required props", () => {
 				const wrapper = mount({
 					type: "email",
-					validation: [{ rule: "required", message: "Validation message" }],
+					required: true,
 				});
 
 				const vm = wrapper.vm;
@@ -149,7 +147,7 @@ describe("form-field", () => {
 			test("should merge external inputAttributes", () => {
 				const wrapper = mount({
 					type: "email",
-					validation: [{ rule: "required", message: "Validation message" }],
+					required: true,
 					inputAttributes: { "aria-labelledby": "id-123" },
 				});
 
@@ -190,59 +188,49 @@ describe("form-field", () => {
 			});
 		});
 
-		describe("propsForValidation", () => {
-			test("should not add props if no validation is present", () => {
+		describe("isRequired", () => {
+			test("should be false with no required prop or cascade", () => {
 				const wrapper = mount();
-				const vm = wrapper.vm;
 
-				expect(vm.propsForValidation).toEqual({});
+				expect(wrapper.vm.isRequired).toBe(false);
 			});
 
-			test("should add props for `required` rule", () => {
-				const wrapper = mount({
-					validation: [{ rule: "required", message: "Validation message" }],
-				});
+			test("should be true from the `required` prop", () => {
+				const wrapper = mount({ required: true });
 
-				const vm = wrapper.vm;
-
-				expect(vm.propsForValidation).toEqual({
-					required: true,
-				});
+				expect(wrapper.vm.isRequired).toBe(true);
 			});
 
-			test("should add props for `required` prop", () => {
+			test("should be true when form-wrapper cascades a required rule", () => {
 				const wrapper = mount({
-					required: true,
+					global: {
+						provide: {
+							"form-wrapper": {
+								fieldErrorsFor: fieldErrorsForMock,
+								registerField: registerFieldMock,
+								isFieldRequired: (name) => name === "username",
+							},
+						},
+					},
 				});
 
-				const vm = wrapper.vm;
-
-				expect(vm.propsForValidation).toEqual({
-					required: true,
-				});
+				expect(wrapper.vm.isRequired).toBe(true);
 			});
 
-			test("should add props when both `required` prop and validation rule are present", () => {
+			test("should be false when the form-wrapper cascade does not match", () => {
 				const wrapper = mount({
-					required: true,
-					validation: [{ rule: "required", message: "Validation message" }],
+					global: {
+						provide: {
+							"form-wrapper": {
+								fieldErrorsFor: fieldErrorsForMock,
+								registerField: registerFieldMock,
+								isFieldRequired: () => false,
+							},
+						},
+					},
 				});
 
-				const vm = wrapper.vm;
-
-				expect(vm.propsForValidation).toEqual({
-					required: true,
-				});
-			});
-
-			test("should not add required props when `required` prop is false and no validation rule", () => {
-				const wrapper = mount({
-					required: false,
-				});
-
-				const vm = wrapper.vm;
-
-				expect(vm.propsForValidation).toEqual({});
+				expect(wrapper.vm.isRequired).toBe(false);
 			});
 		});
 
@@ -311,17 +299,6 @@ describe("form-field", () => {
 				const vm = wrapper.vm;
 
 				expect(vm.fieldMessages).toEqual([]);
-			});
-		});
-	});
-
-	describe("Methods", () => {
-		describe("validateField", () => {
-			test("should pass if no validation is provided", async () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				expect(await vm.validateField()).toBe(true);
 			});
 		});
 	});

@@ -21,5 +21,6 @@ export const modalDialogTitleMetadata = {
 			summary: "Optional explanatory text below the title.",
 		},
 	],
+	parts: [{ name: "subtitle", summary: "Optional introduction to display below the title." }],
 	examples: [],
 };

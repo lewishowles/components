@@ -85,38 +85,4 @@ describe("form-field metadata", () => {
 			}
 		});
 	});
-
-	describe("validation examples", () => {
-		test("no example uses the deprecated { type: '...' } validation shape", () => {
-			for (const example of formFieldMetadata.examples) {
-				const validationProp = example.snippet?.props?.validation;
-
-				if (!validationProp) {
-					continue;
-				}
-
-				// The value is a serialised string; check it does not contain type: '...' objects
-				// where type would be a rule name (e.g. type: 'required', type: 'email').
-				expect(
-					validationProp.value,
-					`Example "${example.name}" uses deprecated { type: '...' } validation shape`,
-				).not.toMatch(/\{\s*type\s*:/);
-			}
-		});
-
-		test("every validation example uses the { rule: '...' } shape", () => {
-			for (const example of formFieldMetadata.examples) {
-				const validationProp = example.snippet?.props?.validation;
-
-				if (!validationProp) {
-					continue;
-				}
-
-				expect(
-					validationProp.value,
-					`Example "${example.name}" validation should use { rule: '...' } shape`,
-				).toMatch(/\brule\s*:/);
-			}
-		});
-	});
 });

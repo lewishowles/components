@@ -234,10 +234,6 @@ const formData = defineModel({
 const formFields = reactive({});
 // Whether we have any form fields registered to the form.
 const haveFormFields = computed(() => isNonEmptyObject(formFields));
-// Field-local validation errors, keyed by field name. Each value is an array
-// of error message strings. Populated during submit from each field's
-// validateField method.
-const fieldValidationErrors = ref({});
 // Errors produced by the `submitErrorsCallback` from a rejected submit.
 const submitErrors = ref({});
 // Errors produced by form-level `rules`, keyed by field name. Populated on
@@ -341,8 +337,6 @@ function isFieldRequired(fieldName) {
  * @param  {string}  field.id
  *     The ID of the field to register, which helps with linking errors to
  *     fields.
- * @param  {function}  field.validateField
- *     The validation function for this field, run when the form is submitted.
  * @param  {function}  field.triggerFocus
  *     A method to focus on this field, used by the error summary.
  */
@@ -410,7 +404,6 @@ async function handleFormSubmit() {
 	// Clear all wrapper-owned errors so stale errors don't block this attempt
 	// or linger in the summary.
 	submitErrors.value = {};
-	fieldValidationErrors.value = {};
 	formLevelErrors.value = {};
 
 	if (!haveFormFields.value) {
@@ -419,7 +412,6 @@ async function handleFormSubmit() {
 		return;
 	}
 
-	await validateFields();
 	await validateFormLevelRules();
 
 	if (haveErrorSummary.value) {
@@ -434,40 +426,9 @@ async function handleFormSubmit() {
 }
 
 /**
- * Validate each field based on its provided validation function, storing
- * results in fieldValidationErrors keyed by field name.
- */
-async function validateFields() {
-	const errors = {};
-
-	for (const fieldName in formFields) {
-		if (!Object.hasOwn(formFields, fieldName)) {
-			continue;
-		}
-
-		const field = formFields[fieldName];
-
-		if (!isFunction(field.validateField)) {
-			continue;
-		}
-
-		const validationResult = await field.validateField(fieldName, formData.value);
-
-		if (!isNonEmptyArray(validationResult)) {
-			continue;
-		}
-
-		errors[fieldName] = validationResult;
-	}
-
-	fieldValidationErrors.value = errors;
-}
-
-/**
  * Validate the form-level `rules` against the current form data, mapping any
- * errors to their field name. Field-local validation runs first, so these
- * append after a field's own messages in both the field display and the error
- * summary. Re-runs from scratch on each submit so resolved errors clear.
+ * errors to their field name. Re-runs from scratch on each submit so resolved
+ * errors clear.
  */
 async function validateFormLevelRules() {
 	if (!isNonEmptyObject(props.rules)) {
@@ -495,9 +456,9 @@ async function validateFormLevelRules() {
 }
 
 /**
- * Get all error messages for a field, combining field-local validation,
- * parent-owned, submit callback, and form-level rule errors with deduplication.
- * This is the single merge point for all field error sources.
+ * Get all error messages for a field, combining parent-owned, submit callback,
+ * and form-level rule errors with deduplication. This is the single merge point
+ * for all field error sources.
  *
  * @param  {string}  fieldName
  *     The field to retrieve error messages for.
@@ -506,7 +467,6 @@ function fieldErrorsFor(fieldName) {
 	const seen = new Set();
 
 	return [
-		...normaliseFieldErrors(fieldValidationErrors.value[fieldName]),
 		...normaliseFieldErrors(props.fieldErrors?.[fieldName]),
 		...normaliseFieldErrors(submitErrors.value?.[fieldName]),
 		...normaliseFieldErrors(formLevelErrors.value[fieldName]),
@@ -673,5 +633,5 @@ function focusField(fieldName) {
 	callComponentMethod(formFields[fieldName], "triggerFocus");
 }
 
-defineExpose({ isSubmitting, resetSubmitButton, fieldValidationErrors });
+defineExpose({ isSubmitting, resetSubmitButton });
 </script>

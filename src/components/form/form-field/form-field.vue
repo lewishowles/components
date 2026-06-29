@@ -45,12 +45,11 @@
 
 <script setup>
 import { computed, inject, onMounted, ref, watch } from "vue";
-import { deepMerge, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { deepMerge } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
-import { validateField as validateFormField } from "@lewishowles/helpers/form";
 
 import useInputId from "@/components/form/composables/use-input-id/use-input-id";
 
@@ -93,17 +92,6 @@ const props = defineProps({
 	},
 
 	/**
-	 * Any validation to apply to the field. This is used with the
-	 * externally-facing `validate` function, as well as applying attributes to
-	 * the field as necessary such as `required`. For more information
-	 * validation types, check the `form-field` docs.
-	 */
-	validation: {
-		type: Array,
-		default: () => [],
-	},
-
-	/**
 	 * Any additional attributes to pass to the input itself, such as
 	 * `autocomplete` or `aria-labelledby`.
 	 */
@@ -137,8 +125,6 @@ const registerField = formWrapperInject?.registerField;
 const updateFieldValue = formWrapperInject?.updateFieldValue;
 const isReadonly = formWrapperInject?.isReadonly;
 const isFieldRequired = formWrapperInject?.isFieldRequired;
-// Whether any validation has been provided for this field.
-const haveValidation = computed(() => isNonEmptyArray(props.validation));
 
 // All error messages for this field, sourced from the wrapper's single merge
 // point. Returns an empty array when the field is used outside form-wrapper.
@@ -200,16 +186,24 @@ const fieldComponent = computed(() => {
 	return fieldComponents[fieldType.value] ?? defaultComponent;
 });
 
-// Any additional props to pass to the field, including default props, any added
-// by validation, and any provided directly.
-const fieldProps = computed(() => {
-	const baseProps = deepMerge({ id: inputId.value }, fieldTypes[fieldType.value]);
-
-	if (!isNonEmptyObject(baseProps) && !haveValidation.value) {
-		return null;
+// Whether this field should be marked required, from an explicit prop or a
+// `required` rule cascaded from the parent form-wrapper.
+const isRequired = computed(() => {
+	if (props.required) {
+		return true;
 	}
 
-	const attributeGroups = [baseProps, propsForValidation.value];
+	return isFunction(isFieldRequired) && isFieldRequired(props.name);
+});
+
+// Any additional props to pass to the field, including default props, required
+// state, and any provided directly.
+const fieldProps = computed(() => {
+	const attributeGroups = [deepMerge({ id: inputId.value }, fieldTypes[fieldType.value])];
+
+	if (isRequired.value) {
+		attributeGroups.push({ required: true });
+	}
 
 	// Pass the field name through to group components that need it for
 	// pre-fill behaviour and input naming.
@@ -227,34 +221,6 @@ const fieldProps = computed(() => {
 	}
 
 	return deepMerge(...attributeGroups);
-});
-
-// Any additional props to provide to the input based on current validation
-// rules.
-const propsForValidation = computed(() => {
-	const additionalProps = {};
-
-	// Explicit `required` prop takes effect directly.
-	if (props.required) {
-		additionalProps.required = true;
-	}
-
-	// Auto-detect `required` from validation rules.
-	if (isNonEmptyArray(props.validation)) {
-		props.validation.forEach((rule) => {
-			if (rule.rule === "required") {
-				additionalProps.required = true;
-			}
-		});
-	}
-
-	// Cascade required from form-wrapper rules so fields still show the
-	// correct indicator when validation lives in form-wrapper.
-	if (isFunction(isFieldRequired) && isFieldRequired(props.name)) {
-		additionalProps.required = true;
-	}
-
-	return additionalProps;
 });
 
 // Whether we detect a parent form.
@@ -283,31 +249,10 @@ onMounted(() => {
 		registerField({
 			name: props.name,
 			id: fieldRef.value?.focusId ?? inputId.value,
-			validateField,
 			triggerFocus,
 		});
 	}
 });
-
-/**
- * Validate this field for all provided validation rules. Returns the error
- * messages so form-wrapper can store them centrally.
- *
- * @param  {string}  fieldName
- *     The name of the field to validate, allowing us to retrieve its value from
- *     the form data.
- * @param  {object}  formData
- *     The current values of each form field.
- */
-async function validateField(fieldName, formData) {
-	if (!haveValidation.value) {
-		return true;
-	}
-
-	const { errors } = await validateFormField(fieldName, props.validation, formData);
-
-	return errors;
-}
 
 /**
  * Trigger focus on the field.

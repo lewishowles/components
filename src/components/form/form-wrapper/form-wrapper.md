@@ -1,6 +1,6 @@
 # `form-wrapper`
 
-`form-wrapper` is intended as a complete form, wrapped around individual fields. The wrapper automatically adds actions and, when fields are provided validation information, handles field validation and the generation of an error summary to maximise the accessibility of the form.
+`form-wrapper` is intended as a complete form, wrapped around individual fields. The wrapper automatically adds actions and, when a `rules` prop is provided, handles validation and the generation of an error summary to maximise the accessibility of the form.
 
 We recommend a [required by default, marked if optional technique](https://adamsilver.io/blog/how-to-highlight-required-and-optional-form-fields/) for form fields, meaning that optional fields should be marked as such.
 
@@ -109,7 +109,7 @@ Additional classes passed to the inner `form-layout`.
 - type: `object`
 - default: `{}`
 
-Form-level validation rules, keyed by field name. Each value is an array of rules in the same shape as `form-field`'s own `validation`, supporting both object rules and function shorthand, but run against the full form data on submit. This is useful both for keeping validation contained and not spread across fields, but it also allows validation that relies on other fields.
+All validation lives here, keyed by field name. Each value is an array of rules run against the full form data on submit. Keeping validation in one place keeps it contained rather than spread across fields, and it also allows rules that rely on other fields.
 
 ```js
 const rules = {
@@ -128,9 +128,87 @@ const rules = {
 <form-wrapper v-bind="{ rules }"></form-wrapper>
 ```
 
-#### Rule precedence and error order
+Each entry in a field's rules array can be either an object `{ rule, message?, ...ruleOptions }` or a function `(value, formData)` (see Function shorthand below).
 
-Each field's own `validation` runs first, and form-level `rules` run afterwards. A form-level error is mapped to its named field, so it displays beside that field and appears in the error summary exactly like a field-local error. Within a field, its own validation messages come first, followed by any form-level message. Form-level rules re-run on every submit.
+#### `required`
+
+`[{ rule: "required", message: "Enter your name so we know what to call you" }]`
+
+Requires a value to be set. Adds the `required` attribute to the field automatically.
+
+#### `email`
+
+`[{ rule: "email", message: "We need an email address to set up your account" }]`
+
+Perform a minimal check to see if the value contains an `@` symbol. More complex verification isn't really necessary, and the only true way to test an email address is through verification.
+
+#### `size`
+
+`[{ rule: "size", size: 11, message: "Your phone number should be 11 digits long" }]`
+
+Ensure that the provided value is has at least size `size`. For strings, the number of characters is used, for arrays, the length of the array, for objects, the number of properties, for numbers, the number itself is used, and for numeric strings the integer value of the string is used.
+
+#### `min`
+
+`[{ rule: "min", min: 11, message: "Your phone number should be at least 11 digits long" }]`
+
+Ensure that the provided value is has at least size `min`. Values are evaluated as in the `size` rule.
+
+#### `max`
+
+`[{ rule: "max", max: 11, message: "Your phone number should be no more than 11 digits long" }]`
+
+Ensure that the provided value is has at most size `max`. Values are evaluated as in the `size` rule.
+
+#### `between`
+
+`[{ rule: "between", min: 5, max: 8, message: "Your post code should be between 5 and 8 characters" }]`
+
+Ensure that the provided value is has between `min` and `max` size. Values are evaluated as in the `size` rule.
+
+#### `in`
+
+`[{ rule: "in", options: ["a", "b", "c"], message: "Your choice should be a, b, or c" }]`
+
+Ensure that the given value is included within `options`.
+
+#### `not_in`
+
+`[{ rule: "not_in", options: ["a", "b", "c"], message: "Your choice should not include a, b, or c" }]`
+
+Ensure that the given value is not included within `options`.
+
+#### `regexp`
+
+`[{ rule: "regexp", regexp: /[abc]+/, message: "Your ID should only contain the letters a, b, and c" }]`
+
+Ensure that the provided value matches `regexp`.
+
+#### `same` / `different`
+
+`[{ rule: "same", field: "password", message: "Passwords must match" }]`
+
+Compare the value against another field's value. `same` requires them to match; `different` requires them to differ.
+
+#### `custom`
+
+`[{ rule: "custom", validate: (value, formData) => value > formData.startDate, message: "End date must be after the start date" }]`
+
+The escape hatch for any constraint the declarative rules can't express, including cross-field validation. `validate` receives the field's own value and the complete form data.
+
+#### Function shorthand
+
+`[(value) => isNonEmptyString(value) || "Enter your name"]`
+
+A rule entry can also be a function `(value, formData)` instead of an object. The return value determines the outcome:
+
+- `true` or any truthy non-string — valid.
+- A non-empty string — invalid; the string is used as the error message.
+- A non-empty array of strings — invalid; each string becomes an error message.
+
+#### Error order
+
+A form-level error is mapped to its named field, so it displays beside that field and appears in the error summary. Within a field, errors follow the order of its rules array. Rules re-run on every submit, so resolved errors clear.
 
 ## Slots
 
@@ -199,7 +277,7 @@ Four values are provided by `form-wrapper` under the "form-wrapper" namespace.
 
 ### `fieldErrorsFor(fieldName)`
 
-Returns all error messages for a field, deduplicating identical messages. Combines field-local validation, parent-owned `fieldErrors`, submit callback errors, and form-level `rules` errors into a single array. Used by `form-field` for its error display.
+Returns all error messages for a field, deduplicating identical messages. Combines parent-owned `fieldErrors`, submit callback errors, and form-level `rules` errors into a single array. Used by `form-field` for its error display.
 
 | Parameter   | Type     | Description                       |
 | ----------- | -------- | --------------------------------- |
@@ -209,12 +287,11 @@ Returns all error messages for a field, deduplicating identical messages. Combin
 
 Allow a field to register itself with the form.
 
-| Parameter             | Type       | Description                                                |
-| --------------------- | ---------- | ---------------------------------------------------------- |
-| `field.name`          | `string`   | Name of the field to register.                             |
-| `field.id`            | `string`   | The ID of the field, helpful for linking errors to fields. |
-| `field.validateField` | `function` | Validation function, run when the form is submitted.       |
-| `field.triggerFocus`  | `function` | Method to focus on this field, used by the error summary.  |
+| Parameter            | Type       | Description                                                |
+| -------------------- | ---------- | ---------------------------------------------------------- |
+| `field.name`         | `string`   | Name of the field to register.                             |
+| `field.id`           | `string`   | The ID of the field, helpful for linking errors to fields. |
+| `field.triggerFocus` | `function` | Method to focus on this field, used by the error summary.  |
 
 ### `updateFieldValue(name, value)`
 

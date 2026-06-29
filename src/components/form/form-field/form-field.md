@@ -1,6 +1,6 @@
 # `form-field`
 
-A general form component for use in [form-wrapper](/src/components/form/form-wrapper/form-wrapper.md), allowing the definition of field properties and validation rules.
+A general form component for use in [form-wrapper](/src/components/form/form-wrapper/form-wrapper.md), allowing the definition of field properties. Validation is defined on the parent `form-wrapper` via its `rules` prop.
 
 ## Slots
 
@@ -41,89 +41,14 @@ Any unknown type will default to `text`.
 
 The name of the field. This is required when used within a `form-wrapper` component, where it is used as the key for the form's data collection. As such, its uniqueness will be verified by `form-wrapper` when used together.
 
-### `validation`
-
-- type: `array`
-- default: `[]`
-
-Any validation to apply to the field. This is used with the externally-facing `validate` function, as well as applying attributes to the field as necessary, such as `required`.
-
-Each entry can be either an object `{ rule, message?, ...ruleOptions }` or a function `(value, formData)` (see Function shorthand below). Available object rules include:
-
-#### `required`
-
-`[{ rule: "required", message: "Enter your name so we know what to call you" }]`
-
-Requires a value to be set. Adds the `required` attribute to the field automatically.
-
-#### `email`
-
-`[{ rule: "email", message: "We need an email address to set up your account" }]`
-
-Perform a minimal check to see if the value contains an `@` symbol. More complex verification isn't really necessary, and the only true way to test an email address is through verification.
-
-#### `size`
-
-`[{ rule: "size", size: 11, message: "Your phone number should be 11 digits long" }]`
-
-Ensure that the provided value is has at least size `size`. For strings, the number of characters is used, for arrays, the length of the array, for objects, the number of properties, for numbers, the number itself is used, and for numeric strings the integer value of the string is used.
-
-#### `min`
-
-`[{ rule: "min", min: 11, message: "Your phone number should be at least 11 digits long" }]`
-
-Ensure that the provided value is has at least size `min`. Values are evaluated as in the `size` rule.
-
-#### `max`
-
-`[{ rule: "max", max: 11, message: "Your phone number should be no more than 11 digits long" }]`
-
-Ensure that the provided value is has at most size `max`. Values are evaluated as in the `size` rule.
-
-#### `between`
-
-`[{ rule: "between", min: 5, max: 8, message: "Your post code should be between 5 and 8 characters" }]`
-
-Ensure that the provided value is has between `min` and `max` size. Values are evaluated as in the `size` rule.
-
-#### `in`
-
-`[{ rule: "in", options: ["a", "b", "c"], message: "Your choice should be a, b, or c" }]`
-
-Ensure that the given value is included within `options`.
-
-#### `not_in`
-
-`[{ rule: "not_in", options: ["a", "b", "c"], message: "Your choice should not include a, b, or c" }]`
-
-Ensure that the given value is not included within `options`.
-
-#### `regexp`
-
-`[{ rule: "regexp", regexp: /[abc]+/, message: "Your ID should only contain the letters a, b, and c" }]`
-
-Ensure that the provided value matches `regexp`.
-
-#### Function shorthand
-
-`[(value) => isNonEmptyString(value) || "Enter your name"]`
-
-Each entry can also be a function `(value, formData)` instead of an object rule. This is an escape hatch for custom logic not covered by the built-in rules. Unlike object rules, function shorthand does not auto-detect the `required` attribute; set the `required` prop on `form-field` if needed.
-
 ### `required`
 
 - type: `boolean`
 - default: `false`
 
-Whether this field is required. When `true`, the `required` attribute is added to the underlying input. This is also set automatically when a `required` validation rule is present, but the prop allows explicit control — useful when using function shorthand or when validation rules don't include `required`.
+Whether this field is required. When `true`, the `required` attribute is added to the underlying input. This is also set automatically when a `required` rule for this field is present in the parent [form-wrapper](/src/components/form/form-wrapper/form-wrapper.md)'s `rules`, but the prop allows explicit control.
 
-For function shorthand, the return value determines the outcome:
-
-- `true` or any truthy non-string — valid.
-- A non-empty string — invalid; the string is used as the error message.
-- A non-empty array of strings — invalid; each string becomes an error message.
-
-Always return meaningful error messages.
+Validation rules are not set on `form-field` directly. Define them on the parent `form-wrapper`'s `rules` prop instead — see the [form-wrapper docs](/src/components/form/form-wrapper/form-wrapper.md) for the available rules.
 
 ### `inputAttributes`
 

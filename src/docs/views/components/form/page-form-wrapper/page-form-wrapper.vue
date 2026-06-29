@@ -102,21 +102,169 @@
 				<template #default-value>{}</template>
 
 				<p>
-					Form-level validation rules, keyed by field name. Each value is an array of rules in the
-					same shape as
-					<code>form-field</code>
-					's own `validation`, but run against the full form data on submit. This is useful both for
-					keeping validation contained and not spread across fields, but it also allows validation
-					that relies on other fields.
+					All validation lives here, keyed by field name. Each value is an array of rules run
+					against the full form data on submit. Keeping validation in one place keeps it contained
+					rather than spread across fields, and it also allows rules that rely on other fields.
 				</p>
 
 				<code-block v-bind="{ code: rulesExample }" />
 
 				<p>
-					Field-local rules run first. Form-level errors map to the named field, so they display
-					beside the field and appear in the error summary exactly like field-local errors — the
-					error summary link still focuses the correct field. Form-level rules re-run on every
-					submit, so resolved errors clear automatically.
+					Each entry in a field's rules array can be either an object
+					<code>{ rule, message?, ...ruleOptions }</code>
+					or a function
+					<code>(value, formData)</code>
+					(see Function shorthand below). Available rules include:
+				</p>
+
+				<h4 id="rule-required">required</h4>
+
+				<p>
+					Requires a value to be set. Adds the
+					<code>required</code>
+					attribute to the field automatically.
+				</p>
+
+				<code-block v-bind="{ code: ruleRequired }" />
+
+				<h4 id="rule-email">email</h4>
+
+				<p>
+					Perform a minimal check to see if the value contains an
+					<code>@</code>
+					symbol. More complex verification isn't really necessary, and the only true way to test an
+					email address is through verification.
+				</p>
+
+				<code-block v-bind="{ code: ruleEmail }" />
+
+				<h4 id="rule-size">size</h4>
+
+				<p>
+					Ensure that the provided value has at least size
+					<code>size</code>
+					. For strings, the number of characters is used, for arrays, the length of the array, for
+					objects, the number of properties, for numbers, the number itself is used, and for numeric
+					strings the integer value of the string is used.
+				</p>
+
+				<code-block v-bind="{ code: ruleSize }" />
+
+				<h4 id="rule-min">min</h4>
+
+				<p>
+					Ensure that the provided value has at least size
+					<code>min</code>
+					. Values are evaluated as in the
+					<code>size</code>
+					rule.
+				</p>
+
+				<code-block v-bind="{ code: ruleMin }" />
+
+				<h4 id="rule-max">max</h4>
+
+				<p>
+					Ensure that the provided value has at most size
+					<code>max</code>
+					. Values are evaluated as in the
+					<code>size</code>
+					rule.
+				</p>
+
+				<code-block v-bind="{ code: ruleMax }" />
+
+				<h4 id="rule-between">between</h4>
+
+				<p>
+					Ensure that the provided value has between
+					<code>min</code>
+					and
+					<code>max</code>
+					size. Values are evaluated as in the
+					<code>size</code>
+					rule.
+				</p>
+
+				<code-block v-bind="{ code: ruleBetween }" />
+
+				<h4 id="rule-in">in</h4>
+
+				<p>
+					Ensure that the given value is included within
+					<code>options</code>
+					.
+				</p>
+
+				<code-block v-bind="{ code: ruleIn }" />
+
+				<h4 id="rule-not-in">not_in</h4>
+
+				<p>
+					Ensure that the given value is not included within
+					<code>options</code>
+					.
+				</p>
+
+				<code-block v-bind="{ code: ruleNotIn }" />
+
+				<h4 id="rule-regexp">regexp</h4>
+
+				<p>
+					Ensure that the provided value matches
+					<code>regexp</code>
+					.
+				</p>
+
+				<code-block v-bind="{ code: ruleRegexp }" />
+
+				<h4 id="rule-same">same / different</h4>
+
+				<p>
+					Compare the value against another field's value.
+					<code>same</code>
+					requires them to match;
+					<code>different</code>
+					requires them to differ.
+				</p>
+
+				<code-block v-bind="{ code: ruleSame }" />
+
+				<h4 id="rule-custom">custom</h4>
+
+				<p>
+					The escape hatch for any constraint the declarative rules can't express, including
+					cross-field validation.
+					<code>validate</code>
+					receives the field's own value and the complete form data.
+				</p>
+
+				<code-block v-bind="{ code: ruleCustom }" />
+
+				<h4 id="rule-function">Function shorthand</h4>
+
+				<p>
+					A rule entry can also be a function
+					<code>(value, formData)</code>
+					instead of an object. The return value determines the outcome:
+				</p>
+
+				<ul>
+					<li>
+						<code>true</code>
+						or any truthy non-string: valid.
+					</li>
+					<li>A non-empty string: invalid; the string is used as the error message.</li>
+					<li>A non-empty array of strings: invalid; each string becomes an error message.</li>
+				</ul>
+
+				<code-block v-bind="{ code: ruleFunction }" />
+
+				<p>
+					Form-level errors map to the named field, so they display beside the field and appear in
+					the error summary — the error summary link still focuses the correct field. Within a
+					field, errors follow the order of its rules array. Rules re-run on every submit, so
+					resolved errors clear automatically.
 				</p>
 			</component-prop>
 
@@ -336,11 +484,6 @@
 							<td>The ID of the field, helpful for linking errors to fields.</td>
 						</tr>
 						<tr>
-							<td><code>field.validateField</code></td>
-							<td><code>function</code></td>
-							<td>Validation function, run when the form is submitted.</td>
-						</tr>
-						<tr>
 							<td><code>field.triggerFocus</code></td>
 							<td><code>function</code></td>
 							<td>Method to focus on this field, used by the error summary.</td>
@@ -451,4 +594,21 @@ const rulesExample = `const rules = {
 
 </form-wrapper>
 `;
+
+const ruleRequired = `[{ rule: "required", message: "Enter your name so we know what to call you" }]`;
+const ruleEmail = `[{ rule: "email", message: "We need an email address to set up your account" }]`;
+const ruleSize = `[{ rule: "size", size: 11, message: "Your phone number should be 11 digits long" }]`;
+const ruleMin = `[{ rule: "min", min: 11, message: "Your phone number should be at least 11 digits long" }]`;
+const ruleMax = `[{ rule: "max", max: 11, message: "Your phone number should be no more than 11 digits long" }]`;
+const ruleBetween = `[{ rule: "between", min: 5, max: 8, message: "Your post code should be between 5 and 8 characters" }]`;
+const ruleIn = `[{ rule: "in", options: ["a", "b", "c"], message: "Your choice should be a, b, or c" }]`;
+const ruleNotIn = `[{ rule: "not_in", options: ["a", "b", "c"], message: "Your choice should not include a, b, or c" }]`;
+const ruleRegexp = `[{ rule: "regexp", regexp: /[abc]+/, message: "Your ID should only contain the letters a, b, and c" }]`;
+const ruleSame = `[{ rule: "same", field: "password", message: "Passwords must match" }]`;
+const ruleCustom = `[{ rule: "custom", validate: (value, formData) => value > formData.startDate, message: "End date must be after the start date" }]`;
+
+const ruleFunction = `[
+	(v) => !!v || "Enter your name",
+	(v) => /^[a-z]+$/i.test(v) || "Name must only contain letters",
+]`;
 </script>

@@ -87,7 +87,9 @@ describe("source-backed snippets", () => {
 		const output = generateSnippet(component, "basic-form");
 
 		expect(output).toContain("\n<template>");
-		expect(output).toContain('<form-wrapper v-model="formData" @submit="saveProfile">');
+		expect(output).toContain(
+			'<form-wrapper v-model="formData" v-bind="{ rules }" @submit="saveProfile">',
+		);
 		expect(output).toContain("<template #submit-button-label>");
 		expect(output).toContain("<script setup>");
 	});

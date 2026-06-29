@@ -30,13 +30,6 @@ export const formFieldMetadata = {
 			summary: "Field name used as the form data key. Must be unique within a form-wrapper.",
 		},
 		{
-			name: "validation",
-			type: "array",
-			default: "[]",
-			summary:
-				"Validation rules applied on submit. Each entry is either { rule, message?, ...ruleOptions } or a function (value, formData) returning true for valid, false or a string for invalid.",
-		},
-		{
 			name: "inputAttributes",
 			type: "object",
 			default: null,
@@ -47,7 +40,7 @@ export const formFieldMetadata = {
 			type: "boolean",
 			default: false,
 			summary:
-				"Whether this field is required. Also set automatically when a required validation rule is present, but the prop allows explicit control.",
+				"Whether this field is required. Also set automatically when a required rule for this field is present in the parent form-wrapper's rules, but the prop allows explicit control.",
 		},
 	],
 	slots: [
@@ -113,8 +106,8 @@ export const formFieldMetadata = {
 		},
 		{
 			name: "email",
-			label: "Email field with validation",
-			summary: "A required email field wired into a form-wrapper.",
+			label: "Required email field",
+			summary: "A required email field. Validation rules live on the parent form-wrapper.",
 			snippet: {
 				slots: {
 					default: {
@@ -133,10 +126,10 @@ export const formFieldMetadata = {
 						value: "email",
 						isInline: true,
 					},
-					validation: {
-						label: "Validation rules",
-						value:
-							"[{ rule: 'required', message: 'Enter your email address.' }, { rule: 'email', message: 'Enter a valid email address.' }]",
+					required: {
+						label: "Required",
+						value: true,
+						type: "boolean",
 					},
 				},
 			},
