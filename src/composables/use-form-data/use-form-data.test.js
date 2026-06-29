@@ -31,6 +31,16 @@ describe("useFormData", () => {
 		});
 	});
 
+	describe("Default mapper", () => {
+		test("Deep clones the source when no mapper is provided", () => {
+			const source = ref(sampleSource);
+			const formData = useFormData(source);
+
+			expect(formData.value).toEqual(sampleSource);
+			expect(formData.value).not.toBe(sampleSource);
+		});
+	});
+
 	describe("Population", () => {
 		test("should populate formData when the source first becomes available", async () => {
 			const source = ref(null);

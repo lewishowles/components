@@ -1,4 +1,4 @@
-import { ref, watch } from "vue";
+import { ref, toRaw, watch } from "vue";
 
 /**
  * Initialise form data from an async data source. Fires once when the source
@@ -12,8 +12,9 @@ import { ref, watch } from "vue";
  *     Colada query.
  * @param  {function}  mapper
  *     Maps the resolved source value to the initial form data object.
+ *     Defaults to a deep clone of the source value.
  */
-export function useFormData(source, mapper) {
+export function useFormData(source, mapper = (data) => structuredClone(toRaw(data))) {
 	// The form data, populated once the source first resolves.
 	const formData = ref({});
 	// Guards against populating more than once, even if the source changes after the first resolve.
