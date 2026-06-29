@@ -13,7 +13,7 @@
 			class="inline-block stroke-current"
 			:class="{
 				'size-text': iconOnly && !showExternalIcon,
-				'me-2 size-[0.857em] align-[1px]': !iconOnly || showExternalIcon,
+				'me-2 size-[0.857em] align-middle': !iconOnly || showExternalIcon,
 			}"
 			data-part="icon-start"
 			data-test="link-tag-icon-start"
