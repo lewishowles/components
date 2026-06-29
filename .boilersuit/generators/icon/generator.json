@@ -2,7 +2,7 @@
 	"schema_version": 1,
 	"id": "icon",
 	"display_name": "Icon",
-	"description": "Creates a library icon component with unit and Cypress component tests.",
+	"description": "Creates a library icon component with unit and Playwright component tests.",
 	"default_path": "src/components/icon",
 	"fields": [
 		{
@@ -32,12 +32,12 @@
 			"required": true
 		},
 		{
-			"template": "icon.cy.js",
-			"output_path": "{{ NAME | kebab }}/{{ NAME | kebab }}.cy.js",
+			"template": "icon.pw.js",
+			"output_path": "{{ NAME | kebab }}/{{ NAME | kebab }}.pw.js",
 			"required": false,
-			"label": "Cypress component test",
+			"label": "Playwright component test",
 			"include_when": {
-				"test_framework": "cypress"
+				"test_framework": "playwright"
 			}
 		}
 	]

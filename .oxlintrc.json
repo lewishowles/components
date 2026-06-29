@@ -74,26 +74,6 @@
 			"env": {
 				"node": true
 			}
-		},
-		{
-			"files": ["**/*.cy.js", "test/cypress/support/*.js"],
-			"rules": {
-				"cypress/no-assigning-return-values": "error",
-				"cypress/no-unnecessary-waiting": "error",
-				"cypress/no-async-tests": "error",
-				"cypress/unsafe-to-chain-command": "error"
-			},
-			"jsPlugins": ["eslint-plugin-cypress"],
-			"globals": {
-				"cy": "readonly",
-				"Cypress": "readonly",
-				"expect": "readonly",
-				"assert": "readonly",
-				"chai": "readonly"
-			},
-			"env": {
-				"mocha": true
-			}
 		}
 	],
 	"options": {

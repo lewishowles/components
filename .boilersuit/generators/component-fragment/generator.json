@@ -88,12 +88,12 @@
 			"required": true
 		},
 		{
-			"template": "fragment.cy.js",
-			"output_path": "{{ CATEGORY }}/{{ PARENT_COMPONENT | kebab }}/fragments/{{ NAME | kebab }}/{{ NAME | kebab }}.cy.js",
+			"template": "fragment.pw.js",
+			"output_path": "{{ CATEGORY }}/{{ PARENT_COMPONENT | kebab }}/fragments/{{ NAME | kebab }}/{{ NAME | kebab }}.pw.js",
 			"required": false,
-			"label": "Cypress component test",
+			"label": "Playwright component test",
 			"include_when": {
-				"test_framework": "cypress"
+				"test_framework": "playwright"
 			}
 		}
 	]

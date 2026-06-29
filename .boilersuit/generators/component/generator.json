@@ -2,7 +2,7 @@
 	"schema_version": 1,
 	"id": "component",
 	"display_name": "Component",
-	"description": "Creates a full component with a Vue file, unit test, Cypress component test, and documentation page.",
+	"description": "Creates a full component with a Vue file, unit test, Playwright component test, and documentation page.",
 	"default_path": "src/components",
 	"fields": [
 		{
@@ -74,12 +74,12 @@
 			"required": true
 		},
 		{
-			"template": "component.cy.js",
-			"output_path": "{{ CATEGORY }}/{{ NAME | kebab }}/{{ NAME | kebab }}.cy.js",
+			"template": "component.pw.js",
+			"output_path": "{{ CATEGORY }}/{{ NAME | kebab }}/{{ NAME | kebab }}.pw.js",
 			"required": false,
-			"label": "Cypress component test",
+			"label": "Playwright component test",
 			"include_when": {
-				"test_framework": "cypress"
+				"test_framework": "playwright"
 			}
 		},
 		{
