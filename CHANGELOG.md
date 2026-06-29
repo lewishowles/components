@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 2.4.2 - 2026-06-29
+
+### Fixes
+
+- `form-wrapper`: `required` rules now correctly pass down the required prop to individual fields.
 
 ## 2.4.1 — 2026-06-29
 

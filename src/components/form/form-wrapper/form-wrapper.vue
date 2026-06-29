@@ -302,6 +302,37 @@ const isSubmitting = ref(false);
 // Whether child fields should be readonly, derived from the readonly prop.
 const isReadonly = computed(() => props.readonly);
 
+// Field names that have a `required` rule in the form-level `rules` prop. Used
+// to cascade required state to child fields so they still show the correct
+// indicator when validation is centralised in form-wrapper.
+const requiredFieldNames = computed(() => {
+	const names = new Set();
+
+	for (const fieldName in props.rules) {
+		if (!Object.hasOwn(props.rules, fieldName)) {
+			continue;
+		}
+
+		const rules = props.rules[fieldName];
+
+		if (Array.isArray(rules) && rules.some((r) => r?.rule === "required")) {
+			names.add(fieldName);
+		}
+	}
+
+	return names;
+});
+
+/**
+ * Check whether a field name has a required rule in the form-level rules.
+ *
+ * @param  {string}  fieldName
+ *     The field name to check.
+ */
+function isFieldRequired(fieldName) {
+	return requiredFieldNames.value.has(fieldName);
+}
+
 /**
  * Allow a field to register itself with the form.
  *
@@ -356,6 +387,7 @@ provide("form-wrapper", {
 	registerField,
 	updateFieldValue,
 	isReadonly,
+	isFieldRequired,
 });
 
 watch(

@@ -136,6 +136,7 @@ const fieldErrorsFor = formWrapperInject?.fieldErrorsFor;
 const registerField = formWrapperInject?.registerField;
 const updateFieldValue = formWrapperInject?.updateFieldValue;
 const isReadonly = formWrapperInject?.isReadonly;
+const isFieldRequired = formWrapperInject?.isFieldRequired;
 // Whether any validation has been provided for this field.
 const haveValidation = computed(() => isNonEmptyArray(props.validation));
 
@@ -245,6 +246,12 @@ const propsForValidation = computed(() => {
 				additionalProps.required = true;
 			}
 		});
+	}
+
+	// Cascade required from form-wrapper rules so fields still show the
+	// correct indicator when validation lives in form-wrapper.
+	if (isFunction(isFieldRequired) && isFieldRequired(props.name)) {
+		additionalProps.required = true;
 	}
 
 	return additionalProps;
