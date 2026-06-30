@@ -38,6 +38,14 @@ describe("form-checkbox", () => {
 	});
 
 	describe("Props", () => {
+		describe("showOptionalIndicator", () => {
+			test("is false by default", () => {
+				const wrapper = mount();
+
+				expect(wrapper.props("showOptionalIndicator")).toBe(false);
+			});
+		});
+
 		describe("required", () => {
 			test("sets the required attribute on the input when required", () => {
 				const wrapper = mount({ props: { required: true } });

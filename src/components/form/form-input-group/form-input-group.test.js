@@ -200,5 +200,23 @@ describe("form-input-group", () => {
 				expect(wrapper.findComponent({ name: "FormLabel" }).props("required")).toBe(false);
 			});
 		});
+
+		describe("type", () => {
+			test("suppresses the optional indicator on the legend when type is checkbox", () => {
+				const wrapper = deepMount({ props: { type: "checkbox" } });
+
+				expect(wrapper.findComponent({ name: "FormLabel" }).props("showOptionalIndicator")).toBe(
+					false,
+				);
+			});
+
+			test("does not suppress the optional indicator on the legend when type is radio", () => {
+				const wrapper = deepMount({ props: { type: "radio" } });
+
+				expect(wrapper.findComponent({ name: "FormLabel" }).props("showOptionalIndicator")).toBe(
+					true,
+				);
+			});
+		});
 	});
 });

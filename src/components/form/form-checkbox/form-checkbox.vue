@@ -84,7 +84,7 @@ const props = defineProps({
 	 */
 	displayLabel: {
 		type: Boolean,
-		default: true,
+		default: false,
 	},
 
 	/**
@@ -105,11 +105,13 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether to show optional text when the field is not required.
+	 * Whether to show optional text when the field is not required. Defaults
+	 * to false — unchecked is always a valid state, making the indicator
+	 * misleading for checkboxes.
 	 */
 	showOptionalIndicator: {
 		type: Boolean,
-		default: true,
+		default: false,
 	},
 
 	/**
