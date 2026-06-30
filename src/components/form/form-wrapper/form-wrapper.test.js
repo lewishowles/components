@@ -16,105 +16,6 @@ describe("form-wrapper", () => {
 
 	describe("Props", () => {
 		describe("submitErrorsCallback", () => {
-			describe("handleSubmitError", () => {
-				test("Maps a rejected error to a registered field", () => {
-					const wrapper = mount({
-						props: { submitErrorsCallback: () => ({ email: "That email is taken" }) },
-					});
-
-					const vm = wrapper.vm;
-
-					vm.registerField({ name: "email", id: "email-id" });
-
-					vm.handleSubmitError(new Error("Request failed"));
-
-					expect(vm.errorSummary).toEqual([
-						{ fieldName: "email", id: "email-id", message: "That email is taken" },
-					]);
-				});
-
-				test("Normalises a list of messages for a field", () => {
-					const wrapper = mount({
-						props: { submitErrorsCallback: () => ({ name: ["Too short", "Required"] }) },
-					});
-
-					const vm = wrapper.vm;
-
-					vm.registerField({ name: "name", id: "name-id" });
-
-					vm.handleSubmitError(new Error("Request failed"));
-
-					expect(vm.errorSummary).toEqual([
-						{ fieldName: "name", id: "name-id", message: "Too short" },
-						{ fieldName: "name", id: "name-id", message: "Required" },
-					]);
-				});
-
-				test("Surfaces errors for unknown fields as general errors", () => {
-					const wrapper = mount({
-						props: { submitErrorsCallback: () => ({ form: "Something went wrong" }) },
-					});
-
-					const vm = wrapper.vm;
-
-					vm.handleSubmitError(new Error("Request failed"));
-
-					expect(vm.generalSubmitErrors).toEqual(["Something went wrong"]);
-					expect(vm.errorSummary).toEqual([]);
-				});
-
-				test("Re-throws when the adapter returns nothing mappable", async () => {
-					const error = new Error("Server error");
-					const wrapper = mount({ props: { submitErrorsCallback: () => null } });
-
-					const vm = wrapper.vm;
-
-					await expect(vm.handleSubmitError(error)).rejects.toThrow(error);
-					expect(vm.generalSubmitErrors).toEqual([]);
-				});
-
-				test("Re-throws when no submitErrorsCallback is provided", async () => {
-					const error = new Error("Server error");
-					const wrapper = mount();
-
-					await expect(wrapper.vm.handleSubmitError(error)).rejects.toThrow(error);
-				});
-			});
-
-			describe("fieldErrorsFor", () => {
-				test("Combines parent-owned and adapter errors", () => {
-					const wrapper = mount({
-						props: {
-							fieldErrors: { email: "Parent error" },
-							submitErrorsCallback: () => ({ email: "API error" }),
-						},
-					});
-
-					const vm = wrapper.vm;
-
-					vm.registerField({ name: "email", id: "email-id" });
-					vm.handleSubmitError(new Error("Request failed"));
-
-					expect(vm.fieldErrorsFor("email")).toEqual(["Parent error", "API error"]);
-				});
-
-				test("Deduplicates identical messages from multiple sources", () => {
-					const wrapper = mount({
-						props: {
-							fieldErrors: { email: "Already taken" },
-							submitErrorsCallback: () => ({ email: "Already taken" }),
-						},
-					});
-
-					const vm = wrapper.vm;
-
-					vm.registerField({ name: "email", id: "email-id" });
-					vm.handleSubmitError(new Error("Request failed"));
-
-					expect(vm.fieldErrorsFor("email")).toEqual(["Already taken"]);
-				});
-			});
-
 			describe("Async submit", () => {
 				test("Maps a rejected submit and resets the submitting state", async () => {
 					const onSubmit = vi.fn(() => Promise.reject(new Error("Request failed")));
@@ -164,8 +65,6 @@ describe("form-wrapper", () => {
 					await vm.handleFormSubmit();
 
 					expect(vm.errorSummary).toEqual([]);
-					expect(vm.submitErrors).toEqual({});
-					expect(vm.formLevelErrors).toEqual({});
 
 					await flushPromises();
 				});

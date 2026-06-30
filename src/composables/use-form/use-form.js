@@ -1,0 +1,422 @@
+import { computed, nextTick, reactive, ref, watch } from "vue";
+
+import { isFunction } from "@lewishowles/helpers/general";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { validateForm } from "@lewishowles/helpers/form";
+
+/**
+ * The internal form engine used by form-wrapper. Handles field registration,
+ * form-level validation, the submit lifecycle, readonly cascade, and error
+ * focus. Not intended for direct use — this API will be replaced by the
+ * public useForm() interface in a later release.
+ *
+ * @param  {ref}  formData
+ *     The v-model ref for form field values.
+ * @param  {object}  props
+ *     The host component's props. Reads fieldErrors, rules,
+ *     submitErrorsCallback, updatePageTitleOnError, pageTitleErrorPrefix, and
+ *     readonly.
+ * @param  {ref}  errorSummaryElement
+ *     Ref to the error summary element, focused after a failed submit.
+ * @param  {ref}  generalErrorsElement
+ *     Ref to the general errors container, focused when only general errors
+ *     exist.
+ * @param  {ref}  submitButtonRef
+ *     Ref to the submit button component, reset when the submit settles.
+ * @param  {object|null}  instance
+ *     The host component instance from getCurrentInstance(), used to invoke
+ *     the parent's submit handlers.
+ */
+export function useForm({
+	formData,
+	props,
+	errorSummaryElement,
+	generalErrorsElement,
+	submitButtonRef,
+	instance,
+}) {
+	// A reference to each of our form fields once registered.
+	const formFields = reactive({});
+	// Whether we have any form fields registered to the form.
+	const haveFormFields = computed(() => isNonEmptyObject(formFields));
+	// Errors produced by the `submitErrorsCallback` from a rejected submit.
+	const submitErrors = ref({});
+	// Errors produced by form-level `rules`, keyed by field name.
+	const formLevelErrors = ref({});
+
+	// Parsed submit errors whose key doesn't match a registered field, surfaced
+	// as general errors rather than field errors.
+	const generalSubmitErrors = computed(() => {
+		const messages = [];
+
+		for (const key in submitErrors.value) {
+			if (!Object.hasOwn(submitErrors.value, key)) {
+				continue;
+			}
+
+			if (Object.hasOwn(formFields, key)) {
+				continue;
+			}
+
+			messages.push(...normaliseFieldErrors(submitErrors.value[key]));
+		}
+
+		return messages;
+	});
+
+	// Whether we have any general (non-field) submit errors to show.
+	const haveGeneralSubmitErrors = computed(() => isNonEmptyArray(generalSubmitErrors.value));
+
+	// The stored prefixed page title so the wrapper can restore it after a
+	// successful submit.
+	const prefixedPageTitle = ref(null);
+
+	// All field errors shown in the error summary, computed from a single merge
+	// point per field.
+	const errorSummary = computed(() => {
+		const errors = [];
+
+		for (const fieldName in formFields) {
+			if (!Object.hasOwn(formFields, fieldName)) {
+				continue;
+			}
+
+			fieldErrorsFor(fieldName).forEach((message) => {
+				errors.push({ fieldName, id: formFields[fieldName].id, message });
+			});
+		}
+
+		return errors;
+	});
+
+	// Whether our error summary contains any errors.
+	const haveErrorSummary = computed(() => isNonEmptyArray(errorSummary.value));
+	// Whether a form submission is currently in progress.
+	const isSubmitting = ref(false);
+	// Whether child fields should be readonly, derived from the readonly prop.
+	const isReadonly = computed(() => props.readonly);
+
+	// Field names that have a `required` rule in the form-level `rules` prop.
+	const requiredFieldNames = computed(() => {
+		const names = new Set();
+
+		for (const fieldName in props.rules) {
+			if (!Object.hasOwn(props.rules, fieldName)) {
+				continue;
+			}
+
+			const rules = props.rules[fieldName];
+
+			if (Array.isArray(rules) && rules.some((r) => r?.rule === "required")) {
+				names.add(fieldName);
+			}
+		}
+
+		return names;
+	});
+
+	/**
+	 * Check whether a field name has a required rule in the form-level rules.
+	 *
+	 * @param  {string}  fieldName
+	 */
+	function isFieldRequired(fieldName) {
+		return requiredFieldNames.value.has(fieldName);
+	}
+
+	/**
+	 * Allow a field to register itself with the form.
+	 *
+	 * @param  {string}    field.name
+	 * @param  {string}    field.id
+	 * @param  {function}  field.triggerFocus
+	 */
+	async function registerField(field) {
+		if (!isObject(formData.value)) {
+			formData.value = {};
+
+			await nextTick();
+		}
+
+		if (Object.hasOwn(formFields, field.name)) {
+			console.error(
+				"<form-wrapper>",
+				`Duplicate field name <${field.name}> detected. Only one field with a given name will be represented in form data.`,
+			);
+		}
+
+		formFields[field.name] = field;
+
+		if (!Object.hasOwn(formData.value, field.name)) {
+			formData.value[field.name] = null;
+		}
+	}
+
+	/**
+	 * Allow a field to update its value in the form.
+	 *
+	 * @param  {string}   name
+	 * @param  {unknown}  value
+	 */
+	async function updateFieldValue(name, value) {
+		formData.value[name] = value;
+	}
+
+	/**
+	 * Get all error messages for a field, combining parent-owned, submit
+	 * callback, and form-level rule errors with deduplication.
+	 *
+	 * @param  {string}  fieldName
+	 */
+	function fieldErrorsFor(fieldName) {
+		const seen = new Set();
+
+		return [
+			...normaliseFieldErrors(props.fieldErrors?.[fieldName]),
+			...normaliseFieldErrors(submitErrors.value?.[fieldName]),
+			...normaliseFieldErrors(formLevelErrors.value[fieldName]),
+		].filter((message) => {
+			if (seen.has(message)) {
+				return false;
+			}
+
+			seen.add(message);
+
+			return true;
+		});
+	}
+
+	/**
+	 * Normalise a field's error value into an array of non-empty messages.
+	 *
+	 * @param  {string|Array}  value
+	 */
+	function normaliseFieldErrors(value) {
+		if (isNonEmptyString(value)) {
+			return [value];
+		}
+
+		if (!isNonEmptyArray(value)) {
+			return [];
+		}
+
+		return value.filter((message) => isNonEmptyString(message));
+	}
+
+	/**
+	 * Focus the error summary after Vue has rendered the latest errors.
+	 */
+	async function focusErrorSummary() {
+		await nextTick();
+
+		callComponentMethod(errorSummaryElement.value, "focus");
+	}
+
+	/**
+	 * Focus the general errors container when only general errors are present.
+	 */
+	async function focusGeneralErrors() {
+		await nextTick();
+
+		callComponentMethod(generalErrorsElement.value, "focus");
+	}
+
+	/**
+	 * After a failed submit, focus the error summary when field errors are
+	 * present, or the general errors container when only general errors exist.
+	 */
+	async function focusAfterFailedSubmit() {
+		if (haveErrorSummary.value) {
+			await focusErrorSummary();
+		} else if (haveGeneralSubmitErrors.value) {
+			await focusGeneralErrors();
+		}
+	}
+
+	/**
+	 * Add the error prefix to the page title after a failed submit.
+	 */
+	function updatePageTitle() {
+		if (!props.updatePageTitleOnError) {
+			return;
+		}
+
+		const prefix = `${props.pageTitleErrorPrefix} `;
+
+		if (document.title.startsWith(prefix)) {
+			return;
+		}
+
+		prefixedPageTitle.value = `${prefix}${document.title}`;
+		document.title = prefixedPageTitle.value;
+	}
+
+	/**
+	 * Remove the error prefix the wrapper added. Called automatically on
+	 * successful submit.
+	 */
+	function clearPageTitle() {
+		if (!prefixedPageTitle.value) {
+			return;
+		}
+
+		document.title = document.title.slice(props.pageTitleErrorPrefix.length + 1);
+		prefixedPageTitle.value = null;
+	}
+
+	/**
+	 * Validate the form-level `rules` against the current form data, mapping any
+	 * errors to their field name.
+	 */
+	async function validateFormLevelRules() {
+		if (!isNonEmptyObject(props.rules)) {
+			formLevelErrors.value = {};
+
+			return;
+		}
+
+		const { results } = await validateForm(props.rules, formData.value);
+		const errors = {};
+
+		for (const fieldName in results) {
+			if (!Object.hasOwn(results, fieldName)) {
+				continue;
+			}
+
+			const fieldErrors = results[fieldName].errors;
+
+			if (isNonEmptyArray(fieldErrors)) {
+				errors[fieldName] = fieldErrors;
+			}
+		}
+
+		formLevelErrors.value = errors;
+	}
+
+	/**
+	 * Handle the submit of the form, checking any provided validation, and
+	 * submitting the appropriate event if validation succeeds.
+	 */
+	async function handleFormSubmit() {
+		submitErrors.value = {};
+		formLevelErrors.value = {};
+
+		if (!haveFormFields.value) {
+			await doSubmit();
+
+			return;
+		}
+
+		await validateFormLevelRules();
+
+		if (haveErrorSummary.value) {
+			resetSubmitButton();
+			updatePageTitle();
+			await focusAfterFailedSubmit();
+
+			return;
+		}
+
+		await doSubmit();
+	}
+
+	/**
+	 * Call the parent's submit handlers directly, tracking any returned Promise
+	 * to auto-reset the submit button when the async work settles.
+	 */
+	async function doSubmit() {
+		isSubmitting.value = true;
+
+		const onSubmit = instance?.vnode.props?.onSubmit;
+		const handlers = Array.isArray(onSubmit) ? onSubmit : [onSubmit].filter(Boolean);
+
+		try {
+			await Promise.all(handlers.map((handler) => handler(formData.value)));
+			clearPageTitle();
+		} catch (error) {
+			await handleSubmitError(error);
+		} finally {
+			resetSubmitButton();
+		}
+	}
+
+	/**
+	 * Handle a rejected submit Promise. If a `submitErrorsCallback` is provided
+	 * and can map the error to field errors, surface those; otherwise re-throw.
+	 *
+	 * @param  {unknown}  error
+	 */
+	async function handleSubmitError(error) {
+		if (!isFunction(props.submitErrorsCallback)) {
+			throw error;
+		}
+
+		const parsedErrors = props.submitErrorsCallback(error);
+
+		if (!isNonEmptyObject(parsedErrors)) {
+			throw error;
+		}
+
+		submitErrors.value = parsedErrors;
+
+		await focusAfterFailedSubmit();
+	}
+
+	/**
+	 * Reset the submit button's loading state.
+	 */
+	function resetSubmitButton() {
+		isSubmitting.value = false;
+
+		callComponentMethod(submitButtonRef.value, "reset");
+	}
+
+	/**
+	 * Trigger focus on the underlying form field.
+	 *
+	 * @param  {string}  fieldName
+	 */
+	function focusField(fieldName) {
+		if (!Object.hasOwn(formFields, fieldName)) {
+			return;
+		}
+
+		callComponentMethod(formFields[fieldName], "triggerFocus");
+	}
+
+	watch(
+		() => props.fieldErrors,
+		async () => {
+			if (!isNonEmptyArray(errorSummary.value)) {
+				return;
+			}
+
+			await focusErrorSummary();
+		},
+		{ deep: true },
+	);
+
+	return {
+		formFields,
+		haveFormFields,
+		submitErrors,
+		formLevelErrors,
+		generalSubmitErrors,
+		haveGeneralSubmitErrors,
+		errorSummary,
+		haveErrorSummary,
+		isSubmitting,
+		isReadonly,
+		registerField,
+		updateFieldValue,
+		fieldErrorsFor,
+		handleFormSubmit,
+		handleSubmitError,
+		resetSubmitButton,
+		focusField,
+		isFieldRequired,
+	};
+}
