@@ -70,7 +70,7 @@ watch(
 :deep(.shiki) {
 	margin-block-end: 0;
 	overflow-x: auto;
-	white-space: pre-wrap;
+	white-space: pre;
 	border-radius: var(--radius-md);
 	padding: 1rem;
 	font-size: var(--text-sm);
