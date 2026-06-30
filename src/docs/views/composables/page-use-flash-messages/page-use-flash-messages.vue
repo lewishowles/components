@@ -80,5 +80,34 @@
 				</p>
 			</component-method>
 		</component-methods>
+
+		<component-tab v-bind="{ id: 'tab-examples', icon: 'icon-code' }">
+			<template #title>Examples</template>
+
+			<code-block :code="flashMessagesExample" />
+		</component-tab>
 	</component-page>
 </template>
+
+<script setup>
+const flashMessagesExample = `<template>
+	<button type="button" @click="saveProfile">Save profile</button>
+	<flash-messages v-bind="{ namespace }" />
+</template>
+
+<script setup>
+import { useFlashMessages } from "@lewishowles/components/composables";
+
+const namespace = "profile-form";
+const { sendMessage } = useFlashMessages();
+
+function saveProfile() {
+	sendMessage({
+		namespace,
+		type: "success",
+		title: "Profile saved",
+		message: "Your profile changes have been saved.",
+	});
+}
+\x3c/script>`;
+</script>

@@ -184,5 +184,70 @@
 				</p>
 			</component-method>
 		</component-methods>
+
+		<component-tab v-bind="{ id: 'tab-examples', icon: 'icon-code' }">
+			<template #title>Examples</template>
+
+			<code-block :code="comboboxExample" />
+		</component-tab>
 	</component-page>
 </template>
+
+<script setup>
+const comboboxExample = `<template>
+	<input
+		v-model="search"
+		v-bind="inputAttributes"
+		autocomplete="off"
+		@focus="open"
+		@input="open"
+		@keydown="handleKeydown"
+	/>
+
+	<ul v-if="isOpen" v-bind="listboxAttributes" class="bg-white">
+		<li
+			v-for="option in filteredOptions"
+			:key="option.id"
+			v-bind="getOptionAttributes(option.id).value"
+			:class="{ active: activeId === option.id }"
+			@click="selectOption(option.id)"
+		>
+			{{ option.label }}
+		</li>
+	</ul>
+</template>
+
+<script setup>
+import { computed, ref } from "vue";
+import { useCombobox } from "@lewishowles/components/composables";
+
+const options = [
+	{ id: "owner-lewis", label: "Lewis Howles" },
+	{ id: "owner-maya", label: "Maya Patel" },
+	{ id: "owner-sam", label: "Sam Taylor" },
+];
+
+const search = ref("");
+const filteredOptions = computed(() =>
+	options.filter((option) => option.label.toLowerCase().includes(search.value.toLowerCase())),
+);
+const optionIds = computed(() => filteredOptions.value.map((option) => option.id));
+
+const {
+	activeId,
+	getOptionAttributes,
+	handleKeydown,
+	inputAttributes,
+	isOpen,
+	listboxAttributes,
+	open,
+	selectOption,
+} = useCombobox({
+	options: optionIds,
+	listboxId: "owner-listbox",
+	onSelect: (id) => {
+		search.value = options.find((option) => option.id === id)?.label ?? "";
+	},
+});
+\x3c/script>`;
+</script>

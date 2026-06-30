@@ -71,5 +71,24 @@
 				</p>
 			</component-method>
 		</component-methods>
+
+		<component-tab v-bind="{ id: 'tab-examples', icon: 'icon-code' }">
+			<template #title>Examples</template>
+
+			<code-block :code="chartConfigExample" />
+		</component-tab>
 	</component-page>
 </template>
+
+<script setup>
+const chartConfigExample = `import { useChartConfig } from "@lewishowles/components/composables";
+
+const segments = [
+	{ label: "Search", value: 42 },
+	{ label: "Referral", value: 28 },
+	{ label: "Direct", value: 18 },
+	{ label: "Social", value: 12 },
+];
+
+const { series } = useChartConfig(segments);`;
+</script>

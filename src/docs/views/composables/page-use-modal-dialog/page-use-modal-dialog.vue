@@ -66,5 +66,29 @@
 				</p>
 			</component-method>
 		</component-methods>
+
+		<component-tab v-bind="{ id: 'tab-examples', icon: 'icon-code' }">
+			<template #title>Examples</template>
+
+			<code-block :code="modalDialogExample" />
+		</component-tab>
 	</component-page>
 </template>
+
+<script setup>
+const modalDialogExample = `<template>
+	<button type="button" @click="confirmDeleteUser(user)">Delete user</button>
+	<modal-controller />
+</template>
+
+<script setup>
+import { useModalDialog } from "@lewishowles/components/composables";
+import DeleteUserDialog from "@/dialogs/delete-user-dialog.vue";
+
+const { openModal } = useModalDialog();
+
+function confirmDeleteUser(user) {
+	openModal(DeleteUserDialog, { user });
+}
+\x3c/script>`;
+</script>

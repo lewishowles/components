@@ -5,7 +5,15 @@
 		<template #introduction>
 			<p>
 				<code>useFormData</code>
-				initialises form data from an async data source, such as the
+				prepares the
+				<code>formData</code>
+				ref that is passed to
+				<router-link v-bind="{ to: '/form/form-wrapper' }">
+					<code>form-wrapper</code>
+				</router-link>
+				or
+				<code>useForm</code>
+				. It initialises values from an async data source, such as the
 				<code>data</code>
 				ref from a Pinia Colada query. It populates the form once when the source first becomes
 				available.
@@ -16,10 +24,6 @@
 				<code>isReady</code>
 				so fields mount only after data is available.
 			</p>
-
-			<code-block
-				:code="`import { useFormData } from &quot;@lewishowles/components/composables&quot;;`"
-			/>
 		</template>
 
 		<component-returns>
@@ -67,29 +71,38 @@
 						</tr>
 					</tbody>
 				</table>
-
-				<p>Usage example:</p>
-
-				<code-block :code="usageExample" />
-
-				<p>Template gate:</p>
-
-				<code-block :code="templateExample" language="html" />
 			</component-method>
 		</component-methods>
+
+		<component-tab v-bind="{ id: 'tab-examples', icon: 'icon-code' }">
+			<template #title>Examples</template>
+
+			<code-block :code="formDataExample" />
+		</component-tab>
 	</component-page>
 </template>
 
 <script setup>
-// Usage examples shown in the documentation.
-const usageExample = `const { isReady, userDetails } = useUser(userId);
+const formDataExample = `<template>
+	<form-wrapper v-if="isReady" v-model="formData" @submit="saveProfile">
+		<form-field name="name">Full name</form-field>
+		<form-field name="email" type="email">Email address</form-field>
 
-const formData = useFormData(userDetails, (data) => ({
+		<template #submit-button-label>Save profile</template>
+	</form-wrapper>
+</template>
+
+<script setup>
+import { computed } from "vue";
+import { useFormData } from "@lewishowles/components/composables";
+import { useUser } from "@/queries/use-user";
+
+const { data: profile } = useUser();
+const isReady = computed(() => Boolean(profile.value));
+
+const formData = useFormData(profile, (data) => ({
 	email: data.email,
 	name: data.name,
-}));`;
-
-const templateExample = `<form-wrapper v-if="isReady" v-model="formData" @submit="handleSubmit">
-	<!-- form fields -->
-</form-wrapper>`;
+}));
+\x3c/script>`;
 </script>

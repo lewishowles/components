@@ -187,5 +187,34 @@
 				<p>Remove all notifications from the registry.</p>
 			</component-method>
 		</component-methods>
+
+		<component-tab v-bind="{ id: 'tab-examples', icon: 'icon-code' }">
+			<template #title>Examples</template>
+
+			<code-block :code="notificationsExample" />
+		</component-tab>
 	</component-page>
 </template>
+
+<script setup>
+const notificationsExample = `<template>
+	<button type="button" @click="notifyReportReady">Add notification</button>
+	<notification-handler />
+</template>
+
+<script setup>
+import { useNotifications } from "@lewishowles/components/composables";
+
+const { add } = useNotifications();
+
+function notifyReportReady() {
+	add({
+		type: "info",
+		title: "Document ready",
+		message: "The accessibility audit report is ready to review.",
+		date: "2026-06-30",
+		icon: "icon-document",
+	});
+}
+\x3c/script>`;
+</script>

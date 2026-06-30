@@ -139,5 +139,54 @@
 				<p>Removes any current event listeners. Call this when the floating panel closes.</p>
 			</component-method>
 		</component-methods>
+
+		<component-tab v-bind="{ id: 'tab-examples', icon: 'icon-code' }">
+			<template #title>Examples</template>
+
+			<code-block :code="floatingPositionExample" />
+		</component-tab>
 	</component-page>
 </template>
+
+<script setup>
+const floatingPositionExample = `<template>
+	<button ref="triggerElement" type="button" @click="togglePanel">Toggle panel</button>
+
+	<div v-if="isOpen" ref="panelElement" :class="panelClasses">
+		Floating panel content
+	</div>
+</template>
+
+<script setup>
+import { computed, nextTick, ref } from "vue";
+import { useFloatingPosition } from "@lewishowles/components/composables";
+
+const isOpen = ref(false);
+const triggerElement = ref(null);
+const panelElement = ref(null);
+const initialPlacement = ref("below");
+const initialAlign = ref("start");
+
+const { computedAlign, computedPlacement, handleClose, handleOpen, isPositioning, placementClasses } =
+	useFloatingPosition({ triggerElement, panelElement, initialPlacement, initialAlign });
+
+const panelClasses = computed(() => [
+	placementClasses.value,
+	isPositioning.value ? "invisible" : "",
+	computedPlacement.value === "above" ? "bottom-full" : "top-full",
+	computedAlign.value === "end" ? "right-0" : "left-0",
+]);
+
+async function togglePanel() {
+	isOpen.value = !isOpen.value;
+
+	if (!isOpen.value) {
+		handleClose();
+		return;
+	}
+
+	await nextTick();
+	await handleOpen();
+}
+\x3c/script>`;
+</script>
