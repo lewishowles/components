@@ -6,8 +6,8 @@
 			<p>
 				<code>form-wrapper</code>
 				is intended as a complete form, wrapped around individual fields. The wrapper automatically
-				adds actions and, when fields are provided validation information, handles field validation
-				and the generation of an error summary to maximise the accessibility of the form.
+				adds actions, owns form-level validation, and generates an error summary to maximise the
+				accessibility of the form.
 			</p>
 
 			<p>
@@ -28,6 +28,19 @@
 				around its
 				<code>default</code>
 				content.
+			</p>
+
+			<p>
+				Internally,
+				<code>form-wrapper</code>
+				uses
+				<code>useForm</code>
+				to register child fields, run validation, build the error summary, and manage the submit
+				lifecycle. Custom wrappers use the same composable and provide the same
+				<code>form-wrapper</code>
+				injection when they need
+				<code>form-field</code>
+				children to work.
 			</p>
 		</template>
 
@@ -538,6 +551,25 @@
 		</component-provides>
 
 		<component-methods>
+			<component-method id="method-use-form">
+				<template #name>
+					<code>useForm</code>
+				</template>
+
+				<p>
+					<code>useForm</code>
+					is the composable behind
+					<code>form-wrapper</code>
+					. A custom wrapper calls it to provide the same
+					<code>form-wrapper</code>
+					injection that
+					<code>form-field</code>
+					uses.
+				</p>
+
+				<code-block v-bind="{ code: useFormExample }" />
+			</component-method>
+
 			<component-method id="method-reset-submit-button">
 				<template #name>
 					<code>resetSubmitButton</code>
@@ -580,6 +612,24 @@
 
 <script setup>
 import PlaygroundFormWrapper from "./fragments/playground-form-wrapper.vue";
+
+const useFormExample = `import { useForm } from "@lewishowles/components/composables";
+
+const {
+	fieldErrorsFor,
+	isFieldRequired,
+	isReadonly,
+	registerField,
+	updateFieldValue,
+} = useForm({ formData, props, errorSummaryElement, generalErrorsElement, submitButtonRef, instance });
+
+provide("form-wrapper", {
+	fieldErrorsFor,
+	isFieldRequired,
+	isReadonly,
+	registerField,
+	updateFieldValue,
+});`;
 
 const fieldErrorsExample = `const fieldErrors = { date: "The date must be in the future", email: ["The email address provided already exists"], };`;
 
