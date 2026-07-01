@@ -704,7 +704,14 @@ const {
 	isReadonly,
 	registerField,
 	updateFieldValue,
-} = useForm({ formData, props, errorSummaryElement, generalErrorsElement, submitButtonRef, instance });
+} = useForm({
+	initialData: modelValue,
+	rules: props.rules,
+	onSubmit: (data) => emit("submit", data),
+	errorSummaryElement,
+	generalErrorsElement,
+	submitButtonRef,
+});
 
 provide("form-wrapper", {
 	fieldErrorsFor,
