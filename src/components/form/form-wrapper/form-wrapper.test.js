@@ -294,6 +294,12 @@ describe("form-wrapper", () => {
 
 			expect(wrapper.vm.readonly).toBe(true);
 		});
+
+		test("exposes compact", () => {
+			const wrapper = mount({ props: { compact: true } });
+
+			expect(wrapper.vm.compact).toBe(true);
+		});
 	});
 
 	describe("aria-busy", () => {

@@ -56,6 +56,13 @@ export const formWrapperMetadata = {
 			summary:
 				"When true, all child form-field components become readonly. Use for review-mode or read-only forms.",
 		},
+		{
+			name: "compact",
+			type: "boolean",
+			default: false,
+			summary:
+				"When true, reduces vertical spacing in the form. Cascades automatically to form-layout and form-fieldset — no prop needed on child components.",
+		},
 	],
 	slots: [
 		{

@@ -43,6 +43,10 @@ Additional classes to apply to the title, merged on top of the title's base styl
 
 Additional classes to pass to the inner form-layout, merged via `cn` to resolve Tailwind conflicts. Useful for overriding the default gap.
 
+## Compact density
+
+When `form-fieldset` is inside a `<form-wrapper compact>`, the heading size and the header block spacing reduce. A `titleClasses` override always wins.
+
 ## Styling hooks
 
 | Attribute                        | Element | Notes                          |

@@ -194,6 +194,16 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+
+	/**
+	 * When true, reduces vertical spacing in the form layout and fieldset
+	 * headings. Cascades automatically to form-layout and form-fieldset via
+	 * provide — no prop needed on child components.
+	 */
+	compact: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 defineEmits(["submit"]);
@@ -237,12 +247,15 @@ const {
 	instance,
 });
 
+const isCompact = computed(() => props.compact);
+
 provide("form-wrapper", {
 	fieldErrorsFor,
 	registerField,
 	updateFieldValue,
 	isReadonly,
 	isFieldRequired,
+	isCompact,
 });
 
 defineExpose({ isSubmitting, resetSubmitButton });

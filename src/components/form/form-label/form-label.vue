@@ -27,7 +27,7 @@
 		:class="{
 			'sr-only': hidden,
 			'text-content-strong font-semibold': styled,
-			'inline-flex gap-2': haveOptionalIndicator,
+			'inline-flex flex-wrap gap-x-2': haveOptionalIndicator,
 		}"
 		data-test="form-label"
 	>

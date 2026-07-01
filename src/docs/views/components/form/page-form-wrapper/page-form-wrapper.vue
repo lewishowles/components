@@ -301,6 +301,26 @@
 
 				<code-block v-bind="{ code: readonlyExample }" />
 			</component-prop>
+
+			<component-prop id="prop-compact">
+				<template #name>compact</template>
+
+				<template #type>Boolean</template>
+
+				<template #default-value>false</template>
+
+				<p>
+					When
+					<code>true</code>
+					, reduces vertical spacing in the form. The change cascades automatically to
+					<code>form-layout</code>
+					and
+					<code>form-fieldset</code>
+					.
+				</p>
+
+				<code-block v-bind="{ code: compactExample }" />
+			</component-prop>
 		</component-props>
 
 		<component-slots>
@@ -548,6 +568,22 @@
 					to cascade readonly state to underlying controls. Not intended for direct consumer use.
 				</p>
 			</component-provide>
+
+			<component-provide id="provide-is-compact">
+				<template #name>
+					<code>isCompact</code>
+				</template>
+
+				<p>
+					A reactive boolean that reflects the
+					<code>compact</code>
+					prop. Consumed by
+					<code>form-layout</code>
+					and
+					<code>form-fieldset</code>
+					to reduce vertical spacing. Not intended for direct consumer use.
+				</p>
+			</component-provide>
 		</component-provides>
 
 		<component-methods>
@@ -606,12 +642,14 @@
 
 		<component-playgrounds>
 			<playground-form-wrapper />
+			<playground-compact-form-wrapper />
 		</component-playgrounds>
 	</component-page>
 </template>
 
 <script setup>
 import PlaygroundFormWrapper from "./fragments/playground-form-wrapper.vue";
+import PlaygroundCompactFormWrapper from "./fragments/playground-compact-form-wrapper.vue";
 
 const useFormExample = `import { useForm } from "@lewishowles/components/composables";
 
@@ -634,6 +672,8 @@ provide("form-wrapper", {
 const fieldErrorsExample = `const fieldErrors = { date: "The date must be in the future", email: ["The email address provided already exists"], };`;
 
 const readonlyExample = `<form-wrapper v-bind="{ readonly: true }">…</form-wrapper>`;
+
+const compactExample = `<form-wrapper v-bind="{ compact: true }">…</form-wrapper>`;
 
 const rulesExample = `const rules = {
 	confirmPassword: [{ rule: "same", field: "password", message: "Passwords must match" }],

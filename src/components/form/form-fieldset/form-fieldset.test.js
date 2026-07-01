@@ -53,4 +53,56 @@ describe("form-fieldset", () => {
 			expect(layout.classes()).not.toContain("gap-y-8");
 		});
 	});
+
+	describe("compact", () => {
+		const compactProvide = { "form-wrapper": { isCompact: { value: true } } };
+
+		test("reduces heading size when compact is provided", () => {
+			const wrapper = mount({
+				slots: { title: "Section title" },
+				global: { provide: compactProvide },
+			});
+
+			const heading = wrapper.find("h2");
+
+			expect(heading.classes()).toContain("text-xl");
+			expect(heading.classes()).not.toContain("text-3xl");
+		});
+
+		test("titleClasses override wins over compact heading size", () => {
+			const wrapper = mount({
+				props: { titleClasses: "text-4xl" },
+				slots: { title: "Section title" },
+				global: { provide: compactProvide },
+			});
+
+			const heading = wrapper.find("h2");
+
+			expect(heading.classes()).toContain("text-4xl");
+			expect(heading.classes()).not.toContain("text-xl");
+		});
+
+		test("reduces header block spacing when compact is provided", () => {
+			const wrapper = mount({
+				slots: { title: "Section title" },
+				global: { provide: compactProvide },
+			});
+
+			const header = wrapper.find(".border-b");
+
+			expect(header.classes()).toContain("mb-4");
+			expect(header.classes()).toContain("pb-4");
+			expect(header.classes()).not.toContain("mb-6");
+			expect(header.classes()).not.toContain("pb-6");
+		});
+
+		test("uses default spacing when compact is not provided", () => {
+			const wrapper = mount({ slots: { title: "Section title" } });
+
+			const header = wrapper.find(".border-b");
+
+			expect(header.classes()).toContain("mb-6");
+			expect(header.classes()).toContain("pb-6");
+		});
+	});
 });

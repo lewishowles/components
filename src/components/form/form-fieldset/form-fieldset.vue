@@ -1,6 +1,6 @@
 <template>
 	<div data-component="form-fieldset" data-test="form-fieldset">
-		<div class="border-border mb-6 flex flex-col gap-4 border-b pb-6">
+		<div :class="headerClass">
 			<component :is="headingLevel" :class="resolvedTitleClasses">
 				<slot name="title" />
 			</component>
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, inject } from "vue";
 import { cn } from "@/utilities/cn.js";
 
 const props = defineProps({
@@ -47,9 +47,17 @@ const props = defineProps({
 	},
 });
 
-// The resolved title classes, merging the base title styles with any user
-// overrides.
+const { isCompact } = inject("form-wrapper", {});
+
+const headerClass = computed(() =>
+	cn("border-border flex flex-col border-b", isCompact?.value ? "mb-4 pb-4" : "mb-6 pb-6 gap-4"),
+);
+
 const resolvedTitleClasses = computed(() =>
-	cn("text-content-strong text-3xl font-bold", props.titleClasses),
+	cn(
+		"text-content-strong font-bold",
+		isCompact?.value ? "text-xl" : "text-3xl",
+		props.titleClasses,
+	),
 );
 </script>

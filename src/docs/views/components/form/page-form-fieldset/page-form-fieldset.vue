@@ -33,7 +33,51 @@
 
 				<p>The heading level to use for this fieldset.</p>
 			</component-prop>
+
+			<component-prop id="prop-title-classes">
+				<template #name>titleClasses</template>
+
+				<template #type>String | Array | Object</template>
+
+				<template #default-value>null</template>
+
+				<p>
+					Additional classes applied to the title, merged on top of the base styles via
+					<code>cn</code>
+					. Conflicting classes override the defaults. Always wins over compact density.
+				</p>
+			</component-prop>
+
+			<component-prop id="prop-layout-classes">
+				<template #name>layoutClasses</template>
+
+				<template #type>String</template>
+
+				<template #default-value>""</template>
+
+				<p>
+					Additional classes passed to the inner
+					<code>form-layout</code>
+					, merged via
+					<code>cn</code>
+					to resolve Tailwind conflicts. Always wins over compact density.
+				</p>
+			</component-prop>
 		</component-props>
+
+		<component-provides>
+			<template #introduction>
+				<p>
+					When
+					<code>form-fieldset</code>
+					is inside a
+					<code>&lt;form-wrapper compact&gt;</code>
+					, the heading size and the header block spacing reduce. A
+					<code>titleClasses</code>
+					override always wins.
+				</p>
+			</template>
+		</component-provides>
 
 		<component-slots>
 			<component-slot id="slot-title">

@@ -5,13 +5,16 @@
 </template>
 
 <script setup>
-import { computed, useAttrs } from "vue";
+import { computed, inject, useAttrs } from "vue";
 import { cn } from "@/utilities/cn.js";
 
 defineOptions({ inheritAttrs: false });
 
 const attrs = useAttrs();
 
-// Root element class, merging base layout with any override classes.
-const rootClass = computed(() => cn("flex flex-col gap-y-8", attrs.class));
+const { isCompact } = inject("form-wrapper", {});
+
+const rootClass = computed(() =>
+	cn("flex flex-col", isCompact?.value ? "gap-y-4" : "gap-y-8", attrs.class),
+);
 </script>

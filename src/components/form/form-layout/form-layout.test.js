@@ -27,6 +27,25 @@ describe("form-layout", () => {
 				expect(wrapper.vm.rootClass).toContain("gap-y-4");
 				expect(wrapper.vm.rootClass).not.toContain("gap-y-8");
 			});
+
+			test("uses compact gap when form-wrapper provides compact", () => {
+				const wrapper = mount({
+					global: { provide: { "form-wrapper": { isCompact: { value: true } } } },
+				});
+
+				expect(wrapper.vm.rootClass).toContain("gap-y-5");
+				expect(wrapper.vm.rootClass).not.toContain("gap-y-8");
+			});
+
+			test("override class wins over compact gap", () => {
+				const wrapper = mount({
+					attrs: { class: "gap-y-2" },
+					global: { provide: { "form-wrapper": { isCompact: { value: true } } } },
+				});
+
+				expect(wrapper.vm.rootClass).toContain("gap-y-2");
+				expect(wrapper.vm.rootClass).not.toContain("gap-y-5");
+			});
 		});
 	});
 });

@@ -93,6 +93,17 @@ When `true`, all child `form-field` components become readonly. Use for review-m
 <form-wrapper v-bind="{ readonly: true }">…</form-wrapper>
 ```
 
+### `compact`
+
+- type: `boolean`
+- default: `false`
+
+When `true`, reduces vertical spacing in the form. The change cascades automatically to `form-layout` and `form-fieldset`.
+
+```html
+<form-wrapper v-bind="{ compact: true }">…</form-wrapper>
+```
+
 ### `layoutClasses`
 
 - type: `string`
