@@ -63,6 +63,13 @@ export const formWrapperMetadata = {
 			summary:
 				"When true, reduces vertical spacing in the form. Cascades automatically to form-layout and form-fieldset — no prop needed on child components.",
 		},
+		{
+			name: "fieldTypes",
+			type: "object",
+			default: "{}",
+			summary:
+				"Field type transformations applied to submitted form data, keyed by field name. Each value is one of 'nullable-number' or 'nullable-string'. See useFormData for the equivalent init-side coercion.",
+		},
 	],
 	slots: [
 		{

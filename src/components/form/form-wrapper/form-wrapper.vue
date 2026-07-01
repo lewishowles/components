@@ -204,6 +204,16 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+
+	/**
+	 * Field type transformations applied to submitted form data, keyed by
+	 * field name. Each value is one of "nullable-number" or "nullable-string".
+	 * See useFormData for the equivalent init-side coercion.
+	 */
+	fieldTypes: {
+		type: Object,
+		default: () => ({}),
+	},
 });
 
 defineEmits(["submit"]);

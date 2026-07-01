@@ -104,6 +104,22 @@ When `true`, reduces vertical spacing in the form. The change cascades automatic
 <form-wrapper v-bind="{ compact: true }">…</form-wrapper>
 ```
 
+### `fieldTypes`
+
+- type: `object`
+- default: `{}`
+
+Field type transformations applied to submitted form data, keyed by field name. Each value is one of `nullable-number` or `nullable-string`:
+
+- `nullable-number` — `""`/`null`/`undefined` → `null`, else `Number(value)` (`NaN` → `null`)
+- `nullable-string` — `""` → `null`, else kept as-is
+
+See [`useFormData`](/src/composables/use-form-data/use-form-data.js) for the equivalent init-side coercion.
+
+```html
+<form-wrapper v-bind="{ fieldTypes: { age: 'nullable-number' } }">…</form-wrapper>
+```
+
 ### `layoutClasses`
 
 - type: `string`

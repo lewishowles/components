@@ -321,6 +321,51 @@
 
 				<code-block v-bind="{ code: compactExample }" />
 			</component-prop>
+
+			<component-prop id="prop-field-types">
+				<template #name>fieldTypes</template>
+
+				<template #type>Object</template>
+
+				<template #default-value>{}</template>
+
+				<p>
+					Field type transformations applied to submitted form data, keyed by field name. Each value
+					is one of
+					<code>nullable-number</code>
+					or
+					<code>nullable-string</code>
+					.
+					<code>nullable-number</code>
+					converts
+					<code>""</code>
+					/
+					<code>null</code>
+					/
+					<code>undefined</code>
+					to
+					<code>null</code>
+					, else
+					<code>Number(value)</code>
+					(
+					<code>NaN</code>
+					→
+					<code>null</code>
+					).
+					<code>nullable-string</code>
+					converts
+					<code>""</code>
+					to
+					<code>null</code>
+					, else keeps the value as-is. See
+					<router-link v-bind="{ to: '/composables/use-form-data' }">
+						<code>useFormData</code>
+					</router-link>
+					for the equivalent init-side coercion.
+				</p>
+
+				<code-block v-bind="{ code: fieldTypesExample }" />
+			</component-prop>
 		</component-props>
 
 		<component-slots>
@@ -674,6 +719,8 @@ const fieldErrorsExample = `const fieldErrors = { date: "The date must be in the
 const readonlyExample = `<form-wrapper v-bind="{ readonly: true }">…</form-wrapper>`;
 
 const compactExample = `<form-wrapper v-bind="{ compact: true }">…</form-wrapper>`;
+
+const fieldTypesExample = `<form-wrapper v-bind="{ fieldTypes: { age: 'nullable-number' } }">…</form-wrapper>`;
 
 const rulesExample = `const rules = {
 	confirmPassword: [{ rule: "same", field: "password", message: "Passwords must match" }],

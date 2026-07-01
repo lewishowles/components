@@ -149,6 +149,22 @@ describe("form-wrapper", () => {
 				expect(vm.fieldErrorsFor("confirmPassword")).toEqual(["Passwords must match"]);
 			});
 		});
+
+		describe("fieldTypes", () => {
+			test("coerces submitted data per the declared field types", async () => {
+				const onSubmit = vi.fn();
+				const fieldTypes = { age: "nullable-number" };
+				const wrapper = mount({ props: { fieldTypes, onSubmit } });
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "age", id: "age-id" });
+				vm.updateFieldValue("age", "");
+
+				await vm.handleFormSubmit();
+
+				expect(onSubmit).toHaveBeenCalledWith({ age: null });
+			});
+		});
 	});
 
 	describe("Methods", () => {
@@ -299,6 +315,13 @@ describe("form-wrapper", () => {
 			const wrapper = mount({ props: { compact: true } });
 
 			expect(wrapper.vm.compact).toBe(true);
+		});
+
+		test("exposes fieldTypes", () => {
+			const fieldTypes = { age: "nullable-number" };
+			const wrapper = mount({ props: { fieldTypes } });
+
+			expect(wrapper.vm.fieldTypes).toEqual(fieldTypes);
 		});
 	});
 
