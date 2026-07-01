@@ -46,6 +46,12 @@
 					<code>useFormData(source, mapper)</code>
 				</template>
 
+				<p>
+					The second argument accepts either a mapper function, or a declarative
+					<code>{ fields, fieldTypes }</code>
+					options object.
+				</p>
+
 				<table>
 					<thead>
 						<tr>
@@ -66,8 +72,47 @@
 						</tr>
 						<tr>
 							<td><code>mapper</code></td>
-							<td><code>function</code></td>
-							<td>Maps the resolved source value to the initial form data object.</td>
+							<td><code>function | object</code></td>
+							<td>
+								A function that maps the resolved source value to the initial form data object, or
+								an options object
+								<code>{ fields, fieldTypes }</code>
+								for declarative field selection and type normalisation.
+							</td>
+						</tr>
+						<tr>
+							<td><code>mapper.fields</code></td>
+							<td><code>string[] | object</code></td>
+							<td>
+								An array of keys to pick from the source, or an object mapping form field names to
+								source keys for renaming, e.g.
+								<code>{ name: "firstName" }</code>
+								.
+							</td>
+						</tr>
+						<tr>
+							<td><code>mapper.fieldTypes</code></td>
+							<td><code>object</code></td>
+							<td>
+								Field type transformations keyed by form field name.
+								<code>nullable-number</code>
+								converts
+								<code>null</code>
+								/
+								<code>undefined</code>
+								to
+								<code>""</code>
+								and otherwise stringifies the value;
+								<code>nullable-string</code>
+								converts
+								<code>null</code>
+								/
+								<code>undefined</code>
+								to
+								<code>""</code>
+								and otherwise keeps the value as-is. Fields without a listed type pass through
+								unchanged.
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -78,6 +123,8 @@
 			<template #title>Examples</template>
 
 			<code-block :code="formDataExample" />
+
+			<code-block :code="fieldsExample" />
 		</component-tab>
 	</component-page>
 </template>
@@ -105,4 +152,9 @@ const formData = useFormData(profile, (data) => ({
 	name: data.name,
 }));
 \x3c/script>`;
+
+const fieldsExample = `const formData = useFormData(profile, {
+	fields: { name: "firstName", email: "emailAddress" },
+	fieldTypes: { age: "nullable-number" },
+});`;
 </script>
