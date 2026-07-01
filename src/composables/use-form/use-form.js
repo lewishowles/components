@@ -8,6 +8,41 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { validateForm } from "@lewishowles/helpers/form";
 
 /**
+ * Normalise field values for form submission based on declared field types.
+ *
+ * @param  {object}  data
+ *     The form data to normalise.
+ * @param  {object}  fieldTypes
+ *     Field type transformations keyed by field name, each value one of
+ *     "nullable-number" or "nullable-string".
+ * @returns {object}
+ *     A new object with normalised values.
+ */
+export function normaliseForSubmit(data, fieldTypes) {
+	const result = {};
+
+	for (const [key, value] of Object.entries(data)) {
+		const fieldType = fieldTypes[key];
+
+		if (fieldType === "nullable-number") {
+			if (value === "" || value == null) {
+				result[key] = null;
+			} else {
+				const number = Number(value);
+
+				result[key] = Number.isNaN(number) ? null : number;
+			}
+		} else if (fieldType === "nullable-string") {
+			result[key] = value === "" ? null : value;
+		} else {
+			result[key] = value;
+		}
+	}
+
+	return result;
+}
+
+/**
  * The internal form engine used by form-wrapper. Handles field registration,
  * form-level validation, the submit lifecycle, readonly cascade, and error
  * focus. Not intended for direct use — this API will be replaced by the
@@ -17,8 +52,8 @@ import { validateForm } from "@lewishowles/helpers/form";
  *     The v-model ref for form field values.
  * @param  {object}  props
  *     The host component's props. Reads fieldErrors, rules,
- *     submitErrorsCallback, updatePageTitleOnError, pageTitleErrorPrefix, and
- *     readonly.
+ *     submitErrorsCallback, updatePageTitleOnError, pageTitleErrorPrefix,
+ *     readonly, and fieldTypes.
  * @param  {ref}  errorSummaryElement
  *     Ref to the error summary element, focused after a failed submit.
  * @param  {ref}  generalErrorsElement
@@ -340,6 +375,17 @@ export function useForm({
 	}
 
 	/**
+	 * Get the form data to submit, coerced per the host component's
+	 * `fieldTypes` prop.
+	 *
+	 * @returns {object}
+	 *     A plain object of submit-ready values.
+	 */
+	function getSubmitData() {
+		return normaliseForSubmit(formData.value, props.fieldTypes ?? {});
+	}
+
+	/**
 	 * Call the parent's submit handlers directly, tracking any returned Promise
 	 * to auto-reset the submit button when the async work settles.
 	 */
@@ -350,7 +396,7 @@ export function useForm({
 		const handlers = Array.isArray(onSubmit) ? onSubmit : [onSubmit].filter(Boolean);
 
 		try {
-			await Promise.all(handlers.map((handler) => handler(formData.value)));
+			await Promise.all(handlers.map((handler) => handler(getSubmitData())));
 			clearPageTitle();
 		} catch (error) {
 			await handleSubmitError(error);
@@ -434,5 +480,6 @@ export function useForm({
 		resetSubmitButton,
 		focusField,
 		isFieldRequired,
+		getSubmitData,
 	};
 }

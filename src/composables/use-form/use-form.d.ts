@@ -1,5 +1,7 @@
 import type { ComponentInternalInstance, ComputedRef, Ref } from "vue";
 
+type FieldType = "nullable-number" | "nullable-string";
+
 interface UseFormProps {
 	fieldErrors?: Record<string, string | string[]>;
 	rules?: Record<string, unknown[]>;
@@ -7,6 +9,7 @@ interface UseFormProps {
 	updatePageTitleOnError?: boolean;
 	pageTitleErrorPrefix?: string;
 	readonly?: boolean;
+	fieldTypes?: Record<string, FieldType>;
 }
 
 interface FormField {
@@ -49,6 +52,12 @@ interface UseFormReturn {
 	resetSubmitButton: () => void;
 	focusField: (fieldName: string) => void;
 	isFieldRequired: (fieldName: string) => boolean;
+	getSubmitData: () => Record<string, unknown>;
 }
+
+export declare function normaliseForSubmit(
+	data: Record<string, unknown>,
+	fieldTypes: Record<string, FieldType>,
+): Record<string, unknown>;
 
 export declare function useForm(options: UseFormOptions): UseFormReturn;

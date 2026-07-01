@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { describe, expect, test, vi } from "vite-plus/test";
-import { useForm } from "./use-form.js";
+import { normaliseForSubmit, useForm } from "./use-form.js";
 
 // Build a useForm instance with sensible defaults for props and DOM refs.
 function createForm(overrides = {}) {
@@ -13,6 +13,7 @@ function createForm(overrides = {}) {
 		updatePageTitleOnError: true,
 		pageTitleErrorPrefix: "Error:",
 		readonly: false,
+		fieldTypes: {},
 		...overrides.props,
 	};
 
@@ -302,6 +303,23 @@ describe("useForm", () => {
 			expect(handler).toHaveBeenCalled();
 		});
 
+		test("calls the onSubmit handler with data coerced per fieldTypes", async () => {
+			const handler = vi.fn().mockResolvedValue(undefined);
+
+			const instance = { vnode: { props: { onSubmit: handler } } };
+
+			const { formData, handleFormSubmit } = createForm({
+				instance,
+				props: { fieldTypes: { age: "nullable-number" } },
+			});
+
+			formData.value.age = "";
+
+			await handleFormSubmit();
+
+			expect(handler).toHaveBeenCalledWith({ age: null });
+		});
+
 		test("clears formLevelErrors from a previous submit before re-validating", async () => {
 			const { registerField, formLevelErrors, handleFormSubmit } = createForm({
 				props: { rules: { email: [{ rule: "required" }] } },
@@ -433,6 +451,72 @@ describe("useForm", () => {
 			const { focusField } = createForm();
 
 			expect(() => focusField("unknown")).not.toThrow();
+		});
+	});
+
+	describe("getSubmitData", () => {
+		test("returns formData unchanged when no fieldTypes are declared", () => {
+			const { formData, getSubmitData } = createForm();
+
+			formData.value = { name: "Alice" };
+
+			expect(getSubmitData()).toEqual({ name: "Alice" });
+		});
+
+		test("coerces fields per the fieldTypes prop", () => {
+			const { formData, getSubmitData } = createForm({
+				props: { fieldTypes: { age: "nullable-number", notes: "nullable-string" } },
+			});
+
+			formData.value = { age: "", notes: "" };
+
+			expect(getSubmitData()).toEqual({ age: null, notes: null });
+		});
+	});
+});
+
+describe("normaliseForSubmit", () => {
+	test("nullable-number converts an empty string to null", () => {
+		expect(normaliseForSubmit({ age: "" }, { age: "nullable-number" })).toEqual({ age: null });
+	});
+
+	test("nullable-number converts null to null", () => {
+		expect(normaliseForSubmit({ age: null }, { age: "nullable-number" })).toEqual({ age: null });
+	});
+
+	test("nullable-number converts undefined to null", () => {
+		expect(normaliseForSubmit({ age: undefined }, { age: "nullable-number" })).toEqual({
+			age: null,
+		});
+	});
+
+	test("nullable-number converts a numeric string to a number", () => {
+		expect(normaliseForSubmit({ age: "30" }, { age: "nullable-number" })).toEqual({ age: 30 });
+	});
+
+	test("nullable-number converts a non-numeric string to null", () => {
+		expect(normaliseForSubmit({ age: "abc" }, { age: "nullable-number" })).toEqual({ age: null });
+	});
+
+	test("nullable-string converts an empty string to null", () => {
+		expect(normaliseForSubmit({ notes: "" }, { notes: "nullable-string" })).toEqual({
+			notes: null,
+		});
+	});
+
+	test("nullable-string keeps a real string value as-is", () => {
+		expect(normaliseForSubmit({ notes: "Some notes" }, { notes: "nullable-string" })).toEqual({
+			notes: "Some notes",
+		});
+	});
+
+	test("fields without a listed type pass through unchanged", () => {
+		expect(
+			normaliseForSubmit({ name: "Alice", age: "30", notes: "" }, { age: "nullable-number" }),
+		).toEqual({
+			name: "Alice",
+			age: 30,
+			notes: "",
 		});
 	});
 });
