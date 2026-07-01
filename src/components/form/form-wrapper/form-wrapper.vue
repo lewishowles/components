@@ -108,7 +108,7 @@
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, provide, ref, useSlots } from "vue";
+import { computed, getCurrentInstance, provide, ref, toRefs, useSlots, watch } from "vue";
 
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { useForm } from "@/composables/use-form/use-form.js";
@@ -214,9 +214,18 @@ const props = defineProps({
 		type: Object,
 		default: () => ({}),
 	},
+
+	/**
+	 * The form's field values. Seeded once from the initial value passed in —
+	 * later changes to this prop from outside the form are not reflected.
+	 */
+	modelValue: {
+		type: Object,
+		default: () => ({}),
+	},
 });
 
-defineEmits(["submit"]);
+const emit = defineEmits(["update:modelValue", "submit"]);
 
 const slots = useSlots();
 const instance = getCurrentInstance();
@@ -229,12 +238,21 @@ const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button
 const haveSubmitErrorsSlot = computed(() => isNonEmptySlot(slots["submit-errors"]));
 const haveActionsLabel = computed(() => isNonEmptySlot(slots["actions-label"]));
 
-const formData = defineModel({
-	type: Object,
-	default: () => ({}),
-});
+/**
+ * Call whatever `@submit` listener(s) the parent attached directly, so their
+ * returned Promise can be awaited by useForm.
+ *
+ * @param  {object}  data
+ */
+async function callSubmitListeners(data) {
+	const onSubmit = instance?.vnode.props?.onSubmit;
+	const handlers = Array.isArray(onSubmit) ? onSubmit : [onSubmit].filter(Boolean);
+
+	await Promise.all(handlers.map((handler) => handler(data)));
+}
 
 const {
+	formData,
 	errorSummary,
 	haveErrorSummary,
 	generalSubmitErrors,
@@ -249,13 +267,15 @@ const {
 	focusField,
 	isFieldRequired,
 } = useForm({
-	formData,
-	props,
+	initialData: () => props.modelValue,
+	...toRefs(props),
+	onSubmit: callSubmitListeners,
 	errorSummaryElement,
 	generalErrorsElement,
 	submitButtonRef,
-	instance,
 });
+
+watch(formData, (value) => emit("update:modelValue", value), { deep: true });
 
 const isCompact = computed(() => props.compact);
 

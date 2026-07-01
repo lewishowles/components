@@ -1,16 +1,6 @@
-import type { ComponentInternalInstance, ComputedRef, Ref } from "vue";
+import type { ComputedRef, MaybeRefOrGetter, Ref } from "vue";
 
 type FieldType = "nullable-number" | "nullable-string";
-
-interface UseFormProps {
-	fieldErrors?: Record<string, string | string[]>;
-	rules?: Record<string, unknown[]>;
-	submitErrorsCallback?: ((error: unknown) => Record<string, unknown> | null) | null;
-	updatePageTitleOnError?: boolean;
-	pageTitleErrorPrefix?: string;
-	readonly?: boolean;
-	fieldTypes?: Record<string, FieldType>;
-}
 
 interface FormField {
 	name: string;
@@ -24,16 +14,34 @@ interface ErrorSummaryEntry {
 	message: string;
 }
 
-interface UseFormOptions {
-	formData: Ref<Record<string, unknown>>;
-	props: UseFormProps;
+type FormDataMapper<T> =
+	| ((value: T) => Record<string, unknown>)
+	| {
+			fields?: string[] | Record<string, string>;
+			fieldTypes?: Record<string, FieldType>;
+	  };
+
+interface UseFormOptions<T = unknown> {
+	initialData?: MaybeRefOrGetter<Record<string, unknown> | T | null | undefined>;
+	mapper?: FormDataMapper<T>;
+	fieldTypes?: MaybeRefOrGetter<Record<string, FieldType> | undefined>;
+	fieldErrors?: MaybeRefOrGetter<Record<string, string | string[]> | undefined>;
+	rules?: MaybeRefOrGetter<Record<string, unknown[]> | undefined>;
+	onSubmit?: (data: Record<string, unknown>) => unknown;
+	submitErrorsCallback?:
+		| Ref<((error: unknown) => Record<string, unknown> | null | undefined) | null>
+		| ((error: unknown) => Record<string, unknown> | null | undefined)
+		| null;
+	updatePageTitleOnError?: MaybeRefOrGetter<boolean | undefined>;
+	pageTitleErrorPrefix?: MaybeRefOrGetter<string | undefined>;
+	readonly?: MaybeRefOrGetter<boolean | undefined>;
 	errorSummaryElement: Ref<HTMLElement | null>;
 	generalErrorsElement: Ref<{ $el: HTMLElement } | null>;
 	submitButtonRef: Ref<{ reset: () => void } | null>;
-	instance: ComponentInternalInstance | null;
 }
 
 interface UseFormReturn {
+	formData: Ref<Record<string, unknown>>;
 	formFields: Record<string, FormField>;
 	haveFormFields: ComputedRef<boolean>;
 	submitErrors: Ref<Record<string, string | string[]>>;
@@ -60,4 +68,4 @@ export declare function normaliseForSubmit(
 	fieldTypes: Record<string, FieldType>,
 ): Record<string, unknown>;
 
-export declare function useForm(options: UseFormOptions): UseFormReturn;
+export declare function useForm<T = unknown>(options: UseFormOptions<T>): UseFormReturn;

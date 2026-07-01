@@ -1,59 +1,45 @@
-import { computed, nextTick, reactive, ref, watch } from "vue";
-
+import { callComponentMethod } from "@lewishowles/helpers/vue";
+import { computed, nextTick, reactive, ref, toRef, toValue, unref, watch } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
-import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { useFormData } from "@/composables/use-form-data/use-form-data.js";
 import { validateForm } from "@lewishowles/helpers/form";
 
 /**
- * Normalise field values for form submission based on declared field types.
+ * Used by form-wrapper; also usable directly.
  *
- * @param  {object}  data
- *     The form data to normalise.
- * @param  {object}  fieldTypes
- *     Field type transformations keyed by field name, each value one of
- *     "nullable-number" or "nullable-string".
- * @returns {object}
- *     A new object with normalised values.
- */
-export function normaliseForSubmit(data, fieldTypes) {
-	const result = {};
-
-	for (const [key, value] of Object.entries(data)) {
-		const fieldType = fieldTypes[key];
-
-		if (fieldType === "nullable-number") {
-			if (value === "" || value == null) {
-				result[key] = null;
-			} else {
-				const number = Number(value);
-
-				result[key] = Number.isNaN(number) ? null : number;
-			}
-		} else if (fieldType === "nullable-string") {
-			result[key] = value === "" ? null : value;
-		} else {
-			result[key] = value;
-		}
-	}
-
-	return result;
-}
-
-/**
- * The internal form engine used by form-wrapper. Handles field registration,
- * form-level validation, the submit lifecycle, readonly cascade, and error
- * focus. Not intended for direct use — this API will be replaced by the
- * public useForm() interface in a later release.
- *
- * @param  {ref}  formData
- *     The v-model ref for form field values.
- * @param  {object}  props
- *     The host component's props. Reads fieldErrors, rules,
- *     submitErrorsCallback, updatePageTitleOnError, pageTitleErrorPrefix,
- *     readonly, and fieldTypes.
+ * @param  {object|ref}  [initialData]
+ *     Seed for formData. A plain object, seeded immediately, or a ref/getter,
+ *     seeded once it first resolves truthy.
+ * @param  {function|object}  [mapper]
+ *     Shapes initialData into form data, either a mapping function, or a
+ *     `{ fields, fieldTypes }` options object for declarative field
+ *     selection and type coercion.
+ * @param  {object|ref|function}  [fieldTypes]
+ *     Type coercion for form values on submit, keyed by field name. Each
+ *     value is one of "nullable-number" or "nullable-string". For the
+ *     equivalent coercion on init, use mapper's own fieldTypes instead.
+ * @param  {object|ref|function}  [fieldErrors]
+ *     Field-level errors managed by the caller, keyed by field name. Each
+ *     value can be a single message or a list of messages.
+ * @param  {object|ref|function}  [rules]
+ *     Form-level validation rules, keyed by field name.
+ * @param  {function}  [onSubmit]
+ *     Called with the submit-ready data once validation passes. Its
+ *     returned Promise (if any) is awaited before resetting the submit
+ *     button; a rejection is passed to submitErrorsCallback.
+ * @param  {ref|function|null}  [submitErrorsCallback]
+ *     Maps a rejected submit error to field errors. Return an empty value
+ *     for errors the form should not handle, which are re-thrown.
+ * @param  {boolean|ref|function}  [updatePageTitleOnError]
+ *     Whether failed validation prefixes the page title with
+ *     pageTitleErrorPrefix.
+ * @param  {string|ref|function}  [pageTitleErrorPrefix]
+ *     Prefix added to document.title after failed validation.
+ * @param  {boolean|ref|function}  [readonly]
+ *     Whether all form fields should be treated as readonly.
  * @param  {ref}  errorSummaryElement
  *     Ref to the error summary element, focused after a failed submit.
  * @param  {ref}  generalErrorsElement
@@ -61,18 +47,24 @@ export function normaliseForSubmit(data, fieldTypes) {
  *     exist.
  * @param  {ref}  submitButtonRef
  *     Ref to the submit button component, reset when the submit settles.
- * @param  {object|null}  instance
- *     The host component instance from getCurrentInstance(), used to invoke
- *     the parent's submit handlers.
  */
 export function useForm({
-	formData,
-	props,
+	initialData,
+	mapper,
+	fieldTypes,
+	fieldErrors,
+	rules,
+	onSubmit,
+	submitErrorsCallback,
+	updatePageTitleOnError,
+	pageTitleErrorPrefix,
+	readonly,
 	errorSummaryElement,
 	generalErrorsElement,
 	submitButtonRef,
-	instance,
 }) {
+	// Our form data.
+	const formData = resolveInitialData(initialData, mapper);
 	// A reference to each of our form fields once registered.
 	const formFields = reactive({});
 	// Whether we have any form fields registered to the form.
@@ -104,7 +96,6 @@ export function useForm({
 
 	// Whether we have any general (non-field) submit errors to show.
 	const haveGeneralSubmitErrors = computed(() => isNonEmptyArray(generalSubmitErrors.value));
-
 	// The stored prefixed page title so the wrapper can restore it after a
 	// successful submit.
 	const prefixedPageTitle = ref(null);
@@ -132,26 +123,27 @@ export function useForm({
 	// Whether a form submission is currently in progress.
 	const isSubmitting = ref(false);
 	// Whether child fields should be readonly, derived from the readonly prop.
-	const isReadonly = computed(() => props.readonly);
+	const isReadonly = computed(() => toValue(readonly));
 
 	// Field names that are required, either via a static `required` rule or a
 	// `required_if` rule whose condition is currently met against live formData.
 	const requiredFieldNames = computed(() => {
 		const names = new Set();
 		const data = formData.value;
+		const currentRules = toValue(rules);
 
-		for (const fieldName in props.rules) {
-			if (!Object.hasOwn(props.rules, fieldName)) {
+		for (const fieldName in currentRules) {
+			if (!Object.hasOwn(currentRules, fieldName)) {
 				continue;
 			}
 
-			const rules = props.rules[fieldName];
+			const fieldRules = currentRules[fieldName];
 
-			if (!Array.isArray(rules)) {
+			if (!Array.isArray(fieldRules)) {
 				continue;
 			}
 
-			for (const rule of rules) {
+			for (const rule of fieldRules) {
 				if (rule?.rule === "required") {
 					names.add(fieldName);
 
@@ -168,6 +160,20 @@ export function useForm({
 
 		return names;
 	});
+
+	/**
+	 * @param  {object|ref}  initialData
+	 *     The seed for formData. A plain object, or a ref/getter to watch.
+	 * @param  {function|object}  [mapper]
+	 *     Shapes the resolved value into form data, either a mapping function,
+	 *     or a `{ fields, fieldTypes }` options object for declarative field
+	 *     selection and type coercion.
+	 */
+	function resolveInitialData(initialData, mapper) {
+		const source = toRef(initialData);
+
+		return mapper ? useFormData(source, mapper) : useFormData(source);
+	}
 
 	/**
 	 * Check whether a field name has a required rule in the form-level rules.
@@ -226,7 +232,7 @@ export function useForm({
 		const seen = new Set();
 
 		return [
-			...normaliseFieldErrors(props.fieldErrors?.[fieldName]),
+			...normaliseFieldErrors(toValue(fieldErrors)?.[fieldName]),
 			...normaliseFieldErrors(submitErrors.value?.[fieldName]),
 			...normaliseFieldErrors(formLevelErrors.value[fieldName]),
 		].filter((message) => {
@@ -291,11 +297,11 @@ export function useForm({
 	 * Add the error prefix to the page title after a failed submit.
 	 */
 	function updatePageTitle() {
-		if (!props.updatePageTitleOnError) {
+		if (!toValue(updatePageTitleOnError)) {
 			return;
 		}
 
-		const prefix = `${props.pageTitleErrorPrefix} `;
+		const prefix = `${toValue(pageTitleErrorPrefix)} `;
 
 		if (document.title.startsWith(prefix)) {
 			return;
@@ -314,7 +320,7 @@ export function useForm({
 			return;
 		}
 
-		document.title = document.title.slice(props.pageTitleErrorPrefix.length + 1);
+		document.title = document.title.slice(toValue(pageTitleErrorPrefix).length + 1);
 		prefixedPageTitle.value = null;
 	}
 
@@ -323,13 +329,15 @@ export function useForm({
 	 * errors to their field name.
 	 */
 	async function validateFormLevelRules() {
-		if (!isNonEmptyObject(props.rules)) {
+		const currentRules = toValue(rules);
+
+		if (!isNonEmptyObject(currentRules)) {
 			formLevelErrors.value = {};
 
 			return;
 		}
 
-		const { results } = await validateForm(props.rules, formData.value);
+		const { results } = await validateForm(currentRules, formData.value);
 		const errors = {};
 
 		for (const fieldName in results) {
@@ -375,28 +383,24 @@ export function useForm({
 	}
 
 	/**
-	 * Get the form data to submit, coerced per the host component's
-	 * `fieldTypes` prop.
+	 * Get the form data to submit, coerced per `fieldTypes`.
 	 *
 	 * @returns {object}
 	 *     A plain object of submit-ready values.
 	 */
 	function getSubmitData() {
-		return normaliseForSubmit(formData.value, props.fieldTypes ?? {});
+		return normaliseForSubmit(formData.value, toValue(fieldTypes) ?? {});
 	}
 
 	/**
-	 * Call the parent's submit handlers directly, tracking any returned Promise
+	 * Call onSubmit with the submit-ready data, tracking any returned Promise
 	 * to auto-reset the submit button when the async work settles.
 	 */
 	async function doSubmit() {
 		isSubmitting.value = true;
 
-		const onSubmit = instance?.vnode.props?.onSubmit;
-		const handlers = Array.isArray(onSubmit) ? onSubmit : [onSubmit].filter(Boolean);
-
 		try {
-			await Promise.all(handlers.map((handler) => handler(getSubmitData())));
+			await onSubmit?.(getSubmitData());
 			clearPageTitle();
 		} catch (error) {
 			await handleSubmitError(error);
@@ -412,11 +416,13 @@ export function useForm({
 	 * @param  {unknown}  error
 	 */
 	async function handleSubmitError(error) {
-		if (!isFunction(props.submitErrorsCallback)) {
+		const callback = unref(submitErrorsCallback);
+
+		if (!isFunction(callback)) {
 			throw error;
 		}
 
-		const parsedErrors = props.submitErrorsCallback(error);
+		const parsedErrors = callback(error);
 
 		if (!isNonEmptyObject(parsedErrors)) {
 			throw error;
@@ -450,7 +456,7 @@ export function useForm({
 	}
 
 	watch(
-		() => props.fieldErrors,
+		() => toValue(fieldErrors),
 		async () => {
 			if (!isNonEmptyArray(errorSummary.value)) {
 				return;
@@ -462,6 +468,7 @@ export function useForm({
 	);
 
 	return {
+		formData,
 		formFields,
 		haveFormFields,
 		submitErrors,
@@ -482,4 +489,39 @@ export function useForm({
 		isFieldRequired,
 		getSubmitData,
 	};
+}
+
+/**
+ * Normalise field values for form submission based on declared field types.
+ *
+ * @param  {object}  data
+ *     The form data to normalise.
+ * @param  {object}  fieldTypes
+ *     Field type transformations keyed by field name, each value one of
+ *     "nullable-number" or "nullable-string".
+ * @returns {object}
+ *     A new object with normalised values.
+ */
+export function normaliseForSubmit(data, fieldTypes) {
+	const result = {};
+
+	for (const [key, value] of Object.entries(data)) {
+		const fieldType = fieldTypes[key];
+
+		if (fieldType === "nullable-number") {
+			if (value === "" || value == null) {
+				result[key] = null;
+			} else {
+				const number = Number(value);
+
+				result[key] = Number.isNaN(number) ? null : number;
+			}
+		} else if (fieldType === "nullable-string") {
+			result[key] = value === "" ? null : value;
+		} else {
+			result[key] = value;
+		}
+	}
+
+	return result;
 }

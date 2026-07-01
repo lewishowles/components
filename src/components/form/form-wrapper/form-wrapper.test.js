@@ -201,6 +201,18 @@ describe("form-wrapper", () => {
 
 				expect(vm.formData).toEqual({ username: "wall-e" });
 			});
+
+			test("emits update:modelValue with the new form data", async () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				vm.updateFieldValue("username", "wall-e");
+				await vi.waitFor(() => expect(wrapper.emitted("update:modelValue")).toBeTruthy());
+
+				const [lastEmit] = wrapper.emitted("update:modelValue").at(-1);
+
+				expect(lastEmit).toEqual({ username: "wall-e" });
+			});
 		});
 
 		describe("handleFormSubmit", () => {

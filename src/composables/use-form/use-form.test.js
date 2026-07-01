@@ -1,12 +1,10 @@
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import { describe, expect, test, vi } from "vite-plus/test";
 import { normaliseForSubmit, useForm } from "./use-form.js";
 
 // Build a useForm instance with sensible defaults for props and DOM refs.
 function createForm(overrides = {}) {
-	const formData = ref({});
-
-	const props = {
+	const namedParams = {
 		fieldErrors: {},
 		rules: {},
 		submitErrorsCallback: null,
@@ -18,15 +16,15 @@ function createForm(overrides = {}) {
 	};
 
 	const form = useForm({
-		formData,
-		props,
+		initialData: overrides.initialData ?? {},
+		mapper: overrides.mapper,
+		...namedParams,
 		errorSummaryElement: ref(null),
 		generalErrorsElement: ref(null),
 		submitButtonRef: ref(null),
-		instance: overrides.instance ?? null,
 	});
 
-	return { formData, ...form };
+	return { ...form };
 }
 
 describe("useForm", () => {
@@ -45,6 +43,45 @@ describe("useForm", () => {
 			const { isReadonly } = createForm({ props: { readonly: true } });
 
 			expect(isReadonly.value).toBe(true);
+		});
+	});
+
+	describe("initialData", () => {
+		test("seeds formData immediately from a plain object", () => {
+			const { formData } = createForm({ initialData: { name: "Alice" } });
+
+			expect(formData.value).toEqual({ name: "Alice" });
+		});
+
+		test("seeds formData once a ref source resolves truthy", async () => {
+			const source = ref(null);
+			const { formData } = createForm({ initialData: source });
+
+			expect(formData.value).toEqual({});
+
+			source.value = { name: "Alice" };
+			await vi.waitFor(() => expect(formData.value).toEqual({ name: "Alice" }));
+		});
+
+		test("does not re-seed a ref source after the first populate", async () => {
+			const source = ref({ name: "Alice" });
+			const { formData } = createForm({ initialData: source });
+
+			await vi.waitFor(() => expect(formData.value).toEqual({ name: "Alice" }));
+
+			source.value = { name: "Bob" };
+			await nextTick();
+
+			expect(formData.value).toEqual({ name: "Alice" });
+		});
+
+		test("applies a fields/fieldTypes mapper without re-implementing useFormData", () => {
+			const { formData } = createForm({
+				initialData: { age: 30, extra: "ignored" },
+				mapper: { fields: ["age"], fieldTypes: { age: "nullable-number" } },
+			});
+
+			expect(formData.value).toEqual({ age: "30" });
 		});
 	});
 
@@ -294,9 +331,7 @@ describe("useForm", () => {
 	describe("handleFormSubmit", () => {
 		test("calls the onSubmit handler when there are no registered fields", async () => {
 			const handler = vi.fn().mockResolvedValue(undefined);
-
-			const instance = { vnode: { props: { onSubmit: handler } } };
-			const { handleFormSubmit } = createForm({ instance });
+			const { handleFormSubmit } = createForm({ props: { onSubmit: handler } });
 
 			await handleFormSubmit();
 
@@ -306,11 +341,8 @@ describe("useForm", () => {
 		test("calls the onSubmit handler with data coerced per fieldTypes", async () => {
 			const handler = vi.fn().mockResolvedValue(undefined);
 
-			const instance = { vnode: { props: { onSubmit: handler } } };
-
 			const { formData, handleFormSubmit } = createForm({
-				instance,
-				props: { fieldTypes: { age: "nullable-number" } },
+				props: { onSubmit: handler, fieldTypes: { age: "nullable-number" } },
 			});
 
 			formData.value.age = "";
