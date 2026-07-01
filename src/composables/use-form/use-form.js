@@ -99,9 +99,11 @@ export function useForm({
 	// Whether child fields should be readonly, derived from the readonly prop.
 	const isReadonly = computed(() => props.readonly);
 
-	// Field names that have a `required` rule in the form-level `rules` prop.
+	// Field names that are required, either via a static `required` rule or a
+	// `required_if` rule whose condition is currently met against live formData.
 	const requiredFieldNames = computed(() => {
 		const names = new Set();
+		const data = formData.value;
 
 		for (const fieldName in props.rules) {
 			if (!Object.hasOwn(props.rules, fieldName)) {
@@ -110,8 +112,22 @@ export function useForm({
 
 			const rules = props.rules[fieldName];
 
-			if (Array.isArray(rules) && rules.some((r) => r?.rule === "required")) {
-				names.add(fieldName);
+			if (!Array.isArray(rules)) {
+				continue;
+			}
+
+			for (const rule of rules) {
+				if (rule?.rule === "required") {
+					names.add(fieldName);
+
+					break;
+				}
+
+				if (rule?.rule === "required_if" && data[rule.field] === rule.value) {
+					names.add(fieldName);
+
+					break;
+				}
 			}
 		}
 

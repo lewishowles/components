@@ -33,7 +33,7 @@ describe("form-layout", () => {
 					global: { provide: { "form-wrapper": { isCompact: { value: true } } } },
 				});
 
-				expect(wrapper.vm.rootClass).toContain("gap-y-5");
+				expect(wrapper.vm.rootClass).toContain("gap-y-4");
 				expect(wrapper.vm.rootClass).not.toContain("gap-y-8");
 			});
 

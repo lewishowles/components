@@ -187,6 +187,54 @@ describe("useForm", () => {
 
 			expect(isFieldRequired("email")).toBe(false);
 		});
+
+		test("returns true when required_if condition is met", () => {
+			const { formData, isFieldRequired } = createForm({
+				props: {
+					rules: {
+						vatNumber: [{ rule: "required_if", field: "isVatRegistered", value: "yes" }],
+					},
+				},
+			});
+
+			formData.value.isVatRegistered = "yes";
+
+			expect(isFieldRequired("vatNumber")).toBe(true);
+		});
+
+		test("returns false when required_if condition is not met", () => {
+			const { formData, isFieldRequired } = createForm({
+				props: {
+					rules: {
+						vatNumber: [{ rule: "required_if", field: "isVatRegistered", value: "yes" }],
+					},
+				},
+			});
+
+			formData.value.isVatRegistered = "no";
+
+			expect(isFieldRequired("vatNumber")).toBe(false);
+		});
+
+		test("updates reactively when the dependent field changes", () => {
+			const { formData, isFieldRequired } = createForm({
+				props: {
+					rules: {
+						vatNumber: [{ rule: "required_if", field: "isVatRegistered", value: "yes" }],
+					},
+				},
+			});
+
+			expect(isFieldRequired("vatNumber")).toBe(false);
+
+			formData.value.isVatRegistered = "yes";
+
+			expect(isFieldRequired("vatNumber")).toBe(true);
+
+			formData.value.isVatRegistered = "no";
+
+			expect(isFieldRequired("vatNumber")).toBe(false);
+		});
 	});
 
 	describe("errorSummary", () => {
