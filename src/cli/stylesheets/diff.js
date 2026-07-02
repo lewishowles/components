@@ -20,14 +20,16 @@ import {
  *
  * @param  {string[]}  rawArguments
  *     Arguments following the `diff` subcommand.
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  */
-export function runDiff(rawArguments) {
+export function runDiff(rawArguments, ui) {
 	const { flags, names: argumentNames } = parseSheetArguments(rawArguments);
 	const sheets = getSheets();
 	const names = flags.all ? sheets : argumentNames;
 
 	if (flags.help) {
-		printHelp([getHelpSection()]);
+		printHelp([getHelpSection()], ui);
 
 		return;
 	}

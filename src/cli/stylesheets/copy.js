@@ -20,14 +20,16 @@ import {
  *
  * @param  {string[]}  rawArgs
  *     Arguments following the `copy` subcommand.
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  */
-export async function runCopy(rawArgs) {
+export async function runCopy(rawArgs, ui) {
 	const { flags, names: argNames } = parseSheetArguments(rawArgs);
 	const sheets = getSheets();
 	const names = flags.all ? sheets : argNames;
 
 	if (flags.help || !names.length) {
-		printHelp([getHelpSection()]);
+		printHelp([getHelpSection()], ui);
 
 		return;
 	}

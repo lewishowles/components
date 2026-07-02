@@ -1,31 +1,40 @@
-import { c } from "./utils/colour.js";
+import { divider, hint, row, style } from "@lewishowles/cli-style";
 import { PACKAGE_NAME } from "./utils/constants.js";
 
 /**
  * Prints help from each command group's section.
  *
  * @param  {object[]}  sections
- *     The sections to print
+ *     The sections to print.
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle(), used to resolve rendering
+ *     options and print to stdout.
  */
-export function printHelp(sections) {
+export function printHelp(sections, ui) {
 	const allCommands = sections.flatMap((section) => section.commands);
 	const width = Math.max(...allCommands.map((command) => command.name.length));
 
-	console.log(`\n${c.bold(`Usage: ${PACKAGE_NAME} [command]`)}\n`);
+	ui.print(`\n${style(`Usage: ${PACKAGE_NAME} [command]`, "bold", ui.options)}\n`);
 
 	for (const section of sections) {
-		console.log(`${c.bold(`${section.group}:`)}`);
+		ui.print(divider({ label: section.group, ...ui.options }));
 
 		for (const command of section.commands) {
-			console.log(`  ${c.cyan(command.name.padEnd(width))}  ${command.description}`);
+			ui.print(
+				row(command.name, command.description, {
+					...ui.options,
+					labelColour: "info",
+					labelWidth: width,
+				}),
+			);
 		}
 
 		if (section.footer) {
-			console.log(`\n  ${c.dim(section.footer)}`);
+			ui.print(`\n  ${style(section.footer, "dim", ui.options)}`);
 		}
 
-		console.log();
+		ui.print("");
 	}
 
-	console.log(`  ${c.dim("Run a command with --help for details.")}\n`);
+	ui.print(hint("Run a command with --help for details.", ui.options));
 }

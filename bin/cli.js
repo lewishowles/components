@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { createCliStyle } from "@lewishowles/cli-style";
 import { PACKAGE_NAME } from "../src/cli/utils/constants.js";
 import { getHelpSection as getStylesheetsHelpSection } from "../src/cli/stylesheets/index.js";
 import { getHelpSections } from "../src/cli/registry.js";
@@ -13,15 +14,21 @@ import { runSnippet } from "../src/cli/components/snippet.js";
 
 const [, , command, ...rest] = process.argv;
 
+const ui = createCliStyle({
+	argv: process.argv.slice(2),
+	env: process.env,
+	stdout: process.stdout,
+});
+
 if (command === "stylesheet") {
 	const [subcommand, ...subArgs] = rest;
 
 	if (subcommand === "copy") {
-		await runCopy(subArgs);
+		await runCopy(subArgs, ui);
 	} else if (subcommand === "diff") {
-		runDiff(subArgs);
+		runDiff(subArgs, ui);
 	} else if (subcommand === "--help" || subcommand === "-h") {
-		printHelp([getStylesheetsHelpSection()]);
+		printHelp([getStylesheetsHelpSection()], ui);
 	} else {
 		console.error(`Usage: npx ${PACKAGE_NAME} stylesheet <copy|diff> [options]\n`);
 		process.exit(1);
@@ -35,5 +42,5 @@ if (command === "stylesheet") {
 } else if (command === "snippet") {
 	await runSnippet(rest);
 } else {
-	printHelp(getHelpSections());
+	printHelp(getHelpSections(), ui);
 }
