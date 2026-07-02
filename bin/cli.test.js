@@ -27,4 +27,8 @@ describe("bin/cli.js", () => {
 	test("prints help for the stylesheet group itself", () => {
 		expect(runCli(["stylesheet", "--help"])).toContain("Usage:");
 	});
+
+	test("prints info for a real component", () => {
+		expect(runCli(["info", "ui-button"])).toContain("ui-button");
+	});
 });

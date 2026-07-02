@@ -34,7 +34,7 @@ if (command === "stylesheet") {
 		process.exit(1);
 	}
 } else if (command === "info") {
-	runInfo(rest);
+	runInfo(rest, ui);
 } else if (command === "list") {
 	runList(rest);
 } else if (command === "pattern") {

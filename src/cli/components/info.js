@@ -1,5 +1,5 @@
+import { chip, divider, foreground, style, table } from "@lewishowles/cli-style";
 import { PACKAGE_NAME } from "../utils/constants.js";
-import { c } from "../utils/colour.js";
 import { componentMetadata, lookupComponent } from "./index.js";
 import { printAllComponents } from "./list.js";
 
@@ -48,8 +48,10 @@ export function parseInfoArguments(argv) {
  *
  * @param  {string[]}  argv
  *     Arguments following the `info` subcommand.
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  */
-export function runInfo(argv) {
+export function runInfo(argv, ui) {
 	const { flags, name } = parseInfoArguments(argv);
 
 	if (flags.help || name === null) {
@@ -58,7 +60,7 @@ export function runInfo(argv) {
 		return;
 	}
 
-	printInfo(lookupComponent(name));
+	printInfo(lookupComponent(name), ui);
 }
 
 /**
@@ -66,93 +68,143 @@ export function runInfo(argv) {
  *
  * @param  {object}  component
  *     Component metadata record.
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  */
-export function printInfo(component) {
+export function printInfo(component, ui) {
 	const lines = [
 		"",
-		`${c.bold(component.name)}  ${c.dim(component.category)}`,
+		`${style(component.name, "bold", ui.options)}  ${foreground(component.category, "muted", ui.options)}`,
 		`${component.summary}`,
 	];
 
-	const props = component.props ?? [];
-	const slots = component.slots ?? [];
-	const events = component.events ?? [];
-	const methods = component.methods ?? [];
-	const parts = component.parts ?? [];
+	pushSection(
+		lines,
+		"Props",
+		(component.props ?? []).map((prop) => formatProp(prop, ui)),
+		ui,
+		propColumns,
+	);
+	pushSection(
+		lines,
+		"Slots",
+		(component.slots ?? []).map((slot) => formatSlot(slot, ui)),
+		ui,
+	);
+	pushSection(
+		lines,
+		"Events",
+		(component.events ?? []).map((event) => ({ description: event.summary, name: event.name })),
+		ui,
+	);
+	pushSection(
+		lines,
+		"Methods",
+		(component.methods ?? []).map((method) => ({ description: method.summary, name: method.name })),
+		ui,
+	);
+	pushSection(
+		lines,
+		"Parts",
+		(component.parts ?? []).map((part) => ({ description: part.summary, name: part.name })),
+		ui,
+	);
 
-	if (props.length) {
-		lines.push("", c.bold("Props"));
-		lines.push(...formatTable(props.map((prop) => formatProp(prop))));
+	lines.push(
+		"",
+		divider({ label: "Usage", ...ui.options }),
+		"",
+		`  npx ${PACKAGE_NAME} snippet ${component.name}`,
+		"",
+	);
+
+	ui.print(lines.join("\n"));
+}
+
+// The default two-column shape used by every section except Props.
+const defaultColumns = [
+	{ key: "name", label: "Name" },
+	{ key: "description", label: "Description" },
+];
+
+// Props get their own Type column instead of folding it into Description.
+const propColumns = [
+	{ key: "name", label: "Name" },
+	{ key: "type", label: "Type" },
+	{ key: "description", label: "Description" },
+];
+
+/**
+ * Appends a labelled table section to the output when rows are present.
+ *
+ * @param  {string[]}   lines
+ *     The lines accumulator to push onto.
+ * @param  {string}     label
+ *     The section heading.
+ * @param  {object[]}   rows
+ *     Table rows, matching the shape of `columns`.
+ * @param  {object}     ui
+ *     A cli-style instance from createCliStyle().
+ * @param  {object[]}   [columns]
+ *     Table columns; defaults to a `{ name, description }` shape.
+ */
+function pushSection(lines, label, rows, ui, columns = defaultColumns) {
+	if (!rows.length) {
+		return;
 	}
 
-	if (slots.length) {
-		lines.push("", c.bold("Slots"));
-		lines.push(...formatTable(slots.map((slot) => formatSlot(slot))));
-	}
-
-	if (events.length) {
-		lines.push("", c.bold("Events"));
-		lines.push(...formatTable(events.map((event) => [event.name, event.summary])));
-	}
-
-	if (methods.length) {
-		lines.push("", c.bold("Methods"));
-		lines.push(...formatTable(methods.map((method) => [method.name, method.summary])));
-	}
-
-	if (parts.length) {
-		lines.push("", c.bold("Parts"));
-		lines.push(...formatTable(parts.map((part) => [part.name, part.summary])));
-	}
-
-	lines.push("", c.bold("Usage"), "", `  npx ${PACKAGE_NAME} snippet ${component.name}`, "");
-
-	console.log(lines.join("\n"));
+	lines.push("", divider({ label, ...ui.options }), table({ columns, rows, ...ui.options }));
 }
 
 /**
- * Converts a prop metadata record into a display row. The first column is the
- * prop name; the second carries the type, default, and summary.
+ * Renders a default value as a trailing chip, so it reads as a distinct
+ * badge after the description rather than competing with it for the same
+ * column, and without needing a dedicated Default column.
+ *
+ * @param   {unknown}  defaultValue
+ * @param   {object}   ui
+ *     A cli-style instance from createCliStyle().
+ * @returns {string}
+ */
+function formatDefault(defaultValue, ui) {
+	if (defaultValue === null || defaultValue === undefined) {
+		return "";
+	}
+
+	return ` ${chip(`default: ${defaultValue}`, "neutral", ui.options)}`;
+}
+
+/**
+ * Converts a prop metadata record into a display row. The description
+ * carries a trailing default chip; type gets its own column.
  *
  * @param   {object}  prop
- * @returns {string[]}
+ * @param   {object}  ui
+ *     A cli-style instance from createCliStyle().
+ * @returns {{ description: string, name: string, type: string }}
  */
-function formatProp(prop) {
-	const typePart = c.dim(prop.type ?? "");
-
-	const defaultPart =
-		prop.default !== null && prop.default !== undefined ? c.dim(`= ${prop.default}`) : "";
-
-	const meta = [typePart, defaultPart].filter(Boolean).join("  ");
-
-	return [prop.name, meta ? `${meta}  ${prop.summary}` : prop.summary];
+function formatProp(prop, ui) {
+	return {
+		description: `${prop.summary}${formatDefault(prop.default, ui)}`,
+		name: prop.name,
+		type: prop.type ?? "",
+	};
 }
 
 /**
- * Converts a slot metadata record into a display row. Appends the default
- * value when one is defined.
+ * Converts a slot metadata record into a display row. The description
+ * carries a trailing default chip when one is defined.
  *
  * @param   {object}  slot
- * @returns {string[]}
+ * @param   {object}  ui
+ *     A cli-style instance from createCliStyle().
+ * @returns {{ description: string, name: string }}
  */
-function formatSlot(slot) {
-	const defaultPart =
-		slot.default !== null && slot.default !== undefined ? c.dim(`= ${slot.default}`) : "";
-
-	return [slot.name, defaultPart ? `${slot.summary}  ${defaultPart}` : slot.summary];
+function formatSlot(slot, ui) {
+	return {
+		description: `${slot.summary}${formatDefault(slot.default, ui)}`,
+		name: slot.name,
+	};
 }
 
-/**
- * Aligns a list of two-column rows by padding the first column to a uniform
- * width, then indents each row by two spaces.
- *
- * @param   {string[][]}  rows
- * @returns {string[]}
- */
-function formatTable(rows) {
-	const width = Math.max(...rows.map(([name]) => name.length));
-
-	return rows.map(([name, description]) => `  ${c.cyan(name.padEnd(width))}  ${description}`);
-}
-
-export const _test = { formatProp, formatSlot, formatTable, parseInfoArguments };
+export const _test = { formatDefault, formatProp, formatSlot, parseInfoArguments, pushSection };
