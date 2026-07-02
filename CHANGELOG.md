@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### CLI
+
+Terminal output now goes through `@lewishowles/cli-style` instead of hand-rolled ANSI codes. Respects `--plain`, `--no-colour`/`--no-color`, `NO_COLOR`, `TERM=dumb`, and non-TTY output. Tables (`info`, `list`, `pattern --help`, `snippet --list`) now render with proper headers and fall back to stacked key/value blocks in narrow terminals. "Not found" errors (unknown component, pattern, example, stylesheet, or top-level command) now show a clear banner followed by the same listing you'd get from asking directly (`list`, `pattern --help`, etc.), instead of an unlabelled dump.
+
 ### `modal-dialog-title`
 
 Now has an optional `subtitle` slot to display information below its title.

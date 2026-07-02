@@ -1,5 +1,7 @@
 import { CSS_DIR, DEFAULT_DEST, PACKAGE_NAME, VERSION } from "../utils/constants.js";
 import { existsSync, readdirSync } from "node:fs";
+import { printHelp } from "../help.js";
+import { printUnknownItemError } from "../utils/unknown-item-error.js";
 
 /**
  * Returns the list of available stylesheet names (without extension), sorted
@@ -76,22 +78,25 @@ export function parseSheetArguments(argv) {
 }
 
 /**
- * Validates that all names are known sheets. Exits with an error if any are not.
+ * Validates that all names are known sheets. Exits with an error if any are
+ * not, printing the same listing `stylesheet --help` shows.
  *
  * @param  {string[]}  names
  *     Names to validate.
  * @param  {string[]}  sheets
  *     All available sheet names.
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  */
-export function validateSheetNames(names, sheets) {
+export function validateSheetNames(names, sheets, ui) {
 	const invalid = names.filter((name) => !sheets.includes(name));
 
 	if (!invalid.length) {
 		return;
 	}
 
-	console.error(`Unknown sheet(s): ${invalid.join(", ")}`);
-	console.error(`Available: ${sheets.join(", ")}`);
+	printUnknownItemError("sheet(s)", invalid.join(", "), ui);
+	printHelp([getHelpSection()], ui);
 	process.exit(1);
 }
 

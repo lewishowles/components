@@ -1,5 +1,5 @@
+import { resultTypes, status } from "@lewishowles/cli-style";
 import { CSS_DIR, DEFAULT_DEST, PACKAGE_NAME, VERSION } from "../utils/constants.js";
-import { c } from "../utils/colour.js";
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { printHelp } from "../help.js";
@@ -41,7 +41,7 @@ export function runDiff(rawArguments, ui) {
 		process.exit(1);
 	}
 
-	validateSheetNames(names, sheets);
+	validateSheetNames(names, sheets, ui);
 
 	const destinationDirectory = join(process.cwd(), flags.dest);
 
@@ -54,7 +54,12 @@ export function runDiff(rawArguments, ui) {
 		const sourcePath = join(CSS_DIR, filename);
 
 		if (!existsSync(destinationPath)) {
-			console.log(`  ${c.yellow(filename)}: not found at ${flags.dest}/${filename}`);
+			ui.print(
+				`  ${status(resultTypes.WARNING, `${flags.dest}/${filename}`, {
+					...ui.options,
+					label: "Not found",
+				})}`,
+			);
 			continue;
 		}
 
@@ -62,7 +67,9 @@ export function runDiff(rawArguments, ui) {
 		const local = stripCopiedFileHeader(readFileSync(destinationPath, "utf8"));
 
 		if (installed === local) {
-			console.log(`  ${c.green(filename)}: up to date`);
+			ui.print(
+				`  ${status(resultTypes.SUCCESS, filename, { ...ui.options, label: "Up to date" })}`,
+			);
 			continue;
 		}
 
@@ -92,8 +99,11 @@ export function runDiff(rawArguments, ui) {
 			);
 
 			if (result.error?.code === "ENOENT") {
-				console.log(
-					`  ${c.yellow(filename)}: differs from installed version (install diff to see changes)`,
+				ui.print(
+					`  ${status(resultTypes.WARNING, "install diff to see changes", {
+						...ui.options,
+						label: `Differs: ${filename}`,
+					})}`,
 				);
 			}
 		} finally {

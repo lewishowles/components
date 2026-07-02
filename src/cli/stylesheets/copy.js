@@ -1,5 +1,5 @@
+import { resultTypes, status } from "@lewishowles/cli-style";
 import { CSS_DIR } from "../utils/constants.js";
-import { c } from "../utils/colour.js";
 import { createInterface } from "node:readline";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -34,7 +34,7 @@ export async function runCopy(rawArgs, ui) {
 		return;
 	}
 
-	validateSheetNames(names, sheets);
+	validateSheetNames(names, sheets, ui);
 
 	const destDir = join(process.cwd(), flags.dest);
 
@@ -58,7 +58,7 @@ export async function runCopy(rawArgs, ui) {
 			const answer = await prompt(`Overwrite ${flags.dest}/${filename}? [y/N] `);
 
 			if (answer.toLowerCase() !== "y") {
-				console.log(`  ${c.yellow("Skipped")} ${filename}`);
+				ui.print(`  ${status(resultTypes.SKIPPED, filename, ui.options)}`);
 				continue;
 			}
 		}
@@ -66,7 +66,12 @@ export async function runCopy(rawArgs, ui) {
 		const source = readFileSync(srcPath, "utf8");
 
 		writeFileSync(destPath, buildCopiedFileHeader(filename) + source);
-		console.log(`  ${c.green("Copied")} ${filename} → ${flags.dest}/${filename}`);
+		ui.print(
+			`  ${status(resultTypes.SUCCESS, `${filename} → ${flags.dest}/${filename}`, {
+				...ui.options,
+				label: "Copied",
+			})}`,
+		);
 	}
 }
 
