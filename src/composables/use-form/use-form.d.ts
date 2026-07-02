@@ -35,12 +35,20 @@ interface UseFormOptions<T = unknown> {
 	updatePageTitleOnError?: MaybeRefOrGetter<boolean | undefined>;
 	pageTitleErrorPrefix?: MaybeRefOrGetter<string | undefined>;
 	readonly?: MaybeRefOrGetter<boolean | undefined>;
-	errorSummaryElement: Ref<HTMLElement | null>;
-	generalErrorsElement: Ref<{ $el: HTMLElement } | null>;
-	submitButtonRef: Ref<{ reset: () => void } | null>;
+	errorSummaryElement?: Ref<HTMLElement | null>;
+	generalErrorsElement?: Ref<{ $el: HTMLElement } | null>;
+	submitButtonRef?: Ref<{ reset: () => void } | null>;
+}
+
+interface BindableForm {
+	modelValue: Record<string, unknown>;
+	"onUpdate:modelValue": (value: Record<string, unknown>) => void;
+	rules: Record<string, unknown[]> | undefined;
+	onSubmit: ((data: Record<string, unknown>) => unknown) | undefined;
 }
 
 interface UseFormReturn {
+	form: ComputedRef<BindableForm>;
 	formData: Ref<Record<string, unknown>>;
 	formFields: Record<string, FormField>;
 	haveFormFields: ComputedRef<boolean>;

@@ -85,6 +85,56 @@ describe("useForm", () => {
 		});
 	});
 
+	describe("form", () => {
+		test("modelValue reflects the current formData", () => {
+			const { form, formData } = createForm({ initialData: { name: "Alice" } });
+
+			expect(form.value.modelValue).toBe(formData.value);
+		});
+
+		test("onUpdate:modelValue writes back into formData", () => {
+			const { form, formData } = createForm({ initialData: { name: "Alice" } });
+
+			form.value["onUpdate:modelValue"]({ name: "Bob" });
+
+			expect(formData.value).toEqual({ name: "Bob" });
+		});
+
+		test("rules reflects the current rules value", () => {
+			const rules = { name: [{ rule: "required" }] };
+			const { form } = createForm({ props: { rules } });
+
+			expect(form.value.rules).toBe(rules);
+		});
+
+		test("onSubmit is the provided onSubmit handler", () => {
+			const onSubmit = vi.fn();
+			const { form } = createForm({ props: { onSubmit } });
+
+			expect(form.value.onSubmit).toBe(onSubmit);
+		});
+	});
+
+	describe("optional DOM refs", () => {
+		test("resetSubmitButton does not throw when submitButtonRef is omitted", async () => {
+			const { handleFormSubmit } = useForm({ initialData: {}, onSubmit: vi.fn() });
+
+			await handleFormSubmit();
+		});
+
+		test("a failed submit does not throw when error refs are omitted", async () => {
+			const { registerField, handleFormSubmit } = useForm({
+				initialData: {},
+				rules: { email: [{ rule: "required", message: "Required" }] },
+				onSubmit: vi.fn(),
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+
+			await handleFormSubmit();
+		});
+	});
+
 	describe("registerField", () => {
 		test("adds the field to formFields", async () => {
 			const { formFields, registerField } = createForm();

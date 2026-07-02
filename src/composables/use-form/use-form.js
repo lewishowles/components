@@ -40,13 +40,16 @@ import { validateForm } from "@lewishowles/helpers/form";
  *     Prefix added to document.title after failed validation.
  * @param  {boolean|ref|function}  [readonly]
  *     Whether all form fields should be treated as readonly.
- * @param  {ref}  errorSummaryElement
+ * @param  {ref}  [errorSummaryElement]
  *     Ref to the error summary element, focused after a failed submit.
- * @param  {ref}  generalErrorsElement
+ *     Only needed when calling handleFormSubmit directly; not required for
+ *     the `form-wrapper v-bind="form"` pattern.
+ * @param  {ref}  [generalErrorsElement]
  *     Ref to the general errors container, focused when only general errors
- *     exist.
- * @param  {ref}  submitButtonRef
+ *     exist. Only needed when calling handleFormSubmit directly.
+ * @param  {ref}  [submitButtonRef]
  *     Ref to the submit button component, reset when the submit settles.
+ *     Only needed when calling handleFormSubmit directly.
  */
 export function useForm({
 	initialData,
@@ -161,6 +164,17 @@ export function useForm({
 		return names;
 	});
 
+	// A bindable object for `v-bind="form"` on form-wrapper, packing the
+	// v-model binding, rules, and submit handler into a single prop.
+	const form = computed(() => ({
+		modelValue: formData.value,
+		"onUpdate:modelValue": (value) => {
+			formData.value = value;
+		},
+		rules: toValue(rules),
+		onSubmit,
+	}));
+
 	/**
 	 * @param  {object|ref}  initialData
 	 *     The seed for formData. A plain object, or a ref/getter to watch.
@@ -269,7 +283,7 @@ export function useForm({
 	async function focusErrorSummary() {
 		await nextTick();
 
-		callComponentMethod(errorSummaryElement.value, "focus");
+		callComponentMethod(errorSummaryElement?.value, "focus");
 	}
 
 	/**
@@ -278,7 +292,7 @@ export function useForm({
 	async function focusGeneralErrors() {
 		await nextTick();
 
-		callComponentMethod(generalErrorsElement.value, "focus");
+		callComponentMethod(generalErrorsElement?.value, "focus");
 	}
 
 	/**
@@ -439,7 +453,7 @@ export function useForm({
 	function resetSubmitButton() {
 		isSubmitting.value = false;
 
-		callComponentMethod(submitButtonRef.value, "reset");
+		callComponentMethod(submitButtonRef?.value, "reset");
 	}
 
 	/**
@@ -468,6 +482,7 @@ export function useForm({
 	);
 
 	return {
+		form,
 		formData,
 		formFields,
 		haveFormFields,

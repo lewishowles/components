@@ -1,6 +1,7 @@
 import { createMount } from "@lewishowles/testing/vue";
 import { flushPromises } from "@vue/test-utils";
 import { describe, expect, test, vi } from "vite-plus/test";
+import { useForm } from "@/composables/use-form/use-form.js";
 import FormWrapper from "./form-wrapper.vue";
 
 const mount = createMount(FormWrapper);
@@ -356,6 +357,62 @@ describe("form-wrapper", () => {
 			await wrapper.vm.handleFormSubmit();
 
 			expect(wrapper.attributes("aria-busy")).toBe("false");
+		});
+	});
+
+	describe("useForm()'s form binding", () => {
+		test("modelValue seeds formData, rules block an invalid submit, and onSubmit is not called", async () => {
+			const onSubmit = vi.fn();
+
+			const { form } = useForm({
+				initialData: { email: "" },
+				rules: { email: [{ rule: "required", message: "Required" }] },
+				onSubmit,
+			});
+
+			const wrapper = mount({ props: { ...form.value } });
+
+			wrapper.vm.registerField({ name: "email", id: "email-id" });
+
+			expect(wrapper.vm.formData).toEqual({ email: "" });
+
+			await wrapper.vm.handleFormSubmit();
+
+			expect(wrapper.vm.errorSummary).toEqual([
+				{ fieldName: "email", id: "email-id", message: "Required" },
+			]);
+			expect(onSubmit).not.toHaveBeenCalled();
+		});
+
+		test("onSubmit is called with the wrapper's submit-ready data once rules pass", async () => {
+			const onSubmit = vi.fn();
+
+			const { form } = useForm({
+				initialData: { email: "person@example.com" },
+				rules: { email: [{ rule: "required", message: "Required" }] },
+				onSubmit,
+			});
+
+			const wrapper = mount({ props: { ...form.value } });
+
+			wrapper.vm.registerField({ name: "email", id: "email-id" });
+
+			await wrapper.vm.handleFormSubmit();
+			await flushPromises();
+
+			expect(onSubmit).toHaveBeenCalledWith({ email: "person@example.com" });
+		});
+
+		test("onUpdate:modelValue writes the wrapper's edits back into the outer formData", async () => {
+			const { form, formData } = useForm({ initialData: { email: "" }, onSubmit: vi.fn() });
+			const wrapper = mount({ props: { ...form.value } });
+
+			wrapper.vm.registerField({ name: "email", id: "email-id" });
+			wrapper.vm.updateFieldValue("email", "person@example.com");
+
+			await flushPromises();
+
+			expect(formData.value).toEqual({ email: "person@example.com" });
 		});
 	});
 });
