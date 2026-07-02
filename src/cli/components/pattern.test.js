@@ -1,8 +1,22 @@
-import { describe, expect, test } from "vite-plus/test";
-import { generatePattern, lookupPattern, parsePatternArguments, _test } from "./pattern.js";
+import { describe, expect, test, vi } from "vite-plus/test";
+import {
+	generatePattern,
+	lookupPattern,
+	parsePatternArguments,
+	printPatterns,
+	_test,
+} from "./pattern.js";
 import { patterns } from "./patterns.js";
 
 const { getPatternItems } = _test;
+
+// Build a fake cli-style instance, capturing every printed line.
+function createUi(options = {}) {
+	return {
+		options: { colour: false, unicode: true, width: 80, ...options },
+		print: vi.fn(),
+	};
+}
 
 describe("parsePatternArguments", () => {
 	test("Returns null name and both flags false when no args are given", () => {
@@ -114,5 +128,27 @@ describe("getPatternItems", () => {
 			expect(item).toHaveProperty("category");
 			expect(item).toHaveProperty("summary");
 		}
+	});
+});
+
+describe("printPatterns", () => {
+	test("prints every pattern grouped under its category", () => {
+		const ui = createUi();
+
+		printPatterns(ui);
+
+		const output = ui.print.mock.calls[0][0];
+
+		for (const pattern of patterns) {
+			expect(output).toContain(pattern.name);
+		}
+	});
+
+	test("prints the usage hint", () => {
+		const ui = createUi();
+
+		printPatterns(ui);
+
+		expect(ui.print.mock.calls[0][0]).toContain("pattern <name>");
 	});
 });

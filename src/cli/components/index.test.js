@@ -1,7 +1,15 @@
-import { describe, expect, test } from "vite-plus/test";
-import { _test, buildTemplateAttributes } from "./index.js";
+import { describe, expect, test, vi } from "vite-plus/test";
+import { _test, buildTemplateAttributes, printExamples } from "./index.js";
 
 const { getExampleItems } = _test;
+
+// Build a fake cli-style instance, capturing every printed line.
+function createUi(options = {}) {
+	return {
+		options: { colour: false, unicode: true, width: 80, ...options },
+		print: vi.fn(),
+	};
+}
 
 describe("getExampleItems", () => {
 	test("Returns example items for a component", () => {
@@ -99,5 +107,41 @@ describe("buildTemplateAttributes", () => {
 		});
 
 		expect(attrs).toEqual(['class="btn"', '@click="handleClick"']);
+	});
+});
+
+describe("printExamples", () => {
+	test("prints each example with its summary", () => {
+		const ui = createUi();
+
+		printExamples(
+			{
+				name: "ui-button",
+				examples: [
+					{ name: "default", summary: "A standard button." },
+					{ name: "icon", summary: "A button with an icon." },
+				],
+			},
+			ui,
+		);
+
+		const output = ui.print.mock.calls[0][0];
+
+		expect(output).toContain("ui-button");
+		expect(output).toContain("default");
+		expect(output).toContain("A standard button.");
+		expect(output).toContain("icon");
+		expect(output).toContain("A button with an icon.");
+	});
+
+	test("prints the usage hint with the component name", () => {
+		const ui = createUi();
+
+		printExamples(
+			{ name: "ui-button", examples: [{ name: "default", summary: "A standard button." }] },
+			ui,
+		);
+
+		expect(ui.print.mock.calls[0][0]).toContain("snippet ui-button <example>");
 	});
 });

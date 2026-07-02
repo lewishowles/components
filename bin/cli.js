@@ -5,6 +5,7 @@ import { PACKAGE_NAME } from "../src/cli/utils/constants.js";
 import { getHelpSection as getStylesheetsHelpSection } from "../src/cli/stylesheets/index.js";
 import { getHelpSections } from "../src/cli/registry.js";
 import { printHelp } from "../src/cli/help.js";
+import { printUnknownItemError } from "../src/cli/utils/unknown-item-error.js";
 import { runCopy } from "../src/cli/stylesheets/copy.js";
 import { runDiff } from "../src/cli/stylesheets/diff.js";
 import { runInfo } from "../src/cli/components/info.js";
@@ -38,9 +39,13 @@ if (command === "stylesheet") {
 } else if (command === "list") {
 	runList(rest, ui);
 } else if (command === "pattern") {
-	await runPattern(rest);
+	await runPattern(rest, ui);
 } else if (command === "snippet") {
-	await runSnippet(rest);
-} else {
+	await runSnippet(rest, ui);
+} else if (command === undefined) {
 	printHelp(getHelpSections(), ui);
+} else {
+	printUnknownItemError("command", command, ui);
+	printHelp(getHelpSections(), ui);
+	process.exit(1);
 }

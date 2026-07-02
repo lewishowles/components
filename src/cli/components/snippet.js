@@ -4,6 +4,7 @@ import { highlight } from "cli-highlight";
 import { readFileSync } from "node:fs";
 
 import { printAllComponents } from "./list.js";
+import { printUnknownItemError } from "../utils/unknown-item-error.js";
 import {
 	buildTemplateAttributes,
 	componentMetadata,
@@ -67,14 +68,16 @@ export function parseSnippetArguments(argv) {
  *     Component metadata record.
  * @param  {string}  exampleName
  *     The name of the example to generate.
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  * @returns {string}
  */
-export function generateSnippet(component, exampleName) {
+export function generateSnippet(component, exampleName, ui) {
 	const example = component.examples.find((example) => example.name === exampleName);
 
 	if (!example) {
-		console.error(`Unknown example: ${exampleName}`);
-		console.error(`Available: ${component.examples.map((example) => example.name).join(", ")}`);
+		printUnknownItemError("example", exampleName, ui);
+		printExamples(component, ui);
 		process.exit(1);
 	}
 
@@ -152,40 +155,42 @@ function normaliseSourceSnippet(source) {
  *
  * @param  {string[]}  rawArguments
  *     Arguments following the `snippet` subcommand.
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  */
-export async function runSnippet(rawArguments) {
+export async function runSnippet(rawArguments, ui) {
 	const { example, flags, name } = parseSnippetArguments(rawArguments);
 
 	if (flags.help) {
-		printAllComponents(componentMetadata);
+		printAllComponents(componentMetadata, ui);
 
 		return;
 	}
 
 	if (flags.list && name === null) {
-		printAllComponents(componentMetadata);
+		printAllComponents(componentMetadata, ui);
 
 		return;
 	}
 
 	if (flags.list) {
-		printExamples(lookupComponent(name));
+		printExamples(lookupComponent(name, ui), ui);
 
 		return;
 	}
 
 	if (name !== null && example !== null) {
-		printSnippet(lookupComponent(name), example);
+		printSnippet(lookupComponent(name, ui), example, ui);
 
 		return;
 	}
 
 	if (name !== null) {
-		const component = lookupComponent(name);
+		const component = lookupComponent(name, ui);
 		const resolvedExample = resolveSnippetExample(component);
 
 		if (resolvedExample !== null) {
-			printSnippet(component, resolvedExample);
+			printSnippet(component, resolvedExample, ui);
 
 			return;
 		}
@@ -197,7 +202,7 @@ export async function runSnippet(rawArguments) {
 
 		const exampleChoice = await promptExample(component);
 
-		printSnippet(component, exampleChoice);
+		printSnippet(component, exampleChoice, ui);
 
 		return;
 	}
@@ -207,14 +212,14 @@ export async function runSnippet(rawArguments) {
 		process.exit(1);
 	}
 
-	const selected = await promptSnippet();
+	const selected = await promptSnippet(ui);
 
 	if (selected === null) {
 		cancel("No snippet examples available.");
 		process.exit(1);
 	}
 
-	printSnippet(lookupComponent(selected.component), selected.example);
+	printSnippet(lookupComponent(selected.component, ui), selected.example, ui);
 }
 
 /**
@@ -236,10 +241,12 @@ function resolveSnippetExample(component) {
 /**
  * Shows interactive prompts to pick a component and snippet example.
  *
+ * @param   {object}  ui
+ *     A cli-style instance from createCliStyle().
  * @returns {Promise<{ component: string, example: string } | null>}
  *     The selected component and example names.
  */
-async function promptSnippet() {
+async function promptSnippet(ui) {
 	const components = componentMetadata.filter((component) => component.examples?.length > 0);
 
 	if (!components.length) {
@@ -262,7 +269,7 @@ async function promptSnippet() {
 		process.exit(0);
 	}
 
-	const component = lookupComponent(componentChoice);
+	const component = lookupComponent(componentChoice, ui);
 
 	const exampleChoice = await select({
 		message: `Choose a ${component.name} example`,
@@ -316,9 +323,11 @@ async function promptExample(component) {
  *     Component metadata record.
  * @param  {string}  exampleName
  *     The name of the example to generate.
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  */
-function printSnippet(component, exampleName) {
-	console.log(generateSnippet(component, exampleName));
+function printSnippet(component, exampleName, ui) {
+	console.log(generateSnippet(component, exampleName, ui));
 }
 
 export const _test = { normaliseSourceSnippet, resolveSnippetExample };

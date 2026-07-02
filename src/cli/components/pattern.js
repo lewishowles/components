@@ -1,9 +1,10 @@
+import { divider, style, table } from "@lewishowles/cli-style";
 import { PACKAGE_NAME } from "../utils/constants.js";
-import { c } from "../utils/colour.js";
 import { cancel, intro, isCancel, select } from "@clack/prompts";
 import { groupBy } from "@lewishowles/helpers/array";
 import { highlight } from "cli-highlight";
 import { patterns, patternsByName } from "./patterns.js";
+import { printUnknownItemError } from "../utils/unknown-item-error.js";
 
 export function getHelpSection() {
 	return {
@@ -52,14 +53,16 @@ export function parsePatternArguments(argv) {
  *
  * @param   {string}  name
  *     The pattern name to look up.
+ * @param   {object}  ui
+ *     A cli-style instance from createCliStyle().
  * @returns {object}
  */
-export function lookupPattern(name) {
+export function lookupPattern(name, ui) {
 	const pattern = patternsByName[name];
 
 	if (!pattern) {
-		console.error(`Unknown pattern: ${name}`);
-		console.error(`Available: ${patterns.map((pattern) => pattern.name).join(", ")}`);
+		printUnknownItemError("pattern", name, ui);
+		printPatterns(ui);
 		process.exit(1);
 	}
 
@@ -85,38 +88,48 @@ export function generatePattern(pattern) {
 /**
  * Prints all available patterns grouped by category, with a single illustrative
  * note as a footer.
+ *
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  */
-export function printPatterns() {
+export function printPatterns(ui) {
 	const items = getPatternItems();
 
 	if (!items.length) {
-		console.log(`\n${c.dim("No patterns available.")}\n`);
+		ui.print(`\n${style("No patterns available.", "dim", ui.options)}\n`);
 
 		return;
 	}
 
 	const grouped = groupBy(items, "category");
-
-	console.log(`\n${c.bold("Available patterns")}\n`);
+	const lines = ["", style("Available patterns", "bold", ui.options)];
 
 	for (const [category, categoryItems] of Object.entries(grouped)) {
-		const width = Math.max(...categoryItems.map((item) => item.name.length));
-
-		console.log(`  ${c.bold(capitalise(category))}\n`);
-
-		for (const item of categoryItems) {
-			console.log(`    ${c.cyan(item.name.padEnd(width))}  ${item.summary}`);
-		}
-
-		console.log();
+		lines.push(
+			"",
+			divider({ label: capitalise(category), ...ui.options }),
+			table({
+				columns: [
+					{ key: "name", label: "Name" },
+					{ key: "summary", label: "Summary" },
+				],
+				rows: categoryItems,
+				...ui.options,
+			}),
+		);
 	}
 
-	console.log(`  ${c.dim("All patterns are illustrative — adapt to your requirements.")}`);
-	console.log(`
-${c.bold("Usage")}
+	lines.push(
+		"",
+		style("All patterns are illustrative, adapt to your requirements.", "dim", ui.options),
+		"",
+		divider({ label: "Usage", ...ui.options }),
+		"",
+		`  npx ${PACKAGE_NAME} pattern <name>`,
+		"",
+	);
 
-  npx ${PACKAGE_NAME} pattern <name>
-`);
+	ui.print(lines.join("\n"));
 }
 
 /**
@@ -126,18 +139,20 @@ ${c.bold("Usage")}
  *
  * @param  {string[]}  rawArguments
  *     Arguments following the `pattern` subcommand.
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  */
-export async function runPattern(rawArguments) {
+export async function runPattern(rawArguments, ui) {
 	const { flags, name } = parsePatternArguments(rawArguments);
 
 	if (flags.help || (flags.list && name === null)) {
-		printPatterns();
+		printPatterns(ui);
 
 		return;
 	}
 
 	if (name !== null) {
-		console.log(generatePattern(lookupPattern(name)));
+		console.log(generatePattern(lookupPattern(name, ui)));
 
 		return;
 	}
@@ -149,7 +164,7 @@ export async function runPattern(rawArguments) {
 
 	const selected = await promptPattern();
 
-	console.log(generatePattern(lookupPattern(selected)));
+	console.log(generatePattern(lookupPattern(selected, ui)));
 }
 
 /**

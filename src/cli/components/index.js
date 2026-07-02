@@ -1,25 +1,27 @@
+import { divider, style, table } from "@lewishowles/cli-style";
 import { componentMetadata, componentMetadataByName } from "../../components/component-metadata.js";
-import { c } from "../utils/colour.js";
 import { PACKAGE_NAME } from "../utils/constants.js";
+import { printUnknownItemError } from "../utils/unknown-item-error.js";
+import { printAllComponents } from "./list.js";
 
 export { componentMetadata };
 
 /**
  * Resolves a component name to its metadata record. Exits with an error if the
- * name is not found.
+ * name is not found, printing the same listing `list`/`info --help` show.
  *
  * @param   {string}  name
  *     The kebab-case component name to look up.
+ * @param   {object}  ui
+ *     A cli-style instance from createCliStyle().
  * @returns {object}
  */
-export function lookupComponent(name) {
+export function lookupComponent(name, ui) {
 	const component = componentMetadataByName[name];
 
 	if (!component) {
-		console.error(`\n${c.red("Unknown component:")} ${name}\n`);
-		console.error(
-			`Available: ${componentMetadata.map((component) => component.name).join(", ")}\n`,
-		);
+		printUnknownItemError("component", name, ui);
+		printAllComponents(componentMetadata, ui);
 		process.exit(1);
 	}
 
@@ -71,22 +73,32 @@ export function buildTemplateAttributes(snippet) {
  *
  * @param  {object}  component
  *     Component metadata record.
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  */
-export function printExamples(component) {
+export function printExamples(component, ui) {
 	const items = getExampleItems(component);
-	const width = Math.max(...items.map((item) => item.name.length));
 
-	console.log(`\n${c.bold(`Snippet examples for ${component.name}`)}\n`);
+	const lines = [
+		"",
+		style(`Snippet examples for ${component.name}`, "bold", ui.options),
+		"",
+		table({
+			columns: [
+				{ key: "name", label: "Name" },
+				{ key: "summary", label: "Summary" },
+			],
+			rows: items,
+			...ui.options,
+		}),
+		"",
+		divider({ label: "Usage", ...ui.options }),
+		"",
+		`  npx ${PACKAGE_NAME} snippet ${component.name} <example>`,
+		"",
+	];
 
-	for (const item of items) {
-		console.log(`  ${c.cyan(item.name.padEnd(width))}  ${item.summary}`);
-	}
-
-	console.log(`
-${c.bold("Usage")}
-
-  npx ${PACKAGE_NAME} snippet ${component.name} <example>
-`);
+	ui.print(lines.join("\n"));
 }
 
 /**

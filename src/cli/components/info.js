@@ -60,7 +60,7 @@ export function runInfo(argv, ui) {
 		return;
 	}
 
-	printInfo(lookupComponent(name), ui);
+	printInfo(lookupComponent(name, ui), ui);
 }
 
 /**
