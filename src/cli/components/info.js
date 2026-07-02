@@ -55,7 +55,7 @@ export function runInfo(argv, ui) {
 	const { flags, name } = parseInfoArguments(argv);
 
 	if (flags.help || name === null) {
-		printAllComponents(componentMetadata);
+		printAllComponents(componentMetadata, ui);
 
 		return;
 	}

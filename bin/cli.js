@@ -36,7 +36,7 @@ if (command === "stylesheet") {
 } else if (command === "info") {
 	runInfo(rest, ui);
 } else if (command === "list") {
-	runList(rest);
+	runList(rest, ui);
 } else if (command === "pattern") {
 	await runPattern(rest);
 } else if (command === "snippet") {

@@ -1,7 +1,15 @@
-import { describe, expect, test } from "vite-plus/test";
-import { _test } from "./list.js";
+import { describe, expect, test, vi } from "vite-plus/test";
+import { _test, printAllComponents } from "./list.js";
 
 const { groupByCategory } = _test;
+
+// Build a fake cli-style instance, capturing every printed line.
+function createUi(options = {}) {
+	return {
+		options: { colour: false, unicode: true, width: 80, ...options },
+		print: vi.fn(),
+	};
+}
 
 describe("groupByCategory", () => {
 	test("Groups components by category", () => {
@@ -53,5 +61,39 @@ describe("groupByCategory", () => {
 		]);
 
 		expect(result.get("general")).toEqual([{ name: "app-link", summary: "A link." }]);
+	});
+});
+
+describe("printAllComponents", () => {
+	test("prints each component grouped under its category heading", () => {
+		const ui = createUi();
+
+		printAllComponents(
+			[
+				{ category: "form", name: "form-input", summary: "A text input." },
+				{ category: "interaction", name: "ui-button", summary: "A button." },
+			],
+			ui,
+		);
+
+		const output = ui.print.mock.calls[0][0];
+
+		expect(output).toContain("form");
+		expect(output).toContain("form-input");
+		expect(output).toContain("A text input.");
+		expect(output).toContain("interaction");
+		expect(output).toContain("ui-button");
+		expect(output).toContain("A button.");
+	});
+
+	test("prints usage hints for info and snippet", () => {
+		const ui = createUi();
+
+		printAllComponents([{ category: "form", name: "form-input", summary: "A text input." }], ui);
+
+		const output = ui.print.mock.calls[0][0];
+
+		expect(output).toContain("info <component>");
+		expect(output).toContain("snippet <component>");
 	});
 });

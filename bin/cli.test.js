@@ -31,4 +31,12 @@ describe("bin/cli.js", () => {
 	test("prints info for a real component", () => {
 		expect(runCli(["info", "ui-button"])).toContain("ui-button");
 	});
+
+	test("prints info's fallback listing when no component name is given", () => {
+		expect(runCli(["info"])).toContain("Available components");
+	});
+
+	test("prints the full component list", () => {
+		expect(runCli(["list"])).toContain("Available components");
+	});
 });

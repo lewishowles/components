@@ -1,5 +1,5 @@
+import { divider, style, table } from "@lewishowles/cli-style";
 import { PACKAGE_NAME } from "../utils/constants.js";
-import { c } from "../utils/colour.js";
 import { groupBy } from "@lewishowles/helpers/array";
 import { componentMetadata } from "./index.js";
 
@@ -15,9 +15,11 @@ export function getHelpSection() {
  *
  * @param  {string[]}  _argv
  *     Arguments following the `list` subcommand (reserved for future flags).
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  */
-export function runList(_argv) {
-	printAllComponents(componentMetadata);
+export function runList(_argv, ui) {
+	printAllComponents(componentMetadata, ui);
 }
 
 /**
@@ -26,33 +28,38 @@ export function runList(_argv) {
  *
  * @param  {object[]}  components
  *     Component metadata records.
+ * @param  {object}  ui
+ *     A cli-style instance from createCliStyle().
  */
-export function printAllComponents(components) {
+export function printAllComponents(components, ui) {
 	const groups = groupByCategory(components);
-	const allNames = components.map((component) => component.name);
-	const width = Math.max(...allNames.map((name) => name.length));
-
-	console.log(`\n${c.bold("Available components")}\n`);
+	const lines = ["", style("Available components", "bold", ui.options)];
 
 	for (const [category, items] of groups) {
-		console.log(`  ${c.bold(category)}`);
-
-		for (const item of items) {
-			console.log(`    ${c.cyan(item.name.padEnd(width))}  ${item.summary}`);
-		}
-
-		console.log();
+		lines.push(
+			"",
+			divider({ label: category, ...ui.options }),
+			table({
+				columns: [
+					{ key: "name", label: "Name" },
+					{ key: "summary", label: "Summary" },
+				],
+				rows: items,
+				...ui.options,
+			}),
+		);
 	}
 
-	console.log(
-		[
-			c.bold("Usage"),
-			"",
-			`  npx ${PACKAGE_NAME} info <component>`,
-			`  npx ${PACKAGE_NAME} snippet <component>`,
-			"",
-		].join("\n"),
+	lines.push(
+		"",
+		divider({ label: "Usage", ...ui.options }),
+		"",
+		`  npx ${PACKAGE_NAME} info <component>`,
+		`  npx ${PACKAGE_NAME} snippet <component>`,
+		"",
 	);
+
+	ui.print(lines.join("\n"));
 }
 
 /**
