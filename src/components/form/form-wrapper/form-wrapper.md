@@ -48,24 +48,47 @@ function parseApiSubmitErrors(error) {
 - type: `object`
 - default: `null`
 
-Form-wide status feedback shown near the submit button in an accessible live region. Use for overall form state such as success confirmation, permission errors, or session expiry. For specific submission failures, use `submitErrorsCallback`.
+Form-wide status feedback shown near the submit button in an accessible live region. Defaults to `useForm`'s own submit-lifecycle status, so failed submits show an inline error automatically with no setup. Pass a value to override with app-driven state such as a permission error or session expiry, which takes precedence until cleared. For specific submission failures, use `submitErrorsCallback`.
 
-Shape: `{ type: 'success' | 'error' | 'info', message: string | string[] }`
+Shape: `{ type: 'success' | 'error' | 'info', message?: string | string[] }`
+
+`message` is optional. A bare successful submit has no message and shows no visible alert here by design: success feedback usually belongs in the app's own flash/toast system, wired up via `onSuccess` (see below), rather than a second inline banner.
 
 `message` can be a single string or an array of strings. `success` and `info` use `aria-live="polite"`; `error` uses `role="alert"` for assertive announcement.
+
+Overriding for app-driven state unrelated to a submit outcome:
 
 ```js
 const status = ref(null);
 
-// After a successful save:
-status.value = { type: "success", message: "Settings saved." };
-
-// After a permission error:
-status.value = { type: "error", message: "You do not have permission to do that." };
+// After detecting session expiry:
+status.value = { type: "error", message: "Your session has expired." };
 ```
 
 ```html
 <form-wrapper v-bind="{ status }">…</form-wrapper>
+```
+
+### `onSuccess`, `onError`, `onSettled`
+
+- type: `function`
+- default: `null`
+
+Submit lifecycle hooks, called with data from `useForm`'s own submit cycle. Use these for app-level side effects, such as a flash message, closing a modal, or navigating away, that live outside the inline `status` alert.
+
+- `onSuccess(result, formData)`: called once `onSubmit` resolves.
+- `onError(error, formData)`: called when `onSubmit` rejects, before `submitErrorsCallback` decides whether to swallow the error.
+- `onSettled(result, error, formData)`: always called after a submit attempt, whichever of `result`/`error` didn't occur is `undefined`.
+
+```html
+<form-wrapper v-bind="{ onSubmit, onSuccess, onError }" v-model="values">…</form-wrapper>
+```
+
+```js
+function onSuccess() {
+	flashMessages.add({ type: "success", message: "Settings saved." });
+	router.push({ name: "settings" });
+}
 ```
 
 ### `updatePageTitleOnError`

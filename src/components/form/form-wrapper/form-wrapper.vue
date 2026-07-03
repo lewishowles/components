@@ -73,16 +73,16 @@
 				</alert-message>
 
 				<alert-message
-					v-if="status"
-					v-bind="{ type: status.type, showIcon: false }"
+					v-if="formStatus?.message"
+					v-bind="{ type: formStatus.type, showIcon: false }"
 					class="mb-4"
 					data-test="form-wrapper-status"
 				>
-					<template v-if="Array.isArray(status.message)">
-						<p v-for="(message, index) in status.message" :key="index">{{ message }}</p>
+					<template v-if="Array.isArray(formStatus.message)">
+						<p v-for="(message, index) in formStatus.message" :key="index">{{ message }}</p>
 					</template>
 					<template v-else>
-						{{ status.message }}
+						{{ formStatus.message }}
 					</template>
 				</alert-message>
 
@@ -135,6 +135,35 @@ const props = defineProps({
 	},
 
 	/**
+	 * Called with onSubmit's resolved return value and the submitted form
+	 * data once a submit succeeds. Use for side effects such as a success
+	 * message, closing a modal, or navigating away.
+	 */
+	onSuccess: {
+		type: Function,
+		default: null,
+	},
+
+	/**
+	 * Called with onSubmit's rejection error and the submitted form data
+	 * when a submit fails. Use to log the error or show a fallback message
+	 * for failures that submitErrorsCallback can't map to a field.
+	 */
+	onError: {
+		type: Function,
+		default: null,
+	},
+
+	/**
+	 * Called with the submit result, error, and submitted form data after
+	 * every submit attempt, regardless of outcome.
+	 */
+	onSettled: {
+		type: Function,
+		default: null,
+	},
+
+	/**
 	 * Additional classes to pass to the inner form-layout, merged via `cn` to
 	 * resolve Tailwind conflicts. Useful for overriding the default gap on
 	 * compact forms.
@@ -157,10 +186,11 @@ const props = defineProps({
 	},
 
 	/**
-	 * Form-wide status feedback displayed near the submit button in an
-	 * accessible live region. Use for overall form state such as success
-	 * confirmation, permission errors, or session expiry. For specific
-	 * submission failures, use submitErrorsCallback.
+	 * Form-wide status feedback displayed near the submit button. Defaults to
+	 * useForm's own submit-lifecycle status (success/error), so most forms need
+	 * not set this. Pass a value to override with app-driven state such as a
+	 * permission error or session expiry, which takes precedence until cleared.
+	 * For specific submission failures, use submitErrorsCallback.
 	 */
 	status: {
 		type: Object,
@@ -254,12 +284,16 @@ const haveActionsLabel = computed(() => isNonEmptySlot(slots["actions-label"]));
  * returned Promise can be awaited by useForm.
  *
  * @param  {object}  data
+ * @returns {unknown}
+ *     The first listener's resolved value, passed on to onSuccess as its
+ *     submit result.
  */
 async function callSubmitListeners(data) {
 	const onSubmit = instance?.vnode.props?.onSubmit;
 	const handlers = Array.isArray(onSubmit) ? onSubmit : [onSubmit].filter(Boolean);
+	const results = await Promise.all(handlers.map((handler) => handler(data)));
 
-	await Promise.all(handlers.map((handler) => handler(data)));
+	return results[0];
 }
 
 const {
@@ -271,6 +305,7 @@ const {
 	isSubmitting,
 	isReadonly,
 	isDirty,
+	status: submitStatus,
 	registerField,
 	updateFieldValue,
 	fieldErrorsFor,
@@ -290,6 +325,10 @@ const {
 watch(formData, (value) => emit("update:modelValue", value), { deep: true });
 
 const isCompact = computed(() => props.compact);
+
+// The prop overrides the engine's own submit-lifecycle status, for
+// app-driven state (e.g. session expiry) unrelated to a submit outcome.
+const formStatus = computed(() => props.status ?? submitStatus.value);
 
 provide("form-wrapper", {
 	fieldErrorsFor,

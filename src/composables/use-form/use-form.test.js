@@ -676,6 +676,19 @@ describe("useForm", () => {
 			expect(onSuccess).toHaveBeenCalledWith({ id: 12 }, { age: 30 });
 		});
 
+		test("calls a ref-wrapped onSuccess, as form-wrapper's toRefs(props) produces", async () => {
+			const onSuccess = vi.fn();
+			const handler = vi.fn().mockResolvedValue({ id: 12 });
+
+			const { handleFormSubmit } = createForm({
+				props: { onSubmit: handler, onSuccess: ref(onSuccess) },
+			});
+
+			await handleFormSubmit();
+
+			expect(onSuccess).toHaveBeenCalledWith({ id: 12 }, {});
+		});
+
 		test("calls onError with the submit error and submitted data", async () => {
 			const error = new Error("Server error");
 			const onError = vi.fn();

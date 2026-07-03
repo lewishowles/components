@@ -1,10 +1,11 @@
-import { createMount } from "@lewishowles/testing/vue";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { flushPromises } from "@vue/test-utils";
 import { describe, expect, test, vi } from "vite-plus/test";
 import { useForm } from "@/composables/use-form/use-form.js";
 import FormWrapper from "./form-wrapper.vue";
 
 const mount = createMount(FormWrapper);
+const mountDeep = createDeepMount(FormWrapper);
 
 describe("form-wrapper", () => {
 	describe("Initialisation", () => {
@@ -444,6 +445,95 @@ describe("form-wrapper", () => {
 			);
 
 			vi.restoreAllMocks();
+		});
+	});
+
+	describe("status", () => {
+		test("does not show a status alert for a successful submit with no message", async () => {
+			const onSubmit = vi.fn();
+			const wrapper = mountDeep({ props: { onSubmit } });
+
+			await wrapper.vm.handleFormSubmit();
+			await flushPromises();
+
+			expect(wrapper.find('[data-test="form-wrapper-status"]').exists()).toBe(false);
+		});
+
+		test("shows the engine's status after an unhandled submit error", async () => {
+			const onSubmit = vi.fn(() => Promise.reject(new Error("Request failed")));
+			const wrapper = mountDeep({ props: { onSubmit } });
+
+			await expect(wrapper.vm.handleFormSubmit()).rejects.toThrow("Request failed");
+			await flushPromises();
+
+			const status = wrapper.find('[data-test="form-wrapper-status"]');
+
+			expect(status.exists()).toBe(true);
+			expect(status.text()).toBe("Error: Request failed");
+		});
+
+		test("the status prop overrides the engine's own status", async () => {
+			const onSubmit = vi.fn();
+
+			const wrapper = mountDeep({
+				props: { onSubmit, status: { type: "error", message: "Session expired" } },
+			});
+
+			await wrapper.vm.handleFormSubmit();
+			await flushPromises();
+
+			const status = wrapper.find('[data-test="form-wrapper-status"]');
+
+			expect(status.text()).toBe("Error: Session expired");
+		});
+
+		test("does not show status when neither the prop nor a submit result is set", () => {
+			const wrapper = mountDeep();
+
+			expect(wrapper.find('[data-test="form-wrapper-status"]').exists()).toBe(false);
+		});
+	});
+
+	describe("submit lifecycle hooks", () => {
+		test("calls onSuccess with the submit result and submitted data", async () => {
+			const onSuccess = vi.fn();
+			const onSubmit = vi.fn().mockResolvedValue({ id: 12 });
+			const wrapper = mount({ props: { onSubmit, onSuccess } });
+
+			await wrapper.vm.handleFormSubmit();
+			await flushPromises();
+
+			expect(onSuccess).toHaveBeenCalledWith({ id: 12 }, {});
+		});
+
+		test("calls onError with the submit error and submitted data", async () => {
+			const error = new Error("Request failed");
+			const onError = vi.fn();
+			const onSubmit = vi.fn().mockRejectedValue(error);
+			const wrapper = mount({ props: { onSubmit, onError } });
+
+			await expect(wrapper.vm.handleFormSubmit()).rejects.toThrow(error);
+
+			expect(onError).toHaveBeenCalledWith(error, {});
+		});
+
+		test("calls onSettled after both a successful and a failed submit", async () => {
+			const onSettled = vi.fn();
+
+			const onSubmit = vi
+				.fn()
+				.mockResolvedValueOnce("saved")
+				.mockRejectedValueOnce(new Error("Request failed"));
+
+			const wrapper = mount({ props: { onSubmit, onSettled } });
+
+			await wrapper.vm.handleFormSubmit();
+
+			expect(onSettled).toHaveBeenCalledWith("saved", undefined, {});
+
+			await expect(wrapper.vm.handleFormSubmit()).rejects.toThrow("Request failed");
+
+			expect(onSettled).toHaveBeenCalledWith(undefined, expect.any(Error), {});
 		});
 	});
 });

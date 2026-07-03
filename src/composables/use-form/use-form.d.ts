@@ -7,6 +7,14 @@ export type FormStatus = {
 	message?: string;
 };
 
+type SubmitSuccessCallback = (result: unknown, data: Record<string, unknown>) => unknown;
+type SubmitErrorCallback = (error: unknown, data: Record<string, unknown>) => unknown;
+type SubmitSettledCallback = (
+	result: unknown | undefined,
+	error: unknown | undefined,
+	data: Record<string, unknown>,
+) => unknown;
+
 interface FormField {
 	name: string;
 	id: string;
@@ -35,13 +43,9 @@ interface UseFormOptions<T = unknown> {
 	fieldErrors?: MaybeRefOrGetter<Record<string, string | string[]> | undefined>;
 	rules?: MaybeRefOrGetter<Record<string, unknown[]> | undefined>;
 	onSubmit?: (data: Record<string, unknown>) => unknown;
-	onSuccess?: (result: unknown, data: Record<string, unknown>) => unknown;
-	onError?: (error: unknown, data: Record<string, unknown>) => unknown;
-	onSettled?: (
-		result: unknown | undefined,
-		error: unknown | undefined,
-		data: Record<string, unknown>,
-	) => unknown;
+	onSuccess?: Ref<SubmitSuccessCallback | null> | SubmitSuccessCallback;
+	onError?: Ref<SubmitErrorCallback | null> | SubmitErrorCallback;
+	onSettled?: Ref<SubmitSettledCallback | null> | SubmitSettledCallback;
 	submitErrorsCallback?:
 		| Ref<((error: unknown) => Record<string, unknown> | null | undefined) | null>
 		| ((error: unknown) => Record<string, unknown> | null | undefined)

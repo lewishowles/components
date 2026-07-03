@@ -34,7 +34,28 @@ export const formWrapperMetadata = {
 			type: "object",
 			default: null,
 			summary:
-				"Form-wide status feedback shown near the submit button in an accessible live region. Shape: { type: 'success' | 'error' | 'info', message: string | string[] }. Use for overall form state (success confirmation, permission errors, session expiry). For specific submission failures, use submitErrorsCallback.",
+				"Form-wide status feedback shown near the submit button in an accessible live region. Shape: { type: 'success' | 'error' | 'info', message: string | string[] }. Defaults to useForm's own submit-lifecycle status, so most forms need not set this. Pass a value to override with app-driven state (permission errors, session expiry): it takes precedence until cleared. For specific submission failures, use submitErrorsCallback.",
+		},
+		{
+			name: "onSuccess",
+			type: "function",
+			default: null,
+			summary:
+				"Called with onSubmit's resolved return value and the submitted form data once a submit succeeds. Use for app-level side effects such as a flash message, closing a modal, or navigating away.",
+		},
+		{
+			name: "onError",
+			type: "function",
+			default: null,
+			summary:
+				"Called with onSubmit's rejection error and the submitted form data when a submit fails, before submitErrorsCallback decides whether to swallow the error.",
+		},
+		{
+			name: "onSettled",
+			type: "function",
+			default: null,
+			summary:
+				"Called with the submit result, error, and submitted form data after every submit attempt, regardless of outcome.",
 		},
 		{
 			name: "updatePageTitleOnError",

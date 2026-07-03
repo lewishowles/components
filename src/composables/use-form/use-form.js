@@ -55,11 +55,11 @@ import { validateForm } from "@lewishowles/helpers/form";
  *     Called with the submit-ready data once validation passes. Its
  *     returned Promise (if any) is awaited before resetting the submit
  *     button; a rejection is passed to submitErrorsCallback.
- * @param  {function}  [onSuccess]
+ * @param  {ref|function}  [onSuccess]
  *     Called with onSubmit's resolved return value and submitted form data.
- * @param  {function}  [onError]
+ * @param  {ref|function}  [onError]
  *     Called with onSubmit's rejection error and submitted form data.
- * @param  {function}  [onSettled]
+ * @param  {ref|function}  [onSettled]
  *     Called with the submit result, error, and submitted form data.
  * @param  {ref|function|null}  [submitErrorsCallback]
  *     Maps a rejected submit error to field errors. Return an empty value
@@ -558,15 +558,15 @@ export function useForm({
 				try {
 					await handleSubmitError(error, submittedData);
 				} finally {
-					await onSettled?.(undefined, error, submittedData);
+					await unref(onSettled)?.(undefined, error, submittedData);
 				}
 
 				return;
 			}
 
 			status.value = { type: "success" };
-			await onSuccess?.(result, submittedData);
-			await onSettled?.(result, undefined, submittedData);
+			await unref(onSuccess)?.(result, submittedData);
+			await unref(onSettled)?.(result, undefined, submittedData);
 			clearPageTitle();
 		} finally {
 			resetSubmitButton();
@@ -581,7 +581,7 @@ export function useForm({
 	 * @param  {object}  [submittedData]
 	 */
 	async function handleSubmitError(error, submittedData = getSubmitData()) {
-		await onError?.(error, submittedData);
+		await unref(onError)?.(error, submittedData);
 
 		const callback = unref(submitErrorsCallback);
 
