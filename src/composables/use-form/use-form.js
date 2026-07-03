@@ -55,6 +55,12 @@ import { validateForm } from "@lewishowles/helpers/form";
  *     Called with the submit-ready data once validation passes. Its
  *     returned Promise (if any) is awaited before resetting the submit
  *     button; a rejection is passed to submitErrorsCallback.
+ * @param  {function}  [onSuccess]
+ *     Called with onSubmit's resolved return value and submitted form data.
+ * @param  {function}  [onError]
+ *     Called with onSubmit's rejection error and submitted form data.
+ * @param  {function}  [onSettled]
+ *     Called with the submit result, error, and submitted form data.
  * @param  {ref|function|null}  [submitErrorsCallback]
  *     Maps a rejected submit error to field errors. Return an empty value
  *     for errors the form should not handle, which are re-thrown.
@@ -85,6 +91,9 @@ export function useForm({
 	fieldErrors,
 	rules,
 	onSubmit,
+	onSuccess,
+	onError,
+	onSettled,
 	submitErrorsCallback,
 	updatePageTitleOnError,
 	pageTitleErrorPrefix,
@@ -110,6 +119,8 @@ export function useForm({
 	const submitErrors = ref({});
 	// Errors produced by form-level `rules`, keyed by field name.
 	const formLevelErrors = ref({});
+	// Overall submit result for form-wide live status feedback.
+	const status = ref(null);
 
 	// Parsed submit errors whose key doesn't match a registered field, surfaced
 	// as general errors rather than field errors.
@@ -533,13 +544,30 @@ export function useForm({
 	 * to auto-reset the submit button when the async work settles.
 	 */
 	async function doSubmit() {
+		const submittedData = getSubmitData();
+
+		status.value = null;
 		isSubmitting.value = true;
 
 		try {
-			await onSubmit?.(getSubmitData());
+			let result;
+
+			try {
+				result = await onSubmit?.(submittedData);
+			} catch (error) {
+				try {
+					await handleSubmitError(error, submittedData);
+				} finally {
+					await onSettled?.(undefined, error, submittedData);
+				}
+
+				return;
+			}
+
+			status.value = { type: "success" };
+			await onSuccess?.(result, submittedData);
+			await onSettled?.(result, undefined, submittedData);
 			clearPageTitle();
-		} catch (error) {
-			await handleSubmitError(error);
 		} finally {
 			resetSubmitButton();
 		}
@@ -550,17 +578,24 @@ export function useForm({
 	 * and can map the error to field errors, surface those; otherwise re-throw.
 	 *
 	 * @param  {unknown}  error
+	 * @param  {object}  [submittedData]
 	 */
-	async function handleSubmitError(error) {
+	async function handleSubmitError(error, submittedData = getSubmitData()) {
+		await onError?.(error, submittedData);
+
 		const callback = unref(submitErrorsCallback);
 
 		if (!isFunction(callback)) {
+			status.value = { type: "error", message: submitErrorMessage(error) };
+
 			throw error;
 		}
 
 		const parsedErrors = callback(error);
 
 		if (!isNonEmptyObject(parsedErrors)) {
+			status.value = { type: "error", message: submitErrorMessage(error) };
+
 			throw error;
 		}
 
@@ -610,6 +645,7 @@ export function useForm({
 		haveFormFields,
 		submitErrors,
 		formLevelErrors,
+		status,
 		generalSubmitErrors,
 		haveGeneralSubmitErrors,
 		errorSummary,
@@ -627,6 +663,19 @@ export function useForm({
 		isFieldRequired,
 		getSubmitData,
 	};
+}
+
+/**
+ * Get the message to show for an unhandled submit error.
+ *
+ * @param  {unknown}  error
+ */
+function submitErrorMessage(error) {
+	if (isNonEmptyString(error?.message)) {
+		return error.message;
+	}
+
+	return "Submit failed";
 }
 
 /**

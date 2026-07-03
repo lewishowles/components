@@ -657,6 +657,137 @@ describe("useForm", () => {
 			expect(handler).toHaveBeenCalledWith({ age: null });
 		});
 
+		test("calls onSuccess with the submit result and submitted data", async () => {
+			const onSuccess = vi.fn();
+			const handler = vi.fn().mockResolvedValue({ id: 12 });
+
+			const { formData, handleFormSubmit } = createForm({
+				props: {
+					fieldTypes: { age: "nullable-number" },
+					onSubmit: handler,
+					onSuccess,
+				},
+			});
+
+			formData.value = { age: "30" };
+
+			await handleFormSubmit();
+
+			expect(onSuccess).toHaveBeenCalledWith({ id: 12 }, { age: 30 });
+		});
+
+		test("calls onError with the submit error and submitted data", async () => {
+			const error = new Error("Server error");
+			const onError = vi.fn();
+			const handler = vi.fn().mockRejectedValue(error);
+
+			const { formData, handleFormSubmit } = createForm({
+				props: {
+					fieldTypes: { age: "nullable-number" },
+					onError,
+					onSubmit: handler,
+				},
+			});
+
+			formData.value = { age: "30" };
+
+			await expect(handleFormSubmit()).rejects.toThrow(error);
+			expect(onError).toHaveBeenCalledWith(error, { age: 30 });
+		});
+
+		test("calls onSettled with the result on success", async () => {
+			const onSettled = vi.fn();
+			const handler = vi.fn().mockResolvedValue("saved");
+
+			const { formData, handleFormSubmit } = createForm({
+				props: {
+					fieldTypes: { age: "nullable-number" },
+					onSettled,
+					onSubmit: handler,
+				},
+			});
+
+			formData.value = { age: "30" };
+
+			await handleFormSubmit();
+
+			expect(onSettled).toHaveBeenCalledWith("saved", undefined, { age: 30 });
+		});
+
+		test("calls onSettled with the error on failure", async () => {
+			const error = new Error("Server error");
+			const onSettled = vi.fn();
+			const handler = vi.fn().mockRejectedValue(error);
+
+			const { formData, handleFormSubmit } = createForm({
+				props: {
+					fieldTypes: { age: "nullable-number" },
+					onSettled,
+					onSubmit: handler,
+				},
+			});
+
+			formData.value = { age: "30" };
+
+			await expect(handleFormSubmit()).rejects.toThrow(error);
+			expect(onSettled).toHaveBeenCalledWith(undefined, error, { age: 30 });
+		});
+
+		test("sets status to success after a successful submit", async () => {
+			const handler = vi.fn().mockResolvedValue(undefined);
+			const { handleFormSubmit, status } = createForm({ props: { onSubmit: handler } });
+
+			await handleFormSubmit();
+
+			expect(status.value).toEqual({ type: "success" });
+		});
+
+		test("sets status to error when a submit error is unhandled", async () => {
+			const error = new Error("Server error");
+			const handler = vi.fn().mockRejectedValue(error);
+
+			const { handleFormSubmit, status } = createForm({ props: { onSubmit: handler } });
+
+			await expect(handleFormSubmit()).rejects.toThrow(error);
+			expect(status.value).toEqual({ type: "error", message: "Server error" });
+		});
+
+		test("does not set error status when submitErrorsCallback handles the error", async () => {
+			const error = new Error("Server error");
+			const handler = vi.fn().mockRejectedValue(error);
+
+			const { handleFormSubmit, status } = createForm({
+				props: {
+					onSubmit: handler,
+					submitErrorsCallback: () => ({ email: "That email is taken" }),
+				},
+			});
+
+			await handleFormSubmit();
+
+			expect(status.value).toBeNull();
+		});
+
+		test("clears status at the start of the next submit", async () => {
+			const handler = vi
+				.fn()
+				.mockRejectedValueOnce(new Error("Server error"))
+				.mockImplementationOnce(() => {
+					expect(status.value).toBeNull();
+
+					return "saved";
+				});
+
+			const { handleFormSubmit, status } = createForm({ props: { onSubmit: handler } });
+
+			await expect(handleFormSubmit()).rejects.toThrow("Server error");
+			expect(status.value).toEqual({ type: "error", message: "Server error" });
+
+			await handleFormSubmit();
+
+			expect(status.value).toEqual({ type: "success" });
+		});
+
 		test("clears formLevelErrors from a previous submit before re-validating", async () => {
 			const { registerField, formLevelErrors, handleFormSubmit } = createForm({
 				props: { rules: { email: [{ rule: "required" }] } },

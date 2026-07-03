@@ -2,6 +2,11 @@ import type { ComputedRef, MaybeRefOrGetter, Ref } from "vue";
 
 type FieldType = "nullable-number" | "nullable-string";
 
+export type FormStatus = {
+	type: "success" | "error";
+	message?: string;
+};
+
 interface FormField {
 	name: string;
 	id: string;
@@ -30,6 +35,13 @@ interface UseFormOptions<T = unknown> {
 	fieldErrors?: MaybeRefOrGetter<Record<string, string | string[]> | undefined>;
 	rules?: MaybeRefOrGetter<Record<string, unknown[]> | undefined>;
 	onSubmit?: (data: Record<string, unknown>) => unknown;
+	onSuccess?: (result: unknown, data: Record<string, unknown>) => unknown;
+	onError?: (error: unknown, data: Record<string, unknown>) => unknown;
+	onSettled?: (
+		result: unknown | undefined,
+		error: unknown | undefined,
+		data: Record<string, unknown>,
+	) => unknown;
 	submitErrorsCallback?:
 		| Ref<((error: unknown) => Record<string, unknown> | null | undefined) | null>
 		| ((error: unknown) => Record<string, unknown> | null | undefined)
@@ -57,6 +69,7 @@ interface UseFormReturn {
 	haveFormFields: ComputedRef<boolean>;
 	submitErrors: Ref<Record<string, string | string[]>>;
 	formLevelErrors: Ref<Record<string, string[]>>;
+	status: Ref<FormStatus | null>;
 	generalSubmitErrors: ComputedRef<string[]>;
 	haveGeneralSubmitErrors: ComputedRef<boolean>;
 	errorSummary: ComputedRef<ErrorSummaryEntry[]>;
