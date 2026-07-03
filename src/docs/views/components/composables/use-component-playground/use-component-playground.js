@@ -1,6 +1,6 @@
 import { computed, ref } from "vue";
 import { deepCopy } from "@lewishowles/helpers/object";
-import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { isNonEmptyString, toCamelCase } from "@lewishowles/helpers/string";
 
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 
@@ -53,15 +53,4 @@ export function useComponentPlayground(componentMetadata, variantName) {
 		template,
 		textSlots,
 	};
-}
-
-/**
- * Convert kebab-case template prop names to camelCase component prop names.
- *
- * @param  {string}  value
- *     Prop name from snippet metadata.
- * @returns {string}
- */
-function toCamelCase(value) {
-	return value.replace(/-([a-z])/g, (_match, letter) => letter.toUpperCase());
 }

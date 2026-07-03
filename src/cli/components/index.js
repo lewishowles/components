@@ -1,4 +1,5 @@
 import { divider, style, table } from "@lewishowles/cli-style";
+import { toKebabCase } from "@lewishowles/helpers/string";
 import { componentMetadata, componentMetadataByName } from "../../components/component-metadata.js";
 import { PACKAGE_NAME } from "../utils/constants.js";
 import { printUnknownItemError } from "../utils/unknown-item-error.js";
@@ -99,16 +100,6 @@ export function printExamples(component, ui) {
 	];
 
 	ui.print(lines.join("\n"));
-}
-
-/**
- * Converts a camelCase string to kebab-case for use in Vue templates.
- *
- * @param   {string}  str
- * @returns {string}
- */
-function toKebabCase(str) {
-	return str.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
 }
 
 /**

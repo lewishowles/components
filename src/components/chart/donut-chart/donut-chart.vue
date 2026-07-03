@@ -51,7 +51,7 @@ import { computed, useId, useSlots } from "vue";
 import { useChartConfig } from "@/composables/use-chart-config/use-chart-config";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
-import { isNumber } from "@lewishowles/helpers/number";
+import { isNumber, toPercentage } from "@lewishowles/helpers/number";
 
 const props = defineProps({
 	/**
@@ -125,7 +125,7 @@ const slices = computed(() => {
 			id: `${sliceBaseId}-${index}`,
 		};
 
-		cumulativePercentage += (entry.value / total.value) * 100;
+		cumulativePercentage += toPercentage(entry.value, total.value);
 
 		return slice;
 	});

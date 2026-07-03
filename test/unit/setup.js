@@ -1,9 +1,7 @@
-import { afterEach } from "vite-plus/test";
-import { cleanupMountedWrappers } from "@lewishowles/testing/vue";
-import { mockLocalStorage } from "@lewishowles/testing/vitest";
+import { setupVueMounting } from "@lewishowles/testing/vue";
+import { mockLocalStorage, setupConsole } from "@lewishowles/testing/vitest";
 
 mockLocalStorage();
+setupVueMounting();
 
-afterEach(() => {
-	cleanupMountedWrappers();
-});
+export const consoleSpies = setupConsole(["error", "warn"]);

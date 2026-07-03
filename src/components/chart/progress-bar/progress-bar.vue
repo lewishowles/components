@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import { clamp } from "@lewishowles/helpers/number";
+import { clamp, toPercentage } from "@lewishowles/helpers/number";
 import { computed, useId } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
 import { cn } from "@/utilities/cn.js";
@@ -186,7 +186,7 @@ const percentageValue = computed(() => {
 		return 0;
 	}
 
-	return Math.round(((internalValue.value - props.min) / (props.max - props.min)) * 100);
+	return Math.round(toPercentage(internalValue.value - props.min, props.max - props.min));
 });
 
 // The ARIA role, based on the variant.

@@ -78,11 +78,11 @@
 
 <script setup>
 import { computed, ref, useTemplateRef, watch } from "vue";
+import { getDateParts, toDateFromParts } from "@lewishowles/helpers/date";
 import { getPathValue, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber, isNumeric } from "@lewishowles/helpers/number";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
-import { Temporal } from "temporal-polyfill";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
@@ -205,15 +205,13 @@ function toString() {
 		return "";
 	}
 
-	try {
-		const plainDate = Temporal.PlainDate.from(date.value);
+	const plainDate = toDateFromParts(date.value);
 
-		return plainDate.toString();
-	} catch (error) {
-		console.error("form-date[toString]", error);
-
+	if (plainDate === null) {
 		return "";
 	}
+
+	return plainDate.toString();
 }
 
 /**
@@ -228,13 +226,19 @@ function setDateFromIsoString(dateString) {
 		return;
 	}
 
-	try {
-		const { day, month, year } = Temporal.PlainDate.from(dateString);
+	const parts = getDateParts(dateString);
 
-		date.value = { day: day.toString(), month: month.toString(), year: year.toString() };
-	} catch (error) {
-		console.error("form-date[setDateFromString]", error);
+	if (parts === null) {
+		console.error("form-date[setDateFromString]", `Unable to parse date: ${dateString}`);
+
+		return;
 	}
+
+	date.value = {
+		day: parts.day.toString(),
+		month: parts.month.toString(),
+		year: parts.year.toString(),
+	};
 }
 
 /**

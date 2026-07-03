@@ -2,6 +2,7 @@ import { divider, style, table } from "@lewishowles/cli-style";
 import { PACKAGE_NAME } from "../utils/constants.js";
 import { cancel, intro, isCancel, select } from "@clack/prompts";
 import { groupBy } from "@lewishowles/helpers/array";
+import { capitalise } from "@lewishowles/helpers/string";
 import { highlight } from "cli-highlight";
 import { patterns, patternsByName } from "./patterns.js";
 import { printUnknownItemError } from "../utils/unknown-item-error.js";
@@ -234,16 +235,6 @@ function getPatternItems() {
 			summary: pattern.summary,
 		}))
 		.sort((a, b) => a.name.localeCompare(b.name));
-}
-
-/**
- * Capitalises the first character of a string.
- *
- * @param   {string}  string
- * @returns {string}
- */
-function capitalise(string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 export const _test = { getPatternItems };

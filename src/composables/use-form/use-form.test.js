@@ -1,5 +1,6 @@
 import { nextTick, ref } from "vue";
 import { describe, expect, test, vi } from "vite-plus/test";
+import { consoleSpies } from "#test/unit/setup.js";
 import { normaliseForSubmit, useForm } from "./use-form.js";
 
 // Build a useForm instance with sensible defaults for props and DOM refs.
@@ -163,18 +164,15 @@ describe("useForm", () => {
 		});
 
 		test("logs an error for duplicate field names", async () => {
-			const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 			const { registerField } = createForm();
 
 			await registerField({ name: "email", id: "email-id" });
 			await registerField({ name: "email", id: "email-id-2" });
 
-			expect(consoleSpy).toHaveBeenCalledWith(
+			expect(consoleSpies.error).toHaveBeenCalledWith(
 				"<form-wrapper>",
 				expect.stringContaining("Duplicate field name <email>"),
 			);
-
-			consoleSpy.mockRestore();
 		});
 
 		test("initialises formData to an object when it is not one", async () => {
