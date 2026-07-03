@@ -6,6 +6,25 @@
 
 - `form-field`'s `validation` prop has been removed. All validation now goes through `form-wrapper`'s `rules` prop, keyed by field name.
 
+```html
+<!-- Before: validation declared per field -->
+<form-field name="email" :validation="rules.email" />
+
+<!-- After: all rules on form-wrapper, keyed by field name -->
+<form-wrapper v-bind="{ rules }">
+	<form-field name="email">Email</form-field>
+</form-wrapper>
+```
+
+```js
+const rules = {
+	email: [
+		{ rule: "required", message: "Enter your email" },
+		{ rule: "email", message: "Enter a valid email address" },
+	],
+};
+```
+
 ### `useForm`
 
 A new composable for building custom form chrome, or for reducing `form-wrapper` itself to a thin consumer of the same engine. Accepts `initialData` (a plain object, or a ref/getter for an async source such as a Pinia Colada query, seeded once it first resolves) and an optional `mapper` to shape that source into form data, either a mapping function or a declarative `{ fields, fieldTypes }` object.
@@ -34,6 +53,10 @@ Required-field indicators now also respond to `required_if` rules evaluated agai
 
 Gained the same unsaved-changes guard as `useForm` (see above), along with a matching `unsavedChangesGuard` prop, and now exposes `isDirty` for consumers using the plain `v-model` pattern rather than `v-bind="form"`.
 
+Added `onSuccess`, `onError`, and `onSettled` props for submit-lifecycle side effects. `onSuccess(result, formData)` fires once `onSubmit` resolves, `onError(error, formData)` fires on rejection, and `onSettled(result, error, formData)` fires after every attempt. Use these for follow-on actions such as flash messages, closing a modal, or navigating away.
+
+The `status` prop now defaults to `useForm`'s own submit-lifecycle status, so failed submits show an inline error automatically with no setup. Pass a value to override with app-driven state such as a permission error or session expiry, which takes precedence until cleared.
+
 ### `modal-dialog-title`
 
 Now has an optional `subtitle` slot to display information below its title.
@@ -43,6 +66,18 @@ Now has an optional `subtitle` slot to display information below its title.
 A new `titleClasses` prop allows custom classes to be applied to fieldset titles.
 
 A new `layoutClasses` prop allows classes to be applied to the inner `form-layout`.
+
+### `form-checkbox`
+
+The `showOptionalIndicator` prop now defaults to `false`. Unchecked is always a valid state for a checkbox, so the optional indicator was misleading by default. Set `showOptionalIndicator` to `true` to restore the previous behaviour.
+
+### `link-tag`
+
+Fixed icon alignment within link tags.
+
+### `button`
+
+Button content no longer wraps, keeping labels on a single line.
 
 ## 2.4.2 - 2026-06-29
 
