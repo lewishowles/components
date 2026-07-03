@@ -1,10 +1,10 @@
 import { callComponentMethod } from "@lewishowles/helpers/vue";
-import { computed, nextTick, reactive, ref, toRef, toValue, unref, watch } from "vue";
-import { isFunction } from "@lewishowles/helpers/general";
+import { computed, nextTick, reactive, ref, toRaw, toRef, toValue, unref, watch } from "vue";
+import { isEqual, isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { useFormData } from "@/composables/use-form-data/use-form-data.js";
+import { mapFormData } from "@/composables/use-form-data/use-form-data.js";
 import { validateForm } from "@lewishowles/helpers/form";
 
 /**
@@ -17,6 +17,12 @@ import { validateForm } from "@lewishowles/helpers/form";
  *     Shapes initialData into form data, either a mapping function, or a
  *     `{ fields, fieldTypes }` options object for declarative field
  *     selection and type coercion.
+ * @param  {string|number|ref|function|null}  [recordId]
+ *     Identifies the record initialData represents. Omit for the default
+ *     populate-once-forever behaviour. Provide to reseed formData from the
+ *     current initialData/mapper output whenever recordId changes to a new
+ *     truthy value and the form isn't dirty; if the form is dirty, the change
+ *     is ignored until the caller resolves it (e.g. via useUnsavedChanges).
  * @param  {object|ref|function}  [fieldTypes]
  *     Type coercion for form values on submit, keyed by field name. Each
  *     value is one of "nullable-number" or "nullable-string". For the
@@ -54,6 +60,7 @@ import { validateForm } from "@lewishowles/helpers/form";
 export function useForm({
 	initialData,
 	mapper,
+	recordId,
 	fieldTypes,
 	fieldErrors,
 	rules,
@@ -66,8 +73,15 @@ export function useForm({
 	generalErrorsElement,
 	submitButtonRef,
 }) {
+	// The resolved initialData source, watched to (re)seed formData.
+	const source = toRef(initialData);
 	// Our form data.
-	const formData = resolveInitialData(initialData, mapper);
+	const formData = ref({});
+	// Whether formData has been seeded at least once.
+	const seeded = ref(false);
+	// A snapshot of formData taken immediately after the last (re)seed,
+	// compared against for isDirty.
+	const baseline = ref({});
 	// A reference to each of our form fields once registered.
 	const formFields = reactive({});
 	// Whether we have any form fields registered to the form.
@@ -164,6 +178,9 @@ export function useForm({
 		return names;
 	});
 
+	// Whether formData has changed since the last (re)seed.
+	const isDirty = computed(() => !isEqual(toRaw(formData.value), baseline.value));
+
 	// A bindable object for `v-bind="form"` on form-wrapper, packing the
 	// v-model binding, rules, and submit handler into a single prop.
 	const form = computed(() => ({
@@ -175,18 +192,56 @@ export function useForm({
 		onSubmit,
 	}));
 
-	/**
-	 * @param  {object|ref}  initialData
-	 *     The seed for formData. A plain object, or a ref/getter to watch.
-	 * @param  {function|object}  [mapper]
-	 *     Shapes the resolved value into form data, either a mapping function,
-	 *     or a `{ fields, fieldTypes }` options object for declarative field
-	 *     selection and type coercion.
-	 */
-	function resolveInitialData(initialData, mapper) {
-		const source = toRef(initialData);
+	// Whether a recordId change is waiting for initialData/source to resolve to
+	// that record's data before it can reseed. Set by the recordId watcher
+	// below, cleared once the source watcher acts on it — this decouples "the
+	// record changed" from "the new record's data has arrived," since an async
+	// source (e.g. a query keyed on recordId) may not update in the same tick.
+	const awaitingReseed = ref(false);
 
-		return mapper ? useFormData(source, mapper) : useFormData(source);
+	// Seed our form data once, when it becomes available; reseed instead if a
+	// recordId change is waiting on this source update.
+	watch(
+		source,
+		(value) => {
+			if (!value || (seeded.value && !awaitingReseed.value)) {
+				return;
+			}
+
+			seed(value);
+			awaitingReseed.value = false;
+		},
+		{ immediate: true },
+	);
+
+	// If there's a unique record ID which identifies the entity this form
+	// represents, and it changes, and the user hasn't changed anything in the
+	// form, flag that the next source update should reseed — never reseed here
+	// directly, since the source may still hold the previous record's data.
+	if (recordId !== undefined) {
+		watch(toRef(recordId), (value, oldValue) => {
+			if (!value || value === oldValue || isDirty.value) {
+				return;
+			}
+
+			awaitingReseed.value = true;
+		});
+	}
+
+	/**
+	 * (Re)seed formData from a resolved initialData value, snapshotting the
+	 * result as the new isDirty baseline.
+	 *
+	 * @param  {unknown}  value
+	 *     The resolved initialData value to seed from.
+	 */
+	function seed(value) {
+		seeded.value = true;
+
+		const seededData = mapFormData(value, mapper);
+
+		formData.value = seededData;
+		baseline.value = structuredClone(toRaw(seededData));
 	}
 
 	/**
@@ -494,6 +549,7 @@ export function useForm({
 		haveErrorSummary,
 		isSubmitting,
 		isReadonly,
+		isDirty,
 		registerField,
 		updateFieldValue,
 		fieldErrorsFor,

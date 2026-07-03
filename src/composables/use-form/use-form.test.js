@@ -19,6 +19,7 @@ function createForm(overrides = {}) {
 	const form = useForm({
 		initialData: overrides.initialData ?? {},
 		mapper: overrides.mapper,
+		recordId: overrides.recordId,
 		...namedParams,
 		errorSummaryElement: ref(null),
 		generalErrorsElement: ref(null),
@@ -83,6 +84,111 @@ describe("useForm", () => {
 			});
 
 			expect(formData.value).toEqual({ age: "30" });
+		});
+	});
+
+	describe("isDirty", () => {
+		test("starts false after seeding", () => {
+			const { isDirty } = createForm({ initialData: { name: "Alice" } });
+
+			expect(isDirty.value).toBe(false);
+		});
+
+		test("becomes true once formData changes from the seeded baseline", () => {
+			const { formData, isDirty } = createForm({ initialData: { name: "Alice" } });
+
+			formData.value = { name: "Bob" };
+
+			expect(isDirty.value).toBe(true);
+		});
+
+		test("returns to false when formData matches the baseline again", () => {
+			const { formData, isDirty } = createForm({ initialData: { name: "Alice" } });
+
+			formData.value = { name: "Bob" };
+			formData.value = { name: "Alice" };
+
+			expect(isDirty.value).toBe(false);
+		});
+	});
+
+	describe("recordId", () => {
+		test("does not reseed when recordId is not provided", async () => {
+			const source = ref({ name: "Alice" });
+			const { formData } = createForm({ initialData: source });
+
+			await vi.waitFor(() => expect(formData.value).toEqual({ name: "Alice" }));
+
+			formData.value = { name: "Bob" };
+			source.value = { name: "Carol" };
+			await nextTick();
+
+			expect(formData.value).toEqual({ name: "Bob" });
+		});
+
+		test("reseeds formData once recordId changes and the new record's source data arrives in the same tick", async () => {
+			const source = ref({ name: "Alice" });
+			const recordId = ref(1);
+			const { formData, isDirty } = createForm({ initialData: source, recordId });
+
+			await vi.waitFor(() => expect(formData.value).toEqual({ name: "Alice" }));
+
+			recordId.value = 2;
+			source.value = { name: "Bob" };
+			await nextTick();
+
+			expect(formData.value).toEqual({ name: "Bob" });
+			expect(isDirty.value).toBe(false);
+		});
+
+		test("reseeds once recordId changes and the new record's source data arrives later", async () => {
+			const source = ref({ name: "Alice" });
+			const recordId = ref(1);
+			const { formData, isDirty } = createForm({ initialData: source, recordId });
+
+			await vi.waitFor(() => expect(formData.value).toEqual({ name: "Alice" }));
+
+			// recordId changes first; the async source hasn't caught up yet.
+			recordId.value = 2;
+			await nextTick();
+
+			expect(formData.value).toEqual({ name: "Alice" });
+
+			// The new record's data arrives afterwards, in a later tick.
+			source.value = { name: "Bob" };
+			await nextTick();
+
+			expect(formData.value).toEqual({ name: "Bob" });
+			expect(isDirty.value).toBe(false);
+		});
+
+		test("does not reseed when the form is dirty", async () => {
+			const source = ref({ name: "Alice" });
+			const recordId = ref(1);
+			const { formData } = createForm({ initialData: source, recordId });
+
+			await vi.waitFor(() => expect(formData.value).toEqual({ name: "Alice" }));
+
+			formData.value = { name: "Edited" };
+			source.value = { name: "Bob" };
+			recordId.value = 2;
+			await nextTick();
+
+			expect(formData.value).toEqual({ name: "Edited" });
+		});
+
+		test("does not reseed when recordId changes to a falsy value", async () => {
+			const source = ref({ name: "Alice" });
+			const recordId = ref(1);
+			const { formData } = createForm({ initialData: source, recordId });
+
+			await vi.waitFor(() => expect(formData.value).toEqual({ name: "Alice" }));
+
+			source.value = { name: "Bob" };
+			recordId.value = null;
+			await nextTick();
+
+			expect(formData.value).toEqual({ name: "Alice" });
 		});
 	});
 

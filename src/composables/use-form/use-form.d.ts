@@ -24,6 +24,7 @@ type FormDataMapper<T> =
 interface UseFormOptions<T = unknown> {
 	initialData?: MaybeRefOrGetter<Record<string, unknown> | T | null | undefined>;
 	mapper?: FormDataMapper<T>;
+	recordId?: MaybeRefOrGetter<string | number | null | undefined>;
 	fieldTypes?: MaybeRefOrGetter<Record<string, FieldType> | undefined>;
 	fieldErrors?: MaybeRefOrGetter<Record<string, string | string[]> | undefined>;
 	rules?: MaybeRefOrGetter<Record<string, unknown[]> | undefined>;
@@ -60,6 +61,7 @@ interface UseFormReturn {
 	haveErrorSummary: ComputedRef<boolean>;
 	isSubmitting: Ref<boolean>;
 	isReadonly: ComputedRef<boolean>;
+	isDirty: ComputedRef<boolean>;
 	registerField: (field: FormField) => Promise<void>;
 	updateFieldValue: (name: string, value: unknown) => Promise<void>;
 	fieldErrorsFor: (fieldName: string) => string[];

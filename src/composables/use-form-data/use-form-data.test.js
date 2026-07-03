@@ -1,6 +1,6 @@
 import { nextTick, ref } from "vue";
 import { describe, expect, test } from "vite-plus/test";
-import { normaliseForInitialisation, useFormData } from "./use-form-data.js";
+import { mapFormData, normaliseForInitialisation, useFormData } from "./use-form-data.js";
 
 // Sample source data representing a resolved API response.
 const sampleSource = { name: "Alice", email: "alice@example.com" };
@@ -9,6 +9,26 @@ const sampleSource = { name: "Alice", email: "alice@example.com" };
 const sampleMapper = (data) => ({
 	email: data.email,
 	name: data.name,
+});
+
+describe("mapFormData", () => {
+	test("should use a function mapper to shape the value", () => {
+		expect(mapFormData(sampleSource, sampleMapper)).toEqual({
+			email: "alice@example.com",
+			name: "Alice",
+		});
+	});
+
+	test("should use an options object to pick fields", () => {
+		expect(mapFormData(sampleSource, { fields: ["name"] })).toEqual({ name: "Alice" });
+	});
+
+	test("should deep clone the value when no mapper is provided", () => {
+		const mapped = mapFormData(sampleSource);
+
+		expect(mapped).toEqual(sampleSource);
+		expect(mapped).not.toBe(sampleSource);
+	});
 });
 
 describe("useFormData", () => {

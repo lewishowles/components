@@ -57,6 +57,30 @@ function resolveFields(value, fields) {
 }
 
 /**
+ * Shape a resolved source value into a form data object, following the same
+ * function-or-options-object convention as `useFormData`'s `mapper` param.
+ *
+ * @param  {unknown}  value
+ *     The resolved source value to map.
+ * @param  {function|object}  mapper
+ *     Either a function that maps the resolved source value to the initial
+ *     form data object, or an options object `{ fields, fieldTypes }` for
+ *     declarative field selection and type normalisation. Defaults to a deep
+ *     clone of the source value.
+ * @returns {object}
+ *     The mapped form data object.
+ */
+export function mapFormData(value, mapper = (data) => structuredClone(toRaw(data))) {
+	if (typeof mapper === "function") {
+		return mapper(value);
+	}
+
+	const { fields, fieldTypes = {} } = mapper;
+
+	return normaliseForInitialisation(resolveFields(value, fields), fieldTypes);
+}
+
+/**
  * Initialise form data from an async data source. Fires once when the source
  * first becomes available.
  *
@@ -86,18 +110,7 @@ export function useFormData(source, mapper = (data) => structuredClone(toRaw(dat
 			}
 
 			populated.value = true;
-
-			// Function mapper: delegate to the caller.
-			if (typeof mapper === "function") {
-				formData.value = mapper(value);
-
-				return;
-			}
-
-			// Object convention: pick/rename fields, then normalise for init.
-			const { fields, fieldTypes = {} } = mapper;
-
-			formData.value = normaliseForInitialisation(resolveFields(value, fields), fieldTypes);
+			formData.value = mapFormData(value, mapper);
 		},
 		{ immediate: true },
 	);
