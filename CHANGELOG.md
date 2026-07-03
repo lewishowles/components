@@ -2,6 +2,38 @@
 
 ## Unreleased
 
+### Breaking changes
+
+- `form-field`'s `validation` prop has been removed. All validation now goes through `form-wrapper`'s `rules` prop, keyed by field name.
+
+### `useForm`
+
+A new composable for building custom form chrome, or for reducing `form-wrapper` itself to a thin consumer of the same engine. Accepts `initialData` (a plain object, or a ref/getter for an async source such as a Pinia Colada query, seeded once it first resolves) and an optional `mapper` to shape that source into form data, either a mapping function or a declarative `{ fields, fieldTypes }` object.
+
+Returns a `form` object designed to be spread directly onto `form-wrapper`, bundling the `v-model` binding, `rules`, and submit handler into a single prop:
+
+```html
+<form-wrapper v-bind="form" />
+```
+
+Also returns `isDirty`, reflecting whether the current form values differ from the initial values, and guards against losing unsaved changes automatically by warning on tab close or refresh while the form is dirty. Set `unsavedChangesGuard: false` to turn this off for trivial forms, such as a live search filter. Pair it with the new `installUnsavedChangesGuard(router)` function, called once wherever your app builds its router, to also block in-app navigation while any form on the page is dirty.
+
+An optional `recordId` param reseeds the form from `initialData` whenever it changes to a new value and the form isn't dirty, which is useful when a single form instance is reused across different records, such as a route param controlling which record is loaded.
+
+### `useFormData`
+
+A new composable that initialises form data from an async source, such as a Pinia Colada query's `data` ref, populating the form once that source first resolves. Accepts a mapping function, or a declarative `{ fields, fieldTypes }` object for picking or renaming fields and coercing their types on init.
+
+### `form-wrapper`
+
+Added a `compact` prop that reduces vertical spacing in the form, cascading automatically to `form-layout` and `form-fieldset`.
+
+Added a `fieldTypes` prop, coercing submitted field values (`"nullable-number"` or `"nullable-string"`) before they reach your submit handler.
+
+Required-field indicators now also respond to `required_if` rules evaluated against the live form data, rather than only a static `required` rule.
+
+Gained the same unsaved-changes guard as `useForm` (see above), along with a matching `unsavedChangesGuard` prop, and now exposes `isDirty` for consumers using the plain `v-model` pattern rather than `v-bind="form"`.
+
 ### `modal-dialog-title`
 
 Now has an optional `subtitle` slot to display information below its title.

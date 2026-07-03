@@ -324,6 +324,22 @@ describe("form-wrapper", () => {
 			expect(wrapper.vm.readonly).toBe(true);
 		});
 
+		test("exposes unsavedChangesGuard", () => {
+			const wrapper = mount({ props: { unsavedChangesGuard: false } });
+
+			expect(wrapper.vm.unsavedChangesGuard).toBe(false);
+		});
+
+		test("exposes isDirty, reflecting whether formData has changed", async () => {
+			const wrapper = mount({ props: { modelValue: { name: "Alice" } } });
+
+			expect(wrapper.vm.isDirty).toBe(false);
+
+			await wrapper.vm.updateFieldValue("name", "Bob");
+
+			expect(wrapper.vm.isDirty).toBe(true);
+		});
+
 		test("exposes compact", () => {
 			const wrapper = mount({ props: { compact: true } });
 
@@ -413,6 +429,21 @@ describe("form-wrapper", () => {
 			await flushPromises();
 
 			expect(formData.value).toEqual({ email: "person@example.com" });
+		});
+
+		test("propagates the outer useForm's unsavedChangesGuard to the wrapper's own instance", () => {
+			vi.spyOn(window, "addEventListener");
+
+			const { form } = useForm({ initialData: { email: "" }, unsavedChangesGuard: false });
+
+			mount({ props: { ...form.value } });
+
+			expect(window.addEventListener).not.toHaveBeenCalledWith(
+				"beforeunload",
+				expect.any(Function),
+			);
+
+			vi.restoreAllMocks();
 		});
 	});
 });

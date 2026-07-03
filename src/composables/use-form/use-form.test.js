@@ -1,6 +1,8 @@
-import { nextTick, ref } from "vue";
-import { describe, expect, test, vi } from "vite-plus/test";
+import { defineComponent, h, nextTick, ref } from "vue";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 import { consoleSpies } from "#test/unit/setup.js";
+import { hasDirtyForms } from "./dirty-forms-registry.js";
+import { mount } from "@vue/test-utils";
 import { normaliseForSubmit, useForm } from "./use-form.js";
 
 // Build a useForm instance with sensible defaults for props and DOM refs.
@@ -13,6 +15,11 @@ function createForm(overrides = {}) {
 		pageTitleErrorPrefix: "Error:",
 		readonly: false,
 		fieldTypes: {},
+		// Off by default in tests: useForm() is called directly here, outside a
+		// mounted component, so onUnmounted never fires to clean up the
+		// beforeunload listener and dirty-form registration. Tests for this
+		// behaviour turn it on explicitly.
+		unsavedChangesGuard: false,
 		...overrides.props,
 	};
 
@@ -27,6 +34,44 @@ function createForm(overrides = {}) {
 	});
 
 	return { ...form };
+}
+
+// Wrappers created via mountForm, unmounted after each unsavedChangesGuard
+// test so a form left dirty doesn't leak into the shared dirty-form registry
+// for later tests.
+const mountedWrappers = [];
+
+// Mount useForm inside a real component instance, needed for tests where
+// onUnmounted must actually fire (unsavedChangesGuard cleanup).
+function mountForm({ initialData = {}, props = {} } = {}) {
+	let instance;
+
+	const component = defineComponent({
+		setup() {
+			instance = useForm({
+				initialData,
+				errorSummaryElement: ref(null),
+				generalErrorsElement: ref(null),
+				submitButtonRef: ref(null),
+				...props,
+			});
+
+			return () => h("div");
+		},
+	});
+
+	const wrapper = mount(component);
+
+	mountedWrappers.push(wrapper);
+
+	return { instance, wrapper };
+}
+
+// Get the beforeunload handler registered via the last addEventListener call.
+function getBeforeUnloadHandler() {
+	const call = window.addEventListener.mock.calls.find(([type]) => type === "beforeunload");
+
+	return call[1];
 }
 
 describe("useForm", () => {
@@ -110,6 +155,17 @@ describe("useForm", () => {
 
 			expect(isDirty.value).toBe(false);
 		});
+
+		test("becomes true when a single field is mutated in place, e.g. via updateFieldValue", async () => {
+			const { formData, isDirty, updateFieldValue } = createForm({
+				initialData: { name: "Alice" },
+			});
+
+			await updateFieldValue("name", "Bob");
+
+			expect(formData.value).toEqual({ name: "Bob" });
+			expect(isDirty.value).toBe(true);
+		});
 	});
 
 	describe("recordId", () => {
@@ -189,6 +245,101 @@ describe("useForm", () => {
 			await nextTick();
 
 			expect(formData.value).toEqual({ name: "Alice" });
+		});
+	});
+
+	describe("unsavedChangesGuard", () => {
+		beforeEach(() => {
+			vi.spyOn(window, "addEventListener");
+			vi.spyOn(window, "removeEventListener");
+		});
+
+		afterEach(() => {
+			vi.restoreAllMocks();
+
+			for (const wrapper of mountedWrappers.splice(0)) {
+				wrapper.unmount();
+			}
+		});
+
+		test("registers a beforeunload listener when enabled", () => {
+			mountForm({ props: { unsavedChangesGuard: true } });
+
+			expect(window.addEventListener).toHaveBeenCalledWith("beforeunload", expect.any(Function));
+		});
+
+		test("does not register a beforeunload listener when disabled", () => {
+			mountForm({ props: { unsavedChangesGuard: false } });
+
+			expect(window.addEventListener).not.toHaveBeenCalledWith(
+				"beforeunload",
+				expect.any(Function),
+			);
+		});
+
+		test("removes the beforeunload listener on unmount", () => {
+			const { wrapper } = mountForm({ props: { unsavedChangesGuard: true } });
+
+			wrapper.unmount();
+
+			expect(window.removeEventListener).toHaveBeenCalledWith("beforeunload", expect.any(Function));
+		});
+
+		test("prevents default and sets returnValue when dirty", () => {
+			const { instance } = mountForm({
+				initialData: { name: "Alice" },
+				props: { unsavedChangesGuard: true },
+			});
+
+			instance.formData.value = { name: "Bob" };
+
+			const handler = getBeforeUnloadHandler();
+			const event = { preventDefault: vi.fn(), returnValue: undefined };
+
+			handler(event);
+
+			expect(event.preventDefault).toHaveBeenCalled();
+		});
+
+		test("does nothing when not dirty", () => {
+			mountForm({ initialData: { name: "Alice" }, props: { unsavedChangesGuard: true } });
+
+			const handler = getBeforeUnloadHandler();
+			const event = { preventDefault: vi.fn(), returnValue: undefined };
+
+			handler(event);
+
+			expect(event.preventDefault).not.toHaveBeenCalled();
+		});
+
+		test("contributes to the shared dirty-form count while dirty, and stops on unmount", async () => {
+			const { instance, wrapper } = mountForm({
+				initialData: { name: "Alice" },
+				props: { unsavedChangesGuard: true },
+			});
+
+			expect(hasDirtyForms()).toBe(false);
+
+			instance.formData.value = { name: "Bob" };
+			await nextTick();
+
+			expect(hasDirtyForms()).toBe(true);
+
+			wrapper.unmount();
+
+			expect(hasDirtyForms()).toBe(false);
+		});
+
+		test("does not contribute to the shared dirty-form count when disabled", async () => {
+			const { instance } = mountForm({
+				initialData: { name: "Alice" },
+				props: { unsavedChangesGuard: false },
+			});
+
+			instance.formData.value = { name: "Bob" };
+			await nextTick();
+
+			expect(hasDirtyForms()).toBe(false);
 		});
 	});
 

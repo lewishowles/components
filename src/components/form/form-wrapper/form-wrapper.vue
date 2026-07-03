@@ -196,6 +196,17 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether this form should guard against losing unsaved changes: warn on
+	 * tab close/refresh while dirty, and contribute to the shared dirty-form
+	 * count that installUnsavedChangesGuard's router guard checks. Set to
+	 * false for trivial forms where the guard would be unwanted noise.
+	 */
+	unsavedChangesGuard: {
+		type: Boolean,
+		default: true,
+	},
+
+	/**
 	 * When true, reduces vertical spacing in the form layout and fieldset
 	 * headings. Cascades automatically to form-layout and form-fieldset via
 	 * provide — no prop needed on child components.
@@ -259,6 +270,7 @@ const {
 	haveGeneralSubmitErrors,
 	isSubmitting,
 	isReadonly,
+	isDirty,
 	registerField,
 	updateFieldValue,
 	fieldErrorsFor,
@@ -288,5 +300,5 @@ provide("form-wrapper", {
 	isCompact,
 });
 
-defineExpose({ isSubmitting, resetSubmitButton });
+defineExpose({ isSubmitting, isDirty, resetSubmitButton });
 </script>

@@ -57,6 +57,13 @@ export const formWrapperMetadata = {
 				"When true, all child form-field components become readonly. Use for review-mode or read-only forms.",
 		},
 		{
+			name: "unsavedChangesGuard",
+			type: "boolean",
+			default: true,
+			summary:
+				"Whether this form guards against losing unsaved changes: warns on tab close/refresh while dirty, and contributes to the shared dirty-form count that installUnsavedChangesGuard's router guard checks. Set to false for trivial forms where the guard would be unwanted noise.",
+		},
+		{
 			name: "compact",
 			type: "boolean",
 			default: false,

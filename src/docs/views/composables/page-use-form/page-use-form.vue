@@ -66,6 +66,50 @@
 				</p>
 			</component-parameter>
 
+			<component-parameter id="parameter-record-id">
+				<template #name>recordId</template>
+				<template #type>string | number</template>
+
+				<p>
+					Identifies the record that
+					<code>initialData</code>
+					represents. Most forms can leave this out and rely on the default behaviour: populate
+					once, then never reseed. Provide
+					<code>recordId</code>
+					when a single form instance is reused for different records, such as an edit page whose
+					route changes from one item to another without remounting the component.
+				</p>
+
+				<p>
+					When
+					<code>recordId</code>
+					changes to a new value, the form reseeds itself from
+					<code>initialData</code>
+					once that source next resolves, as long as the form isn't dirty (see
+					<code>isDirty</code>
+					below). If the user has unsaved changes at that point, the reseed is skipped until they
+					save or discard them, and the
+					<code>unsavedChangesGuard</code>
+					below helps prevent them from losing that work by accident.
+				</p>
+			</component-parameter>
+
+			<component-parameter id="parameter-unsaved-changes-guard">
+				<template #name>unsavedChangesGuard</template>
+				<template #type>boolean</template>
+
+				<p>
+					Whether this form should guard against losing unsaved changes: warn on tab close/refresh
+					while dirty, and contribute to a shared dirty-form count that
+					<code>installUnsavedChangesGuard</code>
+					's router guard checks. Defaults to
+					<code>true</code>
+					. Set to
+					<code>false</code>
+					for trivial forms, such as a live search filter, where the guard would be unwanted noise.
+				</p>
+			</component-parameter>
+
 			<component-parameter id="parameter-rules">
 				<template #name>rules</template>
 				<template #type>object</template>
@@ -187,8 +231,59 @@
 			</component-return>
 		</component-returns>
 
+		<component-methods>
+			<component-method id="method-install-unsaved-changes-guard">
+				<template #name>
+					<code>installUnsavedChangesGuard(router, options)</code>
+				</template>
+
+				<p>
+					Registers a single, app-wide navigation guard that blocks routing away while any
+					<code>useForm</code>
+					instance is dirty. Call once, wherever the app builds its router: every
+					<code>useForm</code>
+					instance with
+					<code>unsavedChangesGuard</code>
+					enabled (the default) contributes to the shared dirty-form count this checks. Takes the
+					router instance directly rather than importing anything from
+					<code>vue-router</code>
+					, so this library carries no dependency on it.
+				</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Parameter</th>
+							<th>Type</th>
+							<th>Purpose</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>router</code></td>
+							<td><code>object</code></td>
+							<td>
+								A Vue Router instance, or anything exposing a compatible
+								<code>beforeEach</code>
+								method.
+							</td>
+						</tr>
+						<tr>
+							<td><code>options.message</code></td>
+							<td><code>string</code></td>
+							<td>The message shown in the confirm dialog before blocking navigation.</td>
+						</tr>
+					</tbody>
+				</table>
+			</component-method>
+		</component-methods>
+
 		<component-tab v-bind="{ id: 'tab-examples', icon: 'icon-code' }">
 			<template #title>Examples</template>
+
+			<h3>Unsaved changes</h3>
+
+			<code-block :code="unsavedChangesExample" />
 
 			<h3>Async-seeded form</h3>
 
@@ -232,6 +327,13 @@
 </template>
 
 <script setup>
+const unsavedChangesExample = `// router.js, wherever the app builds its router
+import { installUnsavedChangesGuard } from "@lewishowles/components/composables";
+
+const router = createRouter({ ... });
+
+installUnsavedChangesGuard(router);`;
+
 const asyncExample = `<template>
 	<form-wrapper v-if="isReady" v-bind="form">
 		<form-field name="name">Full name</form-field>

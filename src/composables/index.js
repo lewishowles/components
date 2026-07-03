@@ -2,6 +2,7 @@ export { useChartConfig } from "./use-chart-config/use-chart-config.js";
 export { useCombobox } from "./use-combobox/use-combobox.js";
 export { useFlashMessages } from "./use-flash-messages/use-flash-messages.js";
 export { useFloatingPosition } from "./use-floating-position/use-floating-position.js";
+export { installUnsavedChangesGuard } from "./use-form/install-unsaved-changes-guard.js";
 export { useForm } from "./use-form/use-form.js";
 export { useFormData } from "./use-form-data/use-form-data.js";
 export { useModalDialog } from "./use-modal-dialog/use-modal-dialog.js";

@@ -93,6 +93,17 @@ When `true`, all child `form-field` components become readonly. Use for review-m
 <form-wrapper v-bind="{ readonly: true }">…</form-wrapper>
 ```
 
+### `unsavedChangesGuard`
+
+- type: `boolean`
+- default: `true`
+
+Whether this form guards against losing unsaved changes: warns on tab close/refresh while dirty, and contributes to the shared dirty-form count that `installUnsavedChangesGuard`'s router guard checks (see the `useForm` docs). Set to `false` for trivial forms, such as a live search filter, where the guard would be unwanted noise.
+
+```html
+<form-wrapper v-bind="{ unsavedChangesGuard: false }">…</form-wrapper>
+```
+
 ### `compact`
 
 - type: `boolean`

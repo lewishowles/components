@@ -1,10 +1,22 @@
 import { callComponentMethod } from "@lewishowles/helpers/vue";
-import { computed, nextTick, reactive, ref, toRaw, toRef, toValue, unref, watch } from "vue";
+import {
+	computed,
+	nextTick,
+	onUnmounted,
+	reactive,
+	ref,
+	toRaw,
+	toRef,
+	toValue,
+	unref,
+	watch,
+} from "vue";
 import { isEqual, isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { mapFormData } from "@/composables/use-form-data/use-form-data.js";
+import { registerDirtyForm, unregisterDirtyForm } from "./dirty-forms-registry.js";
 import { validateForm } from "@lewishowles/helpers/form";
 
 /**
@@ -22,7 +34,14 @@ import { validateForm } from "@lewishowles/helpers/form";
  *     populate-once-forever behaviour. Provide to reseed formData from the
  *     current initialData/mapper output whenever recordId changes to a new
  *     truthy value and the form isn't dirty; if the form is dirty, the change
- *     is ignored until the caller resolves it (e.g. via useUnsavedChanges).
+ *     is ignored until the caller resolves it, e.g. by waiting for the user
+ *     to save or discard their changes.
+ * @param  {boolean}  [unsavedChangesGuard]
+ *     Whether this form should guard against losing unsaved changes: warn on
+ *     tab close/refresh while dirty, and contribute to the shared dirty-form
+ *     count that installUnsavedChangesGuard's router guard checks. Defaults
+ *     to true. Set to false for trivial forms (e.g. a live search filter)
+ *     where the guard would be unwanted noise.
  * @param  {object|ref|function}  [fieldTypes]
  *     Type coercion for form values on submit, keyed by field name. Each
  *     value is one of "nullable-number" or "nullable-string". For the
@@ -61,6 +80,7 @@ export function useForm({
 	initialData,
 	mapper,
 	recordId,
+	unsavedChangesGuard = true,
 	fieldTypes,
 	fieldErrors,
 	rules,
@@ -178,11 +198,57 @@ export function useForm({
 		return names;
 	});
 
-	// Whether formData has changed since the last (re)seed.
-	const isDirty = computed(() => !isEqual(toRaw(formData.value), baseline.value));
+	// Whether formData has changed since the last (re)seed. Compares the live
+	// reactive formData directly (not toRaw'd) so isEqual's internal property
+	// reads go through the reactive proxy and are tracked as dependencies;
+	// stripping reactivity first would hide nested edits like updateFieldValue,
+	// which mutate a single property rather than reassigning formData.value.
+	const isDirty = computed(() => !isEqual(formData.value, baseline.value));
+
+	if (toValue(unsavedChangesGuard)) {
+		// Warn on tab close/refresh while dirty. Browsers ignore the custom
+		// message and show their own generic text regardless of returnValue's
+		// content.
+		function handleBeforeUnload(event) {
+			if (!isDirty.value) {
+				return;
+			}
+
+			event.preventDefault();
+			event.returnValue = "";
+		}
+
+		window.addEventListener("beforeunload", handleBeforeUnload);
+
+		// Contribute to the shared dirty-form count that
+		// installUnsavedChangesGuard's router guard checks.
+		watch(isDirty, (dirty) => {
+			if (dirty) {
+				registerDirtyForm();
+			} else {
+				unregisterDirtyForm();
+			}
+		});
+
+		onUnmounted(() => {
+			window.removeEventListener("beforeunload", handleBeforeUnload);
+
+			if (isDirty.value) {
+				unregisterDirtyForm();
+			}
+		});
+	}
 
 	// A bindable object for `v-bind="form"` on form-wrapper, packing the
 	// v-model binding, rules, and submit handler into a single prop.
+	// unsavedChangesGuard is included (unlike readonly/fieldTypes) because
+	// form-wrapper spins up its own separate useForm instance in this pattern:
+	// readonly/fieldTypes only ever affect rendering owned by that inner
+	// instance regardless of what the outer instance holds, but
+	// unsavedChangesGuard has a real external side effect (a beforeunload
+	// listener, a shared dirty-form registry write) in both instances, so the
+	// outer instance's setting must reach the inner one or an opt-out here
+	// would silently only half-apply.
 	const form = computed(() => ({
 		modelValue: formData.value,
 		"onUpdate:modelValue": (value) => {
@@ -190,11 +256,12 @@ export function useForm({
 		},
 		rules: toValue(rules),
 		onSubmit,
+		unsavedChangesGuard: toValue(unsavedChangesGuard),
 	}));
 
 	// Whether a recordId change is waiting for initialData/source to resolve to
 	// that record's data before it can reseed. Set by the recordId watcher
-	// below, cleared once the source watcher acts on it — this decouples "the
+	// below, cleared once the source watcher acts on it: this decouples "the
 	// record changed" from "the new record's data has arrived," since an async
 	// source (e.g. a query keyed on recordId) may not update in the same tick.
 	const awaitingReseed = ref(false);
@@ -216,7 +283,7 @@ export function useForm({
 
 	// If there's a unique record ID which identifies the entity this form
 	// represents, and it changes, and the user hasn't changed anything in the
-	// form, flag that the next source update should reseed — never reseed here
+	// form, flag that the next source update should reseed; never reseed here
 	// directly, since the source may still hold the previous record's data.
 	if (recordId !== undefined) {
 		watch(toRef(recordId), (value, oldValue) => {

@@ -25,6 +25,7 @@ interface UseFormOptions<T = unknown> {
 	initialData?: MaybeRefOrGetter<Record<string, unknown> | T | null | undefined>;
 	mapper?: FormDataMapper<T>;
 	recordId?: MaybeRefOrGetter<string | number | null | undefined>;
+	unsavedChangesGuard?: boolean;
 	fieldTypes?: MaybeRefOrGetter<Record<string, FieldType> | undefined>;
 	fieldErrors?: MaybeRefOrGetter<Record<string, string | string[]> | undefined>;
 	rules?: MaybeRefOrGetter<Record<string, unknown[]> | undefined>;
@@ -46,6 +47,7 @@ interface BindableForm {
 	"onUpdate:modelValue": (value: Record<string, unknown>) => void;
 	rules: Record<string, unknown[]> | undefined;
 	onSubmit: ((data: Record<string, unknown>) => unknown) | undefined;
+	unsavedChangesGuard: boolean;
 }
 
 interface UseFormReturn {
@@ -79,3 +81,12 @@ export declare function normaliseForSubmit(
 ): Record<string, unknown>;
 
 export declare function useForm<T = unknown>(options: UseFormOptions<T>): UseFormReturn;
+
+interface RouterLike {
+	beforeEach(guard: () => unknown): void;
+}
+
+export declare function installUnsavedChangesGuard(
+	router: RouterLike,
+	options?: { message?: string },
+): void;
