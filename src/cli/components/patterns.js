@@ -10,16 +10,16 @@ export const patterns = [
 		category: "form",
 		summary: "Name, email address, and message with a submit button.",
 		stability: "illustrative",
-		template: `<form-wrapper v-model="form" @submit="handleSubmit">
-  <form-field name="name" :validation="[{ rule: 'required' }]">
+		template: `<form-wrapper v-model="form" :rules="{ name: [{ rule: 'required' }], email: [{ rule: 'required' }, { rule: 'email' }], message: [{ rule: 'required' }] }" @submit="handleSubmit">
+  <form-field name="name">
     Full name
   </form-field>
 
-  <form-field name="email" type="email" :validation="[{ rule: 'required' }, { rule: 'email' }]">
+  <form-field name="email" type="email">
     Email address
   </form-field>
 
-  <form-field name="message" type="textarea" :validation="[{ rule: 'required' }]">
+  <form-field name="message" type="textarea">
     Message
   </form-field>
 
@@ -32,12 +32,12 @@ export const patterns = [
 		category: "form",
 		summary: "Email address and password with a submit button.",
 		stability: "illustrative",
-		template: `<form-wrapper v-model="form" @submit="handleSubmit">
-  <form-field name="email" type="email" :validation="[{ rule: 'required' }, { rule: 'email' }]">
+		template: `<form-wrapper v-model="form" :rules="{ email: [{ rule: 'required' }, { rule: 'email' }], password: [{ rule: 'required' }] }" @submit="handleSubmit">
+  <form-field name="email" type="email">
     Email address
   </form-field>
 
-  <form-field name="password" type="password" :validation="[{ rule: 'required' }]">
+  <form-field name="password" type="password">
     Password
   </form-field>
 
@@ -50,12 +50,12 @@ export const patterns = [
 		category: "form",
 		summary: "A named settings section with a save button and cancel link.",
 		stability: "illustrative",
-		template: `<form-wrapper v-model="form" @submit="handleSubmit">
-  <form-field name="displayName" :validation="[{ rule: 'required' }]">
+		template: `<form-wrapper v-model="form" :rules="{ displayName: [{ rule: 'required' }], email: [{ rule: 'required' }, { rule: 'email' }] }" @submit="handleSubmit">
+  <form-field name="displayName">
     Display name
   </form-field>
 
-  <form-field name="email" type="email" :validation="[{ rule: 'required' }, { rule: 'email' }]">
+  <form-field name="email" type="email">
     Email address
   </form-field>
 
