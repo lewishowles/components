@@ -1,5 +1,5 @@
 {
-	"plugins": ["oxc", "typescript", "unicorn", "react", "vue"],
+	"plugins": ["oxc", "typescript", "unicorn", "vue"],
 	"jsPlugins": [
 		"@stylistic/eslint-plugin",
 		{
@@ -35,7 +35,6 @@
 		"no-unexpected-multiline": "error",
 		"no-useless-assignment": "error",
 		"preserve-caught-error": "error",
-
 		"vue/no-arrow-functions-in-watch": "error",
 		"vue/no-deprecated-data-object-declaration": "error",
 		"vue/no-deprecated-delete-set": "error",
@@ -51,21 +50,55 @@
 		"vue/valid-define-props": "error",
 		"vue/no-multiple-slot-args": "warn",
 		"vue/no-required-prop-with-default": "warn",
-
 		"@stylistic/no-confusing-arrow": "error",
 		"@stylistic/padding-line-between-statements": [
 			"error",
-			{ "blankLine": "always", "prev": "const", "next": "let" },
-			{ "blankLine": "always", "prev": "let", "next": "const" },
-			{ "blankLine": "always", "prev": "*", "next": "break" },
-			{ "blankLine": "always", "prev": ["const", "let"], "next": "*" },
-			{ "blankLine": "always", "prev": "*", "next": "return" },
-			{ "blankLine": "any", "prev": "const", "next": "const" },
-			{ "blankLine": "any", "prev": "let", "next": "let" },
-			{ "blankLine": "always", "prev": "multiline-const", "next": "*" },
-			{ "blankLine": "always", "prev": "*", "next": "multiline-const" }
+			{
+				"blankLine": "always",
+				"prev": "const",
+				"next": "let"
+			},
+			{
+				"blankLine": "always",
+				"prev": "let",
+				"next": "const"
+			},
+			{
+				"blankLine": "always",
+				"prev": "*",
+				"next": "break"
+			},
+			{
+				"blankLine": "always",
+				"prev": ["const", "let"],
+				"next": "*"
+			},
+			{
+				"blankLine": "always",
+				"prev": "*",
+				"next": "return"
+			},
+			{
+				"blankLine": "any",
+				"prev": "const",
+				"next": "const"
+			},
+			{
+				"blankLine": "any",
+				"prev": "let",
+				"next": "let"
+			},
+			{
+				"blankLine": "always",
+				"prev": "multiline-const",
+				"next": "*"
+			},
+			{
+				"blankLine": "always",
+				"prev": "*",
+				"next": "multiline-const"
+			}
 		],
-
 		"vite-plus/prefer-vite-plus-imports": "error"
 	},
 	"overrides": [
