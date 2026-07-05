@@ -365,6 +365,13 @@ describe("useForm", () => {
 			expect(form.value.rules).toBe(rules);
 		});
 
+		test("schema reflects the current schema value", () => {
+			const schema = { "~standard": { validate: vi.fn() } };
+			const { form } = createForm({ props: { schema } });
+
+			expect(form.value.schema).toBe(schema);
+		});
+
 		test("onSubmit is the provided onSubmit handler", () => {
 			const onSubmit = vi.fn();
 			const { form } = createForm({ props: { onSubmit } });
@@ -826,6 +833,101 @@ describe("useForm", () => {
 			await handleFormSubmit();
 
 			expect(submitErrors.value).toEqual({});
+			expect(formLevelErrors.value).toEqual({});
+		});
+	});
+
+	describe("schema-as-rules", () => {
+		function makeSchema(issues) {
+			return {
+				"~standard": {
+					validate: vi.fn().mockResolvedValue(issues?.length ? { issues } : {}),
+				},
+			};
+		}
+
+		test("maps a schema issue's path[0] to its field", async () => {
+			const schema = makeSchema([{ message: "Required", path: ["email"] }]);
+
+			const { registerField, formLevelErrors, handleFormSubmit } = createForm({
+				props: { schema },
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+
+			await handleFormSubmit();
+
+			expect(formLevelErrors.value).toEqual({ email: ["Required"] });
+		});
+
+		test("runs schema and keyed rules together, merging into one per-field result", async () => {
+			const schema = makeSchema([{ message: "Invalid format", path: ["email"] }]);
+
+			const { registerField, formLevelErrors, handleFormSubmit } = createForm({
+				props: {
+					schema,
+					rules: { email: [{ rule: "required", message: "Required" }] },
+				},
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+
+			await handleFormSubmit();
+
+			expect(formLevelErrors.value).toEqual({ email: ["Invalid format", "Required"] });
+		});
+
+		test("deduplicates identical messages between schema and rules", async () => {
+			const schema = makeSchema([{ message: "Required", path: ["email"] }]);
+
+			const { registerField, formLevelErrors, handleFormSubmit } = createForm({
+				props: {
+					schema,
+					rules: { email: [{ rule: "required", message: "Required" }] },
+				},
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+
+			await handleFormSubmit();
+
+			expect(formLevelErrors.value).toEqual({ email: ["Required"] });
+		});
+
+		test("a field is invalid if only the schema reports an issue", async () => {
+			const schema = makeSchema([{ message: "Required", path: ["email"] }]);
+
+			const { registerField, haveErrorSummary, handleFormSubmit } = createForm({
+				props: { schema },
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+
+			await handleFormSubmit();
+
+			expect(haveErrorSummary.value).toBe(true);
+		});
+
+		test("ignores a schema value that isn't a Standard Schema", async () => {
+			const { registerField, formLevelErrors, handleFormSubmit } = createForm({
+				props: { schema: { not: "a schema" } },
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+
+			await handleFormSubmit();
+
+			expect(formLevelErrors.value).toEqual({});
+		});
+
+		test("ignores a schema-shaped value whose validate isn't callable", async () => {
+			const { registerField, formLevelErrors, handleFormSubmit } = createForm({
+				props: { schema: { "~standard": {} } },
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+
+			await expect(handleFormSubmit()).resolves.not.toThrow();
 			expect(formLevelErrors.value).toEqual({});
 		});
 	});

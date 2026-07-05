@@ -57,6 +57,8 @@ Added `onSuccess`, `onError`, and `onSettled` props for submit-lifecycle side ef
 
 The `status` prop now defaults to `useForm`'s own submit-lifecycle status, so failed submits show an inline error automatically with no setup. Pass a value to override with app-driven state such as a permission error or session expiry, which takes precedence until cleared.
 
+Added a `schema` prop accepting a whole-object Standard Schema (e.g. Zod, Valibot), validated against the full form data alongside `rules`. Both run together and merge into one per-field result, schema errors first, with duplicate messages removed. A whole-object schema can't express cross-field constraints (`same`, `required_if`, `different`, `custom`), so `rules` remains available for those. `useForm` gains a matching `schema` param.
+
 ### `modal-dialog-title`
 
 Now has an optional `subtitle` slot to display information below its title.

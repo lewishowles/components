@@ -51,6 +51,12 @@ import { validateForm } from "@lewishowles/helpers/form";
  *     value can be a single message or a list of messages.
  * @param  {object|ref|function}  [rules]
  *     Form-level validation rules, keyed by field name.
+ * @param  {object|ref|function}  [schema]
+ *     A whole-object Standard Schema (e.g. Zod, Valibot) validated against the
+ *     full form data alongside rules. Both run together and merge into one
+ *     per-field result; each issue's path[0] maps it to its field. Cross-field
+ *     rules (same, required_if, different, custom) still need rules, since a
+ *     whole-object schema can't express them.
  * @param  {function}  [onSubmit]
  *     Called with the submit-ready data once validation passes. Its
  *     returned Promise (if any) is awaited before resetting the submit
@@ -90,6 +96,7 @@ export function useForm({
 	fieldTypes,
 	fieldErrors,
 	rules,
+	schema,
 	onSubmit,
 	onSuccess,
 	onError,
@@ -266,6 +273,7 @@ export function useForm({
 			formData.value = value;
 		},
 		rules: toValue(rules),
+		schema: toValue(schema),
 		onSubmit,
 		unsavedChangesGuard: toValue(unsavedChangesGuard),
 	}));
@@ -472,30 +480,63 @@ export function useForm({
 	}
 
 	/**
-	 * Validate the form-level `rules` against the current form data, mapping any
-	 * errors to their field name.
+	 * Validate a whole-object Standard Schema against the current form data,
+	 * mapping each issue's path[0] to its field name.
 	 */
-	async function validateFormLevelRules() {
-		const currentRules = toValue(rules);
+	async function validateFormLevelSchema() {
+		const currentSchema = toValue(schema);
 
-		if (!isNonEmptyObject(currentRules)) {
-			formLevelErrors.value = {};
-
-			return;
+		if (!isObject(currentSchema) || !isFunction(currentSchema["~standard"]?.validate)) {
+			return {};
 		}
 
-		const { results } = await validateForm(currentRules, formData.value);
+		const result = await currentSchema["~standard"].validate(formData.value);
 		const errors = {};
 
-		for (const fieldName in results) {
-			if (!Object.hasOwn(results, fieldName)) {
+		if (!isNonEmptyArray(result?.issues)) {
+			return errors;
+		}
+
+		for (const issue of result.issues) {
+			const segment = issue.path?.[0];
+			const fieldName = isObject(segment) ? segment.key : segment;
+
+			if (!isNonEmptyString(fieldName)) {
 				continue;
 			}
 
-			const fieldErrors = results[fieldName].errors;
+			(errors[fieldName] ??= []).push(issue.message);
+		}
 
-			if (isNonEmptyArray(fieldErrors)) {
-				errors[fieldName] = fieldErrors;
+		return errors;
+	}
+
+	/**
+	 * Validate the form-level `rules` and whole-object `schema` against the
+	 * current form data, merging both into a single per-field result: schema
+	 * errors first, then keyed-rule errors, with duplicate messages removed.
+	 */
+	async function validateFormLevelRules() {
+		const currentRules = toValue(rules);
+		const schemaErrors = await validateFormLevelSchema();
+
+		const ruleResults = isNonEmptyObject(currentRules)
+			? (await validateForm(currentRules, formData.value)).results
+			: {};
+
+		const errors = {};
+		const fieldNames = new Set([...Object.keys(schemaErrors), ...Object.keys(ruleResults)]);
+
+		for (const fieldName of fieldNames) {
+			const messages = [
+				...(schemaErrors[fieldName] ?? []),
+				...(ruleResults[fieldName]?.errors ?? []),
+			];
+
+			const deduped = [...new Set(messages)];
+
+			if (isNonEmptyArray(deduped)) {
+				errors[fieldName] = deduped;
 			}
 		}
 

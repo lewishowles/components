@@ -30,6 +30,13 @@ export const formWrapperMetadata = {
 				"Form-level validation rules, keyed by field name. Each value is an array of rules in the same shape as `form-field`'s own `validation`, but run against the full form data on submit. Field-local rules run first; form-level errors map to the named field so they display beside the field and in the error summary.",
 		},
 		{
+			name: "schema",
+			type: "object",
+			default: null,
+			summary:
+				"A whole-object Standard Schema (e.g. Zod, Valibot) validated against the full form data, in addition to rules. Both run together and merge into one per-field result, schema errors first. A whole-object schema can't express cross-field constraints (same, required_if, different, custom); use rules for those.",
+		},
+		{
 			name: "status",
 			type: "object",
 			default: null,

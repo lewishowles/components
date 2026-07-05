@@ -271,6 +271,27 @@ A rule entry can also be a function `(value, formData)` instead of an object. Th
 
 A form-level error is mapped to its named field, so it displays beside that field and appears in the error summary. Within a field, errors follow the order of its rules array. Rules re-run on every submit, so resolved errors clear.
 
+### `schema`
+
+- type: `object`
+- default: `null`
+
+A whole-object Standard Schema (e.g. Zod, Valibot), validated against the full form data in addition to `rules`. Both run together and merge into a single per-field result: schema errors first, then `rules` errors, with identical messages deduplicated. A field is invalid if either source reports an issue.
+
+```js
+import { z } from "zod";
+
+const schema = z.object({
+	email: z.string().min(1, "Enter your email address").email("Enter a valid email address"),
+});
+```
+
+```html
+<form-wrapper v-bind="{ schema }"></form-wrapper>
+```
+
+Each schema issue's `path[0]` maps it to its field; deeper nested paths aren't currently mapped. A whole-object schema can't express cross-field constraints (`same`, `required_if`, `different`, `custom`), so `rules` remains available alongside it for those cases.
+
 ## Slots
 
 ### `pre-form`

@@ -27,6 +27,12 @@ interface ErrorSummaryEntry {
 	message: string;
 }
 
+interface StandardSchemaLike {
+	"~standard": {
+		validate: (value: unknown) => unknown;
+	};
+}
+
 type FormDataMapper<T> =
 	| ((value: T) => Record<string, unknown>)
 	| {
@@ -42,6 +48,7 @@ interface UseFormOptions<T = unknown> {
 	fieldTypes?: MaybeRefOrGetter<Record<string, FieldType> | undefined>;
 	fieldErrors?: MaybeRefOrGetter<Record<string, string | string[]> | undefined>;
 	rules?: MaybeRefOrGetter<Record<string, unknown[]> | undefined>;
+	schema?: MaybeRefOrGetter<StandardSchemaLike | undefined>;
 	onSubmit?: (data: Record<string, unknown>) => unknown;
 	onSuccess?: Ref<SubmitSuccessCallback | null> | SubmitSuccessCallback;
 	onError?: Ref<SubmitErrorCallback | null> | SubmitErrorCallback;
@@ -62,6 +69,7 @@ interface BindableForm {
 	modelValue: Record<string, unknown>;
 	"onUpdate:modelValue": (value: Record<string, unknown>) => void;
 	rules: Record<string, unknown[]> | undefined;
+	schema: StandardSchemaLike | undefined;
 	onSubmit: ((data: Record<string, unknown>) => unknown) | undefined;
 	unsavedChangesGuard: boolean;
 }

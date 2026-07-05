@@ -186,6 +186,17 @@ const props = defineProps({
 	},
 
 	/**
+	 * A whole-object Standard Schema (e.g. Zod, Valibot) validated against the
+	 * full form data, in addition to rules. Both run together and merge into
+	 * one per-field result. A whole-object schema can't express cross-field
+	 * constraints (same, required_if, different, custom); use rules for those.
+	 */
+	schema: {
+		type: Object,
+		default: null,
+	},
+
+	/**
 	 * Form-wide status feedback displayed near the submit button. Defaults to
 	 * useForm's own submit-lifecycle status (success/error), so most forms need
 	 * not set this. Pass a value to override with app-driven state such as a

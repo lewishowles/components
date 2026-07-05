@@ -120,6 +120,39 @@
 				</p>
 			</component-parameter>
 
+			<component-parameter id="parameter-schema">
+				<template #name>schema</template>
+				<template #type>object</template>
+
+				<p>
+					A whole-object Standard Schema (e.g. Zod, Valibot), validated against the full form data
+					alongside
+					<code>rules</code>
+					. Both run together and merge into a single per-field result, schema errors first. A
+					whole-object schema can't express cross-field constraints (
+					<code>same</code>
+					,
+					<code>required_if</code>
+					,
+					<code>different</code>
+					,
+					<code>custom</code>
+					), so
+					<code>rules</code>
+					remains available for those.
+					<code>v-bind="form"</code>
+					carries
+					<code>schema</code>
+					through to
+					<router-link v-bind="{ to: '/form/form-wrapper' }">
+						<code>form-wrapper</code>
+					</router-link>
+					the same way it does
+					<code>rules</code>
+					.
+				</p>
+			</component-parameter>
+
 			<component-parameter id="parameter-on-submit">
 				<template #name>onSubmit(formData)</template>
 				<template #type>function</template>

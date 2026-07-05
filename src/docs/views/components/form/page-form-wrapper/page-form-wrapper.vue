@@ -281,6 +281,43 @@
 				</p>
 			</component-prop>
 
+			<component-prop id="prop-schema">
+				<template #name>schema</template>
+
+				<template #type>Object</template>
+
+				<template #default-value>null</template>
+
+				<p>
+					A whole-object Standard Schema (e.g. Zod, Valibot), validated against the full form data
+					in addition to
+					<code>rules</code>
+					. Both run together and merge into a single per-field result: schema errors first, then
+					<code>rules</code>
+					errors, with identical messages deduplicated. A field is invalid if either source reports
+					an issue.
+				</p>
+
+				<code-block v-bind="{ code: schemaExample }" />
+
+				<p>
+					Each schema issue's
+					<code>path[0]</code>
+					maps it to its field; deeper nested paths aren't currently mapped. A whole-object schema
+					can't express cross-field constraints (
+					<code>same</code>
+					,
+					<code>required_if</code>
+					,
+					<code>different</code>
+					,
+					<code>custom</code>
+					), so
+					<code>rules</code>
+					remains available alongside it for those cases.
+				</p>
+			</component-prop>
+
 			<component-prop id="prop-readonly">
 				<template #name>readonly</template>
 
@@ -735,6 +772,17 @@ const rulesExample = `const rules = {
 };
 
 <form-wrapper v-bind="{ rules }">
+
+</form-wrapper>
+`;
+
+const schemaExample = `import { z } from "zod";
+
+const schema = z.object({
+	email: z.string().min(1, "Enter your email address").email("Enter a valid email address"),
+});
+
+<form-wrapper v-bind="{ schema }">
 
 </form-wrapper>
 `;
