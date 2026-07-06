@@ -108,6 +108,7 @@
 </template>
 
 <script setup>
+// fallow-ignore-file -- "submit" emit is used by consumers via `useForm` onSubmit callback, not directly within this component.
 import { computed, getCurrentInstance, provide, ref, toRefs, useSlots, watch } from "vue";
 
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
@@ -277,6 +278,7 @@ const props = defineProps({
 	},
 });
 
+// "submit" is emitted by the consumer's `useForm` onSubmit callback, not directly within this component.
 const emit = defineEmits(["update:modelValue", "submit"]);
 
 const slots = useSlots();

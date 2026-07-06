@@ -1,22 +1,9 @@
 import { readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { toPascalCase } from "@lewishowles/helpers/string";
 
 const componentsRoot = fileURLToPath(new URL("../src/components", import.meta.url));
-
-/**
- * Convert a kebab-case component file name to its PascalCase export name:
- * `ui-button` → `UiButton`, `data-table-header` → `DataTableHeader`.
- *
- * @param  {string}  tag
- *     The kebab-case tag / file name (without extension).
- */
-export function toPascalCase(tag) {
-	return tag
-		.split("-")
-		.map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
-		.join("");
-}
 
 /**
  * Walk `src/components`, collecting every public `.vue` file. Test fixtures are

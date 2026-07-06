@@ -1,7 +1,7 @@
 import { divider, style, table } from "@lewishowles/cli-style";
 import { PACKAGE_NAME } from "../utils/constants.js";
 import { groupBy } from "@lewishowles/helpers/array";
-import { componentMetadata } from "./index.js";
+import { componentMetadata } from "../../components/component-metadata.js";
 
 export function getHelpSection() {
 	return {

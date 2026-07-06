@@ -24,7 +24,25 @@
 		"vue-eslint-parser",
 		"globals",
 		"@tailwindcss/forms",
+		"@tailwindcss/container-queries",
+		"@tailwindcss/typography",
+		"@tailwindcss/vite",
+		"tailwindcss",
+		"tailwindcss-hocus",
+		"shiki",
+		"unplugin-vue-components",
+		"vue-router",
+		"@lewishowles/testing",
 		"axe-core"
+	],
+
+	"overrides": [
+		{
+			"files": ["src/components/form/form-wrapper/form-wrapper.vue"],
+			"rules": {
+				"unused-component-emits": "off"
+			}
+		}
 	],
 
 	"ignoreExports": [

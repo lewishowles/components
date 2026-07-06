@@ -21,4 +21,3 @@ const componentLibrary = {
 };
 
 export default componentLibrary;
-export { components };
