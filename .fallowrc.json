@@ -1,0 +1,38 @@
+{
+	"$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+
+	"entry": [
+		"src/index.js",
+		"src/composables/index.js",
+		"src/utilities/index.js",
+		"src/resolver.js",
+		"bin/cli.js"
+	],
+
+	"dynamicallyLoaded": [
+		"src/docs/views/**/*.vue",
+		"src/docs/views/**/*.js",
+		"src/components/**/*.pw.js",
+		"test/ct/index.js",
+		"src/assets/css/font.css"
+	],
+
+	"ignoreDependencies": [
+		"@eslint/js",
+		"@stylistic/eslint-plugin",
+		"eslint-plugin-vue",
+		"vue-eslint-parser",
+		"globals",
+		"@tailwindcss/forms",
+		"axe-core"
+	],
+
+	"ignoreExports": [
+		{ "file": "src/cli/components/index.js", "exports": ["*"] },
+		{ "file": "src/cli/components/info.js", "exports": ["*"] },
+		{ "file": "src/cli/components/list.js", "exports": ["*"] },
+		{ "file": "src/cli/components/pattern.js", "exports": ["*"] },
+		{ "file": "src/cli/components/snippet.js", "exports": ["*"] },
+		{ "file": "src/cli/stylesheets/index.js", "exports": ["*"] }
+	]
+}

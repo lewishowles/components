@@ -10,7 +10,11 @@ import { formButtonGroupMetadata } from "./form/form-button-group/form-button-gr
 import { chartLegendMetadata } from "./chart/chart-legend/chart-legend.metadata.js";
 import { comboBoxMetadata } from "./content/combo-box/combo-box.metadata.js";
 import { conditionalWrapperMetadata } from "./general/conditional-wrapper/conditional-wrapper.metadata.js";
+import { contentCardColumnsMetadata } from "./content/content-card-columns/content-card-columns.metadata.js";
+import { contentCardFooterMetadata } from "./content/content-card-footer/content-card-footer.metadata.js";
+import { contentCardHeaderMetadata } from "./content/content-card-header/content-card-header.metadata.js";
 import { contentCardMetadata } from "./content/content-card/content-card.metadata.js";
+import { contentCardSectionMetadata } from "./content/content-card-section/content-card-section.metadata.js";
 import { contentSeparatorMetadata } from "./content/content-separator/content-separator.metadata.js";
 import { copyContentMetadata } from "./interaction/copy-content/copy-content.metadata.js";
 import { dataTableMetadata } from "./content/data-table/data-table.metadata.js";
@@ -81,7 +85,11 @@ const componentMetadataRecords = [
 	chartLegendMetadata,
 	comboBoxMetadata,
 	conditionalWrapperMetadata,
+	contentCardColumnsMetadata,
+	contentCardFooterMetadata,
+	contentCardHeaderMetadata,
 	contentCardMetadata,
+	contentCardSectionMetadata,
 	contentSeparatorMetadata,
 	copyContentMetadata,
 	dataTableMetadata,
