@@ -65,6 +65,27 @@
 			</form-input>
 		</div>
 
+		<template v-if="haveDateHelpers">
+			<div class="mb-1 flex flex-wrap gap-2 text-xs">
+				<ui-button
+					v-for="(dateHelperItem, dateHelperIndex) in dateHelperItems"
+					:key="dateHelperIndex"
+					class="button--muted"
+					:aria-label="dateHelperItem.accessibleLabel"
+					data-part="date-helper"
+					@click="applyDateHelper(dateHelperItem)"
+				>
+					{{ dateHelperItem.label }}
+				</ui-button>
+			</div>
+
+			<span role="status" aria-live="polite" class="sr-only" data-test="form-date-helper-status">
+				<slot name="date-helper-status" v-bind="{ date: announcedDate }">
+					<template v-if="announcedDate">Date set to {{ announcedDate }}.</template>
+				</slot>
+			</span>
+		</template>
+
 		<form-supplementary v-bind="{ inputId }">
 			<template #error>
 				<slot name="error" />
@@ -77,17 +98,15 @@
 </template>
 
 <script setup>
+import { Temporal } from "temporal-polyfill";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { computed, ref, useTemplateRef, watch } from "vue";
-import { getDateParts, toDateFromParts } from "@lewishowles/helpers/date";
+import { formatDate, getDateParts, toDateFromParts } from "@lewishowles/helpers/date";
 import { getPathValue, isNonEmptyObject } from "@lewishowles/helpers/object";
+import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNumber, isNumeric } from "@lewishowles/helpers/number";
-import { callComponentMethod } from "@lewishowles/helpers/vue";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
-
-import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
-import FormLabel from "@/components/form/form-label/form-label.vue";
-import FormSupplementary from "@/components/form/fragments/form-supplementary/form-supplementary.vue";
 
 const props = defineProps({
 	/**
@@ -107,6 +126,18 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+
+	/**
+	 * Optional quick-select date helpers, rendered as buttons beneath the
+	 * date inputs. Each helper is `{ label, unit, value }`, where `unit` is
+	 * one of "day", "week", "month", or "year", and `value` is an integer
+	 * amount of that unit to add relative to today (negative for the past,
+	 * `0` for today).
+	 */
+	dateHelpers: {
+		type: Array,
+		default: () => [],
+	},
 });
 
 const { inputId, haveIntroduction, haveError } = useFormField({ id: props.id });
@@ -121,6 +152,31 @@ const model = defineModel({
 const date = ref({ day: "", month: "", year: "" });
 // A reference to the day input, which we will use to focus this field.
 const dayInput = useTemplateRef("dayInput");
+// The display date last applied via a date helper, announced to assistive
+// technology via the status live region.
+const announcedDate = ref(null);
+
+// The Temporal duration key for each supported date-helper unit.
+const dateHelperUnitDurationKeys = {
+	day: "days",
+	week: "weeks",
+	month: "months",
+	year: "years",
+};
+
+// Resolved, displayable versions of the configured date helpers. Invalid
+// entries (missing label, unsupported unit, non-integer value) are dropped
+// rather than rendered broken.
+const dateHelperItems = computed(() => {
+	if (!isNonEmptyArray(props.dateHelpers)) {
+		return [];
+	}
+
+	return props.dateHelpers.map(resolveDateHelperItem).filter((item) => item !== null);
+});
+
+// Whether we have at least one valid, resolved date helper to render.
+const haveDateHelpers = computed(() => dateHelperItems.value.length > 0);
 
 // Whether we have a valid date. We use this to hide inputs and avoid errors if
 // the provided model date is invalid. By "valid", we don't mean a valid date,
@@ -246,6 +302,57 @@ function setDateFromIsoString(dateString) {
  */
 function triggerFocus() {
 	callComponentMethod(dayInput.value, "triggerFocus");
+}
+
+/**
+ * Resolve a single configured date helper into a displayable item, or `null`
+ * if the entry is invalid.
+ *
+ * @param  {object}  helper
+ *     The configured date helper, `{ label, unit, value }`.
+ */
+function resolveDateHelperItem(helper) {
+	if (!isNonEmptyObject(helper) || !isNonEmptyString(helper.label)) {
+		return null;
+	}
+
+	const durationKey = dateHelperUnitDurationKeys[helper.unit];
+
+	if (durationKey === undefined || !Number.isInteger(helper.value)) {
+		return null;
+	}
+
+	const resolvedDate = Temporal.Now.plainDateISO().add({ [durationKey]: helper.value });
+	const displayDate = formatDate(resolvedDate, "date");
+
+	return {
+		label: helper.label,
+		resolvedDate,
+		displayDate,
+		accessibleLabel: isNonEmptyString(displayDate)
+			? `${helper.label}, ${displayDate}`
+			: helper.label,
+	};
+}
+
+/**
+ * Apply a resolved date helper, setting the current date and announcing the
+ * change to assistive technology. Focus deliberately stays on the activated
+ * button rather than moving to the date inputs.
+ *
+ * @param  {object}  dateHelperItem
+ *     The resolved date helper item to apply.
+ */
+function applyDateHelper(dateHelperItem) {
+	const { resolvedDate } = dateHelperItem;
+
+	date.value = {
+		day: resolvedDate.day.toString(),
+		month: resolvedDate.month.toString(),
+		year: resolvedDate.year.toString(),
+	};
+
+	announcedDate.value = dateHelperItem.displayDate;
 }
 
 // The ID of the first focusable input, used by form-field to register the

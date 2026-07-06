@@ -21,11 +21,13 @@ test.describe("form-button-group", () => {
 		const labels = buttonGroup.getByTestId("form-label");
 
 		await expect(labels).toHaveCount(4);
-		await expect(labels.nth(0)).toHaveText("Best smoothie(optional)");
+		await expect(labels.nth(0)).toHaveText("Best smoothie");
 		await expect(labels.nth(1)).toHaveText("Pineapple");
 		await expect(labels.nth(2)).toHaveText("Banana");
 		await expect(labels.nth(3)).toHaveText("Coconut");
-		await expect(buttonGroup.getByTestId("form-label-optional-indicator")).toHaveCount(1);
+		// No form-wrapper ancestor is providing context here, so the optional
+		// indicator is suppressed (see form-label.test.js for the form-wrapper case).
+		await expect(buttonGroup.getByTestId("form-label-optional-indicator")).toHaveCount(0);
 	});
 
 	test.describe("supplementary information", () => {

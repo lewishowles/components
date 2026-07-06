@@ -42,6 +42,12 @@ Any error text to display below the field.
 
 Any help text to display below the field.
 
+### `date-helper-status`
+
+The screen-reader status announcement shown after a date helper button (see the `dateHelpers` prop) is activated. Receives a `date` slot prop containing the resolved, formatted date. Defaults to `Date set to {date}.`.
+
+Only rendered when `dateHelpers` resolves at least one valid entry.
+
 ## Props
 
 ### `id`
@@ -73,6 +79,21 @@ Any placeholder to show in the "Month" field. Do not use a placeholder for criti
 - default: `null`
 
 Any placeholder to show in the "Year" field. Do not use a placeholder for critical information. Always use the label and help text as priorities.
+
+### `dateHelpers`
+
+- type: `array`
+- default: `[]`
+
+Optional quick-select date buttons, rendered beneath the date inputs. Each entry is `{ label, unit, value }`:
+
+- `label`: the button text, e.g. `"Today"`, `"Tomorrow"`, `"+2 days"`.
+- `unit`: one of `"day"`, `"week"`, `"month"`, `"year"`.
+- `value`: an integer amount of `unit` to add relative to today. `0` is valid (e.g. "Today"); negative values select a date in the past.
+
+Invalid entries (missing label, unsupported unit, non-integer value) are silently dropped rather than rendered broken.
+
+Each button press is idempotent: the resulting date is always calculated relative to today, not relative to the field's current value, so repeated presses of "+2 days" always land two days from today rather than accumulating. Activating a button keeps focus on that button rather than moving focus into the date inputs, and announces the resolved date via the `date-helper-status` slot.
 
 ## Methods
 

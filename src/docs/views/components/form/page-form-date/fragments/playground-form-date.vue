@@ -6,7 +6,7 @@
 	>
 		<template #title>Form date</template>
 
-		<form-date v-bind="componentProps" v-model="componentModel">
+		<form-date v-bind="componentProps" v-model="componentModel" :date-helpers="dateHelpers">
 			{{ textSlots.default?.value }}
 
 			<template #introduction>
@@ -54,12 +54,26 @@ const textSlots = ref({
 	},
 });
 
+// Quick-select date helpers, shown as buttons beneath the date inputs. Not
+// user-editable in the playground UI; referenced by variable name in the
+// generated template.
+const dateHelpers = [
+	{ label: "Today", unit: "day", value: 0 },
+	{ label: "Tomorrow", unit: "day", value: 1 },
+	{ label: "+2 days", unit: "day", value: 2 },
+];
+
 // Props both for the template and for the component example itself.
 const props = ref({
 	type: {
 		label: "Type",
 		value: "date",
 		type: "text",
+	},
+	dateHelpers: {
+		label: "Date helpers",
+		type: "array",
+		variableName: "dateHelpers",
 	},
 });
 

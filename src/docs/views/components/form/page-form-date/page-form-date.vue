@@ -79,6 +79,63 @@
 					critical information. Always use the label and help text as priorities.
 				</p>
 			</component-prop>
+			<component-prop id="prop-date-helpers">
+				<template #name>dateHelpers</template>
+
+				<template #type>Array</template>
+
+				<template #default-value>[]</template>
+
+				<p>
+					Optional quick-select date buttons, rendered beneath the date inputs. Each entry is
+					<code>{ label, unit, value }</code>
+					.
+				</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Key</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>label</code></td>
+							<td><code>string</code></td>
+							<td>The button text, e.g. &quot;Today&quot;, &quot;+2 days&quot;.</td>
+						</tr>
+						<tr>
+							<td><code>unit</code></td>
+							<td><code>string</code></td>
+							<td>
+								One of &quot;day&quot;, &quot;week&quot;, &quot;month&quot;, &quot;year&quot;.
+							</td>
+						</tr>
+						<tr>
+							<td><code>value</code></td>
+							<td><code>number</code></td>
+							<td>
+								Integer amount of
+								<code>unit</code>
+								to add relative to today.
+								<code>0</code>
+								is valid; negative values select a date in the past.
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<p>
+					Invalid entries (missing label, unsupported unit, non-integer value) are silently dropped.
+					Each button press is idempotent: the resulting date is always calculated relative to
+					today, not the field's current value, so repeated presses of the same button don't
+					accumulate. Focus stays on the activated button; the resolved date is announced via the
+					<code>date-helper-status</code>
+					slot.
+				</p>
+			</component-prop>
 		</component-props>
 
 		<component-slots>
@@ -136,6 +193,21 @@
 				<template #name>help</template>
 
 				<p>Any help text to display below the field.</p>
+			</component-slot>
+			<component-slot id="slot-date-helper-status">
+				<template #name>date-helper-status</template>
+
+				<p>
+					The screen-reader status announcement shown after a
+					<code>dateHelpers</code>
+					button is activated. Receives a
+					<code>date</code>
+					slot prop containing the resolved, formatted date. Defaults to
+					<code>Date set to {date}.</code>
+					; provided as a slot so the announcement text can be translated. Only rendered when
+					<code>dateHelpers</code>
+					resolves at least one valid entry.
+				</p>
 			</component-slot>
 		</component-slots>
 
@@ -224,6 +296,16 @@
 			<component-styling-hook id="hook-data-invalid">
 				<template #attribute>data-invalid</template>
 				<p>Present on the root element when the field has an error.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-date-helper">
+				<template #attribute>data-part="date-helper"</template>
+				<p>Present on each quick-select date helper button.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-date-helper-status">
+				<template #attribute>data-part="date-helper-status"</template>
+				<p>Present on the visually hidden live region announcing date helper activation.</p>
 			</component-styling-hook>
 		</component-styling-hooks>
 

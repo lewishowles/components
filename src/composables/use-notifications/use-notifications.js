@@ -10,7 +10,7 @@ const notifications = ref([]);
 const callbacks = new Map();
 
 /**
- * Store and manage notifications. The composable is module-scoped — all
+ * Store and manage notifications. The composable is module-scoped; all
  * `useNotifications()` calls share the same registry.
  */
 export function useNotifications() {

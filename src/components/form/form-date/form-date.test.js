@@ -1,5 +1,6 @@
 import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test, vi } from "vite-plus/test";
+import { nextTick } from "vue";
 import FormDate from "./form-date.vue";
 
 const mount = createMount(FormDate);
@@ -298,6 +299,104 @@ describe("form-date", () => {
 		});
 	});
 
+	describe("Computed", () => {
+		describe("dateHelperItems", () => {
+			const systemTime = new Date("2025-06-15T09:00:00Z");
+
+			test("should return an empty array without dateHelpers configured", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				expect(vm.dateHelperItems).toEqual([]);
+			});
+
+			test("should resolve a valid date helper relative to today", () => {
+				vi.useFakeTimers();
+				vi.setSystemTime(systemTime);
+
+				const wrapper = mount({ dateHelpers: [{ label: "Tomorrow", unit: "day", value: 1 }] });
+				const vm = wrapper.vm;
+
+				expect(vm.dateHelperItems).toHaveLength(1);
+				expect(vm.dateHelperItems[0].label).toBe("Tomorrow");
+				expect(vm.dateHelperItems[0].resolvedDate.toString()).toBe("2025-06-16");
+				expect(vm.dateHelperItems[0].accessibleLabel).toContain("Tomorrow");
+
+				vi.useRealTimers();
+			});
+
+			test("should support zero and negative values", () => {
+				vi.useFakeTimers();
+				vi.setSystemTime(systemTime);
+
+				const wrapper = mount({
+					dateHelpers: [
+						{ label: "Today", unit: "day", value: 0 },
+						{ label: "Last week", unit: "week", value: -1 },
+					],
+				});
+
+				const vm = wrapper.vm;
+
+				expect(vm.dateHelperItems[0].resolvedDate.toString()).toBe("2025-06-15");
+				expect(vm.dateHelperItems[1].resolvedDate.toString()).toBe("2025-06-08");
+
+				vi.useRealTimers();
+			});
+
+			describe("should drop invalid entries", () => {
+				test.for([
+					["missing label", { unit: "day", value: 1 }],
+					["empty label", { label: "", unit: "day", value: 1 }],
+					["unsupported unit", { label: "Next decade", unit: "decade", value: 1 }],
+					["non-integer value", { label: "Half a day", unit: "day", value: 0.5 }],
+					["non-numeric value", { label: "Someday", unit: "day", value: "1" }],
+					["non-object entry", "Today"],
+					["null entry", null],
+				])("%s", ([, dateHelper]) => {
+					const wrapper = mount({ dateHelpers: [dateHelper] });
+					const vm = wrapper.vm;
+
+					expect(vm.dateHelperItems).toEqual([]);
+				});
+			});
+		});
+	});
+
+	describe("Methods", () => {
+		describe("applyDateHelper", () => {
+			test("should set the current date and announce it", () => {
+				vi.useFakeTimers();
+				vi.setSystemTime(new Date("2025-06-15T09:00:00Z"));
+
+				const wrapper = mount({ dateHelpers: [{ label: "Tomorrow", unit: "day", value: 1 }] });
+				const vm = wrapper.vm;
+
+				vm.applyDateHelper(vm.dateHelperItems[0]);
+
+				expect(vm.date).toEqual({ day: "16", month: "6", year: "2025" });
+				expect(vm.announcedDate).toBe(vm.dateHelperItems[0].displayDate);
+
+				vi.useRealTimers();
+			});
+
+			test("should always resolve relative to today rather than the current value", () => {
+				vi.useFakeTimers();
+				vi.setSystemTime(new Date("2025-06-15T09:00:00Z"));
+
+				const wrapper = mount({ dateHelpers: [{ label: "+2 days", unit: "day", value: 2 }] });
+				const vm = wrapper.vm;
+
+				vm.applyDateHelper(vm.dateHelperItems[0]);
+				vm.applyDateHelper(vm.dateHelperItems[0]);
+
+				expect(vm.date).toEqual({ day: "17", month: "6", year: "2025" });
+
+				vi.useRealTimers();
+			});
+		});
+	});
+
 	describe("Props", () => {
 		describe("required", () => {
 			test("passes required to all date sub-inputs", () => {
@@ -318,6 +417,37 @@ describe("form-date", () => {
 				for (const input of wrapper.findAllComponents({ name: "FormInput" })) {
 					expect(input.props("required")).toBe(false);
 				}
+			});
+		});
+	});
+
+	describe("Slots", () => {
+		describe("date-helper-status", () => {
+			test("exposes the announced date as a scoped slot prop", async () => {
+				vi.useFakeTimers();
+				vi.setSystemTime(new Date("2025-06-15T09:00:00Z"));
+
+				let receivedProps = null;
+
+				const wrapper = deepMount({
+					props: { dateHelpers: [{ label: "Tomorrow", unit: "day", value: 1 }] },
+					slots: {
+						"date-helper-status": (slotProps) => {
+							receivedProps = slotProps;
+
+							return "status";
+						},
+					},
+				});
+
+				expect(receivedProps).toMatchObject({ date: null });
+
+				wrapper.vm.applyDateHelper(wrapper.vm.dateHelperItems[0]);
+				await nextTick();
+
+				expect(receivedProps).toMatchObject({ date: wrapper.vm.announcedDate });
+
+				vi.useRealTimers();
 			});
 		});
 	});

@@ -16,6 +16,13 @@ export const formDateMetadata = {
 			default: false,
 			summary: "Mark each date part as required.",
 		},
+		{
+			name: "dateHelpers",
+			type: "array",
+			default: [],
+			summary:
+				"Optional quick-select date buttons, each { label, unit, value }, where unit is day/week/month/year and value is an integer offset from today.",
+		},
 	],
 	slots: [
 		{
@@ -54,7 +61,13 @@ export const formDateMetadata = {
 			name: "help",
 			summary: "Help text shown below the date inputs.",
 		},
+		{
+			name: "date-helper-status",
+			summary:
+				"Screen-reader status announcement shown after a date helper button is activated. Receives a date slot prop with the resolved display date. Defaults to 'Date set to {date}.'",
+		},
 	],
+	parts: [{ name: "date-helper", summary: "A quick-select date helper button." }],
 	methods: [
 		{
 			name: "toString",

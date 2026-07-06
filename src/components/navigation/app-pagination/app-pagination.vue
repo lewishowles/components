@@ -149,8 +149,9 @@ const pageCount = computed(() => {
 });
 
 // Initialise currentPage from the URL parameter now, before the immediate
-// watcher fires — otherwise the watcher would call updateCurrentUrlParameter("page", 1)
-// and overwrite the URL before onMounted can read it.
+// watcher fires, otherwise the watcher would call
+// updateCurrentUrlParameter("page", 1) and overwrite the URL before onMounted
+// can read it.
 if (initialPage > 1 && initialPage <= pageCount.value) {
 	currentPage.value = initialPage;
 }

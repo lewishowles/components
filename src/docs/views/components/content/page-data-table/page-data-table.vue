@@ -572,17 +572,17 @@
 			<component-slot id="slot-sort-instruction">
 				<template #name>sort-instruction</template>
 
-				<template #default-value>`(sortable — activate to sort ascending)`</template>
+				<template #default-value>`(sortable; activate to sort ascending)`</template>
 
 				<p>
 					A screen-reader-only instruction inside each sortable column's heading button, describing
 					the column's current sort state and what activating it will do. Included only for sortable
 					columns. The default text varies by state:
-					<code>(sortable — activate to sort ascending)</code>
+					<code>(sortable; activate to sort ascending)</code>
 					when unsorted,
-					<code>(sorted ascending — activate to sort descending)</code>
+					<code>(sorted ascending; activate to sort descending)</code>
 					when sorted ascending, and
-					<code>(sorted descending — activate to sort ascending)</code>
+					<code>(sorted descending; activate to sort ascending)</code>
 					when sorted descending.
 				</p>
 

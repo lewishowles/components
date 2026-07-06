@@ -19,7 +19,9 @@ test.describe("star-rating", () => {
 
 		await expect(starRating).toBeVisible();
 		await expect(labels).toHaveCount(6);
-		await expect(labels.nth(0)).toHaveText("Rate your experience(optional)");
+		// No form-wrapper ancestor is providing context here, so the optional
+		// indicator is suppressed (see form-label.test.js for the form-wrapper case).
+		await expect(labels.nth(0)).toHaveText("Rate your experience");
 		await expect(labels.nth(1)).toContainText("1");
 		await expect(labels.nth(2)).toContainText("2");
 		await expect(labels.nth(3)).toContainText("3");

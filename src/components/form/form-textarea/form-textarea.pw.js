@@ -22,7 +22,9 @@ test.describe("form-textarea", () => {
 		const labelElement = formTextarea.getByTestId("form-label");
 
 		await expect(textareaElement).toHaveAttribute("id", "id-abc");
-		await expect(labelElement).toHaveText("Your name(optional)");
+		// No form-wrapper ancestor is providing context here, so the optional
+		// indicator is suppressed (see form-label.test.js for the form-wrapper case).
+		await expect(labelElement).toHaveText("Your name");
 		await expect(labelElement).toHaveAttribute("for", "id-abc");
 	});
 
