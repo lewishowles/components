@@ -15,7 +15,7 @@
 				</li>
 				<li>
 					<code>content-card-section</code>
-					, a bordered body section — use multiple sections to divide content
+					, a bordered body section, use multiple sections to divide content
 				</li>
 				<li>
 					<code>content-card-columns</code>
@@ -40,7 +40,7 @@
 
 				<p>
 					<code>content-card-header</code>
-					— the heading level to use for the title.
+					: the heading level to use for the title.
 				</p>
 			</component-prop>
 
@@ -53,7 +53,7 @@
 
 				<p>
 					<code>content-card-header</code>
-					— classes to apply around the icon slot.
+					: classes to apply around the icon slot.
 				</p>
 			</component-prop>
 		</component-props>

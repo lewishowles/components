@@ -2,7 +2,7 @@ import { errorBlock } from "@lewishowles/cli-style";
 
 /**
  * Prints a boxed "Unknown X" error banner. Does not exit or list what was
- * available — the caller follows this with whatever `--list`/`--help`
+ * available; the caller follows this with whatever `--list`/`--help`
  * rendering it already has (e.g. `printAllComponents`, `printPatterns`,
  * `printExamples`), so the "not found" case reuses the same labelled,
  * grouped output a user would get by asking for it directly, then exits.

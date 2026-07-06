@@ -6,7 +6,7 @@
 
 ### `default`
 
-The label of the field. A label is always required — this component will show an error if none is provided.
+The label of the field. A label is always required; this component will show an error if none is provided.
 
 ### `option-label`
 

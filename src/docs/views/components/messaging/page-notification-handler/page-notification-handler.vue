@@ -7,7 +7,7 @@
 				<code>notification-handler</code>
 				displays and allows an end-user to manage notifications. Notification data is managed via
 				<code>useNotifications()</code>
-				— a module-scoped composable that acts as the shared registry for the application.
+				, a module-scoped composable that acts as the shared registry for the application.
 			</p>
 			<p>
 				<link-tag

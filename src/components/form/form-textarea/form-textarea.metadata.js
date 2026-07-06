@@ -15,7 +15,7 @@ export const formTextareaMetadata = {
 			name: "placeholder",
 			type: "string",
 			default: null,
-			summary: "Placeholder text — do not use for critical information.",
+			summary: "Placeholder text; do not use for critical information.",
 		},
 		{
 			name: "inputAttributes",

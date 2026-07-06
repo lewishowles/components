@@ -105,7 +105,7 @@ describe("useFormData", () => {
 		});
 	});
 
-	describe("Object convention — fields", () => {
+	describe("Object convention: fields", () => {
 		test("should pick listed keys when fields is an array", () => {
 			const source = ref({ name: "Alice", email: "alice@example.com", age: 30 });
 
@@ -131,7 +131,7 @@ describe("useFormData", () => {
 		});
 	});
 
-	describe("Object convention — fieldTypes", () => {
+	describe("Object convention: fieldTypes", () => {
 		test("nullable-number converts null to empty string", () => {
 			const source = ref({ age: null });
 

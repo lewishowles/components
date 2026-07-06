@@ -146,7 +146,7 @@
 				</p>
 
 				<p>
-					This is a controlled prop — the consumer owns the state and passes it in. That matters
+					This is a controlled prop; the consumer owns the state and passes it in. That matters
 					because toggle actions are often async (a mute request might fail), and
 					<code>aria-pressed</code>
 					must reflect actual truth, not an optimistic flip.

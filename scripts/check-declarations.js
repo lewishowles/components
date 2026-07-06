@@ -26,7 +26,7 @@ const missing = [];
 
 let checked = 0;
 
-// Composables — every subdirectory must have a co-located `.d.ts`.
+// Composables: every subdirectory must have a co-located `.d.ts`.
 for (const entry of readdirSync(composablesDir, { withFileTypes: true })) {
 	if (!entry.isDirectory()) {
 		continue;
@@ -47,7 +47,7 @@ for (const entry of readdirSync(composablesDir, { withFileTypes: true })) {
 	}
 }
 
-// Utilities — check each path referenced by `src/utilities/index.js` exports.
+// Utilities: check each path referenced by `src/utilities/index.js` exports.
 const indexSource = readFileSync(join(utilitiesDir, "index.js"), "utf8");
 const exportedPaths = [...indexSource.matchAll(/from\s+"([^"]+)"/g)].map(([, path]) => path);
 

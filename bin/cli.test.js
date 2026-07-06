@@ -5,7 +5,7 @@ import { join } from "node:path";
 const cliPath = join(process.cwd(), "bin/cli.js");
 
 // Runs the real CLI as a subprocess. Unit tests on individual command files
-// only prove a command behaves correctly when given a `ui` instance — they
+// only prove a command behaves correctly when given a `ui` instance; they
 // can't catch the entrypoint itself forgetting to pass one through.
 function runCli(args) {
 	return execFileSync("node", [cliPath, ...args], { encoding: "utf8" });

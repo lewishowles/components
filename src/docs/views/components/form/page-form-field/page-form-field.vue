@@ -109,7 +109,7 @@
 					<code>form-field</code>
 					directly. Define them on the parent form-wrapper's
 					<code>rules</code>
-					prop instead — see the form-wrapper docs for the available rules.
+					prop instead; see the form-wrapper docs for the available rules.
 				</p>
 			</component-prop>
 

@@ -4,12 +4,12 @@ import { getComponentManifest } from "../component-manifest.js";
 // re-exported from `src/index.js` so consumers can tree-shake named imports.
 const NAMED_ID = "virtual:components-named";
 
-// `virtual:components-manifest` — the `[{ tag, name }]` table baked into the
+// `virtual:components-manifest`: the `[{ tag, name }]` table baked into the
 // `unplugin-vue-components` resolver so it can map tags to library exports
 // without reading our source at the consumer's build time.
 const MANIFEST_ID = "virtual:components-manifest";
 
-// `virtual:component-icons` — the runtime icon registry used by components
+// `virtual:component-icons`: the runtime icon registry used by components
 // that accept icon names as strings.
 const ICONS_ID = "virtual:component-icons";
 
@@ -20,15 +20,15 @@ const resolved = (id) => `\0${id}`;
  * components they actually use. Both are built from the same list of
  * components.
  *
- * - `virtual:components-named` — `export { default as Name } from "…"` for
+ * - `virtual:components-named`: `export { default as Name } from "…"` for
  * every component. The `install()` plugin registers everything via an eager
  * glob (not tree-shakeable); these static re-exports let a consumer's bundler
  * keep one component and drop the rest.
  *
- * - `virtual:components-manifest` — the `[{ tag, name }]` table consumed by the
+ * - `virtual:components-manifest`: the `[{ tag, name }]` table consumed by the
  * resolver entry, inlined into `dist/resolver.js` at build time.
  *
- * - `virtual:component-icons` — the `[{ tag, component }]` map used internally
+ * - `virtual:component-icons`: the `[{ tag, component }]` map used internally
  * by components that accept icon component names as string props.
  */
 export function createNamedExports() {

@@ -75,7 +75,7 @@
 				</template>
 
 				<p>
-					Remove every flash message. Intended for internal and testing use only—it clears messages
+					Remove every flash message. Intended for internal and testing use only; it clears messages
 					requested by any component.
 				</p>
 			</component-method>

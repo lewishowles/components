@@ -14,9 +14,9 @@ import { componentManifest } from "virtual:components-manifest";
  *
  * @example
  * const overrides = { "ui-button": MyButton };
- * // main.js — register globally
+ * // main.js: register globally
  * Object.entries(overrides).forEach(([name, c]) => app.component(name, c));
- * // vite.config — exclude the same tags
+ * // vite.config: exclude the same tags
  * componentsResolver({ exclude: Object.keys(overrides) })
  *
  * @param  {object}  [options]

@@ -8,10 +8,10 @@ import { componentMetadata } from "./component-metadata.js";
 
 const root = fileURLToPath(new URL("../..", import.meta.url));
 
-// Props injected by Vue globally — not authored by components.
+// Props injected by Vue globally; not authored by components.
 const globalPropNames = new Set(["class", "style", "key", "ref", "ref_key", "ref_for"]);
 
-// Props that are part of the v-model contract or internal testing hooks — not consumer-facing API.
+// Props that are part of the v-model contract or internal testing hooks; not consumer-facing API.
 const internalPropNames = new Set(["modelValue", "onUpdate:modelValue", "dataTest"]);
 
 const checker = createCheckerByJson(root, {
@@ -36,13 +36,13 @@ describe("component-metadata completeness", { timeout: 30000 }, () => {
 	for (const component of componentMetadata) {
 		const filePath = componentFileMap[component.name];
 
-		// Skip components without a discoverable source file — they may be
+		// Skip components without a discoverable source file; they may be
 		// virtual or aliased components not following the standard naming pattern.
 		if (!filePath) {
 			continue;
 		}
 
-		test(`${component.name} — all props covered`, () => {
+		test(`${component.name}: all props covered`, () => {
 			const meta = checker.getComponentMeta(filePath);
 
 			const extractedPropNames = meta.props
@@ -65,7 +65,7 @@ describe("component-metadata completeness", { timeout: 30000 }, () => {
 
 describe("component-metadata shape", () => {
 	for (const component of componentMetadata) {
-		test(`${component.name} — shape is valid`, () => {
+		test(`${component.name}: shape is valid`, () => {
 			for (const key of ["name", "category", "summary"]) {
 				expect(
 					typeof component[key] === "string" && component[key].length > 0,
@@ -118,7 +118,7 @@ describe("component-metadata parts completeness", () => {
 			continue;
 		}
 
-		test(`${component.name} — all data-part values documented`, () => {
+		test(`${component.name}: all data-part values documented`, () => {
 			const metadataPartNames = new Set((component.parts ?? []).map((part) => part.name));
 			const missing = uniqueParts.filter((name) => !metadataPartNames.has(name));
 

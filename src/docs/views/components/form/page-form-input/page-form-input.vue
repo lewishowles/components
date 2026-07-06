@@ -115,7 +115,7 @@
 			<component-slot id="slot-prefix">
 				<template #name>prefix</template>
 
-				<p>Any element—text or icon—to place at the start of the field.</p>
+				<p>Any element (text or icon) to place at the start of the field.</p>
 				<p>
 					You can find
 					<router-link v-bind="{ to: 'icons' }">
@@ -126,7 +126,7 @@
 			<component-slot id="slot-suffix">
 				<template #name>suffix</template>
 
-				<p>Any element—text or icon—to place at the end of the field.</p>
+				<p>Any element (text or icon) to place at the end of the field.</p>
 				<p>
 					You can find
 					<router-link v-bind="{ to: 'icons' }">

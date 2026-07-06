@@ -43,7 +43,7 @@
 					Initial values for the form. Pass a plain object to seed the form immediately, or pass an
 					async source such as a query
 					<code>data</code>
-					ref — the form populates once the source first becomes available.
+					ref; the form populates once the source first becomes available.
 				</p>
 			</component-parameter>
 
@@ -159,7 +159,7 @@
 
 				<p>
 					Called with the current form values when validation passes. This is where the async work
-					goes — an API call, a mutation, or similar. Throw to trigger
+					goes: an API call, a mutation, or similar. Throw to trigger
 					<code>onError</code>
 					.
 				</p>
@@ -227,7 +227,7 @@
 				<template #type>Ref&lt;object&gt;</template>
 
 				<p>
-					The current form field values. Destructure this when you need direct access — for example
+					The current form field values. Destructure this when you need direct access, for example
 					to watch for changes or derive computed values from the form state.
 				</p>
 			</component-return>

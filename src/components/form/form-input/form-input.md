@@ -20,7 +20,7 @@ Any additional text to introduce this input, which appears between the label and
 
 ### `prefix` and `suffix`
 
-Any element—text or icon—to place at the start or end of the field.
+Any element (text or icon) to place at the start or end of the field.
 
 You can find [the list of available icons in this project](/src/components/icon/icon.md)
 

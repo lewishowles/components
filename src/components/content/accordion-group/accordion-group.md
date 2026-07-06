@@ -2,7 +2,7 @@
 
 `accordion-group` represents an accordion and is used in conjunction with [`accordion-panel`](/src/components/content/accordion-panel/accordion-panel.md), which represents each panel in the group, to create a set of accessible content.
 
-Accordions are very much like tabs, but display content vertically. Accordions provide a few benefits, one of which is that there isn't really a physical limit to the number of accordion panels, as they’re displayed vertically. To that point, accordion buttons can also have more text explaining their purpose—though this should be kept to an absolute minimum.
+Accordions are very much like tabs, but display content vertically. Accordions provide a few benefits, one of which is that there isn't really a physical limit to the number of accordion panels, as they’re displayed vertically. To that point, accordion buttons can also have more text explaining their purpose, though this should be kept to an absolute minimum.
 
 Another advantage is that multiple (or all) panels can be displayed at once.
 

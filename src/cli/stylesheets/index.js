@@ -32,7 +32,7 @@ export function getSheets() {
 export function buildCopiedFileHeader(filename) {
 	const name = filename.replace(".css", "");
 
-	return `/* Copied from ${PACKAGE_NAME}@${VERSION} — ${filename}. Compare: npx ${PACKAGE_NAME} stylesheet diff ${name} */\n`;
+	return `/* Copied from ${PACKAGE_NAME}@${VERSION}: ${filename}. Compare: npx ${PACKAGE_NAME} stylesheet diff ${name} */\n`;
 }
 
 /**

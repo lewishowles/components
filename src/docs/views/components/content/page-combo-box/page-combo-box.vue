@@ -20,7 +20,7 @@
 				<code>items</code>
 				and render each one through the default slot, so matching and ordering stay with whoever
 				owns the data. This keeps the component agnostic to what each result is, which makes it well
-				suited to a command menu fed by several sources — vehicles, users, pages — each matching
+				suited to a command menu fed by several sources (vehicles, users, pages), each matching
 				itself before the results are combined into one list.
 			</p>
 
@@ -44,7 +44,7 @@
 				<p>
 					The results to display, already matched and ordered by the caller. Each item is rendered
 					through the default slot and emitted as-is when chosen. Results may be merged from several
-					sources without their IDs needing to be unique — each is tracked by its position in the
+					sources without their IDs needing to be unique; each is tracked by its position in the
 					list.
 				</p>
 			</component-prop>

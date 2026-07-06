@@ -99,7 +99,7 @@ import FormSupplementary from "@/components/form/fragments/form-supplementary/fo
 
 const props = defineProps({
 	/**
-	 * The type of input to use for this group—"radio" or "checkbox"
+	 * The type of input to use for this group: "radio" or "checkbox"
 	 */
 	type: {
 		type: String,

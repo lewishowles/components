@@ -48,7 +48,7 @@ The name of the field. This is required when used within a `form-wrapper` compon
 
 Whether this field is required. When `true`, the `required` attribute is added to the underlying input. This is also set automatically when a `required` rule for this field is present in the parent [form-wrapper](/src/components/form/form-wrapper/form-wrapper.md)'s `rules`, but the prop allows explicit control.
 
-Validation rules are not set on `form-field` directly. Define them on the parent `form-wrapper`'s `rules` prop instead — see the [form-wrapper docs](/src/components/form/form-wrapper/form-wrapper.md) for the available rules.
+Validation rules are not set on `form-field` directly. Define them on the parent `form-wrapper`'s `rules` prop instead; see the [form-wrapper docs](/src/components/form/form-wrapper/form-wrapper.md) for the available rules.
 
 ### `inputAttributes`
 

@@ -61,7 +61,7 @@
 				</template>
 
 				<p>
-					Remove every modal from the stack. Intended for internal and testing use only—it clears
+					Remove every modal from the stack. Intended for internal and testing use only; it clears
 					dialogs requested by any component, so avoid it in application code.
 				</p>
 			</component-method>

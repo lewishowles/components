@@ -1,7 +1,7 @@
 // Curated multi-component patterns for the pattern command.
 //
 // stability values:
-//   "illustrative" — hand-crafted starting point; adapt field names, labels,
+//   "illustrative": hand-crafted starting point; adapt field names, labels,
 //                    and validation to your requirements before use.
 export const patterns = [
 	{

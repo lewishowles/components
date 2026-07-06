@@ -275,9 +275,9 @@
 
 				<p>
 					Form-level errors map to the named field, so they display beside the field and appear in
-					the error summary — the error summary link still focuses the correct field. Within a
-					field, errors follow the order of its rules array. Rules re-run on every submit, so
-					resolved errors clear automatically.
+					the error summary; the error summary link still focuses the correct field. Within a field,
+					errors follow the order of its rules array. Rules re-run on every submit, so resolved
+					errors clear automatically.
 				</p>
 			</component-prop>
 
@@ -453,7 +453,7 @@
 
 				<p>
 					The label to use on the submit button. This should be representative of what is about to
-					happen—such as &quot;Create account&quot; or &quot;Update settings&quot;, not something
+					happen, such as &quot;Create account&quot; or &quot;Update settings&quot;, not something
 					generic, and as such
 					<strong>no default label is provided</strong>
 					.
@@ -463,9 +463,9 @@
 				<template #name>secondary-actions</template>
 
 				<p>
-					Additional actions to appear beside the submit button—such as &quot;Save and exit&quot; to
-					come back to the form later. Any actions that relate to a particular field—such as
-					&quot;Add another&quot;—should appear with that field or group of fields, not in the
+					Additional actions to appear beside the submit button, such as &quot;Save and exit&quot;
+					to come back to the form later. Any actions that relate to a particular field, such as
+					&quot;Add another&quot;, should appear with that field or group of fields, not in the
 					actions of the form.
 				</p>
 			</component-slot>
@@ -696,7 +696,7 @@
 				<p>
 					Resets the submit button's loading state. Call this after your
 					<code>@submit</code>
-					handler completes if it does not return a Promise — for example, when the async work is
+					handler completes if it does not return a Promise, for example when the async work is
 					deferred or the result comes back via a separate channel.
 				</p>
 			</component-method>

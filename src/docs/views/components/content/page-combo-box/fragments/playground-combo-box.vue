@@ -10,7 +10,7 @@
 			<p>
 				Type to filter the crew.
 				<code>combo-box</code>
-				never filters itself — here a simple list is matched by name and handed over as
+				never filters itself; here a simple list is matched by name and handed over as
 				<code>items</code>
 				.
 			</p>

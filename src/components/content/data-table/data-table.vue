@@ -485,14 +485,14 @@ function getSortInstruction(columnKey) {
 	const direction = getColumnSortDirection(columnKey);
 
 	if (direction === null) {
-		return "(sortable — activate to sort ascending)";
+		return "(sortable: activate to sort ascending)";
 	}
 
 	if (direction === sortDirections.ASCENDING) {
-		return "(sorted ascending — activate to sort descending)";
+		return "(sorted ascending: activate to sort descending)";
 	}
 
-	return "(sorted descending — activate to sort ascending)";
+	return "(sorted descending: activate to sort ascending)";
 }
 
 // Whether we have any data to display. That is, not only do we have data for

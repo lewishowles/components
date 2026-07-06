@@ -74,7 +74,7 @@
 
 		<p>
 			<code>data-state</code>
-			is used when both states are valid CSS targets — for example, when a panel transitions
+			is used when both states are valid CSS targets, for example when a panel transitions
 			differently on close than on open, or when expanded and collapsed appearances both need
 			explicit styling:
 		</p>

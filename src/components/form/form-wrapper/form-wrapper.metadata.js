@@ -96,7 +96,7 @@ export const formWrapperMetadata = {
 			type: "boolean",
 			default: false,
 			summary:
-				"When true, reduces vertical spacing in the form. Cascades automatically to form-layout and form-fieldset — no prop needed on child components.",
+				"When true, reduces vertical spacing in the form. Cascades automatically to form-layout and form-fieldset; no prop needed on child components.",
 		},
 		{
 			name: "fieldTypes",
@@ -135,7 +135,7 @@ export const formWrapperMetadata = {
 		{
 			name: "submit-errors",
 			summary:
-				"Custom rendering for general submit errors. Scoped with errors: string[] — all general errors from submitErrorsCallback.",
+				"Custom rendering for general submit errors. Scoped with errors: string[]; all general errors from submitErrorsCallback.",
 		},
 		{
 			name: "error-summary-title",

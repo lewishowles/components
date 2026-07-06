@@ -29,7 +29,7 @@ import { useModalDialog } from "@/composables/use-modal-dialog/use-modal-dialog"
 
 const { modals, closeTopModal } = useModalDialog();
 
-// The topmost modal — the one the user is currently interacting with.
+// The topmost modal: the one the user is currently interacting with.
 const currentModal = computed(() => {
 	if (!isNonEmptyArray(modals.value)) {
 		return null;

@@ -18,7 +18,7 @@ const root = fileURLToPath(new URL("..", import.meta.url));
 const { exports: exportMap } = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
 
 // Entries that rely on build-time virtual modules and cannot be imported
-// outside of a Vite context — file existence check only.
+// outside of a Vite context (file existence check only).
 const FILE_CHECK_ONLY = new Set(["./resolver"]);
 
 const failed = [];

@@ -49,7 +49,7 @@
 					<code>"auto"</code>
 					mode (default), arrow keys both move focus and activate the tab. In
 					<code>"manual"</code>
-					mode, arrow keys move focus only — press Enter or Space to activate. Use
+					mode, arrow keys move focus only; press Enter or Space to activate. Use
 					<code>"manual"</code>
 					when activating a tab triggers a data fetch, for example.
 				</p>

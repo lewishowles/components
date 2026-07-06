@@ -1,6 +1,6 @@
 # `none-found`
 
-`none-found` is a convenient way to show an attention-grabbing message to the user. Designed to be used in list contexts when no items can be displayed—either through error or filtering—`none-found` also includes an area for actions, giving the user an important guide to what their next step could be.
+`none-found` is a convenient way to show an attention-grabbing message to the user. Designed to be used in list contexts when no items can be displayed (either through error or filtering), `none-found` also includes an area for actions, giving the user an important guide to what their next step could be.
 
 ## Slots
 

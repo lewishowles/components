@@ -5,7 +5,7 @@ import path from "node:path";
 const componentsRoot = fileURLToPath(new URL("../src/components", import.meta.url));
 
 /**
- * Convert a kebab-case component file name to its PascalCase export name —
+ * Convert a kebab-case component file name to its PascalCase export name:
  * `ui-button` → `UiButton`, `data-table-header` → `DataTableHeader`.
  *
  * @param  {string}  tag

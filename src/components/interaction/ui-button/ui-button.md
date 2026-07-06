@@ -62,7 +62,7 @@ Additional classes to apply to the icon, merged on top of the base styles. Any p
 
 The pressed state of this button, for toggle buttons. When `true` or `false`, `aria-pressed` is set accordingly. When `null` (default), `aria-pressed` is not set and the button behaves as a normal action button.
 
-This is a controlled prop — the consumer owns the state and passes it in. That matters because toggle actions are often async (a mute request might fail), and `aria-pressed` must reflect actual truth, not an optimistic flip.
+This is a controlled prop: the consumer owns the state and passes it in. That matters because toggle actions are often async (a mute request might fail), and `aria-pressed` must reflect actual truth, not an optimistic flip.
 
 The visible label must remain stable across pressed and unpressed states; `aria-pressed` alone conveys the state change to screen reader users.
 

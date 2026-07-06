@@ -127,7 +127,7 @@ const props = defineProps({
 	 * An optional method that maps a rejected submit Promise into an errors
 	 * object. Keys matching registered fields are shown as field errors; other
 	 * keys are surfaced as general errors. Return an empty value for errors the
-	 * form should not handle — they are re-thrown.
+	 * form should not handle; they are re-thrown.
 	 */
 	submitErrorsCallback: {
 		type: Function,
@@ -250,7 +250,7 @@ const props = defineProps({
 	/**
 	 * When true, reduces vertical spacing in the form layout and fieldset
 	 * headings. Cascades automatically to form-layout and form-fieldset via
-	 * provide — no prop needed on child components.
+	 * provide; no prop needed on child components.
 	 */
 	compact: {
 		type: Boolean,
@@ -268,7 +268,7 @@ const props = defineProps({
 	},
 
 	/**
-	 * The form's field values. Seeded once from the initial value passed in —
+	 * The form's field values. Seeded once from the initial value passed in;
 	 * later changes to this prop from outside the form are not reflected.
 	 */
 	modelValue: {

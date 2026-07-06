@@ -88,7 +88,7 @@
 				<template #name>default</template>
 
 				<p>
-					The label of the field. A label is always required — this component will show an error if
+					The label of the field. A label is always required; this component will show an error if
 					none is provided.
 				</p>
 			</component-slot>

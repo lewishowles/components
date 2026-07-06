@@ -29,7 +29,7 @@ export function useChartConfig(segments) {
 		return items;
 	});
 
-	// The extended series — each segment paired with its chart colour.
+	// The extended series: each segment paired with its chart colour.
 	const series = computed(() =>
 		resolvedSegments.value.map((segment, index) => ({
 			color: getColor(index),

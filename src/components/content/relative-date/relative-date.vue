@@ -80,7 +80,7 @@ const dateTimeAttribute = computed(() => {
 	return new Date(dateEpochMilliseconds.value).toISOString();
 });
 
-// The effective comparison date — either the provided `relativeTo` or the
+// The effective comparison date: either the provided `relativeTo` or the
 // current time (which refreshes on an interval).
 const effectiveRelativeTo = computed(() => props.relativeTo ?? currentEpochMilliseconds.value);
 

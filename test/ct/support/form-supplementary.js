@@ -10,7 +10,7 @@ import { expect, test } from "@playwright/experimental-ct-vue";
  * @param  {object}  options
  * @param  {Function}  options.ariaTarget
  *     A function that receives `page` and returns the locator that should carry
- *     `aria-describedby` — typically the input, textarea, or fieldset element.
+ *     `aria-describedby`: typically the input, textarea, or fieldset element.
  * @param  {string}  [options.id="id-abc"]
  *     The `id` prop used when mounting, which drives the help/error element IDs.
  */

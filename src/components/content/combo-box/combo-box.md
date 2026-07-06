@@ -2,7 +2,7 @@
 
 `combo-box` pairs a search input with a list of results, handling the keyboard, ARIA, and open/close behaviour of the combobox interaction pattern on top of the [`useCombobox`](/composables/use-combobox) composable. Arrow keys move through the results, `Enter` chooses the highlighted one, and `Escape` closes the list.
 
-It deliberately does not filter. You pass the already-matched `items` and render each one through the default slot, so matching and ordering stay with whoever owns the data. This keeps the component agnostic to what each result is, which makes it well suited to a command menu fed by several sources — vehicles, users, pages — each matching itself before the results are combined into one list.
+It deliberately does not filter. You pass the already-matched `items` and render each one through the default slot, so matching and ordering stay with whoever owns the data. This keeps the component agnostic to what each result is, which makes it well suited to a command menu fed by several sources (vehicles, users, pages), each matching itself before the results are combined into one list.
 
 Choosing a result emits it through the `select` event.
 
@@ -48,7 +48,7 @@ Replaces the message shown while results are loading.
 - type: `array`
 - default: `[]`
 
-The results to display, already matched and ordered by the caller. Each item is rendered through the default slot and emitted as-is when chosen. Results may be merged from several sources without their IDs needing to be unique — each is tracked by its position in the list.
+The results to display, already matched and ordered by the caller. Each item is rendered through the default slot and emitted as-is when chosen. Results may be merged from several sources without their IDs needing to be unique; each is tracked by its position in the list.
 
 ### `loading`
 

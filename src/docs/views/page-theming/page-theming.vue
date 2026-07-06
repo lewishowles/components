@@ -55,7 +55,7 @@
 		<p>
 			That re-points everything built on
 			<code>--primary-500</code>
-			. To shift the whole palette, override the shades your brand relies on — the colour scales
+			. To shift the whole palette, override the shades your brand relies on; the colour scales
 			section below lists every variable.
 		</p>
 
@@ -111,7 +111,7 @@
 		<h2>Colour scales</h2>
 
 		<p>
-			Every family follows the same pattern —
+			Every family follows the same pattern:
 			<code>--{name}-50</code>
 			through
 			<code>--{name}-950</code>
@@ -395,7 +395,7 @@ const { setTitle } = useTitle();
 
 setTitle("Theming");
 
-// The library's shipped stylesheets — each independently importable for
+// The library's shipped stylesheets, each independently importable for
 // fork-one customisation.
 const stylesheets = [
 	{

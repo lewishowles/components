@@ -34,7 +34,7 @@
 				<template #type>ComputedRef&lt;object[]&gt;</template>
 
 				<p>
-					The extended series — each entry from the input paired with its chart colour. Each object
+					The extended series: each entry from the input paired with its chart colour. Each object
 					contains
 					<code>color</code>
 					(a

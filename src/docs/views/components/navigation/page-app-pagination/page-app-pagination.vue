@@ -209,7 +209,7 @@
 				</template>
 
 				<p>
-					A reactive number reflecting the currently active page. Writable — set it to navigate
+					A reactive number reflecting the currently active page. Writable; set it to navigate
 					directly. Accessible via a
 					<code>ref</code>
 					on the component.
@@ -234,7 +234,7 @@
 				</template>
 
 				<p>
-					A reactive boolean —
+					A reactive boolean:
 					<code>true</code>
 					when there is a next page available. Accessible via a
 					<code>ref</code>
@@ -248,7 +248,7 @@
 				</template>
 
 				<p>
-					A reactive boolean —
+					A reactive boolean:
 					<code>true</code>
 					when there is a previous page available. Accessible via a
 					<code>ref</code>

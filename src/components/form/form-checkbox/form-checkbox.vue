@@ -106,7 +106,7 @@ const props = defineProps({
 
 	/**
 	 * Whether to show optional text when the field is not required. Defaults
-	 * to false — unchecked is always a valid state, making the indicator
+	 * to false; unchecked is always a valid state, making the indicator
 	 * misleading for checkboxes.
 	 */
 	showOptionalIndicator: {

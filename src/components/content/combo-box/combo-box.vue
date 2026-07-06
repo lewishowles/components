@@ -86,9 +86,9 @@
  * keyboard, ARIA, and open/close behaviour of the combobox interaction pattern
  * on top of the `useCombobox` composable.
  *
- * It deliberately does not filter. You pass the already-matched `items` — which
- * may come from a single source or several combined into a command menu — and
- * render each one through the default slot. Choosing a result emits it via the
+ * It deliberately does not filter. You pass the already-matched `items`
+ * (which may come from a single source or several combined into a command
+ * menu) and render each one through the default slot. Choosing a result emits it via the
  * `select` event.
  *
  * The `default` slot renders each result's content.
@@ -308,7 +308,7 @@ function handleFocusin() {
 
 /**
  * Close the results when focus leaves the component. Focus moving to another
- * element within the component — should one ever exist — keeps them open.
+ * element within the component (should one ever exist) keeps them open.
  *
  * @param  {FocusEvent}  event
  */

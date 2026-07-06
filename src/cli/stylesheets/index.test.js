@@ -149,7 +149,7 @@ describe("stripCopiedFileHeader", () => {
 
 	test("Strips only the first line when it matches the pattern", () => {
 		const css =
-			"/* Copied from @lewishowles/components@1.0.0 — buttons.css. Compare: npx @lewishowles/components diff buttons */\n.button { color: red; }\n";
+			"/* Copied from @lewishowles/components@1.0.0: buttons.css. Compare: npx @lewishowles/components diff buttons */\n.button { color: red; }\n";
 
 		expect(stripCopiedFileHeader(css)).toBe(".button { color: red; }\n");
 	});

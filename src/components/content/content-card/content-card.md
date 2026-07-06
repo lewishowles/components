@@ -3,7 +3,7 @@
 `content-card` groups related content in a bordered card. Build it up using the companion components:
 
 - `content-card-header`, a header with title, icon, and additional header slots
-- `content-card-section`, a bordered body section — use multiple sections to divide content
+- `content-card-section`, a bordered body section; use multiple sections to divide content
 - `content-card-columns`, a section variant that arranges `content-card-section` children as side-by-side columns
 - `content-card-footer`, a footer region
 
@@ -53,7 +53,7 @@ No props. Accepts a default slot for section content. Sections stack with collap
 
 ## `content-card-columns`
 
-No props. Place `content-card-section` children inside to arrange them as side-by-side columns with vertical dividers. Sits in the card like a regular section — border collapsing and rounding apply automatically.
+No props. Place `content-card-section` children inside to arrange them as side-by-side columns with vertical dividers. Sits in the card like a regular section; border collapsing and rounding apply automatically.
 
 ## `content-card-footer`
 

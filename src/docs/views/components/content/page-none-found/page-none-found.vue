@@ -6,7 +6,7 @@
 			<p>
 				<code>none-found</code>
 				is a convenient way to show an attention-grabbing message to the user. Designed to be used
-				in list contexts when no items can be displayed—either through error or filtering—
+				in list contexts when no items can be displayed (either through error or filtering),
 				<code>none-found</code>
 				also includes an area for actions, giving the user an important guide to what their next
 				step could be.

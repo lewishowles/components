@@ -188,7 +188,7 @@
 
 			<component-styling-hook id="hook-data-part-track">
 				<template #attribute>data-part="track"</template>
-				<p>The track element — the background behind the filled bar.</p>
+				<p>The track element: the background behind the filled bar.</p>
 			</component-styling-hook>
 
 			<component-styling-hook id="hook-data-part-bar">

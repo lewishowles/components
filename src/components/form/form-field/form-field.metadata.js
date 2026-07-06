@@ -82,7 +82,7 @@ export const formFieldMetadata = {
 		{
 			name: "minimal",
 			label: "Minimal text field",
-			summary: "A text field with only a label, name, and type — the smallest valid usage.",
+			summary: "A text field with only a label, name, and type: the smallest valid usage.",
 			snippet: {
 				slots: {
 					default: {

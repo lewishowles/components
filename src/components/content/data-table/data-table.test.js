@@ -658,7 +658,7 @@ describe("data-table", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.getSortInstruction("title")).toBe("(sortable — activate to sort ascending)");
+				expect(vm.getSortInstruction("title")).toBe("(sortable: activate to sort ascending)");
 			});
 
 			test("describes the ascending state and offers descending", () => {
@@ -669,7 +669,7 @@ describe("data-table", () => {
 				vm.sortDirection = "ascending";
 
 				expect(vm.getSortInstruction("title")).toBe(
-					"(sorted ascending — activate to sort descending)",
+					"(sorted ascending: activate to sort descending)",
 				);
 			});
 
@@ -681,7 +681,7 @@ describe("data-table", () => {
 				vm.sortDirection = "descending";
 
 				expect(vm.getSortInstruction("title")).toBe(
-					"(sorted descending — activate to sort ascending)",
+					"(sorted descending: activate to sort ascending)",
 				);
 			});
 		});

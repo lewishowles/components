@@ -6,7 +6,7 @@ const defaultProps = { id: "id-abc" };
 const mount = createMount(FormLabel, { props: defaultProps });
 
 // Provide a minimal form-wrapper context so the optional indicator renders
-// inside a form. Use an empty object — form-label only checks for presence.
+// inside a form. Use an empty object; form-label only checks for presence.
 const formWrapperContext = {};
 
 const mountInForm = createMount(FormLabel, {

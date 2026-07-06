@@ -39,7 +39,7 @@ export const baseModalMetadata = {
 			name: "inert",
 			type: "boolean",
 			default: false,
-			summary: "Make the dialog inert — visible but not interactive. Used when stacking modals.",
+			summary: "Make the dialog inert: visible but not interactive. Used when stacking modals.",
 		},
 	],
 	slots: [

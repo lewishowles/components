@@ -117,7 +117,7 @@ const props = defineProps({
 	 * or `false`, `aria-pressed` is set accordingly. When `null` (default),
 	 * `aria-pressed` is not set and the button behaves as a normal action button.
 	 *
-	 * This is a controlled prop — the consumer owns the state and passes it in.
+	 * This is a controlled prop: the consumer owns the state and passes it in.
 	 * That matters because toggle actions are often async (a mute request might
 	 * fail), and `aria-pressed` must reflect actual truth, not an optimistic flip.
 	 *

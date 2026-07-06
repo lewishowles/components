@@ -145,8 +145,8 @@ When `true`, reduces vertical spacing in the form. The change cascades automatic
 
 Field type transformations applied to submitted form data, keyed by field name. Each value is one of `nullable-number` or `nullable-string`:
 
-- `nullable-number` — `""`/`null`/`undefined` → `null`, else `Number(value)` (`NaN` → `null`)
-- `nullable-string` — `""` → `null`, else kept as-is
+- `nullable-number`: `""`/`null`/`undefined` → `null`, else `Number(value)` (`NaN` → `null`)
+- `nullable-string`: `""` → `null`, else kept as-is
 
 See [`useFormData`](/src/composables/use-form-data/use-form-data.js) for the equivalent init-side coercion.
 
@@ -263,9 +263,9 @@ The escape hatch for any constraint the declarative rules can't express, includi
 
 A rule entry can also be a function `(value, formData)` instead of an object. The return value determines the outcome:
 
-- `true` or any truthy non-string — valid.
-- A non-empty string — invalid; the string is used as the error message.
-- A non-empty array of strings — invalid; each string becomes an error message.
+- `true` or any truthy non-string: valid.
+- A non-empty string: invalid; the string is used as the error message.
+- A non-empty array of strings: invalid; each string becomes an error message.
 
 #### Error order
 
@@ -309,11 +309,11 @@ The `default` slot contains the content of the form itself, including any fields
 
 ### `submit-button-label`
 
-The label to use on the submit button. This should be representative of what is about to happen—such as "Create account" or "Update settings", not something generic, and as such **no default label is provided**.
+The label to use on the submit button. This should be representative of what is about to happen, such as "Create account" or "Update settings", not something generic, and as such **no default label is provided**.
 
 ### `secondary-actions`
 
-Additional actions to appear beside the submit button—such as "Save and exit" to come back to the form later. Any actions that relate to a particular field—such as "Add another"—should appear with that field or group of fields, not in the actions of the form.
+Additional actions to appear beside the submit button, such as "Save and exit" to come back to the form later. Any actions that relate to a particular field (such as "Add another") should appear with that field or group of fields, not in the actions of the form.
 
 ### `tertiary-actions`
 
@@ -335,7 +335,7 @@ The title of the error summary that appears if any errors are found in the form.
 
 ### `actions-label`
 
-An optional visually hidden label for the form's action group, threaded into `form-actions` via `aria-labelledby`. Omit it for most forms — a single action group doesn't need a label. Provide one when the form has multiple action groups that need to be distinguished (e.g. primary actions alongside a "danger zone"), or in complex layouts where the group's purpose may not be obvious from context.
+An optional visually hidden label for the form's action group, threaded into `form-actions` via `aria-labelledby`. Omit it for most forms; a single action group doesn't need a label. Provide one when the form has multiple action groups that need to be distinguished (e.g. primary actions alongside a "danger zone"), or in complex layouts where the group's purpose may not be obvious from context.
 
 ## Events
 
@@ -351,7 +351,7 @@ The current values of each of the `form-field` elements contained within the for
 
 ### `resetSubmitButton`
 
-Resets the submit button's loading state. Call this after your `@submit` handler completes if it does not return a Promise — for example, when the async work is deferred or the result comes back via a separate channel.
+Resets the submit button's loading state. Call this after your `@submit` handler completes if it does not return a Promise, for example when the async work is deferred or the result comes back via a separate channel.
 
 ## Provide
 

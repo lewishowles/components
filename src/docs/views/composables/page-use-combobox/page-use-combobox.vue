@@ -10,7 +10,7 @@
 			</p>
 
 			<p>
-				It owns the state and behaviour only—you provide the markup. Spread the returned attribute
+				It owns the state and behaviour only; you provide the markup. Spread the returned attribute
 				objects onto your input, listbox, and option elements, pass the ordered list of option IDs
 				as
 				<code>options</code>

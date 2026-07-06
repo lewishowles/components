@@ -25,7 +25,7 @@
 			This library helps improve accessibility in two primary ways; the first by implementing the
 			components with accessibility in mind, so a developer can be confident out of the box; and the
 			second by using the documentation to help promote the mindset of accessibility. In addition,
-			some components show visible errors if standards are not met—such as form fields requiring
+			some components show visible errors if standards are not met, such as form fields requiring
 			labels.
 		</p>
 

@@ -26,7 +26,7 @@
 					One of its most profound contributions is the Pale Blue Dot image, captured in 1990 at the
 					request of astronomer Carl Sagan. This photograph, taken from about 3.7 billion miles
 					away, depicts Earth as a mere speck within the vastness of space. It serves as a reminder
-					of humanity's place within the universe—both insignificant in scale yet uniquely capable
+					of humanity's place within the universe, both insignificant in scale yet uniquely capable
 					of exploration and understanding.
 				</p>
 
@@ -81,7 +81,7 @@ const additionalContent = useTemplateGenerator("div", {
 			slots: {
 				default: {
 					value:
-						"One of its most profound contributions is the Pale Blue Dot image, captured in 1990 at the request of astronomer Carl Sagan. This photograph, taken from about 3.7 billion miles away, depicts Earth as a mere speck within the vastness of space. It serves as a reminder of humanity's place within the universe—both insignificant in scale yet uniquely capable of exploration and understanding.",
+						"One of its most profound contributions is the Pale Blue Dot image, captured in 1990 at the request of astronomer Carl Sagan. This photograph, taken from about 3.7 billion miles away, depicts Earth as a mere speck within the vastness of space. It serves as a reminder of humanity's place within the universe, both insignificant in scale yet uniquely capable of exploration and understanding.",
 				},
 			},
 			indent: 1,

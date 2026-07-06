@@ -13,7 +13,7 @@
 				Accordions are very much like tabs, but display content vertically. Accordions provide a few
 				benefits, one of which is that there isn't really a physical limit to the number of
 				accordion panels, as they’re displayed vertically. To that point, accordion buttons can also
-				have more text explaining their purpose—though this should be kept to an absolute minimum.
+				have more text explaining their purpose, though this should be kept to an absolute minimum.
 			</p>
 			<p>Another advantage is that multiple (or all) panels can be displayed at once.</p>
 			<p>

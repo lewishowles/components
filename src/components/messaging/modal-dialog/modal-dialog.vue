@@ -75,7 +75,7 @@ const descriptionId = useId();
 const haveTitle = computed(() => isNonEmptySlot(slots.title));
 // Whether we have content for the actions slot.
 const haveActions = computed(() => isNonEmptySlot(slots.actions));
-// The ARIA role override — "alertdialog" for alert variants, null otherwise
+// The ARIA role override: "alertdialog" for alert variants, null otherwise
 // (preserving the native implicit "dialog" role).
 const dialogRole = computed(() => (props.variant === "alert" ? "alertdialog" : null));
 // aria-labelledby points to the title element when a title slot is populated.

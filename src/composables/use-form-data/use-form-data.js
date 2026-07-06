@@ -42,7 +42,7 @@ export function normaliseForInitialisation(data, fieldTypes) {
  *     The picked (and optionally renamed) form data object.
  */
 function resolveFields(value, fields) {
-	// No fields specified — nothing to pick.
+	// No fields specified; nothing to pick.
 	if (!fields) {
 		return {};
 	}

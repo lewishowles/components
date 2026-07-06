@@ -70,7 +70,7 @@
 
 				<p>
 					The values to display. If any value is not a number, or is negative, no chart will be
-					generated. Kept for backwards compatibility — prefer
+					generated. Kept for backwards compatibility; prefer
 					<code>segments</code>
 					for new usage.
 				</p>
