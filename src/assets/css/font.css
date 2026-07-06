@@ -24,6 +24,7 @@
 	font-family: "IBM Plex Mono";
 	font-style: normal;
 	font-weight: 400;
+	font-display: swap;
 	src: url("../fonts/IBMPlexMono-Regular.woff2") format("woff2");
 }
 
@@ -31,5 +32,6 @@
 	font-family: "IBM Plex Mono";
 	font-style: normal;
 	font-weight: 600;
+	font-display: swap;
 	src: url("../fonts/IBMPlexMono-Bold.woff2") format("woff2");
 }
