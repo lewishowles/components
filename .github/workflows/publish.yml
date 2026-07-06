@@ -36,11 +36,11 @@ jobs:
       - name: Lint
         run: bun run lint
 
-      - name: Run unit tests
-        run: bun run test:unit
-
       - name: Build package
         run: bun run build
+
+      - name: Run unit tests
+        run: bun run test:unit
 
       - name: Check package exports
         run: bun run publint
