@@ -14,7 +14,11 @@
 <script setup>
 import { computed, ref, useSlots, watch } from "vue";
 import { getSlotText } from "@lewishowles/helpers/vue";
-import { normaliseCodeText, renderCodeHtml } from "@/docs/helpers/code-highlighter.js";
+import {
+	normaliseCodeText,
+	renderCodeHtml,
+	renderFallbackHtml,
+} from "@/docs/helpers/code-highlighter.js";
 
 const props = defineProps({
 	/**
@@ -35,7 +39,6 @@ const props = defineProps({
 });
 
 const slots = useSlots();
-const codeHtml = ref("");
 
 // The text from the default slot.
 const defaultText = computed(() => getSlotText(slots.default));
@@ -46,6 +49,10 @@ const haveDefaultText = computed(() => defaultText.value.trim().length > 0);
 const textToDisplay = computed(() =>
 	normaliseCodeText(haveDefaultText.value ? defaultText.value : props.code),
 );
+
+// Show unhighlighted code immediately so the block is never empty while
+// Shiki loads off the critical path.
+const codeHtml = ref(renderFallbackHtml(textToDisplay.value, props.language));
 
 let highlightRequestId = 0;
 

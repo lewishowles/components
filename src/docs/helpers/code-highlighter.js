@@ -1,4 +1,3 @@
-import { codeToHtml } from "shiki/bundle/web";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 const codeTheme = "github-dark-default";
@@ -38,8 +37,25 @@ export function normaliseCodeText(code) {
 }
 
 /**
+ * Render an unhighlighted fallback synchronously, so a code block has
+ * immediate content while Shiki loads off the critical path.
+ *
+ * @param  {string}  code
+ *     The code sample to render.
+ * @param  {string|null}  language
+ *     The requested language.
+ * @returns {string}
+ */
+export function renderFallbackHtml(code, language) {
+	const resolvedLanguage = resolveLanguage(code, language);
+
+	return renderPlainCodeHtml(code, resolvedLanguage);
+}
+
+/**
  * Render a code sample as highlighted HTML, with an escaped fallback for plain
- * text or unsupported languages.
+ * text or unsupported languages. Shiki is loaded lazily so it does not sit on
+ * the critical path for the docs app.
  *
  * @param  {string}  code
  *     The code sample to render.
@@ -55,6 +71,8 @@ export async function renderCodeHtml(code, language) {
 	}
 
 	try {
+		const { codeToHtml } = await import("shiki/bundle/web");
+
 		return await codeToHtml(code, {
 			lang: resolvedLanguage,
 			theme: codeTheme,
