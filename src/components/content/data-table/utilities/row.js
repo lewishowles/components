@@ -42,7 +42,7 @@ export function getRawRow(row) {
 export function getRowContent(row, columnKey) {
 	const cell = getPathValue(row, `content.${columnKey}.content`);
 
-	if (!isNonEmptyString(cell) && !isNumber(cell)) {
+	if (!isNonEmptyString(cell) && !isNumber(cell) && typeof cell !== "boolean") {
 		return "";
 	}
 

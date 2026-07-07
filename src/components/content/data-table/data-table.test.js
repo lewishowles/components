@@ -584,10 +584,26 @@ describe("data-table", () => {
 				expect(content).toEqual("Toy Story");
 			});
 
-			describe("should ignore invalid cell content", () => {
+			describe("should correctly retrieve supported values", () => {
 				test.for([
 					["boolean (true)", true],
 					["boolean (false)", false],
+					["number (positive)", 1],
+					["number (negative)", -1],
+					["string (non-empty)", "string"],
+				])("%s", ([, input]) => {
+					const wrapper = mount({ data: [{ id: input }] });
+					const vm = wrapper.vm;
+
+					const row = vm.internalData[0];
+					const content = vm.getRowContent(row, "id");
+
+					expect(content).toEqual(input);
+				});
+			});
+
+			describe("should ignore invalid cell content", () => {
+				test.for([
 					["number (NaN)", NaN],
 					["string (empty)", ""],
 					["object (non-empty)", { property: "value" }],

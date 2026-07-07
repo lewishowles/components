@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Fixes
+
+- `data-table` no longer discards boolean cell values
+
 ## 2.5.0 - 2026-07-06
 
 ### Breaking changes
