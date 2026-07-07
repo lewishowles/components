@@ -2,7 +2,7 @@
 	<div
 		:class="
 			cn(
-				'border-border flex flex-row border first:rounded-t-xl last:rounded-b-xl [&:not(:first-child)]:border-t-0',
+				'border-border flex flex-row border not-first:border-t-0 first:rounded-t-xl last:rounded-b-xl',
 				attributes.class,
 			)
 		"

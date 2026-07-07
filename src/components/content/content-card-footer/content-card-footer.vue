@@ -2,7 +2,7 @@
 	<div
 		:class="
 			cn(
-				'border-border flex items-center gap-4 border px-6 py-4 text-sm first:rounded-t-xl last:rounded-b-xl [&:not(:first-child)]:border-t-0',
+				'border-border flex items-center gap-4 border px-[1em] py-[0.75em] text-sm not-first:border-t-0 first:rounded-t-xl last:rounded-b-xl',
 				attributes.class,
 			)
 		"

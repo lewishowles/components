@@ -2,7 +2,7 @@
 	<div
 		:class="
 			cn(
-				'border-border border px-6 py-4 first:rounded-t-xl last:rounded-b-xl [&:not(:first-child)]:border-t-0',
+				'border-border border px-[1em] py-[0.75em] not-first:border-t-0 first:rounded-t-xl last:rounded-b-xl',
 				attributes.class,
 			)
 		"
@@ -12,7 +12,7 @@
 		data-test="content-card-header"
 	>
 		<slot name="header">
-			<div class="flex items-center justify-between gap-14">
+			<div class="flex items-center justify-between gap-4">
 				<div v-if="haveTitleArea" class="flex items-center justify-between gap-2">
 					<div v-if="haveIcon" :class="iconClasses" data-test="content-card-icon">
 						<slot name="icon" />
