@@ -10,7 +10,7 @@ export const patterns = [
 		category: "form",
 		summary: "Name, email address, and message with a submit button.",
 		stability: "illustrative",
-		template: `<form-wrapper v-model="form" :rules="{ name: [{ rule: 'required' }], email: [{ rule: 'required' }, { rule: 'email' }], message: [{ rule: 'required' }] }" @submit="handleSubmit">
+		template: `<form-wrapper v-bind="form" :rules="{ name: [{ rule: 'required' }], email: [{ rule: 'required' }, { rule: 'email' }], message: [{ rule: 'required' }] }">
   <form-field name="name">
     Full name
   </form-field>
@@ -32,7 +32,7 @@ export const patterns = [
 		category: "form",
 		summary: "Email address and password with a submit button.",
 		stability: "illustrative",
-		template: `<form-wrapper v-model="form" :rules="{ email: [{ rule: 'required' }, { rule: 'email' }], password: [{ rule: 'required' }] }" @submit="handleSubmit">
+		template: `<form-wrapper v-bind="form" :rules="{ email: [{ rule: 'required' }, { rule: 'email' }], password: [{ rule: 'required' }] }">
   <form-field name="email" type="email">
     Email address
   </form-field>
@@ -50,7 +50,7 @@ export const patterns = [
 		category: "form",
 		summary: "A named settings section with a save button and cancel link.",
 		stability: "illustrative",
-		template: `<form-wrapper v-model="form" :rules="{ displayName: [{ rule: 'required' }], email: [{ rule: 'required' }, { rule: 'email' }] }" @submit="handleSubmit">
+		template: `<form-wrapper v-bind="form" :rules="{ displayName: [{ rule: 'required' }], email: [{ rule: 'required' }, { rule: 'email' }] }">
   <form-field name="displayName">
     Display name
   </form-field>
