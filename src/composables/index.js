@@ -1,5 +1,6 @@
 export { useChartConfig } from "./use-chart-config/use-chart-config.js";
 export { useCombobox } from "./use-combobox/use-combobox.js";
+export { useFilteredItems } from "./use-filtered-items/use-filtered-items.js";
 export { useFlashMessages } from "./use-flash-messages/use-flash-messages.js";
 export { useFloatingPosition } from "./use-floating-position/use-floating-position.js";
 export { installUnsavedChangesGuard } from "./use-form/install-unsaved-changes-guard.js";

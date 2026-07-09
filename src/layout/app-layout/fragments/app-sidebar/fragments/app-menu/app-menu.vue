@@ -108,6 +108,7 @@
 					<template #title>Composables</template>
 
 					<app-menu-link to="/composables/use-combobox">useCombobox</app-menu-link>
+					<app-menu-link to="/composables/use-filtered-items">useFilteredItems</app-menu-link>
 					<app-menu-link to="/composables/use-floating-position">useFloatingPosition</app-menu-link>
 					<app-menu-link to="/composables/use-flash-messages">useFlashMessages</app-menu-link>
 					<app-menu-link to="/composables/use-form">useForm</app-menu-link>

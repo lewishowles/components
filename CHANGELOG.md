@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### `useFilteredItems`
+
+A new composable for filtering a reactive item list by exact property matches, including nested paths and array-of-values matching. Returns the filtered `items`, a `count`, and a `have` flag for empty-state checks.
+
 ### Fixes
 
 - `data-table` no longer discards boolean cell values
