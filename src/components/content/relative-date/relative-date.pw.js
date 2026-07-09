@@ -25,6 +25,16 @@ test.describe("relative-date", () => {
 		await expect(page.getByTestId("relative-date")).toHaveText("30 seconds ago");
 	});
 
+	test("named relative dates are capitalised by default", async ({ mount, page }) => {
+		await mountRelativeDate(mount, {
+			props: {
+				date: "2025-03-28T13:14:20",
+			},
+		});
+
+		await expect(page.getByTestId("relative-date")).toHaveText("Yesterday");
+	});
+
 	test("a machine-readable datetime is provided", async ({ mount, page }) => {
 		await mountRelativeDate(mount);
 

@@ -5,7 +5,7 @@
 		data-test="relative-date"
 	>
 		<template v-if="relativeDateParts?.value === 0">
-			<slot v-bind="relativeDateParts">Just now</slot>
+			<slot v-bind="currentTimeSlotProps">Just now</slot>
 		</template>
 
 		<template v-else>{{ relativeDate }}</template>
@@ -14,9 +14,18 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from "vue";
-import { toEpochMilliseconds, getRelativeDateParts } from "@lewishowles/helpers/date";
+import { getRelativeDateParts, toEpochMilliseconds } from "@lewishowles/helpers/date";
+import { capitalise as capitaliseString } from "@lewishowles/helpers/string";
 
 const props = defineProps({
+	/**
+	 * Whether to capitalise the generated relative date.
+	 */
+	capitalise: {
+		type: Boolean,
+		default: true,
+	},
+
 	/**
 	 * The date to describe. Supports epoch millisecond timestamps, Date,
 	 * Temporal date objects, or a string date in RFC 9557 format.
@@ -79,9 +88,9 @@ const dateTimeAttribute = computed(() => {
 
 	return new Date(dateEpochMilliseconds.value).toISOString();
 });
-
 // The effective comparison date: either the provided `relativeTo` or the
 // current time (which refreshes on an interval).
+
 const effectiveRelativeTo = computed(() => props.relativeTo ?? currentEpochMilliseconds.value);
 
 // The raw relative date parts, used both for the "Just now" slot check and for
@@ -96,6 +105,12 @@ const relativeDateParts = computed(() => {
 	}
 });
 
+// The state exposed to consumers replacing the current-time label.
+const currentTimeSlotProps = computed(() => ({
+	...relativeDateParts.value,
+	capitalise: props.capitalise,
+}));
+
 // The relative date string for display.
 const relativeDate = computed(() => {
 	if (relativeDateParts.value === null) {
@@ -107,8 +122,9 @@ const relativeDate = computed(() => {
 	});
 
 	const { unit, value } = relativeDateParts.value;
+	const formattedRelativeDate = formatter.format(value, unit);
 
-	return formatter.format(value, unit);
+	return props.capitalise ? capitaliseString(formattedRelativeDate) : formattedRelativeDate;
 });
 
 // Set up our interval to keep a relative date in sync, instead of static.

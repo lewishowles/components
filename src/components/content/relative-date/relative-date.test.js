@@ -19,6 +19,38 @@ describe("relative-date", () => {
 		});
 	});
 
+	describe("Render contracts", () => {
+		test("Keeps the current-time fallback in the default slot", () => {
+			const wrapper = mount({ date: relativeTo });
+
+			expect(wrapper.text()).toBe("Just now");
+		});
+
+		test("Exposes capitalise to the current-time slot", () => {
+			let receivedProps = null;
+
+			mount({
+				props: {
+					capitalise: false,
+					date: relativeTo,
+				},
+				slots: {
+					default: (slotProps) => {
+						receivedProps = slotProps;
+
+						return "translated current time";
+					},
+				},
+			});
+
+			expect(receivedProps).toMatchObject({
+				capitalise: false,
+				unit: "second",
+				value: 0,
+			});
+		});
+	});
+
 	describe("Computed", () => {
 		describe("relativeDate", () => {
 			test("Returns seconds ago for dates less than 60 seconds ago", () => {
@@ -60,14 +92,14 @@ describe("relative-date", () => {
 				const wrapper = mount({ date: "2025-03-28T13:14:20" });
 				const vm = wrapper.vm;
 
-				expect(vm.relativeDate).toBe("yesterday");
+				expect(vm.relativeDate).toBe("Yesterday");
 			});
 
 			test("Does not round one day ago up to two days ago", () => {
 				const wrapper = mount({ date: "2025-03-27T13:16:20" });
 				const vm = wrapper.vm;
 
-				expect(vm.relativeDate).toBe("yesterday");
+				expect(vm.relativeDate).toBe("Yesterday");
 			});
 
 			test("Returns two days ago after 48 hours", () => {
@@ -81,28 +113,39 @@ describe("relative-date", () => {
 				const wrapper = mount({ date: "2025-02-27T13:15:20" });
 				const vm = wrapper.vm;
 
-				expect(vm.relativeDate).toBe("last month");
+				expect(vm.relativeDate).toBe("Last month");
 			});
 
 			test("Returns years ago after 365 days", () => {
 				const wrapper = mount({ date: "2024-03-29T13:15:20" });
 				const vm = wrapper.vm;
 
-				expect(vm.relativeDate).toBe("last year");
+				expect(vm.relativeDate).toBe("Last year");
+			});
+
+			test("Allows capitalisation to be disabled", () => {
+				const wrapper = mount({
+					capitalise: false,
+					date: "2025-03-28T13:14:20",
+				});
+
+				const vm = wrapper.vm;
+
+				expect(vm.relativeDate).toBe("yesterday");
 			});
 
 			test("Returns future relative dates", () => {
 				const wrapper = mount({ date: "2025-03-29T13:16:20" });
 				const vm = wrapper.vm;
 
-				expect(vm.relativeDate).toBe("in 1 minute");
+				expect(vm.relativeDate).toBe("In 1 minute");
 			});
 
 			test("Allows a custom locale to be provided", () => {
 				const wrapper = mount({ date: "2025-03-29T13:14:20", locale: "de-DE" });
 				const vm = wrapper.vm;
 
-				expect(vm.relativeDate).toBe("vor 1 Minute");
+				expect(vm.relativeDate).toBe("Vor 1 Minute");
 			});
 
 			test("Returns null for unsupported dates", () => {

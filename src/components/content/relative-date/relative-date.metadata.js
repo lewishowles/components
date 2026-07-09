@@ -5,6 +5,12 @@ export const relativeDateMetadata = {
 	summary: "A live relative-time label for a date.",
 	props: [
 		{
+			name: "capitalise",
+			type: "boolean",
+			default: true,
+			summary: "Whether to capitalise the generated relative date.",
+		},
+		{
 			name: "date",
 			type: "string | number | Date",
 			required: true,
@@ -27,6 +33,12 @@ export const relativeDateMetadata = {
 			type: "number",
 			default: 1000,
 			summary: "Interval in milliseconds for refreshing the label.",
+		},
+	],
+	slots: [
+		{
+			name: "default",
+			summary: "Current-time label; receives value, unit, and capitalise.",
 		},
 	],
 	examples: [],
