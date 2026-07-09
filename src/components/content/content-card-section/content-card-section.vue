@@ -1,16 +1,6 @@
 <template>
 	<div
-		:class="
-			cn(
-				{
-					'not-first:border-border flex flex-1 flex-col justify-center p-[1em] not-first:border-l':
-						inColumns,
-					'border-border flex flex-col justify-center border p-[1em] not-first:border-t-0 first:rounded-t-xl last:rounded-b-xl':
-						!inColumns,
-				},
-				attributes.class,
-			)
-		"
+		:class="sectionClasses"
 		v-bind="attrsWithoutClass"
 		data-component="content-card-section"
 		data-part="section"
@@ -39,4 +29,17 @@ const attrsWithoutClass = computed(() => {
 
 	return rest;
 });
+
+// The classes applied to the section root, varying by column layout.
+const sectionClasses = computed(() =>
+	cn(
+		{
+			"not-first:border-border flex flex-1 flex-col justify-center p-[1em] not-first:border-l":
+				inColumns,
+			"border-border flex flex-col justify-center border p-[1em] not-first:border-t-0 first:rounded-t-xl last:rounded-b-xl":
+				!inColumns,
+		},
+		attributes.class,
+	),
+);
 </script>
