@@ -100,11 +100,6 @@ interface UseFormReturn {
 	getSubmitData: () => Record<string, unknown>;
 }
 
-export declare function normaliseForSubmit(
-	data: Record<string, unknown>,
-	fieldTypes: Record<string, FieldType>,
-): Record<string, unknown>;
-
 export declare function useForm<T = unknown>(options: UseFormOptions<T>): UseFormReturn;
 
 interface RouterLike {

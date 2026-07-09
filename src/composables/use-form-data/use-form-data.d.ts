@@ -7,11 +7,6 @@ type FormDataOptions<T> = {
 	fieldTypes?: Record<string, FieldType>;
 };
 
-export declare function normaliseForInitialisation(
-	data: Record<string, unknown>,
-	fieldTypes: Record<string, FieldType>,
-): Record<string, unknown>;
-
 export declare function useFormData<T>(
 	source: Ref<T | null | undefined>,
 	mapper: (value: T) => Record<string, unknown>,
