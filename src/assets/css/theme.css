@@ -52,6 +52,7 @@
  * without a rebuild. e.g. :root { --primary-500: oklch(0.6 0.2 250); }
  */
 :root {
+	color-scheme: light dark;
 	--primary-50: var(--color-purple-50);
 	--primary-100: var(--color-purple-100);
 	--primary-200: var(--color-purple-200);
@@ -257,6 +258,7 @@
  * Semantic roles (dark mode)
  */
 :where(.dark, .dark *) {
+	color-scheme: dark;
 	--primary-fill: var(--primary-500);
 	--primary-text: var(--primary-300);
 	--primary-subtle: color-mix(in oklab, var(--primary-500) 50%, transparent);
