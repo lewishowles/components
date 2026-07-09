@@ -27,6 +27,36 @@ export const patterns = [
 </form-wrapper>`,
 	},
 	{
+		name: "data-table-list",
+		label: "Data table list",
+		category: "table",
+		summary:
+			"An async-loaded data table with a loading state, last-updated timestamp, and refresh button.",
+		stability: "illustrative",
+		template: `<loading-indicator v-if="isInitialLoading" large>
+  Loading users…
+</loading-indicator>
+
+<template v-else-if="isReady">
+  <data-table name="users" :data="users" :columns="columns">
+    <template #search-label>Search users</template>
+    <template #search-introduction>Find a user</template>
+    <template #no-data-message>No users to display</template>
+  </data-table>
+
+  <div class="mt-10 flex items-center justify-end gap-4 text-sm">
+    <p class="flex shrink-0 flex-col items-end">
+      <span>Last updated</span>
+      <relative-date :date="lastFetched" />
+    </p>
+
+    <ui-button class="button--muted" icon-start="icon-reload" reactive @click="refetch">
+      Refresh
+    </ui-button>
+  </div>
+</template>`,
+	},
+	{
 		name: "login-form",
 		label: "Login form",
 		category: "form",
