@@ -89,6 +89,12 @@
 			"label": "Documentation page"
 		},
 		{
+			"template": "component.metadata.js",
+			"output_path": "{{ CATEGORY }}/{{ NAME | kebab }}/{{ NAME | kebab }}.metadata.js",
+			"required": false,
+			"label": "Metadata"
+		},
+		{
 			"template": "component-docs-page.vue",
 			"output_path": "../docs/views/components/{{ CATEGORY }}/page-{{ NAME | kebab }}/page-{{ NAME | kebab }}.vue",
 			"required": false,

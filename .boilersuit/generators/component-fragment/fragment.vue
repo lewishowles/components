@@ -9,8 +9,6 @@
  * [Describe what this component does.]
  */
 
-import { ref } from "vue";
-
 defineProps({
 	/**
 	 * [Describe what this prop controls.]

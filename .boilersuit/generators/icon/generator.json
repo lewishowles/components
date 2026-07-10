@@ -2,7 +2,7 @@
 	"schema_version": 1,
 	"id": "icon",
 	"display_name": "Icon",
-	"description": "Creates a library icon component with unit and Playwright component tests.",
+	"description": "Creates a library icon component with a unit test.",
 	"default_path": "src/components/icon",
 	"fields": [
 		{
@@ -30,15 +30,6 @@
 			"template": "icon.test.js",
 			"output_path": "{{ NAME | kebab }}/{{ NAME | kebab }}.test.js",
 			"required": true
-		},
-		{
-			"template": "icon.pw.js",
-			"output_path": "{{ NAME | kebab }}/{{ NAME | kebab }}.pw.js",
-			"required": false,
-			"label": "Playwright component test",
-			"include_when": {
-				"test_framework": "playwright"
-			}
 		}
 	]
 }
