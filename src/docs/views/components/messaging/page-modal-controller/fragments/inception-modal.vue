@@ -1,21 +1,23 @@
 <template>
-	<div class="flex flex-col gap-4">
-		<p class="text-4xl font-bold">#{{ modalId }}</p>
+	<modal-dialog v-bind="{ inert }" @dialog:close="onClose?.()">
+		<template #title>#{{ modalId }}</template>
 
-		<p>
-			Multiple copies of this modal dialog can be opened to display the last-in first-out system.
-		</p>
+		<div class="flex flex-col gap-4">
+			<p>
+				Multiple copies of this modal dialog can be opened to display the last-in first-out system.
+			</p>
 
-		<form-field type="text">
-			Text input
+			<form-field type="text">
+				Text input
 
-			<template #help>
-				The text in this input should persist when further modals are closed.
-			</template>
-		</form-field>
+				<template #help>
+					The text in this input should persist when further modals are closed.
+				</template>
+			</form-field>
 
-		<ui-button class="button--primary self-start" @click="displayModal">Open another</ui-button>
-	</div>
+			<ui-button class="button--primary self-start" @click="displayModal">Open another</ui-button>
+		</div>
+	</modal-dialog>
 </template>
 
 <script setup>
@@ -30,6 +32,23 @@ const props = defineProps({
 	modalId: {
 		type: Number,
 		default: 1,
+	},
+
+	/**
+	 * Whether this modal is inert, provided by modal-controller when a modal
+	 * further up the stack is currently active.
+	 */
+	inert: {
+		type: Boolean,
+		default: false,
+	},
+
+	/**
+	 * Called when this modal should close, provided by modal-controller.
+	 */
+	onClose: {
+		type: Function,
+		default: null,
 	},
 });
 

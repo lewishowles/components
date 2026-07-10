@@ -22,7 +22,7 @@ function closeDialog() {
 			Open dialog
 		</ui-button>
 
-		<modal-dialog ref="dialogComponent">
+		<modal-dialog ref="dialogComponent" :initially-open="false">
 			<template #title>Confirm action</template>
 
 			<ui-button data-test="modal-dialog-interaction-test-confirm">Confirm</ui-button>

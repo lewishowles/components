@@ -7,7 +7,7 @@ export const modalDialogMetadata = {
 		{
 			name: "initiallyOpen",
 			type: "boolean",
-			default: false,
+			default: true,
 			summary: "Open the dialog when it mounts.",
 		},
 		{
@@ -23,6 +23,13 @@ export const modalDialogMetadata = {
 			values: ["dialog", "alert"],
 			summary:
 				'Dialog variant. `alert` renders role="alertdialog" for dialogs that require an immediate response.',
+		},
+		{
+			name: "inert",
+			type: "boolean",
+			default: false,
+			summary:
+				"Whether this dialog is inert (disabled and not interactive). Forwarded to base-modal, for use when stacking modals via modal-controller.",
 		},
 	],
 	slots: [

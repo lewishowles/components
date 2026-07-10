@@ -20,21 +20,18 @@
 			</p>
 
 			<p>
-				To simplify the creation of modal dialogs that share a visual style, there are a number of
-				companion components, including:
+				Each component opened via
+				<code>openModal</code>
+				must be fully self-contained: it renders its own
+				<a href="/messaging/modal-dialog"><code>modal-dialog</code></a>
+				, forwards the
+				<code>inert</code>
+				prop it receives into it, and calls the
+				<code>onClose</code>
+				prop it receives when its dialog closes. This avoids nesting a second dialog inside the one
+				<code>modal-controller</code>
+				would otherwise provide.
 			</p>
-
-			<ul>
-				<li>
-					<code>modal-controller-title</code>
-					, a styled title with a customisable
-					<code>tag</code>
-				</li>
-				<li>
-					<code>modal-controller-actions</code>
-					, a wrapper for actions to be taken within the dialog
-				</li>
-			</ul>
 		</template>
 
 		<component-playgrounds>

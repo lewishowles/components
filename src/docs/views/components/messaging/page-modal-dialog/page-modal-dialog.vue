@@ -27,7 +27,7 @@
 
 				<template #type>Boolean</template>
 
-				<template #default-value>false</template>
+				<template #default-value>true</template>
 
 				<p>
 					Whether the dialog should open itself immediately. This is true by default for use with
@@ -46,6 +46,22 @@
 				<p>
 					When opening the dialog, determine whether to focus the dialog itself, or the first
 					focusable element within it.
+				</p>
+			</component-prop>
+
+			<component-prop id="prop-inert">
+				<template #name>inert</template>
+
+				<template #type>Boolean</template>
+
+				<template #default-value>false</template>
+
+				<p>
+					Whether this dialog is inert (disabled and not interactive), forwarded to the underlying
+					<code>base-modal</code>
+					. Used when stacking modals via
+					<code>modal-controller</code>
+					, so background dialogs stay visible but not interactive.
 				</p>
 			</component-prop>
 		</component-props>

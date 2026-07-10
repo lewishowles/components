@@ -2,6 +2,65 @@
 
 ## Unreleased
 
+### Breaking changes
+
+- `modal-controller` no longer wraps pushed components in its own `base-modal`. Each component opened via `openModal` is now expected to be fully self-contained: render its own `modal-dialog`, forward the `inert` prop it receives into it, and call the `onClose` prop it receives when its dialog closes (`@dialog:close="onClose?.()"`). This removes the previous double-`<dialog>` nesting that occurred if a pushed component tried to render `modal-dialog` itself.
+
+```html
+<!-- Before: modal-controller supplied the dialog chrome, only content was needed -->
+<template>
+	<p>Are you sure you want to delete this user? This cannot be undone.</p>
+
+	<ui-button @click="onClose">Delete user</ui-button>
+</template>
+
+<!-- After: the component owns its own modal-dialog -->
+<template>
+	<modal-dialog v-bind="{ inert }" @dialog:close="onClose?.()">
+		<template #title>Delete user</template>
+
+		<p>Are you sure you want to delete this user? This cannot be undone.</p>
+
+		<template #actions>
+			<ui-button @click="onClose">Delete user</ui-button>
+		</template>
+	</modal-dialog>
+</template>
+
+<script setup>
+	const props = defineProps({
+		/**
+		 * Whether this modal is inert, provided by modal-controller when a modal
+		 * further up the stack is currently active.
+		 */
+		inert: {
+			type: Boolean,
+			default: false,
+		},
+
+		/**
+		 * Called when this modal should close, provided by modal-controller.
+		 */
+		onClose: {
+			type: Function,
+			default: null,
+		},
+	});
+</script>
+```
+
+- `modal-dialog`'s `initiallyOpen` prop now defaults to `true` (matching `base-modal`), so it opens itself immediately unless explicitly told not to. Previously it defaulted to `false`, relying on `modal-controller` to open it via the `base-modal` wrapper it no longer provides.
+- `modal-dialog` gained an `inert` prop, forwarded to its internal `base-modal`, for use when stacking modals via `modal-controller`.
+
+`modal-controller` also now runs any `onClose` you pass to `openModal` yourself before popping the modal, so you can react to a modal closing for any reason (confirm, cancel, the built-in close button, Escape) without needing to reimplement stack-popping:
+
+```js
+openModal(RevokeAccessConfirm, {
+	onConfirm: () => revokeAccess(vehicleId),
+	onClose: () => trackDialogDismissed("revoke-access"),
+});
+```
+
 ### `useFilteredItems`
 
 A new composable for filtering a reactive item list by exact property matches, including nested paths and array-of-values matching. Returns the filtered `items`, a `count`, and a `have` flag for empty-state checks.

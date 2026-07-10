@@ -14,9 +14,13 @@
 			<p>
 				Each modal invoked using
 				<code>useModalDialog</code>
-				is wrapped in a
-				<code>base-modal</code>
-				, so only the content is necessary.
+				is expected to be fully self-contained: it renders its own
+				<code>modal-dialog</code>
+				, forwards the received
+				<code>inert</code>
+				prop to it, and calls the received
+				<code>onClose</code>
+				prop when its dialog closes.
 			</p>
 
 			<h4>Displaying the modal</h4>
@@ -65,7 +69,7 @@ const template = useTemplateGenerator("modal-controller");
 
 const modalDialogTemplateCode = [
 	"<template>",
-	"\t<modal-dialog>",
+	'\t<modal-dialog v-bind="{ inert }" @dialog:close="onClose?.()">',
 	"\t\t<template #title>",
 	'\t\t\tDelete "Sophie Wardhaugh"',
 	"\t\t</template>",
@@ -81,6 +85,24 @@ const modalDialogTemplateCode = [
 	"</template>",
 	"",
 	"<script setup>",
+	"\tconst props = defineProps({",
+	"\t\t/**",
+	"\t\t * Whether this modal is inert, provided by modal-controller when a modal",
+	"\t\t * further up the stack is currently active.",
+	"\t\t */",
+	"\t\tinert: {",
+	"\t\t\ttype: Boolean,",
+	"\t\t\tdefault: false,",
+	"\t\t},",
+	"",
+	"\t\t/**",
+	"\t\t * Called when this modal should close, provided by modal-controller.",
+	"\t\t */",
+	"\t\tonClose: {",
+	"\t\t\ttype: Function,",
+	"\t\t\tdefault: null,",
+	"\t\t},",
+	"\t});",
 	"\t// ...",
 	// For some reason, excluding the escape here seems to cause a problem with
 	// one of the parses, but I'm unsure what's wrong with this template

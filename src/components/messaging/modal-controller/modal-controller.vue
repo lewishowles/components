@@ -1,29 +1,33 @@
 <template>
 	<Teleport to="body">
-		<base-modal
+		<component
 			v-for="modal in modals"
 			:key="modal.id"
-			:inert="modal.id !== currentModal?.id"
-			@dialog:close="closeTopModal"
-		>
-			<component :is="modal.component" v-bind="{ ...modal.props, onClose: closeTopModal }" />
-		</base-modal>
+			:is="modal.component"
+			v-bind="{
+				...modal.props,
+				onClose: () => closeModal(modal),
+				inert: modal.id !== currentModal?.id,
+			}"
+		/>
 	</Teleport>
 </template>
 
 <script setup>
 /**
- * Display modals as defined in `use-modal-dialog`. This uses our `base-modal`,
- * and expects a component as its content. We do this because modals in
- * `use-modal-dialog` are defined programmatically, and adding slot content is
- * more fiddly. This also promotes the use of individual components for modal
- * dialogs, keeping them self-contained.
+ * Display modals as defined in `use-modal-dialog`. Modals are defined
+ * programmatically, so each pushed component is expected to be fully
+ * self-contained: it renders its own `modal-dialog`, forwards the received
+ * `inert` prop to it, and calls the received `onClose` prop when its dialog
+ * emits `dialog:close` (covering the built-in close button, Escape, and any
+ * confirm/cancel actions of its own).
  *
  * All modals in the stack stay in the DOM. Non-current modals receive the
- * `inert` attribute so they are visible but not interactive, which preserves
+ * `inert` prop so they are visible but not interactive, which preserves
  * focus context when a stacked modal closes.
  */
 import { computed } from "vue";
+import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray, lastDefined } from "@lewishowles/helpers/array";
 import { useModalDialog } from "@/composables/use-modal-dialog/use-modal-dialog";
 
@@ -37,4 +41,20 @@ const currentModal = computed(() => {
 
 	return lastDefined(modals.value);
 });
+
+/**
+ * Close a modal: runs any onClose the caller supplied to openModal, then
+ * pops it off the stack, so a caller can react to a modal closing for any
+ * reason without needing to reimplement stack-popping themselves.
+ *
+ * @param  {object}  modal
+ *     The modal stack entry to close.
+ */
+function closeModal(modal) {
+	if (isFunction(modal.props?.onClose)) {
+		modal.props.onClose();
+	}
+
+	closeTopModal();
+}
 </script>

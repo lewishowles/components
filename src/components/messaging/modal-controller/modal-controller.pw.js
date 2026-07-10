@@ -60,5 +60,31 @@ test.describe("modal-controller", () => {
 			await expect(page.getByTestId("stacking-test-first-content")).toBeAttached();
 			await expect(page.getByTestId("stacking-test-second-content")).toBeAttached();
 		});
+
+		test("the built-in close button pops the stack, restoring the modal underneath", async ({
+			mount,
+			page,
+		}) => {
+			await mountStackingTest(mount);
+
+			await page.getByTestId("stacking-test-open-first").click();
+			await page.getByTestId("stacking-test-open-second").click();
+
+			const secondDialog = page
+				.getByTestId("stacking-test-second-content")
+				.locator("xpath=ancestor::dialog");
+
+			await secondDialog.locator('[data-test="modal-dialog-close"]').click();
+
+			await expect(page.getByTestId("stacking-test-second-content")).not.toBeAttached();
+
+			const firstDialog = page
+				.getByTestId("stacking-test-first-content")
+				.locator("xpath=ancestor::dialog");
+
+			const inert = await firstDialog.evaluate((el) => el.inert);
+
+			expect(inert).toBe(false);
+		});
 	});
 });

@@ -4,6 +4,7 @@
 		v-bind="baseModalProps"
 		data-component="modal-dialog"
 		:data-state="props.variant"
+		@dialog:close="emit('dialog:close')"
 	>
 		<template #close-dialog-label>
 			<slot name="close-dialog-label" />
@@ -31,11 +32,13 @@ import ConditionalWrapper from "@/components/general/conditional-wrapper/conditi
 
 const props = defineProps({
 	/**
-	 * Whether the dialog should open itself immediately.
+	 * Whether the dialog should open itself immediately. Defaults to true,
+	 * matching base-modal, since a dialog rendered without this would mount
+	 * hidden and require the consumer to open it manually.
 	 */
 	initiallyOpen: {
 		type: Boolean,
-		default: false,
+		default: true,
 	},
 
 	/**
@@ -57,7 +60,18 @@ const props = defineProps({
 		default: "dialog",
 		validator: (value) => ["dialog", "alert"].includes(value),
 	},
+
+	/**
+	 * Whether this dialog is inert (disabled and not interactive). Forwarded
+	 * to base-modal, for use when stacking modals via modal-controller.
+	 */
+	inert: {
+		type: Boolean,
+		default: false,
+	},
 });
+
+const emit = defineEmits(["dialog:close"]);
 
 const attrs = useAttrs();
 // A reference to the base-modal component.
@@ -91,6 +105,7 @@ const baseModalProps = computed(() => ({
 	dialogRole: dialogRole.value,
 	ariaLabelledby: ariaLabelledby.value,
 	ariaDescribedby: ariaDescribedby.value,
+	inert: props.inert,
 }));
 
 // Provide the titleId so modal-dialog-title can inject it and apply it as

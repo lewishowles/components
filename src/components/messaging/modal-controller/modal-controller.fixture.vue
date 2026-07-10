@@ -6,6 +6,7 @@ import { defineComponent, h, markRaw } from "vue";
 import { useModalDialog } from "@/composables/use-modal-dialog/use-modal-dialog";
 
 import ModalController from "./modal-controller.vue";
+import ModalDialog from "@/components/messaging/modal-dialog/modal-dialog.vue";
 
 const { openModal, _clearModals } = useModalDialog();
 
@@ -15,6 +16,10 @@ const SecondModal = markRaw(
 	defineComponent({
 		name: "SecondModal",
 		props: {
+			inert: {
+				type: Boolean,
+				default: false,
+			},
 			onClose: {
 				type: Function,
 				default: null,
@@ -22,17 +27,24 @@ const SecondModal = markRaw(
 		},
 		setup(props) {
 			return () =>
-				h("div", [
-					h("p", { "data-test": "stacking-test-second-content" }, "Second modal"),
-					h(
-						"ui-button",
-						{
-							"data-test": "stacking-test-close-second",
-							onClick: props.onClose,
-						},
-						"Close second",
-					),
-				]);
+				h(
+					ModalDialog,
+					{ inert: props.inert, "onDialog:close": props.onClose },
+					{
+						title: () => "Second modal",
+						default: () => [
+							h("p", { "data-test": "stacking-test-second-content" }, "Second modal"),
+							h(
+								"ui-button",
+								{
+									"data-test": "stacking-test-close-second",
+									onClick: props.onClose,
+								},
+								"Close second",
+							),
+						],
+					},
+				);
 		},
 	}),
 );
@@ -40,7 +52,17 @@ const SecondModal = markRaw(
 const FirstModal = markRaw(
 	defineComponent({
 		name: "FirstModal",
-		setup() {
+		props: {
+			inert: {
+				type: Boolean,
+				default: false,
+			},
+			onClose: {
+				type: Function,
+				default: null,
+			},
+		},
+		setup(props) {
 			const { openModal } = useModalDialog();
 
 			function openSecondModal() {
@@ -48,17 +70,24 @@ const FirstModal = markRaw(
 			}
 
 			return () =>
-				h("div", [
-					h("p", { "data-test": "stacking-test-first-content" }, "First modal"),
-					h(
-						"ui-button",
-						{
-							"data-test": "stacking-test-open-second",
-							onClick: openSecondModal,
-						},
-						"Open second modal",
-					),
-				]);
+				h(
+					ModalDialog,
+					{ inert: props.inert, "onDialog:close": props.onClose },
+					{
+						title: () => "First modal",
+						default: () => [
+							h("p", { "data-test": "stacking-test-first-content" }, "First modal"),
+							h(
+								"ui-button",
+								{
+									"data-test": "stacking-test-open-second",
+									onClick: openSecondModal,
+								},
+								"Open second modal",
+							),
+						],
+					},
+				);
 		},
 	}),
 );

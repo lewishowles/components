@@ -42,6 +42,13 @@ Whether the dialog should open itself immediately. This is true by default for u
 
 When opening the dialog, determine whether to focus the dialog itself, or the first focusable element within it.
 
+### `inert`
+
+- type: `boolean`
+- default: `false`
+
+Whether this dialog is inert (disabled and not interactive), forwarded to the underlying `base-modal`. Used when stacking modals via `modal-controller`, so background dialogs stay visible but not interactive.
+
 ## Events
 
 ### `@dialog:close`

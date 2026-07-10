@@ -56,5 +56,29 @@ describe("modal-dialog", () => {
 				expect(wrapper.vm.ariaDescribedby).toBeNull();
 			});
 		});
+
+		describe("baseModalProps", () => {
+			test("forwards inert to base-modal", () => {
+				const wrapper = mount({ inert: true });
+
+				expect(wrapper.vm.baseModalProps.inert).toBe(true);
+			});
+
+			test("defaults inert to false", () => {
+				const wrapper = mount();
+
+				expect(wrapper.vm.baseModalProps.inert).toBe(false);
+			});
+		});
+	});
+
+	describe("Events", () => {
+		test("re-emits dialog:close when base-modal closes", async () => {
+			const wrapper = mount();
+
+			await wrapper.find('[data-test="modal-dialog-close"]').trigger("click");
+
+			expect(wrapper.emitted("dialog:close")).not.toBeUndefined();
+		});
 	});
 });

@@ -51,6 +51,12 @@ const props = ref({
 		value: "delete-user-dialog",
 		isInline: true,
 	},
+
+	// This playground opens the dialog on demand via the button below, so it
+	// shouldn't also open itself immediately on mount.
+	initiallyOpen: {
+		value: false,
+	},
 });
 
 const slots = computed(() => ({
