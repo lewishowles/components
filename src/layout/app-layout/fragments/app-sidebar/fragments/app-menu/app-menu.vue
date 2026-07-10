@@ -14,18 +14,23 @@
 					<template #title>Form</template>
 
 					<app-menu-link to="/form/form-wrapper">form-wrapper</app-menu-link>
-					<app-menu-link to="/form/form-fieldset">form-fieldset</app-menu-link>
-					<app-menu-link to="/form/form-layout">form-layout</app-menu-link>
 					<app-menu-link to="/form/form-field">form-field</app-menu-link>
+				</app-menu-section>
+
+				<app-menu-section>
+					<template #title>Form fields</template>
+
 					<app-menu-link to="/form/form-actions">form-actions</app-menu-link>
-					<app-menu-link to="/form/form-input">form-input</app-menu-link>
-					<app-menu-link to="/form/form-textarea">form-textarea</app-menu-link>
+					<app-menu-link to="/form/form-button-group">form-button-group</app-menu-link>
 					<app-menu-link to="/form/form-checkbox">form-checkbox</app-menu-link>
 					<app-menu-link to="/form/form-checkbox-group">form-checkbox-group</app-menu-link>
-					<app-menu-link to="/form/form-radio-group">form-radio-group</app-menu-link>
-					<app-menu-link to="/form/form-button-group">form-button-group</app-menu-link>
 					<app-menu-link to="/form/form-date">form-date</app-menu-link>
+					<app-menu-link to="/form/form-fieldset">form-fieldset</app-menu-link>
+					<app-menu-link to="/form/form-input">form-input</app-menu-link>
+					<app-menu-link to="/form/form-layout">form-layout</app-menu-link>
+					<app-menu-link to="/form/form-radio-group">form-radio-group</app-menu-link>
 					<app-menu-link to="/form/form-select">form-select</app-menu-link>
+					<app-menu-link to="/form/form-textarea">form-textarea</app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
@@ -108,6 +113,7 @@
 				<app-menu-section>
 					<template #title>Composables</template>
 
+					<app-menu-link to="/composables/use-chart-config">useChartConfig</app-menu-link>
 					<app-menu-link to="/composables/use-combobox">useCombobox</app-menu-link>
 					<app-menu-link to="/composables/use-filtered-items">useFilteredItems</app-menu-link>
 					<app-menu-link to="/composables/use-floating-position">useFloatingPosition</app-menu-link>
@@ -115,6 +121,7 @@
 					<app-menu-link to="/composables/use-form">useForm</app-menu-link>
 					<app-menu-link to="/composables/use-form-data">useFormData</app-menu-link>
 					<app-menu-link to="/composables/use-modal-dialog">useModalDialog</app-menu-link>
+					<app-menu-link to="/composables/use-notifications">useNotifications</app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
