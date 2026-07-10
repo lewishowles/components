@@ -84,7 +84,7 @@ const props = defineProps({
 	 */
 	displayLabel: {
 		type: Boolean,
-		default: false,
+		default: true,
 	},
 
 	/**

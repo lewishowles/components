@@ -40,6 +40,12 @@ test.describe("form-checkbox", () => {
 
 			await expect(page.getByTestId("form-label")).toHaveClass(/sr-only/);
 		});
+
+		test("a label is visible by default", async ({ mount, page }) => {
+			await mountFormCheckbox(mount);
+
+			await expect(page.getByTestId("form-label")).not.toHaveClass(/sr-only/);
+		});
 	});
 
 	test("additional attributes can be provided to the input", async ({ mount, page }) => {
