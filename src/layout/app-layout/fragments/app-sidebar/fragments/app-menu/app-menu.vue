@@ -86,6 +86,7 @@
 					<app-menu-link to="/messaging/pill-badge">pill-badge</app-menu-link>
 					<app-menu-link to="/messaging/modal-controller">modal-controller</app-menu-link>
 					<app-menu-link to="/messaging/modal-dialog">modal-dialog</app-menu-link>
+					<app-menu-link to="/messaging/confirm-dialog">confirm-dialog</app-menu-link>
 					<app-menu-link to="/messaging/step-indicator">step-indicator</app-menu-link>
 					<app-menu-link to="/messaging/notification-handler">notification-handler</app-menu-link>
 				</app-menu-section>

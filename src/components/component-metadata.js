@@ -10,6 +10,7 @@ import { formButtonGroupMetadata } from "./form/form-button-group/form-button-gr
 import { chartLegendMetadata } from "./chart/chart-legend/chart-legend.metadata.js";
 import { comboBoxMetadata } from "./content/combo-box/combo-box.metadata.js";
 import { conditionalWrapperMetadata } from "./general/conditional-wrapper/conditional-wrapper.metadata.js";
+import { confirmDialogMetadata } from "./messaging/confirm-dialog/confirm-dialog.metadata.js";
 import { contentCardColumnsMetadata } from "./content/content-card-columns/content-card-columns.metadata.js";
 import { contentCardFooterMetadata } from "./content/content-card-footer/content-card-footer.metadata.js";
 import { contentCardHeaderMetadata } from "./content/content-card-header/content-card-header.metadata.js";
@@ -85,6 +86,7 @@ const componentMetadataRecords = [
 	chartLegendMetadata,
 	comboBoxMetadata,
 	conditionalWrapperMetadata,
+	confirmDialogMetadata,
 	contentCardColumnsMetadata,
 	contentCardFooterMetadata,
 	contentCardHeaderMetadata,

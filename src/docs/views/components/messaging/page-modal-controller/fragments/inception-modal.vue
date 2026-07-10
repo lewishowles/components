@@ -1,5 +1,5 @@
 <template>
-	<modal-dialog v-bind="{ inert }" @dialog:close="onClose?.()">
+	<modal-dialog @dialog:close="onClose?.()">
 		<template #title>#{{ modalId }}</template>
 
 		<div class="flex flex-col gap-4">
@@ -32,15 +32,6 @@ const props = defineProps({
 	modalId: {
 		type: Number,
 		default: 1,
-	},
-
-	/**
-	 * Whether this modal is inert, provided by modal-controller when a modal
-	 * further up the stack is currently active.
-	 */
-	inert: {
-		type: Boolean,
-		default: false,
 	},
 
 	/**

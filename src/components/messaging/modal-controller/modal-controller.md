@@ -10,11 +10,13 @@ Creating a modal for display comes in two parts.
 
 ### The modal itself
 
-Each component opened via `openModal` must be fully self-contained: it renders its own [`modal-dialog`](/src/components/messaging/modal-dialog/modal-dialog.md), forwards the `inert` prop it receives into it, and calls the `onClose` prop it receives when its dialog closes. This avoids nesting a second dialog inside the one `modal-controller` would otherwise provide.
+Each component opened via `openModal` must be fully self-contained: it renders its own [`modal-dialog`](/src/components/messaging/modal-dialog/modal-dialog.md), and calls the `onClose` prop it receives when its dialog closes. This avoids nesting a second dialog inside the one `modal-controller` would otherwise provide.
+
+You don't need to declare or forward the `inert` prop yourself: `modal-controller` still passes it, but as long as your component's own root is (directly or transitively) a `modal-dialog` and you haven't declared `inert` as one of your own props, Vue's attribute fallthrough carries it straight through. Only declare it explicitly if your component needs to reference `inert` itself.
 
 ```html
 <template>
-	<modal-dialog v-bind="{ inert }" @dialog:close="onClose?.()">
+	<modal-dialog @dialog:close="onClose?.()">
 		<template #title>Delete "Sophie Wardhaugh"</template>
 
 		<p>Are you sure you want to delete this user? This cannot be undone.</p>
@@ -26,16 +28,7 @@ Each component opened via `openModal` must be fully self-contained: it renders i
 </template>
 
 <script setup>
-	const props = defineProps({
-		/**
-		 * Whether this modal is inert, provided by modal-controller when a modal
-		 * further up the stack is currently active.
-		 */
-		inert: {
-			type: Boolean,
-			default: false,
-		},
-
+	defineProps({
 		/**
 		 * Called when this modal should close, provided by modal-controller.
 		 */
@@ -70,8 +63,8 @@ openModal(DeleteUser, componentProps);
 Pass your own `onClose` in the props given to `openModal` to run something whenever the modal closes, for any reason (a specific action like confirm, the built-in close button, or Escape). `modal-controller` runs it before popping the modal off the stack, so you don't need to reimplement stack-popping yourself, and it composes with any other callback the component defines for a more specific outcome:
 
 ```javascript
-openModal(RevokeAccessConfirm, {
-	onConfirm: () => revokeAccess(vehicleId),
-	onClose: () => trackDialogDismissed("revoke-access"),
+openModal(DeleteAccountConfirm, {
+	onConfirm: () => deleteAccount(),
+	onClose: () => trackDialogDismissed("delete-account"),
 });
 ```

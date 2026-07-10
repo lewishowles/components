@@ -24,13 +24,14 @@
 				<code>openModal</code>
 				must be fully self-contained: it renders its own
 				<a href="/messaging/modal-dialog"><code>modal-dialog</code></a>
-				, forwards the
-				<code>inert</code>
-				prop it receives into it, and calls the
+				, and calls the
 				<code>onClose</code>
 				prop it receives when its dialog closes. This avoids nesting a second dialog inside the one
 				<code>modal-controller</code>
 				would otherwise provide.
+				<code>inert</code>
+				doesn't need declaring or forwarding yourself, it falls through automatically as long as
+				your component doesn't declare it as one of its own props.
 			</p>
 		</template>
 
