@@ -1,5 +1,6 @@
 import { pick, pickAs } from "@lewishowles/helpers/object";
 import { ref, toRaw, watch } from "vue";
+import { cloneFormData } from "@/utilities/clone-form-data.js";
 
 /**
  * Normalise field values for form initialisation based on declared field types.
@@ -70,7 +71,7 @@ function resolveFields(value, fields) {
  * @returns {object}
  *     The mapped form data object.
  */
-export function mapFormData(value, mapper = (data) => structuredClone(toRaw(data))) {
+export function mapFormData(value, mapper = (data) => cloneFormData(toRaw(data))) {
 	if (typeof mapper === "function") {
 		return mapper(value);
 	}
@@ -96,7 +97,7 @@ export function mapFormData(value, mapper = (data) => structuredClone(toRaw(data
  *     declarative field selection and type normalisation. Defaults to a deep
  *     clone of the source value.
  */
-export function useFormData(source, mapper = (data) => structuredClone(toRaw(data))) {
+export function useFormData(source, mapper = (data) => cloneFormData(toRaw(data))) {
 	// The form data, populated once the source first resolves.
 	const formData = ref({});
 	// Guards against populating more than once, even if the source changes after the first resolve.

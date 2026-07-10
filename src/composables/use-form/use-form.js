@@ -16,6 +16,7 @@ import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { mapFormData } from "@/composables/use-form-data/use-form-data.js";
+import { cloneFormData } from "@/utilities/clone-form-data.js";
 import { registerDirtyForm, unregisterDirtyForm } from "./dirty-forms-registry.js";
 import { validateForm } from "@lewishowles/helpers/form";
 
@@ -327,7 +328,7 @@ export function useForm({
 		const seededData = mapFormData(value, mapper);
 
 		formData.value = seededData;
-		baseline.value = structuredClone(toRaw(seededData));
+		baseline.value = cloneFormData(toRaw(seededData));
 	}
 
 	/**
