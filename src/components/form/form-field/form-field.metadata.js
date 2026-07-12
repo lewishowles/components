@@ -20,6 +20,7 @@ export const formFieldMetadata = {
 				"form-button-group",
 				"select",
 				"date",
+				"file",
 			],
 			summary: "The control to render.",
 		},
@@ -41,6 +42,12 @@ export const formFieldMetadata = {
 			default: false,
 			summary:
 				"Whether this field is required. Also set automatically when a required rule for this field is present in the parent form-wrapper's rules, but the prop allows explicit control.",
+		},
+		{
+			name: "multiple",
+			type: "boolean",
+			default: false,
+			summary: "Allow multiple files when type is file; returns an array from v-model.",
 		},
 	],
 	slots: [
@@ -76,6 +83,10 @@ export const formFieldMetadata = {
 		{
 			name: "help",
 			summary: "Help text shown below the input.",
+		},
+		{
+			name: "remove-button-label",
+			summary: "File remove button content; receives the current files array.",
 		},
 	],
 	examples: [

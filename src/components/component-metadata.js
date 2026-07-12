@@ -34,6 +34,7 @@ import { formCheckboxMetadata } from "./form/form-checkbox/form-checkbox.metadat
 import { formDateMetadata } from "./form/form-date/form-date.metadata.js";
 import { formFieldMetadata } from "./form/form-field/form-field.metadata.js";
 import { formFieldsetMetadata } from "./form/form-fieldset/form-fieldset.metadata.js";
+import { formFileMetadata } from "./form/form-file/form-file.metadata.js";
 import { formInputGroupMetadata } from "./form/form-input-group/form-input-group.metadata.js";
 import { formInputMetadata } from "./form/form-input/form-input.metadata.js";
 import { formLabelMetadata } from "./form/form-label/form-label.metadata.js";
@@ -110,6 +111,7 @@ const componentMetadataRecords = [
 	formDateMetadata,
 	formFieldMetadata,
 	formFieldsetMetadata,
+	formFileMetadata,
 	formInputGroupMetadata,
 	formInputMetadata,
 	formLabelMetadata,

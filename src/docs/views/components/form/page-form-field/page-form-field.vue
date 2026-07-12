@@ -45,6 +45,7 @@
 					<li><code>radio-group</code></li>
 					<li><code>form-button-group</code></li>
 					<li><code>date</code></li>
+					<li><code>file</code></li>
 				</ul>
 
 				<p>
@@ -113,16 +114,39 @@
 				</p>
 			</component-prop>
 
+			<component-prop id="prop-multiple">
+				<template #name>multiple</template>
+
+				<template #type>Boolean</template>
+
+				<template #default-value>false</template>
+
+				<p>
+					Whether a
+					<code>file</code>
+					field allows selecting more than one file. When enabled, the field's
+					<code>v-model</code>
+					contains an array of
+					<code>File</code>
+					objects or
+					<code>null</code>
+					instead of a single
+					<code>File</code>
+					or
+					<code>null</code>
+					.
+				</p>
+			</component-prop>
+
 			<component-prop id="prop-additional">
 				<template #name>Additional props</template>
 
 				<p>
-					Additional props are passed through to the underlying form field. Additional props may be
-					required depending on that field, such as
-					<code>options</code>
-					for
-					<code>radio-group</code>
-					.
+					Some field types expose additional props. For example,
+					<code>multiple</code>
+					applies to
+					<code>file</code>
+					fields, while option-bearing fields use their documented options configuration.
 				</p>
 			</component-prop>
 		</component-props>
@@ -200,6 +224,17 @@
 
 				<p>Help text shown below the input, providing additional context or guidance.</p>
 			</component-slot>
+			<component-slot id="slot-remove-button-label">
+				<template #name>remove-button-label</template>
+
+				<p>
+					Content for a file field's remove button. Receives
+					<code>files</code>
+					, an array containing the current
+					<code>File</code>
+					objects.
+				</p>
+			</component-slot>
 		</component-slots>
 
 		<component-events>
@@ -224,6 +259,7 @@
 			<playground-form-field-radio-group />
 			<playground-form-field-form-button-group />
 			<playground-form-field-date />
+			<playground-form-field-file />
 			<playground-form-field-select />
 		</component-playgrounds>
 	</component-page>
@@ -235,6 +271,7 @@ import PlaygroundFormFieldCheckbox from "./fragments/playground-form-field-check
 import PlaygroundFormFieldCheckboxGroup from "./fragments/playground-form-field-checkbox-group.vue";
 import PlaygroundFormFieldDate from "./fragments/playground-form-field-date.vue";
 import PlaygroundFormFieldEmail from "./fragments/playground-form-field-email.vue";
+import PlaygroundFormFieldFile from "./fragments/playground-form-field-file.vue";
 import PlaygroundFormFieldPassword from "./fragments/playground-form-field-password.vue";
 import PlaygroundFormFieldRadioGroup from "./fragments/playground-form-field-radio-group.vue";
 import PlaygroundFormFieldSelect from "./fragments/playground-form-field-select.vue";

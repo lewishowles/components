@@ -51,8 +51,10 @@
  * Raw named scales. Override these at :root to re-theme the whole library
  * without a rebuild. e.g. :root { --primary-500: oklch(0.6 0.2 250); }
  */
+
 :root {
 	color-scheme: light dark;
+
 	--primary-50: var(--color-purple-50);
 	--primary-100: var(--color-purple-100);
 	--primary-200: var(--color-purple-200);
@@ -112,6 +114,18 @@
 	--info-800: var(--color-blue-800);
 	--info-900: var(--color-blue-900);
 	--info-950: var(--color-blue-950);
+}
+
+:root {
+	/* Chart palette (Okabe-Ito, colour-blind safe). Wraps at 8. */
+	--color-chart-1: #e69f00;
+	--color-chart-2: #56b4e9;
+	--color-chart-3: #009e73;
+	--color-chart-4: #e6be00;
+	--color-chart-5: #0072b2;
+	--color-chart-6: #d55e00;
+	--color-chart-7: #cc79a7;
+	--color-chart-8: #404040;
 }
 
 /*
@@ -202,7 +216,8 @@
  * Fill and text use different shades where the accessible text shade differs
  * from the fill shade.
  */
-:root {
+/* Keep defaults zero-specificity so theme modes can override them on the root. */
+:where(:root) {
 	--primary-fill: var(--primary-800);
 	--primary-text: var(--primary-800);
 	--primary-subtle: var(--primary-50);
@@ -239,19 +254,6 @@
 
 	--border: var(--color-grey-200);
 	--border-strong: var(--color-grey-300);
-
-	/*
-	 * Chart palette (Okabe-Ito, colour-blind safe). Wraps at 8 — override any
-	 * token in your own :root to re-theme charts without touching components.
-	 */
-	--color-chart-1: #e69f00;
-	--color-chart-2: #56b4e9;
-	--color-chart-3: #009e73;
-	--color-chart-4: #e6be00;
-	--color-chart-5: #0072b2;
-	--color-chart-6: #d55e00;
-	--color-chart-7: #cc79a7;
-	--color-chart-8: #404040;
 }
 
 /*
@@ -298,6 +300,47 @@
 	--color-chart-6: #f07840;
 	--color-chart-7: #dc95be;
 	--color-chart-8: #aaaaaa;
+}
+
+/* Derive control states where the active semantic roles are in scope. */
+:where(:root, .dark, .dark *) {
+	--control-surface: var(--surface);
+	--control-surface-hover: color-mix(in oklab, var(--surface), var(--content-strong) 2%);
+	--control-surface-active: color-mix(in oklab, var(--surface), var(--content-strong) 4%);
+
+	--control-border: var(--border-strong);
+	--control-border-hover: color-mix(in oklab, var(--border-strong), var(--content-strong) 20%);
+	--control-border-active: color-mix(in oklab, var(--border-strong), var(--content-strong) 45%);
+	--control-ring: var(--control-border);
+	--control-ring-hover: var(--control-border-active);
+
+	--control-content: var(--content);
+	--control-content-hover: color-mix(in oklab, var(--content), var(--content-strong) 24%);
+	--control-content-active: color-mix(in oklab, var(--content), var(--content-strong) 60%);
+
+	--control-focus: var(--primary-fill);
+	--control-overlay: rgb(from var(--content-strong) r g b / 20%);
+	--control-overlay-hover: rgb(from var(--content-strong) r g b / 30%);
+	--control-overlay-active: rgb(from var(--content-strong) r g b / 40%);
+
+	--control-selected-surface: var(--primary-fill);
+	--control-selected-surface-focus: var(--primary-fill);
+	--control-selected-border: var(--primary-900);
+	--control-selected-border-focus: var(--primary-900);
+	--control-selected-foreground: var(--primary-foreground);
+
+	--control-invalid: var(--danger-600);
+}
+
+:where(.dark, .dark *) {
+	--control-content-hover: color-mix(in oklab, var(--content), var(--surface) 2%);
+	--control-content-active: var(--content);
+	--control-ring-hover: rgb(from var(--content-strong) r g b / 50%);
+	--control-selected-surface: var(--primary-500);
+	--control-selected-surface-focus: var(--primary-600);
+	--control-selected-border: var(--primary-400);
+	--control-selected-border-focus: var(--primary-500);
+	--control-invalid: var(--danger-300);
 }
 
 /*

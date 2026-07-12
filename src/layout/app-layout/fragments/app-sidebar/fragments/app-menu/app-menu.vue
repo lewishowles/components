@@ -26,6 +26,7 @@
 					<app-menu-link to="/form/form-checkbox-group">form-checkbox-group</app-menu-link>
 					<app-menu-link to="/form/form-date">form-date</app-menu-link>
 					<app-menu-link to="/form/form-fieldset">form-fieldset</app-menu-link>
+					<app-menu-link to="/form/form-file">form-file</app-menu-link>
 					<app-menu-link to="/form/form-input">form-input</app-menu-link>
 					<app-menu-link to="/form/form-layout">form-layout</app-menu-link>
 					<app-menu-link to="/form/form-radio-group">form-radio-group</app-menu-link>

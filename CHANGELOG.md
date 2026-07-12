@@ -60,9 +60,14 @@ A new `modal-dialog` built for confirm/cancel decisions, such as destructive act
 
 A new composable for filtering a reactive item list by exact property matches, including nested paths and array-of-values matching.
 
+### `form-file`
+
+A new single-file upload field used via `form-field type="file"` directly.
+
 ### Fixes
 
 - `data-table` no longer discards boolean cell values
+- `useForm` no longer attempts to structurally clone `File`, `Blob`, or `FileList` values when tracking form data or seeding a reset baseline, which broke reference equality and dirty-checking for file fields
 
 ## 2.5.0 - 2026-07-06
 

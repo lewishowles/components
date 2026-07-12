@@ -12,6 +12,10 @@ Passed through to the `default` slot of the relevant form field, the `default` s
 
 Content shown after the label text when the field is not required. Defaults to `(optional)`.
 
+### `remove-button-label`
+
+Content for a file field's remove button. Receives `files`, an array containing the current `File` objects.
+
 ## Props
 
 ### `type`
@@ -31,6 +35,7 @@ The type of field. Known types include:
 - `radio-group`
 - `form-button-group`
 - `date`
+- `file`
 
 Any unknown type will default to `text`.
 
@@ -50,6 +55,13 @@ Whether this field is required. When `true`, the `required` attribute is added t
 
 Validation rules are not set on `form-field` directly. Define them on the parent `form-wrapper`'s `rules` prop instead; see the [form-wrapper docs](/src/components/form/form-wrapper/form-wrapper.md) for the available rules.
 
+### `multiple`
+
+- type: `boolean`
+- default: `false`
+
+Whether a `file` field allows selecting more than one file. When enabled, the field's `v-model` contains an array of `File` objects or `null` instead of a single `File` or `null`. The remove button clears the complete current selection.
+
 ### `inputAttributes`
 
 - type: `object`
@@ -59,7 +71,7 @@ Any additional attributes to pass to the input itself, such as `autocomplete` or
 
 ### Additional props
 
-Additional props are passed through to the underlying form field. Additional props may be required depending on that field, such as `options` for `radio-group`.
+Some field types expose additional props. For example, `multiple` applies to `file` fields, while option-bearing fields use their documented options configuration.
 
 ## Events
 
@@ -81,4 +93,10 @@ The current value of the underlying form field will be available via `v-model`.
 <form-field type="checkbox" name="accept_terms">
 	By submitting this form, you accept our <link-tag v-bind="{ href: "/terms" external: true }">terms and conditions of sale</link-tag>.
 </form-field>
+```
+
+### File
+
+```html
+<form-field type="file" name="supporting_document">Supporting document</form-field>
 ```

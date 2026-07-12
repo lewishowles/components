@@ -103,7 +103,12 @@
 	},
 	"overrides": [
 		{
-			"files": ["bin/**/*.js", "src/cli/**/*.js", "test/playwright*.config.js"],
+			"files": [
+				"bin/**/*.js",
+				"src/cli/**/*.js",
+				"test/playwright*.config.js",
+				"src/components/form/form-file/form-file.pw.js"
+			],
 			"env": {
 				"node": true
 			}

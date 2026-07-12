@@ -40,6 +40,9 @@
 		<template #help>
 			<slot name="help" />
 		</template>
+		<template #remove-button-label="slotProps">
+			<slot name="remove-button-label" v-bind="slotProps" />
+		</template>
 	</component>
 </template>
 
@@ -57,6 +60,7 @@ import FormButtonGroup from "@/components/form/form-button-group/form-button-gro
 import FormCheckbox from "@/components/form/form-checkbox/form-checkbox.vue";
 import FormCheckboxGroup from "@/components/form/form-checkbox-group/form-checkbox-group.vue";
 import FormDate from "@/components/form/form-date/form-date.vue";
+import FormFile from "@/components/form/form-file/form-file.vue";
 import FormInput from "@/components/form/form-input/form-input.vue";
 import FormRadioGroup from "@/components/form/form-radio-group/form-radio-group.vue";
 import FormSelect from "@/components/form/form-select/form-select.vue";
@@ -74,6 +78,7 @@ const props = defineProps({
 	 * radio-group
 	 * checkbox-group
 	 * form-button-group
+	 * file
 	 */
 	type: {
 		type: String,
@@ -106,6 +111,15 @@ const props = defineProps({
 	 * `required` validation rule is present.
 	 */
 	required: {
+		type: Boolean,
+		default: false,
+	},
+
+	/**
+	 * Whether a file field allows selecting more than one file. Only applies when
+	 * `type` is `file`.
+	 */
+	multiple: {
 		type: Boolean,
 		default: false,
 	},
@@ -152,6 +166,7 @@ const fieldComponents = {
 	checkbox: FormCheckbox,
 	"checkbox-group": FormCheckboxGroup,
 	date: FormDate,
+	file: FormFile,
 	select: FormSelect,
 	"radio-group": FormRadioGroup,
 	textarea: FormTextarea,
@@ -163,6 +178,7 @@ const fieldTypes = {
 	email: { inputAttributes: { type: "email" } },
 	password: { inputAttributes: { type: "password" } },
 	date: {},
+	file: {},
 	textarea: {},
 	checkbox: {},
 	"checkbox-group": {},
@@ -203,6 +219,10 @@ const fieldProps = computed(() => {
 
 	if (isRequired.value) {
 		attributeGroups.push({ required: true });
+	}
+
+	if (fieldType.value === "file" && props.multiple) {
+		attributeGroups.push({ multiple: true });
 	}
 
 	// Pass the field name through to group components that need it for

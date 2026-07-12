@@ -4,6 +4,7 @@ import { describe, expect, test, vi } from "vite-plus/test";
 import FormButtonGroup from "@/components/form/form-button-group/form-button-group.vue";
 import FormCheckbox from "@/components/form/form-checkbox/form-checkbox.vue";
 import FormField from "./form-field.vue";
+import FormFile from "@/components/form/form-file/form-file.vue";
 import FormInput from "@/components/form/form-input/form-input.vue";
 import FormRadioGroup from "@/components/form/form-radio-group/form-radio-group.vue";
 import FormTextarea from "@/components/form/form-textarea/form-textarea.vue";
@@ -65,6 +66,7 @@ describe("form-field", () => {
 					["checkbox", {}],
 					["radio-group", { options: [] }],
 					["form-button-group", { options: [] }],
+					["file", {}],
 				])("%s", ([type, props]) => {
 					const wrapper = mount({ type, ...props });
 					const vm = wrapper.vm;
@@ -91,6 +93,7 @@ describe("form-field", () => {
 					[{ type: "checkbox" }, FormCheckbox],
 					[{ type: "radio-group", options: [] }, FormRadioGroup],
 					[{ type: "form-button-group", options: [] }, FormButtonGroup],
+					[{ type: "file" }, FormFile],
 				])("%s", ([props, component]) => {
 					const wrapper = mount({ props });
 					const vm = wrapper.vm;
@@ -144,6 +147,15 @@ describe("form-field", () => {
 				});
 			});
 
+			test("should pass multiple to file fields", () => {
+				const wrapper = mount({ type: "file", multiple: true });
+
+				expect(wrapper.vm.fieldProps).toEqual({
+					id: expect.any(String),
+					multiple: true,
+				});
+			});
+
 			test("should merge external inputAttributes", () => {
 				const wrapper = mount({
 					type: "email",
@@ -185,6 +197,22 @@ describe("form-field", () => {
 				expect(wrapper.vm.fieldProps).toEqual({
 					id: expect.any(String),
 				});
+			});
+		});
+
+		describe("file slots", () => {
+			test("should forward the remove button label slot", async () => {
+				const wrapper = mountDeep({
+					props: { type: "file" },
+					slots: {
+						default: "Supporting document",
+						"remove-button-label": ({ files }) => `Clear ${files.length} files`,
+					},
+				});
+
+				await wrapper.setProps({ modelValue: new File(["content"], "document.pdf") });
+
+				expect(wrapper.find('[data-part="remove"]').text()).toContain("Clear 1 files");
 			});
 		});
 

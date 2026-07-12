@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vite-plus/test";
 import { formFieldMetadata } from "./form-field.metadata.js";
 
-// The 10 types supported by form-field.vue fieldTypes map.
+// The 11 types supported by form-field.vue fieldTypes map.
 const SUPPORTED_TYPES = [
 	"text",
 	"email",
@@ -13,6 +13,7 @@ const SUPPORTED_TYPES = [
 	"form-button-group",
 	"select",
 	"date",
+	"file",
 ];
 
 // Option-bearing types that must be listed as supported.
