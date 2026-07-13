@@ -35,7 +35,7 @@ The label for the button which hides all accordion panels.
 - type: `string`
 - default: `h2`
 
-The heading level to use for all panels.
+The heading level to use for all panels. Choose it based on the heading levels already used around this component; the library can't detect this automatically.
 
 ## Styling hooks
 

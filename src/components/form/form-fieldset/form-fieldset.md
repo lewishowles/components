@@ -27,7 +27,7 @@ The content of the fieldset, which will be wrapped in a [form-layout](/src/compo
 - type: `string`
 - default: `h2`
 
-The heading level to use this fieldset.
+The heading level to use this fieldset. Choose it based on the heading levels already used around this component; the library can't detect this automatically.
 
 ### `titleClasses`
 

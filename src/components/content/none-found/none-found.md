@@ -23,7 +23,7 @@ Any actions to provide to the user, such as a create button, or a reload button.
 - type: `string`
 - default: `h2`
 
-The heading level to use for the title.
+The heading level to use for the title. Choose it based on the heading levels already used around this component; the library can't detect this automatically.
 
 ### `titleClasses`
 

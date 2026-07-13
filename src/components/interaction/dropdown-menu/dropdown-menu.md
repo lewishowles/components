@@ -9,6 +9,24 @@ To build up a standardised menu, use the companion components:
 - `dropdown-menu-button`, a styled action button
 - `dropdown-menu-link`, a styled link
 - `dropdown-menu-divider`, a visual divider between sections
+- `dropdown-menu-title`, a heading for grouped dropdown-menu items
+
+## `dropdown-menu-title`
+
+### Slots
+
+#### default
+
+Menu section title.
+
+### Props
+
+#### `headingLevel`
+
+- type: `string`
+- default: `h4`
+
+The heading level to use for the dropdown menu title. Choose it based on the heading levels already used around this component; the library can't detect this automatically.
 
 ## Props
 

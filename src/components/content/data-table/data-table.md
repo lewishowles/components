@@ -297,6 +297,13 @@ Whether to enable selection. When enabled, a new column is added to the start of
 
 The placeholder to apply to the search input.
 
+### `headingLevel`
+
+- type: `string`
+- default: `h2`
+
+The heading level to use for any introduction to this table. Choose it based on the heading levels already used around this component; the library can't detect this automatically.
+
 ### `headingClasses`
 
 - type: `string`
