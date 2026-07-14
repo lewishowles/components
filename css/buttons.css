@@ -1,5 +1,6 @@
 .link,
-.link--muted {
+.link--muted,
+.list--ghost {
 	text-decoration: underline;
 	text-decoration-skip-ink: auto;
 	text-underline-offset: 4px;
@@ -24,18 +25,20 @@
 }
 
 .link--muted {
-	color: var(--color-grey-500);
+	color: var(--content-muted);
 
 	&:is(:hover, :focus) {
-		color: var(--color-grey-700);
+		color: var(--content-strong);
 	}
+}
 
-	&:where(.dark, .dark *) {
-		color: rgb(255 255 255 / 60%);
+.link--ghost {
+	color: currentColor;
+	text-decoration: none;
 
-		&:is(:hover, :focus) {
-			color: rgb(255 255 255 / 90%);
-		}
+	&:is(:hover, :focus) {
+		color: var(--content-strong);
+		text-decoration: underline;
 	}
 }
 
@@ -44,12 +47,13 @@
 }
 
 .button-padding-y {
-	padding-block: 0.5em;
+	padding-block: calc(0.375em - 1px);
 }
 
 .button {
+	border: 1px solid transparent;
 	border-radius: var(--radius-md);
-	padding-block: 0.5em;
+	padding-block: calc(0.375em - 1px);
 	padding-inline: 1em;
 }
 
@@ -58,9 +62,11 @@
 .button--toggle,
 .button--ghost,
 .button--danger {
+	border: 1px solid transparent;
 	border-radius: var(--radius-md);
-	padding-block: 0.5em;
+	padding-block: calc(0.375em - 1px);
 	padding-inline: 1em;
+	white-space: nowrap;
 
 	&:has([data-part="label"].sr-only) svg {
 		min-block-size: 1lh;
@@ -72,7 +78,8 @@
 	--outline-colour: var(--primary-fill);
 
 	background-color: var(--background-colour);
-	color: white;
+	border-color: var(--background-colour);
+	color: var(--primary-foreground);
 	font-weight: 500;
 	outline: 0;
 
@@ -103,7 +110,7 @@
 }
 
 .button--muted {
-	--background-colour: white;
+	--background-colour: var(--surface);
 	--colour: currentColor;
 	--border-colour: var(--color-grey-300);
 
@@ -147,7 +154,7 @@
 	text-decoration: none;
 
 	&:not([aria-pressed="true"]) {
-		--background-colour: white;
+		--background-colour: var(--surface);
 		--colour: currentColor;
 		--border-colour: var(--color-grey-300);
 
@@ -192,7 +199,7 @@
 		&:not([aria-pressed="true"]) {
 			--background-colour: rgb(255 255 255 / 20%);
 			--colour: currentColor;
-			--border-colour: rgb(255 255 255 / 20%);
+			--border-colour: var(--border);
 
 			background-color: var(--background-colour);
 			color: var(--colour);
@@ -237,6 +244,7 @@
 	--colour: currentColor;
 
 	background-color: var(--background-colour);
+	border-color: var(--background-colour);
 	color: var(--colour);
 	text-decoration: none;
 
@@ -270,7 +278,8 @@
 	--outline-colour: var(--danger-fill);
 
 	background-color: var(--background-colour);
-	color: white;
+	border-color: var(--background-colour);
+	color: var(--danger-foreground);
 	font-weight: 500;
 	outline: 0;
 

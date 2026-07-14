@@ -1,16 +1,16 @@
 @theme {
 	/* Allow us to use UK spelling */
-	--color-grey-50: var(--color-gray-50);
-	--color-grey-100: var(--color-gray-100);
-	--color-grey-200: var(--color-gray-200);
-	--color-grey-300: var(--color-gray-300);
-	--color-grey-400: var(--color-gray-400);
-	--color-grey-500: var(--color-gray-500);
-	--color-grey-600: var(--color-gray-600);
-	--color-grey-700: var(--color-gray-700);
-	--color-grey-800: var(--color-gray-800);
-	--color-grey-900: var(--color-gray-900);
-	--color-grey-950: var(--color-gray-950);
+	--color-grey-50: var(--color-stone-50);
+	--color-grey-100: var(--color-stone-100);
+	--color-grey-200: var(--color-stone-200);
+	--color-grey-300: var(--color-stone-300);
+	--color-grey-400: var(--color-stone-400);
+	--color-grey-500: var(--color-stone-500);
+	--color-grey-600: var(--color-stone-600);
+	--color-grey-700: var(--color-stone-700);
+	--color-grey-800: var(--color-stone-800);
+	--color-grey-900: var(--color-stone-900);
+	--color-grey-950: var(--color-stone-950);
 
 	/* Choose our preferred blue */
 	--color-blue-50: var(--color-sky-50);
@@ -34,7 +34,7 @@
 	--color-rose-*: initial;
 	--color-zinc-*: initial;
 	--color-neutral-*: initial;
-	--color-stone-*: initial;
+	--color-gray-*: initial;
 
 	--color-neon-pink: #e61980;
 	--color-neon-blue: #19cbe6;
@@ -51,7 +51,10 @@
  * Raw named scales. Override these at :root to re-theme the whole library
  * without a rebuild. e.g. :root { --primary-500: oklch(0.6 0.2 250); }
  */
+
 :root {
+	color-scheme: light dark;
+
 	--primary-50: var(--color-purple-50);
 	--primary-100: var(--color-purple-100);
 	--primary-200: var(--color-purple-200);
@@ -111,6 +114,18 @@
 	--info-800: var(--color-blue-800);
 	--info-900: var(--color-blue-900);
 	--info-950: var(--color-blue-950);
+}
+
+:root {
+	/* Chart palette (Okabe-Ito, colour-blind safe). Wraps at 8. */
+	--color-chart-1: #e69f00;
+	--color-chart-2: #56b4e9;
+	--color-chart-3: #009e73;
+	--color-chart-4: #e6be00;
+	--color-chart-5: #0072b2;
+	--color-chart-6: #d55e00;
+	--color-chart-7: #cc79a7;
+	--color-chart-8: #404040;
 }
 
 /*
@@ -177,6 +192,17 @@
 	--color-info-800: var(--info-800);
 	--color-info-900: var(--info-900);
 	--color-info-950: var(--info-950);
+
+	--color-surface: var(--surface);
+	--color-surface-subtle: var(--surface-subtle);
+	--color-surface-sunken: var(--surface-sunken);
+
+	--color-content: var(--content);
+	--color-content-strong: var(--content-strong);
+	--color-content-muted: var(--content-muted);
+
+	--color-border: var(--border);
+	--color-border-strong: var(--border-strong);
 }
 
 /*
@@ -190,7 +216,8 @@
  * Fill and text use different shades where the accessible text shade differs
  * from the fill shade.
  */
-:root {
+/* Keep defaults zero-specificity so theme modes can override them on the root. */
+:where(:root) {
 	--primary-fill: var(--primary-800);
 	--primary-text: var(--primary-800);
 	--primary-subtle: var(--primary-50);
@@ -233,6 +260,7 @@
  * Semantic roles (dark mode)
  */
 :where(.dark, .dark *) {
+	color-scheme: dark;
 	--primary-fill: var(--primary-500);
 	--primary-text: var(--primary-300);
 	--primary-subtle: color-mix(in oklab, var(--primary-500) 50%, transparent);
@@ -263,6 +291,56 @@
 
 	--border: rgb(255 255 255 / 20%);
 	--border-strong: rgb(255 255 255 / 30%);
+
+	--color-chart-1: #ffb733;
+	--color-chart-2: #7dcbf5;
+	--color-chart-3: #00c98f;
+	--color-chart-4: #ffe033;
+	--color-chart-5: #2e9dd6;
+	--color-chart-6: #f07840;
+	--color-chart-7: #dc95be;
+	--color-chart-8: #aaaaaa;
+}
+
+/* Derive control states where the active semantic roles are in scope. */
+:where(:root, .dark, .dark *) {
+	--control-surface: var(--surface);
+	--control-surface-hover: color-mix(in oklab, var(--surface), var(--content-strong) 2%);
+	--control-surface-active: color-mix(in oklab, var(--surface), var(--content-strong) 4%);
+
+	--control-border: var(--border-strong);
+	--control-border-hover: color-mix(in oklab, var(--border-strong), var(--content-strong) 20%);
+	--control-border-active: color-mix(in oklab, var(--border-strong), var(--content-strong) 45%);
+	--control-ring: var(--control-border);
+	--control-ring-hover: var(--control-border-active);
+
+	--control-content: var(--content);
+	--control-content-hover: color-mix(in oklab, var(--content), var(--content-strong) 24%);
+	--control-content-active: color-mix(in oklab, var(--content), var(--content-strong) 60%);
+
+	--control-focus: var(--primary-fill);
+	--control-overlay: rgb(from var(--content-strong) r g b / 20%);
+	--control-overlay-hover: rgb(from var(--content-strong) r g b / 30%);
+	--control-overlay-active: rgb(from var(--content-strong) r g b / 40%);
+
+	--control-selected-surface: var(--primary-fill);
+	--control-selected-surface-focus: var(--primary-fill);
+	--control-selected-border: var(--primary-900);
+	--control-selected-border-focus: var(--primary-900);
+	--control-selected-foreground: var(--primary-foreground);
+
+	--control-invalid: var(--danger-600);
+}
+
+:where(.dark, .dark *) {
+	--control-content-hover: color-mix(in oklab, var(--content), var(--surface) 2%);
+	--control-content-active: var(--content);
+	--control-ring-hover: rgb(from var(--content-strong) r g b / 50%);
+	--control-selected-surface: var(--primary-500);
+	--control-selected-surface-focus: var(--primary-600);
+	--control-selected-border: var(--primary-400);
+	--control-selected-border-focus: var(--primary-500);
+	--control-invalid: var(--danger-300);
 }
 
 /*
@@ -372,43 +450,4 @@
 
 @utility text-info-foreground {
 	color: var(--info-foreground);
-}
-
-/* Neutral surfaces */
-@utility bg-surface {
-	background-color: var(--surface);
-}
-
-@utility bg-surface-subtle {
-	background-color: var(--surface-subtle);
-}
-
-@utility bg-surface-sunken {
-	background-color: var(--surface-sunken);
-}
-
-/* Neutral text */
-@utility text-content {
-	color: var(--content);
-}
-
-@utility text-content-strong {
-	color: var(--content-strong);
-}
-
-@utility text-content-muted {
-	color: var(--content-muted);
-}
-
-/* Neutral borders */
-@utility border-border {
-	border-color: var(--border);
-}
-
-@utility border-border-strong {
-	border-color: var(--border-strong);
-}
-
-@utility divide-border {
-	border-color: var(--border);
 }

@@ -2,7 +2,7 @@
 .form-select {
 	border-radius: var(--radius-md);
 	box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-	color: var(--content);
+	color: var(--control-content);
 	display: block;
 	outline: 0;
 	width: 100%;
@@ -13,7 +13,7 @@
 }
 
 .form-input {
-	padding-block: calc(var(--spacing) * 2);
+	padding-block: 0.375em;
 	padding-inline: calc(var(--spacing) * 3);
 }
 
@@ -23,7 +23,7 @@
 	background-position: right 0.5rem center;
 	background-repeat: no-repeat;
 	background-size: 1.5em 1.5em;
-	padding-block: calc(var(--spacing) * 2);
+	padding-block: 0.375em;
 	padding-inline-end: 2.5em;
 	padding-inline-start: calc(var(--spacing) * 3);
 
@@ -40,10 +40,77 @@
 	}
 }
 
+.form-file-input {
+	border: 0;
+	border-radius: var(--radius-md);
+	color: var(--control-content);
+	padding: 0;
+
+	&::file-selector-button {
+		background-color: var(--control-surface);
+		border: 1px solid var(--control-border);
+		border-radius: inherit;
+		color: var(--control-content);
+		cursor: pointer;
+		margin-inline-end: calc(var(--spacing) * 3);
+		padding-block: calc(0.375em - 1px);
+		padding-inline: 1em;
+		transition-duration: var(--default-transition-duration);
+		transition-property: background-color, border-color, color;
+		transition-timing-function: var(--default-transition-timing-function);
+	}
+
+	&:hover::file-selector-button,
+	&::file-selector-button:hover {
+		background-color: var(--control-surface-hover);
+		border-color: var(--control-border-hover);
+		color: var(--control-content-hover);
+	}
+
+	&:active::file-selector-button,
+	&::file-selector-button:active {
+		background-color: var(--control-surface-active);
+		border-color: var(--control-border-active);
+		color: var(--control-content-active);
+	}
+
+	&:focus {
+		outline: 2px solid var(--control-focus);
+		outline-offset: 2px;
+	}
+
+	&.form-field--error {
+		border-color: var(--control-invalid);
+	}
+
+	&:where(.dark, .dark *) {
+		background-color: transparent;
+
+		&::file-selector-button {
+			background-color: var(--control-overlay);
+			border-color: var(--control-overlay);
+		}
+
+		&:hover::file-selector-button,
+		&::file-selector-button:hover {
+			background-color: var(--control-overlay-hover);
+			border-color: var(--control-overlay);
+			color: var(--control-content-hover);
+		}
+
+		&:active::file-selector-button,
+		&::file-selector-button:active {
+			background-color: var(--control-overlay-active);
+			border-color: transparent;
+			color: var(--control-content-active);
+		}
+	}
+}
+
 .form-checkbox,
 .form-radio {
 	--ring-size: 1px;
-	--ring-colour: var(--color-grey-300);
+	--ring-colour: var(--control-ring);
 
 	appearance: none;
 	box-shadow: 0 0 0 var(--ring-size) var(--ring-colour);
@@ -58,11 +125,11 @@
 
 	&:hover {
 		--ring-size: 2px;
-		--ring-colour: var(--color-grey-500);
+		--ring-colour: var(--control-ring-hover);
 	}
 
 	&:focus {
-		--ring-colour: var(--primary-fill);
+		--ring-colour: var(--control-focus);
 
 		outline: 2px solid var(--ring-colour);
 		outline-offset: 2px;
@@ -72,22 +139,22 @@
 		--ring-colour: currentColor;
 
 		background-color: currentColor;
-		color: var(--primary-fill);
+		color: var(--control-selected-surface);
 	}
 
 	&:where(.dark, .dark *) {
-		--ring-colour: rgb(255 255 255 / 30%);
+		--ring-colour: var(--control-ring);
 
-		background-color: rgb(255 255 255 / 20%);
+		background-color: var(--control-overlay);
 
 		&:hover {
-			--ring-colour: rgb(255 255 255 / 50%);
+			--ring-colour: var(--control-ring-hover);
 		}
 
 		&:checked {
 			--ring-colour: currentColor;
 
-			color: var(--primary-fill);
+			color: var(--control-selected-surface);
 		}
 	}
 }
@@ -100,15 +167,15 @@
 	border-radius: 9999px;
 }
 
-.button-group {
+.form-button-group {
 	appearance: none;
-	background-color: white;
-	border: 1px solid var(--border-strong);
-	color: currentColor;
+	background-color: var(--control-surface);
+	border: 1px solid var(--control-border);
+	color: var(--control-content);
 	cursor: pointer;
 	display: inline-block;
 	outline: 0;
-	padding-block: 0.5em;
+	padding-block: calc(0.375em - 1px);
 	padding-inline: 1em;
 	text-decoration: none;
 	transition-duration: var(--default-transition-duration);
@@ -117,130 +184,127 @@
 
 	&:hover,
 	&:focus {
-		background-color: var(--color-grey-50);
-		border-color: var(--color-grey-400);
-		color: var(--color-grey-700);
+		background-color: var(--control-surface-hover);
+		border-color: var(--control-border-hover);
+		color: var(--control-content-hover);
 	}
 
 	&:active {
-		background-color: var(--color-grey-100);
-		border-color: var(--color-grey-500);
-		color: var(--color-grey-800);
+		background-color: var(--control-surface-active);
+		border-color: var(--control-border-active);
+		color: var(--control-content-active);
 	}
 
 	&:where(.dark, .dark *) {
-		background-color: rgb(255 255 255 / 20%);
-		border-color: rgb(255 255 255 / 20%);
+		background-color: var(--control-overlay);
+		border-color: var(--control-overlay);
 
 		&:hover,
 		&:focus {
-			background-color: rgb(255 255 255 / 30%);
-			border-color: rgb(255 255 255 / 20%);
-			color: var(--color-grey-100);
+			background-color: var(--control-overlay-hover);
+			border-color: var(--control-overlay);
+			color: var(--control-content-hover);
 		}
 
 		&:active {
-			background-color: rgb(255 255 255 / 40%);
+			background-color: var(--control-overlay-active);
 			border-color: transparent;
-			color: var(--color-grey-50);
+			color: var(--control-content-active);
 		}
 	}
 
 	&:is(:where(.peer):focus ~ *) {
 		background-color: var(--surface-subtle);
-		border-color: var(--color-grey-400);
+		border-color: var(--control-border-hover);
 	}
 
 	&:is(:where(.peer):checked ~ *) {
-		background-color: var(--primary-fill);
-		border-color: var(--primary-900);
-		color: var(--primary-foreground);
+		background-color: var(--control-selected-surface);
+		border-color: var(--control-selected-border);
+		color: var(--control-selected-foreground);
 	}
 
 	&:is(:where(.peer):checked:focus ~ *) {
-		background-color: var(--primary-fill);
-		color: var(--primary-foreground);
+		background-color: var(--control-selected-surface-focus);
+		border-color: var(--control-selected-border-focus);
+		color: var(--control-selected-foreground);
 	}
 
 	&:is(:where(.peer):checked:focus-visible ~ *) {
-		outline: 2px solid var(--primary-fill);
+		outline: 2px solid var(--control-focus);
 		outline-offset: 2px;
 	}
 
 	&:where(.dark, .dark *) {
 		&:is(:where(.peer):focus ~ *) {
 			--ring-size: 2px;
-			--ring-colour: var(--primary-fill);
+			--ring-colour: var(--control-focus);
 
-			background-color: rgb(255 255 255 / 30%);
-			border-color: rgb(255 255 255 / 20%);
+			background-color: var(--control-overlay-hover);
+			border-color: var(--control-overlay);
 		}
 
 		&:is(:where(.peer):checked ~ *) {
-			background-color: var(--primary-500);
-			border-color: var(--primary-400);
+			background-color: var(--control-selected-surface);
+			border-color: var(--control-selected-border);
 		}
 
 		&:is(:where(.peer):checked:focus ~ *) {
-			background-color: var(--primary-600);
-			border-color: var(--primary-500);
+			background-color: var(--control-selected-surface-focus);
+			border-color: var(--control-selected-border-focus);
 		}
 	}
 }
 
-.button-group--first {
+.form-button-group--first {
 	border-start-start-radius: var(--radius-lg);
 	border-end-start-radius: var(--radius-lg);
 }
 
-.button-group--middle {
+.form-button-group--middle {
 	border-inline-start-width: 0;
 }
 
-.button-group--last {
+.form-button-group--last {
 	border-start-end-radius: var(--radius-lg);
 	border-end-end-radius: var(--radius-lg);
 }
 
 .form-field--error {
-	--ring-colour: var(--danger-600);
+	--ring-colour: var(--control-invalid);
 
 	box-shadow: 0 0 0 1px var(--ring-colour);
-
-	&:where(.dark, .dark *) {
-		--ring-colour: var(--danger-300);
-	}
 }
 
-[data-selector="form-field-wrapper"] {
+[data-part="field-wrapper"] {
 	--ring-size: 1px;
-	--ring-colour: var(--color-grey-300);
+	--ring-colour: var(--control-ring);
 
 	border-radius: var(--radius-md);
 	box-shadow: 0 0 0 var(--ring-size) var(--ring-colour);
 
 	&:has(:hover) {
 		--ring-size: 1px;
-		--ring-colour: var(--color-grey-400);
+		--ring-colour: var(--control-border-hover);
 	}
 
 	&:has(:focus) {
 		--ring-size: 2px;
-		--ring-colour: var(--primary-fill);
+		--ring-colour: var(--control-focus);
 	}
 
 	&:where(.dark, .dark *) {
-		background-color: rgb(255 255 255 / 20%);
-		--ring-colour: rgb(255 255 255 / 30%);
+		background-color: var(--control-overlay);
+		--ring-colour: var(--control-ring);
 
 		&:has(:hover) {
-			--ring-colour: rgb(255 255 255 / 50%);
+			--ring-colour: var(--control-ring-hover);
 		}
 	}
 }
 
-[data-selector="form-prefix"],
-[data-selector="form-suffix"] {
+[data-part="prefix"],
+[data-part="suffix"] {
 	color: var(--content-muted);
 
 	& > svg {

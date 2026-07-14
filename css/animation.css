@@ -50,6 +50,12 @@
 	.delay {
 		animation-delay: calc(sibling-index() * 50ms);
 	}
+
+	.animate-progress-indeterminate {
+		animation-name: progress-bar-indeterminate;
+		animation-duration: 6s;
+		animation-iteration-count: infinite;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -59,6 +65,20 @@
 
 	.animate-pulse {
 		--animate-pulse: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	}
+}
+
+@keyframes progress-bar-indeterminate {
+	0% {
+		inset-inline-start: 0;
+	}
+
+	50% {
+		inset-inline-start: 75%;
+	}
+
+	100% {
+		inset-inline-start: 0;
 	}
 }
 
