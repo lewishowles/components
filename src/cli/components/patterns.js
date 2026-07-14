@@ -5,43 +5,24 @@
 //                    and validation to your requirements before use.
 export const patterns = [
 	{
-		name: "contact-form",
-		label: "Contact form",
-		category: "form",
-		summary: "Name, email address, and message with a submit button.",
-		stability: "illustrative",
-		template: `<form-wrapper v-bind="form" :rules="{ name: [{ rule: 'required' }], email: [{ rule: 'required' }, { rule: 'email' }], message: [{ rule: 'required' }] }">
-  <form-field name="name">
-    Full name
-  </form-field>
-
-  <form-field name="email" type="email">
-    Email address
-  </form-field>
-
-  <form-field name="message" type="textarea">
-    Message
-  </form-field>
-
-  <template #submit-button-label>Send message</template>
-</form-wrapper>`,
-	},
-	{
-		name: "data-table-list",
-		label: "Data table list",
+		name: "data-table-example",
+		label: "Data table example",
 		category: "table",
 		summary:
-			"An async-loaded data table with a loading state, last-updated timestamp, and refresh button.",
+			"An async-loaded data table with search, sorting, selection, empty states, last-updated timestamp, and refresh button.",
 		stability: "illustrative",
 		template: `<loading-indicator v-if="isInitialLoading" large>
   Loading users…
 </loading-indicator>
 
 <template v-else-if="isReady">
-  <data-table name="users" :data="users" :columns="columns">
+  <data-table name="users" v-model="selectedUsers" v-bind="{ data: users, columns }" enable-selection>
     <template #search-label>Search users</template>
     <template #search-introduction>Find a user</template>
-    <template #no-data-message>No users to display</template>
+    <template #no-data-message>No users have been added yet.</template>
+    <template #no-results-message="{ searchQuery }">
+      No users match "{{ searchQuery }}".
+    </template>
   </data-table>
 
   <div class="mt-10 flex items-center justify-end gap-4 text-sm">
@@ -57,43 +38,109 @@ export const patterns = [
 </template>`,
 	},
 	{
-		name: "login-form",
-		label: "Login form",
+		name: "form-example",
+		label: "Form example",
 		category: "form",
-		summary: "Email address and password with a submit button.",
+		summary:
+			"A complete form with validation, conditional fields, file upload, confirmation, and submit lifecycle handlers.",
 		stability: "illustrative",
-		template: `<form-wrapper v-bind="form" :rules="{ email: [{ rule: 'required' }, { rule: 'email' }], password: [{ rule: 'required' }] }">
-  <form-field name="email" type="email">
-    Email address
-  </form-field>
+		template: `<template>
+  <form-wrapper v-bind="form">
+    <form-field name="full_name">
+      Full name
+    </form-field>
 
-  <form-field name="password" type="password">
-    Password
-  </form-field>
+    <form-field name="email" type="email">
+      Email address
+    </form-field>
 
-  <template #submit-button-label>Sign in</template>
-</form-wrapper>`,
-	},
-	{
-		name: "settings-form",
-		label: "Settings form",
-		category: "form",
-		summary: "A named settings section with a save button and cancel link.",
-		stability: "illustrative",
-		template: `<form-wrapper v-bind="form" :rules="{ displayName: [{ rule: 'required' }], email: [{ rule: 'required' }, { rule: 'email' }] }">
-  <form-field name="displayName">
-    Display name
-  </form-field>
+    <form-field
+      name="is_vat_registered"
+      type="select"
+      :options="[
+        { value: 'yes', label: 'Yes' },
+        { value: 'no', label: 'No' },
+      ]"
+    >
+      Is your organisation VAT registered?
+    </form-field>
 
-  <form-field name="email" type="email">
-    Email address
-  </form-field>
+    <form-field name="vat_number">
+      VAT number
+    </form-field>
 
-  <template #submit-button-label>Save changes</template>
-  <template #secondary-actions>
-    <link-tag href="/settings">Cancel</link-tag>
-  </template>
-</form-wrapper>`,
+    <form-field name="organisation">
+      Organisation
+    </form-field>
+
+    <form-field name="supporting_documents" type="file" multiple>
+      Supporting documents
+
+      <template #help>Upload any documents that help us answer your message.</template>
+    </form-field>
+
+    <form-field name="message" type="textarea">
+      Message
+    </form-field>
+
+    <template #submit-button-label>Send message</template>
+    <template #tertiary-actions>
+      <link-tag href="/contact">Cancel</link-tag>
+    </template>
+  </form-wrapper>
+</template>
+
+<script setup>
+import { useForm } from "@lewishowles/components/composables";
+import { ConfirmDialog, useModalDialog } from "@lewishowles/components";
+
+const { openModal } = useModalDialog();
+
+const { form } = useForm({
+  rules: {
+    full_name: [{ rule: "required", message: "Enter your full name." }],
+    email: [
+      { rule: "required", message: "Enter your email address." },
+      { rule: "email", message: "Enter a valid email address." },
+    ],
+    is_vat_registered: [{ rule: "required", message: "Choose yes or no." }],
+    vat_number: [
+      {
+        rule: "required_if",
+        field: "is_vat_registered",
+        value: "yes",
+        message: "Enter your VAT number.",
+      },
+    ],
+    message: [{ rule: "required", message: "Tell us how we can help." }],
+  },
+  onSubmit(formData) {
+    return new Promise((resolve, reject) => {
+      let confirmed = false;
+
+      openModal(ConfirmDialog, {
+        danger: true,
+        onConfirm: () => {
+          confirmed = true;
+          console.log("Submitting", formData);
+          resolve(formData);
+        },
+        onClose: () => {
+          if (!confirmed) {
+            reject(new Error("Submission cancelled"));
+          }
+        },
+      });
+    });
+  },
+  submitErrorsCallback: () => ({ cancelled: ["Submission cancelled."] }),
+  onSuccess: (result, formData) =>
+    console.log("Submitted successfully", result, formData),
+  onError: (error, formData) => console.error("Submit failed", error, formData),
+  onSettled: (result, error, formData) =>
+    console.log("Submit settled", result, error, formData),
+});
+</script>`,
 	},
 ];
 

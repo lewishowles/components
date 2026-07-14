@@ -204,6 +204,10 @@ async function promptPattern() {
 		selectedCategory = categories[0];
 	}
 
+	if (grouped[selectedCategory].length === 1) {
+		return grouped[selectedCategory][0].name;
+	}
+
 	const patternChoice = await select({
 		message: `Choose a ${selectedCategory} pattern`,
 		options: grouped[selectedCategory].map((item) => ({

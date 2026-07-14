@@ -97,6 +97,14 @@ describe("generatePattern", () => {
 	});
 });
 
+describe("patterns", () => {
+	test("contains the consolidated pattern roster", () => {
+		const names = patterns.map((pattern) => pattern.name);
+
+		expect(names).toEqual(["data-table-example", "form-example"]);
+	});
+});
+
 describe("lookupPattern", () => {
 	test("Returns a pattern for a known name", () => {
 		const firstName = patterns[0].name;
