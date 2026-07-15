@@ -3,7 +3,9 @@ import { componentAutoImports } from "./support/plugins/component-auto-imports.j
 import { defineConfig } from "vite-plus";
 import { fileURLToPath, URL } from "node:url";
 import fmt from "./.oxfmtrc.json" with { type: "json" };
-import lint from "./.oxlintrc.json" with { type: "json" };
+import lintConfigBase from "@lewishowles/lint-config/base.json" with { type: "json" };
+import lintConfigVue from "@lewishowles/lint-config/vue.json" with { type: "json" };
+import oxlintrc from "./.oxlintrc.json" with { type: "json" };
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
@@ -14,6 +16,18 @@ import {
 	publishDeclarations,
 	publishStylesheets,
 } from "./support/plugins/index.js";
+
+// vite-plus requires `extends` entries to be resolved objects rather than the string
+// paths `.oxlintrc.json` uses for raw oxlint/editor consumption.
+const lint = {
+	...lintConfigVue,
+	extends: [lintConfigBase],
+	env: oxlintrc.env,
+	globals: oxlintrc.globals,
+	ignorePatterns: oxlintrc.ignorePatterns,
+	overrides: oxlintrc.overrides,
+	options: oxlintrc.options,
+};
 
 export default defineConfig({
 	staged: {
