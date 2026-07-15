@@ -38,9 +38,9 @@ describe("data-table-header", () => {
 			expect(wrapper.find("h2").text()).toBe("Movies");
 		});
 
-		test("should render a title at a custom heading level", () => {
+		test("should render a title at an injected heading level", () => {
 			const wrapper = mount({
-				props: { headingLevel: "h3" },
+				global: { provide: { "data-table": { headingLevel: "h3" } } },
 				slots: { "table-title": "Movies" },
 			});
 

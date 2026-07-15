@@ -23,7 +23,7 @@
 			</template>
 		</data-table-status>
 
-		<data-table-header v-bind="{ headingLevel }">
+		<data-table-header>
 			<template #table-title>
 				<slot name="table-title" />
 			</template>
@@ -563,6 +563,7 @@ function setSearchQuery(value) {
 
 provide("data-table", {
 	columnDefinitions,
+	headingLevel: props.headingLevel,
 	haveTableName,
 	searchPlaceholder: ref(props.searchPlaceholder),
 	tableName: ref(props.name),

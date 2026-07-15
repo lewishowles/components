@@ -13,18 +13,10 @@
 </template>
 
 <script setup>
-import { computed, useSlots } from "vue";
+import { computed, inject, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 
-defineProps({
-	/**
-	 * The heading level to use for the table title.
-	 */
-	headingLevel: {
-		type: String,
-		default: "h2",
-	},
-});
+const { headingLevel } = inject("data-table", { headingLevel: "h2" });
 
 const slots = useSlots();
 
