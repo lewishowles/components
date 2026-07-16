@@ -73,6 +73,24 @@ describe("ui-button", () => {
 			});
 		});
 
+		describe("attributes: class", () => {
+			test("should merge user-provided classes with base classes", () => {
+				const wrapper = mount({ class: "hidden md:inline-flex" });
+
+				expect(wrapper.classes()).toContain("hidden");
+				expect(wrapper.classes()).toContain("md:inline-flex");
+				expect(wrapper.classes()).toContain("items-center");
+				expect(wrapper.classes()).toContain("justify-center");
+			});
+
+			test("should let a conflicting user class win over the base display class", () => {
+				const wrapper = mount({ class: "hidden" });
+
+				expect(wrapper.classes()).toContain("hidden");
+				expect(wrapper.classes()).not.toContain("inline-flex");
+			});
+		});
+
 		describe("computedIconClasses", () => {
 			test("should return null without an icon", () => {
 				const wrapper = mount();

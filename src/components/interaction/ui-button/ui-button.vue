@@ -1,8 +1,13 @@
 <template>
 	<button
 		type="button"
-		class="inline-flex items-center justify-center"
-		:class="{ relative: reactive, 'button--disabled': disabled }"
+		:class="
+			cn(
+				'inline-flex items-center justify-center',
+				{ relative: reactive, 'button--disabled': disabled },
+				attrs.class,
+			)
+		"
 		v-bind="attributes"
 		data-component="ui-button"
 		:data-disabled="disabled || null"
@@ -63,9 +68,11 @@
  * when activated, which can be reset via an exposed `reset` method.
  */
 import { cn } from "@/utilities/cn.js";
-import { computed, getCurrentInstance, ref } from "vue";
+import { computed, getCurrentInstance, ref, useAttrs } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
+
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
 	/**
@@ -163,9 +170,16 @@ const iconStartComponent = computed(() => resolveIconComponent(props.iconStart))
 // The resolved component for the end icon.
 const iconEndComponent = computed(() => resolveIconComponent(props.iconEnd));
 
-// Any additional attributes to apply to the button.
+// All fallthrough attributes, used to read `class` separately so it can be
+// merged via `cn` rather than doubled up by Vue's automatic inheritance.
+const attrs = useAttrs();
+
+// Any additional attributes to apply to the button, combining fallthrough
+// attributes (aside from `class`, which is handled separately) with computed
+// aria attributes.
 const attributes = computed(() => {
-	const attributes = {};
+	const { class: _omitted, ...rest } = attrs;
+	const attributes = { ...rest };
 
 	if (isReacting.value) {
 		attributes["aria-busy"] = "true";
