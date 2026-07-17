@@ -92,7 +92,7 @@ const {
 const resolvedDetailsClasses = computed(() =>
 	cn(
 		"w-screen rounded-md border p-4 shadow",
-		"border-grey-200 bg-white backdrop-blur-lg dark:border-transparent dark:bg-grey-950/80",
+		"border-border bg-surface-elevated backdrop-blur-lg",
 		"max-w-[calc(100vw-1rem)] lg:max-w-lg",
 		placementClasses.value,
 		{ invisible: isPositioning.value },

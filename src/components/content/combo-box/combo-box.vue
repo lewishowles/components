@@ -243,7 +243,7 @@ const haveQuery = computed(() => isNonEmptyString(query.value));
 // resolved position, alignment, and any caller overrides.
 const resolvedDropdownClasses = computed(() =>
 	cn(
-		"absolute z-10 w-full overflow-hidden rounded-md border border-grey-200 bg-white shadow-lg dark:border-white/15 dark:bg-grey-800",
+		"absolute z-10 w-full overflow-hidden rounded-md border border-border bg-surface-elevated shadow-lg",
 		placementClasses.value,
 		computedPlacement.value === "above" ? "bottom-full" : "top-full",
 		computedAlign.value === "end" ? "inset-e-0" : "inset-s-0",

@@ -110,9 +110,9 @@
 }
 
 .button--muted {
-	--background-colour: var(--surface);
+	--background-colour: var(--control-muted-surface);
 	--colour: currentColor;
-	--border-colour: var(--color-grey-300);
+	--border-colour: var(--control-border);
 
 	background-color: var(--background-colour);
 	border: 1px solid var(--border-colour);
@@ -120,32 +120,15 @@
 	text-decoration: none;
 
 	&:is(:hover, :focus) {
-		--background-colour: var(--color-grey-50);
-		--colour: var(--color-grey-700);
-		--border-colour: var(--color-grey-400);
+		--background-colour: var(--control-muted-surface-hover);
+		--colour: var(--control-content-hover);
+		--border-colour: var(--control-border-hover);
 	}
 
 	&:active {
-		--background-colour: var(--color-grey-100);
-		--colour: var(--color-grey-800);
-		--border-colour: var(--color-grey-500);
-	}
-
-	&:where(.dark, .dark *) {
-		--background-colour: rgb(255 255 255 / 20%);
-		--colour: currentColor;
-		--border-colour: rgb(255 255 255 / 20%);
-
-		&:is(:hover, :focus) {
-			--background-colour: rgb(255 255 255 / 30%);
-			--colour: var(--color-grey-100);
-		}
-
-		&:active {
-			--background-colour: rgb(255 255 255 / 40%);
-			--colour: var(--color-grey-50);
-			--border-colour: transparent;
-		}
+		--background-colour: var(--control-muted-surface-active);
+		--colour: var(--control-content-active);
+		--border-colour: var(--control-border-active);
 	}
 }
 

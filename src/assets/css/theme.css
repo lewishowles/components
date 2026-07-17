@@ -194,6 +194,7 @@
 	--color-info-950: var(--info-950);
 
 	--color-surface: var(--surface);
+	--color-surface-elevated: var(--surface-elevated);
 	--color-surface-subtle: var(--surface-subtle);
 	--color-surface-sunken: var(--surface-sunken);
 
@@ -251,8 +252,12 @@
 
 	/* Neutral foundation. */
 	--surface: var(--color-white);
+	--surface-elevated: var(--color-white);
 	--surface-subtle: var(--color-grey-50);
 	--surface-sunken: var(--color-grey-100);
+	--control-muted-surface: var(--surface);
+	--control-muted-surface-hover: var(--color-grey-50);
+	--control-muted-surface-active: var(--color-grey-100);
 
 	--content: var(--color-grey-600);
 	--content-strong: var(--color-grey-950);
@@ -293,8 +298,12 @@
 	--info-border-subtle: transparent;
 
 	--surface: var(--color-grey-950);
+	--surface-elevated: var(--color-grey-800);
 	--surface-subtle: rgb(255 255 255 / 10%);
 	--surface-sunken: rgb(255 255 255 / 20%);
+	--control-muted-surface: var(--control-overlay);
+	--control-muted-surface-hover: var(--control-overlay-hover);
+	--control-muted-surface-active: var(--control-overlay-active);
 
 	--content: var(--color-grey-50);
 	--content-strong: var(--color-white);
