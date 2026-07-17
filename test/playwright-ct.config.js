@@ -12,7 +12,7 @@ import vue from "@vitejs/plugin-vue";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-	reporter: process.env.CI ? "github" : "list",
+	reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : "list",
 	testDir: join(__dirname, "../src/components"),
 	testMatch: "**/*.pw.js",
 	fullyParallel: true,
