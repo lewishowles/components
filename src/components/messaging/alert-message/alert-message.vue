@@ -142,13 +142,13 @@ const alertPrefix = computed(() => {
 const alertColours = computed(() => {
 	switch (alertType.value) {
 		case alertTypes.SUCCESS:
-			return "border-success-200 bg-success-subtle text-success dark:border-transparent";
+			return "border-success-subtle bg-success-subtle text-success";
 		case alertTypes.ERROR:
-			return "border-danger-200 bg-danger-subtle text-danger dark:border-transparent";
+			return "border-danger-subtle bg-danger-subtle text-danger";
 		case alertTypes.WARNING:
-			return "border-warning-200 bg-warning-subtle text-warning dark:border-transparent";
+			return "border-warning-subtle bg-warning-subtle text-warning";
 		case alertTypes.INFO:
-			return "border-primary-200 bg-primary-subtle text-primary-800 dark:border-transparent dark:text-primary-200";
+			return "border-primary-subtle bg-primary-subtle text-primary-800 dark:text-primary-200";
 		default:
 			return "border-border bg-surface-subtle text-grey-800 dark:border-transparent dark:text-grey-200";
 	}

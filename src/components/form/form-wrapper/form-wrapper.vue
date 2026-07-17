@@ -10,7 +10,7 @@
 			v-show="haveErrorSummary"
 			ref="errorSummaryElement"
 			tabindex="0"
-			class="mb-4 w-full rounded-sm border border-red-200 bg-red-50 px-5 py-3 text-red-800 dark:border-transparent dark:bg-red-500/50 dark:text-red-200"
+			class="border-danger-subtle bg-danger-subtle text-danger mb-4 w-full rounded-sm border px-5 py-3"
 			data-test="form-wrapper-error-summary"
 		>
 			<h2 class="mb-2 font-bold">
