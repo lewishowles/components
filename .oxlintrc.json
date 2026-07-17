@@ -13,7 +13,7 @@
 		"defineSlots": "readonly",
 		"withDefaults": "readonly"
 	},
-	"ignorePatterns": ["**/dist/*", "**/dist-docs/*", ".codebase-memory/**", ".boilersuit/**"],
+	"ignorePatterns": ["**/dist/*", "**/dist-docs/*", "**/.*"],
 	"overrides": [
 		{
 			"files": [
