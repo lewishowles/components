@@ -282,6 +282,7 @@
 
 .button--disabled {
 	background-color: var(--surface-sunken);
+	border-color: transparent;
 	color: var(--content-muted);
 	cursor: not-allowed;
 	font-weight: normal;
