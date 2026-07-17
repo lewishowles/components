@@ -22,6 +22,10 @@ Content shown after the label text when the field is not required. Defaults to `
 
 Any additional text to introduce this input, which appears between the label and the input.
 
+### `empty-option-label`
+
+The label for the empty option. Defaults to the field label.
+
 ### `error`
 
 Any error text to display below the field.
@@ -64,7 +68,7 @@ The key needed to find each option's value within its object. If an individual o
 - type: `boolean`
 - default: `true`
 
-Whether to allow an empty option, the label of which can be provided via the `empty-option-label` slot.
+Whether to allow an empty option. Its label defaults to the field label and can be overridden via the `empty-option-label` slot.
 
 ### `id`
 

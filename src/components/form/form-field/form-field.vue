@@ -19,6 +19,9 @@
 		<template #introduction>
 			<slot name="introduction" />
 		</template>
+		<template v-if="$slots['empty-option-label']" #empty-option-label>
+			<slot name="empty-option-label" />
+		</template>
 		<template #prefix>
 			<slot name="prefix" />
 		</template>

@@ -38,7 +38,9 @@
 				}"
 			>
 				<option v-if="allowEmpty" value="">
-					<slot name="empty-option-label">Please select…</slot>
+					<slot name="empty-option-label">
+						<slot />
+					</slot>
 				</option>
 				<option v-for="option in internalOptions" :key="option.value" :value="option.value">
 					{{ option.label }}
@@ -106,8 +108,8 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether to allow an empty option, the label of which can be provided via
-	 * the `empty-option-label` slot..
+	 * Whether to allow an empty option. Its label defaults to the field label and
+	 * can be overridden via the `empty-option-label` slot.
 	 */
 	allowEmpty: {
 		type: Boolean,

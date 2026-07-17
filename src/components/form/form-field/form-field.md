@@ -12,6 +12,10 @@ Passed through to the `default` slot of the relevant form field, the `default` s
 
 Content shown after the label text when the field is not required. Defaults to `(optional)`.
 
+### `empty-option-label`
+
+Content for a select field's empty option. Defaults to the field label.
+
 ### `remove-button-label`
 
 Content for a file field's remove button. Receives `files`, an array containing the current `File` objects.

@@ -216,6 +216,29 @@ describe("form-field", () => {
 			});
 		});
 
+		describe("select slots", () => {
+			test("should preserve the field label as the empty option fallback", () => {
+				const wrapper = mountDeep({
+					props: { options: ["Chocolate"], type: "select" },
+					slots: { default: "Favourite flavour" },
+				});
+
+				expect(wrapper.get('option[value=""]').text()).toBe("Favourite flavour");
+			});
+
+			test("should forward the empty option label slot", () => {
+				const wrapper = mountDeep({
+					props: { options: ["Chocolate"], type: "select" },
+					slots: {
+						default: "Favourite flavour",
+						"empty-option-label": "Choose a flavour",
+					},
+				});
+
+				expect(wrapper.get('option[value=""]').text()).toBe("Choose a flavour");
+			});
+		});
+
 		describe("isRequired", () => {
 			test("should be false with no required prop or cascade", () => {
 				const wrapper = mount();

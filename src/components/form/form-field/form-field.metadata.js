@@ -65,6 +65,10 @@ export const formFieldMetadata = {
 			summary: "Introductory text shown above the input.",
 		},
 		{
+			name: "empty-option-label",
+			summary: "Content for a select field's empty option. Defaults to the field label.",
+		},
+		{
 			name: "prefix",
 			summary: "Content placed before the input.",
 		},

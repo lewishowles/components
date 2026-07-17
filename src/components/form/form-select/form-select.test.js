@@ -1,8 +1,9 @@
-import { createMount } from "@lewishowles/testing/vue";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test, vi } from "vite-plus/test";
 import FormSelect from "./form-select.vue";
 
 const mount = createMount(FormSelect);
+const mountDeep = createDeepMount(FormSelect);
 
 describe("form-select", () => {
 	console.warn = vi.fn();
@@ -183,6 +184,25 @@ describe("form-select", () => {
 
 				expect(vm.internalOptions).toEqual([]);
 			});
+		});
+	});
+
+	describe("Render contracts", () => {
+		test("The empty option defaults to the field label", () => {
+			const wrapper = mountDeep({ slots: { default: "Favourite flavour" } });
+
+			expect(wrapper.get('option[value=""]').text()).toBe("Favourite flavour");
+		});
+
+		test("The empty option label can be overridden", () => {
+			const wrapper = mountDeep({
+				slots: {
+					default: "Favourite flavour",
+					"empty-option-label": "Choose a flavour",
+				},
+			});
+
+			expect(wrapper.get('option[value=""]').text()).toBe("Choose a flavour");
 		});
 	});
 });

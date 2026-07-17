@@ -64,7 +64,7 @@ export const formSelectMetadata = {
 		{
 			name: "empty-option-label",
 			summary: "Label for the empty option.",
-			default: "Please select…",
+			default: "Field label",
 		},
 		{
 			name: "error",
