@@ -33,8 +33,9 @@
 						ref="tabAnchors"
 						class="border-b-2 px-4 py-2 whitespace-nowrap no-underline"
 						:class="{
-							'border-primary text-primary dark:border-white dark:text-white': tab.active,
-							'hocus:border-border-strong hocus:text-content-strong dark:hocus:border-white/60 border-transparent text-current':
+							'border-primary text-primary dark:border-content-strong dark:text-content-strong':
+								tab.active,
+							'hocus:border-border-strong hocus:text-content-strong dark:hocus:border-content-muted border-transparent text-current':
 								!tab.active,
 						}"
 						data-part="tab"

@@ -55,7 +55,7 @@
 					:id="entry.id"
 					:key="entry.id"
 					:aria-selected="entry.id === activeId"
-					:class="{ 'bg-grey-100 dark:bg-white/10': entry.id === activeId }"
+					:class="{ 'bg-surface-sunken': entry.id === activeId }"
 					class="cursor-pointer px-3 py-2"
 					role="option"
 					data-part="option"
@@ -71,7 +71,7 @@
 
 			<div
 				v-show="!loading && !haveItems && haveQuery"
-				class="text-grey-500 px-3 py-2 text-sm dark:text-white/60"
+				class="text-content-muted px-3 py-2 text-sm"
 				data-test="combo-box-no-results"
 			>
 				<slot name="no-results" v-bind="{ query }">No results found for "{{ query }}"</slot>

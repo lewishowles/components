@@ -158,7 +158,7 @@ const isIndeterminate = computed(() => props.current === null);
 // indeterminate positioning requirement and any user overrides.
 const resolvedTrackClasses = computed(() =>
 	cn(
-		"p-1 rounded-full bg-grey-200 dark:bg-white/20",
+		"p-1 rounded-full bg-border",
 		{ "relative overflow-hidden": isIndeterminate.value },
 		props.trackClasses,
 	),

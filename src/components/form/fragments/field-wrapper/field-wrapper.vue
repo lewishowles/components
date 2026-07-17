@@ -7,7 +7,7 @@
 	>
 		<div
 			v-if="haveError"
-			class="absolute inset-y-0 inset-s-0 w-1 rounded-full bg-red-600 dark:bg-red-300"
+			class="bg-control-invalid absolute inset-y-0 inset-s-0 w-1 rounded-full"
 		/>
 
 		<slot />

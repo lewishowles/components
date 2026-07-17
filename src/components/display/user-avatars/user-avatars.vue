@@ -112,7 +112,7 @@ const props = defineProps({
 	 */
 	initialsColourClasses: {
 		type: [String, Array, Object],
-		default: "bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200",
+		default: "bg-primary-subtle text-primary",
 	},
 
 	/**

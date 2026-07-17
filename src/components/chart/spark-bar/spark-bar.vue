@@ -99,7 +99,7 @@ const rootAttributes = computed(() => ({
 
 // Classes for the track behind the bar.
 const trackMergedClasses = computed(() =>
-	cn("grow h-1 rounded-full bg-grey-200 dark:bg-white/20", props.trackClasses),
+	cn("grow h-1 rounded-full bg-border", props.trackClasses),
 );
 
 // Classes for the bar showing the current value.

@@ -21,7 +21,7 @@
 		</div>
 
 		<div class="flex items-center gap-2" data-part="progress" data-test="step-indicator-progress">
-			<div class="bg-grey-200 h-1 w-full max-w-16 rounded-full dark:bg-white/20">
+			<div class="bg-border h-1 w-full max-w-16 rounded-full">
 				<div
 					class="bg-primary h-full rounded-full transition-all ease-out"
 					:style="{ width: `${percentageValue}%` }"
