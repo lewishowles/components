@@ -8,11 +8,11 @@
 				attrs.class,
 			)
 		"
-		v-bind="attributes"
 		data-component="ui-button"
+		data-test="ui-button"
+		v-bind="attributes"
 		:data-disabled="disabled || null"
 		:data-reacting="isReacting || null"
-		data-test="ui-button"
 		@click="react"
 	>
 		<component

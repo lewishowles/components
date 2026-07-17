@@ -17,10 +17,7 @@ dist-docs
 
 # Tool caches (regenerated on demand)
 .vite
-.codebase-memory
-.agent
 
 # Test output
 test-results
 test/ct/.cache
-.fallow/

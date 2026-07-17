@@ -10,6 +10,24 @@ test.describe("ui-button", () => {
 	test("renders a ui-button", async ({ mount, page }) => {
 		await mountUiButton(mount);
 
-		await expect(page.getByTestId("ui-button")).toBeVisible();
+		const button = page.getByTestId("ui-button");
+
+		await expect(button).toBeVisible();
+		await expect(button).toHaveAttribute("data-component", "ui-button");
+	});
+
+	test("uses caller-provided component and test hooks", async ({ mount, page }) => {
+		await mountUiButton(mount, {
+			props: {
+				"data-component": "custom-ui-button",
+				"data-test": "custom-ui-button",
+			},
+		});
+
+		const button = page.getByTestId("custom-ui-button");
+
+		await expect(button).toBeVisible();
+		await expect(button).toHaveAttribute("data-component", "custom-ui-button");
+		await expect(page.getByTestId("ui-button")).not.toBeAttached();
 	});
 });
