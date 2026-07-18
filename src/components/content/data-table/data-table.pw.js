@@ -538,7 +538,7 @@ test.describe("data-table", () => {
 
 		test.describe("column visibility", () => {
 			test.afterEach(async ({ page }) => {
-				await page.evaluate(() => localStorage.removeItem("data-table:sample-table:columns"));
+				await page.localStorage.removeItem("data-table:sample-table:columns");
 			});
 
 			test("all columns are visible by default", async ({ mount, page }) => {
@@ -561,12 +561,10 @@ test.describe("data-table", () => {
 			});
 
 			test("custom visibility is retrieved from localStorage", async ({ mount, page }) => {
-				await page.evaluate(() => {
-					localStorage.setItem(
-						"data-table:sample-table:columns",
-						'{"title":true,"release_year":false,"box_office":false}',
-					);
-				});
+				await page.localStorage.setItem(
+					"data-table:sample-table:columns",
+					'{"title":true,"release_year":false,"box_office":false}',
+				);
 
 				await mountDataTable(mount, { props: { name: "sample-table" } });
 

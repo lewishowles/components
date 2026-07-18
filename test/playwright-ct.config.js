@@ -21,6 +21,7 @@ export default defineConfig({
 		...sharedUse,
 		ctPort: 3100,
 		ctTemplateDir: "ct",
+		trace: "retain-on-failure-and-retries",
 		ctViteConfig: {
 			plugins: [componentAutoImports(), createNamedExports(), tailwindcss(), vue()],
 			resolve: { alias },
