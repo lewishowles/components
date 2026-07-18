@@ -37,32 +37,32 @@
 				<app-menu-section>
 					<template #title>Interaction</template>
 
-					<app-menu-link to="/interaction/ui-button">ui-button</app-menu-link>
-					<app-menu-link to="/interaction/link-tag">link-tag</app-menu-link>
-					<app-menu-link to="/interaction/dropdown-menu">dropdown-menu</app-menu-link>
 					<app-menu-link to="/interaction/copy-content">copy-content</app-menu-link>
+					<app-menu-link to="/interaction/dropdown-menu">dropdown-menu</app-menu-link>
+					<app-menu-link to="/interaction/link-tag">link-tag</app-menu-link>
 					<app-menu-link to="/interaction/star-rating">star-rating</app-menu-link>
+					<app-menu-link to="/interaction/ui-button">ui-button</app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
 					<template #title>Content</template>
 
-					<app-menu-link to="/content/data-table">data-table</app-menu-link>
-					<app-menu-link to="/content/tab-group">tab-group</app-menu-link>
 					<app-menu-link to="/content/accordion-group">accordion-group</app-menu-link>
-					<app-menu-link to="/content/searchable-list">searchable-list</app-menu-link>
 					<app-menu-link to="/content/combo-box">combo-box</app-menu-link>
-					<app-menu-link to="/content/summary-details">summary-details</app-menu-link>
-					<app-menu-link to="/content/floating-details">floating-details</app-menu-link>
-					<app-menu-link to="/content/flash-messages">flash-messages</app-menu-link>
 					<app-menu-link to="/content/content-card">content-card</app-menu-link>
-					<app-menu-link to="/content/display-date">display-date</app-menu-link>
-					<app-menu-link to="/content/relative-date">relative-date</app-menu-link>
-					<app-menu-link to="/content/loading-indicator">loading-indicator</app-menu-link>
-					<app-menu-link to="/content/loading-spinner">loading-spinner</app-menu-link>
-					<app-menu-link to="/content/loading-skeleton">loading-skeleton</app-menu-link>
-					<app-menu-link to="/content/none-found">none-found</app-menu-link>
 					<app-menu-link to="/content/content-separator">content-separator</app-menu-link>
+					<app-menu-link to="/content/data-table">data-table</app-menu-link>
+					<app-menu-link to="/content/display-date">display-date</app-menu-link>
+					<app-menu-link to="/content/flash-messages">flash-messages</app-menu-link>
+					<app-menu-link to="/content/floating-details">floating-details</app-menu-link>
+					<app-menu-link to="/content/loading-indicator">loading-indicator</app-menu-link>
+					<app-menu-link to="/content/loading-skeleton">loading-skeleton</app-menu-link>
+					<app-menu-link to="/content/loading-spinner">loading-spinner</app-menu-link>
+					<app-menu-link to="/content/none-found">none-found</app-menu-link>
+					<app-menu-link to="/content/relative-date">relative-date</app-menu-link>
+					<app-menu-link to="/content/searchable-list">searchable-list</app-menu-link>
+					<app-menu-link to="/content/summary-details">summary-details</app-menu-link>
+					<app-menu-link to="/content/tab-group">tab-group</app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
@@ -74,8 +74,8 @@
 				<app-menu-section>
 					<template #title>Navigation</template>
 
-					<app-menu-link to="/navigation/breadcrumb-list">breadcrumb-list</app-menu-link>
 					<app-menu-link to="/navigation/app-pagination">app-pagination</app-menu-link>
+					<app-menu-link to="/navigation/breadcrumb-list">breadcrumb-list</app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
@@ -89,12 +89,12 @@
 					<template #title>Messaging</template>
 
 					<app-menu-link to="/messaging/alert-message">alert-message</app-menu-link>
-					<app-menu-link to="/messaging/pill-badge">pill-badge</app-menu-link>
+					<app-menu-link to="/messaging/confirm-dialog">confirm-dialog</app-menu-link>
 					<app-menu-link to="/messaging/modal-controller">modal-controller</app-menu-link>
 					<app-menu-link to="/messaging/modal-dialog">modal-dialog</app-menu-link>
-					<app-menu-link to="/messaging/confirm-dialog">confirm-dialog</app-menu-link>
-					<app-menu-link to="/messaging/step-indicator">step-indicator</app-menu-link>
 					<app-menu-link to="/messaging/notification-handler">notification-handler</app-menu-link>
+					<app-menu-link to="/messaging/pill-badge">pill-badge</app-menu-link>
+					<app-menu-link to="/messaging/step-indicator">step-indicator</app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>
@@ -117,8 +117,8 @@
 					<app-menu-link to="/composables/use-chart-config">useChartConfig</app-menu-link>
 					<app-menu-link to="/composables/use-combobox">useCombobox</app-menu-link>
 					<app-menu-link to="/composables/use-filtered-items">useFilteredItems</app-menu-link>
-					<app-menu-link to="/composables/use-floating-position">useFloatingPosition</app-menu-link>
 					<app-menu-link to="/composables/use-flash-messages">useFlashMessages</app-menu-link>
+					<app-menu-link to="/composables/use-floating-position">useFloatingPosition</app-menu-link>
 					<app-menu-link to="/composables/use-form">useForm</app-menu-link>
 					<app-menu-link to="/composables/use-form-data">useFormData</app-menu-link>
 					<app-menu-link to="/composables/use-modal-dialog">useModalDialog</app-menu-link>
