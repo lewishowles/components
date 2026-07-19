@@ -15,7 +15,7 @@ export const summaryDetailsMetadata = {
 			name: "toggletip",
 			type: "boolean",
 			default: false,
-			summary: "Use toggletip semantics for the disclosure.",
+			summary: "Announce concise, non-interactive supplementary content when opened.",
 		},
 		{
 			name: "closeWithEscape",

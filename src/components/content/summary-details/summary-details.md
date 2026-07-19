@@ -51,7 +51,7 @@ Whether to focus the first focusable element in the content area when the detail
 - type: `boolean`
 - default: `false`
 
-Whether to treat the content as a toggletip, content which is announced immediately when opened. This is good for information tooltips, for example.
+Whether to announce concise, non-interactive information immediately when opened. Use this for supplementary content rather than essential help, and do not use it as a general-purpose tooltip pattern for links, rich interactive content, or definitions within a paragraph. Use a visible description, `floating-details`, or `modal-dialog` when the content needs to be persistently available or interacted with.
 
 ### `closeWithEscape`
 

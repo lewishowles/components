@@ -52,8 +52,14 @@
 				<template #default-value>false</template>
 
 				<p>
-					Whether to treat the content as a toggletip, content which is announced immediately when
-					opened. This is good for information tooltips, for example.
+					Whether to announce concise, non-interactive information immediately when opened. Use this
+					for supplementary content rather than essential help, and do not use it as a
+					general-purpose tooltip pattern for links, rich interactive content, or definitions within
+					a paragraph. Use visible text,
+					<code>floating-details</code>
+					, or
+					<code>modal-dialog</code>
+					when the content needs to be persistently available or interacted with.
 				</p>
 			</component-prop>
 
