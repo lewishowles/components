@@ -24,7 +24,6 @@
 		"vue-eslint-parser",
 		"globals",
 		"@tailwindcss/forms",
-		"@tailwindcss/container-queries",
 		"@tailwindcss/typography",
 		"@tailwindcss/vite",
 		"tailwindcss",
