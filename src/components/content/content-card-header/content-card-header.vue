@@ -2,7 +2,7 @@
 	<div
 		:class="
 			cn(
-				'border-border border px-[1em] py-[0.75em] not-first:border-t-0 first:rounded-t-xl last:rounded-b-xl',
+				'border-border flex flex-wrap items-center justify-between gap-4 border px-[1em] py-[0.75em] not-first:border-t-0 first:rounded-t-xl last:rounded-b-xl',
 				attributes.class,
 			)
 		"
@@ -12,25 +12,23 @@
 		data-test="content-card-header"
 	>
 		<slot name="header">
-			<div class="flex items-center justify-between gap-4">
-				<div v-if="haveTitleArea" class="flex items-center justify-between gap-2">
-					<div v-if="haveIcon" :class="iconClasses" data-test="content-card-icon">
-						<slot name="icon" />
-					</div>
-
-					<component
-						:is="headingLevel"
-						v-if="haveDefault"
-						class="text-content-strong text-lg font-semibold"
-						data-test="content-card-title"
-					>
-						<slot />
-					</component>
+			<div v-if="haveTitleArea" class="flex items-center gap-2">
+				<div v-if="haveIcon" :class="iconClasses" data-test="content-card-icon">
+					<slot name="icon" />
 				</div>
 
-				<div v-if="haveAdditional" data-test="content-card-header-additional">
-					<slot name="additional" />
-				</div>
+				<component
+					:is="headingLevel"
+					v-if="haveDefault"
+					class="text-content-strong text-lg font-semibold"
+					data-test="content-card-title"
+				>
+					<slot />
+				</component>
+			</div>
+
+			<div v-if="haveAdditional" data-test="content-card-header-additional">
+				<slot name="additional" />
 			</div>
 		</slot>
 	</div>

@@ -29,7 +29,7 @@ Optional content shown at the end of the default header layout.
 
 #### `header`
 
-Custom content that replaces the entire default layout. Use when the standard title/icon/additional structure isn't sufficient.
+Custom content that replaces the default header content. Use when the standard title/icon/additional structure isn't sufficient.
 
 ### Props
 
