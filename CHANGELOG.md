@@ -42,6 +42,7 @@
 
 - `modal-dialog`'s `initiallyOpen` prop now defaults to `true` (matching `base-modal`), so it opens itself immediately unless explicitly told not to. Previously it defaulted to `false`, relying on `modal-controller` to open it via the `base-modal` wrapper it no longer provides.
 - `modal-dialog` gained an `inert` prop, forwarded to its internal `base-modal`, for use when stacking modals via `modal-controller`.
+- `modal-dialog` now merges user-provided classes, instead of overriding them.
 
 `modal-controller` now also runs any `onClose` you pass to `openModal` yourself before popping the modal, so you can react to a modal closing for any reason (confirm, cancel, the built-in close button, Escape) without needing to reimplement stack-popping:
 

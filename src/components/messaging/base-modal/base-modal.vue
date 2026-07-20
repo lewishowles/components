@@ -3,18 +3,18 @@
 		ref="dialog"
 		aria-modal="true"
 		v-bind="{
+			...attributes,
 			'aria-labelledby': ariaLabelledby,
 			'aria-describedby': ariaDescribedby,
 			inert,
 			role: dialogRole,
 		}"
-		class="border-border-strong dark:bg-grey-950/80 dark:border-surface-subtle fixed inset-s-1/2 top-1/2 w-full max-w-2xl -translate-1/2 rounded-lg border p-12 text-current shadow-2xl backdrop-blur-xl"
-		:class="{ hidden: inert }"
+		:class="dialogClasses"
 		data-component="base-modal"
 		data-test="modal-dialog"
 	>
 		<ui-button
-			class="hocus:bg-border absolute inset-e-0 top-0 me-4 mt-4 rounded-lg p-3"
+			class="button--ghost absolute inset-e-0 top-0 me-4 mt-4"
 			data-part="close-button"
 			data-test="modal-dialog-close"
 			@click="closeDialog"
@@ -39,8 +39,11 @@
 </template>
 
 <script setup>
-import { onMounted, ref, useTemplateRef } from "vue";
+import { cn } from "@/utilities/cn.js";
+import { computed, onMounted, ref, useAttrs, useTemplateRef } from "vue";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
+
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
 	/**
@@ -103,10 +106,31 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["dialog:close"]);
+
+const attrs = useAttrs();
 // A reference to the dialog element.
 const dialog = useTemplateRef("dialog");
 // Whether the dialog is currently open.
 const isOpen = ref(false);
+
+// Fallthrough attributes aside from class, applied explicitly since
+// inheritAttrs is disabled so class can be merged via cn() instead.
+const attributes = computed(() => {
+	const { class: _omitted, ...rest } = attrs;
+
+	return rest;
+});
+
+// Root dialog classes. Merged via cn() so a consumer's own classes reliably
+// override defaults like padding or overflow, rather than competing with them
+// as separate same-layer Tailwind utilities.
+const dialogClasses = computed(() =>
+	cn(
+		"border-border-strong dark:bg-grey-950/80 dark:border-surface-subtle fixed inset-s-1/2 top-1/2 w-full max-w-2xl -translate-1/2 rounded-lg border p-12 text-content shadow-2xl backdrop-blur-xl",
+		{ hidden: props.inert },
+		attrs.class,
+	),
+);
 
 onMounted(() => {
 	initialiseDialog();
