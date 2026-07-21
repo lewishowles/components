@@ -1,7 +1,7 @@
 <template>
 	<component-playground
 		v-bind="{ copy: template, componentModel }"
-		id="playground-alert-message"
+		id="playground-alert-message-muted"
 		v-model="textSlots"
 	>
 		<template #title>Muted alert message</template>

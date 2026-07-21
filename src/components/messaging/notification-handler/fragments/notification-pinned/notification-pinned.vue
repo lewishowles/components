@@ -5,10 +5,10 @@
 			allowMarkRead: false,
 			locale,
 			dateFormat,
-			stripeClasses: 'bg-primary-100 dark:bg-primary-500/50',
+			stripeClasses: 'bg-primary-text',
 			iconBackgroundClasses: 'bg-primary-subtle',
-			iconClasses: 'text-primary-600 dark:text-primary-200',
-			badgeClasses: 'text-primary-600 dark:text-primary-500/50',
+			iconClasses: 'text-primary',
+			badgeClasses: 'text-primary',
 		}"
 		data-test="notification-pinned"
 	>
@@ -22,7 +22,7 @@
 
 		<template #badge>
 			<icon-pin
-				class="text-primary-600 absolute end-0 top-0 me-5 mt-4.5 size-4"
+				class="text-primary absolute end-0 top-0 me-5 mt-4.5 size-4"
 				data-test="notification-pinned-badge"
 			/>
 		</template>

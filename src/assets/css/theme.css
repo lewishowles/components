@@ -274,27 +274,27 @@
 	color-scheme: dark;
 	--primary-fill: var(--primary-500);
 	--primary-text: var(--primary-300);
-	--primary-subtle: color-mix(in oklab, var(--primary-500) 50%, transparent);
+	--primary-subtle: color-mix(in oklab, var(--primary-500) 25%, transparent);
 	--primary-border-subtle: transparent;
 
 	--danger-fill: var(--danger-500);
 	--danger-text: var(--danger-200);
-	--danger-subtle: color-mix(in oklab, var(--danger-500) 50%, transparent);
+	--danger-subtle: color-mix(in oklab, var(--danger-500) 25%, transparent);
 	--danger-border-subtle: transparent;
 
 	--warning-fill: var(--warning-300);
 	--warning-text: var(--warning-200);
-	--warning-subtle: color-mix(in oklab, var(--warning-500) 50%, transparent);
+	--warning-subtle: color-mix(in oklab, var(--warning-500) 25%, transparent);
 	--warning-border-subtle: transparent;
 
 	--success-fill: var(--success-500);
 	--success-text: var(--success-200);
-	--success-subtle: color-mix(in oklab, var(--success-500) 50%, transparent);
+	--success-subtle: color-mix(in oklab, var(--success-500) 25%, transparent);
 	--success-border-subtle: transparent;
 
 	--info-fill: var(--info-500);
 	--info-text: var(--info-200);
-	--info-subtle: color-mix(in oklab, var(--info-500) 50%, transparent);
+	--info-subtle: color-mix(in oklab, var(--info-500) 25%, transparent);
 	--info-border-subtle: transparent;
 
 	--surface: var(--color-grey-950);
@@ -428,6 +428,27 @@
 
 @utility border-info {
 	border-color: var(--info-text);
+}
+
+/* Intent text backgrounds — bg-primary-text, bg-danger-text, … */
+@utility bg-primary-text {
+	background-color: var(--primary-text);
+}
+
+@utility bg-danger-text {
+	background-color: var(--danger-text);
+}
+
+@utility bg-warning-text {
+	background-color: var(--warning-text);
+}
+
+@utility bg-success-text {
+	background-color: var(--success-text);
+}
+
+@utility bg-info-text {
+	background-color: var(--info-text);
 }
 
 /* Intent subtle backgrounds — bg-primary-subtle, bg-danger-subtle, … */

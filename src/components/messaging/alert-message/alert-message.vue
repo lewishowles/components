@@ -14,7 +14,7 @@
 			</slot>
 		</div>
 
-		<div class="flex flex-col">
+		<div class="flex flex-1 flex-col">
 			<component
 				:is="titleTag"
 				v-if="haveTitleSlot"

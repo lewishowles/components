@@ -1,15 +1,15 @@
 <template>
 	<notification-base
-		class="bg-warning-50/50 dark:bg-warning-500/10 rounded-e-lg"
+		class="bg-warning-subtle rounded-e-lg"
 		v-bind="{
 			notification,
 			locale,
 			dateFormat,
-			stripeClasses: 'bg-warning-100 dark:bg-warning-500/50',
+			stripeClasses: 'bg-warning-text',
 			iconBackgroundClasses: 'bg-warning-subtle',
-			iconClasses: 'text-warning-600 dark:text-warning-200',
-			badgeClasses: 'text-warning-600 dark:text-warning-500/50',
-			titleClasses: 'text-warning-800 dark:text-warning-400',
+			iconClasses: 'text-warning',
+			badgeClasses: 'text-warning',
+			titleClasses: 'text-warning',
 		}"
 		data-test="notification-warning"
 	>

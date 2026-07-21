@@ -1,7 +1,7 @@
 <template>
 	<component-playground
 		v-bind="{ copy: template, componentModel }"
-		id="playground-alert-message"
+		id="playground-alert-message-info"
 		v-model="textSlots"
 	>
 		<template #title>Info message</template>
