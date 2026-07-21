@@ -19,24 +19,32 @@
 
 .form-select {
 	appearance: none;
-	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-	background-position: right 0.5rem center;
-	background-repeat: no-repeat;
-	background-size: 1.5em 1.5em;
 	padding-block: 0.375em;
 	padding-inline-end: 2.5em;
 	padding-inline-start: calc(var(--spacing) * 3);
+}
 
-	&:where(.dark, .dark *) {
-		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff90' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+[data-part="field-wrapper"]:has(.form-select) {
+	position: relative;
+
+	&::after {
+		background-color: var(--content-muted);
+		block-size: 1.5em;
+		content: "";
+		inline-size: 1.5em;
+		inset-block-start: 50%;
+		inset-inline-end: 0.5rem;
+		mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+		mask-position: center;
+		mask-repeat: no-repeat;
+		mask-size: contain;
+		pointer-events: none;
+		position: absolute;
+		transform: translateY(-50%);
 	}
 
-	.form-field--error & {
-		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23dc2625' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-
-		&:where(.dark, .dark *) {
-			background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23fda5a5' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-		}
+	&.form-field--error::after {
+		background-color: var(--control-invalid);
 	}
 }
 
@@ -276,12 +284,29 @@
 	box-shadow: 0 0 0 1px var(--ring-colour);
 }
 
+[data-part="field"][data-state="invalid"] {
+	padding-inline-start: calc(var(--spacing) * 5);
+	position: relative;
+}
+
+[data-part="error-marker"] {
+	background-color: var(--control-invalid);
+	border-radius: 9999px;
+	inset-block: 0;
+	inset-inline-start: 0;
+	position: absolute;
+	width: calc(var(--spacing) * 1);
+}
+
 [data-part="field-wrapper"] {
 	--ring-size: 1px;
-	--ring-colour: var(--control-ring);
 
 	border-radius: var(--radius-md);
 	box-shadow: 0 0 0 var(--ring-size) var(--ring-colour);
+
+	&:not(.form-field--error) {
+		--ring-colour: var(--control-ring);
+	}
 
 	&:has(:hover) {
 		--ring-size: 1px;
@@ -295,7 +320,6 @@
 
 	&:where(.dark, .dark *) {
 		background-color: var(--control-overlay);
-		--ring-colour: var(--control-ring);
 
 		&:has(:hover) {
 			--ring-colour: var(--control-ring-hover);

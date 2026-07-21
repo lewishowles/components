@@ -2,13 +2,11 @@
 	<component
 		:is="tag"
 		class="flex flex-col gap-1"
-		:class="{ 'relative ps-5': haveError }"
+		:data-state="haveError ? 'invalid' : undefined"
+		data-part="field"
 		data-test="field-wrapper"
 	>
-		<div
-			v-if="haveError"
-			class="bg-control-invalid absolute inset-y-0 inset-s-0 w-1 rounded-full"
-		/>
+		<div v-if="haveError" data-part="error-marker" />
 
 		<slot />
 	</component>
