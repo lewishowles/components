@@ -1,10 +1,19 @@
 <template>
-	<div class="-mx-16 -mt-16 mb-16 px-[2px] pt-[2px] text-sm">
-		<div class="bg-grey-50 dark:bg-grey-950/20 flex justify-end gap-2 rounded-sm p-2">
+	<div class="-mx-16 -mt-16 mb-16 px-0.5 pt-0.5 text-sm">
+		<div class="bg-grey-50 dark:bg-grey-950/20 flex items-center justify-end gap-2 rounded-sm p-2">
 			<link-tag
-				href="https://github.com/lewishowles/components"
-				v-bind="{ external: true, showExternalIcon: false }"
-				class="button hocus:bg-grey-50z hocus:border-grey-400 hocus:text-grey-700 dark:hocus:bg-white/30 dark:hocus:border-white/20 dark:hocus:text-grey-100 border border-transparent text-current"
+				v-bind="{ href: changelogUrl, external: true, showExternalIcon: false }"
+				data-test="docs-version"
+			>
+				<pill-badge aria-hidden="true" colour="primary">v{{ version }}</pill-badge>
+
+				<span class="sr-only">View changelog for version {{ version }}</span>
+			</link-tag>
+
+			<link-tag
+				v-bind="{ href: repositoryUrl, external: true, showExternalIcon: false }"
+				class="button--ghost"
+				data-test="project-repository"
 			>
 				<icon-github class="size-5" />
 
@@ -53,7 +62,13 @@
 
 <script setup>
 import { useDark, useToggle } from "@vueuse/core";
+import { name as packageName, version } from "/package.json";
 import useTranslationMode from "@/docs/composables/use-translation-mode/use-translation-mode";
+
+// The repository URL derived from the scoped package name.
+const repositoryUrl = `https://github.com/${packageName.slice(1)}`;
+// The changelog for the current repository.
+const changelogUrl = `${repositoryUrl}/blob/main/CHANGELOG.md`;
 
 const { useTranslation, translationPathPrefix } = useTranslationMode();
 const isDark = useDark({ storageKey: "lh:dark" });
