@@ -48,3 +48,45 @@
 	background: linear-gradient(to left, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
 	right: 0;
 }
+
+dialog[data-component="base-modal"] {
+	background-color: var(--surface-elevated);
+	border-top: 1px solid var(--border);
+	box-shadow: var(--shadow-2xl);
+	box-sizing: border-box;
+	color: var(--content);
+	inset: auto 0 0;
+	margin: 0;
+	max-height: 75dvh;
+	max-width: none;
+	overflow-y: auto;
+	padding-bottom: calc(var(--spacing) * 6 + env(safe-area-inset-bottom));
+	padding: calc(var(--spacing) * 6);
+	position: fixed;
+	width: 100%;
+
+	&::backdrop {
+		backdrop-filter: blur(var(--blur-xs));
+		background-color: color-mix(in oklab, var(--surface) 80%, transparent);
+	}
+}
+
+:where(.dark) dialog[data-component="base-modal"] {
+	background-color: var(--surface-elevated);
+}
+
+@media (width >= theme(--breakpoint-lg)) {
+	dialog[data-component="base-modal"] {
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border);
+		inset: auto;
+		inset-inline-start: 50%;
+		margin: auto;
+		max-height: none;
+		max-width: var(--container-2xl);
+		overflow-y: visible;
+		padding: calc(var(--spacing) * 12);
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+}

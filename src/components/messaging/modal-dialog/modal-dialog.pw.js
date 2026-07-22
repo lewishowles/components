@@ -101,4 +101,38 @@ test.describe("modal-dialog", () => {
 			await expect(page.getByTestId("modal-dialog")).not.toBeVisible();
 		});
 	});
+
+	test.describe("narrow viewport", () => {
+		test.use({ viewport: { width: 1023, height: 800 } });
+
+		test("opens as a bottom sheet", async ({ mount, page }) => {
+			await mountInteractionTest(mount);
+
+			await page.getByTestId("modal-dialog-interaction-test-open").click();
+
+			const layout = await page.getByTestId("modal-dialog").evaluate((element) => {
+				const styles = getComputedStyle(element);
+
+				return {
+					left: styles.left,
+					right: styles.right,
+					bottom: styles.bottom,
+					margin: styles.margin,
+					maxHeight: styles.maxHeight,
+					overflowY: styles.overflowY,
+					position: styles.position,
+				};
+			});
+
+			expect(layout).toEqual({
+				left: "0px",
+				right: "0px",
+				bottom: "0px",
+				margin: "0px",
+				maxHeight: "600px",
+				overflowY: "auto",
+				position: "fixed",
+			});
+		});
+	});
 });

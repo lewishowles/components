@@ -15,15 +15,13 @@
 	>
 		<ui-button
 			class="button--ghost absolute inset-e-0 top-0 me-4 mt-4"
+			icon-start="icon-cross"
+			icon-only
 			data-part="close-button"
 			data-test="modal-dialog-close"
 			@click="closeDialog"
 		>
-			<icon-cross />
-
-			<span class="sr-only">
-				<slot name="close-dialog-label">Close dialog</slot>
-			</span>
+			<slot name="close-dialog-label">Close dialog</slot>
 		</ui-button>
 
 		<slot
@@ -125,11 +123,7 @@ const attributes = computed(() => {
 // override defaults like padding or overflow, rather than competing with them
 // as separate same-layer Tailwind utilities.
 const dialogClasses = computed(() =>
-	cn(
-		"border-border-strong dark:bg-grey-950/80 dark:border-surface-subtle fixed inset-s-1/2 top-1/2 w-full max-w-2xl -translate-1/2 rounded-lg border p-12 text-content shadow-2xl backdrop-blur-xl",
-		{ hidden: props.inert },
-		attrs.class,
-	),
+	cn("animate-fade-in-up", { hidden: props.inert }, attrs.class),
 );
 
 onMounted(() => {
