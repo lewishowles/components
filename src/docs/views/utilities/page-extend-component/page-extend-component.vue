@@ -117,7 +117,12 @@
 				import it explicitly where needed.
 			</p>
 
-			<code-block :code="definitionExample" />
+			<code-block
+				v-bind="{
+					code: definitionExample,
+					file: 'src/components/form/form-wrapper/form-wrapper.js',
+				}"
+			/>
 
 			<p>Then import and use it:</p>
 
@@ -146,8 +151,7 @@ const ExtendedComponent = extendComponent(FormWrapper, {
 	</extended-component>
 </template>`;
 
-const definitionExample = `// src/components/form/form-wrapper/form-wrapper.js
-import { extendComponent } from "@lewishowles/components/utilities";
+const definitionExample = `import { extendComponent } from "@lewishowles/components/utilities";
 import { parseApiFieldErrors } from "@/helpers/api";
 
 import { FormWrapper } from "@lewishowles/components";

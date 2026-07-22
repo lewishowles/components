@@ -1,10 +1,17 @@
 <template>
-	<div class="prose dark:prose-invert relative max-w-none">
+	<div class="relative max-w-none">
 		<div class="peer" v-html="codeHtml" />
+
+		<div
+			v-if="haveFileName"
+			class="border-border text-muted rounded-b-md border border-t-0 px-4 py-2 font-mono text-xs"
+		>
+			{{ file }}
+		</div>
 
 		<copy-content
 			v-bind="{ content: textToDisplay }"
-			class="peer-hocus:pointer-events-auto hocus:pointer-events-auto peer-hocus:opacity-100 hocus:opacity-100 button--muted pointer-events-none absolute end-0 top-0 me-1.5 -translate-y-1/2 text-xs opacity-0 transition-opacity"
+			class="peer-hocus:pointer-events-auto hocus:pointer-events-auto peer-hocus:opacity-100 hocus:opacity-100 button--muted pointer-events-none absolute inset-e-0 top-0 me-1.5 -translate-y-1/2 text-xs opacity-0 transition-opacity"
 		>
 			Copy code
 		</copy-content>
@@ -13,6 +20,7 @@
 
 <script setup>
 import { computed, ref, useSlots, watch } from "vue";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { getSlotText } from "@lewishowles/helpers/vue";
 import {
 	normaliseCodeText,
@@ -26,6 +34,13 @@ const props = defineProps({
 	 * slot will override this content.
 	 */
 	code: {
+		type: String,
+		default: null,
+	},
+	/**
+	 * The source filename displayed with the code sample.
+	 */
+	file: {
 		type: String,
 		default: null,
 	},
@@ -44,6 +59,8 @@ const slots = useSlots();
 const defaultText = computed(() => getSlotText(slots.default));
 // Whether default text has been provided.
 const haveDefaultText = computed(() => defaultText.value.trim().length > 0);
+// Whether a source filename has been provided.
+const haveFileName = computed(() => isNonEmptyString(props.file));
 
 // The text to display, and allow the user to copy.
 const textToDisplay = computed(() =>

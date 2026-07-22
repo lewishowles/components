@@ -316,7 +316,7 @@
 
 			<h3>Unsaved changes</h3>
 
-			<code-block :code="unsavedChangesExample" />
+			<code-block v-bind="{ code: unsavedChangesExample, file: 'router.js' }" />
 
 			<h3>Async-seeded form</h3>
 
@@ -360,8 +360,7 @@
 </template>
 
 <script setup>
-const unsavedChangesExample = `// router.js, wherever the app builds its router
-import { installUnsavedChangesGuard } from "@lewishowles/components/composables";
+const unsavedChangesExample = `import { installUnsavedChangesGuard } from "@lewishowles/components/composables";
 
 const router = createRouter({ ... });
 

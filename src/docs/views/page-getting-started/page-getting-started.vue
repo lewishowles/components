@@ -16,7 +16,7 @@
 			and the library's resolver, components are automatically imported only when used.
 		</p>
 
-		<code-block :code="resolverConfigExample" />
+		<code-block v-bind="{ code: resolverConfigExample, file: 'vite.config.js' }" />
 
 		<h3>Named imports (optional)</h3>
 
@@ -46,7 +46,11 @@
 			component from automatic imports.
 		</p>
 
-		<code-block :code="overrideExample" />
+		<code-block v-bind="{ code: overridesExample, file: 'overrides.js' }" />
+
+		<code-block v-bind="{ code: overrideRegistrationExample, file: 'main.js' }" />
+
+		<code-block v-bind="{ code: overrideResolverExample, file: 'vite.config.js' }" />
 
 		<h2>Stylesheets and Tailwind</h2>
 
@@ -119,8 +123,7 @@ import { UiButton } from "@lewishowles/components";
 	</ui-button>
 </template>`;
 
-const resolverConfigExample = `// vite.config.js
-import { componentsResolver } from "@lewishowles/components/resolver";
+const resolverConfigExample = `import { componentsResolver } from "@lewishowles/components/resolver";
 import Components from "unplugin-vue-components/vite";
 
 export default defineConfig({
@@ -129,20 +132,19 @@ export default defineConfig({
 	],
 });`;
 
-const overrideExample = `// overrides.js
-import UiButton from "./translations/ui-button.vue";
+const overridesExample = `import UiButton from "./translations/ui-button.vue";
 
 export const overrides = { "ui-button": UiButton };
+`;
 
-// main.js: register overrides globally
-import { overrides } from "./overrides";
+const overrideRegistrationExample = `import { overrides } from "./overrides";
 
 Object.entries(overrides).forEach(([name, component]) => {
 	app.component(name, component);
 });
+`;
 
-// vite.config.js: exclude the same tags from auto-import
-import { overrides } from "./overrides";
+const overrideResolverExample = `import { overrides } from "./overrides";
 
 Components({
 	resolvers: [componentsResolver({ exclude: Object.keys(overrides) })],
