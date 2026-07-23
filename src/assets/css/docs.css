@@ -2,6 +2,22 @@
 
 @plugin "@tailwindcss/typography";
 
+:where(code:not(pre code)) {
+	color: var(--content-strong);
+	font-size: 0.875em;
+	font-weight: 600;
+
+	&::before,
+	&::after {
+		content: "`";
+	}
+}
+
+.docs-page-introduction,
+.docs-component-tab > :where(p, ul, ol, blockquote) {
+	max-width: 65ch;
+}
+
 .docs-component-tab > table {
 	width: 100%;
 	margin-block: 2rem;
