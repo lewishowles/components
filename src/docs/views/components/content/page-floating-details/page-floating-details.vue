@@ -263,6 +263,14 @@
 					</tbody>
 				</table>
 			</component-slot>
+
+			<component-slot id="slot-close-dialog-label">
+				<template #name>close-dialog-label</template>
+
+				<template #default-value>Close dialog</template>
+
+				<p>The accessible label for the close button shown in the narrow sheet presentation.</p>
+			</component-slot>
 		</component-slots>
 
 		<component-events>

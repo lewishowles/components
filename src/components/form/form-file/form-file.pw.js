@@ -53,13 +53,15 @@ test.describe("form-file", () => {
 
 	test("keeps generated input attributes authoritative", async ({ mount, page }) => {
 		await mountFormFile(mount, {
-			inputAttributes: {
-				id: "custom-id",
-				type: "text",
-				multiple: true,
-				required: true,
-				"aria-describedby": "custom-help",
-				"aria-invalid": "false",
+			props: {
+				inputAttributes: {
+					id: "custom-id",
+					type: "text",
+					multiple: true,
+					required: true,
+					"aria-describedby": "custom-help",
+					"aria-invalid": "false",
+				},
 			},
 			slots: { help: "Help text" },
 		});

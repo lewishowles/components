@@ -68,8 +68,15 @@
 	padding-inline: 1em;
 	white-space: nowrap;
 
-	&:has([data-part="label"].sr-only) svg {
-		min-block-size: 1lh;
+	&:has([data-part="label"].sr-only) {
+		aspect-ratio: 1;
+		min-block-size: 2.75rem;
+		min-inline-size: 2.75rem;
+		padding-inline: calc(0.375em - 1px);
+
+		svg {
+			min-block-size: 1lh;
+		}
 	}
 }
 
@@ -224,35 +231,24 @@
 
 .button--ghost {
 	--background-colour: transparent;
+	--border-colour: transparent;
 	--colour: currentColor;
 
 	background-color: var(--background-colour);
-	border-color: var(--background-colour);
+	border-color: var(--border-colour);
 	color: var(--colour);
 	text-decoration: none;
 
 	&:is(:hover, :focus) {
-		--background-colour: var(--color-grey-100);
-		--colour: var(--color-grey-700);
+		--background-colour: var(--control-muted-surface-hover);
+		--border-colour: var(--control-border-hover);
+		--colour: var(--control-content-hover);
 	}
 
 	&:active {
-		--background-colour: var(--color-grey-200);
-		--colour: var(--color-grey-800);
-	}
-
-	&:where(.dark, .dark *) {
-		--colour: currentColor;
-
-		&:is(:hover, :focus) {
-			--background-colour: rgb(0 0 0 / 30%);
-			--colour: var(--color-grey-100);
-		}
-
-		&:active {
-			--background-colour: rgb(0 0 0 / 40%);
-			--colour: var(--color-grey-50);
-		}
+		--background-colour: var(--control-muted-surface-active);
+		--border-colour: var(--control-border-active);
+		--colour: var(--control-content-active);
 	}
 }
 

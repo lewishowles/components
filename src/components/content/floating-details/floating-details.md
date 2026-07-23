@@ -28,6 +28,12 @@ The content to be displayed when the panel is open.
 | `close`   | `function` | Closes the panel.                        |
 | `toggle`  | `function` | Toggles the panel open or closed.        |
 
+### `close-dialog-label`
+
+- default: `Close dialog`
+
+The accessible label for the close button shown in the narrow sheet presentation.
+
 ## Props
 
 ### `open`

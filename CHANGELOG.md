@@ -57,6 +57,10 @@ openModal(DeleteAccountConfirm, {
 
 A new `modal-dialog` built for confirm/cancel decisions, such as destructive actions.
 
+### `floating-details`
+
+Now uses a modal sheet on narrow screens, avoiding issues with content flowing off-screen.
+
 ### `useFilteredItems`
 
 A new composable for filtering a reactive item list by exact property matches, including nested paths and array-of-values matching.

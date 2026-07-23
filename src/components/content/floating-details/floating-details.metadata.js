@@ -68,6 +68,10 @@ export const floatingDetailsMetadata = {
 			name: "default",
 			summary: "Panel content; receives open state and toggle helpers.",
 		},
+		{
+			name: "close-dialog-label",
+			summary: "Accessible label for the narrow sheet close button.",
+		},
 	],
 	events: [
 		{ name: "open", summary: "Emitted when the panel opens." },

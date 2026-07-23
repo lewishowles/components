@@ -11,18 +11,21 @@
 		}"
 		:class="dialogClasses"
 		data-component="base-modal"
+		data-part="sheet"
 		data-test="modal-dialog"
 	>
-		<ui-button
-			class="button--ghost absolute inset-e-0 top-0 me-4 mt-4"
-			icon-start="icon-cross"
-			icon-only
-			data-part="close-button"
-			data-test="modal-dialog-close"
-			@click="closeDialog"
-		>
-			<slot name="close-dialog-label">Close dialog</slot>
-		</ui-button>
+		<div class="mb-4 flex justify-end lg:mb-0">
+			<ui-button
+				class="button--ghost lg:absolute lg:inset-e-0 lg:top-0 lg:me-4 lg:mt-4"
+				icon-start="icon-cross"
+				icon-only
+				data-part="close-button"
+				data-test="modal-dialog-close"
+				@click="closeDialog"
+			>
+				<slot name="close-dialog-label">Close dialog</slot>
+			</ui-button>
+		</div>
 
 		<slot
 			v-bind="{

@@ -159,6 +159,140 @@ test.describe("floating-details", () => {
 	});
 });
 
+test.describe("narrow viewport", () => {
+	test.use({ viewport: { width: 1023, height: 800 } });
+
+	test("opens as a labelled bottom sheet", async ({ mount, page }) => {
+		await mountFloatingDetails(mount);
+
+		await page.getByTestId("floating-details-summary").click();
+
+		const sheet = page.getByTestId("floating-details-sheet");
+
+		await expect(sheet).toBeVisible();
+		await expect(sheet).toHaveAttribute("aria-modal", "true");
+		await expect(sheet).toHaveAttribute("aria-label", "Summary label");
+
+		const layout = await sheet.evaluate((element) => {
+			const styles = getComputedStyle(element);
+
+			return {
+				bottom: styles.bottom,
+				left: styles.left,
+				maxHeight: styles.maxHeight,
+				overflowY: styles.overflowY,
+				position: styles.position,
+				right: styles.right,
+			};
+		});
+
+		expect(layout).toEqual({
+			bottom: "0px",
+			left: "0px",
+			maxHeight: "600px",
+			overflowY: "auto",
+			position: "fixed",
+			right: "0px",
+		});
+	});
+
+	test("scrolls tall content inside the sheet before the page", async ({ mount, page }) => {
+		await mountFloatingDetails(mount, {
+			slots: {
+				default: '<div style="height: 1200px">Tall details content</div>',
+			},
+		});
+
+		await page.getByTestId("floating-details-summary").click();
+
+		const sheet = page.getByTestId("floating-details-sheet");
+
+		await sheet.hover();
+		await page.mouse.wheel(0, 500);
+		await expect.poll(() => sheet.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+		expect(await page.evaluate(() => window.scrollY)).toBe(0);
+	});
+
+	test("dismisses with Escape and restores focus to the summary", async ({ mount, page }) => {
+		await mountFloatingDetails(mount);
+
+		const summary = page.getByTestId("floating-details-summary");
+		const sheet = page.getByTestId("floating-details-sheet");
+
+		await summary.click();
+		await expect(sheet).toBeVisible();
+		await page.keyboard.press("Escape");
+
+		await expect(sheet).not.toBeVisible();
+		await expect(summary).toBeFocused();
+	});
+
+	test("ignores backdrop clicks and dismisses from its close button", async ({ mount, page }) => {
+		await mountFloatingDetails(mount);
+
+		const details = page.getByTestId("floating-details");
+		const summary = page.getByTestId("floating-details-summary");
+		const sheet = page.getByTestId("floating-details-sheet");
+		const closeButton = page.getByRole("button", { name: "Close dialog" });
+
+		await summary.click();
+		await expect(sheet).toBeVisible();
+		await page.mouse.click(1, 1);
+
+		await expect(sheet).toBeVisible();
+		await expect(details).toHaveAttribute("open");
+		await expect(closeButton).toBeVisible();
+
+		await closeButton.click();
+
+		await expect(sheet).not.toBeVisible();
+		await expect(details).not.toHaveAttribute("open");
+		await expect(summary).toBeFocused();
+	});
+
+	test("dismisses when a link is activated", async ({ mount, page }) => {
+		await mountFloatingDetails(mount, {
+			slots: {
+				default: '<a href="#" data-test="sheet-link">Visit account</a>',
+			},
+		});
+
+		const summary = page.getByTestId("floating-details-summary");
+		const sheet = page.getByTestId("floating-details-sheet");
+
+		await summary.click();
+		await page.getByTestId("sheet-link").click();
+
+		await expect(sheet).not.toBeVisible();
+		await expect(summary).toBeFocused();
+	});
+
+	test("keeps one live content tree when the viewport crosses the breakpoint", async ({
+		mount,
+		page,
+	}) => {
+		await mountFloatingDetails(mount, {
+			slots: {
+				default: '<label>Value <input data-test="stateful-input" /></label>',
+			},
+		});
+
+		await page.getByTestId("floating-details-summary").click();
+		await page.getByTestId("stateful-input").fill("preserved");
+		await expect(page.getByTestId("stateful-input")).toHaveCount(1);
+
+		await page.setViewportSize({ width: 1200, height: 800 });
+		await expect(page.getByTestId("floating-details-content")).toBeVisible();
+		await expect(page.getByTestId("stateful-input")).toHaveValue("preserved");
+		await expect(page.getByTestId("stateful-input")).toHaveCount(1);
+
+		await page.setViewportSize({ width: 1023, height: 800 });
+		await expect(page.getByTestId("floating-details-sheet")).toBeVisible();
+		await expect(page.getByTestId("stateful-input")).toHaveValue("preserved");
+		await expect(page.getByTestId("stateful-input")).toHaveCount(1);
+	});
+});
+
 test.describe("styling hooks", () => {
 	test("data-component is set on the root element", async ({ mount, page }) => {
 		await mountFloatingDetails(mount);

@@ -250,7 +250,6 @@
 	--info-border-subtle: var(--info-200);
 	--info-foreground: var(--color-white);
 
-	/* Neutral foundation. */
 	--surface: var(--color-white);
 	--surface-elevated: var(--color-white);
 	--surface-subtle: var(--color-grey-50);

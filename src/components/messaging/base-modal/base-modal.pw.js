@@ -46,3 +46,23 @@ test.describe("base-modal", () => {
 		await expect(page.getByTestId("modal-dialog")).not.toHaveAttribute("role");
 	});
 });
+
+test.describe("narrow viewport", () => {
+	test.use({ viewport: { width: 1023, height: 800 } });
+
+	test("keeps the close button in normal flow", async ({ mount, page }) => {
+		await mountBaseModal(mount);
+
+		await expect(page.getByTestId("modal-dialog-close")).toHaveCSS("position", "static");
+	});
+});
+
+test.describe("desktop viewport", () => {
+	test.use({ viewport: { width: 1200, height: 800 } });
+
+	test("positions the close button over the dialog corner", async ({ mount, page }) => {
+		await mountBaseModal(mount);
+
+		await expect(page.getByTestId("modal-dialog-close")).toHaveCSS("position", "absolute");
+	});
+});

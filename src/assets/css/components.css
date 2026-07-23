@@ -49,7 +49,7 @@
 	right: 0;
 }
 
-dialog[data-component="base-modal"] {
+dialog[data-part="sheet"] {
 	background-color: var(--surface-elevated);
 	border-top: 1px solid var(--border);
 	box-shadow: var(--shadow-2xl);
@@ -60,23 +60,23 @@ dialog[data-component="base-modal"] {
 	max-height: 75dvh;
 	max-width: none;
 	overflow-y: auto;
-	padding-bottom: calc(var(--spacing) * 6 + env(safe-area-inset-bottom));
 	padding: calc(var(--spacing) * 6);
+	padding-bottom: calc(var(--spacing) * 6 + env(safe-area-inset-bottom));
 	position: fixed;
 	width: 100%;
 
 	&::backdrop {
 		backdrop-filter: blur(var(--blur-xs));
-		background-color: color-mix(in oklab, var(--surface) 80%, transparent);
+		background-color: color-mix(in oklab, var(--color-grey-950) 80%, transparent);
 	}
 }
 
-:where(.dark) dialog[data-component="base-modal"] {
+:where(.dark) dialog[data-part="sheet"] {
 	background-color: var(--surface-elevated);
 }
 
 @media (width >= theme(--breakpoint-lg)) {
-	dialog[data-component="base-modal"] {
+	dialog[data-part="sheet"] {
 		border-radius: var(--radius-lg);
 		border: 1px solid var(--border);
 		inset: auto;
