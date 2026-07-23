@@ -303,6 +303,134 @@ test.describe("dropdown-menu", () => {
 	});
 });
 
+test.describe("narrow viewport", () => {
+	test.use({ viewport: { width: 1023, height: 800 } });
+
+	test("opens as a labelled action sheet without menu semantics", async ({ mount, page }) => {
+		await mountDropdownMenu(mount);
+
+		const trigger = page.getByTestId("dropdown-menu-trigger");
+
+		await trigger.click();
+
+		const sheet = page.getByTestId("dropdown-menu-sheet");
+		const panel = page.getByTestId("dropdown-menu-panel");
+
+		await expect(sheet).toBeVisible();
+		await expect(sheet).toHaveAttribute("aria-modal", "true");
+		await expect(sheet).toHaveAttribute("aria-label", "Actions");
+		await expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
+		await expect(panel).not.toHaveAttribute("role");
+		await expect(page.getByTestId("dropdown-menu-button").first()).not.toHaveAttribute("role");
+
+		const layout = await sheet.evaluate((element) => {
+			const styles = getComputedStyle(element);
+
+			return {
+				bottom: styles.bottom,
+				left: styles.left,
+				maxHeight: styles.maxHeight,
+				overflowY: styles.overflowY,
+				position: styles.position,
+				right: styles.right,
+			};
+		});
+
+		expect(layout).toEqual({
+			bottom: "0px",
+			left: "0px",
+			maxHeight: "600px",
+			overflowY: "auto",
+			position: "fixed",
+			right: "0px",
+		});
+	});
+
+	test("uses ordinary sequential focus without menu navigation", async ({ mount, page }) => {
+		await mountDropdownMenu(mount);
+
+		await page.getByTestId("dropdown-menu-trigger").click();
+
+		const firstButton = page.getByTestId("dropdown-menu-button").first();
+		const secondButton = page.getByTestId("dropdown-menu-button").nth(1);
+
+		await firstButton.focus();
+		await expect(firstButton).not.toHaveAttribute("tabindex");
+
+		await page.keyboard.press("ArrowDown");
+		await expect(firstButton).toBeFocused();
+
+		await page.keyboard.press("d");
+		await expect(firstButton).toBeFocused();
+
+		await page.keyboard.press("Tab");
+		await expect(secondButton).toBeFocused();
+	});
+
+	test("selection dismisses the sheet and restores focus to the trigger", async ({
+		mount,
+		page,
+	}) => {
+		await mountDropdownMenu(mount);
+
+		const trigger = page.getByTestId("dropdown-menu-trigger");
+
+		await trigger.click();
+		await page.getByTestId("dropdown-menu-button").first().click();
+
+		await expect(page.getByTestId("dropdown-menu-sheet")).not.toBeVisible();
+		await expect(trigger).toBeFocused();
+	});
+
+	test("Escape dismisses the sheet and restores focus to the trigger", async ({ mount, page }) => {
+		await mountDropdownMenu(mount);
+
+		const trigger = page.getByTestId("dropdown-menu-trigger");
+
+		await trigger.click();
+		await page.keyboard.press("Escape");
+
+		await expect(page.getByTestId("dropdown-menu-sheet")).not.toBeVisible();
+		await expect(trigger).toBeFocused();
+	});
+
+	test("the sheet close button restores focus to the trigger", async ({ mount, page }) => {
+		await mountDropdownMenu(mount);
+
+		const trigger = page.getByTestId("dropdown-menu-trigger");
+
+		await trigger.click();
+		await page.getByTestId("overlay-sheet-close").click();
+
+		await expect(page.getByTestId("dropdown-menu-sheet")).not.toBeVisible();
+		await expect(trigger).toBeFocused();
+	});
+});
+
+test.describe("desktop viewport", () => {
+	test.use({ viewport: { width: 1200, height: 800 } });
+
+	test("retains menu semantics and keyboard navigation", async ({ mount, page }) => {
+		await mountDropdownMenu(mount);
+
+		const trigger = page.getByTestId("dropdown-menu-trigger");
+
+		await trigger.click();
+
+		const panel = page.getByTestId("dropdown-menu-panel");
+		const firstButton = page.getByTestId("dropdown-menu-button").first();
+		const secondButton = page.getByTestId("dropdown-menu-button").nth(1);
+
+		await expect(trigger).toHaveAttribute("aria-haspopup", "menu");
+		await expect(panel).toHaveAttribute("role", "menu");
+		await expect(firstButton).toHaveAttribute("role", "menuitem");
+
+		await firstButton.focus();
+		await page.keyboard.press("ArrowDown");
+		await expect(secondButton).toBeFocused();
+	});
+});
+
 function getPanelColours(panel) {
 	return panel.evaluate((element) => {
 		const styles = getComputedStyle(element);

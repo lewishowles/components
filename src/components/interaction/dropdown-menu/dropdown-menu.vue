@@ -11,8 +11,8 @@
 				class: buttonClasses,
 				'aria-expanded': isOpen,
 				'aria-controls': menuId,
+				'aria-haspopup': triggerProps['aria-haspopup'],
 			}"
-			aria-haspopup="menu"
 			data-part="trigger"
 			data-test="dropdown-menu-trigger"
 			@click="toggleMenu"
@@ -24,26 +24,40 @@
 			/>
 		</ui-button>
 
-		<div
-			v-if="isOpen"
-			ref="menuElement"
-			v-bind="{ id: menuId, class: resolvedPanelClasses }"
-			role="menu"
-			data-part="panel"
-			data-test="dropdown-menu-panel"
-			@keydown="onMenuKeydown"
+		<overlay-sheet
+			:class="resolvedSheetClasses"
+			v-bind="{
+				isOpen,
+				isSheet: isNarrow,
+				label: sheetLabel,
+				closeWithEscape: true,
+			}"
+			data-test="dropdown-menu-sheet"
+			@dismiss="closeAndRestoreFocus"
 		>
-			<slot v-bind="{ open: isOpen }" />
-		</div>
+			<div
+				v-if="isOpen"
+				ref="menuElement"
+				v-bind="{ id: menuId, class: resolvedPanelClasses }"
+				:role="isNarrow ? undefined : 'menu'"
+				data-part="panel"
+				data-test="dropdown-menu-panel"
+				@keydown="onMenuKeydown"
+			>
+				<slot v-bind="{ open: isOpen }" />
+			</div>
+		</overlay-sheet>
 	</div>
 </template>
 
 <script setup>
-import { computed, provide, ref, toRef, useId, useTemplateRef } from "vue";
+import { computed, nextTick, provide, ref, toRef, useId, useTemplateRef, watch } from "vue";
 import { getNextIndex } from "@lewishowles/helpers/array";
-import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
+import { onClickOutside, onKeyStroke, useFocusWithin, useMediaQuery } from "@vueuse/core";
 import { useFloatingPosition } from "@/composables";
 import { cn } from "@/utilities/cn.js";
+
+import OverlaySheet from "@/components/messaging/overlay-sheet/overlay-sheet.vue";
 
 const props = defineProps({
 	/**
@@ -95,6 +109,8 @@ const menuElement = useTemplateRef("menuElement");
 // Whether focus is currently within the menu panel. Used to decide whether to
 // return focus to the trigger when the menu closes.
 const { focused: hasFocus } = useFocusWithin(menuElement);
+// Whether the action menu should use the narrow modal sheet presentation.
+const isNarrow = useMediaQuery("(width < 1024px)");
 
 // Resolves the trigger button DOM element for positioning measurements. Queried
 // by data-part rather than a direct ref so it works regardless of what renders
@@ -102,6 +118,9 @@ const { focused: hasFocus } = useFocusWithin(menuElement);
 const triggerDomElement = computed(() =>
 	menuContainerElement.value?.querySelector("[data-part='trigger']"),
 );
+
+// Derive an accessible label for the narrow action sheet from the trigger text.
+const sheetLabel = computed(() => triggerDomElement.value?.textContent?.trim() || "Actions");
 
 const {
 	computedPlacement,
@@ -117,29 +136,36 @@ const {
 	initialAlign: toRef(props, "align"),
 });
 
-// The full class list for the dropdown panel: base shape, colours, and
-// animation merged with the placement gap, position, and any user overrides.
-const resolvedPanelClasses = computed(() =>
-	cn(
+// The full class list for the anchored desktop panel, or a simple full-width
+// wrapper for the narrow action-sheet content.
+const resolvedPanelClasses = computed(() => {
+	if (isNarrow.value) {
+		return "w-full";
+	}
+
+	return cn(
 		"absolute animate-fade-in-down animate-fast min-w-3xs py-2 rounded-lg border border-border bg-surface-elevated backdrop-blur-lg z-50",
 		placementClasses.value,
 		computedPlacement.value === "above" ? "bottom-full" : "top-full",
 		computedAlign.value === "end" ? "inset-e-0" : "inset-s-0",
 		{ "opacity-0": isPositioning.value },
 		props.detailsClasses,
-	),
-);
+	);
+});
+
+// Apply caller panel classes to the sheet itself when the anchored panel is not rendered.
+const resolvedSheetClasses = computed(() => (isNarrow.value ? props.detailsClasses : null));
 
 // The ARIA attributes that belong on the trigger element, exposed as a slot
 // prop so users building a custom trigger can spread them onto their own element.
 const triggerProps = computed(() => ({
-	"aria-haspopup": "menu",
+	"aria-haspopup": isNarrow.value ? "dialog" : "menu",
 	"aria-expanded": isOpen.value,
 	"aria-controls": menuId,
 }));
 
-// Provide child menu item components with a way to close the menu on selection.
-provide("dropdown-menu", { selectMenuItem });
+// Provide child menu item components with their presentation and selection callback.
+provide("dropdown-menu", { isNarrow, selectMenuItem });
 
 // Our type-ahead buffer keeps track of the user's typing while the menu is
 // open, enabling us to focus an element whose label matches.
@@ -148,7 +174,7 @@ let typeaheadTimeout = null;
 
 // Close the menu when clicking outside of the container.
 onClickOutside(menuContainerElement, () => {
-	if (!isOpen.value) {
+	if (isNarrow.value || !isOpen.value) {
 		return;
 	}
 
@@ -157,13 +183,43 @@ onClickOutside(menuContainerElement, () => {
 
 // Close the menu and return focus to the trigger when Escape is pressed.
 onKeyStroke("Escape", (event) => {
-	if (!isOpen.value) {
+	if (isNarrow.value || !isOpen.value) {
 		return;
 	}
 
 	event.preventDefault();
 	closeAndRestoreFocus();
 });
+
+watch(
+	[isOpen, isNarrow],
+	async ([open, narrow], [wasOpen, wasNarrow]) => {
+		if (!open) {
+			handleFloatingClose();
+
+			return;
+		}
+
+		if (narrow) {
+			if (!wasNarrow && wasOpen) {
+				getMenuItems().forEach((item) => item.removeAttribute("tabindex"));
+
+				handleFloatingClose();
+			}
+
+			return;
+		}
+
+		if (wasNarrow) {
+			await nextTick();
+
+			if (isOpen.value && !isNarrow.value) {
+				await handleFloatingOpen();
+			}
+		}
+	},
+	{ flush: "post" },
+);
 
 /**
  * Get all focusable menu items within the panel.
@@ -229,7 +285,7 @@ function handleTypeahead(character, items) {
  * @param  {KeyboardEvent}  event
  */
 function onTriggerKeydown(event) {
-	if (event.key !== "ArrowDown" && event.key !== "ArrowUp") {
+	if (isNarrow.value || (event.key !== "ArrowDown" && event.key !== "ArrowUp")) {
 		return;
 	}
 
@@ -246,6 +302,10 @@ function onTriggerKeydown(event) {
  * @param  {KeyboardEvent}  event
  */
 function onMenuKeydown(event) {
+	if (isNarrow.value) {
+		return;
+	}
+
 	const items = getMenuItems();
 
 	if (items.length === 0) {
@@ -312,6 +372,10 @@ async function openMenu() {
 
 	emit("open");
 
+	if (isNarrow.value) {
+		return;
+	}
+
 	await handleFloatingOpen();
 
 	const items = getMenuItems();
@@ -338,11 +402,13 @@ function closeMenu() {
  * Close the menu and return focus to the trigger if focus was within the panel.
  */
 function closeAndRestoreFocus() {
-	if (hasFocus.value) {
-		menuContainerElement.value?.querySelector("[data-part='trigger']")?.focus();
-	}
+	const shouldRestoreFocus = isNarrow.value || hasFocus.value;
 
 	closeMenu();
+
+	if (shouldRestoreFocus) {
+		menuContainerElement.value?.querySelector("[data-part='trigger']")?.focus();
+	}
 }
 
 /**

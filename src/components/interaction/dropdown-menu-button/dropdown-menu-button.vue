@@ -6,7 +6,7 @@
 			'border-transparent': !selected,
 		}"
 		v-bind="{ iconStart: icon }"
-		role="menuitem"
+		:role="isNarrow ? undefined : 'menuitem'"
 		data-test="dropdown-menu-button"
 		@click="handleSelect"
 	>
@@ -36,7 +36,7 @@ defineProps({
 });
 
 // Functions provided by the parent dropdown-menu, keyed by component name.
-const { selectMenuItem } = inject("dropdown-menu", {});
+const { isNarrow = false, selectMenuItem } = inject("dropdown-menu", {});
 
 /**
  * Handle selection of this menu item, notifying the parent dropdown-menu so

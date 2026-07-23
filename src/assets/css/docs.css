@@ -18,26 +18,39 @@
 	max-width: 65ch;
 }
 
-.docs-component-tab > table {
-	width: 100%;
-	margin-block: 2rem;
-	font-size: 0.875rem;
-	line-height: 1.5rem;
-
-	thead {
-		border-bottom: 1px solid var(--border-strong);
+.docs-page-introduction {
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--spacing) * 2);
+		list-style: disc;
+		margin-inline-start: calc(var(--spacing) * 6);
 	}
+}
 
-	th {
-		padding: 0 0.5rem 0.5rem;
-		color: var(--content-strong);
-		font-weight: 600;
-		text-align: start;
-	}
+.docs-component-tab,
+.docs-page-introduction {
+	& > table {
+		width: 100%;
+		margin-block: 2rem;
+		font-size: 0.875rem;
+		line-height: 1.5rem;
 
-	td {
-		padding: 0.5rem;
-		border-bottom: 1px solid var(--border);
-		text-align: start;
+		thead {
+			border-bottom: 1px solid var(--border-strong);
+		}
+
+		th {
+			padding: 0 0.5rem 0.5rem;
+			color: var(--content-strong);
+			font-weight: 600;
+			text-align: start;
+		}
+
+		td {
+			padding: 0.5rem;
+			border-bottom: 1px solid var(--border);
+			text-align: start;
+		}
 	}
 }
