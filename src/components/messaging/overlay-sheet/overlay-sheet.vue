@@ -9,7 +9,7 @@
 		@cancel="handleCancel"
 		@close="handleClose"
 	>
-		<div class="mb-4 flex justify-end">
+		<div class="flex justify-end">
 			<ui-button
 				class="button--ghost"
 				icon-start="icon-cross"

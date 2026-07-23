@@ -69,6 +69,15 @@ dialog[data-part="sheet"] {
 		backdrop-filter: blur(var(--blur-xs));
 		background-color: color-mix(in oklab, var(--color-grey-950) 80%, transparent);
 	}
+
+	[data-part="actions"] {
+		border-top: 1px solid var(--border);
+		padding-inline: calc(var(--spacing) * 6);
+		padding-block: calc(var(--spacing) * 6);
+		margin-block-start: calc(var(--spacing) * 6);
+		margin-block-end: calc(var(--spacing) * -6);
+		margin-inline: calc(var(--spacing) * -6);
+	}
 }
 
 :where(.dark) dialog[data-part="sheet"] {
@@ -88,5 +97,13 @@ dialog[data-part="sheet"] {
 		padding: calc(var(--spacing) * 12);
 		top: 50%;
 		transform: translate(-50%, -50%);
+
+		[data-part="actions"] {
+			padding-inline: calc(var(--spacing) * 12);
+			padding-block: calc(var(--spacing) * 8);
+			margin-block-start: calc(var(--spacing) * 12);
+			margin-block-end: calc(var(--spacing) * -12);
+			margin-inline: calc(var(--spacing) * -12);
+		}
 	}
 }

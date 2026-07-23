@@ -14,7 +14,7 @@
 		data-part="sheet"
 		data-test="modal-dialog"
 	>
-		<div class="mb-4 flex justify-end lg:mb-0">
+		<div class="flex justify-end lg:mb-0">
 			<ui-button
 				class="button--ghost lg:absolute lg:inset-e-0 lg:top-0 lg:me-4 lg:mt-4"
 				icon-start="icon-cross"
