@@ -1,6 +1,6 @@
 # `dropdown-menu`
 
-`dropdown-menu` provides an accessible action menu with a button trigger and keyboard navigation. Best used for menus with multiple action buttons; for example in `data-table` bulk actions or rows.
+`dropdown-menu` provides an accessible action menu with a button trigger and keyboard navigation. Best used for menus with multiple action buttons; for example in `data-table` bulk actions or rows. Until the `lg` breakpoint, the contents of `dropdown-menu` are shown as a sheet.
 
 For a simple summary-details or floating content area, use `summary-details` or `floating-details` instead.
 
@@ -30,12 +30,12 @@ The heading level to use for the dropdown menu title. Choose it based on the hea
 
 ## Props
 
-| Prop             | Type                        | Default   | Description                                                                                                                                                              |
-| ---------------- | --------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `buttonClasses`  | `string \| array \| object` | —         | Additional classes applied to the trigger button. Defaults to the standard muted button styling.                                                                         |
-| `detailsClasses` | `string \| array \| object` | `null`    | Additional classes applied to the menu panel, merged on top of the panel's base styles. Any provided classes that conflict with base classes will override as necessary. |
-| `placement`      | `string`                    | `"below"` | Preferred placement: `"above"` or `"below"`. Flips automatically if the panel would clip the viewport.                                                                   |
-| `align`          | `string`                    | `"start"` | Preferred alignment: `"start"` or `"end"`. Flips automatically if the panel would clip the viewport.                                                                     |
+| Prop             | Type                        | Default   | Description                                                                                                                                                                                |
+| ---------------- | --------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `buttonClasses`  | `string \| array \| object` | —         | Additional classes applied to the trigger button. Defaults to the standard muted button styling.                                                                                           |
+| `detailsClasses` | `string \| array \| object` | `null`    | Additional classes applied to the menu panel, merged on top of the panel's base styles. Any provided classes that conflict with base classes will override as necessary.                   |
+| `placement`      | `string`                    | `"below"` | Preferred placement: `"above"` or `"below"`. Flips automatically if the panel would clip the viewport. This prop does not affect placement or visibility in the narrow sheet presentation. |
+| `align`          | `string`                    | `"start"` | Preferred alignment: `"start"` or `"end"`. Flips automatically if the panel would clip the viewport. This prop does not affect placement or visibility in the narrow sheet presentation.   |
 
 ## Slots
 

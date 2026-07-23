@@ -13,7 +13,11 @@
 				<router-link v-bind="{ to: '/messaging/notification-handler' }">
 					<code>notification-handler</code>
 				</router-link>
-				.
+				. Until the
+				<code>lg</code>
+				breakpoint, the contents of
+				<code>floating-details</code>
+				are shown as a sheet.
 			</p>
 		</template>
 
@@ -117,7 +121,8 @@
 					aligns the panel's leading edge with the trigger's,
 					<code>end</code>
 					aligns the trailing edges. The panel flips to the opposite side if it would clip the
-					viewport edge.
+					viewport edge. This prop does not affect placement or visibility in the narrow sheet
+					presentation.
 				</p>
 			</component-prop>
 
@@ -134,6 +139,7 @@
 					opens beneath the trigger,
 					<code>above</code>
 					opens above it. The panel flips to the opposite side if it would clip the viewport edge.
+					This prop does not affect placement or visibility in the narrow sheet presentation.
 				</p>
 			</component-prop>
 

@@ -1,6 +1,6 @@
 # `floating-details`
 
-`floating-details` is an extension of `summary-details`, providing sensible defaults for a floating dropdown menu, such as that found in `notification-handler`.
+`floating-details` is an extension of `summary-details`, providing sensible defaults for a floating dropdown menu, such as that found in `notification-handler`. Until the `lg` breakpoint, the contents of `floating-details` are shown as a sheet.
 
 ## Slots
 
@@ -104,14 +104,14 @@ Whether to only include a summary icon, hiding any provided text. When used, tex
 - type: `string`
 - default: `start`
 
-The preferred panel alignment: `start` aligns the panel's leading edge with the trigger's, `end` aligns the trailing edges. The panel flips to the opposite side if it would clip the viewport edge.
+The preferred panel alignment: `start` aligns the panel's leading edge with the trigger's, `end` aligns the trailing edges. The panel flips to the opposite side if it would clip the viewport edge. This prop does not affect placement or visibility in the narrow sheet presentation.
 
 ### `placement`
 
 - type: `string`
 - default: `below`
 
-The preferred panel placement: `below` opens beneath the trigger, `above` opens above it. The panel flips to the opposite side if it would clip the viewport edge.
+The preferred panel placement: `below` opens beneath the trigger, `above` opens above it. The panel flips to the opposite side if it would clip the viewport edge. This prop does not affect placement or visibility in the narrow sheet presentation.
 
 ### `summaryClasses`
 

@@ -9,5 +9,6 @@ export const modalDialogActionsMetadata = {
 			summary: "Dialog action controls.",
 		},
 	],
+	parts: [{ name: "actions", summary: "Container for dialog action controls." }],
 	examples: [],
 };

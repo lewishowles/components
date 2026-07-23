@@ -4,6 +4,7 @@ import { alertMessageMetadata } from "./messaging/alert-message/alert-message.me
 import { appPaginationMetadata } from "./navigation/app-pagination/app-pagination.metadata.js";
 import { baseIconMetadata } from "./icon/base-icon/base-icon.metadata.js";
 import { baseModalMetadata } from "./messaging/base-modal/base-modal.metadata.js";
+import { overlaySheetMetadata } from "./messaging/overlay-sheet/overlay-sheet.metadata.js";
 import { breadcrumbItemMetadata } from "./navigation/breadcrumb-item/breadcrumb-item.metadata.js";
 import { breadcrumbListMetadata } from "./navigation/breadcrumb-list/breadcrumb-list.metadata.js";
 import { formButtonGroupMetadata } from "./form/form-button-group/form-button-group.metadata.js";
@@ -81,6 +82,7 @@ const componentMetadataRecords = [
 	appPaginationMetadata,
 	baseIconMetadata,
 	baseModalMetadata,
+	overlaySheetMetadata,
 	breadcrumbItemMetadata,
 	breadcrumbListMetadata,
 	formButtonGroupMetadata,

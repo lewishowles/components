@@ -9,7 +9,11 @@
 				<code>role="menu"</code>
 				semantics, and full keyboard navigation. It's well suited to bulk action buttons, row-level
 				controls in data tables, and any situation where a small set of actions needs to be
-				de-cluttered from the interface.
+				de-cluttered from the interface. Until the
+				<code>lg</code>
+				breakpoint, the contents of
+				<code>dropdown-menu</code>
+				are shown as a sheet.
 			</p>
 
 			<p>
@@ -125,6 +129,7 @@
 					or
 					<code>"below"</code>
 					. The panel flips to the opposite side automatically if it would clip the viewport edge.
+					This prop does not affect placement or visibility in the narrow sheet presentation.
 				</p>
 			</component-prop>
 
@@ -141,6 +146,7 @@
 					or
 					<code>"end"</code>
 					. The panel flips to the opposite side automatically if it would clip the viewport edge.
+					This prop does not affect placement or visibility in the narrow sheet presentation.
 				</p>
 			</component-prop>
 		</component-props>

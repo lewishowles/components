@@ -1,6 +1,6 @@
 # `modal-dialog`
 
-The `modal-dialog` component provides a base modal dialog. When opened, the user's focus is moved to the dialog, and the rest of the page is made inert.
+The `modal-dialog` component provides a base modal dialog. When opened, the user's focus is moved to the dialog, and the rest of the page is made inert. Until the `lg` breakpoint, a `modal-dialog` is shown as a sheet.
 
 Dialogs should be used sparingly, ideally for confirmation actions.
 

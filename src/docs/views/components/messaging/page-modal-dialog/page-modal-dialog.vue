@@ -7,7 +7,11 @@
 				The
 				<code>modal-dialog</code>
 				component provides a base modal dialog. When opened, the user's focus is moved to the
-				dialog, and the rest of the page is made inert.
+				dialog, and the rest of the page is made inert. Until the
+				<code>lg</code>
+				breakpoint, a
+				<code>modal-dialog</code>
+				is shown as a sheet.
 			</p>
 
 			<p>Dialogs should be used sparingly, ideally for confirmation actions.</p>
