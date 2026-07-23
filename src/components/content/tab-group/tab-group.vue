@@ -6,7 +6,7 @@
 
 		<div
 			ref="tabBarReference"
-			class="border-border mb-12 border-b"
+			class="border-border mb-8 border-b"
 			:class="{ 'wrap-tabs': wrap }"
 			data-part="nav"
 		>
@@ -31,7 +31,7 @@
 							'icon-start': tab.icon,
 						}"
 						ref="tabAnchors"
-						class="border-b-2 px-4 py-2 whitespace-nowrap no-underline"
+						class="border-b-2 px-[0.875em] py-[0.4em] whitespace-nowrap no-underline"
 						:class="{
 							'border-primary text-primary dark:border-content-strong dark:text-content-strong':
 								tab.active,

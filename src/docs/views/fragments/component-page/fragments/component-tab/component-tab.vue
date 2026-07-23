@@ -4,14 +4,14 @@
 			<slot name="title" />
 		</template>
 
-		<div class="prose dark:prose-invert *:animate-fade-in *:delay mb-4">
-			<h2><slot name="title" /></h2>
+		<div class="docs-component-tab *:animate-fade-in *:delay mb-4">
+			<h2 class="text-content-strong mt-8 mb-4 text-xl font-bold"><slot name="title" /></h2>
 
 			<slot name="post-title" />
 
-			<ol v-if="haveSections && sectionCount > 1">
-				<li v-for="section in sections" :key="section.id">
-					<a :href="`#${section.id}`">{{ section.title }}</a>
+			<ol v-if="haveSections && sectionCount > 1" class="ms-6 flex list-decimal flex-col gap-2">
+				<li v-for="section in sections" :key="section.id" class="ps-2">
+					<a :href="`#${section.id}`" class="text-content-strong">{{ section.title }}</a>
 				</li>
 			</ol>
 

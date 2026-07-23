@@ -23,7 +23,7 @@
 			</conditional-wrapper>
 		</div>
 
-		<div class="mt-2 mb-1 flex gap-8">
+		<div class="mt-2 mb-1 flex flex-col gap-x-8 gap-y-4 lg:flex-row">
 			<form-input
 				ref="dayInput"
 				v-model="date.day"
@@ -32,7 +32,7 @@
 					id: `${inputId}-day`,
 					showOptionalIndicator: false,
 				}"
-				class="w-20"
+				class="lg:w-20"
 				data-test="form-date-day"
 			>
 				<slot name="day-label">Day</slot>
@@ -45,7 +45,7 @@
 					id: `${inputId}-month`,
 					showOptionalIndicator: false,
 				}"
-				class="w-20"
+				class="lg:w-20"
 				data-test="form-date-month"
 			>
 				<slot name="month-label">Month</slot>
@@ -58,7 +58,7 @@
 					id: `${inputId}-year`,
 					showOptionalIndicator: false,
 				}"
-				class="w-40"
+				class="lg:w-40"
 				data-test="form-date-year"
 			>
 				<slot name="year-label">Year</slot>

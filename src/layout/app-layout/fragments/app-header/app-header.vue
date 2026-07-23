@@ -23,7 +23,7 @@
 			<floating-details>
 				<template #summary>Language mode</template>
 
-				<div class="prose prose-sm dark:prose-invert">
+				<div class="prose prose-stone prose-sm dark:prose-invert">
 					<h3>Language mode</h3>
 
 					<p>

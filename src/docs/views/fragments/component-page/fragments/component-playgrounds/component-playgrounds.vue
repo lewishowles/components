@@ -7,9 +7,7 @@
 		</template>
 
 		<template #post-content>
-			<div class="divide-border divide-y">
-				<slot />
-			</div>
+			<slot />
 		</template>
 	</component-tab>
 </template>

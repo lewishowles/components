@@ -6,7 +6,7 @@
 			<tab-item icon="icon-object">
 				<template #label>Props</template>
 
-				<div class="prose dark:prose-invert">
+				<div class="prose prose-stone dark:prose-invert">
 					<h2>Props</h2>
 					<p>…</p>
 				</div>
@@ -14,7 +14,7 @@
 			<tab-item icon="icon-slot">
 				<template #label>Slots</template>
 
-				<div class="prose dark:prose-invert">
+				<div class="prose prose-stone dark:prose-invert">
 					<h2>Slots</h2>
 					<p>…</p>
 				</div>

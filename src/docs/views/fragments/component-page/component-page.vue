@@ -1,6 +1,6 @@
 <template>
-	<div class="prose prose-slate dark:prose-invert *:animate-fade-in *:delay">
-		<h1>
+	<div class="*:animate-fade-in *:delay flex flex-col gap-4">
+		<h1 class="text-content-strong mb-2 text-3xl font-bold">
 			<slot name="title" />
 		</h1>
 

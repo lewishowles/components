@@ -28,7 +28,7 @@
 
 				<template #introduction>The key to time travel.</template>
 
-				<div class="prose dark:prose-invert">
+				<div class="prose prose-stone dark:prose-invert">
 					<p>
 						In the world of Back to the Future, the time circuits are the heart of the DeLorean's
 						time-traveling capabilities. With a simple keypad interface, Doc Brown can input any
@@ -49,7 +49,7 @@
 
 				<template #introduction>The iconic time-travelling machine.</template>
 
-				<div class="prose dark:prose-invert">
+				<div class="prose prose-stone dark:prose-invert">
 					<p>...</p>
 				</div>
 			</accordion-panel>

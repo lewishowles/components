@@ -1,79 +1,68 @@
 <template>
 	<div class="flex flex-col gap-8 py-8" v-bind="{ id }">
-		<div
-			v-if="haveTitle || haveIntroduction"
-			class="prose dark:prose-invert flex flex-col gap-3 [&_h3]:m-0 [&_p]:m-0"
-		>
+		<div v-if="haveTitle || haveIntroduction" class="flex flex-col gap-3">
 			<section-title v-if="haveTitle" v-bind="{ id }">
 				<template #title>
 					<slot name="title" />
 				</template>
 			</section-title>
 
-			<div>
-				<slot name="introduction" />
-			</div>
+			<slot name="introduction" />
 		</div>
 
-		<div class="flex flex-col gap-8">
-			<div
-				class="border-grey-200 bg-grey-50 dark:bg-grey-950/20 flex justify-end gap-3 rounded-md border p-3 text-sm backdrop-blur-sm dark:border-transparent"
-				:class="{ 'z-10': isTextSlotsOpen }"
+		<div
+			class="border-grey-200 bg-grey-50 dark:bg-grey-950/20 flex justify-end gap-3 rounded-md border p-3 text-sm backdrop-blur-sm dark:border-transparent"
+			:class="{ 'z-10': isTextSlotsOpen }"
+		>
+			<copy-content v-bind="{ content: copy }" class="button--muted">Copy code</copy-content>
+
+			<floating-details
+				v-show="!useTranslation && haveTextSlots"
+				v-model="isTextSlotsOpen"
+				details-size-classes="max-w-xs"
+				v-bind="{ align: 'right' }"
 			>
-				<copy-content v-bind="{ content: copy }" class="button--muted">Copy code</copy-content>
+				<template #summary>Text slots</template>
 
-				<floating-details
-					v-show="!useTranslation && haveTextSlots"
-					v-model="isTextSlotsOpen"
-					details-size-classes="max-w-xs"
-					v-bind="{ align: 'right' }"
-				>
-					<template #summary>Text slots</template>
+				<form-layout>
+					<form-field
+						v-for="(slot, key) in textSlots"
+						:key="key"
+						v-bind="{ type: slot.type }"
+						v-model="textSlots[key].value"
+					>
+						{{ slot.label }}
+					</form-field>
 
-					<form-layout>
-						<form-field
-							v-for="(slot, key) in textSlots"
-							:key="key"
-							v-bind="{ type: slot.type }"
-							v-model="textSlots[key].value"
-						>
-							{{ slot.label }}
-						</form-field>
+					<ui-button
+						class="button--muted self-start"
+						icon-start="icon-reload"
+						@click="resetTextSlots"
+					>
+						Reset content
+					</ui-button>
+				</form-layout>
+			</floating-details>
+		</div>
 
-						<ui-button
-							class="button--muted self-start"
-							icon-start="icon-reload"
-							@click="resetTextSlots"
-						>
-							Reset content
-						</ui-button>
-					</form-layout>
-				</floating-details>
-			</div>
+		<div
+			class="border-grey-300 relative rounded-md border p-4 inset-shadow-sm lg:p-24 dark:border-white/20"
+		>
+			<slot />
 
 			<div
-				class="border-grey-300 relative rounded-md border p-4 inset-shadow-sm lg:p-24 dark:border-white/20"
+				v-if="haveComponentModel"
+				class="bg-grey-50 dark:bg-grey-950/30 dark:text-grey-200 border-grey-200 text-grey-800 relative mt-12 rounded-md border p-6 dark:border-transparent"
 			>
-				<slot />
+				<pill-badge class="absolute inset-s-0 top-0 ms-6 -translate-y-1/2">Model value</pill-badge>
 
-				<div
-					v-if="haveComponentModel"
-					class="bg-grey-50 dark:bg-grey-950/30 dark:text-grey-200 border-grey-200 text-grey-800 relative mt-12 rounded-md border p-6 dark:border-transparent"
-				>
-					<pill-badge class="absolute inset-s-0 top-0 ms-6 -translate-y-1/2">
-						Model value
-					</pill-badge>
-
-					<pre>{{ componentModel }}</pre>
-				</div>
+				<pre>{{ componentModel }}</pre>
 			</div>
 		</div>
 
-		<div>
-			<code-block>{{ copy }}</code-block>
+		<code-block>{{ copy }}</code-block>
 
-			<slot name="additional-code" />
-		</div>
+		<slot name="additional-code" />
 	</div>
 </template>
 

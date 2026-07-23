@@ -1,5 +1,5 @@
 <template>
-	<div class="prose prose-slate dark:prose-invert *:animate-fade-in *:delay">
+	<div class="prose prose-stone dark:prose-invert *:animate-fade-in *:delay">
 		<h1>@lewishowles/components</h1>
 
 		<p>

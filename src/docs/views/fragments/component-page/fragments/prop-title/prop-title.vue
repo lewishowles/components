@@ -8,23 +8,20 @@
 		</template>
 
 		<template #post-title>
-			<dl
-				v-if="haveType || haveDefault"
-				class="not-prose border-grey-200 flex rounded border text-sm dark:border-transparent dark:bg-white/20"
-			>
+			<dl v-if="haveType || haveDefault" class="border-border flex rounded border text-sm">
 				<div v-if="haveType" class="flex items-start gap-2 px-2 py-1">
 					<dt class="font-bold">Type</dt>
-					<dd class="text-grey-500 dark:text-white/60">
+					<dd class="text-content-muted">
 						<slot name="type" />
 					</dd>
 				</div>
 				<div
 					v-if="haveDefault"
 					class="flex shrink-0 items-start gap-2 px-2 py-1"
-					:class="{ 'border-grey-200 border-s dark:border-transparent': haveType }"
+					:class="{ 'border-border border-s': haveType }"
 				>
 					<dt class="font-bold">Default</dt>
-					<dd class="text-grey-500 font-mono text-balance dark:text-white/60">
+					<dd class="text-muted font-mono text-balance">
 						<slot name="default-value" />
 					</dd>
 				</div>

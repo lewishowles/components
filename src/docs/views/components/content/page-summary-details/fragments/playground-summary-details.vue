@@ -15,7 +15,7 @@
 				{{ textSlots.summary?.value }}
 			</template>
 
-			<div class="prose dark:prose-invert">
+			<div class="prose prose-stone dark:prose-invert">
 				<p>
 					NASA's Voyager 1 spacecraft, launched in 1977, is the most distant human-made object from
 					Earth. As of today, it is over 15 billion miles away and continues to transmit data from
