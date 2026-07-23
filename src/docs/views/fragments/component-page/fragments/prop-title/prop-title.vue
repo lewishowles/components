@@ -1,7 +1,7 @@
 <template>
 	<section-title
 		v-bind="{ id }"
-		class="group/prop-title relative flex flex-wrap items-baseline gap-4"
+		class="group/prop-title relative mt-4 flex flex-wrap items-baseline gap-4"
 	>
 		<template #title>
 			<slot name="title" />

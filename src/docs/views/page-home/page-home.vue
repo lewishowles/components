@@ -51,7 +51,7 @@
 				<li v-for="item in section.items" :key="item.label">
 					<router-link
 						v-bind="{ to: item.to }"
-						class="group hocus:underline block flex items-center justify-between py-1 font-mono text-current no-underline"
+						class="group hocus:underline flex items-center justify-between py-1 font-mono text-current no-underline"
 					>
 						{{ item.label }}
 
