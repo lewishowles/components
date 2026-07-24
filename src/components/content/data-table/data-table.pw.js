@@ -127,6 +127,76 @@ test.describe("data-table", () => {
 	});
 
 	test.describe("rendering", () => {
+		test("keeps wrapped-prone content on one line and scrolls the table", async ({
+			mount,
+			page,
+		}) => {
+			await mountDataTableRaw(mount, {
+				props: {
+					data: [{ device: "Laptop", last_seen: "4 minutes ago" }],
+					columns: {
+						device: { label: "Device name" },
+						last_seen: { label: "Last seen" },
+					},
+					enableSearch: false,
+				},
+			});
+
+			await setTableWidth(page, "12rem");
+
+			const scrollRegion = page.getByRole("region", { name: "Table" });
+
+			await expect(scrollRegion).toBeVisible();
+
+			expect(await getTextLineCount(heading(page, 0).getByTestId("ui-button-label"))).toBe(1);
+			expect(await getTextLineCount(rowCell(page, 0, 1))).toBe(1);
+
+			const metrics = await scrollRegion.evaluate((element) => ({
+				clientWidth: element.clientWidth,
+				documentWidth: document.documentElement.scrollWidth,
+				scrollWidth: element.scrollWidth,
+				tableWidth: element.querySelector("table").getBoundingClientRect().width,
+				viewportWidth: window.innerWidth,
+			}));
+
+			expect(metrics.scrollWidth).toBeGreaterThan(metrics.clientWidth);
+			expect(metrics.tableWidth).toBeGreaterThan(metrics.clientWidth);
+			expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth);
+		});
+
+		test("a description column can override the minimum width and wrap", async ({
+			mount,
+			page,
+		}) => {
+			await mountDataTableRaw(mount, {
+				props: {
+					data: [
+						{
+							device: "Laptop",
+							description: "A long description that should wrap normally in this column.",
+						},
+					],
+					columns: {
+						device: { label: "Device name" },
+						description: { label: "Description", columnClasses: "min-w-0" },
+					},
+					enableSearch: false,
+				},
+			});
+
+			await setTableWidth(page, "12rem");
+
+			const descriptionHeading = heading(page, 1).getByTestId("data-table-sort");
+			const descriptionCell = rowCell(page, 0, 1);
+
+			await expect(descriptionHeading).toHaveClass(/min-w-0/);
+
+			await expect(descriptionHeading).not.toHaveClass(/min-w-32/);
+			await expect(descriptionCell).toHaveClass(/min-w-0/);
+			await expect(descriptionCell).not.toHaveClass(/min-w-32/);
+			expect(await getTextLineCount(descriptionCell)).toBeGreaterThan(1);
+		});
+
 		test("a message is displayed if no data is available", async ({ mount, page }) => {
 			await mountDataTable(mount, { props: { data: [] } });
 
@@ -817,6 +887,41 @@ function rowCheckbox(page, n) {
  */
 function columnCheckbox(page, n) {
 	return page.getByTestId("data-table-columns-checkbox").nth(n).locator("input");
+}
+
+/**
+ * Constrain the component to exercise its own horizontal overflow wrapper.
+ *
+ * @param  {object}  page
+ * @param  {string}  width
+ */
+async function setTableWidth(page, width) {
+	await page.getByTestId("data-table").evaluate((element, width) => {
+		element.style.width = width;
+	}, width);
+}
+
+/**
+ * Count the layout lines occupied by the visible text in a locator.
+ *
+ * @param  {object}  locator
+ */
+async function getTextLineCount(locator) {
+	return locator.evaluate((element) => {
+		const textNode = [...element.childNodes].find(
+			(node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim(),
+		);
+
+		if (!textNode) {
+			return 0;
+		}
+
+		const range = document.createRange();
+
+		range.selectNodeContents(textNode);
+
+		return range.getClientRects().length;
+	});
 }
 
 // --- Interaction helpers ---

@@ -262,6 +262,8 @@ Any additional configuration for columns. **Note:** Any column without configura
 | `columnClasses`             | `Vue class binding` | `""`    | Classes to apply to both this column's heading and cells.                                                                                                            |
 | `tabularNums`               | `boolean`           | `false` | Whether to apply tabular number formatting (`tabular-nums`) to cells in this column. Useful for numeric columns to ensure digits align vertically.                   |
 
+Each heading and cell has a default `min-w-32`, preventing cells from getting too small and allowing a narrow table to scroll. This can be overridden with `columnClasses` (the heading and cells), `headingClasses`, or `cellClasses`.
+
 ### `name`
 
 - type: `string`

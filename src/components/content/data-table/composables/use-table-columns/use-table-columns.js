@@ -53,6 +53,10 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 		}
 	});
 
+	// Keep columns readable in narrow containers by default.
+	const baseHeadingClasses = computed(() => cn("min-w-32", headingClasses.value));
+	const baseCellClasses = computed(() => cn("min-w-32", cellClasses.value));
+
 	// A list of columns to display in the table, taking into account validation,
 	// and containing the relevant data. We base these columns on those provided by
 	// the user, which means that any column not configured will not be displayed by
@@ -163,7 +167,7 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 	 *     The column definition.
 	 */
 	function getHeadingClasses(column) {
-		return cn(headingClasses.value, column.columnClasses, column.headingClasses);
+		return cn(baseHeadingClasses.value, column.columnClasses, column.headingClasses);
 	}
 
 	/**
@@ -176,7 +180,7 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 	function getCellClasses(column) {
 		return cn(
 			tableSpacingClasses.value,
-			cellClasses.value,
+			baseCellClasses.value,
 			column.columnClasses,
 			column.cellClasses,
 		);

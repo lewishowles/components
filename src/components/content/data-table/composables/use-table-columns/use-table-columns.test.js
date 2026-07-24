@@ -97,6 +97,23 @@ describe("useTableColumns", () => {
 	});
 
 	describe("Class merging", () => {
+		test("adds a default minimum width to headings and cells", () => {
+			const { getCellClasses, getHeadingClasses } = createComposable();
+
+			expect(getHeadingClasses({})).toContain("min-w-32");
+			expect(getCellClasses({})).toContain("min-w-32");
+		});
+
+		test("allows column classes to override the default minimum width", () => {
+			const { getCellClasses, getHeadingClasses } = createComposable();
+			const column = { columnClasses: "min-w-0" };
+
+			expect(getHeadingClasses(column)).toContain("min-w-0");
+			expect(getHeadingClasses(column)).not.toContain("min-w-32");
+			expect(getCellClasses(column)).toContain("min-w-0");
+			expect(getCellClasses(column)).not.toContain("min-w-32");
+		});
+
 		test("getHeadingClasses merges table-level and column-level classes", () => {
 			const { getHeadingClasses } = createComposable({ headingClasses: "font-bold" });
 			const classes = getHeadingClasses({ headingClasses: "text-lg" });
