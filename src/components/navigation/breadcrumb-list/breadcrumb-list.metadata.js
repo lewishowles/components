@@ -17,6 +17,9 @@ export const breadcrumbListMetadata = {
 			summary: "Breadcrumb items.",
 		},
 	],
-	parts: [{ name: "list", summary: "Ordered list containing all breadcrumb items." }],
+	parts: [
+		{ name: "nav", summary: "Navigation wrapper hosting the scroll indicators." },
+		{ name: "list", summary: "Ordered list containing all breadcrumb items." },
+	],
 	examples: [],
 };

@@ -2,6 +2,8 @@
 
 `breadcrumb-list` and its related `breadcrumb-item` allow you to provide a breadcrumb navigation trail to users. A breadcrumb trail should start from the "home" page, and end on the page above the current page, and all items should link to their relevant section.
 
+Long breadcrumb trails remain on one line and scroll horizontally when they are wider than their container. The list initially positions at its end so the latest breadcrumb is visible, and edge indicators show when more content is available while scrolling.
+
 ## Props
 
 ### `label`

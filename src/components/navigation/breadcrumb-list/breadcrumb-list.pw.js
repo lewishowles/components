@@ -22,5 +22,61 @@ test.describe("breadcrumb-list", () => {
 
 		await expect(items.nth(0).locator("svg")).toBeAttached();
 		await expect(items.nth(1).locator("svg")).toBeAttached();
+		await expect(items.nth(0)).toHaveClass(/whitespace-nowrap/);
+		await expect(items.nth(1)).toHaveClass(/whitespace-nowrap/);
+	});
+
+	test("keeps a narrow chain on one line with the end visible", async ({ mount, page }) => {
+		await page.setViewportSize({ height: 240, width: 100 });
+		await mountBreadcrumbList(mount);
+
+		const list = page.getByTestId("breadcrumb-list-list");
+		const nav = page.getByTestId("breadcrumb-list");
+
+		const metrics = await list.evaluate((element) => {
+			const listRect = element.getBoundingClientRect();
+			const lastItemRect = element.lastElementChild.getBoundingClientRect();
+
+			return {
+				clientHeight: element.clientHeight,
+				clientWidth: element.clientWidth,
+				documentWidth: document.documentElement.scrollWidth,
+				lastItemRight: lastItemRect.right,
+				scrollHeight: element.scrollHeight,
+				scrollLeft: element.scrollLeft,
+				scrollWidth: element.scrollWidth,
+				viewportWidth: window.innerWidth,
+				listRight: listRect.right,
+			};
+		});
+
+		await expect(list).toHaveClass(/overflow-x-auto/);
+		await expect(nav).toHaveClass(/show-left/);
+		await expect(nav).not.toHaveClass(/show-right/);
+		expect(metrics.scrollWidth).toBeGreaterThan(metrics.clientWidth);
+		expect(metrics.scrollHeight).toBeLessThanOrEqual(metrics.clientHeight);
+		expect(metrics.scrollLeft).toBe(metrics.scrollWidth - metrics.clientWidth);
+		expect(metrics.lastItemRight).toBeLessThanOrEqual(metrics.listRight);
+		expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth);
+	});
+
+	test("does not visibly scroll a short chain", async ({ mount, page }) => {
+		await page.setViewportSize({ height: 240, width: 320 });
+		await mountBreadcrumbList(mount);
+
+		const list = page.getByTestId("breadcrumb-list-list");
+		const nav = page.getByTestId("breadcrumb-list");
+
+		const metrics = await list.evaluate((element) => ({
+			clientWidth: element.clientWidth,
+			scrollLeft: element.scrollLeft,
+			scrollWidth: element.scrollWidth,
+		}));
+
+		await expect(list).toHaveClass(/overflow-x-auto/);
+		await expect(nav).not.toHaveClass(/show-left/);
+		await expect(nav).not.toHaveClass(/show-right/);
+		expect(metrics.scrollWidth).toBe(metrics.clientWidth);
+		expect(metrics.scrollLeft).toBe(0);
 	});
 });

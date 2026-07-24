@@ -1,6 +1,6 @@
 <template>
 	<li
-		class="group flex items-center gap-2"
+		class="group flex items-center gap-2 whitespace-nowrap"
 		data-component="breadcrumb-item"
 		:data-current="current || null"
 		data-test="breadcrumb-item"

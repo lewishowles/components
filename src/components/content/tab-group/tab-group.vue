@@ -7,10 +7,11 @@
 		<div
 			ref="tabBarReference"
 			class="border-border mb-8 border-b"
-			:class="{ 'wrap-tabs': wrap }"
+			:class="tabBarClasses"
 			data-part="nav"
 		>
 			<ol
+				ref="tabListReference"
 				class="-mb-px flex items-end"
 				v-bind="{
 					class: { 'overflow-x-auto': !wrap, 'flex-wrap': wrap },
@@ -54,10 +55,10 @@
 
 <script setup>
 import { clamp } from "@lewishowles/helpers/number";
-import { computed, nextTick, onMounted, provide, ref, useId, useSlots, watch } from "vue";
+import { computed, nextTick, provide, ref, useId, useSlots, watch } from "vue";
 import { getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { onKeyStroke, useFocusWithin } from "@vueuse/core";
+import { onKeyStroke, useFocusWithin, useResizeObserver, useScroll } from "@vueuse/core";
 import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
@@ -93,14 +94,12 @@ const props = defineProps({
 });
 
 const slots = useSlots();
-
 // Whether a label slot has been provided.
 const haveLabel = computed(() => isNonEmptySlot(slots.label));
 // A stable ID for this tab group instance, used to construct the label's aria-labelledby reference.
 const tabGroupId = useId();
 // Stable ID for the label slot content, used for aria-labelledby.
 const labelId = computed(() => (haveLabel.value ? `tab-group-label-${tabGroupId}` : undefined));
-
 // The list of available tabs, as registered by `tab-item` components.
 const tabData = ref([]);
 
@@ -121,12 +120,30 @@ const tabs = computed(() => {
 
 // The list of available tabs, as registered by `tab-item` components.
 const tabAnchors = ref([]);
+// A reference to the scrolling tab list used to calculate the indicators.
+const tabListReference = ref(null);
 // A reference to our tab bar, containing the tabs within it. This allows us to
 // check if any of those tabs currently have focus.
 const tabBarReference = ref(null);
 // Whether one of our tabs has focus. If so, we allow keyboard navigation of the
 // tabs.
 const { focused: tabHasFocus } = useFocusWithin(tabBarReference);
+
+const { arrivedState, measure } = useScroll(tabListReference, { observe: true });
+
+useResizeObserver(tabListReference, () => measure());
+
+// Classes that expose the current hidden-content indicators.
+const scrollIndicatorClasses = computed(() => ({
+	"show-left": !arrivedState.left,
+	"show-right": !arrivedState.right,
+}));
+
+// Classes for the tab bar layout and its scroll indicators.
+const tabBarClasses = computed(() => ({
+	"wrap-tabs": props.wrap,
+	...scrollIndicatorClasses.value,
+}));
 
 // The IDs of the current tabs, allowing us to easily check for a tab's
 // existence.
@@ -217,12 +234,6 @@ onKeyStroke(["Enter", " "], (event) => {
 	setActiveTabByIndex(focusedTabIndex.value);
 });
 
-// When mounting, apply a little Javascript to our tabs to conditionally show
-// the overflow indicators.
-onMounted(() => {
-	setUpScrollIndicators();
-});
-
 /**
  * Register an individual tab with the group.
  *
@@ -245,7 +256,7 @@ function registerTab(tab) {
 	// Ensure we have an active tab.
 	ensureActiveTab();
 	// Ensure we update our indicators to accommodate this new tab.
-	updateIndicators();
+	measure();
 }
 
 /**
@@ -377,46 +388,5 @@ function isValidTabId(tabId) {
  */
 function isActiveTab(tabId) {
 	return tabId === activeTabId.value;
-}
-
-/**
- * Set up scroll indicators and monitor for changes in both the scroll position
- * and the window size.
- */
-async function setUpScrollIndicators() {
-	const nav = tabBarReference.value;
-
-	if (!nav) {
-		return;
-	}
-
-	const ol = nav.querySelector("ol");
-
-	ol.addEventListener("scroll", updateIndicators);
-
-	window.addEventListener("resize", updateIndicators);
-
-	await nextTick();
-
-	updateIndicators();
-}
-
-/**
- * Update current scroll indicators.
- */
-function updateIndicators() {
-	const nav = tabBarReference.value;
-
-	if (!nav) {
-		return;
-	}
-
-	const ol = nav.querySelector("ol");
-
-	const scrollLeft = ol.scrollLeft;
-	const maxScroll = ol.scrollWidth - ol.clientWidth;
-
-	nav.classList.toggle("show-left", scrollLeft > 0);
-	nav.classList.toggle("show-right", scrollLeft < maxScroll);
 }
 </script>
