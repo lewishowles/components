@@ -35,11 +35,11 @@
 </template>
 
 <script setup>
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { cn } from "@/utilities/cn.js";
 import { computed, nextTick, ref, toRef, useAttrs, useTemplateRef, watch } from "vue";
-import { callComponentMethod } from "@lewishowles/helpers/vue";
+import { onClickOutside, useMediaQuery } from "@vueuse/core";
 import { useFloatingPosition } from "@/composables";
-import { useMediaQuery } from "@vueuse/core";
 
 import OverlaySheet from "@/components/messaging/overlay-sheet/overlay-sheet.vue";
 
@@ -126,37 +126,58 @@ const {
 	initialAlign: toRef(props, "align"),
 });
 
-// The final class list for the details panel, merging various sources.
+// The wide-viewport panel's class list. Only read when !isNarrow (see
+// summaryDetailsProps); narrow mode presents through overlay-sheet instead.
 const resolvedDetailsClasses = computed(() =>
 	cn(
 		"w-screen rounded-md border p-4 shadow",
 		"border-border bg-surface-elevated backdrop-blur-lg",
 		"max-w-[calc(100vw-1rem)] lg:max-w-lg",
-		!isNarrow.value && placementClasses.value,
-		{ invisible: !isNarrow.value && isPositioning.value },
+		computedPlacement.value === "above"
+			? "absolute bottom-full animate-fade-in-up"
+			: "absolute top-full animate-fade-in-down",
+		computedAlign.value === "start" ? "inset-s-0" : "inset-e-0",
+		"mt-0",
+		placementClasses.value,
+		{ invisible: isPositioning.value },
 		props.detailsClasses,
 	),
 );
 
-// The summary and panel props forwarded to summary-details, including the
-// narrow-only Escape hand-off to the native dialog.
-const summaryDetailsProps = computed(() => {
-	const forwarded = {
-		...attrs,
-		align: computedAlign.value,
-		closeWithClickOutside: !isNarrow.value && props.closeWithClickOutside,
-		closeWithEscape: !isNarrow.value && props.closeWithEscape,
-		floating: !isNarrow.value,
-		placement: computedPlacement.value,
-		summaryClasses: props.summaryClasses,
-	};
+// The summary and panel props forwarded to summary-details.
+const summaryDetailsProps = computed(() => ({
+	...attrs,
+	class: [
+		attrs.class,
+		!isNarrow.value && !hasAbsoluteOrRelative(attrs.class) && "relative",
+		!isNarrow.value && isOpen.value && "z-50",
+	],
+	closeWithEscape: !isNarrow.value && props.closeWithEscape,
+	detailsClasses: isNarrow.value ? "mt-0" : resolvedDetailsClasses.value,
+	summaryClasses: props.summaryClasses,
+}));
 
-	if (!isNarrow.value) {
-		forwarded.detailsClasses = resolvedDetailsClasses.value;
-	}
+onClickOutside(
+	contentElementRef,
+	() => {
+		if (!isNarrow.value && isOpen.value && props.closeWithClickOutside) {
+			closeFloatingPanel();
+		}
+	},
+	{ ignore: [summaryElementRef] },
+);
 
-	return forwarded;
-});
+/**
+ * Whether classValue already sets an absolute or relative position.
+ *
+ * @param  {unknown}  classValue
+ *     The root element's classes.
+ * @returns  {boolean}
+ *     Whether absolute or relative is present.
+ */
+function hasAbsoluteOrRelative(classValue) {
+	return typeof classValue === "string" && /\b(absolute|relative)\b/.test(classValue);
+}
 
 /**
  * Open the details element and let the presentation watcher activate the
@@ -185,6 +206,14 @@ function handleDismiss() {
 	closeDetails();
 
 	summaryElementRef.value?.focus?.();
+}
+
+/**
+ * Close the floating panel.
+ */
+function closeFloatingPanel() {
+	isOpen.value = false;
+	closeDetails();
 }
 
 /**

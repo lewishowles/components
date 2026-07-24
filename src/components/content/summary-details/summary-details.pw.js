@@ -34,15 +34,6 @@ test.describe("summary-details", () => {
 			await page.getByTestId("summary-details-summary").click();
 			await expect(page.getByTestId("summary-details")).not.toHaveAttribute("open");
 		});
-
-		test("details can float", async ({ mount, page }) => {
-			await mountSummaryDetails(mount, { floating: true });
-
-			await page.getByTestId("summary-details-summary").click();
-
-			await expect(page.getByTestId("summary-details-content")).toBeVisible();
-			await expect(page.getByTestId("summary-details-content")).toHaveClass(/absolute/);
-		});
 	});
 
 	test.describe("icons", () => {
@@ -124,55 +115,6 @@ test.describe("summary-details", () => {
 				await page.keyboard.press("Escape");
 
 				await expect(page.getByTestId("summary-details")).toHaveAttribute("open");
-			});
-		});
-
-		test.describe("closeWithClickOutside", () => {
-			test("clicking outside closes the panel", async ({ mount, page }) => {
-				await mountSummaryDetails(mount, { closeWithClickOutside: true });
-
-				await page.evaluate(() => {
-					const element = document.createElement("div");
-
-					element.setAttribute("data-test", "click-target");
-					element.textContent = "Click target";
-					document.body.appendChild(element);
-				});
-
-				await page.getByTestId("summary-details-summary").click();
-				await expect(page.getByTestId("summary-details")).toHaveAttribute("open");
-
-				await page.getByTestId("click-target").click();
-				await expect(page.getByTestId("summary-details")).not.toHaveAttribute("open");
-
-				await page.evaluate(() => {
-					document.querySelector("[data-test='click-target']")?.remove();
-				});
-			});
-
-			test("when closeWithClickOutside is false, clicking outside does not close the panel", async ({
-				mount,
-				page,
-			}) => {
-				await mountSummaryDetails(mount, { closeWithClickOutside: false });
-
-				await page.evaluate(() => {
-					const element = document.createElement("div");
-
-					element.setAttribute("data-test", "click-target");
-					element.textContent = "Click target";
-					document.body.appendChild(element);
-				});
-
-				await page.getByTestId("summary-details-summary").click();
-				await expect(page.getByTestId("summary-details")).toHaveAttribute("open");
-
-				await page.getByTestId("click-target").click();
-				await expect(page.getByTestId("summary-details")).toHaveAttribute("open");
-
-				await page.evaluate(() => {
-					document.querySelector("[data-test='click-target']")?.remove();
-				});
 			});
 		});
 	});

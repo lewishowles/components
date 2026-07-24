@@ -2,14 +2,12 @@
 	<details
 		ref="detailsElement"
 		v-bind="{ 'data-test': dataTest, 'data-state': isOpen ? 'open' : 'closed' }"
-		:class="floatingClasses"
 		data-component="summary-details"
 		@toggle="updateState"
 	>
 		<summary
 			ref="summaryElement"
-			class="inline-flex cursor-pointer list-none items-center gap-2"
-			:class="summaryClasses"
+			:class="cn('inline-flex cursor-pointer items-center gap-2', summaryClasses)"
 			v-bind="{ 'data-test': `${dataTest}-summary` }"
 			data-part="summary"
 		>
@@ -43,11 +41,7 @@
 
 		<div
 			ref="contentElement"
-			:class="[
-				floatingPositionClasses,
-				{ 'inset-s-0': alignStart, 'inset-e-0': !alignStart },
-				detailsClasses,
-			]"
+			:class="cn('mt-3', detailsClasses)"
 			v-bind="{
 				hidden: isOpen ? undefined : 'until-found',
 				role: contentRole,
@@ -74,12 +68,13 @@
 /**
  * Provides an implementation of the `details` element with optional extras,
  * such as custom icons, and allows a simple way of having content that can be
- * toggled. Suitable for items such as FAQs or even dropdown menus.
+ * toggled. Suitable for items such as FAQs. Use `floating-details` when the
+ * toggled content needs to appear as a floating panel, such as a dropdown menu.
  */
 import { cn } from "@/utilities/cn.js";
-import { computed, nextTick, onMounted, ref, useAttrs, useTemplateRef, watch } from "vue";
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
+import { onKeyStroke, useFocusWithin } from "@vueuse/core";
 import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
 
 const props = defineProps({
@@ -98,15 +93,6 @@ const props = defineProps({
 	closeWithEscape: {
 		type: Boolean,
 		default: true,
-	},
-
-	/**
-	 * Whether to close the details element when clicking outside of the
-	 * component. This is best combined with `floating` for menus.
-	 */
-	closeWithClickOutside: {
-		type: Boolean,
-		default: false,
 	},
 
 	/**
@@ -162,35 +148,6 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether the details should float when opened, perfect for drop down
-	 * menus.
-	 */
-	floating: {
-		type: Boolean,
-		default: false,
-	},
-
-	/**
-	 * When floating, whether to align to the dropdown to the start or end of
-	 * the summary. This is useful for menus that open to the end of the screen,
-	 * for example. Anything but "start" will be treated as "end".
-	 */
-	align: {
-		type: String,
-		default: "start",
-	},
-
-	/**
-	 * Whether to open above or below the trigger. Use "above" for triggers near
-	 * the bottom of the viewport, such as a footer user menu. Anything but
-	 * "above" will be treated as "below".
-	 */
-	placement: {
-		type: String,
-		default: "below",
-	},
-
-	/**
 	 * Any classes to add to the summary element, allowing styling to wrap both
 	 * the summary and icons.
 	 */
@@ -204,7 +161,7 @@ const props = defineProps({
 	 */
 	detailsClasses: {
 		type: [String, Array, Object],
-		default: "mt-3",
+		default: null,
 	},
 
 	/**
@@ -248,8 +205,6 @@ const props = defineProps({
 
 const emit = defineEmits(["open", "close"]);
 
-const attrs = useAttrs();
-
 // Whether the details are currently open.
 const isOpen = defineModel({
 	type: Boolean,
@@ -292,44 +247,6 @@ const currentIcon = computed(() => {
 // The resolved component for the current icon.
 const currentIconComponent = computed(() => resolveIconComponent(currentIcon.value));
 
-// Whether to align a floating dropdown to the start of the summary.
-const alignStart = computed(() => props.align === "start");
-
-// Position and entrance animation classes for the floating content panel.
-const floatingPositionClasses = computed(() => {
-	if (!props.floating) {
-		return null;
-	}
-
-	if (props.placement === "above") {
-		return "absolute bottom-full animate-fade-in-up";
-	}
-
-	return "absolute top-full animate-fade-in-down";
-});
-
-// Classes to apply to the details element when floating is enabled. For this,
-// we check whether the user has provided their own "absolute" class - such as
-// if they want to position the menu. If so, we don't need to apply the
-// "relative" class that would otherwise be necessary.
-const floatingClasses = computed(() => {
-	if (!props.floating) {
-		return null;
-	}
-
-	const classes = attrs.class ? attrs.class.split(" ") : [];
-
-	if (!classes.includes("absolute") && !classes.includes("relative")) {
-		classes.push("relative");
-	}
-
-	if (isOpen.value) {
-		classes.push("z-50");
-	}
-
-	return classes;
-});
-
 /**
  * When mounting, sync up our desired initial state with the details element
  * itself.
@@ -363,14 +280,6 @@ onKeyStroke("Escape", (event) => {
 
 	if (hasFocus.value) {
 		summaryElement.value?.focus();
-	}
-
-	closeDetails();
-});
-
-onClickOutside(detailsElement, () => {
-	if (!isOpen.value || !props.closeWithClickOutside) {
-		return;
 	}
 
 	closeDetails();

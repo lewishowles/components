@@ -7,7 +7,9 @@
 				Provides an implementation of the
 				<code>details</code>
 				element with optional extras, such as custom icons, and allows a simple way of having
-				content that can be toggled. Suitable for items such as FAQs or even dropdown menus.
+				content that can be toggled. Suitable for items such as FAQs. Use
+				<code>floating-details</code>
+				when the toggled content needs to appear as a floating panel, such as a dropdown menu.
 			</p>
 
 			<p>
@@ -73,21 +75,6 @@
 				<p>
 					Whether to close the details element when pressing escape. If focus is within this
 					component, focus is moved to the summary element.
-				</p>
-			</component-prop>
-
-			<component-prop id="prop-close-with-click-outside">
-				<template #name>closeWithClickOutside</template>
-
-				<template #type>Boolean</template>
-
-				<template #default-value>false</template>
-
-				<p>
-					Whether to close the details element when clicking outside of the component. This is best
-					combined with
-					<code>floating</code>
-					for menus.
 				</p>
 			</component-prop>
 

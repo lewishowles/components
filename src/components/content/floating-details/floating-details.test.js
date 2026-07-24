@@ -14,6 +14,18 @@ import FloatingDetails from "./floating-details.vue";
 const mount = createMount(FloatingDetails);
 const mountDeep = createDeepMount(FloatingDetails);
 
+const mountWithRawSummaryDetails = createMount(FloatingDetails, {
+	global: {
+		stubs: {
+			SummaryDetails: {
+				name: "SummaryDetails",
+				inheritAttrs: false,
+				template: "<div />",
+			},
+		},
+	},
+});
+
 globalThis.__floatingDetailsIsNarrow = isNarrow;
 
 describe("floating-details", () => {
@@ -47,12 +59,7 @@ describe("floating-details", () => {
 			isNarrow.value = true;
 			await nextTick();
 
-			const detailsClasses = summaryDetails.props("detailsClasses");
-
-			expect(detailsClasses).not.toContain("w-screen");
-			expect(detailsClasses).not.toContain("border");
-			expect(detailsClasses).not.toContain("shadow");
-			expect(detailsClasses).not.toContain("backdrop-blur-lg");
+			expect(summaryDetails.props("detailsClasses")).toBe("mt-0");
 		});
 
 		test("removes the positioning visibility class when crossing to narrow while open", async () => {
@@ -66,11 +73,30 @@ describe("floating-details", () => {
 			isNarrow.value = true;
 			await nextTick();
 
-			expect(summaryDetails.props("detailsClasses")).not.toContain("invisible");
+			expect(summaryDetails.props("detailsClasses")).toBe("mt-0");
 		});
 
-		test("does not enable desktop floating dismissal behaviour", async () => {
+		test("forwards only the disclosure props needed by summary-details", async () => {
+			const wrapper = mountWithRawSummaryDetails({ props: { align: "end" } });
+			const summaryDetails = wrapper.findComponent({ name: "SummaryDetails" });
+
+			for (const narrow of [true, false]) {
+				isNarrow.value = narrow;
+				await nextTick();
+
+				const forwardedProps = summaryDetails.vm.$attrs;
+
+				expect(forwardedProps).not.toHaveProperty("floating");
+				expect(forwardedProps).not.toHaveProperty("align");
+				expect(forwardedProps).not.toHaveProperty("placement");
+				expect(forwardedProps).not.toHaveProperty("closeWithClickOutside");
+				expect(forwardedProps).toHaveProperty("closeWithEscape", !narrow);
+			}
+		});
+
+		test("does not close on outside click in narrow mode", async () => {
 			const wrapper = mountDeep({
+				props: { closeWithClickOutside: true },
 				slots: {
 					default: "Details content",
 					summary: "Summary",
@@ -79,14 +105,38 @@ describe("floating-details", () => {
 
 			isNarrow.value = true;
 			await nextTick();
-
 			await wrapper.find('[data-test="floating-details-summary"]').trigger("click");
 			await nextTick();
 
-			const summaryDetails = wrapper.findComponent({ name: "SummaryDetails" });
+			const outside = document.createElement("button");
 
-			expect(summaryDetails.props("closeWithClickOutside")).toBe(false);
-			expect(summaryDetails.props("floating")).toBe(false);
+			document.body.append(outside);
+			outside.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+			await nextTick();
+
+			expect(wrapper.find("details").element.open).toBe(true);
+
+			outside.remove();
+		});
+
+		test("does not close on Escape in narrow mode when sheet Escape is disabled", async () => {
+			const wrapper = mountDeep({
+				props: { closeWithEscape: false },
+				slots: {
+					default: "Details content",
+					summary: "Summary",
+				},
+			});
+
+			isNarrow.value = true;
+			await nextTick();
+			await wrapper.find('[data-test="floating-details-summary"]').trigger("click");
+			await nextTick();
+
+			window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+			await nextTick();
+
+			expect(wrapper.find("details").element.open).toBe(true);
 		});
 
 		test("forwards the narrow sheet close label", async () => {
@@ -188,6 +238,108 @@ describe("floating-details", () => {
 			summaryDetails.vm.$emit("open");
 
 			expect(wrapper.vm.isPositioning).toBe(true);
+		});
+
+		test("cancels summary-details' default margin below the trigger", async () => {
+			const wrapper = mountDeep({
+				slots: { default: "Details content", summary: "Summary" },
+			});
+
+			await wrapper.find('[data-test="floating-details-summary"]').trigger("click");
+			await nextTick();
+
+			const contentClasses = wrapper.find('[data-test="floating-details-content"]').classes();
+
+			expect(contentClasses).toContain("mt-3");
+			expect(contentClasses).not.toContain("mt-0");
+			expect(contentClasses).not.toContain("mb-3");
+		});
+
+		test("cancels summary-details' default margin above the trigger", async () => {
+			const wrapper = mountDeep({
+				props: { placement: "above" },
+				slots: { default: "Details content", summary: "Summary" },
+			});
+
+			await wrapper.find('[data-test="floating-details-summary"]').trigger("click");
+			await nextTick();
+
+			const contentClasses = wrapper.find('[data-test="floating-details-content"]').classes();
+
+			expect(contentClasses).toContain("mb-3");
+			expect(contentClasses).toContain("mt-0");
+			expect(contentClasses).not.toContain("mt-3");
+		});
+
+		test("closes on outside pointerdown without moving focus", async () => {
+			const wrapper = mountDeep({
+				slots: {
+					default: "Details content",
+					summary: "Summary",
+				},
+			});
+
+			const summary = wrapper.find('[data-test="floating-details-summary"]');
+
+			await summary.trigger("click");
+			await nextTick();
+
+			const outside = document.createElement("button");
+
+			document.body.append(outside);
+			outside.focus();
+			outside.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+			outside.click();
+			await nextTick();
+
+			expect(wrapper.find("details").element.open).toBe(false);
+			expect(outside).toBe(document.activeElement);
+
+			outside.remove();
+		});
+
+		test("ignores pointerdown on the summary element", async () => {
+			const wrapper = mountDeep({
+				slots: {
+					default: "Details content",
+					summary: "Summary",
+				},
+			});
+
+			const summary = wrapper.find('[data-test="floating-details-summary"]');
+
+			await summary.trigger("click");
+			await nextTick();
+			summary.element.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+			await nextTick();
+
+			expect(wrapper.find("details").element.open).toBe(true);
+		});
+
+		test("does not close on outside pointerdown when closeWithClickOutside is false", async () => {
+			const wrapper = mountDeep({
+				props: { closeWithClickOutside: false },
+				slots: {
+					default: "Details content",
+					summary: "Summary",
+				},
+			});
+
+			const summary = wrapper.find('[data-test="floating-details-summary"]');
+
+			await summary.trigger("click");
+			await nextTick();
+
+			const outside = document.createElement("button");
+
+			document.body.append(outside);
+			outside.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+			outside.click();
+			await nextTick();
+
+			expect(wrapper.find("details").element.open).toBe(true);
+
+			outside.remove();
 		});
 	});
 });

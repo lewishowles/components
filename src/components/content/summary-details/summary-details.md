@@ -1,6 +1,6 @@
 # `summary-details`
 
-Provides an implementation of the `details` element with optional extras, such as custom icons, and allows a simple way of having content that can be toggled. Suitable for items such as FAQs or even dropdown menus.
+Provides an implementation of the `details` element with optional extras, such as custom icons, and allows a simple way of having content that can be toggled. Suitable for items such as FAQs. Use `floating-details` when the toggled content needs to appear as a floating panel, such as a dropdown menu.
 
 When closed, the content is hidden using `hidden="until-found"`, making it discoverable by find-in-page searches. When the user finds text within a closed `summary-details`, the component is automatically kept in sync.
 
@@ -60,13 +60,6 @@ Whether to announce concise, non-interactive information immediately when opened
 
 Whether to close the details element when pressing escape. If focus is within this component, focus is moved to the summary element.
 
-### `closeWithClickOutside`
-
-- type: `boolean`
-- default: `false`
-
-Whether to close the details element when clicking outside of the component. This is best combined with `floating` for menus.
-
 ### `iconOpen`
 
 - type: `string`
@@ -108,20 +101,6 @@ Whether to include a summary icon at all. This allows more flexibility with the 
 - default: `false`
 
 Whether to only include a summary icon, hiding any provided text. When used, text should still be provided to assist screen reader users.
-
-### `floating`
-
-- type: `boolean`
-- default: `false`
-
-Whether the details should float when opened, perfect for drop down menus.
-
-### `align`
-
-- type: `string`
-- default: `start`
-
-When floating, whether to align to the dropdown to the start or end of the summary. This is useful for menus that open to the end of the screen, for example. Anything but "start" will be treated as "end".
 
 ### `summaryClasses`
 

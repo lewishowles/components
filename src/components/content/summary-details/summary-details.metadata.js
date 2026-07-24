@@ -2,7 +2,7 @@
 export const summaryDetailsMetadata = {
 	name: "summary-details",
 	category: "content",
-	summary: "A disclosure component with optional floating panel behaviour.",
+	summary: "A disclosure component built on the native details element.",
 	props: [
 		{ name: "open", type: "boolean", default: false, summary: "Open the details content." },
 		{
@@ -22,12 +22,6 @@ export const summaryDetailsMetadata = {
 			type: "boolean",
 			default: true,
 			summary: "Close when Escape is pressed.",
-		},
-		{
-			name: "closeWithClickOutside",
-			type: "boolean",
-			default: true,
-			summary: "Close when users click outside the content.",
 		},
 		{ name: "iconOpen", type: "string", default: null, summary: "Icon used while open." },
 		{ name: "iconClosed", type: "string", default: null, summary: "Icon used while closed." },
@@ -49,20 +43,6 @@ export const summaryDetailsMetadata = {
 			type: "boolean",
 			default: false,
 			summary: "Visually hide summary text and show only the icon.",
-		},
-		{
-			name: "floating",
-			type: "boolean",
-			default: false,
-			summary: "Render content as a floating panel.",
-		},
-		{ name: "align", type: "string", default: "left", summary: "Floating panel alignment." },
-		{
-			name: "placement",
-			type: "string",
-			default: "below",
-			values: ["below", "above"],
-			summary: "Whether the floating panel appears above or below the summary control.",
 		},
 		{
 			name: "summaryClasses",
