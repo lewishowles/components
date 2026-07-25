@@ -4,6 +4,10 @@
 
 When it comes to whether to format data before passing it to the table, versus formatting it using cell templates, the latter is recommended. If the data is passed to the table in a more raw form, it may be easier for a table to be sortable out of the box (for example, with integers versus formatted currency strings). You then have ultimate control over formatting for each cell, in a way that's more flexible than passing pre-formatted data through.
 
+## Server mode
+
+Set `mode="server"` and bind `v-model:state` when the data comes from a server. The consumer owns fetching and adapting the raw response into the current page of table rows. The state model contains `page`, `itemsPerPage`, `sort`, and `filters`, while `totalRows`, `loading`, and `error` describe the current request. The table does not fetch, filter, sort, or slice server data locally. When selection is enabled, each raw row needs a stable value at the `rowKey` path so selected rows can be restored across page windows.
+
 ## Slots
 
 ### `table-title`
@@ -60,6 +64,16 @@ A screen-reader-only hint rendered inside the caption area, announcing which col
 - default: "No data to display."
 
 The message to display when no data could be found for the table.
+
+### `loading-label`
+
+- default: "Loading data"
+
+The accessible label shown while server data is loading.
+
+### `error`
+
+The content shown when server data fails to load. The `error` slot receives the current `error` value.
 
 ### `no-results-message`
 
@@ -264,6 +278,44 @@ Any additional configuration for columns. **Note:** Any column without configura
 
 Each heading and cell has a default `min-w-32`, preventing cells from getting too small and allowing a narrow table to scroll. This can be overridden with `columnClasses` (the heading and cells), `headingClasses`, or `cellClasses`.
 
+### `mode`
+
+- type: `"client" | "server"`
+- default: `"client"`
+
+Use `"client"` for the default local filtering, sorting, and pagination. Use `"server"` when `data` contains only the already-adapted current page and the consumer controls requests through `v-model:state`.
+
+### `state`
+
+- type: `object`
+
+The controlled server state, required in server mode. It contains `page`, `itemsPerPage`, `sort` (`{ column, direction }` or `null`), and a `filters` object. `itemsPerPage` controls pagination counts and range labels. Fetching remains the consumer's responsibility.
+
+### `totalRows`
+
+- type: `number`
+
+The total number of rows available from the server. Required in server mode and used for counts and pagination.
+
+### `loading`
+
+- type: `boolean`
+
+Whether server data is loading. Required in server mode.
+
+### `error`
+
+- type: `string | Error | null`
+
+The current server loading error, or `null` when there is no error. Required in server mode.
+
+### `rowKey`
+
+- type: `string`
+- default: `"id"`
+
+The raw row property used as the stable identity for selection across server pages. Dotted paths are supported. Every selectable server row needs a non-null value at this path.
+
 ### `name`
 
 - type: `string`
@@ -362,4 +414,95 @@ Set the table's current search query, overriding any current search. This could 
 		</span>
 	</template>
 </data-table>
+```
+
+### Server-fetched rows
+
+The consumer adapts the raw response before passing the current page to `data`. This example keeps request construction, response mapping, and the fetch lifecycle outside the table.
+
+```vue
+<script setup>
+import { isNumber } from "@lewishowles/helpers/number";
+import { isObject } from "@lewishowles/helpers/object";
+import { ref, watch } from "vue";
+
+const columns = {
+	name: { label: "Name", primary: true },
+	email: { label: "Email" },
+};
+
+const data = ref([]);
+const totalRows = ref(0);
+const loading = ref(false);
+const error = ref(null);
+
+const state = ref({
+	page: 1,
+	itemsPerPage: 10,
+	sort: null,
+	filters: { search: "" },
+});
+
+async function fetchUsers(currentState, signal) {
+	loading.value = true;
+	error.value = null;
+
+	try {
+		const params = new URLSearchParams({
+			page: String(currentState.page),
+			itemsPerPage: String(currentState.itemsPerPage),
+			search: String(currentState.filters.search ?? ""),
+			sortColumn: currentState.sort?.column ?? "",
+			sortDirection: currentState.sort?.direction ?? "",
+		});
+
+		const response = await fetch(`/api/users?${params}`, { signal });
+
+		if (!response.ok) {
+			throw new Error("Unable to load users.");
+		}
+
+		const result = await response.json();
+
+		if (!isObject(result) || !Array.isArray(result.items) || !isNumber(result.total)) {
+			throw new Error("The server returned invalid user data.");
+		}
+
+		data.value = result.items.map(({ id, name, email }) => ({
+			id,
+			name,
+			email,
+		}));
+
+		totalRows.value = result.total;
+	} catch (requestError) {
+		if (!signal.aborted) {
+			error.value = requestError;
+		}
+	} finally {
+		if (!signal.aborted) {
+			loading.value = false;
+		}
+	}
+}
+
+watch(
+	state,
+	async (currentState, _previousState, onCleanup) => {
+		const controller = new AbortController();
+
+		onCleanup(() => controller.abort());
+		await fetchUsers(currentState, controller.signal);
+	},
+	{ immediate: true, deep: true },
+);
+</script>
+
+<template>
+	<data-table
+		mode="server"
+		v-model:state="state"
+		v-bind="{ data, columns, totalRows, loading, error }"
+	/>
+</template>
 ```

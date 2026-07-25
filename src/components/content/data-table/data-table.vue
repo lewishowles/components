@@ -5,11 +5,11 @@
 				type: statusType,
 				sortColumn: getColumnLabel(sortedColumn),
 				ascending: isAscending,
-				resultCount: filteredRows.length,
+				resultCount: rowCount,
 				query: searchQuery,
 				selectedCount: selectedRowCount,
 				totalCount: rowCount,
-				allSelected: areAllRowsSelected,
+				allSelected: allAvailableRowsSelected,
 			}"
 		>
 			<template #sort-status="binding">
@@ -33,11 +33,19 @@
 		</data-table-header>
 
 		<div class="text-sm">
-			<alert-message v-if="!haveData" data-test="data-table-no-data">
+			<loading-indicator v-if="isLoading" large data-test="data-table-loading">
+				<slot name="loading-label">Loading data</slot>
+			</loading-indicator>
+
+			<alert-message v-else-if="haveError" type="error" data-test="data-table-error">
+				<slot name="error" v-bind="{ error: props.error }">{{ errorMessage }}</slot>
+			</alert-message>
+
+			<alert-message v-else-if="!haveData" data-test="data-table-no-data">
 				<slot name="no-data-message">No data to display.</slot>
 			</alert-message>
 
-			<div v-if="haveData" class="flex flex-col gap-6">
+			<div v-else class="flex flex-col gap-6">
 				<data-table-toolbar
 					ref="dataTableToolbar"
 					v-bind="{ enableSearch, tableDensityOptions }"
@@ -255,6 +263,7 @@
 						selectedCount: selectedRowCount,
 						enablePagination,
 						haveDataToDisplay,
+						itemsPerPage,
 						totalCount: rowCount,
 						searchQuery,
 					}"
@@ -287,6 +296,7 @@ import { computed, provide, ref, toRef, useId, useSlots, watch, watchEffect } fr
 import { getRawRow, getRowContent, getRowId } from "./utilities/row.js";
 import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { getPathValue } from "@lewishowles/helpers/object";
 import { useResizeObserver } from "@vueuse/core";
 
 import DataTableFooter from "./fragments/data-table-footer/data-table-footer.vue";
@@ -322,6 +332,14 @@ const props = defineProps({
 	columns: {
 		type: Object,
 		default: () => ({}),
+	},
+
+	/**
+	 * Whether the table manages data locally or reports state for server data.
+	 */
+	mode: {
+		type: String,
+		default: "client",
 	},
 
 	/**
@@ -361,6 +379,38 @@ const props = defineProps({
 	enablePagination: {
 		type: Boolean,
 		default: true,
+	},
+
+	/**
+	 * The raw row property path used as a stable identity for server selection.
+	 */
+	rowKey: {
+		type: String,
+		default: "id",
+	},
+
+	/**
+	 * The total number of rows available from the server in server mode.
+	 */
+	totalRows: {
+		type: Number,
+		default: undefined,
+	},
+
+	/**
+	 * Whether server data is currently being loaded.
+	 */
+	loading: {
+		type: Boolean,
+		default: undefined,
+	},
+
+	/**
+	 * The server data loading error, if one occurred.
+	 */
+	error: {
+		type: [String, Error],
+		default: undefined,
 	},
 
 	/**
@@ -418,12 +468,46 @@ const props = defineProps({
 	},
 });
 
+// The single controlled server state model.
+const state = defineModel("state", {
+	type: Object,
+});
+
 // The currently selected rows, if selection is enabled.
 const selection = defineModel({
 	type: Array,
 });
 
 const slots = useSlots();
+// Whether the table delegates data management to the consumer.
+const isServerMode = computed(() => props.mode === "server");
+
+// Whether a controlled server search is active.
+const haveServerSearchQuery = computed(
+	() => isServerMode.value && isNonEmptyString(state.value?.filters?.search),
+);
+
+// Whether server data is currently loading.
+const isLoading = computed(() => isServerMode.value && props.loading === true);
+
+// Whether server data failed to load.
+const haveError = computed(
+	() => isServerMode.value && (isNonEmptyString(props.error) || props.error instanceof Error),
+);
+
+// The message shown when a server error has no usable message.
+const errorMessage = computed(() => {
+	if (props.error instanceof Error && isNonEmptyString(props.error.message)) {
+		return props.error.message;
+	}
+
+	if (isNonEmptyString(props.error)) {
+		return props.error;
+	}
+
+	return "Unable to load data.";
+});
+
 // A reference to the toolbar, allowing us to focus its search input when needed.
 const dataTableToolbar = ref(null);
 // Whether a name has been provided for this table.
@@ -461,9 +545,40 @@ watchEffect(() => {
 	);
 });
 
+watchEffect(() => {
+	if (!import.meta.env.DEV || !isServerMode.value) {
+		return;
+	}
+
+	if (props.totalRows === undefined || props.loading === undefined || props.error === undefined) {
+		console.warn("[data-table] Server mode requires `totalRows`, `loading`, and `error` props.");
+	}
+
+	if (
+		props.enableSelection &&
+		props.data.some((row) => getPathValue(row, props.rowKey, null) === null)
+	) {
+		console.warn(
+			`[data-table] Selectable server rows need a stable value at \`rowKey\` path "${props.rowKey}".`,
+		);
+	}
+});
+
 // Table data: the provided data, transformed into the internal shape the table
 // works with, and whether any valid data is present.
-const { haveData, internalData } = useTableData(toRef(props, "data"), toRef(props, "columns"));
+const { haveData: haveLocalData, internalData } = useTableData(
+	toRef(props, "data"),
+	toRef(props, "columns"),
+);
+
+// Whether to show the table controls and result presentation.
+const haveData = computed(() => {
+	if (isServerMode.value) {
+		return (props.totalRows ?? 0) > 0 || haveServerSearchQuery.value;
+	}
+
+	return haveLocalData.value;
+});
 
 // Columns: the derived column definitions, which are visible, the table
 // density, and the helpers that merge classes and read labels.
@@ -490,6 +605,7 @@ const {
 const { filteredRows, haveSearchQuery, searchQuery } = useTableSearch(
 	internalData,
 	toRef(props, "columns"),
+	{ isServerMode, state },
 );
 
 // Column sorting: the sort state, the sorted rows, and the sort-control helpers.
@@ -501,7 +617,7 @@ const {
 	sortDirection,
 	sortedColumn,
 	sortedRows,
-} = useTableSort(filteredRows, columnDefinitions);
+} = useTableSort(filteredRows, columnDefinitions, { isServerMode, state });
 
 /**
  * The default screen-reader instruction for a column's sort button, describing
@@ -539,14 +655,27 @@ const {
 	selectedRowCount,
 	selectedRowIds,
 	toggleAllRows,
-} = useTableSelection(internalData, filteredRows, selection, toRef(props, "enableSelection"));
+} = useTableSelection(internalData, filteredRows, selection, toRef(props, "enableSelection"), {
+	isServerMode,
+	rowKey: toRef(props, "rowKey"),
+});
 
 // Pagination: the current page, the rows shown for that page, and the total
 // row count.
-const { currentPage, paginatedRows, rowCount } = useTablePagination(
+const { currentPage, itemsPerPage, paginatedRows, rowCount } = useTablePagination(
 	{ filteredRows, sortedRows, sortedColumn, sortDirection },
 	toRef(props, "enablePagination"),
+	{ isServerMode, state, totalRows: toRef(props, "totalRows") },
 );
+
+// Whether the selection includes every row represented by the table total.
+const allAvailableRowsSelected = computed(() => {
+	if (!isServerMode.value) {
+		return areAllRowsSelected.value;
+	}
+
+	return rowCount.value > 0 && selectedRowCount.value === rowCount.value;
+});
 
 // Trigger a sort announcement when the sorted column or direction changes.
 watch([sortedColumn, sortDirection], () => {

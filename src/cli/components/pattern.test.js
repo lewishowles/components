@@ -101,7 +101,16 @@ describe("patterns", () => {
 	test("contains the consolidated pattern roster", () => {
 		const names = patterns.map((pattern) => pattern.name);
 
-		expect(names).toEqual(["data-table-example", "form-example"]);
+		expect(names).toEqual(["data-table-example", "data-table-server-example", "form-example"]);
+	});
+
+	test("server data table example handles stale requests and validates responses", () => {
+		const pattern = patterns.find(({ name }) => name === "data-table-server-example");
+
+		expect(pattern.template).toContain("new AbortController()");
+		expect(pattern.template).toContain("onCleanup(() => controller.abort())");
+		expect(pattern.template).toContain("{ signal }");
+		expect(pattern.template).toContain("isObject(result)");
 	});
 });
 

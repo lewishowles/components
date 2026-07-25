@@ -1,4 +1,7 @@
 import DataTable from "./data-table.vue";
+import DataTableFooter from "./fragments/data-table-footer/data-table-footer.vue";
+import DataTableStatus from "./fragments/data-table-status/data-table-status.vue";
+import DataTableToolbar from "./fragments/data-table-toolbar/data-table-toolbar.vue";
 import { createMount } from "@lewishowles/testing/vue";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import { getPathValue } from "@lewishowles/helpers/object";
@@ -91,6 +94,204 @@ describe("data-table", () => {
 			expect(warning).toHaveBeenCalledWith(
 				"[data-table] An overflowing table needs a caption or `overflowLabel` to label its scroll region.",
 			);
+		});
+	});
+
+	describe("Server mode", () => {
+		test("warns when required server props are missing", () => {
+			const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+			mount({ mode: "server" });
+
+			expect(warning).toHaveBeenCalledWith(
+				"[data-table] Server mode requires `totalRows`, `loading`, and `error` props.",
+			);
+		});
+
+		test("renders the supplied page without applying local search, sort, or pagination", async () => {
+			const firstRow = { id: "a", title: "Zulu" };
+			const secondRow = { id: "b", title: "Alpha" };
+
+			const wrapper = mount({
+				columns: { title: { label: "Title" } },
+				data: [firstRow, secondRow],
+				error: null,
+				loading: false,
+				mode: "server",
+				state: {
+					page: 1,
+					itemsPerPage: 10,
+					sort: null,
+					filters: { search: "" },
+				},
+				totalRows: 25,
+			});
+
+			const vm = wrapper.vm;
+
+			vm.searchQuery = "Alpha";
+			vm.sortColumn("title");
+
+			await nextTick();
+
+			expect(vm.filteredRows.map((row) => row.raw)).toEqual([firstRow, secondRow]);
+			expect(vm.sortedRows.map((row) => row.raw)).toEqual([firstRow, secondRow]);
+			expect(vm.paginatedRows.map((row) => row.raw)).toEqual([firstRow, secondRow]);
+			expect(vm.rowCount).toBe(25);
+
+			const stateUpdates = wrapper.emitted("update:state").map(([nextState]) => nextState);
+
+			expect(stateUpdates).toEqual(
+				expect.arrayContaining([
+					expect.objectContaining({ filters: { search: "Alpha" }, page: 1 }),
+					expect.objectContaining({ sort: { column: "title", direction: "ascending" } }),
+				]),
+			);
+		});
+
+		test("keeps search controls available when a server search has no results", () => {
+			const wrapper = mount({
+				columns: { title: { label: "Title" } },
+				data: [],
+				error: null,
+				loading: false,
+				mode: "server",
+				state: {
+					page: 1,
+					itemsPerPage: 10,
+					sort: null,
+					filters: { search: "Missing" },
+				},
+				totalRows: 0,
+			});
+
+			expect(wrapper.findComponent(DataTableToolbar).exists()).toBe(true);
+			expect(wrapper.findComponent(DataTableFooter).props("haveDataToDisplay")).toBe(false);
+		});
+
+		test("passes the controlled server page size to the footer", () => {
+			const wrapper = mount({
+				data: [sampleRow],
+				error: null,
+				loading: false,
+				mode: "server",
+				state: {
+					page: 1,
+					itemsPerPage: 25,
+					sort: null,
+					filters: {},
+				},
+				totalRows: 100,
+			});
+
+			expect(wrapper.findComponent(DataTableFooter).props("itemsPerPage")).toBe(25);
+		});
+
+		test("reports page-scoped selection against the full server total", async () => {
+			const wrapper = mount({
+				columns: { title: { label: "Title" } },
+				data: [
+					{ id: "a", title: "Alpha" },
+					{ id: "b", title: "Beta" },
+				],
+				enableSelection: true,
+				error: null,
+				loading: false,
+				mode: "server",
+				state: {
+					page: 1,
+					itemsPerPage: 10,
+					sort: null,
+					filters: {},
+				},
+				totalRows: 20,
+			});
+
+			wrapper.vm.selectAllRows = true;
+			wrapper.vm.toggleAllRows();
+			await nextTick();
+
+			expect(wrapper.findComponent(DataTableStatus).props()).toMatchObject({
+				allSelected: false,
+				selectedCount: 2,
+				totalCount: 20,
+			});
+		});
+
+		test("warns when selectable server rows do not contain the configured row key", () => {
+			const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+			mount({
+				columns: { title: { label: "Title" } },
+				data: [{ uuid: "a", title: "Alpha" }],
+				enableSelection: true,
+				error: null,
+				loading: false,
+				mode: "server",
+				state: {
+					page: 1,
+					itemsPerPage: 10,
+					sort: null,
+					filters: {},
+				},
+				totalRows: 1,
+			});
+
+			expect(warning).toHaveBeenCalledWith(
+				'[data-table] Selectable server rows need a stable value at `rowKey` path "id".',
+			);
+		});
+
+		test("preserves selected raw rows when the server page changes", async () => {
+			const firstRow = { id: "a", title: "Alpha" };
+			const secondRow = { id: "b", title: "Beta" };
+
+			const wrapper = mount({
+				columns: { title: { label: "Title" } },
+				data: [firstRow],
+				enableSelection: true,
+				error: null,
+				loading: false,
+				mode: "server",
+				state: {
+					page: 1,
+					itemsPerPage: 10,
+					sort: null,
+					filters: {},
+				},
+				totalRows: 20,
+			});
+
+			const vm = wrapper.vm;
+
+			vm.selectedRowIds = [vm.internalData[0].configuration.id];
+			await nextTick();
+			await wrapper.setProps({ data: [secondRow] });
+			await nextTick();
+
+			expect(wrapper.emitted("update:modelValue").at(-1)[0]).toEqual([firstRow]);
+			expect(vm.selectedRowCount).toBe(1);
+		});
+
+		test("reports server pagination changes through state", async () => {
+			const wrapper = mount({
+				data: [sampleRow],
+				error: null,
+				loading: false,
+				mode: "server",
+				state: {
+					page: 1,
+					itemsPerPage: 10,
+					sort: null,
+					filters: {},
+				},
+				totalRows: 25,
+			});
+
+			wrapper.vm.currentPage = 2;
+			await nextTick();
+
+			expect(wrapper.emitted("update:state").at(-1)[0]).toMatchObject({ page: 2 });
 		});
 	});
 

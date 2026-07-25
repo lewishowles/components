@@ -31,6 +31,12 @@ describe("data-table-footer", () => {
 	});
 
 	describe("Render contracts", () => {
+		test("should pass the configured page size to pagination", () => {
+			const wrapper = mount({ itemsPerPage: 25, totalCount: 100 });
+
+			expect(wrapper.getComponent({ name: "app-pagination" }).props("itemsPerPage")).toBe(25);
+		});
+
 		test("should allow the no-results message to be customised", () => {
 			const wrapper = deepMount({
 				props: { haveDataToDisplay: false },

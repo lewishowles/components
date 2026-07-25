@@ -2,7 +2,8 @@
 export const dataTableMetadata = {
 	name: "data-table",
 	category: "content",
-	summary: "A configurable data table with search, sort, selection, and pagination support.",
+	summary:
+		"A configurable data table with client-side or manually controlled server-side search, sort, selection, and pagination support.",
 	props: [
 		{
 			name: "data",
@@ -15,6 +16,20 @@ export const dataTableMetadata = {
 			type: "array | object",
 			default: null,
 			summary: "Column configuration.",
+		},
+		{
+			name: "mode",
+			type: "string",
+			default: "client",
+			values: ["client", "server"],
+			summary: "Choose local data handling or consumer-controlled server data.",
+		},
+		{
+			name: "state",
+			type: "object",
+			default: undefined,
+			summary:
+				"The controlled server state containing page, itemsPerPage, sort, and filters when mode is server.",
 		},
 		{
 			name: "name",
@@ -40,6 +55,12 @@ export const dataTableMetadata = {
 			type: "boolean",
 			default: false,
 			summary: "Enable row selection controls.",
+		},
+		{
+			name: "rowKey",
+			type: "string",
+			default: "id",
+			summary: "Raw row property used as the stable identity for server selection.",
 		},
 		{
 			name: "searchPlaceholder",
@@ -78,6 +99,24 @@ export const dataTableMetadata = {
 			default: true,
 			summary: "Enable pagination controls below the table.",
 		},
+		{
+			name: "totalRows",
+			type: "number",
+			default: undefined,
+			summary: "The total number of server rows when mode is server.",
+		},
+		{
+			name: "loading",
+			type: "boolean",
+			default: undefined,
+			summary: "Show the server loading state when mode is server.",
+		},
+		{
+			name: "error",
+			type: "string | Error | null",
+			default: undefined,
+			summary: "Show a server loading error when mode is server.",
+		},
 	],
 	slots: [
 		{ name: "table-title", summary: "Table title content." },
@@ -90,6 +129,8 @@ export const dataTableMetadata = {
 		{ name: "sorted-hint", summary: "Screen-reader hint for the current sort state." },
 		{ name: "no-data-message", summary: "Message shown when no data is available." },
 		{ name: "no-results-message", summary: "Message shown when search has no results." },
+		{ name: "loading-label", summary: "Accessible label shown while server data loads." },
+		{ name: "error", summary: "Server loading error content." },
 		{ name: "<columnName>_heading", summary: "Custom heading for a column." },
 		{ name: "<columnName>", summary: "Custom cell renderer for a column." },
 		{ name: "select-all-rows-label", summary: "Label for selecting all rows." },

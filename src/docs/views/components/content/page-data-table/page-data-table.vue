@@ -16,6 +16,28 @@
 				integers versus formatted currency strings). You then have ultimate control over formatting
 				for each cell, in a way that's more flexible than passing pre-formatted data through.
 			</p>
+			<p>
+				For server-fetched data, use
+				<code>mode="server"</code>
+				with one
+				<code>v-model:state</code>
+				ref. Watch that state to run a plain
+				<code>fetch</code>
+				, adapt the raw response into the current page, and pass the related
+				<code>data</code>
+				,
+				<code>columns</code>
+				,
+				<code>totalRows</code>
+				,
+				<code>loading</code>
+				, and
+				<code>error</code>
+				values together. The table does not build requests or translate API responses. When
+				selection is enabled, each raw row needs a stable value at the
+				<code>rowKey</code>
+				path.
+			</p>
 		</template>
 
 		<component-props>
@@ -185,6 +207,86 @@
 						</tr>
 					</tbody>
 				</table>
+			</component-prop>
+
+			<component-prop id="prop-mode">
+				<template #name>mode</template>
+
+				<template #type>"client" | "server"</template>
+
+				<template #default-value>"client"</template>
+
+				<p>
+					Use
+					<code>"client"</code>
+					for local filtering, sorting, and pagination, or
+					<code>"server"</code>
+					when the consumer supplies the current page and controls requests through
+					<code>v-model:state</code>
+					.
+				</p>
+			</component-prop>
+
+			<component-prop id="prop-state">
+				<template #name>state</template>
+
+				<template #type>Object</template>
+
+				<p>
+					The controlled server state containing
+					<code>page</code>
+					,
+					<code>itemsPerPage</code>
+					,
+					<code>sort</code>
+					, and
+					<code>filters</code>
+					.
+					<code>itemsPerPage</code>
+					controls pagination counts and range labels. Fetching remains the consumer's
+					responsibility.
+				</p>
+			</component-prop>
+
+			<component-prop id="prop-total-rows">
+				<template #name>totalRows</template>
+
+				<template #type>Number</template>
+
+				<p>The total number of rows available from the server. Required in server mode.</p>
+			</component-prop>
+
+			<component-prop id="prop-loading">
+				<template #name>loading</template>
+
+				<template #type>Boolean</template>
+
+				<p>Whether server data is loading. Required in server mode.</p>
+			</component-prop>
+
+			<component-prop id="prop-error">
+				<template #name>error</template>
+
+				<template #type>String | Error | null</template>
+
+				<p>
+					The current server loading error, or
+					<code>null</code>
+					when there is no error.
+				</p>
+			</component-prop>
+
+			<component-prop id="prop-row-key">
+				<template #name>rowKey</template>
+
+				<template #type>String</template>
+
+				<template #default-value>"id"</template>
+
+				<p>
+					The raw row property used as the stable identity for selection across server pages. Dotted
+					paths are supported. Every selectable server row needs a non-null value at this path.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-name">
@@ -373,6 +475,37 @@
 				<template #default-value>"No data to display."</template>
 
 				<p>The message to display when no data could be found for the table.</p>
+			</component-slot>
+
+			<component-slot id="slot-loading-label">
+				<template #name>loading-label</template>
+
+				<template #default-value>"Loading data"</template>
+
+				<p>The accessible label shown while server data is loading.</p>
+			</component-slot>
+
+			<component-slot id="slot-error">
+				<template #name>error</template>
+
+				<p>The content shown when server data fails to load.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Slot prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>error</code></td>
+							<td><code>string | Error | null</code></td>
+							<td>The current server loading error.</td>
+						</tr>
+					</tbody>
+				</table>
 			</component-slot>
 
 			<component-slot id="slot-no-results-message">
@@ -876,6 +1009,21 @@
 			</component-styling-hook>
 		</component-styling-hooks>
 
+		<component-tab v-bind="{ id: 'tab-examples', icon: 'icon-code' }">
+			<template #title>Examples</template>
+
+			<h3 class="text-content-strong mt-8 mb-4 text-lg font-bold">Server-controlled data</h3>
+
+			<p class="mb-4">
+				The application fetches and adapts each page of rows. The table reports search, sort, and
+				pagination changes through
+				<code>state</code>
+				without transforming the supplied rows.
+			</p>
+
+			<code-block v-bind="{ code: serverDataTableSource }" />
+		</component-tab>
+
 		<component-playgrounds>
 			<playground-data-table />
 		</component-playgrounds>
@@ -883,5 +1031,6 @@
 </template>
 
 <script setup>
+import serverDataTableSource from "./examples/server-data-table.vue?raw";
 import PlaygroundDataTable from "./fragments/playground-data-table.vue";
 </script>

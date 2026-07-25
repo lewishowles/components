@@ -53,6 +53,10 @@ openModal(DeleteAccountConfirm, {
 });
 ```
 
+### `data-table` server mode
+
+Adds a new `mode="server"`, displaying one page of results at a time, and providing state to allow the data to be re-queried when the user changes page, sort, or search.
+
 ### `confirm-dialog`
 
 A new `modal-dialog` built for confirm/cancel decisions, such as destructive actions.

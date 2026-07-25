@@ -9,7 +9,7 @@
 		v-if="enablePagination"
 		v-show="haveDataToDisplay"
 		v-model="currentPage"
-		v-bind="{ count: totalCount }"
+		v-bind="{ count: totalCount, itemsPerPage }"
 		data-test="data-table-pagination"
 	>
 		<template #page-number-label="{ page }">
@@ -71,6 +71,14 @@ defineProps({
 	haveDataToDisplay: {
 		type: Boolean,
 		default: false,
+	},
+
+	/**
+	 * The number of rows represented by each page.
+	 */
+	itemsPerPage: {
+		type: Number,
+		default: 10,
 	},
 
 	/**

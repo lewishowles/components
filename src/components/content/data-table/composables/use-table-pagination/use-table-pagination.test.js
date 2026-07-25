@@ -7,7 +7,7 @@ describe("useTablePagination", () => {
 		test("Returns the expected shape", () => {
 			const instance = createComposable();
 
-			for (const key of ["currentPage", "paginatedRows", "rowCount"]) {
+			for (const key of ["currentPage", "itemsPerPage", "paginatedRows", "rowCount"]) {
 				expect(instance).toHaveProperty(key);
 			}
 		});
@@ -22,6 +22,18 @@ describe("useTablePagination", () => {
 			const { rowCount } = createComposable({ rows: createRows(25) });
 
 			expect(rowCount.value).toBe(25);
+		});
+
+		test("uses the controlled server page size", () => {
+			const { itemsPerPage } = createComposable({
+				serverMode: true,
+				state: {
+					page: 1,
+					itemsPerPage: 25,
+				},
+			});
+
+			expect(itemsPerPage.value).toBe(25);
 		});
 	});
 
@@ -100,13 +112,19 @@ function createRows(count) {
  *     The rows to paginate.
  * @param  {boolean}  options.enabled
  *     Whether pagination is enabled.
+ * @param  {boolean}  options.serverMode
+ *     Whether the table is externally controlled.
+ * @param  {object|null}  options.state
+ *     The controlled table state.
  */
-function createComposable({ rows = [], enabled = true } = {}) {
+function createComposable({ rows = [], enabled = true, serverMode = false, state = null } = {}) {
 	const filteredRows = ref(rows);
 	const sortedRows = ref(rows);
 	const sortedColumn = ref(null);
 	const sortDirection = ref("ascending");
 	const enablePagination = ref(enabled);
+	const isServerMode = ref(serverMode);
+	const tableState = ref(state);
 
 	return {
 		filteredRows,
@@ -117,6 +135,7 @@ function createComposable({ rows = [], enabled = true } = {}) {
 		...useTablePagination(
 			{ filteredRows, sortedRows, sortedColumn, sortDirection },
 			enablePagination,
+			{ isServerMode, state: tableState },
 		),
 	};
 }

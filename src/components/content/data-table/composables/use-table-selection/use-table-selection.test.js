@@ -157,6 +157,32 @@ describe("useTableSelection", () => {
 
 			expect(selection.value).toEqual([]);
 		});
+
+		test("Restores server selection through the configured raw row key", async () => {
+			const firstRow = createRow("internal-a", { name: "Alice", uuid: "a" });
+			const secondRow = createRow("internal-b", { name: "Bob", uuid: "b" });
+			const returnedFirstRow = createRow("returned-a", { name: "Alice", uuid: "a" });
+
+			const { filteredRows, internalData, selectedRowIds, selection } = createComposable({
+				rowKey: "uuid",
+				rows: [firstRow],
+				serverMode: true,
+			});
+
+			selectedRowIds.value = ["internal-a"];
+			await nextTick();
+
+			internalData.value = [secondRow];
+			filteredRows.value = [secondRow];
+			await nextTick();
+
+			internalData.value = [returnedFirstRow];
+			filteredRows.value = [returnedFirstRow];
+			await nextTick();
+
+			expect(selectedRowIds.value).toEqual(["returned-a"]);
+			expect(selection.value).toEqual([{ name: "Alice", uuid: "a" }]);
+		});
 	});
 });
 
@@ -185,18 +211,33 @@ function createRow(id, raw = { id }) {
  *     The full internal data, when it differs from the filtered rows.
  * @param  {boolean}  options.enabled
  *     Whether selection is enabled.
+ * @param  {string}  options.rowKey
+ *     The raw row property used as the stable server identity.
+ * @param  {boolean}  options.serverMode
+ *     Whether server selection behaviour is active.
  */
-function createComposable({ rows = [], data = rows, enabled = true } = {}) {
+function createComposable({
+	rows = [],
+	data = rows,
+	enabled = true,
+	rowKey = "id",
+	serverMode = false,
+} = {}) {
 	const internalData = ref(data);
 	const filteredRows = ref(rows);
 	const selection = ref([]);
 	const enableSelection = ref(enabled);
+	const isServerMode = ref(serverMode);
+	const rowKeyRef = ref(rowKey);
 
 	return {
 		internalData,
 		filteredRows,
 		selection,
 		enableSelection,
-		...useTableSelection(internalData, filteredRows, selection, enableSelection),
+		...useTableSelection(internalData, filteredRows, selection, enableSelection, {
+			isServerMode,
+			rowKey: rowKeyRef,
+		}),
 	};
 }

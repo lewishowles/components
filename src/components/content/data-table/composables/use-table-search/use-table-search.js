@@ -1,4 +1,4 @@
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isFunction } from "@lewishowles/helpers/general";
 import { getPathValue, isNonEmptyObject } from "@lewishowles/helpers/object";
@@ -14,15 +14,26 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
  * @param  {object}  columns
  *     A ref of the column configuration, used to honour per-column search rules.
  */
-export default function useTableSearch(internalData, columns) {
+export default function useTableSearch(internalData, columns, options = {}) {
+	const { isServerMode = ref(false), state = ref(null) } = options;
+
 	// The current search query, as provided by the search sub-component.
-	const searchQuery = ref("");
+	const searchQuery = ref(
+		isServerMode.value && isNonEmptyString(state.value?.filters?.search)
+			? state.value.filters.search
+			: "",
+	);
+
 	// Whether we have a search term, and thus whether the user is currently
 	// searching.
 	const haveSearchQuery = computed(() => isNonEmptyString(searchQuery.value));
 
 	// Our internal data, filtered to those rows matching any current search term.
 	const filteredRows = computed(() => {
+		if (isServerMode.value) {
+			return internalData.value;
+		}
+
 		if (!isNonEmptyArray(internalData.value)) {
 			return [];
 		}
@@ -80,6 +91,42 @@ export default function useTableSearch(internalData, columns) {
 			return rows;
 		}, []);
 	});
+
+	// Keep the server filter state in the single controlled state model.
+	watch(searchQuery, (value) => {
+		if (!isServerMode.value) {
+			return;
+		}
+
+		const currentState = state.value ?? {};
+		const currentFilters = currentState.filters ?? {};
+
+		if (currentState.page === 1 && currentFilters.search === value) {
+			return;
+		}
+
+		state.value = {
+			...currentState,
+			filters: { ...currentFilters, search: value },
+			page: 1,
+		};
+	});
+
+	// Reflect externally controlled server filters in the search input.
+	watch(
+		() => state.value?.filters?.search,
+		(value) => {
+			if (!isServerMode.value) {
+				return;
+			}
+
+			const nextQuery = isNonEmptyString(value) ? value : "";
+
+			if (nextQuery !== searchQuery.value) {
+				searchQuery.value = nextQuery;
+			}
+		},
+	);
 
 	return {
 		filteredRows,

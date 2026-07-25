@@ -4,6 +4,7 @@ import { createMount } from "@lewishowles/testing/playwright";
 import DataTable from "./data-table.vue";
 import DataTableSearchCallbackFixture from "./data-table-search-callback.fixture.vue";
 import DataTableSearchableContentFixture from "./data-table-searchable-content.fixture.vue";
+import DataTableServerFixture from "./data-table-server.fixture.vue";
 import DataTableShowingItemsFixture from "./data-table-showing-items.fixture.vue";
 import DataTableSortableContentFixture from "./data-table-sortable-content.fixture.vue";
 import DataTableToolbarFixture from "./data-table-toolbar.fixture.vue";
@@ -127,6 +128,80 @@ test.describe("data-table", () => {
 	});
 
 	test.describe("rendering", () => {
+		test("shows loading content while server data is pending", async ({ mount, page }) => {
+			await mountDataTableRaw(mount, {
+				props: {
+					columns,
+					data,
+					error: null,
+					loading: true,
+					mode: "server",
+					totalRows: data.length,
+				},
+				slots: { "loading-label": "Loading movies" },
+			});
+
+			await expect(page.getByTestId("data-table-loading")).toContainText("Loading movies");
+			await expect(page.getByTestId("data-table-table")).not.toBeAttached();
+		});
+
+		test("shows a server error and hides the table content", async ({ mount, page }) => {
+			await mountDataTableRaw(mount, {
+				props: {
+					columns,
+					data,
+					error: "Request failed",
+					loading: false,
+					mode: "server",
+					totalRows: data.length,
+				},
+				slots: { error: "Could not load movies." },
+			});
+
+			await expect(page.getByTestId("data-table-error")).toContainText("Could not load movies.");
+			await expect(page.getByTestId("data-table-table")).not.toBeAttached();
+		});
+
+		test("reports search and sort changes without transforming supplied rows", async ({
+			mount,
+			page,
+		}) => {
+			await mount(DataTableServerFixture);
+
+			await expect(page.getByTestId("app-pagination-showing-items-label")).toHaveText(
+				"Showing 1–2 of 20 items",
+			);
+
+			await sortByColumn(page, "Title");
+			await expect(heading(page, 0)).toHaveAttribute("aria-sort", "ascending");
+			await expect(rowCell(page, 0, 0)).toHaveText("Zulu");
+
+			await searchInput(page).fill("Alpha");
+			await expect(page.getByTestId("data-table-row")).toHaveCount(2);
+			await expect(page.getByTestId("data-table-server-state")).toContainText('"search":"Alpha"');
+		});
+
+		test("keeps server search controls available when no rows match", async ({ mount, page }) => {
+			await mountDataTableRaw(mount, {
+				props: {
+					data: [],
+					mode: "server",
+					state: {
+						page: 1,
+						itemsPerPage: 10,
+						sort: null,
+						filters: {
+							search: "Missing",
+						},
+					},
+					totalRows: 0,
+				},
+			});
+
+			await expect(searchInput(page)).toHaveValue("Missing");
+			await expect(page.getByTestId("data-table-no-results")).toBeVisible();
+		});
+
 		test("a caption labels the overflow region and keeps horizontal scrolling inside it", async ({
 			mount,
 			page,
@@ -708,6 +783,31 @@ test.describe("data-table", () => {
 	});
 
 	test.describe("selection", () => {
+		test("preserves selected rows across pages while keeping select-all page-scoped", async ({
+			mount,
+			page,
+		}) => {
+			await mount(DataTableServerFixture);
+
+			await rowCheckbox(page, 0).click();
+			await expect(page.getByTestId("data-table-footer-selection")).toContainText(
+				"1 rows selected",
+			);
+
+			await selectPage(page, 2);
+			await selectAll(page).click();
+			await expect(rowCheckbox(page, 0)).toBeChecked();
+			await expect(rowCheckbox(page, 1)).toBeChecked();
+			await expect(page.getByTestId("data-table-status")).toHaveText("3 of 20 rows selected");
+
+			await selectPage(page, 1);
+			await expect(rowCheckbox(page, 0)).toBeChecked();
+			await expect(rowCheckbox(page, 1)).not.toBeChecked();
+			await expect(page.getByTestId("data-table-footer-selection")).toContainText(
+				"3 rows selected",
+			);
+		});
+
 		test("columns cannot be selected by default", async ({ mount, page }) => {
 			await mountDataTable(mount);
 
