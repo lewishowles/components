@@ -20,7 +20,8 @@ export const dataTableMetadata = {
 			name: "name",
 			type: "string",
 			default: "items",
-			summary: "Human-readable name used in labels and status text.",
+			summary:
+				"A name for the table so it can remember column visibility and density choices between visits.",
 		},
 		{
 			name: "enableSearch",
@@ -45,6 +46,13 @@ export const dataTableMetadata = {
 			type: "string",
 			default: null,
 			summary: "Placeholder text for the table search input.",
+		},
+		{
+			name: "overflowLabel",
+			type: "string",
+			default: null,
+			summary:
+				"Provide a short phrase describing what the table shows, for example `Recent orders` or `Team members`, so screen reader users can identify the scrollable region when the table has no visible caption.",
 		},
 		{
 			name: "headingClasses",

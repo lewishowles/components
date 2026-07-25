@@ -1,4 +1,4 @@
-import { computed, ref, watch } from "vue";
+import { computed, ref, toValue, watch } from "vue";
 import { cn } from "@/utilities/cn.js";
 import { getPathValue, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
@@ -10,12 +10,12 @@ import { useStorage } from "@vueuse/core";
  * user's configuration, which columns are visible, and the table density.
  *
  * @param  {object}  options
- *     The reactive inputs.
+ *     The inputs used to build the table.
  * @param  {object}  options.columns
  *     A ref of the user's column configuration.
- * @param  {string}  options.name
- *     The table's name, used to persist column visibility. Without a name,
- *     visibility is not persisted.
+ * @param  {string|Ref<string>|Function}  options.name
+ *     The table's name as a plain value, ref, or getter. It identifies where
+ *     column visibility is stored. Without a name, visibility is not stored.
  * @param  {object}  options.haveData
  *     A ref reflecting whether the table has any data.
  * @param  {object}  options.headingClasses
@@ -31,15 +31,27 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 	// having to know what those available densities are from this component.
 	const tableDensityOptions = ref([]);
 
-	// The stored user-selected column visibility for this table.
-	const userColumnVisibility = isNonEmptyString(name)
-		? useStorage(`data-table:${name}:columns`, {})
-		: ref({});
-
 	// Our user-selected column visibility.
 	const columnVisibility = ref({});
 
-	initialiseColumnVisibility();
+	// The user's stored column-visibility preference for the current table. Each
+	// useStorage ref is tied to one key, so a name change creates a new one and
+	// this variable must hold whichever one is in use.
+	let userColumnVisibility = ref({});
+
+	// Switch to the matching stored column-visibility preference whenever the
+	// table name changes.
+	watch(
+		() => toValue(name),
+		(currentName) => {
+			userColumnVisibility = isNonEmptyString(currentName)
+				? useStorage(`data-table:${currentName}:columns`, {})
+				: ref({});
+
+			initialiseColumnVisibility();
+		},
+		{ immediate: true },
+	);
 
 	// Our table spacing, based on our current density.
 	const tableSpacingClasses = computed(() => {
@@ -121,7 +133,7 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 		}, {});
 	});
 
-	// Persist column visibility when users change the table configuration.
+	// Store column visibility when users change the table configuration.
 	watch(
 		columnVisibility,
 		() => {

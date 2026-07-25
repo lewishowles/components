@@ -80,10 +80,13 @@
 				<div
 					ref="tableScrollWrapper"
 					class="overflow-x-auto"
-					:tabindex="isOverflowing ? 0 : -1"
-					:role="isOverflowing ? 'region' : null"
-					:aria-labelledby="isOverflowing && haveCaption ? captionId : null"
-					:aria-label="isOverflowing && !haveCaption ? 'Table' : null"
+					v-bind="{
+						tabindex: isOverflowing ? 0 : -1,
+						role: isOverflowing && (haveCaption || haveOverflowLabel) ? 'region' : null,
+						'aria-labelledby': isOverflowing && haveCaption ? captionId : null,
+						'aria-label':
+							isOverflowing && !haveCaption && haveOverflowLabel ? props.overflowLabel : null,
+					}"
 				>
 					<table v-show="haveDataToDisplay" class="w-full" data-test="data-table-table">
 						<caption
@@ -280,7 +283,7 @@
 
 <script setup>
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
-import { computed, provide, ref, toRef, useId, useSlots, watch } from "vue";
+import { computed, provide, ref, toRef, useId, useSlots, watch, watchEffect } from "vue";
 import { getRawRow, getRowContent, getRowId } from "./utilities/row.js";
 import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
@@ -379,6 +382,16 @@ const props = defineProps({
 	},
 
 	/**
+	 * A short phrase describing what the table shows, for example "Recent orders"
+	 * or "Team members", so screen reader users can identify the scrollable
+	 * region when the table has no visible caption.
+	 */
+	overflowLabel: {
+		type: String,
+		default: null,
+	},
+
+	/**
 	 * The heading level to use for any introduction to this table.
 	 */
 	headingLevel: {
@@ -417,6 +430,8 @@ const dataTableToolbar = ref(null);
 const haveTableName = computed(() => isNonEmptyString(props.name));
 // Whether this table includes a caption.
 const haveCaption = computed(() => isNonEmptySlot(slots.caption));
+// Whether an explicit label is available for an overflowing table.
+const haveOverflowLabel = computed(() => isNonEmptyString(props.overflowLabel));
 // Which type of announcement is currently active in the status live region.
 const statusType = ref(null);
 // A reference to the scrollable wrapper around the table, used to detect overflow.
@@ -429,6 +444,21 @@ const captionId = useId();
 useResizeObserver(tableScrollWrapper, () => {
 	isOverflowing.value =
 		tableScrollWrapper.value?.scrollWidth > tableScrollWrapper.value?.clientWidth;
+});
+
+watchEffect(() => {
+	if (
+		!import.meta.env.DEV ||
+		!isOverflowing.value ||
+		haveCaption.value ||
+		haveOverflowLabel.value
+	) {
+		return;
+	}
+
+	console.warn(
+		"[data-table] An overflowing table needs a caption or `overflowLabel` to label its scroll region.",
+	);
 });
 
 // Table data: the provided data, transformed into the internal shape the table
@@ -449,7 +479,7 @@ const {
 	visibleColumnDefinitions,
 } = useTableColumns({
 	columns: toRef(props, "columns"),
-	name: props.name,
+	name: toRef(props, "name"),
 	haveData,
 	headingClasses: toRef(props, "headingClasses"),
 	cellClasses: toRef(props, "cellClasses"),
@@ -552,7 +582,7 @@ watch(selectedRowCount, () => {
  *     The search query to set.
  */
 function setSearchQuery(value) {
-	if (!isNonEmptyString(value)) {
+	if (typeof value !== "string") {
 		return;
 	}
 
@@ -563,10 +593,10 @@ function setSearchQuery(value) {
 
 provide("data-table", {
 	columnDefinitions,
-	headingLevel: props.headingLevel,
+	headingLevel: toRef(props, "headingLevel"),
 	haveTableName,
-	searchPlaceholder: ref(props.searchPlaceholder),
-	tableName: ref(props.name),
+	searchPlaceholder: toRef(props, "searchPlaceholder"),
+	tableName: toRef(props, "name"),
 	updateTableDensityOptions,
 });
 

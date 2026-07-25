@@ -16,7 +16,7 @@ Any introduction to display with this table.
 
 ### `caption`
 
-An optional visible caption to display above the table. When the table overflows its container, this caption is also used to label the scrollable region for assistive technology.
+An optional visible caption to display above the table. When the table overflows its container, this caption is also used to label the scrollable region for assistive technology. If no caption is provided, use `overflowLabel` to label the scrollable region.
 
 ### `search-label`
 
@@ -298,6 +298,13 @@ Whether to enable selection. When enabled, a new column is added to the start of
 - default: `null`
 
 The placeholder to apply to the search input.
+
+### `overflowLabel`
+
+- type: `string`
+- default: `null`
+
+Provide a short phrase describing what the table shows, for example `Recent orders` or `Team members`, so screen reader users can identify the scrollable region when the table has no visible caption. The caption takes precedence when both are provided.
 
 ### `headingLevel`
 

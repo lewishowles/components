@@ -94,6 +94,77 @@ describe("data-table-density", () => {
 					"compact",
 				);
 			});
+
+			test("should switch to the new table's stored density when the name changes", async () => {
+				const tableName = ref("old-table");
+
+				localStorage.getItem.mockImplementation((key) => {
+					if (key === "data-table:new-table:density") {
+						return "compact";
+					}
+
+					return null;
+				});
+
+				const wrapper = mount({
+					global: {
+						provide: {
+							"data-table": {
+								tableName,
+								haveTableName: ref(true),
+								updateTableDensityOptions: vi.fn(),
+							},
+						},
+					},
+				});
+
+				localStorage.setItem.mockClear();
+				tableName.value = "new-table";
+
+				await nextTick();
+
+				expect(wrapper.emitted("update:modelValue").at(-1)).toEqual(["compact"]);
+
+				wrapper.vm.setTableDensity("standard");
+
+				await nextTick();
+
+				expect(localStorage.setItem).toHaveBeenCalledWith(
+					"data-table:new-table:density",
+					"standard",
+				);
+				expect(localStorage.setItem.mock.calls).not.toContainEqual([
+					"data-table:old-table:density",
+					"standard",
+				]);
+			});
+
+			test("should start storing density once a table name becomes available", async () => {
+				const tableName = ref(null);
+
+				const wrapper = mount({
+					global: {
+						provide: {
+							"data-table": {
+								tableName,
+								haveTableName: ref(false),
+								updateTableDensityOptions: vi.fn(),
+							},
+						},
+					},
+				});
+
+				tableName.value = "new-table";
+				await nextTick();
+
+				wrapper.vm.setTableDensity("compact");
+				await nextTick();
+
+				expect(localStorage.setItem).toHaveBeenCalledWith(
+					"data-table:new-table:density",
+					"compact",
+				);
+			});
 		});
 	});
 });

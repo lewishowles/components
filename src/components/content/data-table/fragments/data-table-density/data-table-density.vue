@@ -20,22 +20,39 @@
 </template>
 
 <script setup>
-import { inject, ref } from "vue";
+import { inject, ref, toValue, watch } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { useStorage } from "@vueuse/core";
-
-const { tableName, haveTableName, updateTableDensityOptions } = inject("data-table", {});
-
-// The user selected density. We know we will have a table name because this
-// component isn't activated without it, but we check it just in case.
-const userDensity =
-	haveTableName.value && useStorage(`data-table:${tableName.value}:density`, "relaxed");
 
 // Our user-selected table density.
 const tableDensity = defineModel({
 	type: String,
 });
+
+const { tableName: providedTableName, updateTableDensityOptions } = inject("data-table", {});
+
+// The user's stored density preference for the current table. Each useStorage
+// ref is tied to one key, so a name change creates a new one and this variable
+// must hold whichever one is in use.
+let userDensity = ref("relaxed");
+
+// Switch to the matching stored density preference whenever the table name
+// changes.
+watch(
+	() => toValue(providedTableName),
+	(currentName) => {
+		if (!isNonEmptyString(currentName)) {
+			userDensity = ref("relaxed");
+
+			return;
+		}
+
+		userDensity = useStorage(`data-table:${currentName}:density`, "relaxed");
+		tableDensity.value = userDensity.value;
+	},
+	{ immediate: true },
+);
 
 // Available table densities.
 const tableDensityOptions = ref([
@@ -48,12 +65,6 @@ const tableDensityOptions = ref([
 // appropriate slots available for users.
 if (isFunction(updateTableDensityOptions)) {
 	updateTableDensityOptions(tableDensityOptions.value.map((density) => density.value));
-}
-
-// Initialise our model value for table density based on our determined initial
-// value.
-if (haveTableName.value) {
-	tableDensity.value = userDensity.value;
 }
 
 /**

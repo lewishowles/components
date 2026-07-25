@@ -127,7 +127,7 @@ test.describe("data-table", () => {
 	});
 
 	test.describe("rendering", () => {
-		test("keeps wrapped-prone content on one line and scrolls the table", async ({
+		test("a caption labels the overflow region and keeps horizontal scrolling inside it", async ({
 			mount,
 			page,
 		}) => {
@@ -140,11 +140,12 @@ test.describe("data-table", () => {
 					},
 					enableSearch: false,
 				},
+				slots: { caption: "Device table" },
 			});
 
 			await setTableWidth(page, "12rem");
 
-			const scrollRegion = page.getByRole("region", { name: "Table" });
+			const scrollRegion = page.getByRole("region", { name: "Device table" });
 
 			await expect(scrollRegion).toBeVisible();
 
@@ -162,6 +163,58 @@ test.describe("data-table", () => {
 			expect(metrics.scrollWidth).toBeGreaterThan(metrics.clientWidth);
 			expect(metrics.tableWidth).toBeGreaterThan(metrics.clientWidth);
 			expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth);
+		});
+
+		test("overflowLabel labels the overflow region when no caption is provided", async ({
+			mount,
+			page,
+		}) => {
+			const overflowLabel = "Scrollable device table";
+
+			await mountDataTableRaw(mount, {
+				props: {
+					data: [{ device: "Laptop", last_seen: "4 minutes ago" }],
+					columns: {
+						device: { label: "Device name" },
+						last_seen: { label: "Last seen" },
+					},
+					enableSearch: false,
+					overflowLabel,
+				},
+			});
+
+			await setTableWidth(page, "12rem");
+
+			const scrollRegion = page.getByRole("region", { name: overflowLabel });
+
+			await expect(scrollRegion).toBeVisible();
+			await expect(scrollRegion).toHaveAttribute("aria-label", overflowLabel);
+			await expect(scrollRegion).not.toHaveAttribute("aria-labelledby");
+		});
+
+		test("an overflowing table keeps its scroll wrapper keyboard-usable without an accessible label", async ({
+			mount,
+			page,
+		}) => {
+			await mountDataTableRaw(mount, {
+				props: {
+					data: [{ device: "Laptop", last_seen: "4 minutes ago" }],
+					columns: {
+						device: { label: "Device name" },
+						last_seen: { label: "Last seen" },
+					},
+					enableSearch: false,
+				},
+			});
+
+			await setTableWidth(page, "12rem");
+
+			const scrollWrapper = page.getByTestId("data-table").locator(".overflow-x-auto");
+
+			await expect(scrollWrapper).toHaveAttribute("tabindex", "0");
+			await expect(scrollWrapper).not.toHaveAttribute("role");
+			await expect(scrollWrapper).not.toHaveAttribute("aria-label");
+			await expect(scrollWrapper).not.toHaveAttribute("aria-labelledby");
 		});
 
 		test("a description column can override the minimum width and wrap", async ({

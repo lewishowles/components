@@ -1,5 +1,6 @@
 import { createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
+import { nextTick, ref } from "vue";
 import DataTableHeader from "./data-table-header.vue";
 
 const mount = createMount(DataTableHeader);
@@ -45,6 +46,20 @@ describe("data-table-header", () => {
 			});
 
 			expect(wrapper.find("h3").text()).toBe("Movies");
+		});
+
+		test("should update when the heading level changes at runtime", async () => {
+			const headingLevel = ref("h3");
+
+			const wrapper = mount({
+				global: { provide: { "data-table": { headingLevel } } },
+				slots: { "table-title": "Movies" },
+			});
+
+			headingLevel.value = "h4";
+			await nextTick();
+
+			expect(wrapper.find("h4").text()).toBe("Movies");
 		});
 	});
 
