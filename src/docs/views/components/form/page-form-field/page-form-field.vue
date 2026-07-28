@@ -43,7 +43,7 @@
 					<li><code>checkbox</code></li>
 					<li><code>checkbox-group</code></li>
 					<li><code>radio-group</code></li>
-					<li><code>form-button-group</code></li>
+					<li><code>button-group</code></li>
 					<li><code>date</code></li>
 					<li><code>file</code></li>
 				</ul>
@@ -203,7 +203,7 @@
 					,
 					<code>checkbox-group</code>
 					, and
-					<code>form-button-group</code>
+					<code>button-group</code>
 					.
 				</p>
 			</component-slot>

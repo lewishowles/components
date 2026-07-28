@@ -10,14 +10,14 @@ const SUPPORTED_TYPES = [
 	"checkbox",
 	"checkbox-group",
 	"radio-group",
-	"form-button-group",
+	"button-group",
 	"select",
 	"date",
 	"file",
 ];
 
 // Option-bearing types that must be listed as supported.
-const OPTION_BEARING_TYPES = ["select", "radio-group", "checkbox-group", "form-button-group"];
+const OPTION_BEARING_TYPES = ["select", "radio-group", "checkbox-group", "button-group"];
 
 describe("form-field metadata", () => {
 	test("exports a metadata object with the required top-level fields", () => {

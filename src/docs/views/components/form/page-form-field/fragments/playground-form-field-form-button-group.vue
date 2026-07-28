@@ -65,7 +65,7 @@ const textSlots = ref({
 const props = ref({
 	type: {
 		label: "Type",
-		value: "form-button-group",
+		value: "button-group",
 		type: "text",
 	},
 	options: {

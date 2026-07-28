@@ -80,7 +80,7 @@ const props = defineProps({
 	 * checkbox
 	 * radio-group
 	 * checkbox-group
-	 * form-button-group
+	 * button-group
 	 * file
 	 */
 	type: {
@@ -165,7 +165,7 @@ const defaultComponent = FormInput;
 // Field controls bundled with `form-field`, so automatic imports do not depend
 // on global registration.
 const fieldComponents = {
-	"form-button-group": FormButtonGroup,
+	"button-group": FormButtonGroup,
 	checkbox: FormCheckbox,
 	"checkbox-group": FormCheckboxGroup,
 	date: FormDate,
@@ -186,7 +186,7 @@ const fieldTypes = {
 	checkbox: {},
 	"checkbox-group": {},
 	"radio-group": {},
-	"form-button-group": {},
+	"button-group": {},
 	select: {},
 };
 

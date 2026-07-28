@@ -17,7 +17,7 @@ export const formFieldMetadata = {
 				"checkbox",
 				"checkbox-group",
 				"radio-group",
-				"form-button-group",
+				"button-group",
 				"select",
 				"date",
 				"file",
@@ -78,7 +78,7 @@ export const formFieldMetadata = {
 		},
 		{
 			name: "options",
-			summary: "Options for select, radio-group, checkbox-group, and form-button-group controls.",
+			summary: "Options for select, radio-group, checkbox-group, and button-group controls.",
 		},
 		{
 			name: "error",

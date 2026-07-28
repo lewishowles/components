@@ -37,7 +37,7 @@ The type of field. Known types include:
 - `checkbox`
 - `checkbox-group`
 - `radio-group`
-- `form-button-group`
+- `button-group`
 - `date`
 - `file`
 
