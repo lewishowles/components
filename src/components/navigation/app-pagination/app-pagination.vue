@@ -100,7 +100,6 @@
 
 <script setup>
 import { computed, useId, watch } from "vue";
-import { getCurrentUrlParameter, updateCurrentUrlParameter } from "@lewishowles/helpers/url";
 import { isNumber } from "@lewishowles/helpers/number";
 
 const props = defineProps({
@@ -126,12 +125,6 @@ const emit = defineEmits(["update:page"]);
 // An internal ID to link the pagination to its label.
 const internalId = useId();
 
-// The page number from the URL parameter, read at setup time so that the
-// immediate watcher does not overwrite it before onMounted can read it.
-const urlPageParam = parseInt(getCurrentUrlParameter("page"));
-// The initial page, derived from the URL parameter when valid.
-const initialPage = isNumber(urlPageParam) && urlPageParam > 0 ? urlPageParam : 1;
-
 // The current page we're looking at.
 const currentPage = defineModel({
 	type: Number,
@@ -147,14 +140,6 @@ const pageCount = computed(() => {
 
 	return Math.ceil(props.count / props.itemsPerPage);
 });
-
-// Initialise currentPage from the URL parameter now, before the immediate
-// watcher fires, otherwise the watcher would call
-// updateCurrentUrlParameter("page", 1) and overwrite the URL before onMounted
-// can read it.
-if (initialPage > 1 && initialPage <= pageCount.value) {
-	currentPage.value = initialPage;
-}
 
 // Whether all items fit onto a single page.
 const haveSinglePage = computed(() => pageCount.value === 1);
@@ -280,17 +265,11 @@ function goTo(page) {
 }
 
 // When our current page changes, emit an event to notify the parent (if they're
-// not using v-model), and update the URL. We only want to update the URL when
-// the page is not the first page, as that is the default anyway and there is no
-// need to add unnecessary parameters.
+// not using v-model).
 watch(
 	currentPage,
 	() => {
 		emit("update:page", currentPage.value);
-
-		if (currentPage.value >= 1) {
-			updateCurrentUrlParameter("page", currentPage.value);
-		}
 	},
 	{ immediate: true },
 );
