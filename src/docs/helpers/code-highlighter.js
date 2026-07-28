@@ -1,6 +1,6 @@
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
-const codeTheme = "github-dark-default";
+const codeTheme = "catppuccin-macchiato";
 
 /**
  * Normalise code text from either a prop or indented Vue slot content.
@@ -144,7 +144,7 @@ function normaliseLanguage(language) {
  * @returns {string}
  */
 function renderPlainCodeHtml(code, language) {
-	return `<pre class="shiki ${codeTheme}" style="background-color:#0d1117;color:#e6edf3" tabindex="0"><code class="language-${language}">${escapeHtml(code)}</code></pre>`;
+	return `<pre class="shiki ${codeTheme}" style="background-color:#24273a;color:#cad3f5" tabindex="0"><code class="language-${language}">${escapeHtml(code)}</code></pre>`;
 }
 
 /**
