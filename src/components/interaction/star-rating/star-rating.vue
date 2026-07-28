@@ -119,14 +119,12 @@
 
 <script setup>
 /**
- * Create a group of radio buttons styled as buttons, based on provided options.
- *
- * `form-button-group` allows options to be provided in a few different formats for
- * simplicity.
+ * A star rating control, built on `form-radio-group` with options styled as
+ * stars.
  */
 import { computed, ref, useId, useSlots } from "vue";
 import { head, isNonEmptyArray, range } from "@lewishowles/helpers/array";
-import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod, isNonEmptySlot } from "@lewishowles/helpers/vue";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";
 
