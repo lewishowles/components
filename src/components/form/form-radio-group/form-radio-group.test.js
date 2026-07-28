@@ -69,6 +69,45 @@ describe("form-radio-group", () => {
 
 				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("required")).toBe(false);
 			});
+
+			test("marks the input group as required when form-wrapper cascades a required rule", () => {
+				const wrapper = mount({
+					props: { name: "flavour" },
+					global: {
+						provide: {
+							"form-wrapper": { isFieldRequired: (name) => name === "flavour" },
+						},
+					},
+				});
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("required")).toBe(true);
+			});
+
+			test("does not mark the input group as required when the form-wrapper cascade does not match", () => {
+				const wrapper = mount({
+					props: { name: "flavour" },
+					global: {
+						provide: {
+							"form-wrapper": { isFieldRequired: (name) => name === "other-field" },
+						},
+					},
+				});
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("required")).toBe(false);
+			});
+
+			test("the explicit prop overrides a form-wrapper cascade of false", () => {
+				const wrapper = mount({
+					props: { name: "flavour", required: true },
+					global: {
+						provide: {
+							"form-wrapper": { isFieldRequired: () => false },
+						},
+					},
+				});
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("required")).toBe(true);
+			});
 		});
 	});
 });

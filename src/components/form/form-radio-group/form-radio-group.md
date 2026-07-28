@@ -80,6 +80,13 @@ Whether to display options inline (horizontally). This is only recommended when 
 
 Note that this only takes effect when the radio buttons are in a _container_ that is at least 320px wide.
 
+### `required`
+
+- type: `boolean`
+- default: `false`
+
+Whether this field is required. Also set automatically when a `required` rule for this field is present in a parent `form-wrapper`'s `rules`, but the prop allows explicit control.
+
 ## Methods
 
 ### `triggerFocus`

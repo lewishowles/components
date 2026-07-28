@@ -2,7 +2,7 @@
 	<form-input-group
 		ref="input-group"
 		v-model="internalModel"
-		v-bind="{ type: 'radio', required, name }"
+		v-bind="{ type: 'radio', required: isRequired, name }"
 		data-component="form-radio-group"
 		data-test="form-radio-group"
 	>
@@ -31,8 +31,9 @@
 </template>
 
 <script setup>
-import { computed, ref, useTemplateRef, watch } from "vue";
+import { computed, inject, ref, useTemplateRef, watch } from "vue";
 import { firstDefined } from "@lewishowles/helpers/array";
+import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyObject, keys, unwrap } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
@@ -48,7 +49,8 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether this field is required.
+	 * Whether this field is required. This is also set automatically when a
+	 * `required` validation rule is present on the parent `form-wrapper`.
 	 */
 	required: {
 		type: Boolean,
@@ -69,6 +71,10 @@ const inputGroupRef = useTemplateRef("input-group");
 // The model provided by the input group, which we intend to transform.
 const internalModel = ref({});
 
+// Retrieve isFieldRequired from an optional parent form-wrapper. The
+// injection may not be defined, so we get it in a safe way.
+const isFieldRequired = inject("form-wrapper", {})?.isFieldRequired;
+
 // The field name of our input, preferring the provided name prop, falling
 // back to deriving it from the internal model's keys.
 const fieldName = computed(() => {
@@ -85,6 +91,16 @@ const fieldName = computed(() => {
 
 // The underlying value of our field.
 const underlyingValue = computed(() => unwrap(internalModel.value));
+
+// Whether this field is required, from the explicit prop or a `required`
+// rule cascaded from the parent form-wrapper, matching form-field.
+const isRequired = computed(() => {
+	if (props.required) {
+		return true;
+	}
+
+	return isFunction(isFieldRequired) && isFieldRequired(fieldName.value);
+});
 
 // When a new value is provided by the input-group, unwrap it and emit it.
 watch(

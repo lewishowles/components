@@ -15,7 +15,8 @@ export const formRadioGroupMetadata = {
 			name: "required",
 			type: "boolean",
 			default: false,
-			summary: "Whether this field is required.",
+			summary:
+				"Whether this field is required. Also set automatically when a required rule for this field is present in the parent form-wrapper's rules, but the prop allows explicit control.",
 		},
 		{
 			name: "name",
