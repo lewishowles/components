@@ -1,6 +1,7 @@
 import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { flushPromises } from "@vue/test-utils";
 import { describe, expect, test, vi } from "vite-plus/test";
+import { nextTick, ref } from "vue";
 import { useForm } from "@/composables/use-form/use-form.js";
 import FormWrapper from "./form-wrapper.vue";
 
@@ -165,6 +166,82 @@ describe("form-wrapper", () => {
 				await vm.handleFormSubmit();
 
 				expect(onSubmit).toHaveBeenCalledWith({ age: null });
+			});
+
+			test("coerces modelValue per the declared field types", async () => {
+				const wrapper = mount({
+					props: {
+						fieldTypes: { age: "nullable-number" },
+						modelValue: { age: 30 },
+					},
+				});
+
+				await nextTick();
+
+				expect(wrapper.vm.formData).toEqual({ age: "30" });
+			});
+		});
+
+		describe("initialData", () => {
+			test("uses modelValue without emitting when initialData is not bound", async () => {
+				const wrapper = mount({ props: { modelValue: { name: "Alice" } } });
+
+				await nextTick();
+
+				expect(wrapper.vm.formData).toEqual({ name: "Alice" });
+				expect(wrapper.emitted("update:modelValue")).toBeUndefined();
+			});
+
+			test("seeds once when an initialData getter resolves", async () => {
+				const source = ref(null);
+				const wrapper = mount({ props: { initialData: () => source.value } });
+
+				source.value = { name: "Alice" };
+				await nextTick();
+
+				expect(wrapper.vm.formData).toEqual({ name: "Alice" });
+
+				source.value = { name: "Bob" };
+				await nextTick();
+
+				expect(wrapper.vm.formData).toEqual({ name: "Alice" });
+			});
+		});
+
+		describe("recordId", () => {
+			test("reseeds a clean form when the next record's data resolves", async () => {
+				const source = ref({ name: "Alice" });
+
+				const wrapper = mount({
+					props: { initialData: () => source.value, recordId: 1 },
+				});
+
+				await nextTick();
+				await wrapper.setProps({ recordId: 2 });
+
+				source.value = { name: "Bob" };
+				await nextTick();
+
+				expect(wrapper.vm.formData).toEqual({ name: "Bob" });
+				expect(wrapper.vm.isDirty).toBe(false);
+			});
+
+			test("does not reseed a dirty form when the record changes", async () => {
+				const source = ref({ name: "Alice" });
+
+				const wrapper = mount({
+					props: { initialData: () => source.value, recordId: 1 },
+				});
+
+				await nextTick();
+				wrapper.vm.updateFieldValue("name", "Edited");
+				await nextTick();
+				await wrapper.setProps({ recordId: 2 });
+
+				source.value = { name: "Bob" };
+				await nextTick();
+
+				expect(wrapper.vm.formData).toEqual({ name: "Edited" });
 			});
 		});
 	});

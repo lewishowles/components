@@ -1,4 +1,5 @@
 import { callComponentMethod } from "@lewishowles/helpers/vue";
+
 import {
 	computed,
 	nextTick,
@@ -11,6 +12,7 @@ import {
 	unref,
 	watch,
 } from "vue";
+
 import { isEqual, isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyObject, isObject } from "@lewishowles/helpers/object";
@@ -27,9 +29,9 @@ import { validateForm } from "@lewishowles/helpers/form";
  *     Seed for formData. A plain object, seeded immediately, or a ref/getter,
  *     seeded once it first resolves truthy.
  * @param  {function|object}  [mapper]
- *     Shapes initialData into form data, either a mapping function, or a
- *     `{ fields, fieldTypes }` options object for declarative field
- *     selection and type coercion.
+ *     Shapes initialData into form data. Overrides fieldTypes for
+ *     initialisation, either as a mapping function or a `{ fields, fieldTypes
+ *     }` options object for declarative field selection and type coercion.
  * @param  {string|number|ref|function|null}  [recordId]
  *     Identifies the record initialData represents. Omit for the default
  *     populate-once-forever behaviour. Provide to reseed formData from the
@@ -44,9 +46,9 @@ import { validateForm } from "@lewishowles/helpers/form";
  *     to true. Set to false for trivial forms (e.g. a live search filter)
  *     where the guard would be unwanted noise.
  * @param  {object|ref|function}  [fieldTypes]
- *     Type coercion for form values on submit, keyed by field name. Each
- *     value is one of "nullable-number" or "nullable-string". For the
- *     equivalent coercion on init, use mapper's own fieldTypes instead.
+ *     Type coercion for form values on initialisation and submit, keyed by
+ *     field name. Each value is one of "nullable-number" or
+ *     "nullable-string". A mapper overrides initialisation behaviour.
  * @param  {object|ref|function}  [fieldErrors]
  *     Field-level errors managed by the caller, keyed by field name. Each
  *     value can be a single message or a list of messages.
@@ -325,7 +327,17 @@ export function useForm({
 	function seed(value) {
 		seeded.value = true;
 
-		const seededData = mapFormData(value, mapper);
+		// The field types currently declared for the form.
+		const declaredFieldTypes = toValue(fieldTypes);
+
+		// Field types apply to every seeded field unless a custom mapper is provided.
+		const seededMapper =
+			mapper ??
+			(Object.keys(declaredFieldTypes ?? {}).length > 0
+				? { fields: Object.keys(value), fieldTypes: declaredFieldTypes }
+				: undefined);
+
+		const seededData = mapFormData(value, seededMapper);
 
 		formData.value = seededData;
 		baseline.value = cloneFormData(toRaw(seededData));

@@ -1,4 +1,4 @@
-import { defineComponent, h, nextTick, ref } from "vue";
+import { defineComponent, h, nextTick, ref, toRaw } from "vue";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 import { consoleSpies } from "#test/unit/setup.js";
 import { hasDirtyForms } from "./dirty-forms-registry.js";
@@ -129,6 +129,32 @@ describe("useForm", () => {
 			});
 
 			expect(formData.value).toEqual({ age: "30" });
+		});
+
+		test("applies fieldTypes to all seeded fields without a mapper", () => {
+			const { formData } = createForm({
+				initialData: { age: 30, name: "Alice" },
+				props: { fieldTypes: { age: "nullable-number" } },
+			});
+
+			expect(formData.value).toEqual({ age: "30", name: "Alice" });
+		});
+
+		test("clones untyped nested values when fieldTypes are declared", () => {
+			const initialData = {
+				age: 30,
+				preferences: { categories: ["news"] },
+			};
+
+			const { formData } = createForm({
+				initialData,
+				props: { fieldTypes: { age: "nullable-number" } },
+			});
+
+			expect(toRaw(formData.value.preferences)).not.toBe(initialData.preferences);
+			expect(toRaw(formData.value.preferences.categories)).not.toBe(
+				initialData.preferences.categories,
+			);
 		});
 	});
 

@@ -394,14 +394,56 @@
 					<code>""</code>
 					to
 					<code>null</code>
-					, else keeps the value as-is. See
-					<router-link v-bind="{ to: '/composables/use-form-data' }">
-						<code>useFormData</code>
-					</router-link>
-					for the equivalent init-side coercion.
+					, else keeps the value as-is. This coerces both the initial seed and submitted data, one
+					declaration for both directions.
 				</p>
 
 				<code-block v-bind="{ code: fieldTypesExample }" />
+			</component-prop>
+
+			<component-prop id="prop-initial-data">
+				<template #name>initialData</template>
+
+				<template #type>Object | Function</template>
+
+				<template #default-value>null</template>
+
+				<p>
+					An object, ref, computed, or getter used to seed the form once it resolves truthy. When
+					omitted,
+					<code>modelValue</code>
+					remains the source of any starting data. No
+					<code>recordId</code>
+					needed unless the form must later reseed for a different record.
+				</p>
+
+				<p>
+					Rename fields inline, or with
+					<code>mapFormData</code>
+					for larger reshaping.
+				</p>
+
+				<code-block v-bind="{ code: initialDataExample }" />
+			</component-prop>
+
+			<component-prop id="prop-record-id">
+				<template #name>recordId</template>
+
+				<template #type>String | Number</template>
+
+				<template #default-value>null</template>
+
+				<p>
+					The stable identifier for the record that identifies the contents of this form. When the
+					record ID changes to a new truthy value, a clean form waits for
+					<code>initialData</code>
+					to resolve and reseeds. A dirty form keeps its edits until they are saved or discarded.
+				</p>
+
+				<p>
+					Only needed when the same form later loads a different record. Pair it with a source that
+					refetches when the id changes.
+				</p>
 			</component-prop>
 		</component-props>
 
@@ -725,6 +767,7 @@
 		<component-playgrounds>
 			<playground-form-wrapper />
 			<playground-compact-form-wrapper />
+			<playground-async-initial-data />
 		</component-playgrounds>
 	</component-page>
 </template>
@@ -732,6 +775,7 @@
 <script setup>
 import PlaygroundFormWrapper from "./fragments/playground-form-wrapper.vue";
 import PlaygroundCompactFormWrapper from "./fragments/playground-compact-form-wrapper.vue";
+import PlaygroundAsyncInitialData from "./fragments/playground-async-initial-data.vue";
 
 const useFormExample = `import { useForm } from "@lewishowles/components/composables";
 
@@ -765,6 +809,21 @@ const readonlyExample = `<form-wrapper v-bind="{ readonly: true }">…</form-wra
 const compactExample = `<form-wrapper v-bind="{ compact: true }">…</form-wrapper>`;
 
 const fieldTypesExample = `<form-wrapper v-bind="{ fieldTypes: { age: 'nullable-number' } }">…</form-wrapper>`;
+
+const initialDataExample = `import { computed } from "vue";
+import { mapFormData } from "@lewishowles/components/composables";
+
+const initialData = computed(() => {
+	if (!record.value) {
+		return null;
+	}
+
+	return mapFormData(record.value, {
+		fields: { firstName: "first_name", age: "age" },
+	});
+});
+
+<form-wrapper v-model="formData" v-bind="{ fieldTypes: { age: 'nullable-number' }, initialData }">…</form-wrapper>`;
 
 const rulesExample = `const rules = {
 	confirmPassword: [{ rule: "same", field: "password", message: "Passwords must match" }],

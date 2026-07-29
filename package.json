@@ -76,12 +76,12 @@
 		"@clack/prompts": "^1.7.0",
 		"@lewishowles/cli-style": "^0.11.0",
 		"@lewishowles/helpers": "^1.7.1",
-		"@vueuse/core": "^14.3.0",
+		"@vueuse/core": "^14.4.0",
 		"cli-highlight": "^2.1.11",
 		"clsx": "^2.1.1",
 		"nanoid": "^6.0.0",
 		"tailwind-merge": "^3.6.0",
-		"temporal-polyfill": "^1.0.1"
+		"temporal-polyfill": "^1.0.2"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.5",
@@ -105,7 +105,7 @@
 		"shiki": "^4.3.1",
 		"tailwindcss": "^4.3.3",
 		"tailwindcss-hocus": "^1.0.0",
-		"typescript": "^7.0.2",
+		"typescript": "6.0.2",
 		"unplugin-vue-components": "^32.1.0",
 		"vite": "npm:@voidzero-dev/vite-plus-core@0.2.6",
 		"vite-plugin-vue-devtools": "^8.2.1",

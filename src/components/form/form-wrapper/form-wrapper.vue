@@ -109,7 +109,17 @@
 
 <script setup>
 // fallow-ignore-file -- "submit" emit is used by consumers via `useForm` onSubmit callback, not directly within this component.
-import { computed, getCurrentInstance, provide, ref, toRefs, useSlots, watch } from "vue";
+import {
+	camelize,
+	computed,
+	getCurrentInstance,
+	provide,
+	ref,
+	toRefs,
+	toValue,
+	useSlots,
+	watch,
+} from "vue";
 
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { useForm } from "@/composables/use-form/use-form.js";
@@ -259,13 +269,33 @@ const props = defineProps({
 	},
 
 	/**
-	 * Field type transformations applied to submitted form data, keyed by
-	 * field name. Each value is one of "nullable-number" or "nullable-string".
-	 * See useFormData for the equivalent init-side coercion.
+	 * Field type transformations applied to initial and submitted form data,
+	 * keyed by field name. Each value is one of "nullable-number" or
+	 * "nullable-string".
 	 */
 	fieldTypes: {
 		type: Object,
 		default: () => ({}),
+	},
+
+	/**
+	 * An object or getter used to seed this form once it resolves. When omitted,
+	 * modelValue remains the seed source.
+	 */
+	initialData: {
+		type: [Object, Function],
+		default: null,
+	},
+
+	/**
+	 * The stable identifier for the record that identifies the contents of this
+	 * form. When the record ID changes to a new truthy value, a clean form
+	 * waits for `initialData` to resolve and reseeds. A dirty form keeps its
+	 * edits until they are saved or discarded.
+	 */
+	recordId: {
+		type: [String, Number],
+		default: null,
 	},
 
 	/**
@@ -278,16 +308,21 @@ const props = defineProps({
 	},
 });
 
-// "submit" is emitted by the consumer's `useForm` onSubmit callback, not directly within this component.
+// "submit" is emitted by the consumer's `useForm` onSubmit callback, not
+// directly within this component.
 const emit = defineEmits(["update:modelValue", "submit"]);
 
 const slots = useSlots();
 const instance = getCurrentInstance();
 
+// Whether the caller explicitly supplied an initial data source.
+const haveInitialData = Object.keys(instance?.vnode.props ?? {}).some(
+	(key) => camelize(key) === "initialData",
+);
+
 const submitButtonRef = ref(null);
 const errorSummaryElement = ref(null);
 const generalErrorsElement = ref(null);
-
 const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button-label"]));
 const haveSubmitErrorsSlot = computed(() => isNonEmptySlot(slots["submit-errors"]));
 const haveActionsLabel = computed(() => isNonEmptySlot(slots["actions-label"]));
@@ -327,8 +362,8 @@ const {
 	focusField,
 	isFieldRequired,
 } = useForm({
-	initialData: () => props.modelValue,
 	...toRefs(props),
+	initialData: () => (haveInitialData ? toValue(props.initialData) : props.modelValue),
 	onSubmit: callSubmitListeners,
 	errorSummaryElement,
 	generalErrorsElement,

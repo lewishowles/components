@@ -20,3 +20,15 @@ export declare function useFormData<T>(
 export declare function useFormData<T>(
 	source: Ref<T | null | undefined>,
 ): Ref<Record<string, unknown>>;
+
+export declare function mapFormData<T>(
+	value: T,
+	mapper: (value: T) => Record<string, unknown>,
+): Record<string, unknown>;
+
+export declare function mapFormData<T>(
+	value: T,
+	options: FormDataOptions<T>,
+): Record<string, unknown>;
+
+export declare function mapFormData<T>(value: T): Record<string, unknown>;

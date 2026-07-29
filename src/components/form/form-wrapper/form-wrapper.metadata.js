@@ -103,7 +103,21 @@ export const formWrapperMetadata = {
 			type: "object",
 			default: "{}",
 			summary:
-				"Field type transformations applied to submitted form data, keyed by field name. Each value is one of 'nullable-number' or 'nullable-string'. See useFormData for the equivalent init-side coercion.",
+				"Field type transformations applied to initial and submitted form data, keyed by field name. Each value is one of 'nullable-number' or 'nullable-string'.",
+		},
+		{
+			name: "initialData",
+			type: "object | function",
+			default: null,
+			summary:
+				"An object or getter used to seed this form once it resolves. When omitted, modelValue remains the seed source.",
+		},
+		{
+			name: "recordId",
+			type: "string | number",
+			default: null,
+			summary:
+				"The stable identifier for the record that identifies the contents of this form. When the record ID changes to a new truthy value, a clean form waits for `initialData` to resolve and reseeds. A dirty form keeps its edits until they are saved or discarded.",
 		},
 	],
 	slots: [

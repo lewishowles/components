@@ -2,11 +2,14 @@ import { expect, test } from "@playwright/experimental-ct-vue";
 import { createMount } from "@lewishowles/testing/playwright";
 
 import FormWrapper from "./form-wrapper.vue";
+import FormWrapperAsyncInitialDataFixture from "./form-wrapper-async-initial-data.fixture.vue";
 import FormWrapperFixture from "./form-wrapper.fixture.vue";
 import FormWrapperRulesFixture from "./form-wrapper-rules.fixture.vue";
 
 // Mount form-wrapper via fixture to supply a form-field with submit-button-label.
 const mountFormWrapper = createMount(FormWrapperFixture);
+// Mount a fixture that resolves an initial data getter after the form mounts.
+const mountFormWrapperAsyncInitialData = createMount(FormWrapperAsyncInitialDataFixture);
 // Mount form-wrapper with a cross-field form-level rule (password confirmation).
 const mountFormWrapperRules = createMount(FormWrapperRulesFixture);
 
@@ -20,6 +23,45 @@ test.describe("form-wrapper", () => {
 	});
 
 	test.describe("Props", () => {
+		test.describe("initialData", () => {
+			test("uses modelValue when initialData is not bound", async ({ mount, page }) => {
+				await mountFormWrapper(mount, { props: { modelValue: { username: "Alice" } } });
+
+				await expect(page.getByLabel("Username", { exact: true })).toHaveValue("Alice");
+			});
+
+			test("seeds when an async :initial-data binding resolves", async ({ mount, page }) => {
+				await mountFormWrapperAsyncInitialData(mount);
+
+				await page.getByRole("button", { name: "Load first record" }).click();
+
+				await expect(page.getByLabel("Username", { exact: true })).toHaveValue("Alice");
+			});
+		});
+
+		test.describe("recordId", () => {
+			test("reseeds a clean form when the next record resolves", async ({ mount, page }) => {
+				await mountFormWrapperAsyncInitialData(mount);
+
+				await page.getByRole("button", { name: "Load first record" }).click();
+				await page.getByRole("button", { name: "Load next record" }).click();
+
+				await expect(page.getByLabel("Username", { exact: true })).toHaveValue("Bob");
+			});
+
+			test("keeps a dirty form unchanged when the record changes", async ({ mount, page }) => {
+				await mountFormWrapperAsyncInitialData(mount);
+
+				const username = page.getByLabel("Username", { exact: true });
+
+				await page.getByRole("button", { name: "Load first record" }).click();
+				await username.fill("Edited");
+				await page.getByRole("button", { name: "Load next record" }).click();
+
+				await expect(username).toHaveValue("Edited");
+			});
+		});
+
 		test.describe("rules", () => {
 			test("shows a failing form-level rule beside the field and in the error summary", async ({
 				mount,

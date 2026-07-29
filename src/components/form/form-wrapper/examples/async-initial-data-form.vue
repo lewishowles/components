@@ -1,0 +1,49 @@
+<template>
+	<form-wrapper v-model="formData" v-bind="{ initialData, recordId }">
+		<template #pre-form>
+			<div class="mb-6 flex gap-2">
+				<button type="button" class="button--muted" @click="resolveInitialRecord">
+					Load first record
+				</button>
+				<button type="button" class="button--muted" @click="loadNextRecord">
+					Load next record
+				</button>
+			</div>
+		</template>
+
+		<form-field v-model="formData.username" v-bind="{ name: 'username' }">Username</form-field>
+
+		<template #submit-button-label>Save</template>
+	</form-wrapper>
+</template>
+
+<script setup>
+import { computed, ref } from "vue";
+// The data captured by the form.
+const formData = defineModel({ default: () => ({}) });
+// The source data.
+const source = ref(null);
+// The ID of the current "record".
+const recordId = ref(1);
+// The form waits for this getter's async source instead of seeding from v-model.
+const initialData = computed(() => source.value);
+
+/**
+ * Resolve the first record after the form has already mounted.
+ */
+function resolveInitialRecord() {
+	source.value = { username: "Alice" };
+}
+
+/**
+ * Change the record identity before its replacement data becomes available.
+ */
+async function loadNextRecord() {
+	recordId.value = 2;
+	source.value = null;
+
+	await Promise.resolve();
+
+	source.value = { username: "Bob" };
+}
+</script>

@@ -5,6 +5,6 @@ export { useFlashMessages } from "./use-flash-messages/use-flash-messages.js";
 export { useFloatingPosition } from "./use-floating-position/use-floating-position.js";
 export { installUnsavedChangesGuard } from "./use-form/install-unsaved-changes-guard.js";
 export { useForm } from "./use-form/use-form.js";
-export { useFormData } from "./use-form-data/use-form-data.js";
+export { mapFormData, useFormData } from "./use-form-data/use-form-data.js";
 export { useModalDialog } from "./use-modal-dialog/use-modal-dialog.js";
 export { useNotifications } from "./use-notifications/use-notifications.js";

@@ -143,16 +143,53 @@ When `true`, reduces vertical spacing in the form. The change cascades automatic
 - type: `object`
 - default: `{}`
 
-Field type transformations applied to submitted form data, keyed by field name. Each value is one of `nullable-number` or `nullable-string`:
+Field type transformations applied to initial and submitted form data, keyed by field name. Each value is one of `nullable-number` or `nullable-string`:
 
 - `nullable-number`: `""`/`null`/`undefined` → `null`, else `Number(value)` (`NaN` → `null`)
 - `nullable-string`: `""` → `null`, else kept as-is
 
-See [`useFormData`](/src/composables/use-form-data/use-form-data.js) for the equivalent init-side coercion.
-
 ```html
 <form-wrapper v-bind="{ fieldTypes: { age: 'nullable-number' } }">…</form-wrapper>
 ```
+
+### `initialData`
+
+- type: `object | function`
+- default: `null`
+
+An object, ref, computed, or getter used to seed the form once it resolves truthy. When this prop is omitted, the form continues to seed from `modelValue` as before. No `recordId` needed unless the form must later reseed for a different record.
+
+Rename fields inline, or with `mapFormData` for larger reshaping. `fieldTypes` on `form-wrapper` coerces both the initial seed and submitted data from one declaration.
+
+```js
+import { computed } from "vue";
+import { mapFormData } from "@lewishowles/components/composables";
+
+const initialData = computed(() => {
+	if (!record.value) {
+		return null;
+	}
+
+	return mapFormData(record.value, {
+		fields: { firstName: "first_name", age: "age" },
+	});
+});
+```
+
+```html
+<form-wrapper v-model="formData" v-bind="{ fieldTypes: { age: 'nullable-number' }, initialData }">
+	…
+</form-wrapper>
+```
+
+### `recordId`
+
+- type: `string | number`
+- default: `null`
+
+The stable identifier for the record that identifies the contents of this form. When the record ID changes to a new truthy value, a clean form waits for `initialData` to resolve and reseeds. A dirty form keeps its edits until they are saved or discarded.
+
+Only needed when the same form later loads a different record. Pair it with a source that refetches when the id changes.
 
 ### `layoutClasses`
 
