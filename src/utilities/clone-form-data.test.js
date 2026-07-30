@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vite-plus/test";
+import { describe, expect, test, vi } from "vite-plus/test";
 import { cloneFormData } from "./clone-form-data.js";
 
 describe("clone-form-data", () => {
@@ -34,6 +34,40 @@ describe("clone-form-data", () => {
 
 		expect(original[0]).toBe(1);
 		expect(original[2].nested).toBe(true);
+	});
+
+	test("Date values are deep-cloned inside plain objects", () => {
+		const original = { submittedAt: new Date("2026-07-30T12:00:00.000Z") };
+		const clone = cloneFormData(original);
+
+		expect(clone).not.toBe(original);
+		expect(clone.submittedAt).not.toBe(original.submittedAt);
+		expect(clone.submittedAt).toEqual(original.submittedAt);
+	});
+
+	test("unsupported structured values retain their references", () => {
+		const map = new Map([["name", "Alice"]]);
+		const original = { items: [map], settings: map };
+		const clone = cloneFormData(original);
+
+		expect(cloneFormData(map)).toBe(map);
+		expect(clone).not.toBe(original);
+		expect(clone.items).not.toBe(original.items);
+		expect(clone.items[0]).toBe(map);
+		expect(clone.settings).toBe(map);
+	});
+
+	test("does not throw when FileList is unavailable", () => {
+		const file = new File(["content"], "test.txt", { type: "text/plain" });
+		const blob = new Blob(["content"], { type: "text/plain" });
+
+		vi.stubGlobal("FileList", undefined);
+
+		try {
+			expect(() => cloneFormData({ blob, file })).not.toThrow();
+		} finally {
+			vi.unstubAllGlobals();
+		}
 	});
 
 	test("File instance is returned by reference, not cloned", () => {
