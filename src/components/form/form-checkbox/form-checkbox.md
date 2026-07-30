@@ -14,6 +14,10 @@ The default slot contains the label of the checkbox, which appears beside it.
 
 Content shown after the label text when the field is not required. Defaults to `(optional)`.
 
+### `description`
+
+Supporting text shown beneath the checkbox label.
+
 ### `error`
 
 Any error text to display below the input.
@@ -51,6 +55,14 @@ Any additional attributes to pass to the input itself, such as `required`.
 - default: `false`
 
 Whether to display the checkbox in an indeterminate state. This is useful when representing a selection state that is neither fully checked nor fully unchecked, such as a "select all" checkbox when only some items are selected.
+
+### `variant`
+
+- type: `string`
+- default: `null`
+- values: `card`
+
+Use `card` to give the checkbox a bordered card treatment, with the checked state using primary-colour border and background tokens.
 
 ## Methods
 

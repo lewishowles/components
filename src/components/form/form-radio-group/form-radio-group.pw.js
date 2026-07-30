@@ -45,6 +45,40 @@ test.describe("form-radio-group", () => {
 		});
 	});
 
+	test.describe("options", () => {
+		test("renders an option description", async ({ mount, page }) => {
+			await mountFormRadioGroup(mount, {
+				options: [
+					{
+						description: "Anyone with the link can access this project.",
+						label: "Public access",
+						value: "public",
+					},
+				],
+			});
+
+			await expect(page.getByTestId("form-input-group-option-description")).toHaveText(
+				"Anyone with the link can access this project.",
+			);
+		});
+
+		test("applies card styling to the selected option", async ({ mount, page }) => {
+			await mountFormRadioGroup(mount, { modelValue: "Banana", variant: "card" });
+
+			await expect(page.getByTestId("form-input-group-option").nth(1)).toHaveClass(
+				/border-primary/,
+			);
+		});
+
+		test("forwards custom option content", async ({ mount, page }) => {
+			await mountFormRadioGroup(mount, {
+				slots: { option: '<span data-test="custom-option">Custom option</span>' },
+			});
+
+			await expect(page.getByTestId("custom-option")).toHaveCount(3);
+		});
+	});
+
 	test.describe("styling hooks", () => {
 		test("data-component is set on the root element", async ({ mount, page }) => {
 			await mountFormRadioGroup(mount);

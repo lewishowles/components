@@ -1,10 +1,11 @@
-import { createMount } from "@lewishowles/testing/vue";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
-import { nextTick } from "vue";
+import { h, nextTick } from "vue";
 import FormRadioGroup from "./form-radio-group.vue";
 
 const defaultProps = { options: ["pineapple", "banana", "coconut"] };
 const mount = createMount(FormRadioGroup, { props: defaultProps });
+const deepMount = createDeepMount(FormRadioGroup, { props: defaultProps });
 
 describe("form-radio-group", () => {
 	describe("Initialisation", () => {
@@ -26,14 +27,15 @@ describe("form-radio-group", () => {
 	test("should update the internal model when provided a new model value", async () => {
 		const wrapper = mount();
 		const vm = wrapper.vm;
+		const inputId = wrapper.findComponent({ name: "FormInputGroup" }).props("id");
 
 		expect(vm.internalModel).toEqual({});
 
-		vm.internalModel = { "field-name": "" };
+		vm.internalModel = { [inputId]: "" };
 
 		await wrapper.setProps({ modelValue: "chocolate" });
 
-		expect(vm.internalModel).toEqual({ "field-name": "chocolate" });
+		expect(vm.internalModel).toEqual({ [inputId]: "chocolate" });
 	});
 
 	test("should emit a new model value when the internal model updates", async () => {
@@ -107,6 +109,31 @@ describe("form-radio-group", () => {
 				});
 
 				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("required")).toBe(true);
+			});
+		});
+
+		describe("variant", () => {
+			test("passes the card variant to the input group", () => {
+				const wrapper = mount({ props: { variant: "card" } });
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("variant")).toBe("card");
+			});
+		});
+
+		describe("Slots", () => {
+			test("forwards custom option content with selection details", () => {
+				const wrapper = deepMount({
+					props: { modelValue: "banana", name: "flavour" },
+					slots: {
+						option: ({ option, selected }) =>
+							h("span", { "data-test": "custom-option" }, `${option.value}:${selected}`),
+					},
+				});
+
+				const options = wrapper.findAll('[data-test="custom-option"]');
+
+				expect(options).toHaveLength(3);
+				expect(options[1].text()).toBe("banana:true");
 			});
 		});
 	});

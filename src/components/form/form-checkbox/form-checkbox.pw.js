@@ -79,6 +79,26 @@ test.describe("form-checkbox", () => {
 		});
 	});
 
+	test.describe("description and variant", () => {
+		test("renders a description", async ({ mount, page }) => {
+			await mountFormCheckbox(mount, {
+				slots: { description: "Use this setting to make the project public." },
+			});
+
+			await expect(page.getByTestId("form-checkbox-description")).toHaveText(
+				"Use this setting to make the project public.",
+			);
+		});
+
+		test("applies card styling when checked", async ({ mount, page }) => {
+			await mountFormCheckbox(mount, { modelValue: true, variant: "card" });
+
+			const card = page.getByTestId("form-checkbox-card");
+
+			await expect(card).toHaveClass(/border-primary/);
+		});
+	});
+
 	test.describe("styling hooks", () => {
 		test("data-component is set on the root element", async ({ mount, page }) => {
 			await mountFormCheckbox(mount);

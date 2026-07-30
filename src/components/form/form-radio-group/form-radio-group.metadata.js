@@ -6,6 +6,12 @@ export const formRadioGroupMetadata = {
 		"A radio group that exposes a single selected value while reusing form-input-group layout.",
 	props: [
 		{
+			name: "id",
+			type: "string",
+			default: null,
+			summary: "ID for the radio group; auto-generated if omitted.",
+		},
+		{
 			name: "modelValue",
 			type: "string | number",
 			default: null,
@@ -24,6 +30,19 @@ export const formRadioGroupMetadata = {
 			default: null,
 			summary: "A name for this radio group. If not set, the input ID is used.",
 		},
+		{
+			name: "descriptionKey",
+			type: "string",
+			default: "description",
+			summary: "Object key used for optional option descriptions.",
+		},
+		{
+			name: "variant",
+			type: "string",
+			default: null,
+			values: ["card"],
+			summary: "Apply a card treatment to each option.",
+		},
 	],
 	slots: [
 		{
@@ -40,8 +59,8 @@ export const formRadioGroupMetadata = {
 			summary: "Introductory text shown above the options.",
 		},
 		{
-			name: "options",
-			summary: "Custom rendering for options. Scoped with options and name.",
+			name: "option",
+			summary: "Custom content for one option. Scoped with option, selected, id, and name.",
 		},
 		{
 			name: "help",

@@ -1,5 +1,6 @@
 import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test, vi } from "vite-plus/test";
+import { h } from "vue";
 import FormInputGroup from "./form-input-group.vue";
 
 const defaultProps = { options: ["pineapple", "banana", "coconut"] };
@@ -114,6 +115,25 @@ describe("form-input-group", () => {
 				]);
 			});
 
+			test('An array of objects with a defined "descriptionKey"', () => {
+				const wrapper = mount({
+					options: [{ title: "One", id: "1", summary: "First option" }],
+					labelKey: "title",
+					valueKey: "id",
+					descriptionKey: "summary",
+				});
+
+				const vm = wrapper.vm;
+
+				expect(vm.internalOptions).toMatchObject([
+					{
+						description: "First option",
+						label: "One",
+						value: "1",
+					},
+				]);
+			});
+
 			test("Multiple option types can be combined", () => {
 				const wrapper = mount({
 					options: [{ label: "one", value: 1 }, "two", 3],
@@ -216,6 +236,55 @@ describe("form-input-group", () => {
 				expect(wrapper.findComponent({ name: "FormLabel" }).props("showOptionalIndicator")).toBe(
 					true,
 				);
+			});
+		});
+
+		describe("variant", () => {
+			test("stacks selected cards above unselected neighbours", () => {
+				const wrapper = deepMount({
+					props: {
+						type: "radio",
+						name: "flavour",
+						modelValue: { flavour: "banana" },
+						variant: "card",
+					},
+				});
+
+				const options = wrapper.findAll('[data-test="form-input-group-option"]');
+
+				expect(options[0].classes()).toContain("border-border");
+				expect(options[0].classes()).toContain("z-0");
+				expect(options[1].classes()).toContain("border-primary");
+				expect(options[1].classes()).toContain("-mt-px");
+				expect(options[1].classes()).toContain("z-10");
+				expect(options[2].classes()).toContain("-mt-px");
+				expect(options[2].classes()).toContain("z-0");
+			});
+		});
+
+		describe("Slots", () => {
+			test("renders custom option content with selection details", () => {
+				const wrapper = deepMount({
+					props: {
+						type: "radio",
+						name: "flavour",
+						modelValue: { flavour: "banana" },
+					},
+					slots: {
+						option: ({ id, name, option, selected }) =>
+							h(
+								"span",
+								{ "data-test": "custom-option" },
+								`${option.value}:${selected}:${id}:${name}`,
+							),
+					},
+				});
+
+				const options = wrapper.findAll('[data-test="custom-option"]');
+
+				expect(options).toHaveLength(3);
+				expect(options[1].text()).toContain("banana:true");
+				expect(options[1].text()).toContain(":flavour");
 			});
 		});
 	});

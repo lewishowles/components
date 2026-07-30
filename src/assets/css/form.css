@@ -175,109 +175,6 @@
 	border-radius: 9999px;
 }
 
-.form-button-group {
-	appearance: none;
-	background-color: var(--control-surface);
-	border: 1px solid var(--control-border);
-	color: var(--control-content);
-	cursor: pointer;
-	display: inline-block;
-	outline: 0;
-	padding-block: calc(0.375em - 1px);
-	padding-inline: 1em;
-	text-decoration: none;
-	transition-duration: var(--default-transition-duration);
-	transition-property: all;
-	transition-timing-function: var(--default-transition-timing-function);
-
-	&:hover,
-	&:focus {
-		background-color: var(--control-surface-hover);
-		border-color: var(--control-border-hover);
-		color: var(--control-content-hover);
-	}
-
-	&:active {
-		background-color: var(--control-surface-active);
-		border-color: var(--control-border-active);
-		color: var(--control-content-active);
-	}
-
-	&:where(.dark, .dark *) {
-		background-color: var(--control-overlay);
-		border-color: var(--control-overlay);
-
-		&:hover,
-		&:focus {
-			background-color: var(--control-overlay-hover);
-			border-color: var(--control-overlay);
-			color: var(--control-content-hover);
-		}
-
-		&:active {
-			background-color: var(--control-overlay-active);
-			border-color: transparent;
-			color: var(--control-content-active);
-		}
-	}
-
-	&:is(:where(.peer):focus ~ *) {
-		background-color: var(--surface-subtle);
-		border-color: var(--control-border-hover);
-	}
-
-	&:is(:where(.peer):checked ~ *) {
-		background-color: var(--control-selected-surface);
-		border-color: var(--control-selected-border);
-		color: var(--control-selected-foreground);
-	}
-
-	&:is(:where(.peer):checked:focus ~ *) {
-		background-color: var(--control-selected-surface-focus);
-		border-color: var(--control-selected-border-focus);
-		color: var(--control-selected-foreground);
-	}
-
-	&:is(:where(.peer):checked:focus-visible ~ *) {
-		outline: 2px solid var(--control-focus);
-		outline-offset: 2px;
-	}
-
-	&:where(.dark, .dark *) {
-		&:is(:where(.peer):focus ~ *) {
-			--ring-size: 2px;
-			--ring-colour: var(--control-focus);
-
-			background-color: var(--control-overlay-hover);
-			border-color: var(--control-overlay);
-		}
-
-		&:is(:where(.peer):checked ~ *) {
-			background-color: var(--control-selected-surface);
-			border-color: var(--control-selected-border);
-		}
-
-		&:is(:where(.peer):checked:focus ~ *) {
-			background-color: var(--control-selected-surface-focus);
-			border-color: var(--control-selected-border-focus);
-		}
-	}
-}
-
-.form-button-group--first {
-	border-start-start-radius: var(--radius-lg);
-	border-end-start-radius: var(--radius-lg);
-}
-
-.form-button-group--middle {
-	border-inline-start-width: 0;
-}
-
-.form-button-group--last {
-	border-start-end-radius: var(--radius-lg);
-	border-end-end-radius: var(--radius-lg);
-}
-
 .form-field--error {
 	--ring-colour: var(--control-invalid);
 
@@ -296,6 +193,112 @@
 	inset-inline-start: 0;
 	position: absolute;
 	width: calc(var(--spacing) * 1);
+}
+
+[data-component="form-button-group"] {
+	[data-part="options"] {
+		flex-direction: row;
+		gap: 0;
+	}
+
+	[data-part="option"] {
+		display: contents;
+
+		&:first-child > label {
+			border-start-start-radius: var(--radius-lg);
+			border-end-start-radius: var(--radius-lg);
+		}
+
+		&:not(:first-child) > label {
+			margin-inline-start: -1px;
+		}
+
+		&:last-child > label {
+			border-start-end-radius: var(--radius-lg);
+			border-end-end-radius: var(--radius-lg);
+		}
+
+		> input {
+			clip: rect(0, 0, 0, 0);
+			clip-path: inset(50%);
+			block-size: 1px;
+			inline-size: 1px;
+			margin: -1px;
+			overflow: hidden;
+			padding: 0;
+			position: absolute;
+			white-space: nowrap;
+
+			&:is(:focus-visible, :checked) ~ label {
+				z-index: 1;
+			}
+
+			&:focus-visible ~ label {
+				outline: 2px solid var(--control-focus);
+				outline-offset: 2px;
+			}
+
+			&:checked ~ label {
+				background-color: var(--control-selected-surface);
+				border-color: var(--control-selected-border);
+				color: var(--control-selected-foreground);
+			}
+
+			&:checked:focus-visible ~ label {
+				background-color: var(--control-selected-surface-focus);
+				border-color: var(--control-selected-border-focus);
+			}
+		}
+
+		> label {
+			align-items: center;
+			background-color: var(--control-surface);
+			border: 1px solid var(--control-border);
+			color: var(--control-content);
+			cursor: pointer;
+			display: inline-flex;
+			gap: calc(var(--spacing) * 2);
+			padding-block: calc(0.375em - 1px);
+			padding-inline: 1em;
+			position: relative;
+			transition-duration: var(--default-transition-duration);
+			transition-property: background-color, border-color, color;
+			transition-timing-function: var(--default-transition-timing-function);
+			z-index: 0;
+
+			&:where(.dark, .dark *) {
+				background-color: var(--control-overlay);
+				border-color: var(--control-overlay);
+			}
+
+			&:is(:hover, :active) {
+				z-index: 1;
+			}
+
+			&:hover {
+				background-color: var(--control-surface-hover);
+				border-color: var(--control-border-hover);
+				color: var(--control-content-hover);
+
+				&:where(.dark, .dark *) {
+					background-color: var(--control-overlay-hover);
+					border-color: var(--control-overlay);
+				}
+			}
+
+			&:active {
+				background-color: var(--control-surface-active);
+				border-color: var(--control-border-active);
+				color: var(--control-content-active);
+
+				&:where(.dark, .dark *) {
+					background-color: var(--control-overlay-active);
+					border-color: transparent;
+					color: var(--control-content-active);
+				}
+			}
+		}
+	}
 }
 
 [data-part="field-wrapper"] {

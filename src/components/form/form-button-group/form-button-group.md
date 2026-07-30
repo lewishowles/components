@@ -16,6 +16,10 @@ _Note that a label is always required, even if a label is not shown to the user,
 
 Content shown after the label text when the field is not required. Defaults to `(optional)`.
 
+### `option`
+
+Custom content for one button. The slot receives `option`, `selected`, `id`, and `name`.
+
 ### `introduction`
 
 Any additional text to introduce the options, which appears between the label and options.

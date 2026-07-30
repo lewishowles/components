@@ -1,38 +1,22 @@
 <template>
-	<form-radio-group v-bind="{ required }" data-test="form-button-group">
+	<form-radio-group
+		ref="radio-group"
+		v-model="model"
+		v-bind="{ required }"
+		data-component="form-button-group"
+		data-test="form-button-group"
+	>
 		<slot />
 
 		<template #optional-indicator>
 			<slot name="optional-indicator" />
 		</template>
 
-		<template #options="{ options, name }">
-			<slot name="options" v-bind="{ options, name }">
-				<div ref="optionsWrapperElement" class="mt-3 flex">
-					<div v-for="option in options" :key="option.id">
-						<input
-							ref="inputReferences"
-							v-model="model"
-							type="radio"
-							class="peer sr-only"
-							v-bind="{ id: option.id, value: option.value, name }"
-						/>
+		<template #option="{ option, selected, id, name }">
+			<slot name="option" v-bind="{ option, selected, id, name }">
+				<component :is="resolveIconComponent(option.icon)" v-if="option.icon" />
 
-						<form-label
-							v-bind="{ id: option.id, styled: false, showOptionalIndicator: false }"
-							class="form-button-group flex items-center gap-2"
-							:class="{
-								'form-button-group--middle': !option.first,
-								'form-button-group--first': option.first,
-								'form-button-group--last': option.last,
-							}"
-						>
-							<component :is="resolveIconComponent(option.icon)" v-if="option.icon" />
-
-							{{ option.label }}
-						</form-label>
-					</div>
-				</div>
+				{{ option.label }}
 			</slot>
 		</template>
 
@@ -55,11 +39,9 @@
  * `form-button-group` allows options to be provided in a few different formats for
  * simplicity.
  */
-import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
-import { ref } from "vue";
+import { useTemplateRef } from "vue";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
 
-import FormLabel from "@/components/form/form-label/form-label.vue";
 import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
 
 defineProps({
@@ -76,42 +58,15 @@ const model = defineModel({
 	type: [String, Number],
 });
 
-// A reference to the inputs, allowing us to trigger focus.
-const inputReferences = ref([]);
-// The element wrapping our options template, which allows us to determine which
-// radio button is checked and focus the appropriate label.
-const optionsWrapperElement = ref(null);
+// The underlying radio group, which owns the input focus behaviour.
+const radioGroupRef = useTemplateRef("radio-group");
 
 /**
  * Trigger focus on the selected radio button, or the first if no selection has
- * been made. Because we're using `form-radio` for the heavy lifting, but
- * overriding the template, we don't simply have access to the options, so we're
- * determining the selection via the HTML instead of passing those options
- * around.
+ * been made.
  */
 function triggerFocus() {
-	if (!isNonEmptyArray(inputReferences.value)) {
-		return;
-	}
-
-	const selectedOption = optionsWrapperElement.value.querySelector(":checked");
-
-	if (selectedOption) {
-		callComponentMethod(selectedOption, "focus");
-
-		return;
-	}
-
-	focusFirstInput();
-}
-
-/**
- * Focus the first input of the group.
- */
-function focusFirstInput() {
-	const input = head(inputReferences.value);
-
-	callComponentMethod(input, "focus");
+	callComponentMethod(radioGroupRef.value, "triggerFocus");
 }
 
 defineExpose({

@@ -22,8 +22,8 @@ export const formButtonGroupMetadata = {
 				"Content shown after the label when the field is not required. Defaults to (optional).",
 		},
 		{
-			name: "options",
-			summary: "Custom rendering for options. Scoped with options and name.",
+			name: "option",
+			summary: "Custom content for one option. Scoped with option, selected, id, and name.",
 		},
 		{
 			name: "introduction",

@@ -22,6 +22,19 @@ export const formCheckboxGroupMetadata = {
 			default: null,
 			summary: "A name for this checkbox group. If not set, the input ID is used.",
 		},
+		{
+			name: "descriptionKey",
+			type: "string",
+			default: "description",
+			summary: "Object key used for optional option descriptions.",
+		},
+		{
+			name: "variant",
+			type: "string",
+			default: null,
+			values: ["card"],
+			summary: "Apply a card treatment to each option.",
+		},
 	],
 	slots: [
 		{
@@ -36,6 +49,10 @@ export const formCheckboxGroupMetadata = {
 		{
 			name: "introduction",
 			summary: "Introductory text shown above the options.",
+		},
+		{
+			name: "option",
+			summary: "Custom content for one option. Scoped with option, selected, id, and name.",
 		},
 		{
 			name: "help",

@@ -30,6 +30,12 @@ export const formInputGroupMetadata = {
 			summary: "Object key used for option values.",
 		},
 		{
+			name: "descriptionKey",
+			type: "string",
+			default: "description",
+			summary: "Object key used for optional option descriptions.",
+		},
+		{
 			name: "name",
 			type: "string",
 			default: null,
@@ -46,6 +52,13 @@ export const formInputGroupMetadata = {
 			type: "boolean",
 			default: false,
 			summary: "Display options horizontally.",
+		},
+		{
+			name: "variant",
+			type: "string",
+			default: null,
+			values: ["card"],
+			summary: "Apply a card treatment to each option.",
 		},
 		{
 			name: "required",
@@ -69,8 +82,8 @@ export const formInputGroupMetadata = {
 			summary: "Introductory text shown above the options.",
 		},
 		{
-			name: "options",
-			summary: "Custom rendering for options. Scoped with options and name.",
+			name: "option",
+			summary: "Custom content for one option. Scoped with option, selected, id, and name.",
 		},
 		{
 			name: "error",
@@ -87,6 +100,10 @@ export const formInputGroupMetadata = {
 			summary: "Move focus to the selected option, or the first option if none is selected.",
 		},
 	],
-	parts: [{ name: "indicator", summary: "Radio or checkbox input element for each option." }],
+	parts: [
+		{ name: "indicator", summary: "Radio or checkbox input element for each option." },
+		{ name: "option", summary: "Container for each radio or checkbox option." },
+		{ name: "options", summary: "Wrapper containing all radio or checkbox options." },
+	],
 	examples: [],
 };

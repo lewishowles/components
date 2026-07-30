@@ -11,14 +11,15 @@ import { nanoid } from "nanoid";
  *
  * - An array of strings or numbers, used as the key and value
  * - An array of objects, containing a key and value pair
- * - An array of any objects when combined with the labelKey and valueKey
+ * - An array of any objects when combined with the labelKey, valueKey, and
+ *   descriptionKey properties.
  *   properties.
  * - An array containing any combination of the above, or
  * - An object where each key-value pair will be turned into a single option.
  */
 export default function useOptions(
 	providedOptions,
-	{ labelKey = "label", valueKey = "value" } = {},
+	{ labelKey = "label", valueKey = "value", descriptionKey = "description" } = {},
 ) {
 	// Our standardised options, converting the range of allowed options formats
 	// into an array of objects containing a label and a value.
@@ -64,7 +65,19 @@ export default function useOptions(
 				// An object that contains both required keys, either those
 				// provided by the user, or the default "label" and "value".
 				if (Object.hasOwn(option, labelKey) && Object.hasOwn(option, valueKey)) {
-					internalOptions.push({ label: option[labelKey], value: option[valueKey] });
+					// The option shape used by grouped inputs.
+					const internalOption = {
+						label: option[labelKey],
+						value: option[valueKey],
+					};
+
+					const description = option[descriptionKey];
+
+					if (description !== undefined) {
+						internalOption.description = description;
+					}
+
+					internalOptions.push(internalOption);
 				}
 			});
 		}

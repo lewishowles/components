@@ -31,7 +31,7 @@ export const formCheckboxMetadata = {
 		{
 			name: "showOptionalIndicator",
 			type: "boolean",
-			default: true,
+			default: false,
 			summary: "Whether to show optional text when the field is not required.",
 		},
 		{
@@ -39,6 +39,13 @@ export const formCheckboxMetadata = {
 			type: "boolean",
 			default: false,
 			summary: "Set the checkbox to an indeterminate visual state.",
+		},
+		{
+			name: "variant",
+			type: "string",
+			default: null,
+			values: ["card"],
+			summary: "Display the checkbox in a card that highlights its selected state.",
 		},
 	],
 	slots: [
@@ -50,6 +57,10 @@ export const formCheckboxMetadata = {
 			name: "optional-indicator",
 			summary:
 				"Content shown after the label when the field is not required. Defaults to (optional).",
+		},
+		{
+			name: "description",
+			summary: "Supporting text shown beneath the checkbox label.",
 		},
 		{
 			name: "error",

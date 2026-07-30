@@ -1,10 +1,11 @@
-import { createMount } from "@lewishowles/testing/vue";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
-import { nextTick } from "vue";
+import { h, nextTick } from "vue";
 import FormCheckboxGroup from "./form-checkbox-group.vue";
 
 const defaultProps = { options: ["pineapple", "banana", "coconut"] };
 const mount = createMount(FormCheckboxGroup, { props: defaultProps });
+const deepMount = createDeepMount(FormCheckboxGroup, { props: defaultProps });
 
 describe("form-checkbox-group", () => {
 	describe("Initialisation", () => {
@@ -62,6 +63,31 @@ describe("form-checkbox-group", () => {
 				const wrapper = mount();
 
 				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("required")).toBe(false);
+			});
+		});
+
+		describe("variant", () => {
+			test("passes the card variant to the input group", () => {
+				const wrapper = mount({ props: { variant: "card" } });
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("variant")).toBe("card");
+			});
+		});
+
+		describe("Slots", () => {
+			test("forwards custom option content with selection details", () => {
+				const wrapper = deepMount({
+					props: { modelValue: ["banana"] },
+					slots: {
+						option: ({ option, selected }) =>
+							h("span", { "data-test": "custom-option" }, `${option.value}:${selected}`),
+					},
+				});
+
+				const options = wrapper.findAll('[data-test="custom-option"]');
+
+				expect(options).toHaveLength(3);
+				expect(options[1].text()).toBe("banana:true");
 			});
 		});
 	});

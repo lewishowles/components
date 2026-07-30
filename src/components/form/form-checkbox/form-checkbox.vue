@@ -9,7 +9,16 @@
 		data-component="form-checkbox"
 		data-test="form-checkbox"
 	>
-		<div class="flex gap-3" :class="{ 'justify-center': !displayLabel }">
+		<div
+			class="flex gap-3"
+			:class="{
+				'justify-center': !displayLabel,
+				relative: variant === 'card',
+				'border-border rounded-lg border p-3': variant === 'card' && !model,
+				'border-primary bg-primary-subtle rounded-lg border p-3': variant === 'card' && model,
+			}"
+			data-test="form-checkbox-card"
+		>
 			<input
 				ref="inputElement"
 				v-model="model"
@@ -28,11 +37,22 @@
 			/>
 
 			<form-label
-				:class="{ 'sr-only': !displayLabel }"
+				:class="{
+					'after:absolute after:inset-0 after:content-[\'\']': variant === 'card',
+					'sr-only': !displayLabel,
+				}"
 				v-bind="{ id: inputId, styled: false, required, showOptionalIndicator }"
 				data-part="label"
 			>
 				<slot />
+
+				<span
+					v-if="haveDescription"
+					class="text-content-muted block"
+					data-test="form-checkbox-description"
+				>
+					<slot name="description" />
+				</span>
 
 				<template #optional-indicator>
 					<slot name="optional-indicator" />
@@ -60,7 +80,8 @@
  * The `default` slot contains the label for the checkbox. `error` and `help`
  * slots exist for additional descriptive text.
  */
-import { useTemplateRef, watch } from "vue";
+import { computed, useSlots, useTemplateRef, watch } from "vue";
+import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
@@ -124,16 +145,27 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+
+	/**
+	 * The visual treatment to apply to this checkbox.
+	 */
+	variant: {
+		type: String,
+		default: null,
+	},
 });
 
 const model = defineModel({
 	type: [Boolean, Array],
 });
 
+const slots = useSlots();
 // A reference to the input, which allows us to trigger focus on it.
 const inputElement = useTemplateRef("inputElement");
-
-const { inputId, errorId, describedBy, haveHelp, haveError } = useFormField({ id: props.id });
+// Whether a description slot has been provided.
+const haveDescription = computed(() => isNonEmptySlot(slots.description));
+// Access to shared form field boilerplate.
+const { inputId, errorId, describedBy, haveError } = useFormField({ id: props.id });
 
 // Set the indeterminate DOM property when the prop changes.
 watch(

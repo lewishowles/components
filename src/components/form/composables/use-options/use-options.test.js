@@ -181,6 +181,24 @@ describe("use-options", () => {
 				]);
 			});
 
+			test('An array of objects with a defined "descriptionKey" includes descriptions', () => {
+				const { options } = useOptions(
+					[{ sport: "Tennis", score: 1, summary: "A racket sport." }],
+					{ labelKey: "sport", valueKey: "score", descriptionKey: "summary" },
+				);
+
+				expect(options.value).toEqual([
+					{
+						id: expect.any(String),
+						label: "Tennis",
+						value: 1,
+						description: "A racket sport.",
+						first: true,
+						last: true,
+					},
+				]);
+			});
+
 			test("Multiple option types can be combined", () => {
 				const { options } = useOptions([{ label: "one", value: 1 }, "two", 3]);
 

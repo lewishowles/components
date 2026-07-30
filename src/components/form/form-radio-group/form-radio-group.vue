@@ -2,7 +2,7 @@
 	<form-input-group
 		ref="input-group"
 		v-model="internalModel"
-		v-bind="{ type: 'radio', required: isRequired, name }"
+		v-bind="{ id: inputId, type: 'radio', required: isRequired, name, descriptionKey, variant }"
 		data-component="form-radio-group"
 		data-test="form-radio-group"
 	>
@@ -16,8 +16,8 @@
 			<slot name="introduction" />
 		</template>
 
-		<template #options="{ options, name }">
-			<slot name="options" v-bind="{ options, name }" />
+		<template #option="{ option, selected, id, name }">
+			<slot name="option" v-bind="{ option, selected, id, name }" />
 		</template>
 
 		<template #help>
@@ -32,13 +32,23 @@
 
 <script setup>
 import { computed, inject, ref, useTemplateRef, watch } from "vue";
-import { firstDefined } from "@lewishowles/helpers/array";
 import { isFunction } from "@lewishowles/helpers/general";
-import { isNonEmptyObject, keys, unwrap } from "@lewishowles/helpers/object";
+import { isNonEmptyObject, unwrap } from "@lewishowles/helpers/object";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
+import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
 const props = defineProps({
+	/**
+	 * Any ID to apply to this field. If an ID is not provided, one will be
+	 * generated at random. Note that when providing an ID, please make sure
+	 * that it is unique.
+	 */
+	id: {
+		type: String,
+		default: null,
+	},
+
 	/**
 	 * Our provided model value for our input. We convert this internally into
 	 * something that can be provided to our input group.
@@ -64,30 +74,37 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
+
+	/**
+	 * The key needed to find each option's description within its object.
+	 */
+	descriptionKey: {
+		type: String,
+		default: "description",
+	},
+
+	/**
+	 * The visual treatment to apply to each option.
+	 */
+	variant: {
+		type: String,
+		default: null,
+	},
 });
 
 const emit = defineEmits(["update:modelValue"]);
 const inputGroupRef = useTemplateRef("input-group");
 // The model provided by the input group, which we intend to transform.
 const internalModel = ref({});
+// Access to shared form field boilerplate.
+const { inputId } = useFormField({ id: props.id });
 
 // Retrieve isFieldRequired from an optional parent form-wrapper. The
 // injection may not be defined, so we get it in a safe way.
 const isFieldRequired = inject("form-wrapper", {})?.isFieldRequired;
 
-// The field name of our input, preferring the provided name prop, falling
-// back to deriving it from the internal model's keys.
-const fieldName = computed(() => {
-	if (isNonEmptyString(props.name)) {
-		return props.name;
-	}
-
-	if (!isNonEmptyObject(internalModel.value)) {
-		return null;
-	}
-
-	return firstDefined(keys(internalModel.value));
-});
+// The field name of our input, preferring the provided name prop.
+const fieldName = computed(() => props.name || inputId.value);
 
 // The underlying value of our field.
 const underlyingValue = computed(() => unwrap(internalModel.value));

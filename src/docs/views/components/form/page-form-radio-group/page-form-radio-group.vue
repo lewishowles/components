@@ -59,6 +59,20 @@
 				</ul>
 			</component-prop>
 
+			<component-prop id="prop-variant">
+				<template #name>variant</template>
+
+				<template #type>String</template>
+
+				<template #default-value>null</template>
+
+				<p>
+					Set to
+					<code>card</code>
+					to render each radio option as a bordered, selectable card.
+				</p>
+			</component-prop>
+
 			<component-prop id="prop-label-key">
 				<template #name>labelKey</template>
 

@@ -5,6 +5,7 @@
 ### Breaking changes
 
 - `modal-controller` no longer wraps pushed components in its own `base-modal`. Each component opened via `openModal` is now expected to be fully self-contained: render its own `modal-dialog`, and call the `onClose` prop it receives when its dialog closes (`@dialog:close="onClose?.()"`). This removes the previous double-`<dialog>` nesting that occurred if a pushed component tried to render `modal-dialog` itself. You don't need to declare or forward `inert` yourself: as long as your component's own root doesn't declare `inert` as one of its own props, Vue's attribute fallthrough carries it straight through to `modal-dialog`.
+- `form-radio-group` no longer supports its whole-array `#options` slot. Use the new per-option `#option` slot instead.
 
 ```html
 <!-- Before: modal-controller supplied the dialog chrome, only content was needed -->
@@ -52,6 +53,11 @@ openModal(DeleteAccountConfirm, {
 	onClose: () => trackDialogDismissed("delete-account"),
 });
 ```
+
+### Form option descriptions, card variants, and custom content
+
+- `form-radio-group` and `form-checkbox-group` options can include descriptions, use `variant="card"` to highlight selected options, and expose the per-option `#option` slot for custom content.
+- `form-checkbox` now supports a `description` slot and `variant="card"`.
 
 ### `data-table` server mode
 

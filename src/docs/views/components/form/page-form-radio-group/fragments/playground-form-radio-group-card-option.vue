@@ -4,7 +4,13 @@
 		id="playground-form-radio-group-card-option"
 		v-model="textSlots"
 	>
-		<template #title>Card options</template>
+		<template #title>Card variant</template>
+
+		<template #introduction>
+			Setting
+			<code>variant="card"</code>
+			renders each option as a bordered, selectable card.
+		</template>
 
 		<form-radio-group v-bind="componentProps" v-model="componentModel">
 			Choose a plan
@@ -13,7 +19,7 @@
 				<span class="flex min-w-0 flex-1 items-start justify-between gap-3">
 					<span class="min-w-0">
 						<span class="block font-medium">{{ option.label }}</span>
-						<span class="text-content-muted mt-1 block">{{ option.description }}</span>
+						<span class="text-content-muted block">{{ option.description }}</span>
 					</span>
 
 					<span class="shrink-0 font-medium">{{ option.price }}</span>
@@ -73,13 +79,13 @@ const componentProps = computed(() => {
 
 // The custom option slot included in the copied template.
 const optionTemplate = [
-	'<template #option="{ option }">',
-	"\t<span>",
-	"\t\t<span>{{ option.label }}</span>",
-	"\t\t<span>{{ option.description }}</span>",
-	"\t\t<span>{{ option.price }}</span>",
-	"\t</span>",
-	"</template>",
+	'\t<template #option="{ option }">',
+	"\t\t<span>",
+	"\t\t\t<span>{{ option.label }}</span>",
+	"\t\t\t<span>{{ option.description }}</span>",
+	"\t\t\t<span>{{ option.price }}</span>",
+	"\t\t</span>",
+	"\t</template>",
 ].join("\n");
 
 const template = useTemplateGenerator("form-radio-group", {

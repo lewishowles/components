@@ -20,6 +20,10 @@ Content shown after the label text when the field is not required. Defaults to `
 
 Any additional text to introduce the options, which appears between the label and options.
 
+### `option`
+
+Custom content for one option. The existing input and label stay in place, while the slot receives `option`, `selected`, `id`, and `name`.
+
 ### `error`
 
 Any error text to display below the field.
@@ -40,6 +44,7 @@ The options to display as radio buttons can be provided in a number of formats f
 - An array of strings `["option1", "option2", "option3"]`, in which case both the label and value are the same.
 - An array of numbers `[1, 2, 3]`, in which case both the label and value are the same.
 - An array of objects `[{ label: "Label", value: "value" }]` where labels and values are explicitly defined.
+- An array of objects with an optional `description`, shown beneath the label.
 - An array of objects combined with the `labelKey` and `valueKey` properties.
 - An object `{ value: "label" }` where each key is the value of oan option, and each value is the label.
 
@@ -56,6 +61,13 @@ The key needed to find each option's label within its object. If an individual o
 - default: `value`
 
 The key needed to find each option's value within its object. If an individual option is a string or number, this is ignored.
+
+### `descriptionKey`
+
+- type: `string`
+- default: `description`
+
+The key needed to find an optional description within each option object.
 
 ### `name`
 
@@ -79,6 +91,14 @@ Any ID to apply to this field. If an ID is not provided, one will be generated a
 Whether to display options inline (horizontally). This is only recommended when there are two to three options. Any more than that, and vertical display is more clear for the user.
 
 Note that this only takes effect when the radio buttons are in a _container_ that is at least 320px wide.
+
+### `variant`
+
+- type: `string`
+- default: `null`
+- values: `card`
+
+Use `card` to give each option a bordered card treatment, with the selected option using primary-colour border and background tokens.
 
 ### `required`
 

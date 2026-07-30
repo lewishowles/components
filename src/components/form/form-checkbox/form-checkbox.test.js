@@ -59,5 +59,13 @@ describe("form-checkbox", () => {
 				expect(wrapper.find("input").attributes("required")).toBeUndefined();
 			});
 		});
+
+		describe("variant", () => {
+			test("adds card styling when checked", () => {
+				const wrapper = mount({ props: { modelValue: true, variant: "card" } });
+
+				expect(wrapper.find(".border-primary").exists()).toBe(true);
+			});
+		});
 	});
 });

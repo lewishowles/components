@@ -2,7 +2,7 @@
 	<form-input-group
 		ref="input-group"
 		v-model="internalModel"
-		v-bind="{ type: 'checkbox', required, name }"
+		v-bind="{ type: 'checkbox', required, name, descriptionKey, variant }"
 		data-component="form-checkbox-group"
 		data-test="form-checkbox-group"
 	>
@@ -14,6 +14,10 @@
 
 		<template #introduction>
 			<slot name="introduction" />
+		</template>
+
+		<template #option="{ option, selected, id, name }">
+			<slot name="option" v-bind="{ option, selected, id, name }" />
 		</template>
 
 		<template #help>
@@ -55,6 +59,22 @@ const props = defineProps({
 	 * A name for this checkbox group. If not set, the input ID is used.
 	 */
 	name: {
+		type: String,
+		default: null,
+	},
+
+	/**
+	 * The key needed to find each option's description within its object.
+	 */
+	descriptionKey: {
+		type: String,
+		default: "description",
+	},
+
+	/**
+	 * The visual treatment to apply to each option.
+	 */
+	variant: {
 		type: String,
 		default: null,
 	},
