@@ -38,10 +38,10 @@
 		<div
 			v-for="section in internalSections"
 			:key="section.label"
-			class="animate-fade-in delay rounded-md px-4 py-3 dark:ring-0"
+			class="animate-fade-in delay rounded-md px-6 py-5 dark:ring-0"
 			:class="section.colours"
 		>
-			<component :is="section.icon" class="my-6 block size-12" />
+			<component :is="section.icon" class="mb-6 block size-12" />
 
 			<h3 class="font-semibold">
 				{{ section.label }}
@@ -113,6 +113,11 @@ const sectionConfiguration = {
 		icon: IconForm,
 		colours: "bg-blue-50 ring-blue-200 text-blue-800 dark:bg-blue-500/20 dark:text-blue-200",
 	},
+	"Form fields": {
+		icon: IconForm,
+		colours:
+			"bg-orange-50 ring-orange-200 text-orange-800 dark:bg-orange-500/20 dark:text-orange-200",
+	},
 	General: {
 		icon: IconGeneral,
 		colours: "bg-grey-50 ring-grey-200 text-grey-800 dark:bg-grey-500/20 dark:text-grey-200",
@@ -164,6 +169,10 @@ const internalSections = computed(() => {
 		}
 
 		sections[item.section].items.push(item);
+	});
+
+	Object.values(sections).forEach((section) => {
+		section.items.sort((firstItem, secondItem) => firstItem.label.localeCompare(secondItem.label));
 	});
 
 	return sections;
