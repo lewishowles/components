@@ -36,6 +36,49 @@
 			<p>If tabs only contain content, an Accordion may be a better choice.</p>
 		</template>
 
+		<component-keyboard-interaction>
+			<table>
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<code>ArrowLeft</code>
+							/
+							<code>ArrowUp</code>
+						</td>
+						<td>
+							Move focus to the previous tab, wrapping to the last tab. In automatic activation
+							mode, also activate it.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code>ArrowRight</code>
+							/
+							<code>ArrowDown</code>
+						</td>
+						<td>
+							Move focus to the next tab, wrapping to the first tab. In automatic activation mode,
+							also activate it.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code>Enter</code>
+							/
+							<code>Space</code>
+						</td>
+						<td>In manual activation mode, activate the focused tab.</td>
+					</tr>
+				</tbody>
+			</table>
+		</component-keyboard-interaction>
+
 		<component-props>
 			<component-prop id="prop-activation">
 				<template #name>activation</template>
@@ -45,11 +88,8 @@
 				<template #default-value>"auto"</template>
 
 				<p>
-					Controls whether tab activation follows focus. In
-					<code>"auto"</code>
-					mode (default), arrow keys both move focus and activate the tab. In
-					<code>"manual"</code>
-					mode, arrow keys move focus only; press Enter or Space to activate. Use
+					Controls whether a focused tab becomes active automatically or only when it is activated.
+					Use
 					<code>"manual"</code>
 					when activating a tab triggers a data fetch, for example.
 				</p>

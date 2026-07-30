@@ -21,6 +21,25 @@
 			</p>
 		</template>
 
+		<component-keyboard-interaction>
+			<table>
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><code>Escape</code></td>
+						<td>
+							When enabled, close the panel. When focus is inside it, return focus to the summary.
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</component-keyboard-interaction>
+
 		<component-props>
 			<component-prop id="prop-open">
 				<template #name>open</template>
@@ -39,10 +58,7 @@
 
 				<template #default-value>true</template>
 
-				<p>
-					Whether to close the details element when pressing escape. If focus is within this
-					component, focus is moved to the summary element.
-				</p>
+				<p>Whether the panel responds when Escape is pressed.</p>
 			</component-prop>
 
 			<component-prop id="prop-close-with-click-outside">

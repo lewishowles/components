@@ -48,7 +48,7 @@ Whether the details element should initially be open.
 - type: `boolean`
 - default: `true`
 
-Whether to close the details element when pressing escape. If focus is within this component, focus is moved to the summary element.
+Whether the panel responds when Escape is pressed.
 
 ### `closeWithClickOutside`
 
@@ -153,6 +153,12 @@ Open the details.
 ### `closeDetails`
 
 Close the details.
+
+## Keyboard interaction
+
+| Key      | Action                                                                               |
+| -------- | ------------------------------------------------------------------------------------ |
+| `Escape` | When enabled, close the panel. When focus is inside it, return focus to the summary. |
 
 ## Styling hooks
 

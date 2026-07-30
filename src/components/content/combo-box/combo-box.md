@@ -1,6 +1,6 @@
 # `combo-box`
 
-`combo-box` pairs a search input with a list of results, handling the keyboard, ARIA, and open/close behaviour of the combobox interaction pattern on top of the [`useCombobox`](/composables/use-combobox) composable. Arrow keys move through the results, `Enter` chooses the highlighted one, and `Escape` closes the list.
+`combo-box` pairs a search input with a list of results, handling the keyboard, ARIA, and open/close behaviour of the combobox interaction pattern on top of the [`useCombobox`](/composables/use-combobox) composable.
 
 It deliberately does not filter. You pass the already-matched `items` and render each one through the default slot, so matching and ordering stay with whoever owns the data. This keeps the component agnostic to what each result is, which makes it well suited to a command menu fed by several sources (vehicles, users, pages), each matching itself before the results are combined into one list.
 
@@ -103,6 +103,17 @@ Emitted when the user chooses a result, with the original item as its payload.
 ### `triggerFocus`
 
 Move focus to the input.
+
+## Keyboard interaction
+
+| Key                                         | Action                                                                          |
+| ------------------------------------------- | ------------------------------------------------------------------------------- |
+| `ArrowDown`                                 | Open the results and highlight the first result, or move to the next result.    |
+| `Alt` + `ArrowDown`                         | Open the results without moving the highlight.                                  |
+| `ArrowUp`                                   | Open the results and highlight the last result, or move to the previous result. |
+| `Enter`                                     | Choose the highlighted result, or close the results when none is highlighted.   |
+| `Escape`                                    | Close the results.                                                              |
+| `ArrowLeft` / `ArrowRight` / `Home` / `End` | Clear the highlighted result and use the input's normal text editing behaviour. |
 
 ## Styling hooks
 

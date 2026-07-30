@@ -40,9 +40,9 @@
 					, a visual divider between sections
 				</li>
 			</ul>
+		</template>
 
-			<h3>Keyboard behaviour</h3>
-
+		<component-keyboard-interaction>
 			<table>
 				<thead>
 					<tr>
@@ -57,7 +57,7 @@
 							/
 							<code>Space</code>
 						</td>
-						<td>Open the menu (on trigger)</td>
+						<td>Open the menu from its trigger.</td>
 					</tr>
 					<tr>
 						<td>
@@ -65,31 +65,34 @@
 							/
 							<code>ArrowUp</code>
 						</td>
-						<td>Open the menu and focus first item (on trigger); move between items (in menu)</td>
+						<td>
+							Open the menu and focus its first item from the trigger; move between items in the
+							menu.
+						</td>
 					</tr>
 					<tr>
 						<td><code>Home</code></td>
-						<td>Focus the first item</td>
+						<td>Focus the first menu item.</td>
 					</tr>
 					<tr>
 						<td><code>End</code></td>
-						<td>Focus the last item</td>
+						<td>Focus the last menu item.</td>
 					</tr>
 					<tr>
 						<td>Character keys</td>
-						<td>Type-ahead: focus first item whose label starts with the typed text</td>
+						<td>Focus the first item whose label starts with the typed text.</td>
 					</tr>
 					<tr>
 						<td><code>Escape</code></td>
-						<td>Close menu, return focus to trigger</td>
+						<td>Close the menu and return focus to its trigger.</td>
 					</tr>
 					<tr>
 						<td><code>Tab</code></td>
-						<td>Close menu, move focus to next element</td>
+						<td>Close the menu and move focus to the next element.</td>
 					</tr>
 				</tbody>
 			</table>
-		</template>
+		</component-keyboard-interaction>
 
 		<component-props>
 			<component-prop id="prop-button-classes">

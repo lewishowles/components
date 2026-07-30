@@ -50,7 +50,7 @@ The label for this tab, to be displayed in the tab bar.
 - default: `"auto"`
 - options: `"auto"` | `"manual"`
 
-Controls whether tab activation follows focus. In `"auto"` mode (default), arrow keys both move focus and activate the tab. In `"manual"` mode, arrow keys move focus only; press Enter or Space to activate. Use `"manual"` when activating a tab triggers a data fetch, for example.
+Controls whether a focused tab becomes active automatically or only when it is activated. Use `"manual"` when activating a tab triggers a data fetch, for example.
 
 ### `rememberSelection`
 
@@ -94,6 +94,14 @@ An icon to display with the tab button.
 ### `select`
 
 Activate this tab programmatically. Useful when external code needs to change which tab is active.
+
+## Keyboard interaction
+
+| Key                        | Action                                                                                                    |
+| -------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `ArrowLeft` / `ArrowUp`    | Move focus to the previous tab, wrapping to the last tab. In automatic activation mode, also activate it. |
+| `ArrowRight` / `ArrowDown` | Move focus to the next tab, wrapping to the first tab. In automatic activation mode, also activate it.    |
+| `Enter` / `Space`          | In manual activation mode, activate the focused tab.                                                      |
 
 ## Styling hooks
 

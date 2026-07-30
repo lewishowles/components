@@ -43,6 +43,37 @@
 			</p>
 		</template>
 
+		<component-keyboard-interaction>
+			<p>With at least two panel triggers, when focus is on one of them:</p>
+
+			<table>
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><code>ArrowDown</code></td>
+						<td>Focus the next panel trigger, wrapping to the first.</td>
+					</tr>
+					<tr>
+						<td><code>ArrowUp</code></td>
+						<td>Focus the previous panel trigger, wrapping to the last.</td>
+					</tr>
+					<tr>
+						<td><code>Home</code></td>
+						<td>Focus the first panel trigger.</td>
+					</tr>
+					<tr>
+						<td><code>End</code></td>
+						<td>Focus the last panel trigger.</td>
+					</tr>
+				</tbody>
+			</table>
+		</component-keyboard-interaction>
+
 		<component-props>
 			<component-prop id="prop-heading-level">
 				<template #name>headingLevel</template>

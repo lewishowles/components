@@ -37,6 +37,17 @@ The label for the button which hides all accordion panels.
 
 The heading level to use for all panels. Choose it based on the heading levels already used around this component; the library can't detect this automatically.
 
+## Keyboard interaction
+
+With at least two panel triggers, when focus is on one of them:
+
+| Key         | Action                                                  |
+| ----------- | ------------------------------------------------------- |
+| `ArrowDown` | Focus the next panel trigger, wrapping to the first.    |
+| `ArrowUp`   | Focus the previous panel trigger, wrapping to the last. |
+| `Home`      | Focus the first panel trigger.                          |
+| `End`       | Focus the last panel trigger.                           |
+
 ## Styling hooks
 
 | Attribute                          | Element                          | Notes                          |

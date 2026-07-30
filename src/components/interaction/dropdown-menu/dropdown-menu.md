@@ -79,17 +79,17 @@ Open the menu programmatically.
 
 Close the menu programmatically.
 
-## Keyboard behaviour
+## Keyboard interaction
 
-| Key                     | Action                                                                        |
-| ----------------------- | ----------------------------------------------------------------------------- |
-| `Enter` / `Space`       | Open the menu (on trigger)                                                    |
-| `ArrowDown` / `ArrowUp` | Open the menu and focus first item (on trigger); move between items (in menu) |
-| `Home`                  | Focus first item                                                              |
-| `End`                   | Focus last item                                                               |
-| Character keys          | Type-ahead: focus first item whose label starts with the typed text           |
-| `Escape`                | Close menu, return focus to trigger                                           |
-| `Tab`                   | Close menu, move focus to next element                                        |
+| Key                     | Action                                                                                   |
+| ----------------------- | ---------------------------------------------------------------------------------------- |
+| `Enter` / `Space`       | Open the menu from its trigger.                                                          |
+| `ArrowDown` / `ArrowUp` | Open the menu and focus its first item from the trigger; move between items in the menu. |
+| `Home`                  | Focus the first menu item.                                                               |
+| `End`                   | Focus the last menu item.                                                                |
+| Character keys          | Focus the first item whose label starts with the typed text.                             |
+| `Escape`                | Close the menu and return focus to its trigger.                                          |
+| `Tab`                   | Close the menu and move focus to the next element.                                       |
 
 ## Styling hooks
 

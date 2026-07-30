@@ -58,7 +58,7 @@ Whether to announce concise, non-interactive information immediately when opened
 - type: `boolean`
 - default: `true`
 
-Whether to close the details element when pressing escape. If focus is within this component, focus is moved to the summary element.
+Whether the details element responds when Escape is pressed.
 
 ### `iconOpen`
 
@@ -146,6 +146,12 @@ Close the details.
 ### `toggleDetails`
 
 Toggle the details between open and closed.
+
+## Keyboard interaction
+
+| Key      | Action                                                                                            |
+| -------- | ------------------------------------------------------------------------------------------------- |
+| `Escape` | When enabled, close the open details. When focus is inside the component, move it to the summary. |
 
 ## Styling hooks
 

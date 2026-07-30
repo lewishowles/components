@@ -50,6 +50,12 @@ Whether pressing Escape requests dismissal of the sheet.
 
 Requests that the owning component dismiss the surface.
 
+## Keyboard interaction
+
+| Key      | Action                                                            |
+| -------- | ----------------------------------------------------------------- |
+| `Escape` | Request dismissal of the sheet when `closeWithEscape` is enabled. |
+
 ## Styling hooks
 
 | Attribute                  | Element           | Notes               |

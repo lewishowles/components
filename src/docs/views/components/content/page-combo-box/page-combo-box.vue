@@ -8,11 +8,7 @@
 				pairs a search input with a list of results, handling the keyboard, ARIA, and open/close
 				behaviour of the combobox interaction pattern on top of the
 				<code>useCombobox</code>
-				composable. Arrow keys move through the results,
-				<code>Enter</code>
-				chooses the highlighted one, and
-				<code>Escape</code>
-				closes the list.
+				composable.
 			</p>
 
 			<p>
@@ -32,6 +28,55 @@
 				event.
 			</p>
 		</template>
+
+		<component-keyboard-interaction>
+			<table>
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><code>ArrowDown</code></td>
+						<td>Open the results and highlight the first result, or move to the next result.</td>
+					</tr>
+					<tr>
+						<td>
+							<code>Alt</code>
+							+
+							<code>ArrowDown</code>
+						</td>
+						<td>Open the results without moving the highlight.</td>
+					</tr>
+					<tr>
+						<td><code>ArrowUp</code></td>
+						<td>Open the results and highlight the last result, or move to the previous result.</td>
+					</tr>
+					<tr>
+						<td><code>Enter</code></td>
+						<td>Choose the highlighted result, or close the results when none is highlighted.</td>
+					</tr>
+					<tr>
+						<td><code>Escape</code></td>
+						<td>Close the results.</td>
+					</tr>
+					<tr>
+						<td>
+							<code>ArrowLeft</code>
+							/
+							<code>ArrowRight</code>
+							/
+							<code>Home</code>
+							/
+							<code>End</code>
+						</td>
+						<td>Clear the highlighted result and use the input's normal text editing behaviour.</td>
+					</tr>
+				</tbody>
+			</table>
+		</component-keyboard-interaction>
 
 		<component-props>
 			<component-prop id="prop-items">
