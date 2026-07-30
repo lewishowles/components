@@ -12,7 +12,9 @@
 			<slot name="default-value" />
 		</template>
 
-		<slot />
+		<div class="prose prose-stone dark:prose-invert prose-pre:mb-10">
+			<slot />
+		</div>
 	</component-tab-section>
 </template>
 

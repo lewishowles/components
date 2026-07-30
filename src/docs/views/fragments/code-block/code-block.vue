@@ -92,7 +92,6 @@ watch(
 
 <style scoped>
 :deep(.shiki) {
-	margin-block-end: 0;
 	overflow-x: auto;
 	white-space: pre;
 	border-radius: var(--radius-md);
