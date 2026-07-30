@@ -377,6 +377,10 @@ export function useForm({
 
 		if (!Object.hasOwn(formData.value, field.name)) {
 			formData.value[field.name] = null;
+
+			if (!Object.hasOwn(baseline.value, field.name)) {
+				baseline.value[field.name] = null;
+			}
 		}
 	}
 

@@ -443,6 +443,14 @@ describe("useForm", () => {
 			expect(formData.value).toHaveProperty("email", null);
 		});
 
+		test("keeps a newly registered default field clean", async () => {
+			const { isDirty, registerField } = createForm();
+
+			await registerField({ name: "email", id: "email-id" });
+
+			expect(isDirty.value).toBe(false);
+		});
+
 		test("does not overwrite an existing formData value on register", async () => {
 			const { formData, registerField } = createForm();
 
