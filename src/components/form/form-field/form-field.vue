@@ -19,6 +19,12 @@
 		<template #introduction>
 			<slot name="introduction" />
 		</template>
+		<template #option="{ option, selected, id, name }">
+			<slot name="option" v-bind="{ option, selected, id, name }" />
+		</template>
+		<template #description>
+			<slot name="description" />
+		</template>
 		<template v-if="$slots['empty-option-label']" #empty-option-label>
 			<slot name="empty-option-label" />
 		</template>
@@ -27,9 +33,6 @@
 		</template>
 		<template #suffix>
 			<slot name="suffix" />
-		</template>
-		<template #options>
-			<slot name="options" />
 		</template>
 		<template #error>
 			<slot name="error">

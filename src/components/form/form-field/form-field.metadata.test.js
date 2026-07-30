@@ -69,21 +69,24 @@ describe("form-field metadata", () => {
 		});
 	});
 
-	describe("options slot", () => {
-		test("documents the options slot", () => {
-			const optionsSlot = formFieldMetadata.slots.find((s) => s.name === "options");
+	describe("forwarded slots", () => {
+		test("documents the option slot and its scoped values", () => {
+			const optionSlot = formFieldMetadata.slots.find((slot) => slot.name === "option");
 
-			expect(optionsSlot).toBeDefined();
+			expect(optionSlot).toBeDefined();
+			expect(optionSlot.summary).toContain("option, selected, id, and name");
 		});
 
-		test("options slot summary mentions all option-bearing types", () => {
-			const optionsSlot = formFieldMetadata.slots.find((s) => s.name === "options");
+		test("documents the checkbox description slot", () => {
+			const descriptionSlot = formFieldMetadata.slots.find((slot) => slot.name === "description");
 
-			expect(optionsSlot).toBeDefined();
+			expect(descriptionSlot).toBeDefined();
+		});
 
-			for (const type of OPTION_BEARING_TYPES) {
-				expect(optionsSlot.summary).toContain(type);
-			}
+		test("does not document the removed options slot", () => {
+			const optionsSlot = formFieldMetadata.slots.find((slot) => slot.name === "options");
+
+			expect(optionsSlot).toBeUndefined();
 		});
 	});
 });

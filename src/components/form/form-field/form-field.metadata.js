@@ -65,6 +65,14 @@ export const formFieldMetadata = {
 			summary: "Introductory text shown above the input.",
 		},
 		{
+			name: "option",
+			summary: "Custom content for one option. Scoped with option, selected, id, and name.",
+		},
+		{
+			name: "description",
+			summary: "Supporting text shown beneath a checkbox label.",
+		},
+		{
 			name: "empty-option-label",
 			summary: "Content for a select field's empty option. Defaults to the field label.",
 		},
@@ -75,10 +83,6 @@ export const formFieldMetadata = {
 		{
 			name: "suffix",
 			summary: "Content placed after the input.",
-		},
-		{
-			name: "options",
-			summary: "Options for select, radio-group, checkbox-group, and button-group controls.",
 		},
 		{
 			name: "error",
@@ -221,66 +225,6 @@ export const formFieldMetadata = {
 					name: {
 						label: "Field name",
 						value: "website",
-						isInline: true,
-					},
-				},
-			},
-		},
-		{
-			name: "select",
-			label: "Select field with options",
-			summary: "A select field using the options slot to provide choices.",
-			snippet: {
-				slots: {
-					default: {
-						label: "Field label",
-						value: "Country",
-					},
-					options: {
-						label: "Options",
-						value:
-							'<option value="gb">United Kingdom</option>\n<option value="us">United States</option>\n<option value="ca">Canada</option>',
-					},
-				},
-				props: {
-					name: {
-						label: "Field name",
-						value: "country",
-						isInline: true,
-					},
-					type: {
-						label: "Field type",
-						value: "select",
-						isInline: true,
-					},
-				},
-			},
-		},
-		{
-			name: "radio-group",
-			label: "Radio group field with options",
-			summary: "A radio-group field using the options slot to provide labelled choices.",
-			snippet: {
-				slots: {
-					default: {
-						label: "Field label",
-						value: "Preferred contact method",
-					},
-					options: {
-						label: "Options",
-						value:
-							'<form-radio value="email">Email</form-radio>\n<form-radio value="phone">Phone</form-radio>',
-					},
-				},
-				props: {
-					name: {
-						label: "Field name",
-						value: "contact_method",
-						isInline: true,
-					},
-					type: {
-						label: "Field type",
-						value: "radio-group",
 						isInline: true,
 					},
 				},

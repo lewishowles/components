@@ -23,8 +23,18 @@ export const summaryDetailsMetadata = {
 			default: true,
 			summary: "Close when Escape is pressed.",
 		},
-		{ name: "iconOpen", type: "string", default: null, summary: "Icon used while open." },
-		{ name: "iconClosed", type: "string", default: null, summary: "Icon used while closed." },
+		{
+			name: "iconOpen",
+			type: "string",
+			default: "icon-chevron-up",
+			summary: "Icon used while open.",
+		},
+		{
+			name: "iconClosed",
+			type: "string",
+			default: "icon-chevron-down",
+			summary: "Icon used while closed.",
+		},
 		{ name: "icon", type: "string", default: null, summary: "Icon used for both states." },
 		{
 			name: "iconAtStart",

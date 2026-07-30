@@ -1,5 +1,6 @@
 import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test, vi } from "vite-plus/test";
+import { h } from "vue";
 
 import FormButtonGroup from "@/components/form/form-button-group/form-button-group.vue";
 import FormCheckbox from "@/components/form/form-checkbox/form-checkbox.vue";
@@ -236,6 +237,45 @@ describe("form-field", () => {
 				});
 
 				expect(wrapper.get('option[value=""]').text()).toBe("Choose a flavour");
+			});
+		});
+
+		describe("forwarded slots", () => {
+			test("should forward option content with selection details", () => {
+				const wrapper = mountDeep({
+					props: {
+						modelValue: "banana",
+						name: "flavour",
+						options: ["banana"],
+						type: "radio-group",
+					},
+					slots: {
+						option: ({ id, name, option, selected }) =>
+							h(
+								"span",
+								{ "data-test": "custom-option" },
+								option.value + ":" + selected + ":" + id + ":" + name,
+							),
+					},
+				});
+
+				const option = wrapper.get('[data-test="custom-option"]');
+
+				expect(option.text()).toMatch(/^banana:true:.+:flavour$/);
+			});
+
+			test("should forward description content to checkbox fields", () => {
+				const wrapper = mountDeep({
+					props: { type: "checkbox" },
+					slots: {
+						default: "Receive updates",
+						description: "Unsubscribe at any time.",
+					},
+				});
+
+				expect(wrapper.get('[data-test="form-checkbox-description"]').text()).toBe(
+					"Unsubscribe at any time.",
+				);
 			});
 		});
 

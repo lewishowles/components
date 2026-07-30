@@ -16,6 +16,14 @@ Content shown after the label text when the field is not required. Defaults to `
 
 Content for a select field's empty option. Defaults to the field label.
 
+### `option`
+
+Custom content for one option in a checkbox or radio group. Receives `option`, `selected`, `id`, and `name`.
+
+### `description`
+
+Supporting text shown beneath a checkbox label.
+
 ### `remove-button-label`
 
 Content for a file field's remove button. Receives `files`, an array containing the current `File` objects.
@@ -75,7 +83,7 @@ Any additional attributes to pass to the input itself, such as `autocomplete` or
 
 ### Additional props
 
-Some field types expose additional props. For example, `multiple` applies to `file` fields, while option-bearing fields use their documented options configuration.
+Some field types expose additional props. For example, `multiple` applies to `file` fields, while option-bearing fields use their documented `options` prop.
 
 ## Events
 
