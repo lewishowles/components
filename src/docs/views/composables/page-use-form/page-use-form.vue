@@ -6,7 +6,7 @@
 			<p>
 				<code>useForm</code>
 				prepares the bindings passed to
-				<router-link v-bind="{ to: '/form/form-wrapper' }">
+				<router-link :to="{ name: 'form-wrapper' }">
 					<code>form-wrapper</code>
 				</router-link>
 				. Use it when setting up a form so form data, validation rules, initial values, and submit
@@ -17,13 +17,13 @@
 				Destructure
 				<code>form</code>
 				from the return and pass it to
-				<router-link v-bind="{ to: '/form/form-wrapper' }">
+				<router-link :to="{ name: 'form-wrapper' }">
 					<code>form-wrapper</code>
 				</router-link>
 				with
 				<code>v-bind</code>
 				. The wrapper still handles field registration, validation, the error summary, and the
-				<router-link v-bind="{ to: '/form/form-field' }">
+				<router-link :to="{ name: 'form-field' }">
 					<code>form-field</code>
 				</router-link>
 				injection. Additional values such as
@@ -56,7 +56,7 @@
 					<code>initialData</code>
 					value into the object used by the form. Receives the resolved value and should return a
 					plain object whose keys match your
-					<router-link v-bind="{ to: '/form/form-field' }">
+					<router-link :to="{ name: 'form-field' }">
 						<code>form-field</code>
 					</router-link>
 					<code>name</code>
@@ -144,7 +144,7 @@
 					carries
 					<code>schema</code>
 					through to
-					<router-link v-bind="{ to: '/form/form-wrapper' }">
+					<router-link :to="{ name: 'form-wrapper' }">
 						<code>form-wrapper</code>
 					</router-link>
 					the same way it does
@@ -209,7 +209,7 @@
 					A bindable object for
 					<code>v-bind="form"</code>
 					on
-					<router-link v-bind="{ to: '/form/form-wrapper' }">
+					<router-link :to="{ name: 'form-wrapper' }">
 						<code>form-wrapper</code>
 					</router-link>
 					. Packs the
@@ -254,7 +254,7 @@
 					The result of the last submit as
 					<code>{ type: 'success' | 'error', message }</code>
 					, shaped to feed directly into
-					<router-link v-bind="{ to: '/form/form-wrapper' }">
+					<router-link :to="{ name: 'form-wrapper' }">
 						<code>form-wrapper</code>
 					</router-link>
 					's

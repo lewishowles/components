@@ -7,7 +7,7 @@
 				<code>useNotifications</code>
 				provides a module-scoped registry for application notifications. All calls share the same
 				state, so notifications added anywhere in the app are visible to every
-				<router-link v-bind="{ to: '/messaging/notification-handler' }">
+				<router-link :to="{ name: 'notification-handler' }">
 					<code>notification-handler</code>
 				</router-link>
 				instance.

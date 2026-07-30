@@ -8,7 +8,7 @@
 				prepares the
 				<code>formData</code>
 				ref that is passed to
-				<router-link v-bind="{ to: '/form/form-wrapper' }">
+				<router-link :to="{ name: 'form-wrapper' }">
 					<code>form-wrapper</code>
 				</router-link>
 				or

@@ -7,7 +7,7 @@
 				<code>useModalDialog</code>
 				provides a shared stack of modal dialogs. The most recently requested dialog is displayed by
 				the
-				<router-link v-bind="{ to: '/messaging/modal-controller' }">
+				<router-link :to="{ name: 'modal-controller' }">
 					<code>modal-controller</code>
 				</router-link>
 				component, which should be included once near the root of the application.

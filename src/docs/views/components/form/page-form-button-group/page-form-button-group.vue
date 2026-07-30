@@ -6,7 +6,7 @@
 			<p>
 				<code>form-button-group</code>
 				is an extension of
-				<router-link v-bind="{ to: '/forms/form-radio-group' }">
+				<router-link :to="{ name: 'form-radio-group' }">
 					<code>form-radio-group</code>
 				</router-link>
 				, styled as a group of buttons.

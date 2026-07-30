@@ -21,14 +21,14 @@
 				panels of a form. If this is the case, it is likely that the form is too complex and should
 				be split over multiple pages. If a user needs to compare two panels or change between them
 				regularly,
-				<router-link v-bind="{ to: '/content/tab-group' }">
+				<router-link :to="{ name: 'tab-group' }">
 					<code>tab-group</code>
 				</router-link>
 				is a better choice as content does’t move.
 			</p>
 			<p>
 				If only one panel is needed, to provide further context, for example, use the
-				<router-link v-bind="{ to: '/content/summary-details' }">
+				<router-link :to="{ name: 'summary-details' }">
 					<code>summary-details</code>
 				</router-link>
 				element instead.

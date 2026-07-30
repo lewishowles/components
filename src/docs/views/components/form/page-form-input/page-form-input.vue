@@ -118,7 +118,7 @@
 				<p>Any element (text or icon) to place at the start of the field.</p>
 				<p>
 					You can find
-					<router-link v-bind="{ to: 'icons' }">
+					<router-link :to="{ name: 'icons' }">
 						the list of available icons in this project
 					</router-link>
 				</p>
@@ -129,7 +129,7 @@
 				<p>Any element (text or icon) to place at the end of the field.</p>
 				<p>
 					You can find
-					<router-link v-bind="{ to: 'icons' }">
+					<router-link :to="{ name: 'icons' }">
 						the list of available icons in this project
 					</router-link>
 				</p>

@@ -18,7 +18,7 @@
 
 			<p>
 				For a simple disclosure panel or floating content area, use
-				<router-link v-bind="{ to: '/content/floating-details' }">
+				<router-link :to="{ name: 'floating-details' }">
 					<code>floating-details</code>
 				</router-link>
 				instead.

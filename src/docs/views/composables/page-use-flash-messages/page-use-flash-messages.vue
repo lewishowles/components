@@ -11,7 +11,7 @@
 
 			<p>
 				Messages are shown by
-				<router-link v-bind="{ to: '/content/flash-messages' }">
+				<router-link :to="{ name: 'flash-messages' }">
 					<code>flash-messages</code>
 				</router-link>
 				. Pass a

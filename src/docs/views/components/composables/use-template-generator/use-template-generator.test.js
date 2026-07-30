@@ -1,4 +1,4 @@
-import { describe, expect, test, vi, beforeEach } from "vite-plus/test";
+import { beforeEach, describe, expect, test, vi } from "vite-plus/test";
 import { ref } from "vue";
 import useTemplateGenerator from "./use-template-generator";
 

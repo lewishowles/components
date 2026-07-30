@@ -21,7 +21,7 @@
 
 			<p>
 				Messages are added through
-				<router-link v-bind="{ to: '/composables/use-flash-messages' }">
+				<router-link :to="{ name: 'use-flash-messages' }">
 					<code>useFlashMessages</code>
 				</router-link>
 				.

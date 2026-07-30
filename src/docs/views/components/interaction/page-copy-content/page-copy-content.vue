@@ -11,7 +11,7 @@
 			</p>
 			<p>
 				Because this component utilises the
-				<router-link v-bind="{ to: '/interaction/ui-button' }">
+				<router-link :to="{ name: 'ui-button' }">
 					<code>ui-button</code>
 				</router-link>
 				component, all props and slots from that component also apply.

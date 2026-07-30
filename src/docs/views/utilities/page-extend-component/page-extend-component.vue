@@ -14,7 +14,7 @@
 			<p>
 				It is intended for wrapping a library component in your own application to inject
 				project-specific defaults, such as a shared error-parsing callback on
-				<router-link v-bind="{ to: '/form/form-wrapper' }">
+				<router-link :to="{ name: 'form-wrapper' }">
 					<code>form-wrapper</code>
 				</router-link>
 				, without having to re-declare its interface. Anything the caller provides takes precedence

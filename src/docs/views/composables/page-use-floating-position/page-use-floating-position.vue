@@ -11,11 +11,11 @@
 
 			<p>
 				It is used internally by
-				<router-link v-bind="{ to: '/interaction/dropdown-menu' }">
+				<router-link :to="{ name: 'dropdown-menu' }">
 					<code>dropdown-menu</code>
 				</router-link>
 				and
-				<router-link v-bind="{ to: '/content/floating-details' }">
+				<router-link :to="{ name: 'floating-details' }">
 					<code>floating-details</code>
 				</router-link>
 				. You will not usually need it directly unless you are building a new floating component.

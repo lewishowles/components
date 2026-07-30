@@ -97,7 +97,7 @@
 
 				<p>
 					The content of the fieldset, which will be wrapped in a
-					<router-link v-bind="{ to: '/forms/form-layout' }">
+					<router-link :to="{ name: 'form-layout' }">
 						<code>form-layout</code>
 					</router-link>
 					component.

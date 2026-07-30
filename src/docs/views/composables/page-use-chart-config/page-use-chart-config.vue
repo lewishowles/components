@@ -12,11 +12,11 @@
 
 			<p>
 				Pass the result directly to
-				<router-link v-bind="{ to: '/chart/donut-chart' }">
+				<router-link :to="{ name: 'donut-chart' }">
 					<code>donut-chart</code>
 				</router-link>
 				,
-				<router-link v-bind="{ to: '/chart/chart-legend' }">
+				<router-link :to="{ name: 'chart-legend' }">
 					<code>chart-legend</code>
 				</router-link>
 				, or any custom chart component.

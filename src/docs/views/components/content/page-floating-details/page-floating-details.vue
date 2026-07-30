@@ -6,11 +6,11 @@
 			<p>
 				<code>floating-details</code>
 				is an extension of
-				<router-link v-bind="{ to: '/content/summary-details' }">
+				<router-link :to="{ name: 'summary-details' }">
 					<code>summary-details</code>
 				</router-link>
 				, providing sensible defaults for a floating dropdown menu, such as that found in
-				<router-link v-bind="{ to: '/messaging/notification-handler' }">
+				<router-link :to="{ name: 'notification-handler' }">
 					<code>notification-handler</code>
 				</router-link>
 				. Until the

@@ -64,7 +64,7 @@
 
 		<p>
 			The
-			<router-link v-bind="{ to: '/theming' }">theming guide</router-link>
+			<router-link :to="{ name: 'theming' }">theming guide</router-link>
 			covers the stylesheets to include and how to re-colour the library with your own brand.
 		</p>
 
@@ -78,15 +78,14 @@
 		<pre>
 &lt;ui-button @click="doMagic"&gt;
 	🪄 Bibbidi-Bobbidi-Boo
-&lt;/ui-button&gt;</pre
-		>
+&lt;/ui-button&gt;</pre>
 
 		<h2>Available components</h2>
 
 		<p>
 			You can find more information about each component on its relevant documentation page. For
 			example,
-			<router-link v-bind="{ to: '/form/form-field' }">
+			<router-link :to="{ name: 'form-field' }">
 				<code>form-field</code>
 			</router-link>
 		</p>
