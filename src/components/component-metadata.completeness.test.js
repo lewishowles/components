@@ -2,7 +2,7 @@
 import { describe, expect, test } from "vite-plus/test";
 import { createCheckerByJson } from "vue-component-meta";
 import { readFileSync, readdirSync } from "node:fs";
-import { fileURLToPath, URL } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import { join } from "node:path";
 import { componentMetadata } from "./component-metadata.js";
 

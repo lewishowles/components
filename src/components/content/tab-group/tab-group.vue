@@ -59,7 +59,7 @@ import { computed, nextTick, provide, ref, useId, useSlots, watch } from "vue";
 import { getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { onKeyStroke, useFocusWithin, useResizeObserver, useScroll } from "@vueuse/core";
-import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod, isNonEmptySlot } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
 	/**

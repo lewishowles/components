@@ -1,4 +1,4 @@
-import { fileURLToPath, URL } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import { readFileSync, readdirSync } from "node:fs";
 
 // Stylesheets that are only used in the docs site and should not be shipped in

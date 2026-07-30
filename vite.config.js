@@ -1,7 +1,7 @@
 import { alias } from "./support/aliases.js";
 import { componentAutoImports } from "./support/plugins/component-auto-imports.js";
 import { defineConfig } from "vite-plus";
-import { fileURLToPath, URL } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import fmt from "./.oxfmtrc.json" with { type: "json" };
 import lintConfigBase from "@lewishowles/lint-config/base.json" with { type: "json" };
 import lintConfigVue from "@lewishowles/lint-config/vue.json" with { type: "json" };

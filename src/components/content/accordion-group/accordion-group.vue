@@ -35,7 +35,7 @@
 
 <script setup>
 import { computed, isRef, provide, ref, useSlots } from "vue";
-import { getSlotText, callComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod, getSlotText } from "@lewishowles/helpers/vue";
 import { isFunction } from "@lewishowles/helpers/general";
 import { arrayLength, getNextIndex, isNonEmptyArray } from "@lewishowles/helpers/array";
 

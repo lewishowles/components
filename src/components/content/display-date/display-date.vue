@@ -5,7 +5,7 @@
 <script setup>
 import { computed } from "vue";
 import { Temporal } from "temporal-polyfill";
-import { parseDate, formatDate } from "@lewishowles/helpers/date";
+import { formatDate, parseDate } from "@lewishowles/helpers/date";
 
 const props = defineProps({
 	/**

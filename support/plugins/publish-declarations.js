@@ -1,4 +1,4 @@
-import { fileURLToPath, URL } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import { readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
 

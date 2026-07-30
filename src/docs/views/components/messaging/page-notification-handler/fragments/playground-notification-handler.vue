@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import { useNotifications } from "@/composables/use-notifications/use-notifications.js";
 import useTemplateGenerator from "@/docs/views/components/composables/use-template-generator/use-template-generator";
 

@@ -2,7 +2,7 @@ import { describe, expect, test } from "vite-plus/test";
 import { cwd } from "node:process";
 import { pathToFileURL } from "node:url";
 import { formWrapperMetadata } from "../../components/form/form-wrapper/form-wrapper.metadata.js";
-import { generateSnippet, parseSnippetArguments, _test } from "./snippet.js";
+import { _test, generateSnippet, parseSnippetArguments } from "./snippet.js";
 
 const { normaliseSourceSnippet, resolveSnippetExample } = _test;
 

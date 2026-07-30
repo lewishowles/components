@@ -1,4 +1,4 @@
-import { fileURLToPath, URL } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 
 // Shared module-resolution aliases for use in the library build, the docs
 // build, and the test runner.

@@ -294,7 +294,7 @@
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { computed, provide, ref, toRef, useId, useSlots, watch, watchEffect } from "vue";
 import { getRawRow, getRowContent, getRowId } from "./utilities/row.js";
-import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod, isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { getPathValue } from "@lewishowles/helpers/object";
 import { useResizeObserver } from "@vueuse/core";

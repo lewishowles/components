@@ -26,7 +26,7 @@
 
 <script setup>
 import { computed, onMounted, provide, useAttrs, useId, useSlots, useTemplateRef } from "vue";
-import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod, isNonEmptySlot } from "@lewishowles/helpers/vue";
 
 import ConditionalWrapper from "@/components/general/conditional-wrapper/conditional-wrapper.vue";
 

@@ -1,10 +1,10 @@
 import { describe, expect, test, vi } from "vite-plus/test";
 import {
+	_test,
 	generatePattern,
 	lookupPattern,
 	parsePatternArguments,
 	printPatterns,
-	_test,
 } from "./pattern.js";
 import { patterns } from "./patterns.js";
 

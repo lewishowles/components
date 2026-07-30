@@ -82,7 +82,7 @@
  */
 import { computed, useId, useSlots, useTemplateRef } from "vue";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
-import { isNonEmptySlot, callComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod, isNonEmptySlot } from "@lewishowles/helpers/vue";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
 import FieldWrapper from "@/components/form/fragments/field-wrapper/field-wrapper.vue";
