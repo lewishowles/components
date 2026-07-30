@@ -31,7 +31,7 @@ import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray, lastDefined } from "@lewishowles/helpers/array";
 import { useModalDialog } from "@/composables/use-modal-dialog/use-modal-dialog";
 
-const { modals, closeTopModal } = useModalDialog();
+const { closeModal: closeModalById, modals } = useModalDialog();
 
 // The topmost modal: the one the user is currently interacting with.
 const currentModal = computed(() => {
@@ -44,8 +44,8 @@ const currentModal = computed(() => {
 
 /**
  * Close a modal: runs any onClose the caller supplied to openModal, then
- * pops it off the stack, so a caller can react to a modal closing for any
- * reason without needing to reimplement stack-popping themselves.
+ * removes that entry from the stack, so a caller can react to a modal closing
+ * for any reason without needing to manage the stack themselves.
  *
  * @param  {object}  modal
  *     The modal stack entry to close.
@@ -55,6 +55,6 @@ function closeModal(modal) {
 		modal.props.onClose();
 	}
 
-	closeTopModal();
+	closeModalById(modal.id);
 }
 </script>

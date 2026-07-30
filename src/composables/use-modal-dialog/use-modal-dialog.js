@@ -1,4 +1,4 @@
-import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { lastDefined } from "@lewishowles/helpers/array";
 import { markRaw, readonly, ref } from "vue";
 
 const modals = ref([]);
@@ -33,11 +33,26 @@ export function useModalDialog() {
 	 * array, meaning it will no longer be displayed.
 	 */
 	function closeTopModal() {
-		if (!isNonEmptyArray(modals.value)) {
+		const topModal = lastDefined(modals.value);
+
+		closeModal(topModal?.id);
+	}
+
+	/**
+	 * Close the modal with the supplied ID by removing its entry from the stack.
+	 *
+	 * @param  {number}  id
+	 *     The ID of the modal to close.
+	 */
+	function closeModal(id) {
+		// The position of the modal entry to remove.
+		const modalIndex = modals.value.findIndex((modal) => modal.id === id);
+
+		if (modalIndex === -1) {
 			return;
 		}
 
-		modals.value.pop();
+		modals.value.splice(modalIndex, 1);
 	}
 
 	/**
@@ -51,6 +66,7 @@ export function useModalDialog() {
 	return {
 		modals: readonly(modals),
 		openModal,
+		closeModal,
 		closeTopModal,
 		_clearModals,
 	};

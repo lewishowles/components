@@ -90,6 +90,39 @@ describe("useModalDialog", () => {
 			});
 		});
 
+		describe("closeModal", () => {
+			test("should remove the requested background modal and preserve stack order", () => {
+				const { closeModal, modals, openModal } = useModalDialog();
+
+				openModal({ name: "first-in" });
+				openModal({ name: "second-in" });
+				openModal({ name: "last-in" });
+
+				const [firstModal, backgroundModal, lastModal] = modals.value;
+
+				closeModal(backgroundModal.id);
+
+				expect(modals.value).toEqual([firstModal, lastModal]);
+			});
+
+			test("should do nothing when the modal is unknown or already closed", () => {
+				const { closeModal, modals, openModal } = useModalDialog();
+
+				openModal({ name: "my-component" });
+
+				const [modal] = modals.value;
+
+				closeModal(-1);
+
+				expect(modals.value).toEqual([modal]);
+
+				closeModal(modal.id);
+				closeModal(modal.id);
+
+				expect(modals.value).toEqual([]);
+			});
+		});
+
 		describe("_clearModals", () => {
 			test("should clear all modals", () => {
 				const { openModal, modals, _clearModals } = useModalDialog();

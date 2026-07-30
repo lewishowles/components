@@ -47,10 +47,13 @@ describe("modal-controller", () => {
 	});
 
 	describe("closeModal", () => {
-		test("calls the caller-supplied onClose, then pops the modal from the stack", () => {
+		test("calls the caller-supplied onClose before removing the modal from the stack", () => {
 			const wrapper = mount();
 			const { openModal } = useModalDialog();
-			const onClose = vi.fn();
+
+			const onClose = vi.fn(() => {
+				expect(wrapper.vm.modals).toHaveLength(1);
+			});
 
 			openModal({ name: "my-component" }, { onClose });
 
@@ -62,16 +65,37 @@ describe("modal-controller", () => {
 			expect(wrapper.vm.modals).toHaveLength(0);
 		});
 
-		test("pops the modal even when no onClose was supplied", () => {
+		test("removes the foreground modal when no onClose was supplied", () => {
 			const wrapper = mount();
 			const { openModal } = useModalDialog();
 
-			openModal({ name: "my-component" });
+			openModal({ name: "background-modal" });
+			openModal({ name: "foreground-modal" });
 
-			const [modal] = wrapper.vm.modals;
+			const [, modal] = wrapper.vm.modals;
 
 			expect(() => wrapper.vm.closeModal(modal)).not.toThrow();
-			expect(wrapper.vm.modals).toHaveLength(0);
+			expect(wrapper.vm.modals).toEqual([
+				{
+					id: expect.any(Number),
+					component: { name: "background-modal" },
+					props: {},
+				},
+			]);
+		});
+
+		test("removes a background modal without closing the foreground modal", () => {
+			const wrapper = mount();
+			const { openModal } = useModalDialog();
+
+			openModal({ name: "background-modal" });
+			openModal({ name: "foreground-modal" });
+
+			const [backgroundModal, foregroundModal] = wrapper.vm.modals;
+
+			wrapper.vm.closeModal(backgroundModal);
+
+			expect(wrapper.vm.modals).toEqual([foregroundModal]);
 		});
 	});
 });

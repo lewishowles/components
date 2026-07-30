@@ -60,7 +60,7 @@ openModal(DeleteUser, componentProps);
 
 ### Reacting to the modal closing
 
-Pass your own `onClose` in the props given to `openModal` to run something whenever the modal closes, for any reason (a specific action like confirm, the built-in close button, or Escape). `modal-controller` runs it before popping the modal off the stack, so you don't need to reimplement stack-popping yourself, and it composes with any other callback the component defines for a more specific outcome:
+Pass your own `onClose` in the props given to `openModal` to run something whenever the modal closes, for any reason (a specific action like confirm, the built-in close button, or Escape). `modal-controller` runs it before removing that modal from the stack, so you don't need to manage the stack yourself, and it composes with any other callback the component defines for a more specific outcome:
 
 ```javascript
 openModal(DeleteAccountConfirm, {
