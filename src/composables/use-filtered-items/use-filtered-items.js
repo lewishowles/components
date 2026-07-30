@@ -1,20 +1,20 @@
 import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
-import { computed, unref } from "vue";
+import { computed, toValue } from "vue";
 import { getPathValue } from "@lewishowles/helpers/object";
 
 /**
  * Filter a reactive item list by exact property matches.
  *
- * @param  {object[]|Ref<object[]>}  items
+ * @param  {object[]|Ref<object[]>|(() => object[])}  items
  *     The source items to filter.
- * @param  {object|Ref<object>}  [filters]
+ * @param  {object|Ref<object>|(() => object)}  [filters]
  *     The property paths and expected values to match. A property mapped to
  *     an array matches any of those values.
  */
 export function useFilteredItems(items, filters = {}) {
 	// The filter entries to apply to each item.
 	const filterEntries = computed(() => {
-		const activeFilters = unref(filters);
+		const activeFilters = toValue(filters);
 
 		if (!activeFilters) {
 			return [];
@@ -25,7 +25,7 @@ export function useFilteredItems(items, filters = {}) {
 
 	// The items matching the provided filters.
 	const filteredItems = computed(() => {
-		const sourceItems = unref(items);
+		const sourceItems = toValue(items);
 
 		if (!isNonEmptyArray(sourceItems)) {
 			return [];

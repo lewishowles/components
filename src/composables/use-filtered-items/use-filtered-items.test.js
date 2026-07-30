@@ -34,6 +34,12 @@ describe("use-filtered-items", () => {
 			expect(filteredItems.value).toEqual([items[1], items[2]]);
 		});
 
+		test("Filters a getter-backed item collection", () => {
+			const { items: filteredItems } = useFilteredItems(() => items, { role: "editor" });
+
+			expect(filteredItems.value).toEqual([items[1], items[2]]);
+		});
+
 		test("Filters items by multiple properties", () => {
 			const { items: filteredItems } = useFilteredItems(items, { role: "editor", active: true });
 
@@ -63,6 +69,26 @@ describe("use-filtered-items", () => {
 			filtersRef.value = { role: "editor" };
 
 			expect(filteredItems.value).toEqual([items[1], items[2]]);
+		});
+
+		test("Reacts to getter-backed items and filters updating", () => {
+			const itemsRef = ref([...items]);
+			const filtersRef = ref({ role: "admin" });
+
+			const { items: filteredItems } = useFilteredItems(
+				() => itemsRef.value,
+				() => filtersRef.value,
+			);
+
+			expect(filteredItems.value).toEqual([items[0]]);
+
+			filtersRef.value = { role: "editor" };
+
+			expect(filteredItems.value).toEqual([items[1], items[2]]);
+
+			itemsRef.value = [items[2]];
+
+			expect(filteredItems.value).toEqual([items[2]]);
 		});
 	});
 
