@@ -73,6 +73,11 @@ A new composable for filtering a reactive item list by exact property matches, i
 
 A new single-file upload field used via `form-field type="file"` directly.
 
+### New icons
+
+- `icon-copy`
+- `icon-keyboard`
+
 ### Fixes
 
 - `data-table` no longer discards boolean cell values
