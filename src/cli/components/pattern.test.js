@@ -1,4 +1,5 @@
 import { describe, expect, test, vi } from "vite-plus/test";
+import { capitalise } from "@lewishowles/helpers/string";
 import {
 	_test,
 	generatePattern,
@@ -155,6 +156,11 @@ describe("printPatterns", () => {
 		printPatterns(ui);
 
 		const output = ui.print.mock.calls[0][0];
+		const categories = [...new Set(patterns.map(({ category }) => capitalise(category)))];
+
+		for (const category of categories) {
+			expect(output).toContain(category);
+		}
 
 		for (const pattern of patterns) {
 			expect(output).toContain(pattern.name);
