@@ -47,7 +47,7 @@ The options for this select can be provided in a number of formats for ease.
 - An array of numbers `[1, 2, 3]`, in which case both the label and value are the same.
 - An array of objects `[{ label: "Label", value: "value" }]` where labels and values are explicitly defined.
 - An array of objects combined with the `labelKey` and `valueKey` properties.
-- An object `{ value: "label" }` where each key is the value of oan option, and each value is the label.
+- An object `{ value: "label" }` where each key is the value of an option, and each value is the label.
 
 ### `labelKey`
 

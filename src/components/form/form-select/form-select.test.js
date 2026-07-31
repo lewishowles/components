@@ -49,7 +49,7 @@ describe("form-select", () => {
 				]);
 			});
 
-			test("An array of numberes", () => {
+			test("An array of numbers", () => {
 				const wrapper = mount({ options: [1, 2] });
 				const vm = wrapper.vm;
 

@@ -1,14 +1,14 @@
-import { describe, expect, it } from "vite-plus/test";
+import { describe, expect, test } from "vite-plus/test";
 import useInputId from "./use-input-id";
 
 describe("useInputId", () => {
-	it("should generate an ID if one is not provided", () => {
+	test("An ID should be generated if one is not provided", () => {
 		const { inputId } = useInputId();
 
 		expect(inputId.value).toEqual(expect.any(String));
 	});
 
-	it("should use a provided ID", () => {
+	test("A provided ID should be used", () => {
 		const { inputId } = useInputId("id-abc");
 
 		expect(inputId.value).toBe("id-abc");
