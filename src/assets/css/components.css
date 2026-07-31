@@ -76,10 +76,6 @@ dialog[data-part="sheet"] {
 	}
 }
 
-:where(.dark) dialog[data-part="sheet"] {
-	background-color: var(--surface-elevated);
-}
-
 @media (width >= theme(--breakpoint-lg)) {
 	dialog[data-part="sheet"] {
 		border-radius: var(--radius-lg);
