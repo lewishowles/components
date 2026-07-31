@@ -54,11 +54,11 @@ jobs:
       - name: Check types are correct
         run: bun run attw
 
-      - name: Publish to npm
-        run: npm publish --access public
-
       - name: Build docs
         run: bun run build:docs
+
+      - name: Publish to npm
+        run: npm publish --access public
 
       - name: Deploy docs
         run: bun run deploy:docs

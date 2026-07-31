@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/lewishowles/components.git"
+		"url": "git+https://github.com/lewishowles/components.git"
 	},
 	"bin": {
 		"components": "./bin/cli.js"
