@@ -7,12 +7,6 @@
 				<code>star-rating</code>
 				offers two optional, mutually inclusive options. Users can either select a rating, or view
 				the current aggregate rating.
-				<code>star-rating</code>
-				is an extension of
-				<code>form-field[type=&quot;radio&quot;]</code>
-				(and thus
-				<code>form-radio-group</code>
-				).
 			</p>
 		</template>
 
