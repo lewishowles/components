@@ -33,31 +33,38 @@ test.describe("breadcrumb-list", () => {
 		const list = page.getByTestId("breadcrumb-list-list");
 		const nav = page.getByTestId("breadcrumb-list");
 
-		const metrics = await list.evaluate((element) => {
-			const listRect = element.getBoundingClientRect();
-			const lastItemRect = element.lastElementChild.getBoundingClientRect();
-
-			return {
-				clientHeight: element.clientHeight,
-				clientWidth: element.clientWidth,
-				documentWidth: document.documentElement.scrollWidth,
-				lastItemRight: lastItemRect.right,
-				scrollHeight: element.scrollHeight,
-				scrollLeft: element.scrollLeft,
-				scrollWidth: element.scrollWidth,
-				viewportWidth: window.innerWidth,
-				listRight: listRect.right,
-			};
-		});
-
 		await expect(list).toHaveClass(/overflow-x-auto/);
 		await expect(nav).toHaveClass(/show-left/);
 		await expect(nav).not.toHaveClass(/show-right/);
-		expect(metrics.scrollWidth).toBeGreaterThan(metrics.clientWidth);
-		expect(metrics.scrollHeight).toBeLessThanOrEqual(metrics.clientHeight);
-		expect(metrics.scrollLeft).toBe(metrics.scrollWidth - metrics.clientWidth);
-		expect(metrics.lastItemRight).toBeLessThanOrEqual(metrics.listRight);
-		expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth);
+
+		// The list scrolls itself to the end asynchronously (after mount, via a
+		// ResizeObserver), so these derived metrics need to be read and
+		// re-checked together as a unit until that settles, rather than as a
+		// single snapshot.
+		await expect(async () => {
+			const metrics = await list.evaluate((element) => {
+				const listRect = element.getBoundingClientRect();
+				const lastItemRect = element.lastElementChild.getBoundingClientRect();
+
+				return {
+					clientHeight: element.clientHeight,
+					clientWidth: element.clientWidth,
+					documentWidth: document.documentElement.scrollWidth,
+					lastItemRight: lastItemRect.right,
+					scrollHeight: element.scrollHeight,
+					scrollLeft: element.scrollLeft,
+					scrollWidth: element.scrollWidth,
+					viewportWidth: window.innerWidth,
+					listRight: listRect.right,
+				};
+			});
+
+			expect(metrics.scrollWidth).toBeGreaterThan(metrics.clientWidth);
+			expect(metrics.scrollHeight).toBeLessThanOrEqual(metrics.clientHeight);
+			expect(metrics.scrollLeft).toBe(metrics.scrollWidth - metrics.clientWidth);
+			expect(metrics.lastItemRight).toBeLessThanOrEqual(metrics.listRight);
+			expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth);
+		}).toPass();
 	});
 
 	test("does not visibly scroll a short chain", async ({ mount, page }) => {
