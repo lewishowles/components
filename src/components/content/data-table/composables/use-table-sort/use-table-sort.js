@@ -79,12 +79,32 @@ export default function useTableSort(filteredRows, columnDefinitions, options = 
 			sortDirection.value = isAscending.value
 				? sortDirections.DESCENDING
 				: sortDirections.ASCENDING;
+			updateServerState();
 
 			return;
 		}
 
 		sortedColumn.value = columnKey;
 		sortDirection.value = sortDirections.ASCENDING;
+		updateServerState();
+	}
+
+	/**
+	 * Report a table-driven sort change through the controlled server state.
+	 */
+	function updateServerState() {
+		if (!isServerMode.value) {
+			return;
+		}
+
+		const currentState = state.value ?? {};
+
+		const nextSort =
+			sortedColumn.value === null
+				? null
+				: { column: sortedColumn.value, direction: sortDirection.value };
+
+		state.value = { ...currentState, page: 1, sort: nextSort };
 	}
 
 	// Keep local sort refs aligned with externally controlled server state changes.
@@ -100,27 +120,6 @@ export default function useTableSort(filteredRows, columnDefinitions, options = 
 		},
 		{ deep: true },
 	);
-
-	// Report sort changes through the single controlled server state model.
-	watch([sortedColumn, sortDirection], ([column, direction]) => {
-		if (!isServerMode.value) {
-			return;
-		}
-
-		const currentState = state.value ?? {};
-		const currentSort = currentState.sort ?? null;
-		const nextSort = column === null ? null : { column, direction };
-
-		if (
-			currentState.page === 1 &&
-			currentSort?.column === nextSort?.column &&
-			currentSort?.direction === nextSort?.direction
-		) {
-			return;
-		}
-
-		state.value = { ...currentState, page: 1, sort: nextSort };
-	});
 
 	/**
 	 * The `aria-sort` value for a column: its sort direction when it is the

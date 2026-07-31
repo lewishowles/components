@@ -13,7 +13,6 @@ import { nanoid } from "nanoid";
  * - An array of objects, containing a key and value pair
  * - An array of any objects when combined with the labelKey, valueKey, and
  *   descriptionKey properties.
- *   properties.
  * - An array containing any combination of the above, or
  * - An object where each key-value pair will be turned into a single option.
  */

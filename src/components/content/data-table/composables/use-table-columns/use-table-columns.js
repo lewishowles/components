@@ -65,8 +65,9 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 		}
 	});
 
-	// Keep columns readable in narrow containers by default.
+	// Keep headings readable in narrow containers by default.
 	const baseHeadingClasses = computed(() => cn("min-w-32", headingClasses.value));
+	// Keep cells readable in narrow containers by default.
 	const baseCellClasses = computed(() => cn("min-w-32", cellClasses.value));
 
 	// A list of columns to display in the table, taking into account validation,

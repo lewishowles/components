@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vite-plus/test";
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import useTableSort, { sortDirections } from "./use-table-sort.js";
 
 /**
@@ -28,12 +28,28 @@ function createRow(values) {
  *     The filtered rows to sort.
  * @param  {object}  options.columns
  *     The column definitions.
+ * @param  {boolean}  options.serverMode
+ *     Whether server mode is active.
+ * @param  {object|null}  options.stateValue
+ *     The initial controlled server state.
  */
-function createComposable({ rows = [], columns = { name: { label: "Name" } } } = {}) {
+function createComposable({
+	rows = [],
+	columns = { name: { label: "Name" } },
+	serverMode = false,
+	stateValue = null,
+} = {}) {
 	const filteredRows = ref(rows);
 	const columnDefinitions = ref(columns);
+	const isServerMode = ref(serverMode);
+	const state = ref(stateValue);
 
-	return { columnDefinitions, filteredRows, ...useTableSort(filteredRows, columnDefinitions) };
+	return {
+		columnDefinitions,
+		filteredRows,
+		state,
+		...useTableSort(filteredRows, columnDefinitions, { isServerMode, state }),
+	};
 }
 
 describe("useTableSort", () => {
@@ -103,6 +119,40 @@ describe("useTableSort", () => {
 			sortColumn("unknown");
 
 			expect(sortedColumn.value).toBeNull();
+		});
+	});
+
+	describe("Server state", () => {
+		test("Preserves the externally controlled page when server sort changes", async () => {
+			const { state } = createComposable({
+				serverMode: true,
+				stateValue: { page: 2, sort: null },
+			});
+
+			state.value = {
+				page: 3,
+				sort: { column: "name", direction: sortDirections.DESCENDING },
+			};
+			await nextTick();
+
+			expect(state.value).toEqual({
+				page: 3,
+				sort: { column: "name", direction: sortDirections.DESCENDING },
+			});
+		});
+
+		test("Resets the controlled page when the table changes server sort", () => {
+			const { sortColumn, state } = createComposable({
+				serverMode: true,
+				stateValue: { page: 3, sort: null },
+			});
+
+			sortColumn("name");
+
+			expect(state.value).toEqual({
+				page: 1,
+				sort: { column: "name", direction: sortDirections.ASCENDING },
+			});
 		});
 	});
 
