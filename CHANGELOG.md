@@ -1,11 +1,10 @@
 # Changelog
 
-## Unreleased
+## 3.0.0 - 2026-07-31
 
 ### Breaking changes
 
 - `modal-controller` no longer wraps pushed components in its own `base-modal`. Each component opened via `openModal` is now expected to be fully self-contained: render its own `modal-dialog`, and call the `onClose` prop it receives when its dialog closes (`@dialog:close="onClose?.()"`). This removes the previous double-`<dialog>` nesting that occurred if a pushed component tried to render `modal-dialog` itself. You don't need to declare or forward `inert` yourself: as long as your component's own root doesn't declare `inert` as one of its own props, Vue's attribute fallthrough carries it straight through to `modal-dialog`.
-- `form-radio-group` no longer supports its whole-array `#options` slot. Use the new per-option `#option` slot instead.
 
 ```html
 <!-- Before: modal-controller supplied the dialog chrome, only content was needed -->
@@ -17,7 +16,7 @@
 
 <!-- After: the component owns its own modal-dialog -->
 <template>
-	<modal-dialog @dialog:close="onClose?.()">
+	<modal-dialog @dialog:close="onClose()">
 		<template #title>Delete user</template>
 
 		<p>Are you sure you want to delete this user? This cannot be undone.</p>
@@ -41,10 +40,6 @@
 </script>
 ```
 
-- `modal-dialog`'s `initiallyOpen` prop now defaults to `true` (matching `base-modal`), so it opens itself immediately unless explicitly told not to. Previously it defaulted to `false`, relying on `modal-controller` to open it via the `base-modal` wrapper it no longer provides.
-- `modal-dialog` gained an `inert` prop, forwarded to its internal `base-modal`, for use when stacking modals via `modal-controller`.
-- `modal-dialog` now merges user-provided classes, instead of overriding them.
-
 `modal-controller` now also runs any `onClose` you pass to `openModal` yourself before popping the modal, so you can react to a modal closing for any reason (confirm, cancel, the built-in close button, Escape) without needing to reimplement stack-popping:
 
 ```js
@@ -54,14 +49,76 @@ openModal(DeleteAccountConfirm, {
 });
 ```
 
+- `modal-dialog`'s `initiallyOpen` prop now defaults to `true` (matching `base-modal`), so it opens itself immediately unless explicitly told not to. Previously it defaulted to `false`, relying on `modal-controller` to open it via the `base-modal` wrapper it no longer provides. If you were relying on the old default to keep a standalone `modal-dialog` closed until you opened it yourself, pass `:initially-open="false"` explicitly.
+- `modal-dialog` gained an `inert` prop, forwarded to its internal `base-modal`, for use when stacking modals via `modal-controller`.
+- `modal-dialog` now merges user-provided classes, instead of overriding them.
+- `form-radio-group`, `form-checkbox-group`, and `form-field` no longer support a whole-array `#options` slot, which received the full option list and required you to loop over it yourself. Use the new per-option `#option` slot instead, called once per option with `{ option, selected, id, name }`.
+
+```html
+<!-- Before -->
+<form-radio-group v-model="value" v-bind="{ options }">
+	<template #options="{ options, name }">
+		<label v-for="option in options" :key="option.value">
+			<input type="radio" v-bind="{ name, value: option.value }" v-model="value" />
+			{{ option.label }}
+		</label>
+	</template>
+</form-radio-group>
+
+<!-- After -->
+<form-radio-group v-model="value" v-bind="{ options }">
+	<template #option="{ option, selected, id, name }">
+		<label>
+			<input type="radio" v-bind="{ name, value: option.value }" v-model="value" />
+			{{ option.label }}
+		</label>
+	</template>
+</form-radio-group>
+```
+
+`form-field` forwards the same `#option` slot, plus a `description` slot (used by checkbox descriptions), to whichever control it renders.
+
+Its `button-group` type also dropped the redundant `form-` prefix.
+
+```html
+<!-- Before -->
+<form-field name="role" type="form-button-group" v-bind="{ options }">Role</form-field>
+
+<!-- After -->
+<form-field name="role" type="button-group" v-bind="{ options }">Role</form-field>
+```
+
+- `summary-details` no longer floats. The `floating`, `align`, `placement`, and `closeWithClickOutside` props have been removed. Floating, positioned disclosures (popovers, menus, tooltips anchored to a trigger) are `floating-details`' job; `summary-details` is for inline, in-flow disclosures only. `closeWithEscape` is unaffected and stays on `summary-details`.
+
+```html
+<!-- Before: summary-details used as a floating popover -->
+<summary-details floating placement="bottom" align="start" close-with-click-outside>
+	<template #summary>More info</template>
+	Extra detail shown in a floating panel.
+</summary-details>
+
+<!-- After: use floating-details for the same behaviour -->
+<floating-details placement="bottom" align="start" close-with-click-outside>
+	<template #summary>More info</template>
+	Extra detail shown in a floating panel.
+</floating-details>
+```
+
+### `data-table` server mode and controlled selection
+
+Adds a new `mode="server"`, which hands paging, sorting, filtering, and searching to your own query instead of doing it client-side. Bind `v-model:state` for the controlled `{ page, itemsPerPage, sort, filters }` object, and supply `totalRows`, `loading`, and `error` alongside whatever page of rows you fetch; `data-table` renders that page directly without further local filtering, sorting, or slicing. Client mode (the default) is unchanged.
+
+Selection (`enableSelection` plus a plain `v-model`) now reads its initial value from your bound `v-model` as well as writing user changes back to it, so selection can be controlled externally in both directions rather than only observed. Selected rows are matched by the `rowKey` prop (default `"id"`), which also lets server mode preserve selected rows that are outside the currently loaded page. Select-all only ever affects the current page.
+
 ### Form option descriptions, card variants, and custom content
 
 - `form-radio-group` and `form-checkbox-group` options can include descriptions, use `variant="card"` to highlight selected options, and expose the per-option `#option` slot for custom content.
 - `form-checkbox` now supports a `description` slot and `variant="card"`.
+- Option descriptions are exposed via `aria-describedby` rather than folded into each option's accessible name, so screen readers announce them as supplementary information rather than as part of the label.
 
-### `data-table` server mode
+### `form-wrapper` async `initialData` and `recordId`
 
-Adds a new `mode="server"`, displaying one page of results at a time, and providing state to allow the data to be re-queried when the user changes page, sort, or search.
+`form-wrapper` now accepts the same `initialData` (object or getter, such as a Pinia Colada query's `data` ref) and `recordId` props as `useForm`, seeding itself directly for consumers with an async data source who don't need an outer `useForm`/`useFormData` instance. Without `initialData` bound, seeding from `modelValue` is unchanged. Field renaming or type coercion inside an `initialData` getter can use the new `mapFormData` helper (exported alongside `useFormData`).
 
 ### `confirm-dialog`
 
@@ -77,7 +134,18 @@ A new composable for filtering a reactive item list by exact property matches, i
 
 ### `form-file`
 
-A new single-file upload field used via `form-field type="file"` directly.
+A field for selecting one or more files, used via `form-field type="file"` directly, or standalone. Defaults to a single file (`v-model` holds a `File` or `null`); set `multiple` to allow several at once instead (`v-model` then holds a `File[]` or `null`).
+
+### `relative-date`
+
+Output is now capitalised by default (e.g. `Yesterday` instead of `yesterday`). Set the new `capitalise` prop to `false` to restore the previous lower-case output.
+
+### Theming and styling
+
+- A new `--control-*` token layer covers form control borders, surfaces, and selected/invalid states, replacing several hard-coded colour utilities.
+- New `--surface-elevated`, `--surface-subtle`, `--surface-sunken`, and `--border-subtle` semantic tokens back floating panels, muted surfaces, and subtle borders consistently across components.
+- Native `color-scheme` support was added, so form controls and scrollbars pick up the correct browser-drawn light/dark styling automatically.
+- Notification stripes, washes, titles, icons, and badges now use semantic intent tokens instead of hard-coded colours.
 
 ### New icons
 
@@ -88,6 +156,8 @@ A new single-file upload field used via `form-field type="file"` directly.
 
 - `data-table` no longer discards boolean cell values
 - `useForm` no longer attempts to structurally clone `File`, `Blob`, or `FileList` values when tracking form data or seeding a reset baseline, which broke reference equality and dirty-checking for file fields
+- `useFilteredItems` now honours a getter passed as its item source, matching its documented API, instead of only accepting a ref or plain value
+- Closing a specific modal from a stack now removes that modal, rather than whichever modal happens to be on top
 
 ## 2.5.0 - 2026-07-06
 
