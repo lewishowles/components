@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/experimental-ct-vue";
 import { testSupplementaryInfo } from "#test/ct/support/form-supplementary.js";
 import { createMount } from "@lewishowles/testing/playwright";
 
+import FormFileScopedSlotFixture from "./form-file-scoped-slot.fixture.vue";
 import FormFile from "./form-file.vue";
 
 // Mount form-file with sensible defaults for testing.
@@ -9,6 +10,8 @@ const mountFormFile = createMount(FormFile, {
 	props: { id: "id-abc" },
 	slots: { default: "Supporting document" },
 });
+
+const mountFormFileScopedSlot = createMount(FormFileScopedSlotFixture);
 
 const testFile = {
 	name: "document.pdf",
@@ -60,6 +63,7 @@ test.describe("form-file", () => {
 					multiple: true,
 					required: true,
 					"aria-describedby": "custom-help",
+					"aria-errormessage": "custom-error",
 					"aria-invalid": "false",
 				},
 			},
@@ -73,6 +77,7 @@ test.describe("form-file", () => {
 		await expect(inputElement).not.toHaveAttribute("multiple");
 		await expect(inputElement).not.toHaveAttribute("required");
 		await expect(inputElement).toHaveAttribute("aria-describedby", "id-abc-help custom-help");
+		await expect(inputElement).not.toHaveAttribute("aria-errormessage");
 		await expect(inputElement).not.toHaveAttribute("aria-invalid");
 	});
 
@@ -99,6 +104,26 @@ test.describe("form-file", () => {
 
 			await expect(removeButton).toBeVisible();
 			await expect(removeButton).toContainText("document.pdf");
+		});
+
+		test("one file in multiple mode is named in the remove button", async ({ mount, page }) => {
+			await mountFormFile(mount, { multiple: true });
+
+			const formFile = page.getByTestId("form-file");
+
+			await formFile.locator('input[type="file"]').setInputFiles(testFile);
+
+			await expect(formFile.locator('[data-part="remove"]')).toContainText("document.pdf");
+		});
+
+		test("the remove button label slot receives the selected files", async ({ mount, page }) => {
+			await mountFormFileScopedSlot(mount);
+
+			const formFile = page.getByTestId("form-file");
+
+			await formFile.locator('input[type="file"]').setInputFiles([testFile, secondTestFile]);
+
+			await expect(formFile.locator('[data-part="remove"]')).toContainText("Clear 2 files");
 		});
 
 		test("places the remove button below the file input", async ({ mount, page }) => {
