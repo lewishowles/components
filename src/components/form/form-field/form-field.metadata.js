@@ -70,7 +70,8 @@ export const formFieldMetadata = {
 		},
 		{
 			name: "description",
-			summary: "Supporting text shown beneath a checkbox label.",
+			summary:
+				"Supporting text shown beneath a checkbox label, or custom option descriptions for checkbox and radio groups.",
 		},
 		{
 			name: "empty-option-label",

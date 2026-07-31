@@ -102,6 +102,7 @@ export const formInputGroupMetadata = {
 	],
 	parts: [
 		{ name: "indicator", summary: "Radio or checkbox input element for each option." },
+		{ name: "label", summary: "Label associated with each option." },
 		{ name: "option", summary: "Container for each radio or checkbox option." },
 		{ name: "options", summary: "Wrapper containing all radio or checkbox options." },
 	],

@@ -181,6 +181,42 @@
 	box-shadow: 0 0 0 1px var(--ring-colour);
 }
 
+[data-part="option"][data-variant="card"] {
+	border: 1px solid var(--border);
+	gap: calc(var(--spacing) * 3);
+	padding: calc(var(--spacing) * 3);
+	position: relative;
+	z-index: 0;
+
+	&[data-position="only"] {
+		border-radius: var(--radius-lg);
+	}
+
+	&[data-state="selected"] {
+		background-color: var(--primary-subtle);
+		border-color: var(--primary-text);
+		z-index: 10;
+	}
+}
+
+[data-part="options"][data-layout="stacked"] {
+	[data-part="option"][data-variant="card"][data-position="first"] {
+		border-start-end-radius: var(--radius-lg);
+		border-start-start-radius: var(--radius-lg);
+	}
+
+	[data-part="option"][data-variant="card"][data-position="last"] {
+		border-end-end-radius: var(--radius-lg);
+		border-end-start-radius: var(--radius-lg);
+	}
+}
+
+[data-part="options"][data-layout="inline"] {
+	[data-part="option"][data-variant="card"] {
+		border-radius: var(--radius-lg);
+	}
+}
+
 [data-part="field"][data-state="invalid"] {
 	padding-inline-start: calc(var(--spacing) * 5);
 	position: relative;
@@ -204,21 +240,21 @@
 	[data-part="option"] {
 		display: contents;
 
-		&:first-child > label {
+		&:is([data-position="first"], [data-position="only"]) [data-part="label"] {
 			border-start-start-radius: var(--radius-lg);
 			border-end-start-radius: var(--radius-lg);
 		}
 
-		&:not(:first-child) > label {
+		&:is([data-position="middle"], [data-position="last"]) [data-part="label"] {
 			margin-inline-start: -1px;
 		}
 
-		&:last-child > label {
+		&:is([data-position="last"], [data-position="only"]) [data-part="label"] {
 			border-start-end-radius: var(--radius-lg);
 			border-end-end-radius: var(--radius-lg);
 		}
 
-		> input {
+		[data-part="indicator"] {
 			clip: rect(0, 0, 0, 0);
 			clip-path: inset(50%);
 			block-size: 1px;
@@ -229,28 +265,28 @@
 			position: absolute;
 			white-space: nowrap;
 
-			&:is(:focus-visible, :checked) ~ label {
+			&:is(:focus-visible, :checked) ~ [data-part="label"] {
 				z-index: 1;
 			}
 
-			&:focus-visible ~ label {
+			&:focus-visible ~ [data-part="label"] {
 				outline: 2px solid var(--control-focus);
 				outline-offset: 2px;
 			}
 
-			&:checked ~ label {
+			&:checked ~ [data-part="label"] {
 				background-color: var(--control-selected-surface);
 				border-color: var(--control-selected-border);
 				color: var(--control-selected-foreground);
 			}
 
-			&:checked:focus-visible ~ label {
+			&:checked:focus-visible ~ [data-part="label"] {
 				background-color: var(--control-selected-surface-focus);
 				border-color: var(--control-selected-border-focus);
 			}
 		}
 
-		> label {
+		[data-part="label"] {
 			align-items: center;
 			background-color: var(--control-surface);
 			border: 1px solid var(--control-border);

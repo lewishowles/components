@@ -13,10 +13,13 @@
 			class="flex gap-3"
 			:class="{
 				'justify-center': !displayLabel,
-				relative: variant === 'card',
-				'border-border rounded-lg border p-3': variant === 'card' && !model,
-				'border-primary bg-primary-subtle rounded-lg border p-3': variant === 'card' && model,
 			}"
+			v-bind="{
+				'data-position': variant === 'card' ? 'only' : null,
+				'data-state': variant === 'card' ? (model ? 'selected' : 'unselected') : null,
+				'data-variant': variant === 'card' ? 'card' : null,
+			}"
+			data-part="option"
 			data-test="form-checkbox-card"
 		>
 			<input
@@ -81,8 +84,7 @@
  * slots exist for additional descriptive text.
  */
 import { computed, useSlots, useTemplateRef, watch } from "vue";
-import { isNonEmptySlot } from "@lewishowles/helpers/vue";
-import { callComponentMethod } from "@lewishowles/helpers/vue";
+import { callComponentMethod, isNonEmptySlot } from "@lewishowles/helpers/vue";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
 import FormLabel from "@/components/form/form-label/form-label.vue";

@@ -26,7 +26,7 @@ export const formCheckboxGroupMetadata = {
 			name: "descriptionKey",
 			type: "string",
 			default: "description",
-			summary: "Object key used for optional option descriptions.",
+			summary: "Object key used for optional descriptions associated with each option.",
 		},
 		{
 			name: "variant",

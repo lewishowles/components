@@ -61,10 +61,14 @@ describe("form-checkbox", () => {
 		});
 
 		describe("variant", () => {
-			test("adds card styling when checked", () => {
+			test("marks a selected card with stable state attributes", () => {
 				const wrapper = mount({ props: { modelValue: true, variant: "card" } });
 
-				expect(wrapper.find(".border-primary").exists()).toBe(true);
+				const card = wrapper.get('[data-test="form-checkbox-card"]');
+
+				expect(card.attributes("data-variant")).toBe("card");
+				expect(card.attributes("data-state")).toBe("selected");
+				expect(card.attributes("data-position")).toBe("only");
 			});
 		});
 	});

@@ -37,18 +37,19 @@
 				'gap-2': !inline && !isCard,
 				'gap-0': !inline && isCard,
 			}"
+			:data-layout="inline ? 'inline' : 'stacked'"
 			data-part="options"
 		>
 			<template v-for="option in internalOptions" :key="option.id">
 				<div
 					class="flex"
 					:class="{
-						'relative z-0 gap-3 border p-3': isCard,
 						'-mt-px': isCard && !inline && !option.first,
-						'rounded-t-lg': isCard && !inline && option.first,
-						'rounded-b-lg': isCard && !inline && option.last,
-						'border-primary bg-primary-subtle z-10': isCard && isOptionSelected(option),
-						'border-border': isCard && !isOptionSelected(option),
+					}"
+					v-bind="{
+						'data-position': getOptionPosition(option),
+						'data-state': isCard ? (isOptionSelected(option) ? 'selected' : 'unselected') : null,
+						'data-variant': isCard ? 'card' : null,
 					}"
 					data-part="option"
 					data-test="form-input-group-option"
@@ -58,7 +59,11 @@
 						ref="inputReferences"
 						v-model="model[fieldName]"
 						type="radio"
-						v-bind="{ id: option.id, value: option.value, name: fieldName }"
+						v-bind="{
+							id: option.id,
+							value: option.value,
+							name: fieldName,
+						}"
 						class="form-radio shrink-0"
 						data-part="indicator"
 					/>
@@ -68,7 +73,11 @@
 						ref="inputReferences"
 						v-model="model[option.value]"
 						type="checkbox"
-						v-bind="{ id: option.id, value: option.value, name: fieldName }"
+						v-bind="{
+							id: option.id,
+							value: option.value,
+							name: fieldName,
+						}"
 						class="form-checkbox shrink-0"
 						data-part="indicator"
 					/>
@@ -76,6 +85,7 @@
 					<form-label
 						v-bind="{ id: option.id, styled: false, showOptionalIndicator: false }"
 						class="leading-6"
+						data-part="label"
 						:class="{
 							'after:absolute after:inset-0 after:content-[\'\']': isCard,
 							'px-3': !isCard,
@@ -270,6 +280,30 @@ function isOptionSelected(option) {
 	}
 
 	return Boolean(model.value[option.value]);
+}
+
+/**
+ * Describe where an option appears in its group for stable styling hooks.
+ *
+ * @param  {object}  option
+ *   The option with position information.
+ * @returns {string}
+ *   The option position within its group.
+ */
+function getOptionPosition(option) {
+	if (option.first && option.last) {
+		return "only";
+	}
+
+	if (option.first) {
+		return "first";
+	}
+
+	if (option.last) {
+		return "last";
+	}
+
+	return "middle";
 }
 
 /**

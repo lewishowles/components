@@ -46,7 +46,10 @@ test.describe("form-radio-group", () => {
 	});
 
 	test.describe("options", () => {
-		test("renders an option description", async ({ mount, page }) => {
+		test("renders an option description as part of its accessible name", async ({
+			mount,
+			page,
+		}) => {
 			await mountFormRadioGroup(mount, {
 				options: [
 					{
@@ -57,17 +60,40 @@ test.describe("form-radio-group", () => {
 				],
 			});
 
-			await expect(page.getByTestId("form-input-group-option-description")).toHaveText(
-				"Anyone with the link can access this project.",
+			const radio = page.getByRole("radio", {
+				name: "Public access Anyone with the link can access this project.",
+				exact: true,
+			});
+
+			const description = page.getByTestId("form-input-group-option-description");
+
+			await expect(description).toHaveText("Anyone with the link can access this project.");
+			await expect(radio).toHaveAccessibleName(
+				"Public access Anyone with the link can access this project.",
 			);
 		});
 
-		test("applies card styling to the selected option", async ({ mount, page }) => {
-			await mountFormRadioGroup(mount, { modelValue: "Banana", variant: "card" });
+		test("selects card options with arrow keys and keeps focus visible", async ({
+			mount,
+			page,
+		}) => {
+			await mountFormRadioGroup(mount, { modelValue: "Pineapple", variant: "card" });
 
-			await expect(page.getByTestId("form-input-group-option").nth(1)).toHaveClass(
-				/border-primary/,
-			);
+			const pineapple = page.getByRole("radio", { name: "Pineapple", exact: true });
+			const banana = page.getByRole("radio", { name: "Banana", exact: true });
+			const bananaCard = page.getByTestId("form-input-group-option").nth(1);
+
+			await pineapple.focus();
+
+			await expect(pineapple).toBeFocused();
+			await expect(pineapple).toHaveCSS("outline-width", "2px");
+
+			await pineapple.press("ArrowDown");
+
+			await expect(banana).toBeFocused();
+			await expect(banana).toBeChecked();
+			await expect(bananaCard).toHaveAttribute("data-variant", "card");
+			await expect(bananaCard).toHaveAttribute("data-state", "selected");
 		});
 
 		test("forwards custom option content", async ({ mount, page }) => {

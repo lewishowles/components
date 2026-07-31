@@ -48,4 +48,12 @@ describe("form-button-group", () => {
 			expect(options[1].text()).toBe("banana:true");
 		});
 	});
+
+	describe("Render contracts", () => {
+		test("renders option labels as indicator siblings", () => {
+			const wrapper = deepMount();
+
+			expect(wrapper.findAll('[data-part="indicator"] + [data-part="label"]')).toHaveLength(3);
+		});
+	});
 });

@@ -80,6 +80,7 @@ export const formCheckboxMetadata = {
 	parts: [
 		{ name: "indicator", summary: "The checkbox input element." },
 		{ name: "label", summary: "Label associated with the checkbox." },
+		{ name: "option", summary: "Container for the checkbox option." },
 	],
 	examples: [
 		{

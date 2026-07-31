@@ -240,7 +240,7 @@ describe("form-input-group", () => {
 		});
 
 		describe("variant", () => {
-			test("stacks selected cards above unselected neighbours", () => {
+			test("marks selected and unselected cards with stable state attributes", () => {
 				const wrapper = deepMount({
 					props: {
 						type: "radio",
@@ -252,13 +252,17 @@ describe("form-input-group", () => {
 
 				const options = wrapper.findAll('[data-test="form-input-group-option"]');
 
-				expect(options[0].classes()).toContain("border-border");
-				expect(options[0].classes()).toContain("z-0");
-				expect(options[1].classes()).toContain("border-primary");
+				expect(options[0].attributes("data-variant")).toBe("card");
+				expect(options[0].attributes("data-position")).toBe("first");
+				expect(options[0].attributes("data-state")).toBe("unselected");
+				expect(options[1].attributes("data-variant")).toBe("card");
+				expect(options[1].attributes("data-position")).toBe("middle");
+				expect(options[1].attributes("data-state")).toBe("selected");
 				expect(options[1].classes()).toContain("-mt-px");
-				expect(options[1].classes()).toContain("z-10");
 				expect(options[2].classes()).toContain("-mt-px");
-				expect(options[2].classes()).toContain("z-0");
+				expect(options[2].attributes("data-position")).toBe("last");
+				expect(options[2].attributes("data-state")).toBe("unselected");
+				expect(wrapper.get('[data-part="options"]').attributes("data-layout")).toBe("stacked");
 			});
 		});
 

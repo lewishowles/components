@@ -58,10 +58,10 @@ test.describe("form-checkbox", () => {
 		test("is set when an error is provided", async ({ mount, page }) => {
 			await mountFormCheckbox(mount, { slots: { error: "Error text" } });
 
-			await expect(page.getByTestId("form-checkbox").locator("input")).toHaveAttribute(
-				"aria-invalid",
-				"true",
-			);
+			const checkbox = page.getByTestId("form-checkbox").locator("input");
+
+			await expect(checkbox).toHaveAttribute("aria-invalid", "true");
+			await expect(checkbox).toHaveAttribute("aria-errormessage", "id-abc-error");
 		});
 
 		test("is not set without an error", async ({ mount, page }) => {
@@ -90,12 +90,22 @@ test.describe("form-checkbox", () => {
 			);
 		});
 
-		test("applies card styling when checked", async ({ mount, page }) => {
-			await mountFormCheckbox(mount, { modelValue: true, variant: "card" });
+		test("selects a card by keyboard with a visible focus indicator", async ({ mount, page }) => {
+			await mountFormCheckbox(mount, { modelValue: false, variant: "card" });
 
 			const card = page.getByTestId("form-checkbox-card");
+			const checkbox = page.getByRole("checkbox", { name: "Your name", exact: true });
 
-			await expect(card).toHaveClass(/border-primary/);
+			await checkbox.focus();
+
+			await expect(checkbox).toBeFocused();
+			await expect(checkbox).toHaveCSS("outline-width", "2px");
+
+			await checkbox.press("Space");
+
+			await expect(checkbox).toBeChecked();
+			await expect(card).toHaveAttribute("data-variant", "card");
+			await expect(card).toHaveAttribute("data-state", "selected");
 		});
 	});
 

@@ -37,7 +37,10 @@ test.describe("form-checkbox-group", () => {
 	});
 
 	test.describe("options", () => {
-		test("renders an option description", async ({ mount, page }) => {
+		test("renders an option description as part of its accessible name", async ({
+			mount,
+			page,
+		}) => {
 			await mountFormCheckboxGroup(mount, {
 				options: [
 					{
@@ -48,17 +51,38 @@ test.describe("form-checkbox-group", () => {
 				],
 			});
 
-			await expect(page.getByTestId("form-input-group-option-description")).toHaveText(
-				"Anyone with the link can access this project.",
+			const checkbox = page.getByRole("checkbox", {
+				name: "Public access Anyone with the link can access this project.",
+				exact: true,
+			});
+
+			const description = page.getByTestId("form-input-group-option-description");
+
+			await expect(description).toHaveText("Anyone with the link can access this project.");
+			await expect(checkbox).toHaveAccessibleName(
+				"Public access Anyone with the link can access this project.",
 			);
 		});
 
-		test("applies card styling to the selected option", async ({ mount, page }) => {
-			await mountFormCheckboxGroup(mount, { modelValue: ["Banana"], variant: "card" });
+		test("selects a card option by keyboard with a visible focus indicator", async ({
+			mount,
+			page,
+		}) => {
+			await mountFormCheckboxGroup(mount, { modelValue: [], variant: "card" });
 
-			await expect(page.getByTestId("form-input-group-option").nth(1)).toHaveClass(
-				/border-primary/,
-			);
+			const checkbox = page.getByRole("checkbox", { name: "Banana", exact: true });
+			const card = page.getByTestId("form-input-group-option").nth(1);
+
+			await checkbox.focus();
+
+			await expect(checkbox).toBeFocused();
+			await expect(checkbox).toHaveCSS("outline-width", "2px");
+
+			await checkbox.press("Space");
+
+			await expect(checkbox).toBeChecked();
+			await expect(card).toHaveAttribute("data-variant", "card");
+			await expect(card).toHaveAttribute("data-state", "selected");
 		});
 
 		test("forwards custom option content", async ({ mount, page }) => {

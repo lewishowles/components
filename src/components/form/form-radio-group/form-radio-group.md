@@ -67,7 +67,7 @@ The key needed to find each option's value within its object. If an individual o
 - type: `string`
 - default: `description`
 
-The key needed to find an optional description within each option object.
+The key needed to find an optional description associated with each option.
 
 ### `name`
 
