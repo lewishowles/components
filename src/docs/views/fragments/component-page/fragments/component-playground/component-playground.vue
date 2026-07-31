@@ -7,7 +7,9 @@
 				</template>
 			</section-title>
 
-			<slot name="introduction" />
+			<div class="space-y-3">
+				<slot name="introduction" />
+			</div>
 		</div>
 
 		<div
