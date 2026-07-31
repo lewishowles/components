@@ -78,7 +78,7 @@ export function mapFormData(value, mapper = (data) => cloneFormData(toRaw(data))
 
 	const { fields, fieldTypes = {} } = mapper;
 
-	const selectedFields = resolveFields(cloneFormData(toRaw(value)), fields);
+	const selectedFields = cloneFormData(resolveFields(toRaw(value), fields));
 
 	return normaliseForInitialisation(selectedFields, fieldTypes);
 }

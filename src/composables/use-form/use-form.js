@@ -334,7 +334,7 @@ export function useForm({
 		// Field types apply to every seeded field unless a custom mapper is provided.
 		const seededMapper =
 			mapper ??
-			(Object.keys(declaredFieldTypes ?? {}).length > 0
+			(declaredFieldTypes && Object.keys(declaredFieldTypes).length > 0
 				? { fields: Object.keys(value), fieldTypes: declaredFieldTypes }
 				: undefined);
 
