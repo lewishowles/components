@@ -158,16 +158,15 @@
  * our navigation menu we can more cleanly order the components based on their
  * importance, or exclude supplementary components, for example.
  */
-import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
-import { createReusableTemplate } from "@vueuse/core";
-import { callComponentMethod } from "@lewishowles/helpers/vue";
+import { breakpointsTailwind, createReusableTemplate, useBreakpoints } from "@vueuse/core";
 import { useRoute } from "vue-router";
 import { useTemplateRef, watch } from "vue";
-
-const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 
 import AppMenuLink from "./fragments/app-menu-link/app-menu-link.vue";
 import AppMenuSection from "./fragments/app-menu-section/app-menu-section.vue";
+
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 
 // Access the route information.
 const route = useRoute();

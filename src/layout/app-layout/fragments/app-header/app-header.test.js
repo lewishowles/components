@@ -1,6 +1,6 @@
 import { createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
-import { name as packageName, version } from "../../../../../package.json";
+import { name as packageName, version } from "/package.json";
 import AppHeader from "./app-header.vue";
 
 const mount = createMount(AppHeader, {
