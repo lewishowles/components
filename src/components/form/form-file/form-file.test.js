@@ -7,23 +7,15 @@ const defaultProps = { id: "id-abc" };
 const mount = createMount(FormFile, { props: defaultProps });
 
 describe("form-file", () => {
-	describe("Initialisation", () => {
-		test("should exist as a Vue component", () => {
-			const wrapper = mount();
-
-			expect(wrapper.vm).toBeTypeOf("object");
-		});
-	});
-
 	describe("Computed", () => {
 		describe("haveFile", () => {
-			test("should be false when no file is selected", () => {
+			test("reports no file when the model is empty", () => {
 				const wrapper = mount();
 
 				expect(wrapper.vm.haveFile).toBe(false);
 			});
 
-			test("should be true when a file is selected", async () => {
+			test("reports a selected file", async () => {
 				const wrapper = mount();
 
 				await wrapper.setProps({ modelValue: new File(["content"], "test.txt") });
@@ -31,7 +23,7 @@ describe("form-file", () => {
 				expect(wrapper.vm.haveFile).toBe(true);
 			});
 
-			test("should be true when multiple files are selected", async () => {
+			test("reports multiple selected files", async () => {
 				const wrapper = mount({ multiple: true });
 
 				await wrapper.setProps({
@@ -45,7 +37,7 @@ describe("form-file", () => {
 
 	describe("Methods", () => {
 		describe("handleChange", () => {
-			test("should set the model to the selected file", () => {
+			test("sets the model to the selected file", () => {
 				const wrapper = mount();
 				const file = new File(["content"], "test.txt");
 
@@ -54,7 +46,7 @@ describe("form-file", () => {
 				expect(wrapper.emitted("update:modelValue")[0]).toEqual([file]);
 			});
 
-			test("should set the model to null when no file is selected", async () => {
+			test("sets the model to null when no file is selected", async () => {
 				const wrapper = mount();
 
 				await wrapper.setProps({ modelValue: new File(["content"], "test.txt") });
@@ -64,7 +56,7 @@ describe("form-file", () => {
 				expect(wrapper.emitted("update:modelValue").at(-1)).toEqual([null]);
 			});
 
-			test("should set the model to all selected files when multiple is enabled", () => {
+			test("sets the model to all files selected in multiple mode", () => {
 				const wrapper = mount({ multiple: true });
 				const files = [new File(["content"], "first.txt"), new File(["content"], "second.txt")];
 
@@ -73,7 +65,7 @@ describe("form-file", () => {
 				expect(wrapper.emitted("update:modelValue").at(-1)).toEqual([files]);
 			});
 
-			test("should set the model to null when multiple selection is empty", async () => {
+			test("sets the model to null when a multiple selection is empty", async () => {
 				const wrapper = mount({ multiple: true });
 				const files = [new File(["content"], "first.txt")];
 
@@ -86,7 +78,7 @@ describe("form-file", () => {
 		});
 
 		describe("removeFile", () => {
-			test("should clear the model", async () => {
+			test("clears the model", async () => {
 				const wrapper = mount();
 
 				await wrapper.setProps({ modelValue: new File(["content"], "test.txt") });

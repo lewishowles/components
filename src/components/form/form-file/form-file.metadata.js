@@ -33,7 +33,7 @@ export const formFileMetadata = {
 			type: "object",
 			default: null,
 			summary:
-				"Additional attributes forwarded to the input element. Component-managed attributes cannot be overridden.",
+				"Additional input attributes. Component-managed attributes take precedence; aria-describedby values are merged.",
 		},
 	],
 	slots: [

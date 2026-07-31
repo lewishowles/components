@@ -11,7 +11,7 @@ There's no `accept` prop. Restricting file types via `accept` can hide non-match
 
 The default slot contains the label of the field.
 
-_Note that a label is always required, even if a label is not shown to the user, as it will be critical for screen readers. This component will show an error if no label is provided._
+_A label is required for screen reader users. The component shows an error when no label is provided._
 
 ### `optional-indicator`
 
@@ -40,7 +40,7 @@ Content for the button that clears the current selection. Receives `files`, an a
 - type: `string`
 - default: `null`
 
-Any ID to apply to this field. If an ID is not provided, one will be generated at random. Note that when providing an ID, please make sure that it is unique to avoid any unforeseen issues.
+The input ID. A unique ID is generated when omitted.
 
 ### `multiple`
 

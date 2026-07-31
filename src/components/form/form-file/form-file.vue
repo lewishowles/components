@@ -65,8 +65,8 @@
 /**
  * A file upload field supporting single or multiple file selection.
  *
- * The `default` slot contains the label for the input. `introduction`,
- * `error`, and `help` slots exist for additional descriptive text.
+ * The default slot contains the input label. Other slots customise the
+ * optional indicator, introduction, error, help text, and remove button label.
  */
 import { computed, nextTick, useTemplateRef, watch } from "vue";
 import { ensureArray } from "@lewishowles/helpers/array";
@@ -75,9 +75,7 @@ import useFormField from "@/components/form/composables/use-form-field/use-form-
 
 const props = defineProps({
 	/**
-	 * Any ID to apply to this field. If an ID is not provided, one will be
-	 * generated at random. Note that when providing an ID, please make sure
-	 * that it is unique.
+	 * The input ID. A unique ID is generated when omitted.
 	 */
 	id: {
 		type: String,
@@ -93,10 +91,9 @@ const props = defineProps({
 	},
 
 	/**
-	 * Any additional attributes to pass to the input itself, such as
-	 * `accept` or `aria-labelledby`. Attributes managed by this component, such as
-	 * `id`, `type`, `multiple`, `required`, and generated ARIA attributes, are
-	 * ignored or merged.
+	 * Additional attributes for the native input, such as `accept` or
+	 * `aria-labelledby`. Component-managed attributes take precedence; custom
+	 * `aria-describedby` values are merged with generated description IDs.
 	 */
 	inputAttributes: {
 		type: Object,
@@ -125,7 +122,7 @@ const model = defineModel({
 	default: null,
 });
 
-// A reference to the input, which allows us to trigger focus on it.
+// The native input used for direct clearing and focus.
 const inputElement = useTemplateRef("inputElement");
 
 const { inputId, introductionId, errorId, describedBy, haveIntroduction, haveError } = useFormField(
@@ -198,7 +195,7 @@ async function removeFile() {
 }
 
 /**
- * Focus on our input.
+ * Focus the native input.
  */
 function triggerFocus() {
 	callComponentMethod(inputElement.value, "focus");
