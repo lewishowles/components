@@ -112,8 +112,9 @@ export function useForm({
 	generalErrorsElement,
 	submitButtonRef,
 }) {
-	// The resolved initialData source, watched to (re)seed formData.
-	const source = toRef(initialData);
+	// The resolved initialData source, watched to (re)seed formData. Using computed()
+	// rather than toRef() to properly evaluate getter functions in addition to refs.
+	const source = computed(() => toValue(initialData));
 	// Our form data.
 	const formData = ref({});
 	// Whether formData has been seeded at least once.
