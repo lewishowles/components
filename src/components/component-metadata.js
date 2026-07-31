@@ -4,7 +4,6 @@ import { alertMessageMetadata } from "./messaging/alert-message/alert-message.me
 import { appPaginationMetadata } from "./navigation/app-pagination/app-pagination.metadata.js";
 import { baseIconMetadata } from "./icon/base-icon/base-icon.metadata.js";
 import { baseModalMetadata } from "./messaging/base-modal/base-modal.metadata.js";
-import { overlaySheetMetadata } from "./messaging/overlay-sheet/overlay-sheet.metadata.js";
 import { breadcrumbItemMetadata } from "./navigation/breadcrumb-item/breadcrumb-item.metadata.js";
 import { breadcrumbListMetadata } from "./navigation/breadcrumb-list/breadcrumb-list.metadata.js";
 import { formButtonGroupMetadata } from "./form/form-button-group/form-button-group.metadata.js";
@@ -56,6 +55,7 @@ import { modalDialogMetadata } from "./messaging/modal-dialog/modal-dialog.metad
 import { modalDialogTitleMetadata } from "./messaging/modal-dialog-title/modal-dialog-title.metadata.js";
 import { noneFoundMetadata } from "./content/none-found/none-found.metadata.js";
 import { notificationHandlerMetadata } from "./messaging/notification-handler/notification-handler.metadata.js";
+import { overlaySheetMetadata } from "./messaging/overlay-sheet/overlay-sheet.metadata.js";
 import { pillBadgeMetadata } from "./messaging/pill-badge/pill-badge.metadata.js";
 import { progressBarMetadata } from "./chart/progress-bar/progress-bar.metadata.js";
 import { relativeDateMetadata } from "./content/relative-date/relative-date.metadata.js";
@@ -82,7 +82,6 @@ const componentMetadataRecords = [
 	appPaginationMetadata,
 	baseIconMetadata,
 	baseModalMetadata,
-	overlaySheetMetadata,
 	breadcrumbItemMetadata,
 	breadcrumbListMetadata,
 	formButtonGroupMetadata,
@@ -134,6 +133,7 @@ const componentMetadataRecords = [
 	modalDialogTitleMetadata,
 	noneFoundMetadata,
 	notificationHandlerMetadata,
+	overlaySheetMetadata,
 	pillBadgeMetadata,
 	progressBarMetadata,
 	relativeDateMetadata,
