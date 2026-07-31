@@ -60,7 +60,7 @@ export const dataTableMetadata = {
 			name: "rowKey",
 			type: "string",
 			default: "id",
-			summary: "Raw row property used as the stable identity for server selection.",
+			summary: "Raw row property used to match controlled selection.",
 		},
 		{
 			name: "searchPlaceholder",

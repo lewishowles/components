@@ -382,7 +382,8 @@ const props = defineProps({
 	},
 
 	/**
-	 * The raw row property path used as a stable identity for server selection.
+	 * The raw row property path used to match controlled selection. Server mode
+	 * also uses it to preserve selection across pages.
 	 */
 	rowKey: {
 		type: String,
@@ -415,8 +416,8 @@ const props = defineProps({
 
 	/**
 	 * Whether to enable selection. When enabled, a new column is added to the
-	 * start of the table to include selection checkboxes, and v-model on the
-	 * table returns the selected rows' data.
+	 * start of the table with selection checkboxes. The table reads initial and
+	 * later selected rows from v-model and writes user changes back to it.
 	 */
 	enableSelection: {
 		type: Boolean,
@@ -473,7 +474,7 @@ const state = defineModel("state", {
 	type: Object,
 });
 
-// The currently selected rows, if selection is enabled.
+// The controlled raw rows selected in the table.
 const selection = defineModel({
 	type: Array,
 });

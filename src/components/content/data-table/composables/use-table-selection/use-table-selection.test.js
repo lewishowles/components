@@ -121,6 +121,75 @@ describe("useTableSelection", () => {
 	});
 
 	describe("Model synchronisation", () => {
+		test("Applies an initial client selection through the configured raw row key", async () => {
+			const rowA = createRow("internal-a", { name: "Alice", uuid: "a" });
+			const rowB = createRow("internal-b", { name: "Bob", uuid: "b" });
+
+			const { selectedRowIds } = createComposable({
+				rowKey: "uuid",
+				rows: [rowA, rowB],
+				selectionValue: [{ name: "Bob", uuid: "b" }],
+			});
+
+			await nextTick();
+
+			expect(selectedRowIds.value).toEqual(["internal-b"]);
+		});
+
+		test("Applies a replacement client selection", async () => {
+			const rowA = createRow("internal-a", { id: "a", name: "Alice" });
+			const rowB = createRow("internal-b", { id: "b", name: "Bob" });
+			const { selection, selectedRowIds } = createComposable({ rows: [rowA, rowB] });
+
+			selection.value = [{ id: "a", name: "Alice" }];
+			await nextTick();
+			selection.value = [{ id: "b", name: "Bob" }];
+			await nextTick();
+
+			expect(selectedRowIds.value).toEqual(["internal-b"]);
+		});
+
+		test("Drops client selection entries that do not match the current data", async () => {
+			const row = createRow("internal-a", { id: "a", name: "Alice" });
+
+			const { selection, selectedRowIds } = createComposable({
+				rows: [row],
+				selectionValue: [row.raw, { id: "missing", name: "Missing" }],
+			});
+
+			await nextTick();
+
+			expect(selectedRowIds.value).toEqual(["internal-a"]);
+			expect(selection.value).toEqual([row.raw]);
+		});
+
+		test("Clears client checkbox state when the external selection is emptied", async () => {
+			const row = createRow("internal-a", { id: "a", name: "Alice" });
+
+			const { selection, selectedRowIds } = createComposable({
+				rows: [row],
+				selectionValue: [row.raw],
+			});
+
+			await nextTick();
+			selection.value = [];
+			await nextTick();
+
+			expect(selectedRowIds.value).toEqual([]);
+		});
+
+		test("Treats an undefined model as empty without rewriting it on mount", async () => {
+			const { selection, selectedRowIds } = createComposable({
+				rows: [createRow("internal-a")],
+				selectionValue: undefined,
+			});
+
+			await nextTick();
+
+			expect(selectedRowIds.value).toEqual([]);
+			expect(selection.value).toBeUndefined();
+		});
+
 		test("Updates the model with the raw data of the selected rows", async () => {
 			const rowA = createRow("a", { id: "a", name: "Alice" });
 			const rowB = createRow("b", { id: "b", name: "Bob" });
@@ -183,6 +252,42 @@ describe("useTableSelection", () => {
 			expect(selectedRowIds.value).toEqual(["returned-a"]);
 			expect(selection.value).toEqual([{ name: "Alice", uuid: "a" }]);
 		});
+
+		test("Preserves externally selected server rows outside the current page", async () => {
+			const currentRow = createRow("internal-a", { name: "Alice", uuid: "a" });
+			const offPageRow = { name: "Bob", uuid: "b" };
+
+			const { selection, selectedRowIds } = createComposable({
+				rowKey: "uuid",
+				rows: [currentRow],
+				selectionValue: [currentRow.raw, offPageRow],
+				serverMode: true,
+			});
+
+			await nextTick();
+
+			expect(selectedRowIds.value).toEqual(["internal-a"]);
+			expect(selection.value).toEqual([currentRow.raw, offPageRow]);
+		});
+
+		test("Replaces externally selected server rows without retaining old keys", async () => {
+			const rowA = createRow("internal-a", { name: "Alice", uuid: "a" });
+			const rowB = createRow("internal-b", { name: "Bob", uuid: "b" });
+
+			const { selection, selectedRowIds } = createComposable({
+				rowKey: "uuid",
+				rows: [rowA],
+				selectionValue: [rowA.raw],
+				serverMode: true,
+			});
+
+			await nextTick();
+			selection.value = [rowB.raw];
+			await nextTick();
+
+			expect(selectedRowIds.value).toEqual([]);
+			expect(selection.value).toEqual([rowB.raw]);
+		});
 	});
 });
 
@@ -213,19 +318,18 @@ function createRow(id, raw = { id }) {
  *     Whether selection is enabled.
  * @param  {string}  options.rowKey
  *     The raw row property used as the stable server identity.
+ * @param  {object[]|undefined}  options.selectionValue
+ *     The initial model value.
  * @param  {boolean}  options.serverMode
  *     Whether server selection behaviour is active.
  */
-function createComposable({
-	rows = [],
-	data = rows,
-	enabled = true,
-	rowKey = "id",
-	serverMode = false,
-} = {}) {
+function createComposable(options = {}) {
+	const { rows = [], data = rows, enabled = true, rowKey = "id", serverMode = false } = options;
+	// Preserve an explicit undefined model while defaulting omitted test input.
+	const selectionValue = Object.hasOwn(options, "selectionValue") ? options.selectionValue : [];
 	const internalData = ref(data);
 	const filteredRows = ref(rows);
-	const selection = ref([]);
+	const selection = ref(selectionValue);
 	const enableSelection = ref(enabled);
 	const isServerMode = ref(serverMode);
 	const rowKeyRef = ref(rowKey);

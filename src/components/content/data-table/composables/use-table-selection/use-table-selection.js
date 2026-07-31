@@ -1,19 +1,21 @@
 import { computed, ref, shallowRef, watch } from "vue";
 import { arrayLength, isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isEqual } from "@lewishowles/helpers/general";
 import { getPathValue } from "@lewishowles/helpers/object";
 import { getRawRow, getRowId } from "../../utilities/row.js";
 
 /**
  * Manage row selection for the data table: which rows are selected, the
  * select-all state, the selection counts, and the action to toggle every row.
- * The table's `v-model` is kept in sync with the raw data of the selected rows.
+ * The table's `v-model` and its selection controls are kept in sync through the
+ * raw data of the selected rows.
  *
  * @param  {object}  internalData
  *     A ref of the table's internalised rows.
  * @param  {object}  filteredRows
  *     A ref of the rows currently visible after any search.
  * @param  {object}  selection
- *     The table's `v-model` ref, updated with the raw selected rows.
+ *     The table's `v-model` ref containing the raw selected rows.
  * @param  {object}  enableSelection
  *     A ref reflecting whether selection is enabled.
  * @param  {object}  options
@@ -36,22 +38,38 @@ export default function useTableSelection(
 	const selectedRowIds = ref([]);
 	// The selected server rows, keyed by stable identity.
 	const selectedRowsByKey = shallowRef(new Map());
+
+	// The model array most recently written by this composable.
+	let lastSelectionWrite;
+
 	// Our checkbox that visually determines whether all rows are selected, and
 	// allows the user to toggle state globally.
 	const selectAllRows = ref(false);
 
 	/**
-	 * Get the selection key for a row. Server rows use the configured raw value
-	 * because internal row IDs are regenerated when a page is normalised.
+	 * Get a stable selection key from a raw row.
+	 *
+	 * @param  {object}  rawRow
+	 *     The row data provided to the table.
+	 */
+	function getRawSelectionKey(rawRow) {
+		const key = getPathValue(rawRow, rowKey.value, null);
+
+		return key === null || key === undefined ? null : key;
+	}
+
+	/**
+	 * Get the selection key for an internal row. Server rows use the configured
+	 * raw value because internal row IDs are regenerated when a page is normalised.
 	 *
 	 * @param  {object}  row
 	 *     The standardised row data.
 	 */
 	function getSelectionKey(row) {
 		if (isServerMode.value) {
-			const rowKeyValue = getPathValue(getRawRow(row), rowKey.value, null);
+			const rowKeyValue = getRawSelectionKey(getRawRow(row));
 
-			if (rowKeyValue !== null && rowKeyValue !== undefined) {
+			if (rowKeyValue !== null) {
 				return rowKeyValue;
 			}
 		}
@@ -60,33 +78,64 @@ export default function useTableSelection(
 	}
 
 	/**
-	 * Restore checkbox state and refresh selected data for the current server page.
+	 * Update selected row IDs only when their values have changed.
+	 *
+	 * @param  {string[]}  rowIds
+	 *     The next selected internal row IDs.
+	 */
+	function setSelectedRowIds(rowIds) {
+		if (isEqual(selectedRowIds.value, rowIds)) {
+			return;
+		}
+
+		selectedRowIds.value = rowIds;
+	}
+
+	/**
+	 * Restore checkbox state for the current rows from stable selection keys.
 	 *
 	 * @param  {object[]}  rows
-	 *     The standardised rows in the current server page.
+	 *     The current standardised rows.
 	 */
 	function restoreCurrentPageCheckboxes(rows) {
 		if (!isServerMode.value) {
+			const selectedKeys = new Set(
+				(isNonEmptyArray(selection.value) ? selection.value : [])
+					.map((row) => getRawSelectionKey(row))
+					.filter((key) => key !== null),
+			);
+
+			const rowIds = rows
+				.filter((row) => selectedKeys.has(getRawSelectionKey(getRawRow(row))))
+				.map((row) => getRowId(row));
+
+			setSelectedRowIds(rowIds);
+
 			return;
 		}
 
 		const nextSelectedRows = new Map(selectedRowsByKey.value);
 
+		let selectedRowsChanged = false;
+
 		for (const row of rows) {
 			const key = getSelectionKey(row);
+			const rawRow = getRawRow(row);
 
-			if (nextSelectedRows.has(key)) {
-				nextSelectedRows.set(key, row);
+			if (nextSelectedRows.has(key) && nextSelectedRows.get(key) !== rawRow) {
+				nextSelectedRows.set(key, rawRow);
+				selectedRowsChanged = true;
 			}
 		}
 
-		selectedRowsByKey.value = nextSelectedRows;
-		selectedRowIds.value = rows
-			.filter((row) => nextSelectedRows.has(getSelectionKey(row)))
-			.map((row) => getRowId(row));
-	}
+		if (selectedRowsChanged) {
+			selectedRowsByKey.value = nextSelectedRows;
+		}
 
-	watch(internalData, restoreCurrentPageCheckboxes, { immediate: true });
+		setSelectedRowIds(
+			rows.filter((row) => nextSelectedRows.has(getSelectionKey(row))).map((row) => getRowId(row)),
+		);
+	}
 
 	// The raw rows that correspond to our `selectedRowIds`.
 	const selectedRows = computed(() => {
@@ -95,7 +144,7 @@ export default function useTableSelection(
 		}
 
 		if (isServerMode.value) {
-			return [...selectedRowsByKey.value.values()].map((row) => getRawRow(row));
+			return [...selectedRowsByKey.value.values()];
 		}
 
 		const internalRows = internalData.value.filter((row) =>
@@ -167,7 +216,7 @@ export default function useTableSelection(
 			const key = getSelectionKey(row);
 
 			if (selectedIds.has(getRowId(row))) {
-				nextSelectedRows.set(key, row);
+				nextSelectedRows.set(key, getRawRow(row));
 			} else {
 				nextSelectedRows.delete(key);
 			}
@@ -178,24 +227,66 @@ export default function useTableSelection(
 
 	watch(selectedRowIds, updateSelectedRowsFromCurrentPage);
 
+	/**
+	 * Replace server selection with the valid keyed rows from the model.
+	 *
+	 * @param  {object[]|undefined}  modelSelection
+	 *     The externally provided selected rows.
+	 */
+	function updateSelectedServerRows(modelSelection) {
+		const nextSelectedRows = new Map();
+
+		for (const row of isNonEmptyArray(modelSelection) ? modelSelection : []) {
+			const key = getRawSelectionKey(row);
+
+			if (key !== null) {
+				nextSelectedRows.set(key, row);
+			}
+		}
+
+		if (nextSelectedRows.size === 0 && selectedRowsByKey.value.size === 0) {
+			return;
+		}
+
+		selectedRowsByKey.value = nextSelectedRows;
+	}
+
 	// When the selected rows change, update our model value.
-	watch(selectedRows, () => {
+	watch(selectedRows, (nextSelectedRows) => {
 		if (enableSelection.value !== true) {
 			return;
 		}
 
-		if (!isNonEmptyArray(selectedRows.value)) {
-			selection.value = [];
+		selection.value = nextSelectedRows;
+		lastSelectionWrite = selection.value;
 
+		if (!isNonEmptyArray(nextSelectedRows)) {
 			if (selectAllRows.value === true) {
 				selectAllRows.value = false;
 			}
-
-			return;
 		}
-
-		selection.value = selectedRows.value;
 	});
+
+	// Apply initial and later external model values to checkbox state.
+	watch(
+		selection,
+		(modelSelection) => {
+			if (modelSelection === lastSelectionWrite) {
+				lastSelectionWrite = undefined;
+
+				return;
+			}
+
+			if (isServerMode.value) {
+				updateSelectedServerRows(modelSelection);
+			}
+
+			restoreCurrentPageCheckboxes(internalData.value);
+		},
+		{ immediate: true },
+	);
+
+	watch(internalData, restoreCurrentPageCheckboxes, { immediate: true });
 
 	// If all rows are now selected, and `selectAllRows` is not, we check it. If
 	// not all rows are selected, but `selectAllRows` is, we uncheck it.

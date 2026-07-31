@@ -8,6 +8,7 @@
 		data-test="modal-dialog-title"
 	>
 		<slot />
+
 		<div v-if="haveSubtitle" data-part="subtitle" class="text-content-muted text-lg font-normal">
 			<slot name="subtitle" />
 		</div>
@@ -33,6 +34,6 @@ const slots = useSlots();
 // The id injected from the parent modal-dialog, used to link aria-labelledby on
 // the dialog element.
 const titleId = inject("modal-dialog-title-id", useId());
-
+// Whether a subtitle has been provided.
 const haveSubtitle = computed(() => isNonEmptySlot(slots.subtitle));
 </script>

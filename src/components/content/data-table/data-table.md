@@ -4,6 +4,10 @@
 
 When it comes to whether to format data before passing it to the table, versus formatting it using cell templates, the latter is recommended. If the data is passed to the table in a more raw form, it may be easier for a table to be sortable out of the box (for example, with integers versus formatted currency strings). You then have ultimate control over formatting for each cell, in a way that's more flexible than passing pre-formatted data through.
 
+## Selection
+
+Set `enableSelection` and bind `v-model` to control the selected raw rows. Initial and later model values are matched through the `rowKey` path, and checkbox changes are written back to the model. Client mode drops model entries that do not match the current data. Server mode preserves valid keyed entries that are outside the current page because their absence cannot be confirmed.
+
 ## Server mode
 
 Set `mode="server"` and bind `v-model:state` when the data comes from a server. The consumer owns fetching and adapting the raw response into the current page of table rows. The state model contains `page`, `itemsPerPage`, `sort`, and `filters`, while `totalRows`, `loading`, and `error` describe the current request. The table does not fetch, filter, sort, or slice server data locally. When selection is enabled, each raw row needs a stable value at the `rowKey` path so selected rows can be restored across page windows.
@@ -314,7 +318,7 @@ The current server loading error, or `null` when there is no error. Required in 
 - type: `string`
 - default: `"id"`
 
-The raw row property used as the stable identity for selection across server pages. Dotted paths are supported. Every selectable server row needs a non-null value at this path.
+The raw row property used to match controlled selection. Dotted paths are supported. In server mode, this identity also preserves selected rows across page windows, so every selectable server row needs a non-null value at this path.
 
 ### `name`
 
@@ -342,7 +346,7 @@ Whether to enable the table sort. When enabled, columns marked as sortable (the 
 - type: `boolean`
 - default: `false`
 
-Whether to enable selection. When enabled, a new column is added to the start of the table to include selection checkboxes, and v-model on the table returns the selected rows' data.
+Whether to enable selection. When enabled, a new column is added to the start of the table with selection checkboxes. Bind `v-model` to provide the selected raw rows and receive user changes.
 
 ### `searchPlaceholder`
 
