@@ -7,7 +7,7 @@
 	>
 		<summary
 			ref="summaryElement"
-			:class="cn('inline-flex cursor-pointer items-center gap-2', summaryClasses)"
+			:class="cn('inline-flex cursor-pointer list-none items-center gap-2', summaryClasses)"
 			v-bind="{ 'data-test': `${dataTest}-summary` }"
 			data-part="summary"
 		>
@@ -195,7 +195,7 @@ const props = defineProps({
 
 	/**
 	 * The data-test attribute for this element. This allows us to re-use the
-	 * provided data-test attribute for sub-components..
+	 * provided data-test attribute for sub-components.
 	 */
 	dataTest: {
 		type: String,

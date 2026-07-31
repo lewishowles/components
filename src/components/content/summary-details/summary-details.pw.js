@@ -37,6 +37,15 @@ test.describe("summary-details", () => {
 	});
 
 	test.describe("icons", () => {
+		test("the custom icon replaces the native disclosure marker", async ({ mount, page }) => {
+			await mountSummaryDetails(mount);
+
+			await expect(page.getByTestId("summary-details-summary")).toHaveCSS(
+				"list-style-type",
+				"none",
+			);
+		});
+
 		test("an icon is shown at the end by default", async ({ mount, page }) => {
 			await mountSummaryDetails(mount);
 
