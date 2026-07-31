@@ -46,15 +46,17 @@ test.describe("breadcrumb-list", () => {
 				const listRect = element.getBoundingClientRect();
 				const lastItemRect = element.lastElementChild.getBoundingClientRect();
 
+				const html = document.documentElement;
+
 				return {
 					clientHeight: element.clientHeight,
 					clientWidth: element.clientWidth,
-					documentWidth: document.documentElement.scrollWidth,
+					documentClientWidth: html.clientWidth,
+					documentScrollWidth: html.scrollWidth,
 					lastItemRight: lastItemRect.right,
 					scrollHeight: element.scrollHeight,
 					scrollLeft: element.scrollLeft,
 					scrollWidth: element.scrollWidth,
-					viewportWidth: window.innerWidth,
 					listRight: listRect.right,
 				};
 			});
@@ -63,10 +65,10 @@ test.describe("breadcrumb-list", () => {
 			expect(metrics.scrollHeight).toBeLessThanOrEqual(metrics.clientHeight);
 			expect(metrics.scrollLeft).toBe(metrics.scrollWidth - metrics.clientWidth);
 			expect(metrics.lastItemRight).toBeLessThanOrEqual(metrics.listRight);
-			// Allow a fraction of a pixel of slack: sub-pixel layout rounding can
-			// report the document as marginally wider than the viewport without an
-			// actual scrollbar appearing.
-			expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
+			// documentElement.clientWidth is an integer while scrollWidth can be
+			// fractional, so compare both from the same element rather than against
+			// window.innerWidth to avoid a false positive from that rounding gap.
+			expect(metrics.documentScrollWidth).toBeLessThanOrEqual(metrics.documentClientWidth + 1);
 		}).toPass();
 	});
 
