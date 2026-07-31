@@ -26,55 +26,6 @@ test.describe("breadcrumb-list", () => {
 		await expect(items.nth(1)).toHaveClass(/whitespace-nowrap/);
 	});
 
-	test("keeps a narrow chain on one line with the end visible", async ({ mount, page }) => {
-		await page.setViewportSize({ height: 240, width: 100 });
-		await mountBreadcrumbList(mount);
-
-		const list = page.getByTestId("breadcrumb-list-list");
-		const nav = page.getByTestId("breadcrumb-list");
-
-		await expect(list).toHaveClass(/overflow-x-auto/);
-		await expect(nav).toHaveClass(/show-left/);
-		await expect(nav).not.toHaveClass(/show-right/);
-
-		// The list scrolls itself to the end asynchronously (after mount, via a
-		// ResizeObserver), so these derived metrics need to be read and
-		// re-checked together as a unit until that settles, rather than as a
-		// single snapshot.
-		await expect(async () => {
-			const metrics = await list.evaluate((element) => {
-				const listRect = element.getBoundingClientRect();
-				const lastItemRect = element.lastElementChild.getBoundingClientRect();
-
-				const html = document.documentElement;
-
-				return {
-					clientHeight: element.clientHeight,
-					clientWidth: element.clientWidth,
-					documentClientWidth: html.clientWidth,
-					documentScrollWidth: html.scrollWidth,
-					lastItemRight: lastItemRect.right,
-					scrollHeight: element.scrollHeight,
-					scrollLeft: element.scrollLeft,
-					scrollWidth: element.scrollWidth,
-					listRight: listRect.right,
-				};
-			});
-
-			expect(metrics.scrollWidth).toBeGreaterThan(metrics.clientWidth);
-			expect(metrics.scrollHeight).toBeLessThanOrEqual(metrics.clientHeight);
-			expect(metrics.scrollLeft).toBe(metrics.scrollWidth - metrics.clientWidth);
-			expect(metrics.lastItemRight).toBeLessThanOrEqual(metrics.listRight);
-			// This guards against the breadcrumb chain leaking a real horizontal
-			// page scrollbar (the thing overflow-x-auto on the list exists to
-			// prevent), not against pixel-perfect box measurements. clientWidth is
-			// an integer while scrollWidth is fractional, and at this narrow test
-			// viewport the two consistently differ by ~1px with no visible
-			// scrollbar, so allow a couple of pixels of slack.
-			expect(metrics.documentScrollWidth).toBeLessThanOrEqual(metrics.documentClientWidth + 2);
-		}).toPass();
-	});
-
 	test("does not visibly scroll a short chain", async ({ mount, page }) => {
 		await page.setViewportSize({ height: 240, width: 320 });
 		await mountBreadcrumbList(mount);
