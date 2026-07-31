@@ -42,7 +42,7 @@ const props = defineProps({
 	},
 });
 
-// Whether a label for the pagination has been provided.
+// Whether a label for the breadcrumbs has been provided.
 const haveLabel = computed(() => isNonEmptyString(props.label));
 // The scroll container used to reveal the latest breadcrumb on mount.
 const listReference = ref(null);
@@ -57,7 +57,7 @@ const scrollIndicatorClasses = computed(() => ({
 	"show-right": !arrivedState.right,
 }));
 
-// When the screen resizes, re-calculate breadcrum visibility.
+// When the screen resizes, re-calculate breadcrumb visibility.
 useResizeObserver(listReference, () => {
 	measure();
 	positionListAtEnd();

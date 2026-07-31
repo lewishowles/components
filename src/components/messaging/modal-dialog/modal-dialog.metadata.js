@@ -13,7 +13,7 @@ export const modalDialogMetadata = {
 		{
 			name: "focusDialogOnOpen",
 			type: "boolean",
-			default: true,
+			default: false,
 			summary: "Move focus to the dialog when it opens.",
 		},
 		{

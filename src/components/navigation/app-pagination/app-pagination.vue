@@ -237,7 +237,7 @@ const firstItem = computed(() => (currentPage.value - 1) * props.itemsPerPage + 
 const lastItem = computed(() => Math.min(firstItem.value + props.itemsPerPage - 1, props.count));
 
 /**
- * Select the next page, limited to 1.
+ * Select the previous page, limited to 1.
  */
 function selectPreviousPage() {
 	currentPage.value = Math.max(currentPage.value - 1, 1);
