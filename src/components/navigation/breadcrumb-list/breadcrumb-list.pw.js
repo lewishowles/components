@@ -63,7 +63,10 @@ test.describe("breadcrumb-list", () => {
 			expect(metrics.scrollHeight).toBeLessThanOrEqual(metrics.clientHeight);
 			expect(metrics.scrollLeft).toBe(metrics.scrollWidth - metrics.clientWidth);
 			expect(metrics.lastItemRight).toBeLessThanOrEqual(metrics.listRight);
-			expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth);
+			// Allow a fraction of a pixel of slack: sub-pixel layout rounding can
+			// report the document as marginally wider than the viewport without an
+			// actual scrollbar appearing.
+			expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
 		}).toPass();
 	});
 
