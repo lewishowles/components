@@ -342,4 +342,22 @@ describe("floating-details", () => {
 			outside.remove();
 		});
 	});
+
+	describe("Root positioning class", () => {
+		test("adds relative positioning when wide", () => {
+			const wrapper = mountWithRawSummaryDetails();
+			const summaryDetails = wrapper.findComponent({ name: "SummaryDetails" });
+
+			expect(summaryDetails.vm.$attrs.class.split(" ")).toContain("relative");
+		});
+
+		test("does not add relative positioning when narrow", () => {
+			isNarrow.value = true;
+
+			const wrapper = mountWithRawSummaryDetails();
+			const summaryDetails = wrapper.findComponent({ name: "SummaryDetails" });
+
+			expect(summaryDetails.vm.$attrs.class.split(" ")).not.toContain("relative");
+		});
+	});
 });

@@ -147,11 +147,7 @@ const resolvedDetailsClasses = computed(() =>
 // The summary and panel props forwarded to summary-details.
 const summaryDetailsProps = computed(() => ({
 	...attrs,
-	class: [
-		attrs.class,
-		!isNarrow.value && !hasAbsoluteOrRelative(attrs.class) && "relative",
-		!isNarrow.value && isOpen.value && "z-50",
-	],
+	class: cn(!isNarrow.value && "relative", !isNarrow.value && isOpen.value && "z-50", attrs.class),
 	closeWithEscape: !isNarrow.value && props.closeWithEscape,
 	detailsClasses: isNarrow.value ? "mt-0" : resolvedDetailsClasses.value,
 	summaryClasses: props.summaryClasses,
@@ -166,18 +162,6 @@ onClickOutside(
 	},
 	{ ignore: [summaryElementRef] },
 );
-
-/**
- * Whether classValue already sets an absolute or relative position.
- *
- * @param  {unknown}  classValue
- *     The root element's classes.
- * @returns  {boolean}
- *     Whether absolute or relative is present.
- */
-function hasAbsoluteOrRelative(classValue) {
-	return typeof classValue === "string" && /\b(absolute|relative)\b/.test(classValue);
-}
 
 /**
  * Open the details element and let the presentation watcher activate the
