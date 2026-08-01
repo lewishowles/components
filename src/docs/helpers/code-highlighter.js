@@ -2,6 +2,39 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 const codeTheme = "catppuccin-macchiato";
 
+// Only the languages actually used in the docs are bundled, rather than
+// Shiki's full grammar/theme set, to keep the highlighter chunk small.
+const languageImporters = {
+	html: () => import("shiki/langs/html.mjs"),
+	javascript: () => import("shiki/langs/javascript.mjs"),
+	vue: () => import("shiki/langs/vue.mjs"),
+};
+
+let highlighterPromise;
+
+/**
+ * Lazily create (and cache) a Shiki core highlighter scoped to the languages
+ * and theme the docs actually render, using the wasm-free JS regex engine.
+ *
+ * @returns {Promise<import("shiki/core").HighlighterCore>}
+ */
+function getHighlighter() {
+	if (!highlighterPromise) {
+		highlighterPromise = Promise.all([
+			import("shiki/core"),
+			import("shiki/engine/javascript"),
+		]).then(([{ createHighlighterCore }, { createJavaScriptRegexEngine }]) =>
+			createHighlighterCore({
+				themes: [import("shiki/themes/catppuccin-macchiato.mjs")],
+				langs: Object.values(languageImporters).map((importLanguage) => importLanguage()),
+				engine: createJavaScriptRegexEngine(),
+			}),
+		);
+	}
+
+	return highlighterPromise;
+}
+
 /**
  * Normalise code text from either a prop or indented Vue slot content.
  *
@@ -71,9 +104,9 @@ export async function renderCodeHtml(code, language) {
 	}
 
 	try {
-		const { codeToHtml } = await import("shiki/bundle/web");
+		const highlighter = await getHighlighter();
 
-		return await codeToHtml(code, {
+		return highlighter.codeToHtml(code, {
 			lang: resolvedLanguage,
 			theme: codeTheme,
 		});
