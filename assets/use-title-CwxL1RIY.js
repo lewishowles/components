@@ -1,0 +1,1 @@
+import{B as e,X as t,it as n}from"./runtime-core.esm-bundler-DJDazOtI.js";import{t as r}from"./is-non-empty-string-BkGTfuai-D8p-Ze5N.js";var i=document.title||`Components | A library of beautiful components`,a=t(i);function o(){function t(e){let t=n(e);if(!r(t)){a.value=i;return}a.value=[t,i].join(` | `)}return e(()=>{document.title=a.value}),{title:a,setTitle:t}}export{o as t};

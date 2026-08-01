@@ -194,6 +194,7 @@
 	--color-info-950: var(--info-950);
 
 	--color-surface: var(--surface);
+	--color-surface-elevated: var(--surface-elevated);
 	--color-surface-subtle: var(--surface-subtle);
 	--color-surface-sunken: var(--surface-sunken);
 
@@ -211,6 +212,7 @@
  * - a fill (bg),
  * - a text colour,
  * - a subtle wash (bg), and
+ * - a subtle border, and
  * - a foreground (text on fill)
 
  * Fill and text use different shades where the accessible text shade differs
@@ -221,32 +223,40 @@
 	--primary-fill: var(--primary-800);
 	--primary-text: var(--primary-800);
 	--primary-subtle: var(--primary-50);
+	--primary-border-subtle: var(--primary-200);
 	--primary-foreground: var(--color-white);
 
 	--danger-fill: var(--danger-700);
 	--danger-text: var(--danger-800);
 	--danger-subtle: var(--danger-50);
+	--danger-border-subtle: var(--danger-200);
 	--danger-foreground: var(--color-white);
 
 	--warning-fill: var(--warning-300);
 	--warning-text: var(--warning-800);
 	--warning-subtle: var(--warning-50);
+	--warning-border-subtle: var(--warning-200);
 	--warning-foreground: var(--color-grey-950);
 
 	--success-fill: var(--success-600);
 	--success-text: var(--success-800);
 	--success-subtle: var(--success-50);
+	--success-border-subtle: var(--success-200);
 	--success-foreground: var(--color-white);
 
 	--info-fill: var(--info-600);
 	--info-text: var(--info-800);
 	--info-subtle: var(--info-50);
+	--info-border-subtle: var(--info-200);
 	--info-foreground: var(--color-white);
 
-	/* Neutral foundation. */
 	--surface: var(--color-white);
+	--surface-elevated: var(--color-white);
 	--surface-subtle: var(--color-grey-50);
 	--surface-sunken: var(--color-grey-100);
+	--control-muted-surface: var(--surface);
+	--control-muted-surface-hover: var(--color-grey-50);
+	--control-muted-surface-active: var(--color-grey-100);
 
 	--content: var(--color-grey-600);
 	--content-strong: var(--color-grey-950);
@@ -263,27 +273,36 @@
 	color-scheme: dark;
 	--primary-fill: var(--primary-500);
 	--primary-text: var(--primary-300);
-	--primary-subtle: color-mix(in oklab, var(--primary-500) 50%, transparent);
+	--primary-subtle: color-mix(in oklab, var(--primary-500) 25%, transparent);
+	--primary-border-subtle: transparent;
 
 	--danger-fill: var(--danger-500);
 	--danger-text: var(--danger-200);
-	--danger-subtle: color-mix(in oklab, var(--danger-500) 50%, transparent);
+	--danger-subtle: color-mix(in oklab, var(--danger-500) 25%, transparent);
+	--danger-border-subtle: transparent;
 
 	--warning-fill: var(--warning-300);
 	--warning-text: var(--warning-200);
-	--warning-subtle: color-mix(in oklab, var(--warning-500) 50%, transparent);
+	--warning-subtle: color-mix(in oklab, var(--warning-500) 25%, transparent);
+	--warning-border-subtle: transparent;
 
 	--success-fill: var(--success-500);
 	--success-text: var(--success-200);
-	--success-subtle: color-mix(in oklab, var(--success-500) 50%, transparent);
+	--success-subtle: color-mix(in oklab, var(--success-500) 25%, transparent);
+	--success-border-subtle: transparent;
 
 	--info-fill: var(--info-500);
 	--info-text: var(--info-200);
-	--info-subtle: color-mix(in oklab, var(--info-500) 50%, transparent);
+	--info-subtle: color-mix(in oklab, var(--info-500) 25%, transparent);
+	--info-border-subtle: transparent;
 
 	--surface: var(--color-grey-950);
+	--surface-elevated: var(--color-grey-800);
 	--surface-subtle: rgb(255 255 255 / 10%);
 	--surface-sunken: rgb(255 255 255 / 20%);
+	--control-muted-surface: var(--control-overlay);
+	--control-muted-surface-hover: var(--control-overlay-hover);
+	--control-muted-surface-active: var(--control-overlay-active);
 
 	--content: var(--color-grey-50);
 	--content-strong: var(--color-white);
@@ -410,6 +429,27 @@
 	border-color: var(--info-text);
 }
 
+/* Intent text backgrounds — bg-primary-text, bg-danger-text, … */
+@utility bg-primary-text {
+	background-color: var(--primary-text);
+}
+
+@utility bg-danger-text {
+	background-color: var(--danger-text);
+}
+
+@utility bg-warning-text {
+	background-color: var(--warning-text);
+}
+
+@utility bg-success-text {
+	background-color: var(--success-text);
+}
+
+@utility bg-info-text {
+	background-color: var(--info-text);
+}
+
 /* Intent subtle backgrounds — bg-primary-subtle, bg-danger-subtle, … */
 @utility bg-primary-subtle {
 	background-color: var(--primary-subtle);
@@ -429,6 +469,27 @@
 
 @utility bg-info-subtle {
 	background-color: var(--info-subtle);
+}
+
+/* Intent subtle borders — border-primary-subtle, border-danger-subtle, … */
+@utility border-primary-subtle {
+	border-color: var(--primary-border-subtle);
+}
+
+@utility border-danger-subtle {
+	border-color: var(--danger-border-subtle);
+}
+
+@utility border-warning-subtle {
+	border-color: var(--warning-border-subtle);
+}
+
+@utility border-success-subtle {
+	border-color: var(--success-border-subtle);
+}
+
+@utility border-info-subtle {
+	border-color: var(--info-border-subtle);
 }
 
 /* Intent foregrounds — text-primary-foreground, text-danger-foreground, … (text on fills) */

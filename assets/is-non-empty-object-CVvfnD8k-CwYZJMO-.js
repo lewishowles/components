@@ -1,0 +1,1 @@
+function e(e){return typeof e==`object`&&!Array.isArray(e)&&e!==null}function t(e){return Array.isArray(e)&&e.length>0}function n(t){return e(t)&&Object.keys(t).length>0}export{t as n,e as r,n as t};

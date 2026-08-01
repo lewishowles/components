@@ -69,7 +69,7 @@
 }
 
 @keyframes progress-bar-indeterminate {
-	0% {
+	from {
 		inset-inline-start: 0;
 	}
 
@@ -77,65 +77,65 @@
 		inset-inline-start: 75%;
 	}
 
-	100% {
+	to {
 		inset-inline-start: 0;
 	}
 }
 
 @keyframes fadeIn {
-	0% {
+	from {
 		opacity: 0;
 	}
 
-	100% {
+	to {
 		opacity: 1;
 	}
 }
 
 @keyframes fadeInUp {
-	0% {
+	from {
 		opacity: 0;
-		transform: translateY(calc(var(--spacing * 2)));
+		translate: 0 calc(var(--spacing) * 2);
 	}
 
-	100% {
+	to {
 		opacity: 1;
-		transform: translateY(0);
+		translate: 0;
 	}
 }
 
 @keyframes fadeInRight {
-	0% {
+	from {
 		opacity: 0;
-		transform: translateX(calc(var(--spacing * -2)));
+		translate: calc(var(--spacing) * -2) 0;
 	}
 
-	100% {
+	to {
 		opacity: 1;
-		transform: translateY(0);
+		translate: 0;
 	}
 }
 
 @keyframes fadeInDown {
-	0% {
+	from {
 		opacity: 0;
-		transform: translateY(calc(var(--spacing * -2)));
+		translate: 0 calc(var(--spacing) * -2);
 	}
 
-	100% {
+	to {
 		opacity: 1;
-		transform: translateY(0);
+		translate: 0;
 	}
 }
 
 @keyframes fadeInLeft {
-	0% {
+	from {
 		opacity: 0;
-		transform: translateX(calc(var(--spacing * 2)));
+		translate: calc(var(--spacing) * 2) 0;
 	}
 
-	100% {
+	to {
 		opacity: 1;
-		transform: translateY(0);
+		translate: 0;
 	}
 }
