@@ -60,6 +60,11 @@ jobs:
       - name: Publish to npm
         run: npm publish --access public
 
+      - name: Configure git identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Deploy docs
         run: bun run deploy:docs
         env:
