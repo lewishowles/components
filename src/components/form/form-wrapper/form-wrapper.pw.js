@@ -5,6 +5,7 @@ import FormWrapper from "./form-wrapper.vue";
 import FormWrapperAsyncInitialDataFixture from "./form-wrapper-async-initial-data.fixture.vue";
 import FormWrapperFixture from "./form-wrapper.fixture.vue";
 import FormWrapperRulesFixture from "./form-wrapper-rules.fixture.vue";
+import FormWrapperSynchronousInitialDataFixture from "./form-wrapper-synchronous-initial-data.fixture.vue";
 
 // Mount form-wrapper via fixture to supply a form-field with submit-button-label.
 const mountFormWrapper = createMount(FormWrapperFixture);
@@ -12,6 +13,11 @@ const mountFormWrapper = createMount(FormWrapperFixture);
 const mountFormWrapperAsyncInitialData = createMount(FormWrapperAsyncInitialDataFixture);
 // Mount form-wrapper with a cross-field form-level rule (password confirmation).
 const mountFormWrapperRules = createMount(FormWrapperRulesFixture);
+
+// Mount a fixture whose initial data is available immediately.
+const mountFormWrapperSynchronousInitialData = createMount(
+	FormWrapperSynchronousInitialDataFixture,
+);
 
 test.describe("form-wrapper", () => {
 	test("renders a form-wrapper", async ({ mount, page }) => {
@@ -28,6 +34,13 @@ test.describe("form-wrapper", () => {
 				await mountFormWrapper(mount, { props: { modelValue: { username: "Alice" } } });
 
 				await expect(page.getByLabel("Username", { exact: true })).toHaveValue("Alice");
+			});
+
+			test("Seeds v-model when initialData is available at mount", async ({ mount, page }) => {
+				await mountFormWrapperSynchronousInitialData(mount);
+
+				await expect(page.getByLabel("First name", { exact: true })).toHaveValue("Alice");
+				await expect(page.getByLabel("Last name", { exact: true })).toHaveValue("Example");
 			});
 
 			test("seeds when an async :initial-data binding resolves", async ({ mount, page }) => {

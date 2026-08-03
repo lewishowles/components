@@ -327,6 +327,11 @@ const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button
 const haveSubmitErrorsSlot = computed(() => isNonEmptySlot(slots["submit-errors"]));
 const haveActionsLabel = computed(() => isNonEmptySlot(slots["actions-label"]));
 
+// The source used to seed the form.
+const formInitialData = computed(() => {
+	return haveInitialData ? toValue(props.initialData) : props.modelValue;
+});
+
 /**
  * Call whatever `@submit` listener(s) the parent attached directly, so their
  * returned Promise can be awaited by useForm.
@@ -363,14 +368,18 @@ const {
 	isFieldRequired,
 } = useForm({
 	...toRefs(props),
-	initialData: () => (haveInitialData ? toValue(props.initialData) : props.modelValue),
+	initialData: formInitialData,
 	onSubmit: callSubmitListeners,
 	errorSummaryElement,
 	generalErrorsElement,
 	submitButtonRef,
 });
 
-watch(formData, (value) => emit("update:modelValue", value), { deep: true });
+// Synchronous initial data seeds before this watcher exists, so emit its current value immediately.
+watch(formData, (value) => emit("update:modelValue", value), {
+	deep: true,
+	immediate: haveInitialData && Boolean(formInitialData.value),
+});
 
 const isCompact = computed(() => props.compact);
 

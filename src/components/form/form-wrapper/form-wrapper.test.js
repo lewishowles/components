@@ -192,6 +192,14 @@ describe("form-wrapper", () => {
 				expect(wrapper.emitted("update:modelValue")).toBeUndefined();
 			});
 
+			test("Emits synchronously available initialData through v-model", async () => {
+				const wrapper = mount({ props: { initialData: () => ({ name: "Alice" }) } });
+
+				await nextTick();
+
+				expect(wrapper.emitted("update:modelValue")).toEqual([[{ name: "Alice" }]]);
+			});
+
 			test("seeds once when an initialData getter resolves", async () => {
 				const source = ref(null);
 				const wrapper = mount({ props: { initialData: () => source.value } });
