@@ -2,7 +2,7 @@
 	<nav
 		v-if="!haveSinglePage"
 		v-bind="{ 'aria-labelledby': internalId }"
-		class="flex flex-wrap items-center gap-4 text-center"
+		class="flex flex-wrap items-center justify-between gap-4 text-center lg:justify-start"
 		data-component="app-pagination"
 		data-test="app-pagination"
 	>
@@ -21,7 +21,9 @@
 			data-test="app-pagination-previous"
 			@click="selectPreviousPage"
 		>
-			<slot name="previous-page-label">Previous</slot>
+			<div class="sr-only lg:not-sr-only">
+				<slot name="previous-page-label">Previous</slot>
+			</div>
 		</ui-button>
 
 		<ul class="flex items-center" data-part="page-list">
@@ -82,7 +84,9 @@
 			data-test="app-pagination-next"
 			@click="selectNextPage"
 		>
-			<slot name="next-page-label">Next</slot>
+			<div class="sr-only lg:not-sr-only">
+				<slot name="next-page-label">Next</slot>
+			</div>
 		</ui-button>
 
 		<span
