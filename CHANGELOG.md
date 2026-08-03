@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.2 - 2026-08-03
+
+### Fixes
+
+- Fixes a clash between Temporal-polyfill versions
+
 ## 3.0.1 - 2026-08-03
 
 ### Fixes
