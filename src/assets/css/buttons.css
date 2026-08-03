@@ -69,9 +69,8 @@
 	white-space: nowrap;
 
 	&:has([data-part="label"].sr-only) {
-		aspect-ratio: 1;
-		min-block-size: 2.75rem;
-		min-inline-size: 2.75rem;
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
 		padding-inline: calc(0.375em - 1px);
 
 		svg {
