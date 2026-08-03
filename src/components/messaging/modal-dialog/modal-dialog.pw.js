@@ -134,5 +134,39 @@ test.describe("modal-dialog", () => {
 				position: "fixed",
 			});
 		});
+
+		test("stays in the viewport and prevents background scrolling", async ({ mount, page }) => {
+			await mountInteractionTest(mount);
+
+			// The trigger is moved down the page so opening happens after document scroll.
+			const openButton = page.getByTestId("modal-dialog-interaction-test-open");
+			// The rendered dialog must remain aligned to the viewport after opening.
+			const dialog = page.getByTestId("modal-dialog");
+
+			await openButton.evaluate((element) => {
+				element.style.marginBlockStart = "150vh";
+			});
+			await openButton.scrollIntoViewIfNeeded();
+
+			// The regression requires the dialog to open from a scrolled document.
+			const initialScrollPosition = await page.evaluate(() => window.scrollY);
+
+			expect(initialScrollPosition).toBeGreaterThan(0);
+
+			await openButton.click();
+
+			await expect
+				.poll(() => dialog.evaluate((element) => element.getBoundingClientRect().bottom))
+				.toBe(800);
+			await expect(page.locator("html")).toHaveCSS("overflow-y", "hidden");
+			await expect(page.locator("body")).toHaveCSS("overflow-y", "hidden");
+
+			// The current position must remain stable while the modal is open.
+			const lockedScrollPosition = await page.evaluate(() => window.scrollY);
+
+			await page.mouse.wheel(0, -500);
+
+			await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(lockedScrollPosition);
+		});
 	});
 });

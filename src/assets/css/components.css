@@ -46,6 +46,11 @@
 	}
 }
 
+html:has(dialog[data-part="sheet"]:modal),
+body:has(dialog[data-part="sheet"]:modal) {
+	overflow: hidden;
+}
+
 dialog[data-part="sheet"] {
 	background-color: var(--surface-elevated);
 	border-top: 1px solid var(--border);
