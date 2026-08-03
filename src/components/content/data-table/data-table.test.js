@@ -66,6 +66,15 @@ describe("data-table", () => {
 			expect(wrapper.attributes("data-component")).toBe("data-table");
 		});
 
+		test("should expose separate scroll indicator and scroll region hooks", () => {
+			const wrapper = mount();
+			const scrollIndicators = wrapper.get('[data-part="scroll-indicators"]');
+			const scrollRegion = wrapper.get('[data-part="scroll-region"]');
+
+			expect(scrollIndicators.classes()).not.toContain("overflow-x-auto");
+			expect(scrollRegion.classes()).toContain("overflow-x-auto");
+		});
+
 		test("should label an overflowing wrapper with overflowLabel", async () => {
 			const wrapper = mount({ overflowLabel: "Scrollable table" });
 

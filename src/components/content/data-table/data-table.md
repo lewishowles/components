@@ -395,9 +395,11 @@ Set the table's current search query, overriding any current search. This could 
 
 ## Styling hooks
 
-| Attribute                     | Element | Notes                          |
-| ----------------------------- | ------- | ------------------------------ |
-| `data-component="data-table"` | Root    | Scope styles to this component |
+| Attribute                       | Element          | Notes                                            |
+| ------------------------------- | ---------------- | ------------------------------------------------ |
+| `data-component="data-table"`   | Root             | Scope styles to this component                   |
+| `data-part="scroll-indicators"` | Indicator shell  | Hosts the shading for columns outside view       |
+| `data-part="scroll-region"`     | Scroll container | Contains the table and owns horizontal scrolling |
 
 ## Examples
 

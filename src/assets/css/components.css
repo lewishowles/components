@@ -1,5 +1,6 @@
 [data-component="tab-group"] [data-part="nav"],
-[data-component="breadcrumb-list"] [data-part="nav"] {
+[data-component="breadcrumb-list"] [data-part="nav"],
+[data-component="data-table"] [data-part="scroll-indicators"] {
 	position: relative;
 
 	&::before,

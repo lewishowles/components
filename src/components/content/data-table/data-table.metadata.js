@@ -150,6 +150,16 @@ export const dataTableMetadata = {
 		{ name: "next-page-label", summary: "Next page label." },
 		{ name: "showing-items-label", summary: "Pagination range label." },
 	],
+	parts: [
+		{
+			name: "scroll-indicators",
+			summary: "Shell displaying shading when columns continue beyond either visible edge.",
+		},
+		{
+			name: "scroll-region",
+			summary: "Horizontally scrollable container for the table.",
+		},
+	],
 	methods: [
 		{
 			name: "setSearchQuery",

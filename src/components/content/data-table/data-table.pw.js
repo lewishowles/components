@@ -202,6 +202,47 @@ test.describe("data-table", () => {
 			await expect(page.getByTestId("data-table-no-results")).toBeVisible();
 		});
 
+		test("shows which table edges have content hidden beyond them", async ({ mount, page }) => {
+			await mountDataTableRaw(mount, {
+				props: {
+					data: [{ device: "Laptop", last_seen: "4 minutes ago" }],
+					columns: {
+						device: { label: "Device name" },
+						last_seen: { label: "Last seen" },
+					},
+					enableSearch: false,
+					overflowLabel: "Scrollable device table",
+				},
+			});
+
+			const scrollIndicators = page.getByTestId("data-table-scroll-indicators");
+			const scrollRegion = page.getByTestId("data-table-scroll-region");
+
+			await expect(scrollIndicators).not.toHaveClass(/show-left/);
+			await expect(scrollIndicators).not.toHaveClass(/show-right/);
+
+			await setTableWidth(page, "12rem");
+
+			await expect(scrollIndicators).not.toHaveClass(/show-left/);
+			await expect(scrollIndicators).toHaveClass(/show-right/);
+
+			await scrollRegion.evaluate((element) => {
+				element.scrollLeft = (element.scrollWidth - element.clientWidth) / 2;
+				element.dispatchEvent(new Event("scroll"));
+			});
+
+			await expect(scrollIndicators).toHaveClass(/show-left/);
+			await expect(scrollIndicators).toHaveClass(/show-right/);
+
+			await scrollRegion.evaluate((element) => {
+				element.scrollLeft = element.scrollWidth;
+				element.dispatchEvent(new Event("scroll"));
+			});
+
+			await expect(scrollIndicators).toHaveClass(/show-left/);
+			await expect(scrollIndicators).not.toHaveClass(/show-right/);
+		});
+
 		test("a caption labels the overflow region and keeps horizontal scrolling inside it", async ({
 			mount,
 			page,
