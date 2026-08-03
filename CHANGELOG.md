@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.4 - 2026-08-03
+
+### Fixes
+
+- `link-tag` properly align icons within a link tag.
+
 ## 3.0.3 - 2026-08-03
 
 ### Fixes
