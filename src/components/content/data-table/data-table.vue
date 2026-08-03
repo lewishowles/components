@@ -92,7 +92,7 @@
 				>
 					<div
 						ref="tableScrollWrapper"
-						class="overflow-x-auto"
+						class="relative overflow-x-auto"
 						data-part="scroll-region"
 						data-test="data-table-scroll-region"
 						v-bind="{
