@@ -128,7 +128,7 @@ test.describe("data-table", () => {
 	});
 
 	test.describe("rendering", () => {
-		test("shows loading content while server data is pending", async ({ mount, page }) => {
+		test("keeps table controls visible while server data is pending", async ({ mount, page }) => {
 			await mountDataTableRaw(mount, {
 				props: {
 					columns,
@@ -136,16 +136,20 @@ test.describe("data-table", () => {
 					error: null,
 					loading: true,
 					mode: "server",
-					totalRows: data.length,
+					totalRows: 15,
 				},
 				slots: { "loading-label": "Loading movies" },
 			});
 
 			await expect(page.getByTestId("data-table-loading")).toContainText("Loading movies");
-			await expect(page.getByTestId("data-table-table")).not.toBeAttached();
+			await expect(page.getByTestId("data-table-toolbar")).toBeVisible();
+			await expect(page.getByTestId("data-table-table")).toBeVisible();
+			await expect(page.getByTestId("data-table-sort")).toHaveCount(Object.keys(columns).length);
+			await expect(page.getByTestId("data-table-pagination")).toBeVisible();
+			await expect(page.getByTestId("data-table-row")).toHaveCount(0);
 		});
 
-		test("shows a server error and hides the table content", async ({ mount, page }) => {
+		test("keeps table controls visible when server loading fails", async ({ mount, page }) => {
 			await mountDataTableRaw(mount, {
 				props: {
 					columns,
@@ -153,13 +157,17 @@ test.describe("data-table", () => {
 					error: "Request failed",
 					loading: false,
 					mode: "server",
-					totalRows: data.length,
+					totalRows: 15,
 				},
 				slots: { error: "Could not load movies." },
 			});
 
 			await expect(page.getByTestId("data-table-error")).toContainText("Could not load movies.");
-			await expect(page.getByTestId("data-table-table")).not.toBeAttached();
+			await expect(page.getByTestId("data-table-toolbar")).toBeVisible();
+			await expect(page.getByTestId("data-table-table")).toBeVisible();
+			await expect(page.getByTestId("data-table-sort")).toHaveCount(Object.keys(columns).length);
+			await expect(page.getByTestId("data-table-pagination")).toBeVisible();
+			await expect(page.getByTestId("data-table-row")).toHaveCount(0);
 		});
 
 		test("reports search and sort changes without transforming supplied rows", async ({

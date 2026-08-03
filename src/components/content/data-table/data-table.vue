@@ -33,15 +33,7 @@
 		</data-table-header>
 
 		<div class="text-sm">
-			<loading-indicator v-if="isLoading" large data-test="data-table-loading">
-				<slot name="loading-label">Loading data</slot>
-			</loading-indicator>
-
-			<alert-message v-else-if="haveError" type="error" data-test="data-table-error">
-				<slot name="error" v-bind="{ error: props.error }">{{ errorMessage }}</slot>
-			</alert-message>
-
-			<alert-message v-else-if="!haveData" data-test="data-table-no-data">
+			<alert-message v-if="!haveData" data-test="data-table-no-data">
 				<slot name="no-data-message">No data to display.</slot>
 			</alert-message>
 
@@ -103,7 +95,7 @@
 								isOverflowing && !haveCaption && haveOverflowLabel ? props.overflowLabel : null,
 						}"
 					>
-						<table v-show="haveDataToDisplay" class="w-full" data-test="data-table-table">
+						<table v-show="haveTableContent" class="w-full" data-test="data-table-table">
 							<caption
 								v-if="haveCaption || (enableSort && sortedColumn)"
 								:id="captionId"
@@ -209,57 +201,75 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr
-									v-for="(row, rowIndex) in paginatedRows"
-									:key="row.configuration.id"
-									class="border-border hover:bg-surface-subtle border-b transition-colors"
-									data-test="data-table-row"
-								>
-									<td v-if="enableSelection" class="px-4">
-										<form-checkbox
-											v-bind="{
-												displayLabel: false,
-												inputAttributes: { value: getRowId(row) },
-												showOptionalIndicator: false,
-											}"
-											v-model="selectedRowIds"
-											class="shrink"
-											data-test="data-table-select-row"
+								<tr v-if="isLoading" data-test="data-table-loading-row">
+									<td :colspan="stateRowColumnCount" class="py-6 text-center">
+										<loading-indicator large data-test="data-table-loading">
+											<slot name="loading-label">Loading data</slot>
+										</loading-indicator>
+									</td>
+								</tr>
+
+								<tr v-else-if="haveError" data-test="data-table-error-row">
+									<td :colspan="stateRowColumnCount" class="py-6">
+										<alert-message type="error" data-test="data-table-error">
+											<slot name="error" v-bind="{ error: props.error }">{{ errorMessage }}</slot>
+										</alert-message>
+									</td>
+								</tr>
+
+								<template v-else>
+									<tr
+										v-for="(row, rowIndex) in paginatedRows"
+										:key="row.configuration.id"
+										class="border-border hover:bg-surface-subtle border-b transition-colors"
+										data-test="data-table-row"
+									>
+										<td v-if="enableSelection" class="px-4">
+											<form-checkbox
+												v-bind="{
+													displayLabel: false,
+													inputAttributes: { value: getRowId(row) },
+													showOptionalIndicator: false,
+												}"
+												v-model="selectedRowIds"
+												class="shrink"
+												data-test="data-table-select-row"
+											>
+												<slot
+													name="select-row-label"
+													v-bind="{ row: getRawRow(row), rowNumber: rowIndex + 1 }"
+												>
+													Select row {{ rowIndex + 1 }}
+												</slot>
+											</form-checkbox>
+										</td>
+										<component
+											:is="column.primary ? 'th' : 'td'"
+											v-for="(column, columnKey) in visibleColumnDefinitions"
+											:key="columnKey"
+											:scope="column.primary ? 'row' : null"
+											:class="[
+												{
+													'ps-3': !column.first,
+													'pe-3': !column.last,
+													'text-content-strong font-semibold': column.primary,
+													'text-start': column.align !== 'right',
+													'text-end': column.align === 'right',
+													'tabular-nums': column.tabularNums,
+												},
+												getCellClasses(column),
+											]"
+											data-test="data-table-cell"
 										>
 											<slot
-												name="select-row-label"
-												v-bind="{ row: getRawRow(row), rowNumber: rowIndex + 1 }"
+												:name="columnKey"
+												v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }"
 											>
-												Select row {{ rowIndex + 1 }}
+												{{ getRowContent(row, columnKey) }}
 											</slot>
-										</form-checkbox>
-									</td>
-									<component
-										:is="column.primary ? 'th' : 'td'"
-										v-for="(column, columnKey) in visibleColumnDefinitions"
-										:key="columnKey"
-										:scope="column.primary ? 'row' : null"
-										:class="[
-											{
-												'ps-3': !column.first,
-												'pe-3': !column.last,
-												'text-content-strong font-semibold': column.primary,
-												'text-start': column.align !== 'right',
-												'text-end': column.align === 'right',
-												'tabular-nums': column.tabularNums,
-											},
-											getCellClasses(column),
-										]"
-										data-test="data-table-cell"
-									>
-										<slot
-											:name="columnKey"
-											v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }"
-										>
-											{{ getRowContent(row, columnKey) }}
-										</slot>
-									</component>
-								</tr>
+										</component>
+									</tr>
+								</template>
 							</tbody>
 						</table>
 					</div>
@@ -270,7 +280,7 @@
 						enableSelection,
 						selectedCount: selectedRowCount,
 						enablePagination,
-						haveDataToDisplay,
+						haveDataToDisplay: haveTableContent,
 						itemsPerPage,
 						totalCount: rowCount,
 						searchQuery,
@@ -504,6 +514,9 @@ const haveError = computed(
 	() => isServerMode.value && (isNonEmptyString(props.error) || props.error instanceof Error),
 );
 
+// Whether a server response state replaces the table's rows.
+const hasServerState = computed(() => isLoading.value || haveError.value);
+
 // The message shown when a server error has no usable message.
 const errorMessage = computed(() => {
 	if (props.error instanceof Error && isNonEmptyString(props.error.message)) {
@@ -592,7 +605,7 @@ const { haveData: haveLocalData, internalData } = useTableData(
 // Whether to show the table controls and result presentation.
 const haveData = computed(() => {
 	if (isServerMode.value) {
-		return (props.totalRows ?? 0) > 0 || haveServerSearchQuery.value;
+		return (props.totalRows ?? 0) > 0 || haveServerSearchQuery.value || hasServerState.value;
 	}
 
 	return haveLocalData.value;
@@ -617,6 +630,11 @@ const {
 	headingClasses: toRef(props, "headingClasses"),
 	cellClasses: toRef(props, "cellClasses"),
 });
+
+// The number of visible columns, including the optional selection control.
+const stateRowColumnCount = computed(
+	() => Object.keys(visibleColumnDefinitions.value).length + (props.enableSelection ? 1 : 0),
+);
 
 // Table search: the current query, whether a search is active, and the rows
 // that match it.
@@ -663,6 +681,9 @@ function getSortInstruction(columnKey) {
 // the table, but if the user is performing a search, there are results for that
 // search term.
 const haveDataToDisplay = computed(() => isNonEmptyArray(filteredRows.value));
+
+// Whether rows or a server response state should keep the table visible.
+const haveTableContent = computed(() => haveDataToDisplay.value || hasServerState.value);
 
 // Row selection: the selected ids, the select-all state, the selection counts,
 // and the action to toggle every row. Keeps the `v-model` in sync.

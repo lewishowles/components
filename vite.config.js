@@ -31,7 +31,7 @@ const lint = {
 
 export default defineConfig({
 	staged: {
-		"*": "bun run lint:fix",
+		"*": "vp check --fix",
 		"src/{composables,utilities}/**/*.js": "bun run check:declarations",
 	},
 	fmt,
