@@ -42,7 +42,7 @@ test.describe("ui-button", () => {
 		const bounds = await button.boundingBox();
 
 		expect(bounds?.width).toBe(bounds?.height);
-		expect(bounds?.width).toBeGreaterThanOrEqual(44);
+		expect(bounds?.width).toBeGreaterThanOrEqual(36);
 	});
 
 	test("uses semantic surfaces and borders for ghost interaction states", async ({

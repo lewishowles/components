@@ -1,5 +1,19 @@
 # Changelog
 
+## 3.0.1 - 2026-08-03
+
+### Fixes
+
+- `data-table` keeps wide content contained within its scrollable region and correctly reports when content overflows, avoiding page-level horizontal scrolling.
+- `modal-dialog` now displays correctly on long, narrow pages.
+- `form-wrapper` applies synchronous initial data immediately.
+- `ui-button` icon-only controls use the intended square sizing.
+- Tailwind utility classes can override component defaults where consumers apply utility classes.
+
+### Performance
+
+- The documentation code highlighter now bundles only the languages and theme it uses.
+
 ## 3.0.0 - 2026-07-31
 
 ### Breaking changes

@@ -1,6 +1,6 @@
 {
 	"name": "@lewishowles/components",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "A library of beautiful components, promoting rapid development, while ensuring that usability and accessibility are at the fore.",
 	"license": "MIT",
 	"repository": {
@@ -79,16 +79,16 @@
 		"@vueuse/core": "^14.4.0",
 		"cli-highlight": "^2.1.11",
 		"clsx": "^2.1.1",
-		"nanoid": "^6.0.0",
+		"nanoid": "^6.0.1",
 		"tailwind-merge": "^3.6.0",
-		"temporal-polyfill": "^1.0.2"
+		"temporal-polyfill": "^1.0.3"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.5",
 		"@eslint/js": "^10.0.1",
 		"@lewishowles/lint-config": "0.2.0",
 		"@lewishowles/pkg-checks": "^0.2.2",
-		"@lewishowles/testing": "^1.2.0",
+		"@lewishowles/testing": "^1.2.1",
 		"@playwright/experimental-ct-vue": "^1.62.1",
 		"@stylistic/eslint-plugin": "^5.10.0",
 		"@tailwindcss/forms": "^0.5.11",
@@ -99,7 +99,7 @@
 		"axe-core": "^4.12.1",
 		"eslint-plugin-vue": "^10.10.0",
 		"gh-pages": "^6.3.0",
-		"globals": "^17.8.0",
+		"globals": "^17.9.0",
 		"happy-dom": "^20.11.1",
 		"publint": "^0.3.22",
 		"shiki": "^4.4.1",
@@ -116,6 +116,9 @@
 	},
 	"peerDependencies": {
 		"vue": "^3.4.0"
+	},
+	"overrides": {
+		"temporal-polyfill": "1.0.3"
 	},
 	"engines": {
 		"node": ">=20"
