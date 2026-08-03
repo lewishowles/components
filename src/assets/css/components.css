@@ -1,48 +1,50 @@
-[data-component="tab-group"] [data-part="nav"],
-[data-component="breadcrumb-list"] [data-part="nav"],
-[data-component="data-table"] [data-part="scroll-indicators"] {
-	position: relative;
+@layer components {
+	:where([data-component="tab-group"] [data-part="nav"]),
+	:where([data-component="breadcrumb-list"] [data-part="nav"]),
+	:where([data-component="data-table"] [data-part="scroll-indicators"]) {
+		position: relative;
 
-	&::before,
-	&::after {
-		content: "";
-		display: none;
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		width: 30px;
-		pointer-events: none;
-		z-index: 1;
+		&::before,
+		&::after {
+			content: "";
+			display: none;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 30px;
+			pointer-events: none;
+			z-index: 1;
+		}
+
+		&.show-left::before,
+		&.show-right::after {
+			display: block;
+		}
+
+		&::before {
+			background: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+			left: 0;
+		}
+
+		&:where(.dark, .dark *)::before {
+			background: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+		}
+
+		&::after {
+			background: linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+			right: 0;
+		}
+
+		&:where(.dark, .dark *)::after {
+			background: linear-gradient(to left, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+		}
 	}
 
-	&.show-left::before,
-	&.show-right::after {
-		display: block;
-	}
-
-	&::before {
-		background: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
-		left: 0;
-	}
-
-	&:where(.dark, .dark *)::before {
-		background: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
-	}
-
-	&::after {
-		background: linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
-		right: 0;
-	}
-
-	&:where(.dark, .dark *)::after {
-		background: linear-gradient(to left, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
-	}
-}
-
-[data-component="tab-group"] [data-part="nav"].wrap-tabs {
-	&::before,
-	&::after {
-		display: none;
+	:where([data-component="tab-group"] [data-part="nav"]).wrap-tabs {
+		&::before,
+		&::after {
+			display: none;
+		}
 	}
 }
 
@@ -51,57 +53,59 @@ body:has(dialog[data-part="sheet"]:modal) {
 	overflow: hidden;
 }
 
-dialog[data-part="sheet"] {
-	background-color: var(--surface-elevated);
-	border-top: 1px solid var(--border);
-	box-shadow: var(--shadow-2xl);
-	box-sizing: border-box;
-	color: var(--content);
-	inset: auto 0 0;
-	margin: 0;
-	max-height: 75dvh;
-	max-width: none;
-	overflow-y: auto;
-	padding: calc(var(--spacing) * 6);
-	padding-bottom: calc(var(--spacing) * 6 + env(safe-area-inset-bottom));
-	position: fixed;
-	width: 100%;
-
-	&::backdrop {
-		backdrop-filter: blur(var(--blur-xs));
-		background-color: color-mix(in oklab, var(--color-grey-950) 80%, transparent);
-	}
-
-	[data-part="actions"] {
+@layer components {
+	:where(dialog[data-part="sheet"]) {
+		background-color: var(--surface-elevated);
 		border-top: 1px solid var(--border);
-		padding-inline: calc(var(--spacing) * 6);
-		padding-block: calc(var(--spacing) * 6);
-		margin-block-start: calc(var(--spacing) * 6);
-		margin-block-end: calc(var(--spacing) * -6);
-		margin-inline: calc(var(--spacing) * -6);
+		box-shadow: var(--shadow-2xl);
+		box-sizing: border-box;
+		color: var(--content);
+		inset: auto 0 0;
+		margin: 0;
+		max-height: 75dvh;
+		max-width: none;
+		overflow-y: auto;
+		padding: calc(var(--spacing) * 6);
+		padding-bottom: calc(var(--spacing) * 6 + env(safe-area-inset-bottom));
+		position: fixed;
+		width: 100%;
+
+		&::backdrop {
+			backdrop-filter: blur(var(--blur-xs));
+			background-color: color-mix(in oklab, var(--color-grey-950) 80%, transparent);
+		}
+
+		& :where([data-part="actions"]) {
+			border-top: 1px solid var(--border);
+			padding-inline: calc(var(--spacing) * 6);
+			padding-block: calc(var(--spacing) * 6);
+			margin-block-start: calc(var(--spacing) * 6);
+			margin-block-end: calc(var(--spacing) * -6);
+			margin-inline: calc(var(--spacing) * -6);
+		}
 	}
-}
 
-@media (width >= theme(--breakpoint-lg)) {
-	dialog[data-part="sheet"] {
-		border-radius: var(--radius-lg);
-		border: 1px solid var(--border);
-		inset: auto;
-		inset-inline-start: 50%;
-		margin: auto;
-		max-height: none;
-		max-width: var(--container-2xl);
-		overflow-y: visible;
-		padding: calc(var(--spacing) * 12);
-		top: 50%;
-		transform: translate(-50%, -50%);
+	@media (width >= theme(--breakpoint-lg)) {
+		:where(dialog[data-part="sheet"]) {
+			border-radius: var(--radius-lg);
+			border: 1px solid var(--border);
+			inset: auto;
+			inset-inline-start: 50%;
+			margin: auto;
+			max-height: none;
+			max-width: var(--container-2xl);
+			overflow-y: visible;
+			padding: calc(var(--spacing) * 12);
+			top: 50%;
+			transform: translate(-50%, -50%);
 
-		[data-part="actions"] {
-			padding-inline: calc(var(--spacing) * 12);
-			padding-block: calc(var(--spacing) * 8);
-			margin-block-start: calc(var(--spacing) * 12);
-			margin-block-end: calc(var(--spacing) * -12);
-			margin-inline: calc(var(--spacing) * -12);
+			& :where([data-part="actions"]) {
+				padding-inline: calc(var(--spacing) * 12);
+				padding-block: calc(var(--spacing) * 8);
+				margin-block-start: calc(var(--spacing) * 12);
+				margin-block-end: calc(var(--spacing) * -12);
+				margin-inline: calc(var(--spacing) * -12);
+			}
 		}
 	}
 }
