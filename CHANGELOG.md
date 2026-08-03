@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.3 - 2026-08-03
+
+### Fixes
+
+- `data-table` keeps server-mode controls available while a new page loads.
+- `app-pagination` displays more cleanly on narrow screens.
+
 ## 3.0.2 - 2026-08-03
 
 ### Fixes
