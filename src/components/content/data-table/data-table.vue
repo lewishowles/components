@@ -87,7 +87,7 @@
 
 				<div
 					ref="tableScrollWrapper"
-					class="overflow-x-auto"
+					class="relative overflow-x-auto"
 					v-bind="{
 						tabindex: isOverflowing ? 0 : -1,
 						role: isOverflowing && (haveCaption || haveOverflowLabel) ? 'region' : null,
