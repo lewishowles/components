@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 3.0.5 - 2026-08-04
+
 ### Fixes
 
 - `form-date` adds `inputmode="numeric"` to date fields to show an appropriate keyboard on mobile devices.
+- `modal-dialog` scrolls long content in its body while keeping the close button and actions bar visible.
 
 ## 3.0.4 - 2026-08-03
 
