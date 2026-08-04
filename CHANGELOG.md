@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Fixes
+
+- `form-date` adds `inputmode="numeric"` to date fields to show an appropriate keyboard on mobile devices.
+
 ## 3.0.4 - 2026-08-03
 
 ### Fixes

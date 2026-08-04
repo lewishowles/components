@@ -31,6 +31,7 @@
 					required,
 					id: `${inputId}-day`,
 					showOptionalIndicator: false,
+					inputAttributes: { inputmode: 'numeric' },
 				}"
 				class="lg:w-20"
 				data-test="form-date-day"
@@ -44,6 +45,7 @@
 					required,
 					id: `${inputId}-month`,
 					showOptionalIndicator: false,
+					inputAttributes: { inputmode: 'numeric' },
 				}"
 				class="lg:w-20"
 				data-test="form-date-month"
@@ -57,6 +59,7 @@
 					required,
 					id: `${inputId}-year`,
 					showOptionalIndicator: false,
+					inputAttributes: { inputmode: 'numeric' },
 				}"
 				class="lg:w-40"
 				data-test="form-date-year"
