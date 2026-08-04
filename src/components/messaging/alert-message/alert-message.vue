@@ -8,7 +8,7 @@
 		:data-state="alertType"
 		data-test="alert-message"
 	>
-		<div v-if="haveIcon" class="mt-1" data-part="icon">
+		<div v-if="haveIcon" class="mt-1.5" data-part="icon">
 			<slot name="icon">
 				<component :is="defaultIconComponent" data-test="alert-message-icon" />
 			</slot>
