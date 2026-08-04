@@ -57,11 +57,8 @@
 	padding-inline: 1em;
 }
 
-.button--primary,
-.button--muted,
-.button--toggle,
-.button--ghost,
-.button--danger {
+/* Each semantic variant duplicates this shared base because Tailwind requires an @utility block to be self-contained for responsive variants (e.g. lg:button--ghost) to be generated. */
+@utility button--primary {
 	border: 1px solid transparent;
 	border-radius: var(--radius-md);
 	padding-block: calc(0.375em - 1px);
@@ -77,9 +74,7 @@
 			min-block-size: 1lh;
 		}
 	}
-}
 
-.button--primary {
 	--background-colour: var(--primary-fill);
 	--outline-colour: var(--primary-fill);
 
@@ -115,7 +110,23 @@
 	}
 }
 
-.button--muted {
+@utility button--muted {
+	border: 1px solid transparent;
+	border-radius: var(--radius-md);
+	padding-block: calc(0.375em - 1px);
+	padding-inline: 1em;
+	white-space: nowrap;
+
+	&:has([data-part="label"].sr-only) {
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
+		padding-inline: calc(0.375em - 1px);
+
+		svg {
+			min-block-size: 1lh;
+		}
+	}
+
 	--background-colour: var(--control-muted-surface);
 	--colour: currentColor;
 	--border-colour: var(--control-border);
@@ -138,7 +149,23 @@
 	}
 }
 
-.button--toggle {
+@utility button--toggle {
+	border: 1px solid transparent;
+	border-radius: var(--radius-md);
+	padding-block: calc(0.375em - 1px);
+	padding-inline: 1em;
+	white-space: nowrap;
+
+	&:has([data-part="label"].sr-only) {
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
+		padding-inline: calc(0.375em - 1px);
+
+		svg {
+			min-block-size: 1lh;
+		}
+	}
+
 	border: 1px solid var(--border-colour);
 	text-decoration: none;
 
@@ -228,7 +255,23 @@
 	}
 }
 
-.button--ghost {
+@utility button--ghost {
+	border: 1px solid transparent;
+	border-radius: var(--radius-md);
+	padding-block: calc(0.375em - 1px);
+	padding-inline: 1em;
+	white-space: nowrap;
+
+	&:has([data-part="label"].sr-only) {
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
+		padding-inline: calc(0.375em - 1px);
+
+		svg {
+			min-block-size: 1lh;
+		}
+	}
+
 	--background-colour: transparent;
 	--border-colour: transparent;
 	--colour: currentColor;
@@ -251,7 +294,23 @@
 	}
 }
 
-.button--danger {
+@utility button--danger {
+	border: 1px solid transparent;
+	border-radius: var(--radius-md);
+	padding-block: calc(0.375em - 1px);
+	padding-inline: 1em;
+	white-space: nowrap;
+
+	&:has([data-part="label"].sr-only) {
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
+		padding-inline: calc(0.375em - 1px);
+
+		svg {
+			min-block-size: 1lh;
+		}
+	}
+
 	--background-colour: var(--danger-fill);
 	--outline-colour: var(--danger-fill);
 
