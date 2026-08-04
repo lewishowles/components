@@ -18,6 +18,10 @@ The main content of the dialog.
 | `titleId`       | `string`   | The value of `ariaLabelledby`, if provided.  |
 | `descriptionId` | `string`   | The value of `ariaDescribedby`, if provided. |
 
+### `actions`
+
+Action controls shown in the dialog footer.
+
 ### `close-dialog-label`
 
 - default: `Close dialog`

@@ -18,9 +18,11 @@
 			<slot v-bind="{ titleId, descriptionId }" />
 		</conditional-wrapper>
 
-		<modal-dialog-actions v-if="haveActions" data-part="actions">
-			<slot name="actions" />
-		</modal-dialog-actions>
+		<template #actions>
+			<modal-dialog-actions v-if="haveActions" data-part="actions">
+				<slot name="actions" />
+			</modal-dialog-actions>
+		</template>
 	</base-modal>
 </template>
 
@@ -84,7 +86,6 @@ const titleId = useId();
 // A stable id consumers can apply to a description element, then read back
 // via the descriptionId slot prop for aria-describedby wiring.
 const descriptionId = useId();
-
 // Whether we have content for the title slot.
 const haveTitle = computed(() => isNonEmptySlot(slots.title));
 // Whether we have content for the actions slot.

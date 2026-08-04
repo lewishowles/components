@@ -63,6 +63,22 @@ test.describe("desktop viewport", () => {
 	test("positions the close button over the dialog corner", async ({ mount, page }) => {
 		await mountBaseModal(mount);
 
-		await expect(page.getByTestId("modal-dialog-close")).toHaveCSS("position", "absolute");
+		const layout = await page.getByTestId("modal-dialog").evaluate((element) => {
+			const dialogBox = element.getBoundingClientRect();
+			const closeButton = element.querySelector('[data-test="modal-dialog-close"]');
+			const closeButtonBox = closeButton.getBoundingClientRect();
+
+			return {
+				closeButtonRight: closeButtonBox.right,
+				closeButtonTop: closeButtonBox.top,
+				dialogRight: dialogBox.right,
+				dialogTop: dialogBox.top,
+			};
+		});
+
+		expect(layout.closeButtonRight).toBeGreaterThan(layout.dialogRight - 32);
+		expect(layout.closeButtonRight).toBeLessThanOrEqual(layout.dialogRight);
+		expect(layout.closeButtonTop).toBeGreaterThanOrEqual(layout.dialogTop);
+		expect(layout.closeButtonTop).toBeLessThan(layout.dialogTop + 32);
 	});
 });

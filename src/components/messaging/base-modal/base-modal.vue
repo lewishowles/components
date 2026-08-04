@@ -14,9 +14,9 @@
 		data-part="sheet"
 		data-test="modal-dialog"
 	>
-		<div class="flex justify-end lg:mb-0">
+		<div class="modal-dialog-header flex justify-end">
 			<ui-button
-				class="button--ghost lg:absolute lg:inset-e-0 lg:top-0 lg:me-4 lg:mt-4"
+				class="button--ghost"
 				icon-start="icon-cross"
 				icon-only
 				data-part="close-button"
@@ -27,15 +27,19 @@
 			</ui-button>
 		</div>
 
-		<slot
-			v-bind="{
-				isOpen,
-				open: openDialog,
-				close: closeDialog,
-				titleId: ariaLabelledby,
-				descriptionId: ariaDescribedby,
-			}"
-		/>
+		<div class="modal-dialog-body">
+			<slot
+				v-bind="{
+					isOpen,
+					open: openDialog,
+					close: closeDialog,
+					titleId: ariaLabelledby,
+					descriptionId: ariaDescribedby,
+				}"
+			/>
+		</div>
+
+		<slot name="actions" />
 	</dialog>
 </template>
 

@@ -112,6 +112,7 @@ test.describe("modal-dialog", () => {
 
 			const layout = await page.getByTestId("modal-dialog").evaluate((element) => {
 				const styles = getComputedStyle(element);
+				const bodyStyles = getComputedStyle(element.querySelector(".modal-dialog-body"));
 
 				return {
 					left: styles.left,
@@ -120,6 +121,7 @@ test.describe("modal-dialog", () => {
 					margin: styles.margin,
 					maxHeight: styles.maxHeight,
 					overflowY: styles.overflowY,
+					bodyOverflowY: bodyStyles.overflowY,
 					position: styles.position,
 				};
 			});
@@ -129,8 +131,9 @@ test.describe("modal-dialog", () => {
 				right: "0px",
 				bottom: "0px",
 				margin: "0px",
-				maxHeight: "600px",
-				overflowY: "auto",
+				maxHeight: "720px",
+				overflowY: "hidden",
+				bodyOverflowY: "auto",
 				position: "fixed",
 			});
 		});

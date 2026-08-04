@@ -48,6 +48,10 @@ export const baseModalMetadata = {
 			summary: "Dialog content; receives open state and close helpers.",
 		},
 		{
+			name: "actions",
+			summary: "Dialog action controls.",
+		},
+		{
 			name: "close-dialog-label",
 			summary: "Accessible label for the close button.",
 		},
