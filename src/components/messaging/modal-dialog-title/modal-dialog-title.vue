@@ -4,7 +4,7 @@
 		:id="titleId"
 		tabindex="-1"
 		autofocus
-		class="text-content-strong mb-6 text-2xl font-bold"
+		class="text-content-strong mb-6 text-2xl font-bold focus-visible:shadow-none focus-visible:outline-none"
 		data-test="modal-dialog-title"
 	>
 		<slot />

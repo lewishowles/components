@@ -74,6 +74,18 @@ test.describe("modal-dialog", () => {
 			await expect(page.getByTestId("modal-dialog")).toBeVisible();
 		});
 
+		test("focuses the title without drawing a focus ring", async ({ mount, page }) => {
+			await mountInteractionTest(mount);
+
+			const title = page.getByTestId("modal-dialog-title");
+
+			await page.getByTestId("modal-dialog-interaction-test-open").click();
+
+			await expect(title).toBeFocused();
+			await expect(title).toHaveCSS("outline-style", "none");
+			await expect(title).toHaveCSS("box-shadow", "none");
+		});
+
 		test("a dialog can be closed via the close button", async ({ mount, page }) => {
 			await mountInteractionTest(mount);
 
