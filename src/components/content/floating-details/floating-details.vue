@@ -132,7 +132,7 @@ const resolvedDetailsClasses = computed(() =>
 	cn(
 		"w-screen rounded-md border p-4 shadow",
 		"border-border bg-surface-elevated backdrop-blur-lg",
-		"max-w-[calc(100vw-1rem)] lg:max-w-lg",
+		"max-w-lg",
 		computedPlacement.value === "above"
 			? "absolute bottom-full animate-fade-in-up"
 			: "absolute top-full animate-fade-in-down",
