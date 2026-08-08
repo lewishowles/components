@@ -70,7 +70,7 @@
 		"check:declarations": "node scripts/check-declarations.js",
 		"check:exports": "pkg-checks exports . --config quality.config.json",
 		"attw": "attw --pack --profile esm-only --exclude-entrypoints '.' './source' './styles' './styles/animation' './styles/buttons' './styles/components' './styles/form' './styles/main' './styles/theme'",
-		"prepare": "vp config"
+		"prepare": "vp config --no-agent"
 	},
 	"dependencies": {
 		"@clack/prompts": "^1.7.0",

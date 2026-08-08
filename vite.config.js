@@ -1,6 +1,6 @@
 import { alias } from "./support/aliases.js";
 import { componentAutoImports } from "./support/plugins/component-auto-imports.js";
-import { defineConfig } from "vite-plus";
+import { defineConfig, lazyPlugins } from "vite-plus";
 import { URL, fileURLToPath } from "node:url";
 import fmt from "./.oxfmtrc.json" with { type: "json" };
 import lintConfigBase from "@lewishowles/lint-config/base.json" with { type: "json" };
@@ -36,7 +36,7 @@ export default defineConfig({
 	},
 	fmt,
 	lint,
-	plugins: [
+	plugins: lazyPlugins(() => [
 		vue(),
 		componentAutoImports(),
 		tailwindcss(),
@@ -45,7 +45,7 @@ export default defineConfig({
 		publishDeclarations(),
 		publishStylesheets(),
 		vueDevTools(),
-	],
+	]),
 	resolve: {
 		alias,
 	},
