@@ -99,7 +99,7 @@
 							<caption
 								v-if="haveCaption || (enableSort && sortedColumn)"
 								:id="captionId"
-								class="text-left italic"
+								class="text-start italic"
 								:class="{ 'mb-2': haveCaption }"
 							>
 								<slot name="caption" />

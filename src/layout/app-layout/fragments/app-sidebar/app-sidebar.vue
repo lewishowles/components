@@ -3,7 +3,7 @@
 		class="flex items-center justify-between gap-8 p-8 text-sm lg:flex-col lg:items-start lg:justify-start lg:pt-4.75"
 	>
 		<router-link v-bind="{ to: { name: 'home' } }">
-			<components-logo class="mr-auto h-9 w-auto" />
+			<components-logo class="me-auto h-9 w-auto" />
 
 			<span class="sr-only">@lewishowles/components</span>
 		</router-link>

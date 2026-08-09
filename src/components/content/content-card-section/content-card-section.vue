@@ -34,7 +34,7 @@ const attrsWithoutClass = computed(() => {
 const sectionClasses = computed(() =>
 	cn(
 		{
-			"not-first:border-border flex flex-1 flex-col justify-center p-[1em] not-first:border-l":
+			"not-first:border-border flex flex-1 flex-col justify-center p-[1em] not-first:border-s":
 				inColumns,
 			"border-border flex flex-col justify-center border p-[1em] not-first:border-t-0 first:rounded-t-xl last:rounded-b-xl":
 				!inColumns,

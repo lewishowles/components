@@ -3,7 +3,7 @@
 		:is="tag"
 		class="border-border"
 		v-bind="{
-			class: { 'border-t': isHorizontal, 'border-l': isVertical },
+			class: { 'border-t': isHorizontal, 'border-s': isVertical },
 			'aria-hidden': !isSemantic,
 			'aria-orientation': explicitOrientation,
 		}"
