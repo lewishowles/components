@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## 3.1.0 - 2026-08-10
+
+### New features
+
+- `form-field`, `form-input`, and `form-select` support `displayLabel` to keep labels available to screen readers while hiding them visually.
+- Button variants can be applied responsively with Tailwind utilities.
+
+### Fixes
+
+- `modal-dialog` accepts `aria-label` when no visible title is provided and no longer leaves focus on its title when it opens.
+- The CLI ships component snippets from their source examples.
+- Pagination, icon-only links, and small-screen action layouts display more cleanly.
+- Directional styles now support right-to-left layouts consistently.
+- Animation utilities include browser delay fallbacks.
+
 ## 3.0.5 - 2026-08-04
 
 ### Fixes
