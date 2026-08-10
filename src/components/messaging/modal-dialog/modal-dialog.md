@@ -6,11 +6,13 @@ Dialogs should be used sparingly, ideally for confirmation actions.
 
 Using [`modal-controller`](/src/components/messaging/modal-controller/modal-controller.md) with `useModalDialog` is recommended, as opposed to creating individual modals within other components.
 
+A dialog needs an accessible name. Use the `title` slot for a visible title, or pass `aria-label` when no visible title is needed. Use `aria-labelledby` when the label is provided by another element.
+
 ## Slots
 
 ### `title`
 
-The title of the dialog.
+The visible title of the dialog. If omitted, pass `aria-label` or `aria-labelledby` on the component.
 
 ### `default`
 
@@ -89,5 +91,15 @@ Close the dialog.
 
 		<ui-button class="button--muted" @click="closeDialog">Cancel</ui-button>
 	</template>
+</modal-dialog>
+```
+
+### Dialog without a visible title
+
+```html
+<modal-dialog aria-label="Primary navigation">
+	<nav>
+		<!-- Navigation links. -->
+	</nav>
 </modal-dialog>
 ```

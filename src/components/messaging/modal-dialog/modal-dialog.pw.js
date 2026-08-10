@@ -35,6 +35,12 @@ test.describe("modal-dialog", () => {
 			await expect(page.getByTestId("modal-dialog")).toHaveAttribute("aria-labelledby", titleId);
 		});
 
+		test("uses aria-label when no title is provided", async ({ mount, page }) => {
+			await mountModalDialog(mount, { props: { "aria-label": "Primary navigation" } });
+
+			await expect(page.getByRole("dialog", { name: "Primary navigation" })).toBeVisible();
+		});
+
 		test("has role=alertdialog when variant is alert", async ({ mount, page }) => {
 			await mountModalDialog(mount, {
 				props: { variant: "alert" },

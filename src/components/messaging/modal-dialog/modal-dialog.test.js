@@ -1,9 +1,14 @@
+import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import { createDeepMount } from "@lewishowles/testing/vue";
-import { describe, expect, test } from "vite-plus/test";
+
 import ModalDialog from "./modal-dialog.vue";
 
 const defaultSlots = { title: "Modal dialog title" };
 const mount = createDeepMount(ModalDialog, { slots: defaultSlots });
+
+afterEach(() => {
+	vi.restoreAllMocks();
+});
 
 describe("modal-dialog", () => {
 	describe("Initialisation", () => {
@@ -69,6 +74,21 @@ describe("modal-dialog", () => {
 
 				expect(wrapper.vm.baseModalProps.inert).toBe(false);
 			});
+		});
+	});
+
+	describe("Accessibility", () => {
+		test("does not warn when aria-label provides the accessible name", () => {
+			const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+			mount({
+				slots: { title: null },
+				attrs: { "aria-label": "Primary navigation" },
+			});
+
+			expect(warning).not.toHaveBeenCalledWith(
+				"[modal-dialog] No accessible label found. Provide a `title` slot, `aria-label`, or `aria-labelledby`.",
+			);
 		});
 	});
 

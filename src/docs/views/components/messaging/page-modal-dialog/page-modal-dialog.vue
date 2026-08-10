@@ -17,6 +17,16 @@
 			<p>Dialogs should be used sparingly, ideally for confirmation actions.</p>
 
 			<p>
+				A dialog needs an accessible name. Use the
+				<code>title</code>
+				slot for a visible title, or pass
+				<code>aria-label</code>
+				when no visible title is needed. Use
+				<code>aria-labelledby</code>
+				when the label is provided by another element.
+			</p>
+
+			<p>
 				Using
 				<a href="/messaging/modal-controller"><code>modal-controller</code></a>
 				with
@@ -74,7 +84,13 @@
 			<component-slot id="slot-title">
 				<template #name>title</template>
 
-				<p>The title of the dialog.</p>
+				<p>
+					The visible title of the dialog. If omitted, pass
+					<code>aria-label</code>
+					or
+					<code>aria-labelledby</code>
+					to the component for proper labelling.
+				</p>
 			</component-slot>
 
 			<component-slot id="slot-default">

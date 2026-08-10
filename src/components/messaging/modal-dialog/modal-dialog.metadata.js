@@ -2,7 +2,8 @@
 export const modalDialogMetadata = {
 	name: "modal-dialog",
 	category: "messaging",
-	summary: "A composed dialog with title, content, actions, and close behaviour.",
+	summary:
+		"A composed dialog with an accessible name, optional title, content, actions, and close behaviour.",
 	props: [
 		{
 			name: "initiallyOpen",
@@ -35,7 +36,8 @@ export const modalDialogMetadata = {
 	slots: [
 		{
 			name: "title",
-			summary: "Dialog title content.",
+			summary:
+				"Visible dialog title content. A title is required for proper labelling, but this slot can be omitted when the dialog has an aria-label or aria-labelledby attribute.",
 		},
 		{
 			name: "default",

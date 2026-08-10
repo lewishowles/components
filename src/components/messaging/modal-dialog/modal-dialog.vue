@@ -29,6 +29,7 @@
 <script setup>
 import { computed, onMounted, provide, useAttrs, useId, useSlots, useTemplateRef } from "vue";
 import { callComponentMethod, isNonEmptySlot } from "@lewishowles/helpers/vue";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 import ConditionalWrapper from "@/components/general/conditional-wrapper/conditional-wrapper.vue";
 
@@ -90,6 +91,15 @@ const descriptionId = useId();
 const haveTitle = computed(() => isNonEmptySlot(slots.title));
 // Whether we have content for the actions slot.
 const haveActions = computed(() => isNonEmptySlot(slots.actions));
+
+// Whether the dialog has an accessible name from a title or ARIA attribute.
+const haveAccessibleName = computed(
+	() =>
+		haveTitle.value ||
+		isNonEmptyString(attrs["aria-labelledby"]) ||
+		isNonEmptyString(attrs["aria-label"]),
+);
+
 // The ARIA role override: "alertdialog" for alert variants, null otherwise
 // (preserving the native implicit "dialog" role).
 const dialogRole = computed(() => (props.variant === "alert" ? "alertdialog" : null));
@@ -115,9 +125,9 @@ provide("modal-dialog-title-id", titleId);
 
 // Validate that the dialog has an accessible label.
 onMounted(() => {
-	if (import.meta.env.DEV && !haveTitle.value && !attrs["aria-labelledby"]) {
+	if (import.meta.env.DEV && !haveAccessibleName.value) {
 		console.warn(
-			"[modal-dialog] No accessible label found. Provide a `title` slot, or pass `aria-labelledby`.",
+			"[modal-dialog] No accessible label found. Provide a `title` slot, `aria-label`, or `aria-labelledby`.",
 		);
 	}
 });
