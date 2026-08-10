@@ -7,7 +7,7 @@
 		</template>
 
 		<div class="overflow-x-auto">
-			<table class="min-w-max border-separate border-spacing-x-3 border-spacing-y-2">
+			<table class="min-w-max border-separate border-spacing-x-3 border-spacing-y-2 text-sm">
 				<caption class="sr-only">
 					UI Button variants shown at base, small, and extra-small font sizes.
 				</caption>
@@ -21,8 +21,8 @@
 						<th
 							v-for="buttonVariant in buttonVariants"
 							:key="buttonVariant.label"
-							class="text-content-muted text-start text-sm font-normal"
 							scope="col"
+							class="text-start font-normal"
 						>
 							{{ buttonVariant.label }}
 						</th>
@@ -31,7 +31,7 @@
 
 				<tbody>
 					<tr v-for="fontSizeRow in fontSizeRows" :key="fontSizeRow.label">
-						<th class="text-content-muted text-start text-sm font-normal" scope="row">
+						<th class="text-start font-normal" scope="row">
 							{{ fontSizeRow.label }}
 						</th>
 
