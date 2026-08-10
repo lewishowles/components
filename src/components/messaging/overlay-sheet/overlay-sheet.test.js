@@ -30,7 +30,7 @@ describe("overlay-sheet", () => {
 
 			await waitForDialogUpdate();
 
-			expect(wrapper.find('[data-test="content"]').element.parentElement).toBe(
+			expect(wrapper.find(".modal-dialog-body").element.parentElement).toBe(
 				wrapper.find("dialog").element,
 			);
 		});
@@ -170,7 +170,7 @@ describe("overlay-sheet", () => {
 			await waitForDialogUpdate();
 
 			expect(wrapper.find("dialog").element.open).toBe(true);
-			expect(wrapper.find('[data-test="content"]').element.parentElement).toBe(
+			expect(wrapper.find(".modal-dialog-body").element.parentElement).toBe(
 				wrapper.find("dialog").element,
 			);
 

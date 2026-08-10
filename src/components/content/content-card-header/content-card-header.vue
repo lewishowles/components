@@ -20,7 +20,7 @@
 				<component
 					:is="headingLevel"
 					v-if="haveDefault"
-					class="text-content-strong text-lg font-semibold"
+					class="text-content-strong font-semibold"
 					data-test="content-card-title"
 				>
 					<slot />
