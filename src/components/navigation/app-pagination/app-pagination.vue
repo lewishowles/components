@@ -2,7 +2,7 @@
 	<nav
 		v-if="!haveSinglePage"
 		v-bind="{ 'aria-labelledby': internalId }"
-		class="flex flex-wrap items-center justify-between gap-4 text-center lg:justify-start"
+		class="flex flex-wrap items-center gap-4 text-center"
 		data-component="app-pagination"
 		data-test="app-pagination"
 	>
@@ -11,19 +11,25 @@
 		</span>
 
 		<ui-button
-			class="button flex items-center gap-2"
-			:class="{
-				'button--ghost': !showingFirstPage,
-			}"
-			v-bind="{ disabled: showingFirstPage }"
+			class="button--ghost max-lg:-order-2"
+			v-bind="{ disabled: showingFirstPage, iconOnly: !showPageNavigationLabels }"
 			icon-start="icon-arrow-left"
 			data-part="previous"
 			data-test="app-pagination-previous"
 			@click="selectPreviousPage"
 		>
-			<div class="sr-only lg:not-sr-only">
-				<slot name="previous-page-label">Previous</slot>
-			</div>
+			<slot name="previous-page-label">Previous</slot>
+		</ui-button>
+
+		<ui-button
+			class="button--ghost lg:hidden"
+			v-bind="{ disabled: showingLastPage, iconOnly: !showPageNavigationLabels }"
+			icon-end="icon-arrow-right"
+			data-part="next"
+			data-test="app-pagination-next"
+			@click="selectNextPage"
+		>
+			<slot name="next-page-label">Next</slot>
 		</ui-button>
 
 		<ul class="flex items-center" data-part="page-list">
@@ -74,25 +80,20 @@
 		</ul>
 
 		<ui-button
-			class="button flex items-center gap-2"
-			:class="{
-				'button--ghost': !showingLastPage,
-			}"
-			v-bind="{ disabled: showingLastPage }"
+			class="button--ghost hidden lg:inline-block"
+			v-bind="{ disabled: showingLastPage, iconOnly: !showPageNavigationLabels }"
 			icon-end="icon-arrow-right"
 			data-part="next"
 			data-test="app-pagination-next"
 			@click="selectNextPage"
 		>
-			<div class="sr-only lg:not-sr-only">
-				<slot name="next-page-label">Next</slot>
-			</div>
+			<slot name="next-page-label">Next</slot>
 		</ui-button>
 
 		<span
 			role="status"
 			aria-live="polite"
-			class="ms-auto"
+			class="order-last w-full text-start lg:ms-auto lg:w-auto"
 			data-test="app-pagination-showing-items-label"
 		>
 			<slot name="showing-items-label" v-bind="{ first: firstItem, last: lastItem, total: count }">
@@ -103,6 +104,7 @@
 </template>
 
 <script setup>
+import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
 import { computed, useId, watch } from "vue";
 import { isNumber } from "@lewishowles/helpers/number";
 
@@ -125,7 +127,10 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:page"]);
-
+// Tailwind breakpoints for inspection.
+const breakpoints = useBreakpoints(breakpointsTailwind);
+// Whether to show page navigation labels.
+const showPageNavigationLabels = breakpoints.greaterOrEqual("lg");
 // An internal ID to link the pagination to its label.
 const internalId = useId();
 

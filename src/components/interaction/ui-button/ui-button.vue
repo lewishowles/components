@@ -18,7 +18,7 @@
 		<component
 			:is="iconStartComponent"
 			v-if="haveIconStart"
-			:class="[computedIconClasses, { 'me-2': !iconOnly }]"
+			:class="[{ 'me-2': !iconOnly }, computedIconClasses]"
 			data-part="icon-start"
 			data-test="ui-button-icon-start"
 		/>
@@ -50,7 +50,7 @@
 		<component
 			:is="iconEndComponent"
 			v-if="haveIconEnd"
-			:class="[computedIconClasses, { 'ms-2': !iconOnly }]"
+			:class="[{ 'ms-2': !iconOnly }, computedIconClasses]"
 			data-part="icon-end"
 			data-test="ui-button-icon-end"
 		/>
