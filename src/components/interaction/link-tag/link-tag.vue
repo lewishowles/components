@@ -1,7 +1,10 @@
 <template>
 	<a
 		ref="anchorElement"
-		class="inline-block"
+		:class="{
+			'inline-flex items-center justify-center': iconOnly,
+			'inline-block': !iconOnly,
+		}"
 		v-bind="{ href, ...attributes }"
 		data-component="link-tag"
 		:data-external="external || null"
@@ -12,8 +15,8 @@
 			v-if="haveIconStart"
 			class="inline-block stroke-current"
 			:class="{
-				'size-text': iconOnly && !showExternalIcon,
-				'me-2 size-[0.857em] align-[-1px]': !iconOnly || showExternalIcon,
+				'size-[1em]': iconOnly,
+				'me-2 size-[0.857em] align-[-1px]': !iconOnly,
 			}"
 			data-part="icon-start"
 			data-test="link-tag-icon-start"
@@ -33,8 +36,8 @@
 			v-if="shouldShowIconEnd"
 			class="inline-block stroke-current"
 			:class="{
-				'size-text': iconOnly && !showExternalIcon,
-				'ms-1 size-[0.857em] align-[-1px]': !iconOnly || showExternalIcon,
+				'size-[1em]': iconOnly,
+				'ms-1 size-[0.857em] align-[-1px]': !iconOnly,
 			}"
 			data-part="icon-end"
 			data-test="link-tag-icon-end"

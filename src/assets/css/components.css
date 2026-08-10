@@ -40,6 +40,15 @@
 		}
 	}
 
+	:where([data-component="link-tag"]:has([data-part="label"].sr-only)) {
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
+
+		& > svg {
+			min-block-size: 1lh;
+		}
+	}
+
 	:where([data-component="tab-group"] [data-part="nav"]).wrap-tabs {
 		&::before,
 		&::after {
