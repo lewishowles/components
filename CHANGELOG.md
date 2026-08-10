@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 3.1.1 - 2026-08-11
+
+### Fixes
+
+- `floating-details`, `dropdown-menu`, and `overlay-sheet` keep long sheet content scrollable within the capped dialog.
+
 ## 3.1.0 - 2026-08-10
 
 ### New features
