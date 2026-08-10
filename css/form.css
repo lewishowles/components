@@ -381,7 +381,7 @@
 
 	textarea {
 		field-sizing: content;
-		min-height: calc(var(--spacing) * 40);
+		min-height: 6lh;
 	}
 
 	[type="checkbox"]:checked {

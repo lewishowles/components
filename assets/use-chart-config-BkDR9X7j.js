@@ -1,0 +1,1 @@
+import{o as e,rt as t}from"./runtime-core.esm-bundler-D8JxCXTF.js";import{n}from"./is-non-empty-object-CVvfnD8k-CwYZJMO-.js";var r=8;function i(i){let a=e(()=>{let e=t(i);return n(e)?e:[]}),o=e(()=>a.value.map((e,t)=>({color:s(t),label:e.label,value:e.value})));function s(e){return`var(--color-chart-${e%r+1})`}return{getColor:s,series:o}}export{i as t};

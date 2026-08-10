@@ -57,13 +57,18 @@
 	padding-inline: 1em;
 }
 
-.button--primary,
-.button--muted,
-.button--toggle,
-.button--ghost,
-.button--danger {
-	border: 1px solid transparent;
+/* Each semantic variant duplicates this shared base because Tailwind requires an @utility block to be self-contained for responsive variants (e.g. lg:button--ghost) to be generated. */
+@utility button--primary {
+	--background-colour: var(--primary-fill);
+	--outline-colour: var(--primary-fill);
+
+	background-color: var(--background-colour);
+	border-color: var(--background-colour);
 	border-radius: var(--radius-md);
+	border: 1px solid transparent;
+	color: var(--primary-foreground);
+	font-weight: 500;
+	outline: 0;
 	padding-block: calc(0.375em - 1px);
 	padding-inline: 1em;
 	white-space: nowrap;
@@ -77,17 +82,6 @@
 			min-block-size: 1lh;
 		}
 	}
-}
-
-.button--primary {
-	--background-colour: var(--primary-fill);
-	--outline-colour: var(--primary-fill);
-
-	background-color: var(--background-colour);
-	border-color: var(--background-colour);
-	color: var(--primary-foreground);
-	font-weight: 500;
-	outline: 0;
 
 	&:is(:hover, :focus) {
 		--background-colour: var(--primary-900);
@@ -115,15 +109,29 @@
 	}
 }
 
-.button--muted {
+@utility button--muted {
 	--background-colour: var(--control-muted-surface);
 	--colour: currentColor;
 	--border-colour: var(--control-border);
 
 	background-color: var(--background-colour);
+	border-radius: var(--radius-md);
 	border: 1px solid var(--border-colour);
 	color: var(--colour);
+	padding-block: calc(0.375em - 1px);
+	padding-inline: 1em;
 	text-decoration: none;
+	white-space: nowrap;
+
+	&:has([data-part="label"].sr-only) {
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
+		padding-inline: calc(0.375em - 1px);
+
+		svg {
+			min-block-size: 1lh;
+		}
+	}
 
 	&:is(:hover, :focus) {
 		--background-colour: var(--control-muted-surface-hover);
@@ -138,9 +146,23 @@
 	}
 }
 
-.button--toggle {
+@utility button--toggle {
+	border-radius: var(--radius-md);
 	border: 1px solid var(--border-colour);
+	padding-block: calc(0.375em - 1px);
+	padding-inline: 1em;
 	text-decoration: none;
+	white-space: nowrap;
+
+	&:has([data-part="label"].sr-only) {
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
+		padding-inline: calc(0.375em - 1px);
+
+		svg {
+			min-block-size: 1lh;
+		}
+	}
 
 	&:not([aria-pressed="true"]) {
 		--background-colour: var(--surface);
@@ -228,15 +250,29 @@
 	}
 }
 
-.button--ghost {
+@utility button--ghost {
 	--background-colour: transparent;
 	--border-colour: transparent;
 	--colour: currentColor;
 
 	background-color: var(--background-colour);
-	border-color: var(--border-colour);
+	border: 1px solid var(--border-colour);
+	border-radius: var(--radius-md);
 	color: var(--colour);
+	padding-block: calc(0.375em - 1px);
+	padding-inline: 1em;
 	text-decoration: none;
+	white-space: nowrap;
+
+	&:has([data-part="label"].sr-only) {
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
+		padding-inline: calc(0.375em - 1px);
+
+		svg {
+			min-block-size: 1lh;
+		}
+	}
 
 	&:is(:hover, :focus) {
 		--background-colour: var(--control-muted-surface-hover);
@@ -251,15 +287,29 @@
 	}
 }
 
-.button--danger {
+@utility button--danger {
 	--background-colour: var(--danger-fill);
 	--outline-colour: var(--danger-fill);
 
 	background-color: var(--background-colour);
-	border-color: var(--background-colour);
+	border-radius: var(--radius-md);
+	border: 1px solid var(--background-colour);
 	color: var(--danger-foreground);
 	font-weight: 500;
 	outline: 0;
+	padding-block: calc(0.375em - 1px);
+	padding-inline: 1em;
+	white-space: nowrap;
+
+	&:has([data-part="label"].sr-only) {
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
+		padding-inline: calc(0.375em - 1px);
+
+		svg {
+			min-block-size: 1lh;
+		}
+	}
 
 	&:is(:hover, :focus) {
 		--background-colour: var(--danger-800);
@@ -281,4 +331,14 @@
 	color: var(--content-muted);
 	cursor: not-allowed;
 	font-weight: normal;
+
+	&:has([data-part="label"].sr-only) {
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
+		padding-inline: calc(0.375em - 1px);
+
+		svg {
+			min-block-size: 1lh;
+		}
+	}
 }

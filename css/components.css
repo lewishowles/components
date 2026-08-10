@@ -40,6 +40,15 @@
 		}
 	}
 
+	:where([data-component="link-tag"]:has([data-part="label"].sr-only)) {
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
+
+		& > svg {
+			min-block-size: 1lh;
+		}
+	}
+
 	:where([data-component="tab-group"] [data-part="nav"]).wrap-tabs {
 		&::before,
 		&::after {
@@ -60,21 +69,20 @@ body:has(dialog[data-part="sheet"]:modal) {
 		box-shadow: var(--shadow-2xl);
 		box-sizing: border-box;
 		color: var(--content);
-
-		&:modal {
-			display: flex;
-			flex-direction: column;
-		}
-
 		inset: auto 0 0;
 		margin: 0;
 		max-height: 90dvh;
 		max-width: none;
 		overflow: hidden;
 		padding: calc(var(--spacing) * 6);
-		padding-bottom: calc(var(--spacing) * 6 + env(safe-area-inset-bottom));
+		padding-block-end: calc(var(--spacing) * 12 + env(safe-area-inset-bottom));
 		position: fixed;
 		width: 100%;
+
+		&:modal {
+			display: flex;
+			flex-direction: column;
+		}
 
 		&::backdrop {
 			backdrop-filter: blur(var(--blur-xs));
