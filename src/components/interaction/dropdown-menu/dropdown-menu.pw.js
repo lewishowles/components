@@ -339,8 +339,8 @@ test.describe("narrow viewport", () => {
 		expect(layout).toEqual({
 			bottom: "0px",
 			left: "0px",
-			maxHeight: "600px",
-			overflowY: "auto",
+			maxHeight: "720px",
+			overflowY: "hidden",
 			position: "fixed",
 			right: "0px",
 		});

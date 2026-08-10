@@ -189,8 +189,8 @@ test.describe("narrow viewport", () => {
 		expect(layout).toEqual({
 			bottom: "0px",
 			left: "0px",
-			maxHeight: "600px",
-			overflowY: "auto",
+			maxHeight: "720px",
+			overflowY: "hidden",
 			position: "fixed",
 			right: "0px",
 		});
@@ -206,10 +206,11 @@ test.describe("narrow viewport", () => {
 		await page.getByTestId("floating-details-summary").click();
 
 		const sheet = page.getByTestId("floating-details-sheet");
+		const body = sheet.locator(".modal-dialog-body");
 
-		await sheet.hover();
+		await body.hover();
 		await page.mouse.wheel(0, 500);
-		await expect.poll(() => sheet.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+		await expect.poll(() => body.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
 		expect(await page.evaluate(() => window.scrollY)).toBe(0);
 	});
 

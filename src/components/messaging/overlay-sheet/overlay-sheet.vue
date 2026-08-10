@@ -30,7 +30,9 @@
 			to: dialog || 'body',
 		}"
 	>
-		<slot />
+		<div class="modal-dialog-body">
+			<slot />
+		</div>
 	</teleport>
 </template>
 
