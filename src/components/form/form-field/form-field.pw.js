@@ -43,4 +43,18 @@ test.describe("form-field", () => {
 		await expect(inputElement).toBeVisible();
 		await expect(inputElement).toHaveAttribute("id", "custom-unique-id");
 	});
+
+	test.describe("displayLabel", () => {
+		test("hides a text field label", async ({ mount, page }) => {
+			await mountFormField(mount, { props: { displayLabel: false, type: "text" } });
+
+			await expect(page.getByTestId("form-label")).toHaveClass(/sr-only/);
+		});
+
+		test("hides a select field label", async ({ mount, page }) => {
+			await mountFormField(mount, { props: { displayLabel: false, type: "select" } });
+
+			await expect(page.getByTestId("form-label")).toHaveClass(/sr-only/);
+		});
+	});
 });

@@ -55,6 +55,13 @@ Any placeholder to show in the field. Do not use a placeholder for critical info
 
 Any additional attributes to pass to the field itself, such as `required` or `autocomplete`. This can also be used to change the type of the field, such as to `email`.
 
+### `displayLabel`
+
+- type: `boolean`
+- default: `true`
+
+Whether to display the field label. When `false`, the label remains available to screen readers but is visually hidden.
+
 ### `showOptionalIndicator`
 
 - type: `boolean`

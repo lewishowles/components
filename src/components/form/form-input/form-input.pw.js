@@ -30,6 +30,12 @@ test.describe("form-input", () => {
 		await expect(labelElement).toHaveAttribute("for", "id-abc");
 	});
 
+	test("the label can be visually hidden", async ({ mount, page }) => {
+		await mountFormInput(mount, { props: { displayLabel: false } });
+
+		await expect(page.getByTestId("form-label")).toHaveClass(/sr-only/);
+	});
+
 	test("additional attributes can be provided to the input", async ({ mount, page }) => {
 		await mountFormInput(mount, {
 			inputAttributes: { autocomplete: "given-name", type: "password" },

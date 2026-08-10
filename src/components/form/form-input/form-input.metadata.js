@@ -23,6 +23,12 @@ export const formInputMetadata = {
 			summary: "Mark the field as required.",
 		},
 		{
+			name: "displayLabel",
+			type: "boolean",
+			default: true,
+			summary: "Show the field label; when false, keep it available to screen readers only.",
+		},
+		{
 			name: "showOptionalIndicator",
 			type: "boolean",
 			default: true,

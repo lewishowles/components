@@ -13,6 +13,15 @@ test.describe("form-select", () => {
 		await expect(page.getByTestId("form-select")).toBeVisible();
 	});
 
+	test("the label can be visually hidden", async ({ mount, page }) => {
+		await mountFormSelect(mount, {
+			props: { displayLabel: false },
+			slots: { default: "Country" },
+		});
+
+		await expect(page.getByTestId("form-label")).toHaveClass(/sr-only/);
+	});
+
 	test.describe("aria-invalid", () => {
 		test("is set when an error is provided", async ({ mount, page }) => {
 			await mountFormSelect(mount, { slots: { error: "Error text" } });

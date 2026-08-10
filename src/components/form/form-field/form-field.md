@@ -67,6 +67,13 @@ Whether this field is required. When `true`, the `required` attribute is added t
 
 Validation rules are not set on `form-field` directly. Define them on the parent `form-wrapper`'s `rules` prop instead; see the [form-wrapper docs](/src/components/form/form-wrapper/form-wrapper.md) for the available rules.
 
+### `displayLabel`
+
+- type: `boolean`
+- default: `true`
+
+Whether to display the label for `text` and `select` fields. When `false`, the label remains available to screen readers but is visually hidden.
+
 ### `multiple`
 
 - type: `boolean`

@@ -5,7 +5,7 @@
 		data-test="form-select"
 	>
 		<div class="flex flex-col">
-			<form-label v-bind="{ id: inputId, required }">
+			<form-label v-bind="{ id: inputId, required, hidden: !displayLabel }">
 				<slot />
 
 				<template #optional-indicator>
@@ -142,6 +142,15 @@ const props = defineProps({
 	required: {
 		type: Boolean,
 		default: false,
+	},
+
+	/**
+	 * Whether to display the field label. The label remains available to screen
+	 * readers when hidden.
+	 */
+	displayLabel: {
+		type: Boolean,
+		default: true,
 	},
 });
 

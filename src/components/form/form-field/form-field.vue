@@ -122,6 +122,15 @@ const props = defineProps({
 	},
 
 	/**
+	 * Whether to display the label for text and select fields. The label remains
+	 * available to screen readers when hidden.
+	 */
+	displayLabel: {
+		type: Boolean,
+		default: true,
+	},
+
+	/**
 	 * Whether a file field allows selecting more than one file. Only applies when
 	 * `type` is `file`.
 	 */
@@ -225,6 +234,10 @@ const fieldProps = computed(() => {
 
 	if (isRequired.value) {
 		attributeGroups.push({ required: true });
+	}
+
+	if (!props.displayLabel && ["select", "text"].includes(fieldType.value)) {
+		attributeGroups.push({ displayLabel: false });
 	}
 
 	if (fieldType.value === "file" && props.multiple) {

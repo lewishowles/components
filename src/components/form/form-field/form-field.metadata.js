@@ -44,6 +44,13 @@ export const formFieldMetadata = {
 				"Whether this field is required. Also set automatically when a required rule for this field is present in the parent form-wrapper's rules, but the prop allows explicit control.",
 		},
 		{
+			name: "displayLabel",
+			type: "boolean",
+			default: true,
+			summary:
+				"Show the label for text and select fields; when false, keep it available to screen readers only.",
+		},
+		{
 			name: "multiple",
 			type: "boolean",
 			default: false,

@@ -148,6 +148,20 @@ describe("form-field", () => {
 				});
 			});
 
+			test("should pass displayLabel to text and select fields", () => {
+				for (const type of ["select", "text"]) {
+					const wrapper = mount({ props: { displayLabel: false, type } });
+
+					expect(wrapper.vm.fieldProps).toEqual(expect.objectContaining({ displayLabel: false }));
+				}
+			});
+
+			test("should not pass displayLabel to other field types", () => {
+				const wrapper = mount({ props: { displayLabel: false, type: "textarea" } });
+
+				expect(wrapper.vm.fieldProps).not.toHaveProperty("displayLabel");
+			});
+
 			test("should pass multiple to file fields", () => {
 				const wrapper = mount({ type: "file", multiple: true });
 
