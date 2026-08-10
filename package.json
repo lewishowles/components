@@ -16,7 +16,8 @@
 		"dist",
 		"src/cli",
 		"src/components/component-metadata.js",
-		"src/components/**/*.metadata.js"
+		"src/components/**/*.metadata.js",
+		"src/components/**/examples/**"
 	],
 	"type": "module",
 	"sideEffects": [
