@@ -13,6 +13,15 @@ test.describe("combo-box", () => {
 		await expect(page.getByTestId("combo-box-input")).toBeVisible();
 	});
 
+	test("the label can be visually hidden", async ({ mount, page }) => {
+		await mountComboBox(mount, { displayLabel: false });
+
+		const labelElement = page.getByTestId("form-label");
+
+		await expect(labelElement).toHaveClass(/sr-only/);
+		await expect(labelElement.locator("..")).toHaveAttribute("data-part", "field");
+	});
+
 	test("the results are hidden until a query is entered", async ({ mount, page }) => {
 		await mountComboBox(mount);
 

@@ -23,6 +23,12 @@ export const comboBoxMetadata = {
 			summary: "ID for the input; auto-generated if omitted.",
 		},
 		{
+			name: "displayLabel",
+			type: "boolean",
+			default: true,
+			summary: "Show the field label; when false, keep it available to screen readers only.",
+		},
+		{
 			name: "placeholder",
 			type: "string",
 			default: null,

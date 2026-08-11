@@ -6,22 +6,22 @@
 		data-component="combo-box"
 		data-test="combo-box"
 	>
-		<form-input
-			ref="input"
-			v-model="query"
-			v-bind="{ id, placeholder, inputAttributes }"
-			data-part="input"
-			data-test="combo-box-input"
-			@keydown="handleKeydown"
-			@focusin="handleFocusin"
-			@focusout="handleFocusout"
-		>
-			<slot name="label" />
+		<div data-part="input" data-test="combo-box-input">
+			<form-input
+				ref="input"
+				v-model="query"
+				v-bind="{ displayLabel, id, placeholder, inputAttributes }"
+				@keydown="handleKeydown"
+				@focusin="handleFocusin"
+				@focusout="handleFocusout"
+			>
+				<slot name="label" />
 
-			<template #introduction>
-				<slot name="introduction" />
-			</template>
-		</form-input>
+				<template #introduction>
+					<slot name="introduction" />
+				</template>
+			</form-input>
+		</div>
 
 		<span aria-live="polite" class="sr-only" data-test="combo-box-announcement">
 			<template v-if="isOpen">
@@ -132,6 +132,15 @@ const props = defineProps({
 	id: {
 		type: String,
 		default: null,
+	},
+
+	/**
+	 * Whether to display the field label. The label remains available to screen
+	 * readers when hidden.
+	 */
+	displayLabel: {
+		type: Boolean,
+		default: true,
 	},
 
 	/**

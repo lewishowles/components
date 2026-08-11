@@ -64,6 +64,13 @@ Whether results are currently loading. While loading, a message is shown in plac
 
 Any ID to apply to the input. If an ID is not provided, one is generated at random. When providing an ID, please make sure that it is unique.
 
+### `displayLabel`
+
+- type: `boolean`
+- default: `true`
+
+Whether to display the field label. When `false`, the label remains available to screen readers but is visually hidden.
+
 ### `placeholder`
 
 - type: `string`

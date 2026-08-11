@@ -3,6 +3,7 @@
 		<combo-box
 			:items="items"
 			:loading="loading"
+			:display-label="displayLabel"
 			:placeholder="placeholder"
 			:dropdown-classes="dropdownClasses"
 			@select="handleSelect"
@@ -35,6 +36,11 @@ const props = defineProps({
 	loading: {
 		type: Boolean,
 		default: false,
+	},
+
+	displayLabel: {
+		type: Boolean,
+		default: true,
 	},
 
 	placeholder: {
