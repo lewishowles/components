@@ -85,6 +85,7 @@
 
 	&:is(:hover, :focus) {
 		--background-colour: var(--primary-900);
+		--outline-colour: var(--primary-900);
 	}
 
 	&:focus-visible {
@@ -313,6 +314,7 @@
 
 	&:is(:hover, :focus) {
 		--background-colour: var(--danger-800);
+		--outline-colour: var(--danger-800);
 	}
 
 	&:focus-visible {
