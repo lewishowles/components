@@ -179,7 +179,7 @@
 	.form-field--error {
 		--ring-colour: var(--control-invalid);
 
-		box-shadow: 0 0 0 1px var(--ring-colour);
+		box-shadow: inset 0 0 0 1px var(--ring-colour);
 	}
 
 	:where([data-part="option"][data-variant="card"]) {
@@ -342,7 +342,7 @@
 		--ring-size: 1px;
 
 		border-radius: var(--radius-md);
-		box-shadow: 0 0 0 var(--ring-size) var(--ring-colour);
+		box-shadow: inset 0 0 0 var(--ring-size) var(--ring-colour);
 
 		&:not(.form-field--error) {
 			--ring-colour: var(--control-ring);
