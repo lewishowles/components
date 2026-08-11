@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 3.1.2 - 2026-08-11
+
+### Fixes
+
+- `form-input`, and `form-select` (and via `form-field`) align correctly when they have visually hidden labels.
+- `form-input` (and via `form-field`) now properly sizes prefixes and suffixes.
+
 ## 3.1.1 - 2026-08-11
 
 ### Fixes
@@ -157,12 +164,14 @@ Its `button-group` type also dropped the redundant `form-` prefix.
 <!-- Before: summary-details used as a floating popover -->
 <summary-details floating placement="bottom" align="start" close-with-click-outside>
 	<template #summary>More info</template>
+
 	Extra detail shown in a floating panel.
 </summary-details>
 
 <!-- After: use floating-details for the same behaviour -->
 <floating-details placement="bottom" align="start" close-with-click-outside>
 	<template #summary>More info</template>
+
 	Extra detail shown in a floating panel.
 </floating-details>
 ```
