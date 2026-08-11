@@ -4,7 +4,10 @@
 		data-component="form-select"
 		data-test="form-select"
 	>
-		<div class="flex flex-col">
+		<conditional-wrapper
+			v-bind="{ wrap: displayLabel || haveIntroduction, tag: 'div' }"
+			class="flex flex-col"
+		>
 			<form-label v-bind="{ id: inputId, required, hidden: !displayLabel }">
 				<slot />
 
@@ -16,7 +19,7 @@
 			<conditional-wrapper v-bind="{ wrap: haveIntroduction, tag: 'p' }">
 				<slot name="introduction" />
 			</conditional-wrapper>
-		</div>
+		</conditional-wrapper>
 
 		<div
 			class="flex transition-shadow"

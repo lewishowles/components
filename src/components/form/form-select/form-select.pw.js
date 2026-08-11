@@ -19,7 +19,10 @@ test.describe("form-select", () => {
 			slots: { default: "Country" },
 		});
 
-		await expect(page.getByTestId("form-label")).toHaveClass(/sr-only/);
+		const labelElement = page.getByTestId("form-label");
+
+		await expect(labelElement).toHaveClass(/sr-only/);
+		await expect(labelElement.locator("..")).toHaveAttribute("data-part", "field");
 	});
 
 	test.describe("aria-invalid", () => {

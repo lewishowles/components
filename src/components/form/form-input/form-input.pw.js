@@ -33,7 +33,10 @@ test.describe("form-input", () => {
 	test("the label can be visually hidden", async ({ mount, page }) => {
 		await mountFormInput(mount, { props: { displayLabel: false } });
 
-		await expect(page.getByTestId("form-label")).toHaveClass(/sr-only/);
+		const labelElement = page.getByTestId("form-label");
+
+		await expect(labelElement).toHaveClass(/sr-only/);
+		await expect(labelElement.locator("..")).toHaveAttribute("data-part", "field");
 	});
 
 	test("additional attributes can be provided to the input", async ({ mount, page }) => {
@@ -117,6 +120,32 @@ test.describe("form-input", () => {
 		});
 	});
 
+	test.describe("sizing", () => {
+		test("keeps icon decorations the same height as the input at small text size", async ({
+			mount,
+			page,
+		}) => {
+			await mountFormInput(mount, {
+				props: { class: "text-sm" },
+				slots: { prefix: slotSvg, suffix: slotSvg },
+			});
+
+			await expectDecorationsToMatchInputHeight(page);
+		});
+
+		test("keeps text decorations the same height as the input at small text size", async ({
+			mount,
+			page,
+		}) => {
+			await mountFormInput(mount, {
+				props: { class: "text-sm" },
+				slots: { prefix: "https://", suffix: "mph" },
+			});
+
+			await expectDecorationsToMatchInputHeight(page);
+		});
+	});
+
 	test.describe("styling hooks", () => {
 		test("data-component is set on the root element", async ({ mount, page }) => {
 			await mountFormInput(mount);
@@ -137,3 +166,27 @@ test.describe("form-input", () => {
 		});
 	});
 });
+
+/**
+ * Check that both field decorations use the input's height.
+ *
+ * @param  {import("@playwright/test").Page}  page
+ *     The page containing the mounted form input.
+ * @returns {Promise<void>}
+ *     Resolves when both decorations match the input height.
+ */
+async function expectDecorationsToMatchInputHeight(page) {
+	const formInput = page.getByTestId("form-input");
+	const inputElement = formInput.locator("input");
+	const inputBounds = await inputElement.boundingBox();
+
+	const prefixBounds = await page.getByTestId("form-prefix").boundingBox();
+	const suffixBounds = await page.getByTestId("form-suffix").boundingBox();
+
+	expect(inputBounds).not.toBeNull();
+	expect(prefixBounds).not.toBeNull();
+	expect(suffixBounds).not.toBeNull();
+
+	expect(prefixBounds?.height).toBe(inputBounds?.height);
+	expect(suffixBounds?.height).toBe(inputBounds?.height);
+}

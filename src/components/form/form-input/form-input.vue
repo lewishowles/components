@@ -4,7 +4,10 @@
 		data-component="form-input"
 		data-test="form-input"
 	>
-		<div class="flex flex-col">
+		<conditional-wrapper
+			v-bind="{ wrap: displayLabel || haveIntroduction, tag: 'div' }"
+			class="flex flex-col"
+		>
 			<form-label
 				v-bind="{
 					id: inputId,
@@ -26,7 +29,7 @@
 			>
 				<slot name="introduction" />
 			</conditional-wrapper>
-		</div>
+		</conditional-wrapper>
 
 		<div
 			class="flex transition-shadow"
