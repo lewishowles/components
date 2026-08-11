@@ -204,10 +204,14 @@
 
 		<component-playgrounds>
 			<playground-form-input />
+			<playground-form-input-prefix-suffix />
+			<playground-form-input-icon />
 		</component-playgrounds>
 	</component-page>
 </template>
 
 <script setup>
 import PlaygroundFormInput from "./fragments/playground-form-input.vue";
+import PlaygroundFormInputIcon from "./fragments/playground-form-input-icon.vue";
+import PlaygroundFormInputPrefixSuffix from "./fragments/playground-form-input-prefix-suffix.vue";
 </script>
