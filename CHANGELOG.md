@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 3.1.4 - 2026-08-11
+
+### Fixes
+
+- `combo-box` supports `displayLabel`, so its label can be visually hidden while remaining available to screen readers, matching `form-field`, `form-input`, and `form-select`.
+- `form-field` forwards `displayLabel` to checkbox fields.
+
 ## 3.1.3 - 2026-08-11
 
 ### Fixes
