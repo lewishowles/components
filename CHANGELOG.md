@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 3.1.3 - 2026-08-11
+
+### Fixes
+
+- Form field focus rings sit inside the border box, so they align with `ui-button` focus rings.
+- `ui-button` uses semantic colour tokens, and its primary and danger variant focus rings now use the hover/focus colour, since that's the colour showing when the ring appears.
+
 ## 3.1.2 - 2026-08-11
 
 ### Fixes
