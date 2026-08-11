@@ -48,7 +48,7 @@ export const formFieldMetadata = {
 			type: "boolean",
 			default: true,
 			summary:
-				"Show the label for text and select fields; when false, keep it available to screen readers only.",
+				"Show the label for text, select, and checkbox fields; when false, keep it available to screen readers only.",
 		},
 		{
 			name: "multiple",

@@ -122,8 +122,8 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether to display the label for text and select fields. The label remains
-	 * available to screen readers when hidden.
+	 * Whether to display the label for text, select, and checkbox fields. The
+	 * label remains available to screen readers when hidden.
 	 */
 	displayLabel: {
 		type: Boolean,
@@ -236,7 +236,7 @@ const fieldProps = computed(() => {
 		attributeGroups.push({ required: true });
 	}
 
-	if (!props.displayLabel && ["select", "text"].includes(fieldType.value)) {
+	if (!props.displayLabel && ["checkbox", "select", "text"].includes(fieldType.value)) {
 		attributeGroups.push({ displayLabel: false });
 	}
 

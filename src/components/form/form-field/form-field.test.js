@@ -148,8 +148,8 @@ describe("form-field", () => {
 				});
 			});
 
-			test("should pass displayLabel to text and select fields", () => {
-				for (const type of ["select", "text"]) {
+			test("should pass displayLabel to text, select, and checkbox fields", () => {
+				for (const type of ["checkbox", "select", "text"]) {
 					const wrapper = mount({ props: { displayLabel: false, type } });
 
 					expect(wrapper.vm.fieldProps).toEqual(expect.objectContaining({ displayLabel: false }));

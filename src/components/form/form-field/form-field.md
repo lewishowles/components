@@ -72,7 +72,7 @@ Validation rules are not set on `form-field` directly. Define them on the parent
 - type: `boolean`
 - default: `true`
 
-Whether to display the label for `text` and `select` fields. When `false`, the label remains available to screen readers but is visually hidden.
+Whether to display the label for `text`, `select`, and `checkbox` fields. When `false`, the label remains available to screen readers but is visually hidden.
 
 ### `multiple`
 
