@@ -54,7 +54,7 @@
 
 <script setup>
 import { computed, inject, onMounted, ref, watch } from "vue";
-import { deepMerge } from "@lewishowles/helpers/object";
+import { deepMerge, pick } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
@@ -171,35 +171,52 @@ const haveFieldMessages = computed(() => isNonEmptyArray(fieldMessages.value));
 const fieldRef = ref(null);
 // The default field type.
 const defaultType = "text";
-// The default field component to use.
-const defaultComponent = FormInput;
 
-// Field controls bundled with `form-field`, so automatic imports do not depend
-// on global registration.
-const fieldComponents = {
-	"button-group": FormButtonGroup,
-	checkbox: FormCheckbox,
-	"checkbox-group": FormCheckboxGroup,
-	date: FormDate,
-	file: FormFile,
-	select: FormSelect,
-	"radio-group": FormRadioGroup,
-	textarea: FormTextarea,
-};
-
-// The available field types, including any additional props to pass by default.
+// Each field type's component, plus any fixed props it needs and any other
+// form-field props it accepts directly and forwards (e.g. file also accepts
+// `multiple`).
 const fieldTypes = {
-	text: {},
-	email: { inputAttributes: { type: "email" } },
-	password: { inputAttributes: { type: "password" } },
-	date: {},
-	file: {},
-	textarea: {},
-	checkbox: {},
-	"checkbox-group": {},
-	"radio-group": {},
-	"button-group": {},
-	select: {},
+	text: {
+		component: FormInput,
+		forward: ["displayLabel"],
+	},
+	email: {
+		component: FormInput,
+		props: { inputAttributes: { type: "email" } },
+	},
+	password: {
+		component: FormInput,
+		props: { inputAttributes: { type: "password" } },
+	},
+	date: {
+		component: FormDate,
+	},
+	file: {
+		component: FormFile,
+		forward: ["multiple"],
+	},
+	textarea: {
+		component: FormTextarea,
+	},
+	checkbox: {
+		component: FormCheckbox,
+		forward: ["displayLabel"],
+	},
+	"checkbox-group": {
+		component: FormCheckboxGroup,
+		forward: ["name"],
+	},
+	"radio-group": {
+		component: FormRadioGroup,
+		forward: ["name"],
+	},
+	"button-group": {
+		component: FormButtonGroup,
+	},
+	select: {
+		component: FormSelect,
+		forward: ["displayLabel"],
+	},
 };
 
 // The field type to use, falling back to the default if an unknown type is
@@ -212,9 +229,12 @@ const fieldType = computed(() => {
 	return props.type;
 });
 
+// The config for the resolved field type.
+const fieldConfiguration = computed(() => fieldTypes[fieldType.value]);
+
 // The appropriate component to use, based on the determined field type.
 const fieldComponent = computed(() => {
-	return fieldComponents[fieldType.value] ?? defaultComponent;
+	return fieldConfiguration.value.component;
 });
 
 // Whether this field should be marked required, from an explicit prop or a
@@ -230,24 +250,14 @@ const isRequired = computed(() => {
 // Any additional props to pass to the field, including default props, required
 // state, and any provided directly.
 const fieldProps = computed(() => {
-	const attributeGroups = [deepMerge({ id: inputId.value }, fieldTypes[fieldType.value])];
+	const attributeGroups = [
+		{ id: inputId.value },
+		fieldConfiguration.value.props,
+		pick(props, fieldConfiguration.value.forward),
+	];
 
 	if (isRequired.value) {
 		attributeGroups.push({ required: true });
-	}
-
-	if (!props.displayLabel && ["checkbox", "select", "text"].includes(fieldType.value)) {
-		attributeGroups.push({ displayLabel: false });
-	}
-
-	if (fieldType.value === "file" && props.multiple) {
-		attributeGroups.push({ multiple: true });
-	}
-
-	// Pass the field name through to group components that need it for
-	// pre-fill behaviour and input naming.
-	if (["radio-group", "checkbox-group"].includes(fieldType.value) && isNonEmptyString(props.name)) {
-		attributeGroups.push({ name: props.name });
 	}
 
 	if (props.inputAttributes) {

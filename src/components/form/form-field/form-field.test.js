@@ -109,7 +109,7 @@ describe("form-field", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
 
-				expect(vm.fieldProps).toEqual({ id: expect.any(String) });
+				expect(vm.fieldProps).toEqual({ id: expect.any(String), displayLabel: true });
 			});
 
 			test("should add props for `email` field type", () => {
@@ -130,6 +130,7 @@ describe("form-field", () => {
 				expect(vm.fieldProps).toEqual({
 					required: true,
 					id: expect.any(String),
+					displayLabel: true,
 				});
 			});
 
@@ -171,6 +172,27 @@ describe("form-field", () => {
 				});
 			});
 
+			test("should pass multiple's default to file fields", () => {
+				const wrapper = mount({ type: "file" });
+
+				expect(wrapper.vm.fieldProps).toEqual({
+					id: expect.any(String),
+					multiple: false,
+				});
+			});
+
+			test("should pass name to group fields", () => {
+				const wrapper = mount({ type: "radio-group", options: [], name: "colour" });
+
+				expect(wrapper.vm.fieldProps).toEqual(expect.objectContaining({ name: "colour" }));
+			});
+
+			test("should pass name's default to group fields", () => {
+				const wrapper = mount({ type: "radio-group", options: [], name: null });
+
+				expect(wrapper.vm.fieldProps).toEqual(expect.objectContaining({ name: null }));
+			});
+
 			test("should merge external inputAttributes", () => {
 				const wrapper = mount({
 					type: "email",
@@ -203,6 +225,7 @@ describe("form-field", () => {
 				expect(wrapper.vm.fieldProps).toEqual({
 					id: expect.any(String),
 					readonly: true,
+					displayLabel: true,
 				});
 			});
 
@@ -211,6 +234,7 @@ describe("form-field", () => {
 
 				expect(wrapper.vm.fieldProps).toEqual({
 					id: expect.any(String),
+					displayLabel: true,
 				});
 			});
 		});
