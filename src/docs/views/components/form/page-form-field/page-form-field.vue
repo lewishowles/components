@@ -168,6 +168,14 @@
 		</component-props>
 
 		<component-slots>
+			<p>
+				Every slot passed to
+				<code>form-field</code>
+				is forwarded to the selected field, including its scoped props. Shared slots and commonly
+				used type-specific slots are listed here; see the selected field's docs for its specific
+				slots.
+			</p>
+
 			<component-slot id="slot-default">
 				<template #name>default</template>
 

@@ -4,6 +4,8 @@ A general form component for use in [form-wrapper](/src/components/form/form-wra
 
 ## Slots
 
+Every slot passed to `form-field` is forwarded to the selected field, including its scoped props. Shared slots and commonly used type-specific slots are listed here; see the selected field's docs for its specific slots.
+
 ### `default`
 
 Passed through to the `default` slot of the relevant form field, the `default` slot generally contains the label for the form element.

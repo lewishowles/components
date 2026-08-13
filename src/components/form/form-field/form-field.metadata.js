@@ -3,7 +3,7 @@ export const formFieldMetadata = {
 	name: "form-field",
 	category: "form",
 	summary:
-		"A smart field wrapper that selects the right control by type and wires it into the parent form.",
+		"A smart field wrapper that selects the right control by type, forwards every consumer-provided slot and its scoped props to that control, and wires it into the parent form.",
 	props: [
 		{
 			name: "type",

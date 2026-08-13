@@ -44,6 +44,37 @@ test.describe("form-field", () => {
 		await expect(inputElement).toHaveAttribute("id", "custom-unique-id");
 	});
 
+	test("forwards a slot to the selected concrete field", async ({ mount, page }) => {
+		await mountFormField(mount, {
+			props: { options: ["Banana"], type: "radio-group" },
+			slots: {
+				default: "Favourite fruit",
+				option: '<span data-test="custom-option">Custom option</span>',
+			},
+		});
+
+		await expect(page.getByTestId("custom-option")).toBeVisible();
+	});
+
+	test("does not render a slot the concrete field does not use", async ({ mount, page }) => {
+		await mountFormField(mount, {
+			slots: { "unrecognised-slot": '<span data-test="unrecognised-slot">Unused content</span>' },
+		});
+
+		await expect(page.getByTestId("unrecognised-slot")).not.toBeAttached();
+	});
+
+	test("allows a consumer error slot to override the default error content", async ({
+		mount,
+		page,
+	}) => {
+		await mountFormField(mount, {
+			slots: { error: '<span data-test="custom-error">Choose another username</span>' },
+		});
+
+		await expect(page.getByTestId("custom-error")).toBeVisible();
+	});
+
 	test.describe("displayLabel", () => {
 		test("hides a text field label", async ({ mount, page }) => {
 			await mountFormField(mount, { props: { displayLabel: false, type: "text" } });

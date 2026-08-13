@@ -9,30 +9,8 @@
 	</alert-message>
 
 	<component :is="fieldComponent" v-else ref="fieldRef" v-bind="fieldProps" v-model="model">
-		<slot />
-
-		<!-- For now, we're listing out slots manually, as one way to
-		automatically retrieve them uses Vue internals and seems fragile -->
-		<template #optional-indicator>
-			<slot name="optional-indicator" />
-		</template>
-		<template #introduction>
-			<slot name="introduction" />
-		</template>
-		<template #option="{ option, selected, id, name }">
-			<slot name="option" v-bind="{ option, selected, id, name }" />
-		</template>
-		<template #description>
-			<slot name="description" />
-		</template>
-		<template v-if="$slots['empty-option-label']" #empty-option-label>
-			<slot name="empty-option-label" />
-		</template>
-		<template #prefix>
-			<slot name="prefix" />
-		</template>
-		<template #suffix>
-			<slot name="suffix" />
+		<template v-for="slotName in getForwardedSlotNames()" #[slotName]="slotProps">
+			<slot :name="slotName" v-bind="slotProps || {}" />
 		</template>
 		<template #error>
 			<slot name="error">
@@ -43,17 +21,11 @@
 				</ul>
 			</slot>
 		</template>
-		<template #help>
-			<slot name="help" />
-		</template>
-		<template #remove-button-label="slotProps">
-			<slot name="remove-button-label" v-bind="slotProps" />
-		</template>
 	</component>
 </template>
 
 <script setup>
-import { computed, inject, onMounted, ref, watch } from "vue";
+import { computed, inject, onMounted, ref, useSlots, watch } from "vue";
 import { deepMerge, pick } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
@@ -169,6 +141,8 @@ const fieldMessages = computed(() => {
 const haveFieldMessages = computed(() => isNonEmptyArray(fieldMessages.value));
 // A reference to the field being rendered.
 const fieldRef = ref(null);
+// The slots provided by the consumer, forwarded dynamically to the field.
+const slots = useSlots();
 // The default field type.
 const defaultType = "text";
 
@@ -302,6 +276,15 @@ onMounted(() => {
 		});
 	}
 });
+
+/**
+ * Get the names of every slot the consumer has provided, to forward to the
+ * selected field. `error` is excluded, since it keeps its own fallback
+ * content when the consumer doesn't provide one.
+ */
+function getForwardedSlotNames() {
+	return Object.keys(slots).filter((slotName) => slotName !== "error");
+}
 
 /**
  * Trigger focus on the field.

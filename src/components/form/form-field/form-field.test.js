@@ -1,6 +1,6 @@
 import { createDeepMount, createMount } from "@lewishowles/testing/vue";
+import { defineComponent, h, nextTick, ref } from "vue";
 import { describe, expect, test, vi } from "vite-plus/test";
-import { h } from "vue";
 
 import FormButtonGroup from "@/components/form/form-button-group/form-button-group.vue";
 import FormCheckbox from "@/components/form/form-checkbox/form-checkbox.vue";
@@ -279,6 +279,36 @@ describe("form-field", () => {
 		});
 
 		describe("forwarded slots", () => {
+			test("should update forwarded slots when a slot is added after mount", async () => {
+				const showPrefix = ref(false);
+
+				const wrapperComponent = defineComponent({
+					setup() {
+						return () =>
+							h(
+								FormField,
+								{ name: "username" },
+								showPrefix.value ? { prefix: () => h("span") } : {},
+							);
+					},
+				});
+
+				const wrapper = createDeepMount(wrapperComponent, { global: { provide } })();
+				const formInput = wrapper.findComponent(FormInput);
+
+				expect(formInput.vm.$slots.prefix).toBeUndefined();
+
+				showPrefix.value = true;
+				await nextTick();
+
+				expect(formInput.vm.$slots.prefix).toBeTypeOf("function");
+
+				showPrefix.value = false;
+				await nextTick();
+
+				expect(formInput.vm.$slots.prefix).toBeUndefined();
+			});
+
 			test("should forward option content with selection details", () => {
 				const wrapper = mountDeep({
 					props: {
@@ -314,6 +344,52 @@ describe("form-field", () => {
 				expect(wrapper.get('[data-test="form-checkbox-description"]').text()).toBe(
 					"Unsubscribe at any time.",
 				);
+			});
+
+			test("should ignore slots the concrete field does not use", () => {
+				const wrapper = mountDeep({
+					slots: { "unrecognised-slot": "Unused content" },
+				});
+
+				expect(wrapper.text()).not.toContain("Unused content");
+			});
+		});
+
+		describe("error slot", () => {
+			test("should render wrapper field errors by default", () => {
+				const wrapper = mountDeep({
+					global: {
+						provide: {
+							"form-wrapper": {
+								fieldErrorsFor: () => ["Enter a different username"],
+								registerField: registerFieldMock,
+							},
+						},
+					},
+				});
+
+				expect(wrapper.get('[data-test="form-error"]').text()).toContain(
+					"Enter a different username",
+				);
+			});
+
+			test("should allow a consumer error slot to override wrapper field errors", () => {
+				const wrapper = mountDeep({
+					global: {
+						provide: {
+							"form-wrapper": {
+								fieldErrorsFor: () => ["Enter a different username"],
+								registerField: registerFieldMock,
+							},
+						},
+					},
+					slots: {
+						error: () => h("span", { "data-test": "custom-error" }, "Choose another username"),
+					},
+				});
+
+				expect(wrapper.get('[data-test="custom-error"]').text()).toBe("Choose another username");
+				expect(wrapper.text()).not.toContain("Enter a different username");
 			});
 		});
 
