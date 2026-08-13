@@ -1,5 +1,6 @@
 import { createDeepMount, createMount } from "@lewishowles/testing/vue";
-import { describe, expect, test, vi } from "vite-plus/test";
+import { afterEach, describe, expect, test, vi } from "vite-plus/test";
+import { Temporal } from "temporal-polyfill";
 import { nextTick } from "vue";
 import FormDate from "./form-date.vue";
 
@@ -7,11 +8,22 @@ const mount = createMount(FormDate);
 const deepMount = createDeepMount(FormDate);
 
 const standardDate = { day: "01", month: "02", year: "2000" };
+// Fixed date used by date-helper tests.
+const fixedToday = Temporal.PlainDate.from("2025-06-15");
+
+/** Make Temporal return the fixed date for the current test. */
+function mockToday() {
+	vi.spyOn(Temporal.Now, "plainDateISO").mockReturnValue(fixedToday);
+}
 
 describe("form-date", () => {
 	console.warn = vi.fn();
 	console.error = vi.fn();
 	console.log = vi.fn();
+
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
 
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
@@ -301,8 +313,6 @@ describe("form-date", () => {
 
 	describe("Computed", () => {
 		describe("dateHelperItems", () => {
-			const systemTime = new Date("2025-06-15T09:00:00Z");
-
 			test("should return an empty array without dateHelpers configured", () => {
 				const wrapper = mount();
 				const vm = wrapper.vm;
@@ -311,8 +321,7 @@ describe("form-date", () => {
 			});
 
 			test("should resolve a valid date helper relative to today", () => {
-				vi.useFakeTimers();
-				vi.setSystemTime(systemTime);
+				mockToday();
 
 				const wrapper = mount({ dateHelpers: [{ label: "Tomorrow", unit: "day", value: 1 }] });
 				const vm = wrapper.vm;
@@ -321,13 +330,10 @@ describe("form-date", () => {
 				expect(vm.dateHelperItems[0].label).toBe("Tomorrow");
 				expect(vm.dateHelperItems[0].resolvedDate.toString()).toBe("2025-06-16");
 				expect(vm.dateHelperItems[0].accessibleLabel).toContain("Tomorrow");
-
-				vi.useRealTimers();
 			});
 
 			test("should support zero and negative values", () => {
-				vi.useFakeTimers();
-				vi.setSystemTime(systemTime);
+				mockToday();
 
 				const wrapper = mount({
 					dateHelpers: [
@@ -340,8 +346,6 @@ describe("form-date", () => {
 
 				expect(vm.dateHelperItems[0].resolvedDate.toString()).toBe("2025-06-15");
 				expect(vm.dateHelperItems[1].resolvedDate.toString()).toBe("2025-06-08");
-
-				vi.useRealTimers();
 			});
 
 			describe("should drop invalid entries", () => {
@@ -366,8 +370,7 @@ describe("form-date", () => {
 	describe("Methods", () => {
 		describe("applyDateHelper", () => {
 			test("should set the current date and announce it", () => {
-				vi.useFakeTimers();
-				vi.setSystemTime(new Date("2025-06-15T09:00:00Z"));
+				mockToday();
 
 				const wrapper = mount({ dateHelpers: [{ label: "Tomorrow", unit: "day", value: 1 }] });
 				const vm = wrapper.vm;
@@ -376,13 +379,10 @@ describe("form-date", () => {
 
 				expect(vm.date).toEqual({ day: "16", month: "6", year: "2025" });
 				expect(vm.announcedDate).toBe(vm.dateHelperItems[0].displayDate);
-
-				vi.useRealTimers();
 			});
 
 			test("should always resolve relative to today rather than the current value", () => {
-				vi.useFakeTimers();
-				vi.setSystemTime(new Date("2025-06-15T09:00:00Z"));
+				mockToday();
 
 				const wrapper = mount({ dateHelpers: [{ label: "+2 days", unit: "day", value: 2 }] });
 				const vm = wrapper.vm;
@@ -391,8 +391,6 @@ describe("form-date", () => {
 				vm.applyDateHelper(vm.dateHelperItems[0]);
 
 				expect(vm.date).toEqual({ day: "17", month: "6", year: "2025" });
-
-				vi.useRealTimers();
 			});
 		});
 	});
@@ -424,8 +422,7 @@ describe("form-date", () => {
 	describe("Slots", () => {
 		describe("date-helper-status", () => {
 			test("exposes the announced date as a scoped slot prop", async () => {
-				vi.useFakeTimers();
-				vi.setSystemTime(new Date("2025-06-15T09:00:00Z"));
+				mockToday();
 
 				let receivedProps = null;
 
@@ -446,8 +443,6 @@ describe("form-date", () => {
 				await nextTick();
 
 				expect(receivedProps).toMatchObject({ date: wrapper.vm.announcedDate });
-
-				vi.useRealTimers();
 			});
 		});
 	});
