@@ -3,18 +3,18 @@
 </template>
 
 <script setup>
-import DataTable from "./data-table.vue";
+import DataTable from "../data-table.vue";
 
-// Returns "buzz lightyear" as extra searchable content for the Toy Story row,
-// allowing the test to verify the search matches on the callback value.
-function searchableContentCallback(columnKey, rowData) {
+// Returns "aaa" as the sort key for Toy Story, ensuring it sorts first regardless
+// of its actual title, so the test can assert a sort override works.
+function sortableContentCallback(columnKey, rowData) {
 	if (columnKey === "title" && rowData.title === "Toy Story") {
-		return "buzz lightyear";
+		return "aaa";
 	}
 }
 
 const columns = {
-	title: { label: "Title", primary: true, searchableContentCallback },
+	title: { label: "Title", primary: true, sortableContentCallback },
 	release_year: { label: "Release year" },
 	box_office: { label: "Box office ($m)" },
 };

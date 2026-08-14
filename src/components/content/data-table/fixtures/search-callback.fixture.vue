@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import DataTable from "./data-table.vue";
+import DataTable from "../data-table.vue";
 
 // Normalises cell and query by stripping whitespace before comparing, allowing
 // "AB23456" to match a cell value of "AB23 456".

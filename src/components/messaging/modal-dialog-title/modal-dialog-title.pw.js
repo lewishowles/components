@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/experimental-ct-vue";
 import { createMount } from "@lewishowles/testing/playwright";
 
 import ModalDialogTitle from "./modal-dialog-title.vue";
-import ModalDialogTitleProvideFixture from "./modal-dialog-title-provide.fixture.vue";
+import TitleIdFixture from "./fixtures/title-id.fixture.vue";
 
 // Mount modal-dialog-title with sensible defaults for testing.
 const mountModalDialogTitle = createMount(ModalDialogTitle, {
@@ -34,7 +34,7 @@ test.describe("modal-dialog-title", () => {
 	});
 
 	test("uses the provided titleId as its id", async ({ mount, page }) => {
-		await mount(ModalDialogTitleProvideFixture);
+		await mount(TitleIdFixture);
 
 		await expect(page.getByTestId("modal-dialog-title")).toHaveAttribute("id", "custom-title-id");
 	});

@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import DataTableToolbar from "./fragments/data-table-toolbar/data-table-toolbar.vue";
+import DataTableToolbar from "../fragments/data-table-toolbar/data-table-toolbar.vue";
 import { computed, provide, ref } from "vue";
 
 const props = defineProps({

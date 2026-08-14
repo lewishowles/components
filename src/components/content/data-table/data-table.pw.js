@@ -2,12 +2,12 @@ import { expect, test } from "@playwright/experimental-ct-vue";
 import { createMount } from "@lewishowles/testing/playwright";
 
 import DataTable from "./data-table.vue";
-import DataTableSearchCallbackFixture from "./data-table-search-callback.fixture.vue";
-import DataTableSearchableContentFixture from "./data-table-searchable-content.fixture.vue";
-import DataTableServerFixture from "./data-table-server.fixture.vue";
-import DataTableShowingItemsFixture from "./data-table-showing-items.fixture.vue";
-import DataTableSortableContentFixture from "./data-table-sortable-content.fixture.vue";
-import DataTableToolbarFixture from "./data-table-toolbar.fixture.vue";
+import SearchCallbackFixture from "./fixtures/search-callback.fixture.vue";
+import SearchableContentFixture from "./fixtures/searchable-content.fixture.vue";
+import ServerFixture from "./fixtures/server.fixture.vue";
+import ShowingItemsFixture from "./fixtures/showing-items.fixture.vue";
+import SortableContentFixture from "./fixtures/sortable-content.fixture.vue";
+import ToolbarFixture from "./fixtures/toolbar.fixture.vue";
 
 const columns = {
 	title: { label: "Title", primary: true },
@@ -118,7 +118,7 @@ const mountDataTable = createMount(DataTable, { props: { data, columns } });
 // Mount data-table without merged defaults, for tests that need a clean column order.
 const mountDataTableRaw = createMount(DataTable);
 
-const mountDataTableToolbar = createMount(DataTableToolbarFixture);
+const mountDataTableToolbar = createMount(ToolbarFixture);
 
 test.describe("data-table", () => {
 	test("a component is rendered", async ({ mount, page }) => {
@@ -174,7 +174,7 @@ test.describe("data-table", () => {
 			mount,
 			page,
 		}) => {
-			await mount(DataTableServerFixture);
+			await mount(ServerFixture);
 
 			await expect(page.getByTestId("app-pagination-showing-items-label")).toHaveText(
 				"Showing 1–2 of 20 items",
@@ -594,7 +594,7 @@ test.describe("data-table", () => {
 		});
 
 		test("a column can define custom searchable content", async ({ mount, page }) => {
-			await mount(DataTableSearchableContentFixture);
+			await mount(SearchableContentFixture);
 
 			await searchInput(page).fill("buzz");
 
@@ -603,7 +603,7 @@ test.describe("data-table", () => {
 		});
 
 		test("a column can define a custom search callback", async ({ mount, page }) => {
-			await mount(DataTableSearchCallbackFixture);
+			await mount(SearchCallbackFixture);
 
 			await searchInput(page).fill("AB23456");
 
@@ -691,7 +691,7 @@ test.describe("data-table", () => {
 		});
 
 		test("a column can define custom sortable content", async ({ mount, page }) => {
-			await mount(DataTableSortableContentFixture);
+			await mount(SortableContentFixture);
 
 			await sortByColumn(page, "Title");
 
@@ -753,7 +753,7 @@ test.describe("data-table", () => {
 		});
 
 		test("the showing items indicator can be overridden", async ({ mount, page }) => {
-			await mount(DataTableShowingItemsFixture);
+			await mount(ShowingItemsFixture);
 
 			await expect(page.getByTestId("app-pagination-showing-items-label")).toHaveText(
 				"1 to 10 of 15",
@@ -836,7 +836,7 @@ test.describe("data-table", () => {
 			mount,
 			page,
 		}) => {
-			await mount(DataTableServerFixture);
+			await mount(ServerFixture);
 
 			await rowCheckbox(page, 0).click();
 			await expect(page.getByTestId("data-table-footer-selection")).toContainText(

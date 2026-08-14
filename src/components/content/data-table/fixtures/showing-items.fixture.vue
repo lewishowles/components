@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import DataTable from "./data-table.vue";
+import DataTable from "../data-table.vue";
 
 const columns = {
 	title: { label: "Title", primary: true },
