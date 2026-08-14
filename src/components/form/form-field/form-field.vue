@@ -1,5 +1,19 @@
 <template>
-	<alert-message v-if="!haveNameIfRequired" type="error">
+	<alert-message
+		v-if="showUnknownTypeDiagnostic"
+		type="error"
+		data-test="form-field-unknown-type-error"
+	>
+		<template #title>&lt;form-field&gt; &mdash; Unknown type</template>
+
+		Unknown field type `{{ type }}`. Falling back to `text`.
+	</alert-message>
+
+	<alert-message
+		v-if="showMissingNameDiagnostic"
+		type="error"
+		data-test="form-field-missing-name-error"
+	>
 		<template #title>
 			&lt;form-field&gt; &mdash;
 			<slot />
@@ -8,7 +22,12 @@
 		A parent `form-wrapper` was detected, but no `name` was provided for this field.
 	</alert-message>
 
-	<component :is="fieldComponent" v-else ref="fieldRef" v-bind="fieldProps" v-model="model">
+	<component
+		:is="fieldComponent"
+		ref="fieldRef"
+		v-bind="{ ...$attrs, ...fieldProps }"
+		v-model="model"
+	>
 		<template v-for="slotName in getForwardedSlotNames()" #[slotName]="slotProps">
 			<slot :name="slotName" v-bind="slotProps || {}" />
 		</template>
@@ -203,6 +222,13 @@ const fieldType = computed(() => {
 	return props.type;
 });
 
+// Whether a given type is set but not present in the field-type registry.
+const haveUnknownType = computed(
+	() => isNonEmptyString(props.type) && !Object.hasOwn(fieldTypes, props.type),
+);
+
+// Whether the unknown-type diagnostic renders; development builds only.
+const showUnknownTypeDiagnostic = computed(() => import.meta.env.DEV && haveUnknownType.value);
 // The config for the resolved field type.
 const fieldConfiguration = computed(() => fieldTypes[fieldType.value]);
 
@@ -258,7 +284,16 @@ const haveNameIfRequired = computed(() => {
 	return isNonEmptyString(props.name);
 });
 
+// Whether the missing-name diagnostic renders; development builds only.
+const showMissingNameDiagnostic = computed(() => import.meta.env.DEV && !haveNameIfRequired.value);
+
+// Fires on every model change to keep form-wrapper's data current.
 watch(model, () => {
+	// Without a name, we can't assign a value.
+	if (!haveNameIfRequired.value) {
+		return;
+	}
+
 	if (isFunction(updateFieldValue)) {
 		updateFieldValue(props.name, model.value);
 	}
@@ -268,6 +303,22 @@ watch(model, () => {
 // until mounted so that composite fields (e.g. form-date) have had a chance
 // to render and expose their focusId.
 onMounted(() => {
+	// Log one warning per diagnostic case.
+	if (import.meta.env.DEV) {
+		if (haveUnknownType.value) {
+			console.warn(`[form-field] Unknown type "${props.type}". Falling back to "${defaultType}".`);
+		}
+
+		if (!haveNameIfRequired.value) {
+			console.warn("[form-field] A non-empty `name` is required inside `form-wrapper`.");
+		}
+	}
+
+	// Without a name, we can't register a field or provide a value.
+	if (!haveNameIfRequired.value) {
+		return;
+	}
+
 	if (haveParentForm.value) {
 		registerField({
 			name: props.name,

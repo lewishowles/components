@@ -1,6 +1,6 @@
 import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { defineComponent, h, nextTick, ref } from "vue";
-import { describe, expect, test, vi } from "vite-plus/test";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 
 import FormButtonGroup from "@/components/form/form-button-group/form-button-group.vue";
 import FormCheckbox from "@/components/form/form-checkbox/form-checkbox.vue";
@@ -12,14 +12,45 @@ import FormTextarea from "@/components/form/form-textarea/form-textarea.vue";
 
 const fieldErrorsForMock = vi.fn(() => []);
 const registerFieldMock = vi.fn();
+const updateFieldValueMock = vi.fn();
 const defaultProps = { name: "username" };
 
 const provide = {
-	"form-wrapper": { fieldErrorsFor: fieldErrorsForMock, registerField: registerFieldMock },
+	"form-wrapper": {
+		fieldErrorsFor: fieldErrorsForMock,
+		registerField: registerFieldMock,
+		updateFieldValue: updateFieldValueMock,
+	},
 };
 
 const mount = createMount(FormField, { props: defaultProps, global: { provide } });
 const mountDeep = createDeepMount(FormField, { props: defaultProps, global: { provide } });
+
+const missingNameWarning = "[form-field] A non-empty `name` is required inside `form-wrapper`.";
+const unknownTypeWarning = '[form-field] Unknown type "unknown". Falling back to "text".';
+
+/**
+ * Stub the development flag and silence console.warn, so a test can check
+ * development-only diagnostic behaviour without real warning output.
+ *
+ * @param  {boolean}  isDevelopment
+ * @returns  {object}
+ *     The console.warn spy, for call assertions.
+ */
+function stubDevelopmentWarning(isDevelopment) {
+	vi.stubEnv("DEV", isDevelopment);
+
+	return vi.spyOn(console, "warn").mockImplementation(() => {});
+}
+
+beforeEach(() => {
+	vi.clearAllMocks();
+});
+
+afterEach(() => {
+	vi.restoreAllMocks();
+	vi.unstubAllEnvs();
+});
 
 describe("form-field", () => {
 	describe("Initialisation", () => {
@@ -74,6 +105,31 @@ describe("form-field", () => {
 
 					expect(vm.fieldType).toBe(type);
 				});
+			});
+		});
+
+		describe("unknown type diagnostic", () => {
+			test("in development, renders the diagnostic and warns", () => {
+				const warning = stubDevelopmentWarning(true);
+				const wrapper = mountDeep({ props: { name: "username", type: "unknown" } });
+
+				expect(wrapper.findComponent(FormInput).exists()).toBe(true);
+				expect(wrapper.get('[data-test="form-field-unknown-type-error"]').exists()).toBe(true);
+				expect(wrapper.text()).toContain("Unknown field type `unknown`. Falling back to `text`.");
+				expect(warning).toHaveBeenCalledTimes(1);
+				expect(warning).toHaveBeenCalledWith(unknownTypeWarning);
+			});
+
+			test("in production, renders neither the diagnostic nor a warning", () => {
+				const warning = stubDevelopmentWarning(false);
+				const wrapper = mountDeep({ props: { name: "username", type: "unknown" } });
+
+				expect(wrapper.findComponent(FormInput).exists()).toBe(true);
+				expect(wrapper.find('[data-test="form-field-unknown-type-error"]').exists()).toBe(false);
+				expect(wrapper.text()).not.toContain(
+					"Unknown field type `unknown`. Falling back to `text`.",
+				);
+				expect(warning).not.toHaveBeenCalled();
 			});
 		});
 
@@ -355,6 +411,14 @@ describe("form-field", () => {
 			});
 		});
 
+		describe("fallthrough attributes", () => {
+			test("should forward attributes to the concrete field", () => {
+				const wrapper = mountDeep({ attrs: { "data-test": "concrete-field" } });
+
+				expect(wrapper.findComponent(FormInput).attributes("data-test")).toBe("concrete-field");
+			});
+		});
+
 		describe("error slot", () => {
 			test("should render wrapper field errors by default", () => {
 				const wrapper = mountDeep({
@@ -475,6 +539,54 @@ describe("form-field", () => {
 				const vm = wrapper.vm;
 
 				expect(vm.haveNameIfRequired).toBe(true);
+			});
+		});
+
+		describe("missing name handling", () => {
+			test("registers and updates the parent form normally when a name is provided", async () => {
+				const wrapper = mount({ props: { modelValue: "initial" } });
+
+				await wrapper.setProps({ modelValue: "updated" });
+
+				expect(updateFieldValueMock).toHaveBeenCalledTimes(1);
+				expect(updateFieldValueMock).toHaveBeenCalledWith("username", "updated");
+			});
+
+			test("in development, renders the diagnostic and warns without registering or writing", async () => {
+				const warning = stubDevelopmentWarning(true);
+				const wrapper = mountDeep({ props: { modelValue: "initial", name: null } });
+
+				await wrapper.setProps({ modelValue: "updated" });
+
+				expect(wrapper.findComponent(FormInput).exists()).toBe(true);
+				expect(wrapper.get('[data-test="form-field-missing-name-error"]').exists()).toBe(true);
+
+				expect(wrapper.text()).toContain(
+					"A parent `form-wrapper` was detected, but no `name` was provided for this field.",
+				);
+
+				expect(warning).toHaveBeenCalledTimes(1);
+				expect(warning).toHaveBeenCalledWith(missingNameWarning);
+				expect(registerFieldMock).not.toHaveBeenCalled();
+				expect(updateFieldValueMock).not.toHaveBeenCalled();
+			});
+
+			test("in production, renders without a diagnostic, warning, registering, or writing", async () => {
+				const warning = stubDevelopmentWarning(false);
+				const wrapper = mountDeep({ props: { modelValue: "initial", name: null } });
+
+				await wrapper.setProps({ modelValue: "updated" });
+
+				expect(wrapper.findComponent(FormInput).exists()).toBe(true);
+				expect(wrapper.find('[data-test="form-field-missing-name-error"]').exists()).toBe(false);
+
+				expect(wrapper.text()).not.toContain(
+					"A parent `form-wrapper` was detected, but no `name` was provided for this field.",
+				);
+
+				expect(warning).not.toHaveBeenCalled();
+				expect(registerFieldMock).not.toHaveBeenCalled();
+				expect(updateFieldValueMock).not.toHaveBeenCalled();
 			});
 		});
 
