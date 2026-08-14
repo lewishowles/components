@@ -92,7 +92,7 @@ Any additional attributes to pass to the input itself, such as `autocomplete` or
 
 ### Additional props
 
-Some field types expose additional props. For example, `multiple` applies to `file` fields, while option-bearing fields use their documented `options` prop.
+Some field types expose additional props. Props that change a field's value shape belong on `form-field`, so the field type and its value are clear in one place. For example, `multiple` applies to `file` fields, while option-bearing fields use their documented `options` prop.
 
 ## Events
 

@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/experimental-ct-vue";
 import { createMount } from "@lewishowles/testing/playwright";
 
 import FormField from "./form-field.vue";
+import ParentFormWrapperFixture from "./fixtures/parent-form-wrapper.fixture.vue";
 
 // Mount form-field with sensible defaults for testing.
 const mountFormField = createMount(FormField, {
@@ -87,5 +88,30 @@ test.describe("form-field", () => {
 
 			await expect(page.getByTestId("form-label")).toHaveClass(/sr-only/);
 		});
+	});
+
+	test("uses the text field without a diagnostic for an unknown type", async ({ mount, page }) => {
+		await mountFormField(mount, { props: { type: "unknown" } });
+
+		await expect(page.getByTestId("form-field-unknown-type-error")).toHaveCount(0);
+		await expect(page.getByTestId("form-input").locator("input")).toBeVisible();
+	});
+
+	test("renders without a diagnostic when name is missing", async ({ mount, page }) => {
+		await mount(ParentFormWrapperFixture);
+
+		await expect(page.getByTestId("form-field-missing-name-error")).toHaveCount(0);
+		await expect(page.getByTestId("form-input")).toBeVisible();
+	});
+
+	test("passes undeclared fallthrough attributes to the field root", async ({ mount, page }) => {
+		await mountFormField(mount, {
+			props: { "data-analytics-id": "profile-field" },
+		});
+
+		await expect(page.getByTestId("form-input")).toHaveAttribute(
+			"data-analytics-id",
+			"profile-field",
+		);
 	});
 });
