@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, ref, useSlots, watch } from "vue";
+import { computed, inject, onMounted, ref, useAttrs, useSlots, watch } from "vue";
 import { deepMerge, pick } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
@@ -133,8 +133,10 @@ const props = defineProps({
 
 const model = defineModel();
 
+// Read fallthrough attributes so a supplied ID can be preserved.
+const attrs = useAttrs();
 // Generate an appropriate input ID.
-const { inputId } = useInputId(props.id);
+const { inputId } = useInputId(attrs.id);
 // Retrieve the relevant methods from the wrapper. Form fields may be used
 // without a wrapper form, so we provide a default value for our injection in
 // case it isn't provided.
