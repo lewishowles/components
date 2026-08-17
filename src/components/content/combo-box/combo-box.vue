@@ -56,7 +56,7 @@
 					:key="entry.id"
 					:aria-selected="entry.id === activeId"
 					:class="{ 'bg-surface-sunken': entry.id === activeId }"
-					class="cursor-pointer px-3 py-2"
+					class="cursor-pointer rounded-md px-3 py-2"
 					role="option"
 					data-part="option"
 					data-test="combo-box-option"
@@ -71,7 +71,7 @@
 
 			<div
 				v-show="!loading && !haveItems && haveQuery"
-				class="text-content-muted px-3 py-2 text-sm"
+				class="text-content-muted p-3 text-sm"
 				data-test="combo-box-no-results"
 			>
 				<slot name="no-results" v-bind="{ query }">No results found for "{{ query }}"</slot>
