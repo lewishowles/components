@@ -3,17 +3,14 @@
 		ref="container"
 		class="relative"
 		:class="{ 'z-10': isOpen }"
-		data-component="combo-box"
-		data-test="combo-box"
+		data-component="form-combo-box"
+		data-test="form-combo-box"
 	>
-		<div data-part="input" data-test="combo-box-input">
+		<div data-part="input" data-test="form-combo-box-input">
 			<form-input
 				ref="input"
 				v-model="query"
-				v-bind="{ displayLabel, id, placeholder, inputAttributes }"
-				@keydown="handleKeydown"
-				@focusin="handleFocusin"
-				@focusout="handleFocusout"
+				v-bind="{ id, placeholder, inputAttributes }"
 				@update:model-value="handleInput"
 			>
 				<slot name="label" />
@@ -24,7 +21,7 @@
 			</form-input>
 		</div>
 
-		<span aria-live="polite" class="sr-only" data-test="combo-box-announcement">
+		<span aria-live="polite" class="sr-only" data-test="form-combo-box-announcement">
 			<template v-if="isOpen">
 				<template v-if="haveItems">
 					{{ itemCount }} {{ itemCount === 1 ? "result" : "results" }} found. Use the arrow keys to
@@ -39,9 +36,9 @@
 			ref="dropdown"
 			:class="resolvedDropdownClasses"
 			data-part="dropdown"
-			data-test="combo-box-dropdown"
+			data-test="form-combo-box-dropdown"
 		>
-			<loading-indicator v-show="loading" class="p-3" data-test="combo-box-loading">
+			<loading-indicator v-show="loading" class="p-3" data-test="form-combo-box-loading">
 				<slot name="loading">Loading…</slot>
 			</loading-indicator>
 
@@ -49,7 +46,7 @@
 				v-show="!loading && haveItems"
 				v-bind="listboxAttributes"
 				class="max-h-64 overflow-y-auto py-1"
-				data-test="combo-box-listbox"
+				data-test="form-combo-box-listbox"
 			>
 				<li
 					v-for="entry in internalItems"
@@ -62,12 +59,12 @@
 					class="cursor-pointer rounded-md px-3 py-2"
 					role="option"
 					data-part="option"
-					data-test="combo-box-option"
+					data-test="form-combo-box-option"
 					@mousedown.prevent="selectOption(entry.id)"
 					@mouseenter="activeId = entry.id"
 				>
-					<slot v-bind="{ item: entry.item, highlighted: entry.id === activeId }">
-						{{ entry.item }}
+					<slot v-bind="{ option: entry.option, highlighted: entry.id === activeId }">
+						{{ entry.option }}
 					</slot>
 				</li>
 			</ul>
@@ -75,7 +72,7 @@
 			<div
 				v-show="!loading && !haveItems && haveQuery"
 				class="text-content-muted p-3 text-sm"
-				data-test="combo-box-no-results"
+				data-test="form-combo-box-no-results"
 			>
 				<slot name="no-results" v-bind="{ query }">No results found for "{{ query }}"</slot>
 			</div>
@@ -84,15 +81,21 @@
 </template>
 
 <script setup>
+import { arrayLength } from "@lewishowles/helpers/array";
+import { cn } from "@/utilities/cn.js";
+import { computed, ref, toRef, useTemplateRef, watch } from "vue";
+import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { nanoid } from "nanoid";
+import { onClickOutside } from "@vueuse/core";
+import { useCombobox, useFloatingPosition } from "@/composables";
+import useOptions from "@/components/form/composables/use-options/use-options";
+
 /**
- * `combo-box` pairs a search input with a list of results, handling the
+ * `form-combo-box` pairs a search input with a list of results, handling the
  * keyboard, ARIA, and open/close behaviour of the combobox interaction pattern
  * on top of the `useCombobox` composable.
  *
- * It deliberately does not filter. You pass the already-matched `items`
- * (which may come from a single source or several combined into a command
- * menu) and render each one through the default slot. Choosing a result emits it via the
- * `select` event.
+ * Only when a result is selected does `form-combo-box` take its value.
  *
  * The `default` slot renders each result's content.
  * The `label` slot provides the input's label.
@@ -100,23 +103,33 @@
  * The `no-results` slot replaces the empty-results message.
  * The `loading` slot replaces the loading message.
  */
-import { arrayLength } from "@lewishowles/helpers/array";
-import { callComponentMethod } from "@lewishowles/helpers/vue";
-import { cn } from "@/utilities/cn.js";
-import { computed, toRef, useTemplateRef, watch } from "vue";
-import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { nanoid } from "nanoid";
-import { onClickOutside } from "@vueuse/core";
-import { useCombobox, useFloatingPosition } from "@/composables";
-
 const props = defineProps({
 	/**
-	 * The results to display, already matched and ordered by the caller. Each
-	 * item is rendered through the default slot and emitted as-is when chosen.
+	 * The options for this combo-box. Options can be a string, used for both
+	 * the label and value, an object containing a "label" and "value", or an
+	 * object in conjunction with the `labelKey` and `valueKey` props.
 	 */
-	items: {
-		type: Array,
+	options: {
+		type: [Array, Object],
 		default: () => [],
+	},
+
+	/**
+	 * The key needed to find each option's label within its object. If an
+	 * individual option is a string or number, this is ignored.
+	 */
+	labelKey: {
+		type: String,
+		default: "label",
+	},
+
+	/**
+	 * The key needed to find each option's value within its object. If an
+	 * individual option is a string or number, this is ignored.
+	 */
+	valueKey: {
+		type: String,
+		default: "value",
 	},
 
 	/**
@@ -135,15 +148,6 @@ const props = defineProps({
 	id: {
 		type: String,
 		default: null,
-	},
-
-	/**
-	 * Whether to display the field label. The label remains available to screen
-	 * readers when hidden.
-	 */
-	displayLabel: {
-		type: Boolean,
-		default: true,
 	},
 
 	/**
@@ -184,13 +188,18 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits(["select"]);
-
-// The current search query, exposed for two-way binding. Nothing is chosen
-// until the user activates a result, so the query is the only model.
-const query = defineModel({
+// The selected item.
+const model = defineModel({
 	type: String,
-	default: "",
+});
+
+// The current text box query
+const query = ref("");
+
+// Standardised options.
+const { options: internalOptions } = useOptions(props.options, {
+	labelKey: props.labelKey,
+	valueKey: props.valueKey,
 });
 
 // A stable prefix for option IDs, shared with the listbox, that keeps them from
@@ -202,9 +211,9 @@ const listboxId = nanoid();
 // itself, so callers can merge results from several sources without worrying
 // about their IDs clashing.
 const internalItems = computed(() =>
-	props.items.map((item, index) => ({
+	internalOptions.value.map((option, index) => ({
 		id: `${listboxId}-${index}`,
-		item,
+		option,
 	})),
 );
 
@@ -279,8 +288,7 @@ watch(isOpen, (currentlyOpen) => {
 onClickOutside(containerElement, closeResults);
 
 /**
- * Handle a result being chosen, emitting the original item and clearing the
- * query ready for the next search.
+ * Handle a result being chosen, setting the current model value for the field.
  *
  * @param  {string}  id
  *     The chosen result's internal ID.
@@ -292,9 +300,10 @@ function selectItem(id) {
 		return;
 	}
 
-	emit("select", entry.item);
+	model.value = entry.option?.value;
+	query.value = entry.option?.label;
 
-	query.value = "";
+	closeResults();
 }
 
 /**
@@ -310,39 +319,4 @@ function handleInput(value) {
 
 	closeResults();
 }
-
-/**
- * Re-open the results when the input regains focus, as long as there is a query
- * to show results for.
- */
-function handleFocusin() {
-	if (haveQuery.value) {
-		openResults();
-	}
-}
-
-/**
- * Close the results when focus leaves the component. Focus moving to another
- * element within the component (should one ever exist) keeps them open.
- *
- * @param  {FocusEvent}  event
- */
-function handleFocusout(event) {
-	if (containerElement.value?.contains(event.relatedTarget)) {
-		return;
-	}
-
-	closeResults();
-}
-
-/**
- * Move focus to the input.
- */
-function triggerFocus() {
-	callComponentMethod(inputComponent.value, "triggerFocus");
-}
-
-defineExpose({
-	triggerFocus,
-});
 </script>

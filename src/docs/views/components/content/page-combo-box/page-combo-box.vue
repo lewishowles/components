@@ -7,7 +7,9 @@
 				<code>combo-box</code>
 				pairs a search input with a list of results, handling the keyboard, ARIA, and open/close
 				behaviour of the combobox interaction pattern on top of the
-				<code>useCombobox</code>
+				<router-link :to="{ name: 'use-combobox' }">
+					<code>useCombobox</code>
+				</router-link>
 				composable.
 			</p>
 

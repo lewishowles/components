@@ -24,6 +24,7 @@
 					<app-menu-link to="/form/form-button-group">form-button-group</app-menu-link>
 					<app-menu-link to="/form/form-checkbox">form-checkbox</app-menu-link>
 					<app-menu-link to="/form/form-checkbox-group">form-checkbox-group</app-menu-link>
+					<app-menu-link to="/form/form-combo-box">form-combo-box</app-menu-link>
 					<app-menu-link to="/form/form-date">form-date</app-menu-link>
 					<app-menu-link to="/form/form-fieldset">form-fieldset</app-menu-link>
 					<app-menu-link to="/form/form-file">form-file</app-menu-link>
