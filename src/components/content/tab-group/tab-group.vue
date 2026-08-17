@@ -14,7 +14,7 @@
 				ref="tabListReference"
 				class="-mb-px flex items-end"
 				v-bind="{
-					class: { 'overflow-x-auto': !wrap, 'flex-wrap': wrap },
+					class: { 'overflow-x-auto p-1 -mx-1': !wrap, 'flex-wrap': wrap },
 					'aria-labelledby': labelId,
 				}"
 				role="tablist"
