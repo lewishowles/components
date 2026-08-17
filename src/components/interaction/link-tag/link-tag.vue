@@ -16,7 +16,7 @@
 			class="inline-block stroke-current"
 			:class="{
 				'size-[1em]': iconOnly,
-				'me-2 size-[0.857em] align-[-1px]': !iconOnly,
+				'me-[0.5em] size-[0.857em] align-[-1px]': !iconOnly,
 			}"
 			data-part="icon-start"
 			data-test="link-tag-icon-start"
@@ -37,7 +37,7 @@
 			class="inline-block stroke-current"
 			:class="{
 				'size-[1em]': iconOnly,
-				'ms-1 size-[0.857em] align-[-1px]': !iconOnly,
+				'ms-[0.5em] size-[0.857em] align-[-1px]': !iconOnly,
 			}"
 			data-part="icon-end"
 			data-test="link-tag-icon-end"
