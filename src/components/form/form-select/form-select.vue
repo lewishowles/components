@@ -70,7 +70,7 @@
  * The `default` slot contains the label for the select.
  * `error` and `help` slots exist for additional descriptive text.
  */
-import { useTemplateRef } from "vue";
+import { toRef, useTemplateRef } from "vue";
 import { firstDefined } from "@lewishowles/helpers/array";
 import { getPathValue } from "@lewishowles/helpers/object";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
@@ -166,7 +166,7 @@ const model = defineModel({
 const selectElement = useTemplateRef("select-element");
 
 // Standardised options.
-const { options: internalOptions } = useOptions(props.options, {
+const { options: internalOptions } = useOptions(toRef(props, "options"), {
 	labelKey: props.labelKey,
 	valueKey: props.valueKey,
 });
