@@ -74,7 +74,7 @@
 
 			<div
 				v-show="!loading && !haveItems && haveQuery"
-				class="text-content-muted p-3 text-sm"
+				class="text-content-muted p-3"
 				data-test="combo-box-no-results"
 			>
 				<slot name="no-results" v-bind="{ query }">No results found for "{{ query }}"</slot>
