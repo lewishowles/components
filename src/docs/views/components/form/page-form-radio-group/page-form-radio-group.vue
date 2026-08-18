@@ -232,6 +232,7 @@
 			<playground-form-radio-group />
 			<playground-form-radio-group-inline />
 			<playground-form-radio-group-card-option />
+			<playground-form-radio-group-option-classes />
 		</component-playgrounds>
 	</component-page>
 </template>
@@ -240,4 +241,5 @@
 import PlaygroundFormRadioGroup from "./fragments/playground-form-radio-group.vue";
 import PlaygroundFormRadioGroupCardOption from "./fragments/playground-form-radio-group-card-option.vue";
 import PlaygroundFormRadioGroupInline from "./fragments/playground-form-radio-group-inline.vue";
+import PlaygroundFormRadioGroupOptionClasses from "./fragments/playground-form-radio-group-option-classes.vue";
 </script>

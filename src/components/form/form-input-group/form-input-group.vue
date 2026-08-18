@@ -41,7 +41,7 @@
 					:class="cn('group flex', optionClasses)"
 					v-bind="{
 						'data-position': getOptionPosition(option),
-						'data-state': isCard ? (isOptionSelected(option) ? 'selected' : 'unselected') : null,
+						'data-state': isOptionSelected(option) ? 'selected' : 'unselected',
 						'data-variant': isCard ? 'card' : null,
 					}"
 					data-part="option"
@@ -77,7 +77,7 @@
 
 					<form-label
 						v-bind="{ id: option.id, styled: false, showOptionalIndicator: false }"
-						class="leading-6"
+						class="w-full leading-6"
 						data-part="label"
 					>
 						<slot

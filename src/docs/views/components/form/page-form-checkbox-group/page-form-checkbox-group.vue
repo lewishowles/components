@@ -211,6 +211,7 @@
 		<component-playgrounds>
 			<playground-form-checkbox-group />
 			<playground-form-checkbox-group-card-option />
+			<playground-form-checkbox-group-option-classes />
 		</component-playgrounds>
 	</component-page>
 </template>
@@ -218,4 +219,5 @@
 <script setup>
 import PlaygroundFormCheckboxGroup from "./fragments/playground-form-checkbox-group.vue";
 import PlaygroundFormCheckboxGroupCardOption from "./fragments/playground-form-checkbox-group-card-option.vue";
+import PlaygroundFormCheckboxGroupOptionClasses from "./fragments/playground-form-checkbox-group-option-classes.vue";
 </script>

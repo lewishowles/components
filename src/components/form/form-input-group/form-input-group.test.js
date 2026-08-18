@@ -262,6 +262,22 @@ describe("form-input-group", () => {
 				expect(options[2].attributes("data-state")).toBe("unselected");
 				expect(wrapper.get('[data-part="options"]').attributes("data-layout")).toBe("stacked");
 			});
+
+			test("marks selected and unselected non-card options with stable state attributes", () => {
+				const wrapper = deepMount({
+					props: {
+						type: "radio",
+						name: "flavour",
+						modelValue: { flavour: "banana" },
+					},
+				});
+
+				const options = wrapper.findAll('[data-test="form-input-group-option"]');
+
+				expect(options[0].attributes("data-state")).toBe("unselected");
+				expect(options[1].attributes("data-state")).toBe("selected");
+				expect(options[2].attributes("data-state")).toBe("unselected");
+			});
 		});
 
 		describe("optionClasses", () => {
