@@ -45,7 +45,7 @@
 					<li>
 						An object
 						<code>{ value: &quot;label&quot; }</code>
-						where each key is the value of oan option, and each value is the label.
+						where each key is the value of an option, and each value is the label.
 					</li>
 					<li>
 						An array of objects

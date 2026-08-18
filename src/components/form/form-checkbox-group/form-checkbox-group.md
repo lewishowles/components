@@ -46,7 +46,7 @@ The options to be displayed as checkboxes can be provided in a number of formats
 - An array of objects `[{ label: "Label", value: "value" }]` where labels and values are explicitly defined.
 - An array of objects with an optional `description`, shown beneath the label.
 - An array of objects combined with the `labelKey` and `valueKey` properties.
-- An object `{ value: "label" }` where each key is the value of oan option, and each value is the label.
+- An object `{ value: "label" }` where each key is the value of an option, and each value is the label.
 
 ### `labelKey`
 
