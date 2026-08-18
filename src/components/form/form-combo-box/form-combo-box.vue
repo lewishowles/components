@@ -190,14 +190,17 @@ const props = defineProps({
 
 // The selected item.
 const model = defineModel({
-	type: String,
+	type: [String, Number],
 });
 
-// The current text box query
+// The current text box query.
 const query = ref("");
+// The label for the selected value, used to tell whether the query has since
+// changed.
+const displayedLabel = ref("");
 
 // Standardised options.
-const { options: internalOptions } = useOptions(props.options, {
+const { options: internalOptions } = useOptions(toRef(props, "options"), {
 	labelKey: props.labelKey,
 	valueKey: props.valueKey,
 });
@@ -207,13 +210,15 @@ const { options: internalOptions } = useOptions(props.options, {
 const listboxId = nanoid();
 
 // Each result paired with the ID used for its element and for keyboard
-// navigation. The ID is derived from the result's position rather than the item
-// itself, so callers can merge results from several sources without worrying
-// about their IDs clashing.
+// navigation, together with its original option for richer slot content. The
+// ID is derived from the result's position rather than the item itself, so
+// callers can merge results from several sources without worrying about their
+// IDs clashing.
 const internalItems = computed(() =>
 	internalOptions.value.map((option, index) => ({
 		id: `${listboxId}-${index}`,
 		option,
+		originalOption: option.originalOption,
 	})),
 );
 
@@ -260,6 +265,11 @@ const haveItems = computed(() => itemCount.value > 0);
 // Whether the user has entered a search query.
 const haveQuery = computed(() => isNonEmptyString(query.value));
 
+// The currently selected result, if any.
+const selectedItem = computed(() =>
+	internalItems.value.find((entry) => entry.option.value === model.value),
+);
+
 // The full class list for the results list: base styling merged with the
 // resolved position, alignment, and any caller overrides.
 const resolvedDropdownClasses = computed(() =>
@@ -285,10 +295,64 @@ watch(isOpen, (currentlyOpen) => {
 	handleFloatingClose();
 });
 
+// Sync the displayed query with the model's label whenever the selected value
+// changes, including on initial mount and when the model is set externally.
+watch(
+	model,
+	() => {
+		const previousDisplayedLabel = displayedLabel.value;
+		const selectedEntry = selectedItem.value;
+
+		if (selectedEntry) {
+			displayedLabel.value = String(selectedEntry.option.label);
+			query.value = displayedLabel.value;
+
+			return;
+		}
+
+		displayedLabel.value = "";
+
+		if (query.value === previousDisplayedLabel) {
+			query.value = "";
+		}
+	},
+	{ immediate: true },
+);
+
+// Refresh the displayed label when options change, in case the selected
+// option's label changed too. A value not yet present in the new options is
+// left as-is rather than cleared.
+watch(internalItems, () => {
+	const selectedEntry = selectedItem.value;
+
+	if (!selectedEntry) {
+		return;
+	}
+
+	displayedLabel.value = String(selectedEntry.option.label);
+	query.value = displayedLabel.value;
+});
+
+// Clear the selected value once the visible query no longer matches its
+// label, since editing or clearing the text means the previous selection no
+// longer represents what's shown.
+watch(query, (value) => {
+	if (value === displayedLabel.value) {
+		return;
+	}
+
+	displayedLabel.value = "";
+
+	if (model.value !== null && model.value !== undefined) {
+		model.value = null;
+	}
+});
+
 onClickOutside(containerElement, closeResults);
 
 /**
- * Handle a result being chosen, setting the current model value for the field.
+ * Handle a result being chosen: sets the model to its value and syncs the
+ * displayed label and query to match.
  *
  * @param  {string}  id
  *     The chosen result's internal ID.
@@ -300,8 +364,9 @@ function selectItem(id) {
 		return;
 	}
 
-	model.value = entry.option?.value;
-	query.value = entry.option?.label;
+	displayedLabel.value = String(entry.option.label);
+	model.value = entry.option.value;
+	query.value = displayedLabel.value;
 
 	closeResults();
 }

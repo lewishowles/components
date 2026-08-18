@@ -40,7 +40,11 @@ export default function useOptions(
 
 				const label = originalOptions[value];
 
-				internalOptions.push({ label, value });
+				internalOptions.push({
+					label,
+					value,
+					originalOption: originalOptions[value],
+				});
 			}
 		}
 
@@ -56,7 +60,11 @@ export default function useOptions(
 				// A string or a number, we use it for both the key and the
 				// value.
 				if (isSimpleOption) {
-					internalOptions.push({ label: option, value: option });
+					internalOptions.push({
+						label: option,
+						value: option,
+						originalOption: option,
+					});
 
 					return;
 				}
@@ -68,6 +76,7 @@ export default function useOptions(
 					const internalOption = {
 						label: option[labelKey],
 						value: option[valueKey],
+						originalOption: option,
 					};
 
 					const description = option[descriptionKey];
