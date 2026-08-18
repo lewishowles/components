@@ -38,7 +38,7 @@
 		>
 			<template v-for="option in internalOptions" :key="option.id">
 				<div
-					class="group flex"
+					:class="cn('group flex', optionClasses)"
 					v-bind="{
 						'data-position': getOptionPosition(option),
 						'data-state': isCard ? (isOptionSelected(option) ? 'selected' : 'unselected') : null,
@@ -126,6 +126,7 @@
 import { computed, ref } from "vue";
 import { head, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
+import { cn } from "@/utilities/cn.js";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 import useOptions from "@/components/form/composables/use-options/use-options";
 
@@ -211,6 +212,15 @@ const props = defineProps({
 	 */
 	variant: {
 		type: String,
+		default: null,
+	},
+
+	/**
+	 * Additional classes to merge onto every option row. Accepts strings,
+	 * arrays, or conditional objects, matching Vue class bindings.
+	 */
+	optionClasses: {
+		type: [String, Array, Object],
 		default: null,
 	},
 

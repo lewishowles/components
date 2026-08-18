@@ -2,7 +2,15 @@
 	<form-input-group
 		ref="input-group"
 		v-model="internalModel"
-		v-bind="{ id: inputId, type: 'radio', required: isRequired, name, descriptionKey, variant }"
+		v-bind="{
+			id: inputId,
+			type: 'radio',
+			required: isRequired,
+			name,
+			descriptionKey,
+			variant,
+			optionClasses,
+		}"
 		data-component="form-radio-group"
 		data-test="form-radio-group"
 	>
@@ -88,6 +96,15 @@ const props = defineProps({
 	 */
 	variant: {
 		type: String,
+		default: null,
+	},
+
+	/**
+	 * Additional classes to merge onto every option row. Accepts strings,
+	 * arrays, or conditional objects, matching Vue class bindings.
+	 */
+	optionClasses: {
+		type: [String, Array, Object],
 		default: null,
 	},
 });

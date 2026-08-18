@@ -100,6 +100,13 @@ Note that this only takes effect when the radio buttons are in a _container_ tha
 
 Use `card` to give each option a bordered card treatment, with the selected option using primary-colour border and background tokens.
 
+### `optionClasses`
+
+- type: `string|array|object`
+- default: `null`
+
+Additional classes to merge onto every option row. Use this with the `option` slot when the card preset does not match the required design. Conditional styling for selected, first, or last options can target the option row's `data-state` and `data-position` attributes in your own CSS.
+
 ### `required`
 
 - type: `boolean`

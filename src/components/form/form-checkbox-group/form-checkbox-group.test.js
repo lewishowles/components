@@ -74,6 +74,17 @@ describe("form-checkbox-group", () => {
 			});
 		});
 
+		describe("optionClasses", () => {
+			test("passes custom option classes to the input group", () => {
+				const optionClasses = { "rounded-lg": true };
+				const wrapper = mount({ props: { optionClasses } });
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("optionClasses")).toEqual(
+					optionClasses,
+				);
+			});
+		});
+
 		describe("Slots", () => {
 			test("forwards custom option content with selection details", () => {
 				const wrapper = deepMount({

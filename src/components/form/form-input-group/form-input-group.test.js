@@ -264,6 +264,26 @@ describe("form-input-group", () => {
 			});
 		});
 
+		describe("optionClasses", () => {
+			test.for([
+				["a string", "rounded-lg", ["rounded-lg"]],
+				["an array", ["rounded-lg", "p-4"], ["rounded-lg", "p-4"]],
+				["an object", { "rounded-lg": true, "p-4": true }, ["rounded-lg", "p-4"]],
+			])("merges %s with the option row classes", ([, optionClasses, customClasses]) => {
+				const wrapper = deepMount({
+					props: {
+						optionClasses,
+					},
+				});
+
+				const option = wrapper.get('[data-test="form-input-group-option"]');
+
+				expect(option.classes()).toEqual(
+					expect.arrayContaining(["group", "flex", ...customClasses]),
+				);
+			});
+		});
+
 		describe("Slots", () => {
 			test("renders custom option content with selection details", () => {
 				const wrapper = deepMount({

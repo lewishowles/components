@@ -4,12 +4,16 @@
 		id="playground-form-radio-group-card-option"
 		v-model="textSlots"
 	>
-		<template #title>Card variant</template>
+		<template #title>Custom card options</template>
 
 		<template #introduction>
-			Setting
+			Combine
 			<code>variant="card"</code>
-			renders each option as a bordered, selectable card.
+			with
+			<code>optionClasses</code>
+			and the
+			<code>option</code>
+			slot to build a custom card row.
 		</template>
 
 		<form-radio-group v-bind="componentProps" v-model="componentModel">
@@ -23,6 +27,11 @@
 					</span>
 
 					<span class="shrink-0 font-medium">{{ option.price }}</span>
+
+					<icon-chevron-right
+						aria-hidden="true"
+						class="group-hocus:translate-x-1 text-content-muted size-5 shrink-0 transition-transform"
+					/>
 				</span>
 			</template>
 		</form-radio-group>
@@ -70,6 +79,11 @@ const props = ref({
 		label: "Variant",
 		value: "card",
 	},
+	optionClasses: {
+		label: "Option classes",
+		value:
+			"hocus:border-primary hocus:bg-surface-subtle w-full rounded-lg border border-border py-3 pe-4 ps-6",
+	},
 });
 
 // Convert our props into a format that can be passed directly to our component.
@@ -80,10 +94,13 @@ const componentProps = computed(() => {
 // The custom option slot included in the copied template.
 const optionTemplate = [
 	'\t<template #option="{ option }">',
-	"\t\t<span>",
-	"\t\t\t<span>{{ option.label }}</span>",
-	"\t\t\t<span>{{ option.description }}</span>",
-	"\t\t\t<span>{{ option.price }}</span>",
+	'\t\t<span class="flex min-w-0 flex-1 items-start justify-between gap-3">',
+	'\t\t\t<span class="min-w-0">',
+	'\t\t\t\t<span class="block font-medium">{{ option.label }}</span>',
+	'\t\t\t\t<span class="text-content-muted block">{{ option.description }}</span>',
+	"\t\t\t</span>",
+	'\t\t\t<span class="shrink-0 font-medium">{{ option.price }}</span>',
+	'\t\t\t<icon-chevron-right aria-hidden="true" class="group-hocus:translate-x-1 size-5 shrink-0 text-content-muted transition-transform" />',
 	"\t\t</span>",
 	"\t</template>",
 ].join("\n");

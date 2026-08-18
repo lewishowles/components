@@ -2,7 +2,7 @@
 	<form-input-group
 		ref="input-group"
 		v-model="internalModel"
-		v-bind="{ type: 'checkbox', required, name, descriptionKey, variant }"
+		v-bind="{ type: 'checkbox', required, name, descriptionKey, variant, optionClasses }"
 		data-component="form-checkbox-group"
 		data-test="form-checkbox-group"
 	>
@@ -76,6 +76,15 @@ const props = defineProps({
 	 */
 	variant: {
 		type: String,
+		default: null,
+	},
+
+	/**
+	 * Additional classes to merge onto every option row. Accepts strings,
+	 * arrays, or conditional objects, matching Vue class bindings.
+	 */
+	optionClasses: {
+		type: [String, Array, Object],
 		default: null,
 	},
 });

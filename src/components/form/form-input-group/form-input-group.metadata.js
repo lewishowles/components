@@ -61,6 +61,12 @@ export const formInputGroupMetadata = {
 			summary: "Apply a card treatment to each option.",
 		},
 		{
+			name: "optionClasses",
+			type: "string | array | object",
+			default: null,
+			summary: "Additional classes to merge onto every option row.",
+		},
+		{
 			name: "required",
 			type: "boolean",
 			default: false,

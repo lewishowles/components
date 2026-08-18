@@ -91,6 +91,13 @@ Any ID to apply to this checkbox group. If an ID is not provided, one will be ge
 
 Use `card` to give each option a bordered card treatment, with selected options using primary-colour border and background tokens.
 
+### `optionClasses`
+
+- type: `string|array|object`
+- default: `null`
+
+Additional classes to merge onto every option row. Use this with the `option` slot when the card preset does not match the required design. Conditional styling for selected, first, or last options can target the option row's `data-state` and `data-position` attributes in your own CSS.
+
 ## Methods
 
 ### `triggerFocus`

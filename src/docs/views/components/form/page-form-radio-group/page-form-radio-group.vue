@@ -73,6 +73,22 @@
 				</p>
 			</component-prop>
 
+			<component-prop id="prop-option-classes">
+				<template #name>optionClasses</template>
+
+				<template #type>String | Array | Object</template>
+
+				<template #default-value>null</template>
+
+				<p>
+					Additional classes to merge onto every option row. Combine this with the
+					<code>option</code>
+					slot when the
+					<code>card</code>
+					preset does not match the required design.
+				</p>
+			</component-prop>
+
 			<component-prop id="prop-label-key">
 				<template #name>labelKey</template>
 
