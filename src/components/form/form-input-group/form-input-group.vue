@@ -32,20 +32,13 @@
 
 		<div
 			class="mt-2 mb-1 flex flex-col"
-			:class="{
-				'@xs:flex-row @xs:gap-10': inline,
-				'gap-2': !inline && !isCard,
-				'gap-0': !inline && isCard,
-			}"
+			:class="{ '@xs:flex-row @xs:gap-10': inline }"
 			:data-layout="inline ? 'inline' : 'stacked'"
 			data-part="options"
 		>
 			<template v-for="option in internalOptions" :key="option.id">
 				<div
-					class="flex"
-					:class="{
-						'-mt-px': isCard && !inline && !option.first,
-					}"
+					class="group flex"
 					v-bind="{
 						'data-position': getOptionPosition(option),
 						'data-state': isCard ? (isOptionSelected(option) ? 'selected' : 'unselected') : null,
@@ -86,10 +79,6 @@
 						v-bind="{ id: option.id, styled: false, showOptionalIndicator: false }"
 						class="leading-6"
 						data-part="label"
-						:class="{
-							'after:absolute after:inset-0 after:content-[\'\']': isCard,
-							'px-3': !isCard,
-						}"
 					>
 						<slot
 							name="option"

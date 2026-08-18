@@ -258,8 +258,6 @@ describe("form-input-group", () => {
 				expect(options[1].attributes("data-variant")).toBe("card");
 				expect(options[1].attributes("data-position")).toBe("middle");
 				expect(options[1].attributes("data-state")).toBe("selected");
-				expect(options[1].classes()).toContain("-mt-px");
-				expect(options[2].classes()).toContain("-mt-px");
 				expect(options[2].attributes("data-position")).toBe("last");
 				expect(options[2].attributes("data-state")).toBe("unselected");
 				expect(wrapper.get('[data-part="options"]').attributes("data-layout")).toBe("stacked");
