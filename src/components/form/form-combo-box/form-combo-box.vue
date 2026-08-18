@@ -3,31 +3,49 @@
 		ref="container"
 		class="relative"
 		:class="{ 'z-10': isOpen }"
+		:data-invalid="haveError ? 'true' : undefined"
+		:data-state="isOpen ? 'open' : 'closed'"
 		data-component="form-combo-box"
 		data-test="form-combo-box"
 	>
-		<div data-part="input" data-test="form-combo-box-input">
+		<div data-part="text-control" data-test="form-combo-box-input">
 			<form-input
 				ref="input"
 				v-model="query"
-				v-bind="{ id, placeholder, inputAttributes }"
+				v-bind="{ id, placeholder, inputAttributes: resolvedInputAttributes }"
 				@update:model-value="handleInput"
 			>
-				<slot name="label" />
+				<slot name="label">
+					<slot />
+				</slot>
+
+				<template #optional-indicator>
+					<slot name="optional-indicator" />
+				</template>
 
 				<template #introduction>
 					<slot name="introduction" />
+				</template>
+
+				<template #help>
+					<slot name="help" />
+				</template>
+
+				<template #error>
+					<slot name="error" />
 				</template>
 			</form-input>
 		</div>
 
 		<span aria-live="polite" class="sr-only" data-test="form-combo-box-announcement">
 			<template v-if="isOpen">
-				<template v-if="haveItems">
+				<template v-if="loading">Loading options.</template>
+				<template v-else-if="!haveOptions">No options available.</template>
+				<template v-else-if="haveItems">
 					{{ itemCount }} {{ itemCount === 1 ? "result" : "results" }} found. Use the arrow keys to
 					navigate.
 				</template>
-				<template v-else-if="haveQuery">No results found for "{{ query }}".</template>
+				<template v-else>No results found for "{{ query }}".</template>
 			</template>
 		</span>
 
@@ -38,18 +56,30 @@
 			data-part="dropdown"
 			data-test="form-combo-box-dropdown"
 		>
-			<loading-indicator v-show="loading" class="p-3" data-test="form-combo-box-loading">
-				<slot name="loading">Loading…</slot>
-			</loading-indicator>
+			<div v-if="loading" class="p-3" data-part="status" data-test="form-combo-box-loading">
+				<loading-indicator>
+					<slot name="loading">Loading…</slot>
+				</loading-indicator>
+			</div>
+
+			<div
+				v-else-if="!haveOptions"
+				class="text-content-muted p-3"
+				data-part="status"
+				data-test="form-combo-box-empty"
+			>
+				<slot name="empty">No options available.</slot>
+			</div>
 
 			<ul
-				v-show="!loading && haveItems"
+				v-else-if="haveItems"
 				v-bind="listboxAttributes"
 				class="max-h-64 overflow-y-auto py-1"
+				data-part="listbox"
 				data-test="form-combo-box-listbox"
 			>
 				<li
-					v-for="entry in internalItems"
+					v-for="entry in filteredItems"
 					v-bind="{
 						id: entry.id,
 						key: entry.id,
@@ -63,15 +93,25 @@
 					@mousedown.prevent="selectOption(entry.id)"
 					@mouseenter="activeId = entry.id"
 				>
-					<slot v-bind="{ option: entry.option, highlighted: entry.id === activeId }">
-						{{ entry.option }}
+					<slot
+						name="option"
+						v-bind="{
+							option: entry.originalOption,
+							label: entry.option.label,
+							value: entry.option.value,
+							highlighted: entry.id === activeId,
+							selected: entry.option.value === model,
+						}"
+					>
+						{{ entry.option.label }}
 					</slot>
 				</li>
 			</ul>
 
 			<div
-				v-show="!loading && !haveItems && haveQuery"
-				class="text-content-muted p-3 text-sm"
+				v-else
+				class="text-content-muted p-3"
+				data-part="status"
 				data-test="form-combo-box-no-results"
 			>
 				<slot name="no-results" v-bind="{ query }">No results found for "{{ query }}"</slot>
@@ -83,8 +123,9 @@
 <script setup>
 import { arrayLength } from "@lewishowles/helpers/array";
 import { cn } from "@/utilities/cn.js";
-import { computed, ref, toRef, useTemplateRef, watch } from "vue";
+import { computed, ref, toRef, useAttrs, useSlots, useTemplateRef, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { nanoid } from "nanoid";
 import { onClickOutside } from "@vueuse/core";
 import { useCombobox, useFloatingPosition } from "@/composables";
@@ -188,10 +229,24 @@ const props = defineProps({
 	},
 });
 
+const attributes = useAttrs();
+const slots = useSlots();
+
 // The selected item.
 const model = defineModel({
 	type: [String, Number],
 });
+
+// Whether the inherited readonly attribute should prevent user interaction.
+const isReadonly = computed(
+	() =>
+		attributes.readonly !== undefined &&
+		attributes.readonly !== null &&
+		attributes.readonly !== false,
+);
+
+// Whether validation error content has been supplied for the field state hook.
+const haveError = computed(() => isNonEmptySlot(slots.error));
 
 // The current text box query.
 const query = ref("");
@@ -205,6 +260,42 @@ const { options: internalOptions } = useOptions(toRef(props, "options"), {
 	valueKey: props.valueKey,
 });
 
+// Keep the first option for each value and collect later duplicates for a
+// development warning.
+const resolvedOptions = computed(() => {
+	const seenValues = new Set();
+	const duplicateValues = new Set();
+
+	const uniqueOptions = internalOptions.value.filter((option) => {
+		if (seenValues.has(option.value)) {
+			duplicateValues.add(option.value);
+
+			return false;
+		}
+
+		seenValues.add(option.value);
+
+		return true;
+	});
+
+	return { duplicateValues, uniqueOptions };
+});
+
+// Warn once for each duplicated value whenever the options are refreshed.
+watch(
+	() => resolvedOptions.value.duplicateValues,
+	(duplicateValues) => {
+		if (!import.meta.env.DEV) {
+			return;
+		}
+
+		duplicateValues.forEach((value) => {
+			console.warn(`[form-combo-box] Duplicate option value "${value}". Keeping the first option.`);
+		});
+	},
+	{ immediate: true },
+);
+
 // A stable prefix for option IDs, shared with the listbox, that keeps them from
 // clashing with other IDs on the page.
 const listboxId = nanoid();
@@ -215,26 +306,45 @@ const listboxId = nanoid();
 // callers can merge results from several sources without worrying about their
 // IDs clashing.
 const internalItems = computed(() =>
-	internalOptions.value.map((option, index) => ({
+	resolvedOptions.value.uniqueOptions.map((option, index) => ({
 		id: `${listboxId}-${index}`,
 		option,
 		originalOption: option.originalOption,
 	})),
 );
 
-// The ordered option IDs handed to the combobox for keyboard navigation.
-const optionIds = computed(() => internalItems.value.map((entry) => entry.id));
+// The options that match the current query.
+const filteredItems = computed(() => {
+	const filter = query.value.toLowerCase();
+
+	if (!filter) {
+		return internalItems.value;
+	}
+
+	return internalItems.value.filter((entry) =>
+		String(entry.option.label).toLowerCase().includes(filter),
+	);
+});
+
+// The ordered, filtered option IDs handed to the combobox for keyboard navigation.
+const optionIds = computed(() => filteredItems.value.map((entry) => entry.id));
 
 const {
 	activeId,
 	close: closeResults,
 	handleKeydown,
-	inputAttributes,
+	inputAttributes: comboboxInputAttributes,
 	isOpen,
 	listboxAttributes,
 	open: openResults,
 	selectOption,
 } = useCombobox({ listboxId, options: optionIds, onSelect: selectItem });
+
+// The input attributes combine the combobox relationship with readonly state.
+const resolvedInputAttributes = computed(() => ({
+	...comboboxInputAttributes.value,
+	...(isReadonly.value ? { readonly: true } : {}),
+}));
 
 // A reference to the root element, so we can close the results when the user
 // interacts elsewhere.
@@ -259,11 +369,11 @@ const {
 });
 
 // The number of results currently shown.
-const itemCount = computed(() => arrayLength(internalItems.value));
-// Whether there are any results to show.
+const itemCount = computed(() => arrayLength(filteredItems.value));
+// Whether any options were provided.
+const haveOptions = computed(() => arrayLength(internalItems.value) > 0);
+// Whether there are any filtered results to show.
 const haveItems = computed(() => itemCount.value > 0);
-// Whether the user has entered a search query.
-const haveQuery = computed(() => isNonEmptyString(query.value));
 
 // The currently selected result, if any.
 const selectedItem = computed(() =>
@@ -321,7 +431,7 @@ watch(
 
 // Refresh the displayed label when options change, in case the selected
 // option's label changed too. A value not yet present in the new options is
-// left as-is rather than cleared.
+// left as-is until a loading cycle finishes.
 watch(internalItems, () => {
 	const selectedEntry = selectedItem.value;
 
@@ -333,10 +443,37 @@ watch(internalItems, () => {
 	query.value = displayedLabel.value;
 });
 
-// Clear the selected value once the visible query no longer matches its
-// label, since editing or clearing the text means the previous selection no
-// longer represents what's shown.
+// Reconcile a selected value only after loading has finished, so options that
+// are temporarily absent during loading do not clear a valid selection.
+watch(
+	() => props.loading,
+	(currentlyLoading, previouslyLoading) => {
+		if (previouslyLoading !== true || currentlyLoading !== false) {
+			return;
+		}
+
+		if (model.value === null || model.value === undefined || selectedItem.value) {
+			return;
+		}
+
+		model.value = null;
+	},
+);
+
+// A readonly field must keep showing the selected label and never clear the
+// model, so revert any query drift back to that label instead of treating it
+// as an edit. Otherwise, clear the selected value once the visible query no
+// longer matches its label, since editing or clearing the text means the
+// previous selection no longer represents what's shown.
 watch(query, (value) => {
+	if (isReadonly.value) {
+		if (value !== displayedLabel.value) {
+			query.value = displayedLabel.value;
+		}
+
+		return;
+	}
+
 	if (value === displayedLabel.value) {
 		return;
 	}
@@ -358,6 +495,10 @@ onClickOutside(containerElement, closeResults);
  *     The chosen result's internal ID.
  */
 function selectItem(id) {
+	if (isReadonly.value) {
+		return;
+	}
+
 	const entry = internalItems.value.find((entry) => entry.id === id);
 
 	if (!entry) {
@@ -373,9 +514,17 @@ function selectItem(id) {
 
 /**
  * When the value of the search box changes by user input, determine whether to
- * open or close the results.
+ * open or close the results. A readonly field reverts the input back to the
+ * selected label instead, since user interaction must not change what's
+ * displayed.
  */
 function handleInput(value) {
+	if (isReadonly.value) {
+		query.value = displayedLabel.value;
+
+		return;
+	}
+
 	if (isNonEmptyString(value)) {
 		openResults();
 
