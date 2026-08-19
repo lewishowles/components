@@ -78,15 +78,6 @@
 					issues.
 				</p>
 			</component-prop>
-			<component-prop id="prop-inline">
-				<template #name>inline</template>
-
-				<template #type>String</template>
-
-				<template #default-value>null</template>
-
-				<p />
-			</component-prop>
 		</component-props>
 
 		<component-slots>

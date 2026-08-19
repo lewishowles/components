@@ -87,7 +87,7 @@ const options = [
 ### With help
 
 ```html
-<form-button-group v-model="accountType" v-bind="{ inline: true }">
+<form-button-group v-model="accountType">
 	Account type
 
 	<template #help>You can change the account type from the user screen later.</template>

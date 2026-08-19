@@ -30,12 +30,7 @@
 			</conditional-wrapper>
 		</div>
 
-		<div
-			class="mt-2 mb-1 flex flex-col"
-			:class="{ '@xs:flex-row @xs:gap-10': inline }"
-			:data-layout="inline ? 'inline' : 'stacked'"
-			data-part="options"
-		>
+		<div class="mt-2 mb-1 flex" :data-layout="inline ? 'inline' : 'stacked'" data-part="options">
 			<template v-for="option in internalOptions" :key="option.id">
 				<div
 					:class="cn('group flex', optionClasses)"

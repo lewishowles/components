@@ -217,6 +217,7 @@
 	}
 
 	:where([data-part="options"][data-layout="stacked"]) {
+		flex-direction: column;
 		gap: calc(var(--spacing) * 2);
 
 		&:has([data-variant="card"]) {
@@ -247,6 +248,13 @@
 	}
 
 	[data-part="options"][data-layout="inline"] {
+		flex-direction: column;
+
+		@container (min-width: var(--container-xs)) {
+			flex-direction: row;
+			gap: calc(var(--spacing) * 10);
+		}
+
 		[data-part="option"][data-variant="card"] {
 			border-radius: var(--radius-lg);
 		}
@@ -266,21 +274,19 @@
 		width: calc(var(--spacing) * 1);
 	}
 
-	:where([data-component="form-button-group"]) {
+	[data-component="form-button-group"] {
 		[data-part="options"] {
 			flex-direction: row;
 			gap: 0;
 		}
 
 		[data-part="option"] {
-			display: contents;
-
 			&:is([data-position="first"], [data-position="only"]) [data-part="label"] {
 				border-start-start-radius: var(--radius-lg);
 				border-end-start-radius: var(--radius-lg);
 			}
 
-			&:is([data-position="middle"], [data-position="last"]) [data-part="label"] {
+			&:is([data-position="middle"], [data-position="last"]) {
 				margin-inline-start: -1px;
 			}
 
