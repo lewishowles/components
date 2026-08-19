@@ -48,7 +48,7 @@
 			<ul
 				v-show="!loading && haveItems"
 				v-bind="listboxAttributes"
-				class="max-h-64 overflow-y-auto py-1"
+				class="max-h-64 overflow-y-auto p-1"
 				data-test="combo-box-listbox"
 			>
 				<li
