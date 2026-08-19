@@ -54,6 +54,37 @@ describe("form-combo-box", () => {
 		});
 	});
 
+	describe("Input presentation", () => {
+		test("keeps a hidden label available to screen readers", () => {
+			const wrapper = mountDeep({
+				props: { displayLabel: false },
+				slots: { default: "Pilot" },
+			});
+
+			const label = wrapper.find('[data-test="form-label"]');
+
+			expect(label.text()).toBe("Pilot");
+			expect(label.classes()).toContain("sr-only");
+		});
+
+		test("merges input attributes with combobox and readonly attributes", () => {
+			const wrapper = mountDeep({
+				attrs: { readonly: true },
+				props: {
+					inputAttributes: { autocomplete: "off", inputmode: "search" },
+				},
+				slots: { default: "Pilot" },
+			});
+
+			const input = wrapper.find("input");
+
+			expect(input.attributes("autocomplete")).toBe("off");
+			expect(input.attributes("inputmode")).toBe("search");
+			expect(input.attributes("role")).toBe("combobox");
+			expect(input.attributes("readonly")).toBeDefined();
+		});
+	});
+
 	describe("Selected value", () => {
 		test("displays the label for an initial and externally changed model value", async () => {
 			const wrapper = mount({
@@ -114,6 +145,21 @@ describe("form-combo-box", () => {
 			expect(wrapper.vm.query).toBe("Amelia Earhart");
 		});
 
+		test("clears the selected value when typing a new query", () => {
+			const wrapper = mount({
+				options,
+				labelKey: "name",
+				valueKey: "id",
+				modelValue: "pilot-42",
+			});
+
+			wrapper.vm.handleInput("Amelia");
+
+			expect(wrapper.emitted("update:modelValue").at(-1)).toEqual([null]);
+			expect(wrapper.vm.isOpen).toBe(true);
+			expect(wrapper.vm.displayedLabel).toBe("");
+		});
+
 		test("clears the selected value when the query is edited or cleared", async () => {
 			const wrapper = mount({
 				options,
@@ -159,6 +205,23 @@ describe("form-combo-box", () => {
 			expect(wrapper.vm.filteredItems.map(({ option }) => option.value)).toEqual([
 				"pilot-7",
 				"pilot-9",
+			]);
+		});
+
+		test("shows every option when opening the input with a selection", async () => {
+			const wrapper = mount({
+				options,
+				labelKey: "name",
+				valueKey: "id",
+				modelValue: "pilot-42",
+			});
+
+			wrapper.vm.handleFocusin();
+			await nextTick();
+
+			expect(wrapper.vm.filteredItems.map(({ option }) => option.value)).toEqual([
+				"pilot-42",
+				"pilot-7",
 			]);
 		});
 

@@ -12,12 +12,19 @@
 			<form-input
 				ref="input"
 				v-model="query"
-				v-bind="{ id, placeholder, inputAttributes: resolvedInputAttributes }"
+				v-bind="{
+					displayLabel,
+					id,
+					placeholder,
+					required,
+					inputAttributes: resolvedInputAttributes,
+				}"
+				@keydown="handleKeydown"
+				@focusin="handleFocusin"
+				@focusout="handleFocusout"
 				@update:model-value="handleInput"
 			>
-				<slot name="label">
-					<slot />
-				</slot>
+				<slot />
 
 				<template #optional-indicator>
 					<slot name="optional-indicator" />
@@ -47,6 +54,10 @@
 				</template>
 				<template v-else>No results found for "{{ query }}".</template>
 			</template>
+			<template v-else-if="selectionMessage?.type === 'selected'">
+				Selected {{ selectionMessage.label }}.
+			</template>
+			<template v-else-if="selectionMessage?.type === 'cleared'">Selection cleared.</template>
 		</span>
 
 		<div
@@ -74,7 +85,7 @@
 			<ul
 				v-else-if="haveItems"
 				v-bind="listboxAttributes"
-				class="max-h-64 overflow-y-auto py-1"
+				class="max-h-64 overflow-y-auto p-1"
 				data-part="listbox"
 				data-test="form-combo-box-listbox"
 			>
@@ -83,7 +94,7 @@
 					v-bind="{
 						id: entry.id,
 						key: entry.id,
-						'aria-selected': entry.id === activeId,
+						'aria-selected': entry.option.value === selectedValue,
 					}"
 					:class="{ 'bg-surface-sunken': entry.id === activeId }"
 					class="cursor-pointer rounded-md px-3 py-2"
@@ -100,7 +111,7 @@
 							label: entry.option.label,
 							value: entry.option.value,
 							highlighted: entry.id === activeId,
-							selected: entry.option.value === model,
+							selected: entry.option.value === selectedValue,
 						}"
 					>
 						{{ entry.option.label }}
@@ -122,6 +133,7 @@
 
 <script setup>
 import { arrayLength } from "@lewishowles/helpers/array";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { cn } from "@/utilities/cn.js";
 import { computed, ref, toRef, useAttrs, useSlots, useTemplateRef, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
@@ -132,16 +144,18 @@ import { useCombobox, useFloatingPosition } from "@/composables";
 import useOptions from "@/components/form/composables/use-options/use-options";
 
 /**
- * `form-combo-box` pairs a search input with a list of results, handling the
+ * `form-combo-box` pairs an input with a list of results, handling the
  * keyboard, ARIA, and open/close behaviour of the combobox interaction pattern
  * on top of the `useCombobox` composable.
  *
  * Only when a result is selected does `form-combo-box` take its value.
  *
- * The `default` slot renders each result's content.
- * The `label` slot provides the input's label.
+ * The `default` slot provides the input's label.
  * The `introduction` slot provides supporting text beneath the label.
- * The `no-results` slot replaces the empty-results message.
+ * The `option` slot receives the original option, normalised label and value,
+ * and highlighted and selected state. Option content must not contain nested
+ * interactive controls.
+ * The `no-results` slot replaces the no-results message.
  * The `loading` slot replaces the loading message.
  */
 const props = defineProps({
@@ -193,11 +207,37 @@ const props = defineProps({
 
 	/**
 	 * Any placeholder to show in the input. This can hint at the kind of value
-	 * the user is searching for.
+	 * the user is entering.
 	 */
 	placeholder: {
 		type: String,
 		default: null,
+	},
+
+	/**
+	 * Any additional attributes to pass to the text input, such as
+	 * `autocomplete`.
+	 */
+	inputAttributes: {
+		type: Object,
+		default: null,
+	},
+
+	/**
+	 * Whether the field is required.
+	 */
+	required: {
+		type: Boolean,
+		default: false,
+	},
+
+	/**
+	 * Whether to display the field label. The label remains available to screen
+	 * readers when hidden.
+	 */
+	displayLabel: {
+		type: Boolean,
+		default: true,
 	},
 
 	/**
@@ -232,8 +272,8 @@ const props = defineProps({
 const attributes = useAttrs();
 const slots = useSlots();
 
-// The selected item.
-const model = defineModel({
+// Keep the model value separate from the text shown in the input.
+const selectedValue = defineModel({
 	type: [String, Number],
 });
 
@@ -248,11 +288,15 @@ const isReadonly = computed(
 // Whether validation error content has been supplied for the field state hook.
 const haveError = computed(() => isNonEmptySlot(slots.error));
 
-// The current text box query.
+// The current input value.
 const query = ref("");
 // The label for the selected value, used to tell whether the query has since
 // changed.
 const displayedLabel = ref("");
+// The selection message shown after the initial model synchronisation.
+const selectionMessage = ref(null);
+// Skip the initial model sync when announcing selection changes.
+const shouldAnnounceSelection = ref(false);
 
 // Standardised options.
 const { options: internalOptions } = useOptions(toRef(props, "options"), {
@@ -315,7 +359,8 @@ const internalItems = computed(() =>
 
 // The options that match the current query.
 const filteredItems = computed(() => {
-	const filter = query.value.toLowerCase();
+	// Treat the selected label as display text until the user edits it.
+	const filter = query.value === displayedLabel.value ? "" : query.value.toLowerCase();
 
 	if (!filter) {
 		return internalItems.value;
@@ -332,7 +377,7 @@ const optionIds = computed(() => filteredItems.value.map((entry) => entry.id));
 const {
 	activeId,
 	close: closeResults,
-	handleKeydown,
+	handleKeydown: handleComboboxKeydown,
 	inputAttributes: comboboxInputAttributes,
 	isOpen,
 	listboxAttributes,
@@ -340,10 +385,12 @@ const {
 	selectOption,
 } = useCombobox({ listboxId, options: optionIds, onSelect: selectItem });
 
-// The input attributes combine the combobox relationship with readonly state.
+// Combine the caller's input attributes with combobox state and field requirements.
 const resolvedInputAttributes = computed(() => ({
+	...props.inputAttributes,
 	...comboboxInputAttributes.value,
-	...(isReadonly.value ? { readonly: true } : {}),
+	"aria-required": props.required ? "true" : undefined,
+	readonly: isReadonly.value ? "true" : undefined,
 }));
 
 // A reference to the root element, so we can close the results when the user
@@ -377,7 +424,7 @@ const haveItems = computed(() => itemCount.value > 0);
 
 // The currently selected result, if any.
 const selectedItem = computed(() =>
-	internalItems.value.find((entry) => entry.option.value === model.value),
+	internalItems.value.find((entry) => entry.option.value === selectedValue.value),
 );
 
 // The full class list for the results list: base styling merged with the
@@ -405,17 +452,30 @@ watch(isOpen, (currentlyOpen) => {
 	handleFloatingClose();
 });
 
+onClickOutside(containerElement, handleClickOutside);
+
 // Sync the displayed query with the model's label whenever the selected value
 // changes, including on initial mount and when the model is set externally.
+// Also announce the change, skipping the immediate initial call so mounting
+// with a prefilled value doesn't announce a selection nobody just made.
 watch(
-	model,
-	() => {
+	selectedValue,
+	(value) => {
 		const previousDisplayedLabel = displayedLabel.value;
 		const selectedEntry = selectedItem.value;
 
 		if (selectedEntry) {
 			displayedLabel.value = String(selectedEntry.option.label);
 			query.value = displayedLabel.value;
+
+			if (shouldAnnounceSelection.value) {
+				selectionMessage.value = {
+					label: displayedLabel.value,
+					type: "selected",
+				};
+			}
+
+			shouldAnnounceSelection.value = true;
 
 			return;
 		}
@@ -425,6 +485,12 @@ watch(
 		if (query.value === previousDisplayedLabel) {
 			query.value = "";
 		}
+
+		if (shouldAnnounceSelection.value) {
+			selectionMessage.value = { type: "cleared" };
+		}
+
+		shouldAnnounceSelection.value = true;
 	},
 	{ immediate: true },
 );
@@ -452,11 +518,11 @@ watch(
 			return;
 		}
 
-		if (model.value === null || model.value === undefined || selectedItem.value) {
+		if (selectedValue.value === null || selectedValue.value === undefined || selectedItem.value) {
 			return;
 		}
 
-		model.value = null;
+		selectedValue.value = null;
 	},
 );
 
@@ -480,12 +546,10 @@ watch(query, (value) => {
 
 	displayedLabel.value = "";
 
-	if (model.value !== null && model.value !== undefined) {
-		model.value = null;
+	if (selectedValue.value !== null && selectedValue.value !== undefined) {
+		selectedValue.value = null;
 	}
 });
-
-onClickOutside(containerElement, closeResults);
 
 /**
  * Handle a result being chosen: sets the model to its value and syncs the
@@ -506,23 +570,104 @@ function selectItem(id) {
 	}
 
 	displayedLabel.value = String(entry.option.label);
-	model.value = entry.option.value;
+	selectedValue.value = entry.option.value;
 	query.value = displayedLabel.value;
 
 	closeResults();
 }
 
 /**
- * When the value of the search box changes by user input, determine whether to
- * open or close the results. A readonly field reverts the input back to the
- * selected label instead, since user interaction must not change what's
- * displayed.
+ * Clear query text that no longer matches the selected label.
+ */
+function clearEditedQuery() {
+	if (query.value !== displayedLabel.value) {
+		query.value = "";
+	}
+}
+
+/**
+ * Close the results and clear any edited query text.
+ */
+function closeAndClear() {
+	closeResults();
+	clearEditedQuery();
+}
+
+/**
+ * Handle keyboard interaction: Tab closes and clears, Backspace/Delete drops
+ * the highlighted option, and other keys delegate to the combobox.
+ *
+ * @param  {KeyboardEvent}  event
+ *     The input keyboard event.
+ */
+function handleKeydown(event) {
+	if (isReadonly.value) {
+		return;
+	}
+
+	if (event.key === "Tab") {
+		// Close and clear before focus leaves the field.
+		closeAndClear();
+
+		return;
+	}
+
+	// Text edits invalidate the highlighted option.
+	if (["Backspace", "Delete"].includes(event.key)) {
+		activeId.value = null;
+	}
+
+	handleComboboxKeydown(event);
+}
+
+/**
+ * Open the options when the text input receives focus.
+ */
+function handleFocusin() {
+	if (!isReadonly.value) {
+		openResults();
+	}
+}
+
+/**
+ * Close the results and clear unfinished input when focus leaves the component.
+ *
+ * @param  {FocusEvent}  event
+ *     The input focus event.
+ */
+function handleFocusout(event) {
+	if (containerElement.value?.contains(event.relatedTarget)) {
+		return;
+	}
+
+	closeAndClear();
+}
+
+/**
+ * Close the results and clear unfinished input after a click outside.
+ */
+function handleClickOutside() {
+	closeAndClear();
+}
+
+/**
+ * Handle changes to the input text, opening results for a query and closing
+ * them when it is empty. Readonly fields restore the selected label, while
+ * editing clears the previous selection.
  */
 function handleInput(value) {
 	if (isReadonly.value) {
 		query.value = displayedLabel.value;
 
 		return;
+	}
+
+	if (value !== displayedLabel.value) {
+		displayedLabel.value = "";
+
+		if (selectedValue.value !== null && selectedValue.value !== undefined) {
+			selectedValue.value = null;
+		}
 	}
 
 	if (isNonEmptyString(value)) {
@@ -533,4 +678,15 @@ function handleInput(value) {
 
 	closeResults();
 }
+
+/**
+ * Move focus to the text input.
+ */
+function triggerFocus() {
+	callComponentMethod(inputComponent.value, "triggerFocus");
+}
+
+defineExpose({
+	triggerFocus,
+});
 </script>

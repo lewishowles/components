@@ -153,7 +153,7 @@ export function useCombobox({ options, listboxId: providedListboxId, onSelect } 
 	/**
 	 * Attach to the input to handle keydown events, implementing the combobox
 	 * keyboard functionality: arrow keys open and navigate the list, Enter
-	 * selects, Escape closes, and cursor keys return to text editing.
+	 * selects, and Escape closes.
 	 *
 	 * @param  {KeyboardEvent}  event
 	 */
@@ -221,19 +221,6 @@ export function useCombobox({ options, listboxId: providedListboxId, onSelect } 
 				event.preventDefault();
 
 				close();
-
-				break;
-
-			// Cursor keys and jump keys return the user to text-editing mode by
-			// clearing the active option without preventing default, so the
-			// browser handles cursor movement as normal.
-			case "ArrowLeft":
-			case "ArrowRight":
-			case "End":
-			case "Home":
-				if (activeId.value) {
-					activeId.value = null;
-				}
 
 				break;
 		}

@@ -113,20 +113,22 @@ Move focus to the input.
 
 ## Keyboard interaction
 
-| Key                                         | Action                                                                          |
-| ------------------------------------------- | ------------------------------------------------------------------------------- |
-| `ArrowDown`                                 | Open the results and highlight the first result, or move to the next result.    |
-| `Alt` + `ArrowDown`                         | Open the results without moving the highlight.                                  |
-| `ArrowUp`                                   | Open the results and highlight the last result, or move to the previous result. |
-| `Enter`                                     | Choose the highlighted result, or close the results when none is highlighted.   |
-| `Escape`                                    | Close the results.                                                              |
-| `ArrowLeft` / `ArrowRight` / `Home` / `End` | Clear the highlighted result and use the input's normal text editing behaviour. |
+| Key                 | Action                                                                          |
+| ------------------- | ------------------------------------------------------------------------------- |
+| `ArrowDown`         | Open the results and highlight the first result, or move to the next result.    |
+| `Alt` + `ArrowDown` | Open the results without moving the highlight.                                  |
+| `ArrowUp`           | Open the results and highlight the last result, or move to the previous result. |
+| `Enter`             | Choose the highlighted result, or close the results when none is highlighted.   |
+| `Escape`            | Close the results.                                                              |
 
 ## Styling hooks
 
-| Attribute                    | Element | Notes                          |
-| ---------------------------- | ------- | ------------------------------ |
-| `data-component="combo-box"` | Root    | Scope styles to this component |
+| Attribute                    | Element       | Notes                                |
+| ---------------------------- | ------------- | ------------------------------------ |
+| `data-component="combo-box"` | Root          | Scope styles to this component       |
+| `data-part="input"`          | Input wrapper | Wraps the text input.                |
+| `data-part="dropdown"`       | Results panel | Positioned panel containing results. |
+| `data-part="option"`         | Option row    | Individual result row.               |
 
 ## Examples
 

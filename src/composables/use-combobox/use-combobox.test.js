@@ -405,7 +405,7 @@ describe("use-combobox", () => {
 
 			describe("ArrowLeft, ArrowRight, Home, End", () => {
 				test.for([["ArrowLeft"], ["ArrowRight"], ["End"], ["Home"]])(
-					"Clears the active option on %s",
+					"Preserves the active option on %s",
 					([key]) => {
 						const { activeId, handleKeydown, open } = useCombobox({ options: ["opt-1"] });
 
@@ -414,9 +414,12 @@ describe("use-combobox", () => {
 
 						expect(activeId.value).toBe("opt-1");
 
-						handleKeydown(createKeyEvent(key));
+						const event = createKeyEvent(key);
 
-						expect(activeId.value).toBeNull();
+						handleKeydown(event);
+
+						expect(activeId.value).toBe("opt-1");
+						expect(event.preventDefault).not.toHaveBeenCalled();
 					},
 				);
 			});
