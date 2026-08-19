@@ -31,6 +31,7 @@ import { floatingDetailsMetadata } from "./content/floating-details/floating-det
 import { formActionsMetadata } from "./form/form-actions/form-actions.metadata.js";
 import { formCheckboxGroupMetadata } from "./form/form-checkbox-group/form-checkbox-group.metadata.js";
 import { formCheckboxMetadata } from "./form/form-checkbox/form-checkbox.metadata.js";
+import { formComboBoxMetadata } from "./form/form-combo-box/form-combo-box.metadata.js";
 import { formDateMetadata } from "./form/form-date/form-date.metadata.js";
 import { formFieldMetadata } from "./form/form-field/form-field.metadata.js";
 import { formFieldsetMetadata } from "./form/form-fieldset/form-fieldset.metadata.js";
@@ -109,6 +110,7 @@ const componentMetadataRecords = [
 	formActionsMetadata,
 	formCheckboxGroupMetadata,
 	formCheckboxMetadata,
+	formComboBoxMetadata,
 	formDateMetadata,
 	formFieldMetadata,
 	formFieldsetMetadata,
