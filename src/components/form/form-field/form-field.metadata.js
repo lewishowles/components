@@ -18,6 +18,7 @@ export const formFieldMetadata = {
 				"checkbox-group",
 				"radio-group",
 				"button-group",
+				"combo-box",
 				"select",
 				"date",
 				"file",
@@ -73,7 +74,21 @@ export const formFieldMetadata = {
 		},
 		{
 			name: "option",
-			summary: "Custom content for one option. Scoped with option, selected, id, and name.",
+			summary:
+				"Custom content for one option. Scoped with option, selected, id, and name for radio-group, checkbox-group, and button-group; combo-box instead provides option, label, value, highlighted, and selected.",
+		},
+		{
+			name: "loading",
+			summary: "Content shown while a combo-box is loading.",
+		},
+		{
+			name: "empty",
+			summary: "Content shown by a combo-box when no options were supplied.",
+		},
+		{
+			name: "no-results",
+			summary:
+				"Content shown by a combo-box when options exist but none match the query. Receives query.",
 		},
 		{
 			name: "description",

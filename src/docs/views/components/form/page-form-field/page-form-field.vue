@@ -40,6 +40,7 @@
 					<li><code>password</code></li>
 					<li><code>textarea</code></li>
 					<li><code>select</code></li>
+					<li><code>combo-box</code></li>
 					<li><code>checkbox</code></li>
 					<li><code>checkbox-group</code></li>
 					<li><code>radio-group</code></li>
@@ -216,18 +217,34 @@
 				<p>Content placed visually after the input, such as a unit or domain suffix.</p>
 			</component-slot>
 
-			<component-slot id="slot-options">
-				<template #name>options</template>
+			<component-slot id="slot-option">
+				<template #name>option</template>
 
 				<p>
-					Options passed through to option-bearing controls:
-					<code>select</code>
-					,
+					Option-bearing controls receive their
+					<code>options</code>
+					through component props, not a slot. Use the
+					<code>option</code>
+					slot for custom option content in controls that provide it, including
 					<code>radio-group</code>
 					,
 					<code>checkbox-group</code>
-					, and
+					,
 					<code>button-group</code>
+					, and
+					<code>combo-box</code>
+					. Scoped props vary by field. The
+					<code>combo-box</code>
+					slot receives
+					<code>option</code>
+					,
+					<code>label</code>
+					,
+					<code>value</code>
+					,
+					<code>highlighted</code>
+					, and
+					<code>selected</code>
 					.
 				</p>
 			</component-slot>
@@ -282,6 +299,7 @@
 			<playground-form-field-checkbox-group />
 			<playground-form-field-radio-group />
 			<playground-form-field-form-button-group />
+			<playground-form-field-combo-box />
 			<playground-form-field-date />
 			<playground-form-field-file />
 			<playground-form-field-select />
@@ -293,6 +311,7 @@
 import PlaygroundFormFieldFormButtonGroup from "./fragments/playground-form-field-form-button-group.vue";
 import PlaygroundFormFieldCheckbox from "./fragments/playground-form-field-checkbox.vue";
 import PlaygroundFormFieldCheckboxGroup from "./fragments/playground-form-field-checkbox-group.vue";
+import PlaygroundFormFieldComboBox from "./fragments/playground-form-field-combo-box.vue";
 import PlaygroundFormFieldDate from "./fragments/playground-form-field-date.vue";
 import PlaygroundFormFieldEmail from "./fragments/playground-form-field-email.vue";
 import PlaygroundFormFieldFile from "./fragments/playground-form-field-file.vue";

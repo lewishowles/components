@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vite-plus/test";
 import { formFieldMetadata } from "./form-field.metadata.js";
 
-// The 11 types supported by form-field.vue fieldTypes map.
+// The 12 types supported by form-field.vue fieldTypes map.
 const SUPPORTED_TYPES = [
 	"text",
 	"email",
@@ -11,13 +11,20 @@ const SUPPORTED_TYPES = [
 	"checkbox-group",
 	"radio-group",
 	"button-group",
+	"combo-box",
 	"select",
 	"date",
 	"file",
 ];
 
 // Option-bearing types that must be listed as supported.
-const OPTION_BEARING_TYPES = ["select", "radio-group", "checkbox-group", "button-group"];
+const OPTION_BEARING_TYPES = [
+	"select",
+	"radio-group",
+	"checkbox-group",
+	"button-group",
+	"combo-box",
+];
 
 describe("form-field metadata", () => {
 	test("exports a metadata object with the required top-level fields", () => {
@@ -74,7 +81,20 @@ describe("form-field metadata", () => {
 			const optionSlot = formFieldMetadata.slots.find((slot) => slot.name === "option");
 
 			expect(optionSlot).toBeDefined();
-			expect(optionSlot.summary).toContain("option, selected, id, and name");
+			expect(optionSlot.summary).toContain(
+				"option, selected, id, and name for radio-group, checkbox-group, and button-group",
+			);
+			expect(optionSlot.summary).toContain(
+				"combo-box instead provides option, label, value, highlighted, and selected",
+			);
+		});
+
+		test("documents combo-box loading, empty, and no-results slots", () => {
+			for (const name of ["loading", "empty", "no-results"]) {
+				const slot = formFieldMetadata.slots.find((entry) => entry.name === name);
+
+				expect(slot).toBeDefined();
+			}
 		});
 
 		test("documents the checkbox description slot", () => {

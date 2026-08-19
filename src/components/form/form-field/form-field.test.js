@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/tes
 
 import FormButtonGroup from "@/components/form/form-button-group/form-button-group.vue";
 import FormCheckbox from "@/components/form/form-checkbox/form-checkbox.vue";
+import FormComboBox from "@/components/form/form-combo-box/form-combo-box.vue";
 import FormField from "./form-field.vue";
 import FormFile from "@/components/form/form-file/form-file.vue";
 import FormInput from "@/components/form/form-input/form-input.vue";
@@ -96,6 +97,7 @@ describe("form-field", () => {
 					["password", {}],
 					["textarea", {}],
 					["checkbox", {}],
+					["combo-box", { options: [] }],
 					["radio-group", { options: [] }],
 					["button-group", { options: [] }],
 					["file", {}],
@@ -148,6 +150,7 @@ describe("form-field", () => {
 					[{ type: "password" }, FormInput],
 					[{ type: "textarea" }, FormTextarea],
 					[{ type: "checkbox" }, FormCheckbox],
+					[{ type: "combo-box", options: [] }, FormComboBox],
 					[{ type: "radio-group", options: [] }, FormRadioGroup],
 					[{ type: "button-group", options: [] }, FormButtonGroup],
 					[{ type: "file" }, FormFile],
@@ -205,8 +208,8 @@ describe("form-field", () => {
 				});
 			});
 
-			test("should pass displayLabel to text, select, and checkbox fields", () => {
-				for (const type of ["checkbox", "select", "text"]) {
+			test("should pass displayLabel to text, select, checkbox, and combo-box fields", () => {
+				for (const type of ["checkbox", "combo-box", "select", "text"]) {
 					const wrapper = mount({ props: { displayLabel: false, type } });
 
 					expect(wrapper.vm.fieldProps).toEqual(expect.objectContaining({ displayLabel: false }));
@@ -386,6 +389,34 @@ describe("form-field", () => {
 				const option = wrapper.get('[data-test="custom-option"]');
 
 				expect(option.text()).toMatch(/^banana:true:.+:flavour$/);
+			});
+
+			test("should forward combo-box option content with selection details", async () => {
+				const wrapper = mountDeep({
+					props: {
+						modelValue: "pilot-42",
+						name: "pilot",
+						labelKey: "name",
+						options: [{ id: "pilot-42", name: "Amelia Earhart" }],
+						type: "combo-box",
+						valueKey: "id",
+					},
+					slots: {
+						option: ({ option, label, value, highlighted, selected }) =>
+							h(
+								"span",
+								{ "data-test": "custom-combo-box-option" },
+								`${option.name}:${label}:${value}:${highlighted}:${selected}`,
+							),
+					},
+				});
+
+				wrapper.findComponent(FormComboBox).vm.openResults();
+				await nextTick();
+
+				const option = wrapper.get('[data-test="custom-combo-box-option"]');
+
+				expect(option.text()).toBe("Amelia Earhart:Amelia Earhart:pilot-42:false:true");
 			});
 
 			test("should forward description content to checkbox fields", () => {

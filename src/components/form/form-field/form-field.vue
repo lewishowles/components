@@ -56,6 +56,7 @@ import useInputId from "@/components/form/composables/use-input-id/use-input-id"
 import FormButtonGroup from "@/components/form/form-button-group/form-button-group.vue";
 import FormCheckbox from "@/components/form/form-checkbox/form-checkbox.vue";
 import FormCheckboxGroup from "@/components/form/form-checkbox-group/form-checkbox-group.vue";
+import FormComboBox from "@/components/form/form-combo-box/form-combo-box.vue";
 import FormDate from "@/components/form/form-date/form-date.vue";
 import FormFile from "@/components/form/form-file/form-file.vue";
 import FormInput from "@/components/form/form-input/form-input.vue";
@@ -75,6 +76,7 @@ const props = defineProps({
 	 * radio-group
 	 * checkbox-group
 	 * button-group
+	 * combo-box
 	 * file
 	 */
 	type: {
@@ -195,6 +197,10 @@ const fieldTypes = {
 	},
 	checkbox: {
 		component: FormCheckbox,
+		forward: ["displayLabel"],
+	},
+	"combo-box": {
+		component: FormComboBox,
 		forward: ["displayLabel"],
 	},
 	"checkbox-group": {
