@@ -105,6 +105,17 @@
 				<p>Whether positioning is currently being calculated.</p>
 			</component-return>
 
+			<component-return id="return-positioning-tick">
+				<template #name>positioningTick</template>
+
+				<template #type>Ref&lt;number&gt;</template>
+
+				<p>
+					A counter consumers can watch to force a recompute when trigger or panel geometry may have
+					changed without a placement or alignment flip.
+				</p>
+			</component-return>
+
 			<component-return id="return-placement-classes">
 				<template #name>placementClasses</template>
 

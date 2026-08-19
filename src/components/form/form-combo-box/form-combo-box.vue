@@ -64,6 +64,7 @@
 			v-if="isOpen"
 			ref="dropdown"
 			:class="resolvedDropdownClasses"
+			:style="resolvedDropdownStyle"
 			data-part="dropdown"
 			data-test="form-combo-box-dropdown"
 		>
@@ -396,6 +397,13 @@ const resolvedInputAttributes = computed(() => ({
 // A reference to the root element, so we can close the results when the user
 // interacts elsewhere.
 const containerElement = useTemplateRef("container");
+
+// Resolve the input wrapper used for positioning measurements rather than the
+// full field, which also contains the label and supplementary text.
+const fieldWrapperElement = computed(() =>
+	containerElement.value?.querySelector("[data-part='field-wrapper']"),
+);
+
 // A reference to the input, so we can move focus to it on demand.
 const inputComponent = useTemplateRef("input");
 // A reference to the results list, used to measure and position it.
@@ -406,10 +414,11 @@ const {
 	computedAlign,
 	isPositioning,
 	placementClasses,
+	positioningTick,
 	handleOpen: handleFloatingOpen,
 	handleClose: handleFloatingClose,
 } = useFloatingPosition({
-	triggerElement: containerElement,
+	triggerElement: fieldWrapperElement,
 	panelElement: dropdownElement,
 	initialPlacement: toRef(props, "placement"),
 	initialAlign: toRef(props, "align"),
@@ -433,12 +442,45 @@ const resolvedDropdownClasses = computed(() =>
 	cn(
 		"absolute z-10 w-full overflow-hidden rounded-md border border-border bg-surface-elevated shadow-lg",
 		placementClasses.value,
-		computedPlacement.value === "above" ? "bottom-full" : "top-full",
 		computedAlign.value === "end" ? "inset-e-0" : "inset-s-0",
 		{ "opacity-0": isPositioning.value },
 		props.dropdownClasses,
 	),
 );
+
+// Position the dropdown against the field wrapper while keeping the root as
+// its containing block for the existing absolute layout.
+const resolvedDropdownStyle = computed(() => {
+	// Geometry can change on resize or reopen without placement or alignment
+	// flipping, which a reference check on those alone would miss. Reading
+	// positioningTick here forces a re-evaluation on every recalculation.
+	void positioningTick.value;
+
+	const container = containerElement.value;
+	const fieldWrapper = fieldWrapperElement.value;
+	const placement = computedPlacement.value;
+
+	if (!fieldWrapper || !container) {
+		return {};
+	}
+
+	const fieldWrapperRect = fieldWrapper.getBoundingClientRect();
+	const containerRectangle = container.getBoundingClientRect();
+	const fieldWrapperTop = fieldWrapperRect.top - containerRectangle.top;
+	const fieldWrapperBottom = fieldWrapperTop + fieldWrapperRect.height;
+
+	if (placement === "above") {
+		return {
+			bottom: `${containerRectangle.height - fieldWrapperTop}px`,
+			top: undefined,
+		};
+	}
+
+	return {
+		bottom: undefined,
+		top: `${fieldWrapperBottom}px`,
+	};
+});
 
 // Measure and position the results whenever they open, and tear the positioning
 // listeners down again when they close.

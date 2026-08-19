@@ -30,7 +30,7 @@
 
 			<template #option="{ option, highlighted, selected }">
 				<div
-					:class="{ 'font-semibold': highlighted }"
+					:class="{ 'text-content-strong': highlighted }"
 					class="flex items-center justify-between gap-4"
 				>
 					<div class="flex flex-col">
@@ -141,15 +141,16 @@ const componentProps = computed(() => {
 
 // Keep the copied example rich enough to show how matching labels can be disambiguated.
 const optionTemplate = [
-	'<template #option="{ option, highlighted, selected }">',
-	'<div :class="{ \'font-semibold\': highlighted }" class="flex items-center justify-between gap-4">',
-	'<div class="flex flex-col">',
-	"<span>{{ option.name }}</span>",
-	'<span class="text-content-muted text-xs">Updated: {{ option.updated }}</span>',
-	"</div>",
-	'<span v-if="selected" aria-hidden="true" class="text-content-muted text-xs">Selected</span>',
-	"</div>",
-	"</template>",
+	'\t<template #option="{ option, highlighted, selected }">',
+	'\t\t<div :class="{ \'text-content-strong\': highlighted }" class="flex items-center justify-between gap-4">',
+	'\t\t\t<div class="flex flex-col">',
+	"\t\t\t\t<span>{{ option.name }}</span>",
+	'\t\t\t\t<span class="text-content-muted text-xs">Updated: {{ option.updated }}</span>',
+	"\t\t\t</div>",
+	"",
+	'\t\t\t<span v-if="selected" aria-hidden="true" class="text-content-muted text-xs">Selected</span>',
+	"\t\t</div>",
+	"\t</template>",
 ].join("\n");
 
 const template = useTemplateGenerator("form-combo-box", {

@@ -52,18 +52,18 @@ describe("useFloatingPosition", () => {
 
 	describe("Computed", () => {
 		describe("placementClasses", () => {
-			test("Returns mt-3 when placed below", () => {
+			test("Returns mbs-1 when placed below", () => {
 				const { instance } = createComposable({ placement: "below" });
 
-				expect(instance.placementClasses.value).toBe("mt-3");
+				expect(instance.placementClasses.value).toBe("mbs-1");
 			});
 
-			test("Returns mb-3 when placed above", () => {
+			test("Returns mbe-1 when placed above", () => {
 				const { instance } = createComposable();
 
 				instance.computedPlacement.value = "above";
 
-				expect(instance.placementClasses.value).toBe("mb-3");
+				expect(instance.placementClasses.value).toBe("mbe-1");
 			});
 		});
 	});
@@ -91,6 +91,27 @@ describe("useFloatingPosition", () => {
 				await instance.handleOpen();
 
 				expect(instance.isPositioning.value).toBe(false);
+			});
+
+			test("increments positioningTick when geometry is measured again", async () => {
+				const { instance } = createComposable({
+					trigger: { bottom: 50, top: 0 },
+					panel: { height: 100 },
+				});
+
+				await instance.handleOpen();
+
+				const initialTick = instance.positioningTick.value;
+
+				const resizeHandler = window.addEventListener.mock.calls.find(
+					([eventName]) => eventName === "resize",
+				)?.[1];
+
+				expect(resizeHandler).toBeTypeOf("function");
+
+				resizeHandler();
+
+				expect(instance.positioningTick.value).toBe(initialTick + 1);
 			});
 
 			describe("Placement resolution", () => {

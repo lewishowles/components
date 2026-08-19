@@ -19,4 +19,5 @@ export declare function useFloatingPosition(options: FloatingPositionOptions): {
 	handleOpen(): Promise<void>;
 	isPositioning: Ref<boolean>;
 	placementClasses: ComputedRef<string>;
+	positioningTick: Ref<number>;
 };

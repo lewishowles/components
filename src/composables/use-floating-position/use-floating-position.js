@@ -38,6 +38,8 @@ export function useFloatingPosition({
 	// Whether the panel is hidden while positioning is being measured, to
 	// prevent a layout flash while the panel jumps to its final position.
 	const isPositioning = ref(false);
+	// Changes whenever positioning is recalculated.
+	const positioningTick = ref(0);
 
 	// Pending requestAnimationFrame ID, used to throttle scroll and resize
 	// handlers.
@@ -47,10 +49,10 @@ export function useFloatingPosition({
 	// with the resolved placement.
 	const placementClasses = computed(() => {
 		if (computedPlacement.value === "above") {
-			return "mb-3";
+			return "mbe-1";
 		}
 
-		return "mt-3";
+		return "mbs-1";
 	});
 
 	/**
@@ -72,6 +74,8 @@ export function useFloatingPosition({
 	 * assessed independently; the preferred side is kept when neither fits.
 	 */
 	function updatePositioning() {
+		positioningTick.value += 1;
+
 		const triggerEl = resolveElement(triggerElement);
 		const panelEl = resolveElement(panelElement);
 
@@ -170,6 +174,7 @@ export function useFloatingPosition({
 		computedAlign,
 		isPositioning,
 		placementClasses,
+		positioningTick,
 		handleOpen,
 		handleClose,
 	};
