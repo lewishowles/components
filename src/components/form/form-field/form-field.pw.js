@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/experimental-ct-vue";
 import { createMount } from "@lewishowles/testing/playwright";
 
 import FormField from "./form-field.vue";
+import FormFieldComboBoxFixture from "./fixtures/form-field-combo-box.fixture.vue";
 import ParentFormWrapperFixture from "./fixtures/parent-form-wrapper.fixture.vue";
 
 // Mount form-field with sensible defaults for testing.
@@ -9,6 +10,23 @@ const mountFormField = createMount(FormField, {
 	props: { name: "name" },
 	slots: { default: "Your name" },
 });
+
+// Options shared by the combo-box adapter interaction tests.
+const comboBoxOptions = [
+	{ id: "pilot-42", name: "Amelia Earhart" },
+	{ id: "pilot-7", name: "Bessie Coleman" },
+];
+
+// Props shared by the combo-box adapter interaction tests.
+const comboBoxProps = {
+	labelKey: "name",
+	options: comboBoxOptions,
+	type: "combo-box",
+	valueKey: "id",
+};
+
+// Mount the form-wrapper fixture that supplies combo-box validation rules.
+const mountFormFieldComboBox = createMount(FormFieldComboBoxFixture);
 
 const fieldTypes = [
 	[{ type: "text" }, "form-input"],
@@ -19,6 +37,7 @@ const fieldTypes = [
 	[{ type: "radio-group", options: [] }, "form-radio-group"],
 	[{ type: "checkbox-group", options: [] }, "form-checkbox-group"],
 	[{ type: "button-group", options: [] }, "form-button-group"],
+	[{ type: "combo-box", options: [] }, "form-combo-box"],
 ];
 
 test.describe("form-field", () => {
@@ -29,6 +48,120 @@ test.describe("form-field", () => {
 			await expect(page.getByTestId(component)).toBeVisible();
 		});
 	}
+
+	test.describe("combo-box", () => {
+		test("keeps active and selected options separate while keyboard focus stays on the input", async ({
+			mount,
+			page,
+		}) => {
+			await mountFormField(mount, { props: { ...comboBoxProps, modelValue: "pilot-42" } });
+
+			const input = page.getByRole("combobox");
+			const options = page.getByRole("option");
+
+			await input.focus();
+			await expect(input).toHaveValue("Amelia Earhart");
+			await expect(options.nth(0)).toHaveAttribute("aria-selected", "true");
+			await expect(options.nth(1)).toHaveAttribute("aria-selected", "false");
+
+			await input.press("ArrowDown");
+			const firstOptionId = await options.nth(0).getAttribute("id");
+
+			await expect(input).toBeFocused();
+			await expect(input).toHaveAttribute("aria-activedescendant", firstOptionId);
+
+			await input.press("ArrowDown");
+			const secondOptionId = await options.nth(1).getAttribute("id");
+
+			await expect(input).toBeFocused();
+			await expect(input).toHaveAttribute("aria-activedescendant", secondOptionId);
+			await expect(options.nth(0)).toHaveAttribute("aria-selected", "true");
+			await expect(options.nth(1)).toHaveAttribute("aria-selected", "false");
+
+			await input.press("ArrowUp");
+			await expect(input).toHaveAttribute("aria-activedescendant", firstOptionId);
+
+			await input.press("ArrowDown");
+			await input.press("Enter");
+			await expect(input).toHaveValue("Bessie Coleman");
+			await expect(input).toBeFocused();
+		});
+
+		test("selects an option by pointer without moving focus from the input", async ({
+			mount,
+			page,
+		}) => {
+			await mountFormField(mount, { props: comboBoxProps });
+
+			const input = page.getByRole("combobox");
+
+			await input.focus();
+			await page.getByRole("option", { name: "Bessie Coleman" }).click();
+
+			await expect(input).toHaveValue("Bessie Coleman");
+			await expect(page.getByTestId("form-combo-box-dropdown")).not.toBeAttached();
+			await expect(input).toBeFocused();
+		});
+
+		test("keeps a readonly selection visible without opening or changing it", async ({
+			mount,
+			page,
+		}) => {
+			await mountFormField(mount, {
+				props: { ...comboBoxProps, modelValue: "pilot-42", readonly: true },
+			});
+
+			const input = page.getByRole("combobox");
+
+			await expect(input).toHaveAttribute("readonly");
+			await expect(input).toHaveValue("Amelia Earhart");
+
+			await input.focus();
+			await input.press("ArrowDown");
+
+			await expect(page.getByTestId("form-combo-box-dropdown")).not.toBeAttached();
+			await expect(input).toHaveValue("Amelia Earhart");
+		});
+
+		test("reports required validation when no combo-box option is selected", async ({
+			mount,
+			page,
+		}) => {
+			await mountFormFieldComboBox(mount);
+
+			const input = page.getByRole("combobox");
+
+			await page.getByTestId("form-wrapper-submit-button").click();
+
+			await expect(page.getByTestId("form-error")).toContainText("Choose a pilot");
+			await expect(input).toHaveAttribute("aria-invalid", "true");
+		});
+
+		test("reports required validation for typed but unselected text", async ({ mount, page }) => {
+			await mountFormFieldComboBox(mount);
+
+			const input = page.getByRole("combobox");
+
+			await input.fill("Amelia");
+			await expect(input).toHaveValue("Amelia");
+			await page.getByTestId("form-wrapper-submit-button").click();
+
+			await expect(page.getByTestId("form-error")).toContainText("Choose a pilot");
+			await expect(input).toHaveAttribute("aria-invalid", "true");
+		});
+
+		test("focuses the combo-box input from the error summary", async ({ mount, page }) => {
+			await mountFormFieldComboBox(mount);
+
+			await page.getByTestId("form-wrapper-submit-button").click();
+			await page
+				.getByTestId("form-wrapper-error-summary-message")
+				.filter({ hasText: "Choose a pilot" })
+				.click();
+
+			await expect(page.getByLabel("Pilot", { exact: true })).toBeFocused();
+		});
+	});
 
 	test("renders the default field type", async ({ mount, page }) => {
 		await mountFormField(mount);
