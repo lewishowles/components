@@ -277,6 +277,25 @@ describe("form-wrapper", () => {
 			});
 		});
 
+		describe("unregisterField", () => {
+			test("removes a live registration while preserving form data", async () => {
+				const wrapper = mount({
+					props: {
+						modelValue: { username: "wall-e" },
+						fieldErrors: { username: "Enter a different username" },
+					},
+				});
+
+				const vm = wrapper.vm;
+
+				await vm.registerField({ name: "username", id: "username-id" });
+				vm.unregisterField("username");
+
+				expect(vm.formData).toEqual({ username: "wall-e" });
+				expect(vm.errorSummary).toEqual([]);
+			});
+		});
+
 		describe("updateFieldValue", () => {
 			test("should update a field's value", () => {
 				const wrapper = mount();

@@ -360,6 +360,7 @@ const {
 	isDirty,
 	status: submitStatus,
 	registerField,
+	unregisterField,
 	updateFieldValue,
 	fieldErrorsFor,
 	handleFormSubmit,
@@ -390,6 +391,7 @@ const formStatus = computed(() => props.status ?? submitStatus.value);
 provide("form-wrapper", {
 	fieldErrorsFor,
 	registerField,
+	unregisterField,
 	updateFieldValue,
 	isReadonly,
 	isFieldRequired,
