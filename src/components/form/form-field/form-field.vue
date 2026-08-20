@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, ref, useAttrs, useSlots, watch } from "vue";
+import { computed, inject, onMounted, onUnmounted, ref, useAttrs, useSlots, watch } from "vue";
 import { deepMerge, pick } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
@@ -146,6 +146,7 @@ const formWrapperInject = inject("form-wrapper", {});
 // The injection may not be defined, so we get its properties in a safe way.
 const fieldErrorsFor = formWrapperInject?.fieldErrorsFor;
 const registerField = formWrapperInject?.registerField;
+const unregisterField = formWrapperInject?.unregisterField;
 const updateFieldValue = formWrapperInject?.updateFieldValue;
 const isReadonly = formWrapperInject?.isReadonly;
 const isFieldRequired = formWrapperInject?.isFieldRequired;
@@ -307,6 +308,15 @@ watch(model, () => {
 	}
 });
 
+// Move the live registration when the reactive field name changes.
+watch(
+	() => props.name,
+	(currentName, previousName) => {
+		unregisterFieldByName(previousName);
+		registerCurrentField(currentName);
+	},
+);
+
 // If a parent `form-wrapper` is found, register this field with it. We wait
 // until mounted so that composite fields (e.g. form-date) have had a chance
 // to render and expose their focusId.
@@ -327,14 +337,47 @@ onMounted(() => {
 		return;
 	}
 
-	if (haveParentForm.value) {
-		registerField({
-			name: props.name,
-			id: fieldRef.value?.focusId ?? inputId.value,
-			triggerFocus,
-		});
-	}
+	registerCurrentField(props.name);
 });
+
+// Remove the live registration when this field leaves the form.
+onUnmounted(() => {
+	unregisterFieldByName(props.name);
+});
+
+/**
+ * Register a named field with the parent form.
+ *
+ * @param  {string}  fieldName
+ *     The name of the field to register.
+ */
+function registerCurrentField(fieldName) {
+	if (!haveParentForm.value || !haveNameIfRequired.value) {
+		return;
+	}
+
+	registerField({
+		name: fieldName,
+		id: fieldRef.value?.focusId ?? inputId.value,
+		triggerFocus,
+	});
+}
+
+/**
+ * Remove a named field from the parent form's live registry.
+ *
+ * @param  {string}  fieldName
+ *     The name of the field to unregister.
+ */
+function unregisterFieldByName(fieldName) {
+	if (!haveParentForm.value || !isNonEmptyString(fieldName)) {
+		return;
+	}
+
+	if (isFunction(unregisterField)) {
+		unregisterField(fieldName);
+	}
+}
 
 /**
  * Get the names of every slot the consumer has provided, to forward to the

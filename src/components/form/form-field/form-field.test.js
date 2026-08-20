@@ -13,6 +13,7 @@ import FormTextarea from "@/components/form/form-textarea/form-textarea.vue";
 
 const fieldErrorsForMock = vi.fn(() => []);
 const registerFieldMock = vi.fn();
+const unregisterFieldMock = vi.fn();
 const updateFieldValueMock = vi.fn();
 const defaultProps = { name: "username" };
 
@@ -20,6 +21,7 @@ const provide = {
 	"form-wrapper": {
 		fieldErrorsFor: fieldErrorsForMock,
 		registerField: registerFieldMock,
+		unregisterField: unregisterFieldMock,
 		updateFieldValue: updateFieldValueMock,
 	},
 };
@@ -78,6 +80,65 @@ describe("form-field", () => {
 			const registeredId = registerFieldMock.mock.calls.at(-1)?.[0]?.id;
 
 			expect(registeredId).toMatch(/-day$/);
+		});
+
+		test("should unregister from a parent form when unmounted", () => {
+			const wrapper = mount();
+
+			wrapper.unmount();
+
+			expect(unregisterFieldMock).toHaveBeenCalledWith("username");
+		});
+
+		test("should not throw when a parent form has no unregister function", () => {
+			const mountWithoutUnregister = createMount(FormField, {
+				props: defaultProps,
+				global: {
+					provide: {
+						"form-wrapper": {
+							fieldErrorsFor: fieldErrorsForMock,
+							registerField: registerFieldMock,
+							updateFieldValue: updateFieldValueMock,
+						},
+					},
+				},
+			});
+
+			const wrapper = mountWithoutUnregister();
+
+			expect(() => wrapper.unmount()).not.toThrow();
+		});
+
+		test("should move its registration when its name changes", async () => {
+			const wrapper = mount();
+
+			await wrapper.setProps({ name: "displayName" });
+
+			expect(unregisterFieldMock).toHaveBeenCalledWith("username");
+			expect(registerFieldMock).toHaveBeenLastCalledWith(
+				expect.objectContaining({
+					name: "displayName",
+					id: expect.any(String),
+				}),
+			);
+		});
+
+		test("should unregister without re-registering when its name becomes null", async () => {
+			const wrapper = mount();
+
+			await wrapper.setProps({ name: null });
+
+			expect(unregisterFieldMock).toHaveBeenCalledWith("username");
+			expect(registerFieldMock).toHaveBeenCalledTimes(1);
+		});
+
+		test("should unregister without re-registering when its name becomes empty", async () => {
+			const wrapper = mount();
+
+			await wrapper.setProps({ name: "" });
+
+			expect(unregisterFieldMock).toHaveBeenCalledWith("username");
+			expect(registerFieldMock).toHaveBeenCalledTimes(1);
 		});
 	});
 

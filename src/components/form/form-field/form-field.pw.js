@@ -3,6 +3,8 @@ import { createMount } from "@lewishowles/testing/playwright";
 
 import FormField from "./form-field.vue";
 import FormFieldComboBoxFixture from "./fixtures/form-field-combo-box.fixture.vue";
+import FormFieldRemovalFixture from "./fixtures/form-field-removal.fixture.vue";
+import FormFieldRenameFixture from "./fixtures/form-field-rename.fixture.vue";
 import ParentFormWrapperFixture from "./fixtures/parent-form-wrapper.fixture.vue";
 
 // Mount form-field with sensible defaults for testing.
@@ -27,6 +29,10 @@ const comboBoxProps = {
 
 // Mount the form-wrapper fixture that supplies combo-box validation rules.
 const mountFormFieldComboBox = createMount(FormFieldComboBoxFixture);
+// Mount the fixture that removes a required field before validation.
+const mountFormFieldRemoval = createMount(FormFieldRemovalFixture);
+// Mount the fixture that renames a required field without replacing it.
+const mountFormFieldRename = createMount(FormFieldRenameFixture);
 
 const fieldTypes = [
 	[{ type: "text" }, "form-input"],
@@ -167,6 +173,69 @@ test.describe("form-field", () => {
 		await mountFormField(mount);
 
 		await expect(page.getByTestId("form-input")).toBeVisible();
+	});
+
+	test.describe("registration lifecycle", () => {
+		test("removes a conditional field from error-summary links and focus targets", async ({
+			mount,
+			page,
+		}) => {
+			await mountFormFieldRemoval(mount);
+
+			const username = page.getByLabel("Username", { exact: true });
+			const usernameId = await username.getAttribute("id");
+
+			expect(usernameId).toBeTruthy();
+
+			await page.getByTestId("form-field-remove-username").click();
+			await expect(username).not.toBeAttached();
+
+			await page.getByTestId("form-wrapper-submit-button").click();
+
+			const email = page.getByLabel("Email", { exact: true });
+			const emailId = await email.getAttribute("id");
+			const errorSummaryLink = page.getByTestId("form-wrapper-error-summary-message");
+
+			expect(emailId).toBeTruthy();
+			await expect(errorSummaryLink).toHaveCount(1);
+			await expect(errorSummaryLink).toHaveAttribute("href", `#${emailId}`);
+			await expect(errorSummaryLink).not.toHaveAttribute("href", `#${usernameId}`);
+			await expect(page.getByTestId("form-wrapper-error-summary")).not.toContainText(
+				"Enter username",
+			);
+
+			await errorSummaryLink.click();
+
+			await expect(email).toBeFocused();
+		});
+
+		test("renames a field with one live error-summary link and focus target", async ({
+			mount,
+			page,
+		}) => {
+			await mountFormFieldRename(mount);
+
+			await page.getByTestId("form-field-rename").click();
+
+			const renamedField = page.getByLabel("Display name", { exact: true });
+			const renamedFieldId = await renamedField.getAttribute("id");
+
+			expect(renamedFieldId).toBeTruthy();
+
+			await page.getByTestId("form-wrapper-submit-button").click();
+
+			const errorSummary = page.getByTestId("form-wrapper-error-summary");
+			const errorSummaryLink = page.getByTestId("form-wrapper-error-summary-message");
+
+			await expect(errorSummary).toContainText("Enter display name");
+			await expect(errorSummary).not.toContainText("Enter username");
+			await expect(errorSummaryLink).toHaveCount(1);
+			await expect(errorSummaryLink).toHaveAttribute("href", `#${renamedFieldId}`);
+
+			await errorSummaryLink.click();
+
+			await expect(renamedField).toBeFocused();
+		});
 	});
 
 	test("additional props are passed through to the underlying field", async ({ mount, page }) => {
