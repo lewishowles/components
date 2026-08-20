@@ -48,6 +48,7 @@ The type of field. Known types include:
 - `checkbox-group`
 - `radio-group`
 - `button-group`
+- `combo-box`
 - `date`
 - `file`
 

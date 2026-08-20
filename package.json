@@ -76,14 +76,14 @@
 	},
 	"dependencies": {
 		"@clack/prompts": "^1.7.0",
-		"@lewishowles/cli-style": "^0.11.0",
+		"@lewishowles/cli-style": "^0.12.0",
 		"@lewishowles/helpers": "^1.7.1",
 		"@vueuse/core": "^14.4.0",
 		"cli-highlight": "^2.1.11",
 		"clsx": "^2.1.1",
 		"nanoid": "^6.0.1",
 		"tailwind-merge": "^3.6.0",
-		"temporal-polyfill": "^1.0.3"
+		"temporal-polyfill": "^1.0.4"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.5",
@@ -101,18 +101,18 @@
 		"axe-core": "^4.13.0",
 		"eslint-plugin-vue": "^10.10.0",
 		"gh-pages": "^6.3.0",
-		"globals": "^17.9.0",
-		"happy-dom": "^20.11.1",
-		"publint": "^0.3.23",
-		"shiki": "^4.4.2",
+		"globals": "^17.11.0",
+		"happy-dom": "^20.11.6",
+		"publint": "^0.3.24",
+		"shiki": "^4.4.3",
 		"tailwindcss": "^4.3.3",
 		"tailwindcss-hocus": "^1.0.0",
-		"typescript": "6.0.2",
+		"typescript": "7.0.2",
 		"unplugin-vue-components": "^32.1.0",
-		"vite": "npm:@voidzero-dev/vite-plus-core@0.2.8",
+		"vite": "npm:@voidzero-dev/vite-plus-core@0.2.9",
 		"vite-plugin-vue-devtools": "^8.2.1",
-		"vite-plus": "0.2.8",
-		"vue-component-meta": "^3.3.9",
+		"vite-plus": "0.2.9",
+		"vue-component-meta": "^3.3.10",
 		"vue-eslint-parser": "^10.4.1",
 		"vue-router": "^5.2.0"
 	},
@@ -120,10 +120,10 @@
 		"vue": "^3.4.0"
 	},
 	"overrides": {
-		"temporal-polyfill": "^1.0.3"
+		"temporal-polyfill": "^1.0.4"
 	},
 	"engines": {
 		"node": ">=20"
 	},
-	"packageManager": "bun@1.3.14"
+	"packageManager": "bun@1.4.0"
 }
