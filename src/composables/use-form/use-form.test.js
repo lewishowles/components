@@ -484,6 +484,63 @@ describe("useForm", () => {
 		});
 	});
 
+	describe("unregisterField", () => {
+		test("removes the field from formFields", async () => {
+			const { formFields, registerField, unregisterField } = createForm();
+
+			await registerField({ name: "email", id: "email-id" });
+			unregisterField("email");
+
+			expect(formFields).not.toHaveProperty("email");
+		});
+
+		test("keeps form data and its baseline after unregistering", async () => {
+			const { formData, isDirty, registerField, unregisterField } = createForm({
+				initialData: { email: "before@example.com" },
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+			formData.value.email = "after@example.com";
+			unregisterField("email");
+
+			expect(formData.value.email).toBe("after@example.com");
+			expect(isDirty.value).toBe(true);
+
+			formData.value.email = "before@example.com";
+
+			expect(isDirty.value).toBe(false);
+		});
+
+		test("removes unregistered field errors from errorSummary", async () => {
+			const { errorSummary, registerField, submitErrors, unregisterField } = createForm();
+
+			await registerField({ name: "email", id: "email-id" });
+			submitErrors.value = { email: "Required" };
+			unregisterField("email");
+
+			expect(errorSummary.value).toEqual([]);
+		});
+
+		test("keeps parent-owned and submit errors surfaceable for an unregistered name", async () => {
+			const { fieldErrorsFor, generalSubmitErrors, registerField, submitErrors, unregisterField } =
+				createForm({ props: { fieldErrors: { email: "Parent error" } } });
+
+			await registerField({ name: "email", id: "email-id" });
+			submitErrors.value = { email: "Submit error" };
+			unregisterField("email");
+
+			expect(fieldErrorsFor("email")).toEqual(["Parent error", "Submit error"]);
+			expect(generalSubmitErrors.value).toEqual(["Submit error"]);
+		});
+
+		test("does nothing for an unknown field name", () => {
+			const { formFields, unregisterField } = createForm();
+
+			expect(() => unregisterField("unknown")).not.toThrow();
+			expect(formFields).toEqual({});
+		});
+	});
+
 	describe("updateFieldValue", () => {
 		test("updates the named field in formData", async () => {
 			const { formData, registerField, updateFieldValue } = createForm();

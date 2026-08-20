@@ -386,6 +386,21 @@ export function useForm({
 	}
 
 	/**
+	 * Allow a field to be removed. This does not remove any current value for
+	 * that field.
+	 *
+	 * @param  {string}  fieldName
+	 *     The name of the field to unregister.
+	 */
+	function unregisterField(fieldName) {
+		if (!Object.hasOwn(formFields, fieldName)) {
+			return;
+		}
+
+		delete formFields[fieldName];
+	}
+
+	/**
 	 * Allow a field to update its value in the form.
 	 *
 	 * @param  {string}   name
@@ -713,6 +728,7 @@ export function useForm({
 		isReadonly,
 		isDirty,
 		registerField,
+		unregisterField,
 		updateFieldValue,
 		fieldErrorsFor,
 		handleFormSubmit,

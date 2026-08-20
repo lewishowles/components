@@ -90,6 +90,7 @@ interface UseFormReturn {
 	isReadonly: ComputedRef<boolean>;
 	isDirty: ComputedRef<boolean>;
 	registerField: (field: FormField) => Promise<void>;
+	unregisterField: (fieldName: string) => void;
 	updateFieldValue: (name: string, value: unknown) => Promise<void>;
 	fieldErrorsFor: (fieldName: string) => string[];
 	handleFormSubmit: () => Promise<void>;
