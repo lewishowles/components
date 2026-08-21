@@ -250,7 +250,7 @@
 	[data-part="options"][data-layout="inline"] {
 		flex-direction: column;
 
-		@container (min-width: var(--container-xs)) {
+		@container (min-width: theme(--container-xs)) {
 			flex-direction: row;
 			gap: calc(var(--spacing) * 10);
 		}
