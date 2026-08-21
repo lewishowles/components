@@ -265,6 +265,40 @@
 		</component-returns>
 
 		<component-methods>
+			<component-method id="method-register-field">
+				<template #name>
+					<code>registerField(field)</code>
+				</template>
+
+				<p>
+					Add a field to a form's field list. A
+					<code>form-field</code>
+					calls this when it mounts. The field's
+					<code>name</code>
+					identifies it. Its
+					<code>id</code>
+					and
+					<code>triggerFocus</code>
+					method are used by the error summary.
+				</p>
+			</component-method>
+
+			<component-method id="method-unregister-field">
+				<template #name>
+					<code>unregisterField(fieldName)</code>
+				</template>
+
+				<p>
+					Remove a field from a form's field list. A
+					<code>form-field</code>
+					calls this when it unmounts or when its
+					<code>name</code>
+					changes, so the registration follows its current name. This does not remove its value or
+					parent-owned errors. Error-summary links and focus-on-error only target currently
+					registered fields, so conditionally removed fields are not targeted.
+				</p>
+			</component-method>
+
 			<component-method id="method-install-unsaved-changes-guard">
 				<template #name>
 					<code>installUnsavedChangesGuard(router, options)</code>

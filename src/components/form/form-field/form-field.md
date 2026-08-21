@@ -61,6 +61,8 @@ Any unknown type will default to `text`.
 
 The name of the field. This is required when used within a `form-wrapper` component, where it is used as the key for the form's data collection. As such, its uniqueness will be verified by `form-wrapper` when used together.
 
+Within `form-wrapper`, a field is registered while it is mounted. If you rename a mounted field by changing `name`, its registration moves to the new name. Unmounting the field unregisters it without removing its value or parent-owned errors.
+
 ### `required`
 
 - type: `boolean`

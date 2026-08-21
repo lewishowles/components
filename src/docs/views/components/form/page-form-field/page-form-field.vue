@@ -85,6 +85,15 @@
 					<code>form-wrapper</code>
 					when used together.
 				</p>
+
+				<p>
+					Within
+					<code>form-wrapper</code>
+					, a field is registered while it is mounted. If you rename a mounted field by changing
+					<code>name</code>
+					, its registration moves to the new name. Unmounting the field unregisters it without
+					removing its value or parent-owned errors.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-required">

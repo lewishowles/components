@@ -404,13 +404,21 @@ Returns all error messages for a field, deduplicating identical messages. Combin
 
 ### `registerField(field)`
 
-Allow a field to register itself with the form.
+Add a field to a form's list of fields.
 
 | Parameter            | Type       | Description                                                |
 | -------------------- | ---------- | ---------------------------------------------------------- |
 | `field.name`         | `string`   | Name of the field to register.                             |
 | `field.id`           | `string`   | The ID of the field, helpful for linking errors to fields. |
 | `field.triggerFocus` | `function` | Method to focus on this field, used by the error summary.  |
+
+### `unregisterField(fieldName)`
+
+Remove a field from a form's list of fields. This does not remove its value or parent-owned errors. Error-summary links and focus-on-error only target currently registered fields, so conditionally removed fields are not targeted.
+
+| Parameter   | Type     | Description                          |
+| ----------- | -------- | ------------------------------------ |
+| `fieldName` | `string` | The name of the field to unregister. |
 
 ### `updateFieldValue(name, value)`
 

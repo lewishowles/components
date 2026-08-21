@@ -619,7 +619,7 @@
 					<code>registerField(field)</code>
 				</template>
 
-				<p>Allow a field to register itself with the form.</p>
+				<p>Add a field to a form's field list.</p>
 
 				<table>
 					<thead>
@@ -644,6 +644,35 @@
 							<td><code>field.triggerFocus</code></td>
 							<td><code>function</code></td>
 							<td>Method to focus on this field, used by the error summary.</td>
+						</tr>
+					</tbody>
+				</table>
+			</component-provide>
+
+			<component-provide id="provide-unregister-field">
+				<template #name>
+					<code>unregisterField(fieldName)</code>
+				</template>
+
+				<p>
+					Remove a field from a form's field list. This does not remove its value or parent-owned
+					errors. Error-summary links and focus-on-error only target currently registered fields, so
+					conditionally removed fields are not targeted.
+				</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Parameter</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>fieldName</code></td>
+							<td><code>string</code></td>
+							<td>The name of the field to unregister.</td>
 						</tr>
 					</tbody>
 				</table>
