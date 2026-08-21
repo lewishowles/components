@@ -390,6 +390,7 @@ describe("form-wrapper", () => {
 				const onSubmit = vi.fn();
 				const wrapper = mount({ props: { onSubmit } });
 
+				await wrapper.vm.registerField({ name: "name", id: "name-id" });
 				wrapper.vm.updateFieldValue("name", "wall-e");
 
 				await wrapper.vm.handleFormSubmit();

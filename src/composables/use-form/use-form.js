@@ -387,7 +387,8 @@ export function useForm({
 
 	/**
 	 * Allow a field to be removed. This does not remove any current value for
-	 * that field.
+	 * that field, but the retained value is excluded from `getSubmitData()`
+	 * until the field registers again.
 	 *
 	 * @param  {string}  fieldName
 	 *     The name of the field to unregister.
@@ -604,13 +605,24 @@ export function useForm({
 	}
 
 	/**
-	 * Get the form data to submit, coerced per `fieldTypes`.
+	 * Get currently registered form data to submit, coerced per `fieldTypes`.
 	 *
 	 * @returns {object}
-	 *     A plain object of submit-ready values.
+	 *     A plain object of submit-ready values for registered fields.
 	 */
 	function getSubmitData() {
-		return normaliseForSubmit(formData.value, toValue(fieldTypes) ?? {});
+		// Keep retained values in formData while excluding fields with no live control.
+		const registeredData = {};
+
+		if (isObject(formData.value)) {
+			for (const fieldName of Object.keys(formFields)) {
+				if (Object.hasOwn(formData.value, fieldName)) {
+					registeredData[fieldName] = formData.value[fieldName];
+				}
+			}
+		}
+
+		return normaliseForSubmit(registeredData, toValue(fieldTypes) ?? {});
 	}
 
 	/**

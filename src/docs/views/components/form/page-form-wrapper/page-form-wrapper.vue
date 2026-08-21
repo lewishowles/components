@@ -585,10 +585,11 @@
 				<template #name>submit</template>
 
 				<p>
-					Fired when the user submits the form and validation succeeds, containing the current
-					values of each of the
-					<code>form-field</code>
-					elements contained within the form.
+					Fired when the user submits the form and validation succeeds, containing submit-ready
+					values. By submit-ready, we mean that the returned data only contains currently registered
+					fields. When a field is unregistered, its value remains in
+					<code>v-model</code>
+					, but is excluded from submit unless a field with the same name is registered again.
 				</p>
 			</component-event>
 
@@ -596,9 +597,11 @@
 				<template #name>v-model</template>
 
 				<p>
-					The current value of the included form fields, in a flat objected, keyed by the
+					The current value of the included form fields, in a flat object, keyed by the
 					<code>name</code>
-					value for each field.
+					value for each field. Values remain available here after a field is unregistered, even
+					though they are excluded from submit payloads until a field with the same name is
+					registered again.
 				</p>
 			</component-event>
 		</component-events>
@@ -655,8 +658,11 @@
 				</template>
 
 				<p>
-					Remove a field from a form's field list. This does not remove its value or parent-owned
-					errors. Error-summary links and focus-on-error only target currently registered fields, so
+					Remove a field from a form's list of fields. This does not remove its value or
+					parent-owned errors. Its value remains in
+					<code>v-model</code>
+					, but is excluded from submit payloads until a field with the same name is registered
+					again. Error-summary links and focus-on-error only target currently registered fields, so
 					conditionally removed fields are not targeted.
 				</p>
 

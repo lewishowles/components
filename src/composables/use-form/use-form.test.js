@@ -107,6 +107,7 @@ describe("useForm", () => {
 			expect(formData.value).toEqual({});
 
 			source.value = { name: "Alice" };
+
 			await vi.waitFor(() => expect(formData.value).toEqual({ name: "Alice" }));
 		});
 
@@ -117,6 +118,7 @@ describe("useForm", () => {
 			await vi.waitFor(() => expect(formData.value).toEqual({ name: "Alice" }));
 
 			source.value = { name: "Bob" };
+
 			await nextTick();
 
 			expect(formData.value).toEqual({ name: "Alice" });
@@ -203,6 +205,7 @@ describe("useForm", () => {
 
 			formData.value = { name: "Bob" };
 			source.value = { name: "Carol" };
+
 			await nextTick();
 
 			expect(formData.value).toEqual({ name: "Bob" });
@@ -217,6 +220,7 @@ describe("useForm", () => {
 
 			recordId.value = 2;
 			source.value = { name: "Bob" };
+
 			await nextTick();
 
 			expect(formData.value).toEqual({ name: "Bob" });
@@ -232,12 +236,14 @@ describe("useForm", () => {
 
 			// recordId changes first; the async source hasn't caught up yet.
 			recordId.value = 2;
+
 			await nextTick();
 
 			expect(formData.value).toEqual({ name: "Alice" });
 
 			// The new record's data arrives afterwards, in a later tick.
 			source.value = { name: "Bob" };
+
 			await nextTick();
 
 			expect(formData.value).toEqual({ name: "Bob" });
@@ -254,6 +260,7 @@ describe("useForm", () => {
 			formData.value = { name: "Edited" };
 			source.value = { name: "Bob" };
 			recordId.value = 2;
+
 			await nextTick();
 
 			expect(formData.value).toEqual({ name: "Edited" });
@@ -268,6 +275,7 @@ describe("useForm", () => {
 
 			source.value = { name: "Bob" };
 			recordId.value = null;
+
 			await nextTick();
 
 			expect(formData.value).toEqual({ name: "Alice" });
@@ -347,6 +355,7 @@ describe("useForm", () => {
 			expect(hasDirtyForms()).toBe(false);
 
 			instance.formData.value = { name: "Bob" };
+
 			await nextTick();
 
 			expect(hasDirtyForms()).toBe(true);
@@ -363,6 +372,7 @@ describe("useForm", () => {
 			});
 
 			instance.formData.value = { name: "Bob" };
+
 			await nextTick();
 
 			expect(hasDirtyForms()).toBe(false);
@@ -489,6 +499,7 @@ describe("useForm", () => {
 			const { formFields, registerField, unregisterField } = createForm();
 
 			await registerField({ name: "email", id: "email-id" });
+
 			unregisterField("email");
 
 			expect(formFields).not.toHaveProperty("email");
@@ -500,6 +511,7 @@ describe("useForm", () => {
 			});
 
 			await registerField({ name: "email", id: "email-id" });
+
 			formData.value.email = "after@example.com";
 			unregisterField("email");
 
@@ -515,6 +527,7 @@ describe("useForm", () => {
 			const { errorSummary, registerField, submitErrors, unregisterField } = createForm();
 
 			await registerField({ name: "email", id: "email-id" });
+
 			submitErrors.value = { email: "Required" };
 			unregisterField("email");
 
@@ -526,6 +539,7 @@ describe("useForm", () => {
 				createForm({ props: { fieldErrors: { email: "Parent error" } } });
 
 			await registerField({ name: "email", id: "email-id" });
+
 			submitErrors.value = { email: "Submit error" };
 			unregisterField("email");
 
@@ -744,9 +758,11 @@ describe("useForm", () => {
 		test("calls the onSubmit handler with data coerced per fieldTypes", async () => {
 			const handler = vi.fn().mockResolvedValue(undefined);
 
-			const { formData, handleFormSubmit } = createForm({
+			const { formData, handleFormSubmit, registerField } = createForm({
 				props: { onSubmit: handler, fieldTypes: { age: "nullable-number" } },
 			});
+
+			await registerField({ name: "age", id: "age-id" });
 
 			formData.value.age = "";
 
@@ -759,13 +775,15 @@ describe("useForm", () => {
 			const onSuccess = vi.fn();
 			const handler = vi.fn().mockResolvedValue({ id: 12 });
 
-			const { formData, handleFormSubmit } = createForm({
+			const { formData, handleFormSubmit, registerField } = createForm({
 				props: {
 					fieldTypes: { age: "nullable-number" },
 					onSubmit: handler,
 					onSuccess,
 				},
 			});
+
+			await registerField({ name: "age", id: "age-id" });
 
 			formData.value = { age: "30" };
 
@@ -792,7 +810,7 @@ describe("useForm", () => {
 			const onError = vi.fn();
 			const handler = vi.fn().mockRejectedValue(error);
 
-			const { formData, handleFormSubmit } = createForm({
+			const { formData, handleFormSubmit, registerField } = createForm({
 				props: {
 					fieldTypes: { age: "nullable-number" },
 					onError,
@@ -800,9 +818,12 @@ describe("useForm", () => {
 				},
 			});
 
+			await registerField({ name: "age", id: "age-id" });
+
 			formData.value = { age: "30" };
 
 			await expect(handleFormSubmit()).rejects.toThrow(error);
+
 			expect(onError).toHaveBeenCalledWith(error, { age: 30 });
 		});
 
@@ -810,13 +831,15 @@ describe("useForm", () => {
 			const onSettled = vi.fn();
 			const handler = vi.fn().mockResolvedValue("saved");
 
-			const { formData, handleFormSubmit } = createForm({
+			const { formData, handleFormSubmit, registerField } = createForm({
 				props: {
 					fieldTypes: { age: "nullable-number" },
 					onSettled,
 					onSubmit: handler,
 				},
 			});
+
+			await registerField({ name: "age", id: "age-id" });
 
 			formData.value = { age: "30" };
 
@@ -830,7 +853,7 @@ describe("useForm", () => {
 			const onSettled = vi.fn();
 			const handler = vi.fn().mockRejectedValue(error);
 
-			const { formData, handleFormSubmit } = createForm({
+			const { formData, handleFormSubmit, registerField } = createForm({
 				props: {
 					fieldTypes: { age: "nullable-number" },
 					onSettled,
@@ -838,9 +861,12 @@ describe("useForm", () => {
 				},
 			});
 
+			await registerField({ name: "age", id: "age-id" });
+
 			formData.value = { age: "30" };
 
 			await expect(handleFormSubmit()).rejects.toThrow(error);
+
 			expect(onSettled).toHaveBeenCalledWith(undefined, error, { age: 30 });
 		});
 
@@ -860,6 +886,7 @@ describe("useForm", () => {
 			const { handleFormSubmit, status } = createForm({ props: { onSubmit: handler } });
 
 			await expect(handleFormSubmit()).rejects.toThrow(error);
+
 			expect(status.value).toEqual({ type: "error", message: "Server error" });
 		});
 
@@ -892,6 +919,7 @@ describe("useForm", () => {
 			const { handleFormSubmit, status } = createForm({ props: { onSubmit: handler } });
 
 			await expect(handleFormSubmit()).rejects.toThrow("Server error");
+
 			expect(status.value).toEqual({ type: "error", message: "Server error" });
 
 			await handleFormSubmit();
@@ -911,7 +939,6 @@ describe("useForm", () => {
 			await handleFormSubmit();
 
 			// handleFormSubmit clears errors at the start of each attempt
-			// (validateFormLevelRules may re-populate them, but the stale set is gone)
 			expect(formLevelErrors.value).not.toEqual({ email: ["Required"] });
 		});
 
@@ -945,7 +972,6 @@ describe("useForm", () => {
 			});
 
 			await registerField({ name: "email", id: "email-id" });
-
 			await handleFormSubmit();
 
 			expect(formLevelErrors.value).toEqual({ email: ["Required"] });
@@ -962,7 +988,6 @@ describe("useForm", () => {
 			});
 
 			await registerField({ name: "email", id: "email-id" });
-
 			await handleFormSubmit();
 
 			expect(formLevelErrors.value).toEqual({ email: ["Invalid format", "Required"] });
@@ -979,7 +1004,6 @@ describe("useForm", () => {
 			});
 
 			await registerField({ name: "email", id: "email-id" });
-
 			await handleFormSubmit();
 
 			expect(formLevelErrors.value).toEqual({ email: ["Required"] });
@@ -993,7 +1017,6 @@ describe("useForm", () => {
 			});
 
 			await registerField({ name: "email", id: "email-id" });
-
 			await handleFormSubmit();
 
 			expect(haveErrorSummary.value).toBe(true);
@@ -1005,7 +1028,6 @@ describe("useForm", () => {
 			});
 
 			await registerField({ name: "email", id: "email-id" });
-
 			await handleFormSubmit();
 
 			expect(formLevelErrors.value).toEqual({});
@@ -1017,8 +1039,8 @@ describe("useForm", () => {
 			});
 
 			await registerField({ name: "email", id: "email-id" });
-
 			await expect(handleFormSubmit()).resolves.not.toThrow();
+
 			expect(formLevelErrors.value).toEqual({});
 		});
 	});
@@ -1070,6 +1092,7 @@ describe("useForm", () => {
 			});
 
 			await expect(handleSubmitError(error)).rejects.toThrow(error);
+
 			expect(generalSubmitErrors.value).toEqual([]);
 		});
 
@@ -1129,18 +1152,42 @@ describe("useForm", () => {
 	});
 
 	describe("getSubmitData", () => {
-		test("returns formData unchanged when no fieldTypes are declared", () => {
-			const { formData, getSubmitData } = createForm();
+		test("returns registered formData unchanged when no fieldTypes are declared", async () => {
+			const { formData, getSubmitData, registerField } = createForm();
+
+			await registerField({ name: "name", id: "name-id" });
 
 			formData.value = { name: "Alice" };
 
 			expect(getSubmitData()).toEqual({ name: "Alice" });
 		});
 
-		test("coerces fields per the fieldTypes prop", () => {
-			const { formData, getSubmitData } = createForm({
+		test("excludes unregistered values and restores them when the field re-registers", async () => {
+			const { formData, getSubmitData, registerField, unregisterField } = createForm({
+				initialData: { email: "before@example.com", name: "Alice" },
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+			await registerField({ name: "name", id: "name-id" });
+
+			formData.value.email = "after@example.com";
+			unregisterField("email");
+
+			expect(formData.value).toEqual({ email: "after@example.com", name: "Alice" });
+			expect(getSubmitData()).toEqual({ name: "Alice" });
+
+			await registerField({ name: "email", id: "email-id" });
+
+			expect(getSubmitData()).toEqual({ email: "after@example.com", name: "Alice" });
+		});
+
+		test("coerces registered fields per the fieldTypes prop", async () => {
+			const { formData, getSubmitData, registerField } = createForm({
 				props: { fieldTypes: { age: "nullable-number", notes: "nullable-string" } },
 			});
+
+			await registerField({ name: "age", id: "age-id" });
+			await registerField({ name: "notes", id: "notes-id" });
 
 			formData.value = { age: "", notes: "" };
 

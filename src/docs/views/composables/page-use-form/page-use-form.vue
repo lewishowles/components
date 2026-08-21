@@ -158,10 +158,12 @@
 				<template #type>function</template>
 
 				<p>
-					Called with the current form values when validation passes. This is where the async work
-					goes: an API call, a mutation, or similar. Throw to trigger
-					<code>onError</code>
-					.
+					Called with submit-ready values for currently registered fields when validation passes.
+					Values for fields removed before submit remain in
+					<code>formData</code>
+					and
+					<code>v-model</code>
+					but are excluded from this payload until a field with the same name is registered again.
 				</p>
 			</component-parameter>
 
@@ -289,13 +291,8 @@
 				</template>
 
 				<p>
-					Remove a field from a form's field list. A
-					<code>form-field</code>
-					calls this when it unmounts or when its
-					<code>name</code>
-					changes, so the registration follows its current name. This does not remove its value or
-					parent-owned errors. Error-summary links and focus-on-error only target currently
-					registered fields, so conditionally removed fields are not targeted.
+					Allow a field to be removed. This does not remove any current value for that field, but
+					the retained value is excluded from `getSubmitData()` until the field registers again.
 				</p>
 			</component-method>
 

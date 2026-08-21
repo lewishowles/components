@@ -74,7 +74,12 @@ status.value = { type: "error", message: "Your session has expired." };
 - type: `function`
 - default: `null`
 
-Submit lifecycle hooks, called with data from `useForm`'s own submit cycle. Use these for app-level side effects, such as a flash message, closing a modal, or navigating away, that live outside the inline `status` alert.
+Submit lifecycle hooks, called with submit-ready data from `useForm`. By submit-ready, we mean that the returned data
+only contains currently registered fields. When a field is unregistered, its value remains in
+`v-model`, but is excluded from submit unless a field with the same name is registered again.
+
+Use these hooks for app-level side effects, such as a flash message, closing a modal, or navigating away, that live
+outside the inline `status` alert.
 
 - `onSuccess(result, formData)`: called once `onSubmit` resolves.
 - `onError(error, formData)`: called when `onSubmit` rejects, before `submitErrorsCallback` decides whether to swallow the error.
@@ -378,11 +383,14 @@ An optional visually hidden label for the form's action group, threaded into `fo
 
 ### `submit`
 
-Fired when the user submits the form and validation succeeds, containing the current values of each of the `form-field` elements contained within the form.
+Fired when the user submits the form and validation succeeds, containing submit-ready values. By submit-ready, we mean that the returned data only contains currently registered fields. When a field is unregistered, its value remains in
+`v-model`, but is excluded from submit unless a field with the same name is registered again.
 
 ### `v-model`
 
-The current values of each of the `form-field` elements contained within the form will be available as an object through `v-model`.
+The current values of each of the `form-field` elements contained within the form are available as an
+object through `v-model`. Values remain available here after a field is unregistered, even though
+they are excluded from submit payloads until the field is registered again.
 
 ## Methods
 
@@ -414,7 +422,7 @@ Add a field to a form's list of fields.
 
 ### `unregisterField(fieldName)`
 
-Remove a field from a form's list of fields. This does not remove its value or parent-owned errors. Error-summary links and focus-on-error only target currently registered fields, so conditionally removed fields are not targeted.
+Remove a field from a form's list of fields. This does not remove its value or parent-owned errors. Its value remains in `v-model`, but is excluded from submit payloads until a field with the same name is registered again. Error-summary links and focus-on-error only target currently registered fields, so conditionally removed fields are not targeted.
 
 | Parameter   | Type     | Description                          |
 | ----------- | -------- | ------------------------------------ |
