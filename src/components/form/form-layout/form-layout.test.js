@@ -30,7 +30,7 @@ describe("form-layout", () => {
 
 			test("uses compact gap when form-wrapper provides compact", () => {
 				const wrapper = mount({
-					global: { provide: { "form-wrapper": { isCompact: { value: true } } } },
+					global: { provide: { form: { isCompact: { value: true } } } },
 				});
 
 				expect(wrapper.vm.rootClass).toContain("gap-y-4");
@@ -40,7 +40,7 @@ describe("form-layout", () => {
 			test("override class wins over compact gap", () => {
 				const wrapper = mount({
 					attrs: { class: "gap-y-2" },
-					global: { provide: { "form-wrapper": { isCompact: { value: true } } } },
+					global: { provide: { form: { isCompact: { value: true } } } },
 				});
 
 				expect(wrapper.vm.rootClass).toContain("gap-y-2");

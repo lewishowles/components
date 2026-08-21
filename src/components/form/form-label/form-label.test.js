@@ -11,7 +11,7 @@ const formWrapperContext = {};
 
 const mountInForm = createMount(FormLabel, {
 	props: defaultProps,
-	global: { provide: { "form-wrapper": formWrapperContext } },
+	global: { provide: { form: formWrapperContext } },
 });
 
 describe("form-label", () => {

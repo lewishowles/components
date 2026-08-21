@@ -139,17 +139,16 @@ const model = defineModel();
 const attrs = useAttrs();
 // Generate an appropriate input ID.
 const { inputId } = useInputId(attrs.id);
-// Retrieve the relevant methods from the wrapper. Form fields may be used
-// without a wrapper form, so we provide a default value for our injection in
-// case it isn't provided.
-const formWrapperInject = inject("form-wrapper", {});
+// Form fields may be used without a form host, so we provide a default
+// value for our injection in case it isn't provided.
+const formContext = inject("form", {});
 // The injection may not be defined, so we get its properties in a safe way.
-const fieldErrorsFor = formWrapperInject?.fieldErrorsFor;
-const registerField = formWrapperInject?.registerField;
-const unregisterField = formWrapperInject?.unregisterField;
-const updateFieldValue = formWrapperInject?.updateFieldValue;
-const isReadonly = formWrapperInject?.isReadonly;
-const isFieldRequired = formWrapperInject?.isFieldRequired;
+const fieldErrorsFor = formContext?.fieldErrorsFor;
+const registerField = formContext?.registerField;
+const unregisterField = formContext?.unregisterField;
+const updateFieldValue = formContext?.updateFieldValue;
+const isReadonly = formContext?.isReadonly;
+const isFieldRequired = formContext?.isFieldRequired;
 
 // All error messages for this field, sourced from the wrapper's single merge
 // point. Returns an empty array when the field is used outside form-wrapper.

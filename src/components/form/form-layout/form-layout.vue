@@ -12,7 +12,7 @@ defineOptions({ inheritAttrs: false });
 
 const attrs = useAttrs();
 
-const { isCompact } = inject("form-wrapper", {});
+const { isCompact } = inject("form", {});
 
 const rootClass = computed(() =>
 	cn("flex flex-col", isCompact?.value ? "gap-y-4" : "gap-y-8", attrs.class),

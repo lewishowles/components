@@ -1,7 +1,7 @@
 <script setup>
 import { provide } from "vue";
 
-provide("form-wrapper", { registerField: () => {} });
+provide("form", { registerField: () => {} });
 </script>
 
 <template>

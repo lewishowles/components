@@ -77,7 +77,7 @@ describe("form-radio-group", () => {
 					props: { name: "flavour" },
 					global: {
 						provide: {
-							"form-wrapper": { isFieldRequired: (name) => name === "flavour" },
+							form: { isFieldRequired: (name) => name === "flavour" },
 						},
 					},
 				});
@@ -90,7 +90,7 @@ describe("form-radio-group", () => {
 					props: { name: "flavour" },
 					global: {
 						provide: {
-							"form-wrapper": { isFieldRequired: (name) => name === "other-field" },
+							form: { isFieldRequired: (name) => name === "other-field" },
 						},
 					},
 				});
@@ -103,7 +103,7 @@ describe("form-radio-group", () => {
 					props: { name: "flavour", required: true },
 					global: {
 						provide: {
-							"form-wrapper": { isFieldRequired: () => false },
+							form: { isFieldRequired: () => false },
 						},
 					},
 				});

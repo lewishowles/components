@@ -113,14 +113,14 @@ const haveLabel = computed(() => isNonEmptySlot(slots.default));
 // Determine if we have an ID and if one is necessary. If not, show a warning to
 // the user about accessibility.
 const missingId = computed(() => props.tag === "label" && !isNonEmptyString(props.id));
-// The optional indicator is only meaningful inside a form-wrapper, where
+// The optional indicator is only meaningful inside a form host, where
 // required/optional is a form-submission concept. Standalone fields (search,
 // filters) suppress the indicator even when not required.
-const formContext = inject("form-wrapper", null);
+const formContext = inject("form", null);
 const haveFormContext = computed(() => formContext !== null);
 
 // Whether to show the optional indicator. Shown when the field is not required,
-// inside a form-wrapper, and showOptionalIndicator is not disabled.
+// inside a form host, and showOptionalIndicator is not disabled.
 const haveOptionalIndicator = computed(
 	() => props.showOptionalIndicator && !props.required && haveFormContext.value,
 );

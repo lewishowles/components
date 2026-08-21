@@ -471,10 +471,11 @@ export function useForm({
 	}
 
 	/**
-	 * After a failed submit, focus the error summary when field errors are
-	 * present, or the general errors container when only general errors exist.
+	 * After validation fails or a submit fails, focus the error summary when
+	 * field errors are present, or the general errors container when only
+	 * general errors exist.
 	 */
-	async function focusAfterFailedSubmit() {
+	async function focusErrors() {
 		if (haveErrorSummary.value) {
 			await focusErrorSummary();
 		} else if (haveGeneralSubmitErrors.value) {
@@ -549,8 +550,15 @@ export function useForm({
 	 * Validate the form-level `rules` and whole-object `schema` against the
 	 * current form data, merging both into a single per-field result: schema
 	 * errors first, then keyed-rule errors, with duplicate messages removed.
+	 *
+	 * Registered field names are provided to avoid an issue where we validate
+	 * fields that aren't, or haven't yet been, presented to the user, such as a
+	 * future screen of a multi-screen form.
+	 *
+	 * @param  {Set<string>}  registeredFieldNames
+	 *     Field names registered when validation started.
 	 */
-	async function validateFormLevelRules() {
+	async function validateFormLevelRules(registeredFieldNames) {
 		const currentRules = toValue(rules);
 		const schemaErrors = await validateFormLevelSchema();
 
@@ -562,6 +570,10 @@ export function useForm({
 		const fieldNames = new Set([...Object.keys(schemaErrors), ...Object.keys(ruleResults)]);
 
 		for (const fieldName of fieldNames) {
+			if (!registeredFieldNames.has(fieldName)) {
+				continue;
+			}
+
 			const messages = [
 				...(schemaErrors[fieldName] ?? []),
 				...(ruleResults[fieldName]?.errors ?? []),
@@ -582,26 +594,45 @@ export function useForm({
 	 * submitting the appropriate event if validation succeeds.
 	 */
 	async function handleFormSubmit() {
-		submitErrors.value = {};
-		formLevelErrors.value = {};
+		const valid = await validate();
 
-		if (!haveFormFields.value) {
-			await doSubmit();
-
-			return;
-		}
-
-		await validateFormLevelRules();
-
-		if (haveErrorSummary.value) {
-			resetSubmitButton();
-			updatePageTitle();
-			await focusAfterFailedSubmit();
-
+		if (!valid) {
 			return;
 		}
 
 		await doSubmit();
+	}
+
+	/**
+	 * Validate the currently registered fields without submitting the form.
+	 *
+	 * @returns {Promise<boolean>}
+	 *     Whether validation passed for the currently registered fields.
+	 */
+	async function validate() {
+		submitErrors.value = {};
+		formLevelErrors.value = {};
+
+		if (!haveFormFields.value) {
+			return true;
+		}
+
+		// Scope validation errors to the fields that were present when
+		// validation started.
+		const registeredFieldNames = new Set(Object.keys(formFields));
+
+		await validateFormLevelRules(registeredFieldNames);
+
+		if (!haveErrorSummary.value) {
+			return true;
+		}
+
+		resetSubmitButton();
+		updatePageTitle();
+
+		await focusErrors();
+
+		return false;
 	}
 
 	/**
@@ -687,7 +718,7 @@ export function useForm({
 
 		submitErrors.value = parsedErrors;
 
-		await focusAfterFailedSubmit();
+		await focusErrors();
 	}
 
 	/**
@@ -748,6 +779,7 @@ export function useForm({
 		resetSubmitButton,
 		focusField,
 		isFieldRequired,
+		validate,
 		getSubmitData,
 	};
 }

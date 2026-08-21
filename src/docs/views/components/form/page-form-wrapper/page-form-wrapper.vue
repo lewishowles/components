@@ -829,7 +829,7 @@ const {
 	submitButtonRef,
 });
 
-provide("form-wrapper", {
+provide("form", {
 	fieldErrorsFor,
 	isFieldRequired,
 	isReadonly,

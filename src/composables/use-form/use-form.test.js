@@ -28,9 +28,9 @@ function createForm(overrides = {}) {
 		mapper: overrides.mapper,
 		recordId: overrides.recordId,
 		...namedParams,
-		errorSummaryElement: ref(null),
-		generalErrorsElement: ref(null),
-		submitButtonRef: ref(null),
+		errorSummaryElement: overrides.errorSummaryElement ?? ref(null),
+		generalErrorsElement: overrides.generalErrorsElement ?? ref(null),
+		submitButtonRef: overrides.submitButtonRef ?? ref(null),
 	});
 
 	return { ...form };
@@ -689,6 +689,91 @@ describe("useForm", () => {
 			formData.value.isVatRegistered = "no";
 
 			expect(isFieldRequired("vatNumber")).toBe(false);
+		});
+	});
+
+	describe("validate", () => {
+		test("returns true without validating when no fields are registered", async () => {
+			const rule = vi.fn();
+			const schemaValidate = vi.fn();
+
+			const { validate } = createForm({
+				props: {
+					rules: { email: [rule] },
+					schema: { "~standard": { validate: schemaValidate } },
+				},
+			});
+
+			const result = await validate();
+
+			expect(result).toBe(true);
+			expect(rule).not.toHaveBeenCalled();
+			expect(schemaValidate).not.toHaveBeenCalled();
+		});
+
+		test("passes complete form data to rules and schema when only some fields are registered", async () => {
+			const rule = vi.fn().mockReturnValue(true);
+			const schemaValidate = vi.fn().mockResolvedValue({});
+
+			const { registerField, validate } = createForm({
+				initialData: { email: "person@example.com", password: "secret" },
+				props: {
+					rules: { email: [{ rule: "custom", validate: rule }] },
+					schema: { "~standard": { validate: schemaValidate } },
+				},
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+			await validate();
+
+			expect(rule).toHaveBeenCalledWith("person@example.com", {
+				email: "person@example.com",
+				password: "secret",
+			});
+			expect(schemaValidate).toHaveBeenCalledWith({
+				email: "person@example.com",
+				password: "secret",
+			});
+		});
+
+		test("does not retain errors for fields that are not registered", async () => {
+			const { registerField, formLevelErrors, validate } = createForm({
+				initialData: { email: "person@example.com", displayName: "" },
+				props: {
+					rules: {
+						email: [{ rule: "required", message: "Email is required" }],
+						displayName: [{ rule: "required", message: "Display name is required" }],
+					},
+				},
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+
+			const result = await validate();
+
+			expect(result).toBe(true);
+			expect(formLevelErrors.value).toEqual({});
+		});
+
+		test("returns false and resets the submit button before focusing errors", async () => {
+			const focus = vi.fn();
+			const reset = vi.fn();
+
+			const { registerField, isSubmitting, validate } = createForm({
+				props: { rules: { email: [{ rule: "required", message: "Email is required" }] } },
+				errorSummaryElement: ref({ focus }),
+				submitButtonRef: ref({ reset }),
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+			isSubmitting.value = true;
+
+			const result = await validate();
+
+			expect(result).toBe(false);
+			expect(isSubmitting.value).toBe(false);
+			expect(reset).toHaveBeenCalledOnce();
+			expect(focus).toHaveBeenCalledOnce();
 		});
 	});
 

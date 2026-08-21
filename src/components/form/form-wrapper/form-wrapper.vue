@@ -388,7 +388,8 @@ const isCompact = computed(() => props.compact);
 // app-driven state (e.g. session expiry) unrelated to a submit outcome.
 const formStatus = computed(() => props.status ?? submitStatus.value);
 
-provide("form-wrapper", {
+// Context shared by form-field and form-layout consumers.
+provide("form", {
 	fieldErrorsFor,
 	registerField,
 	unregisterField,

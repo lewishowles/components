@@ -400,7 +400,7 @@ Resets the submit button's loading state. Call this after your `@submit` handler
 
 ## Provide
 
-Four values are provided by `form-wrapper` under the "form-wrapper" namespace.
+Seven values are provided by `form-wrapper` under the `form` namespace.
 
 ### `fieldErrorsFor(fieldName)`
 
@@ -440,6 +440,18 @@ Allow a field to update its value in the form.
 ### `isReadonly`
 
 A reactive boolean that reflects the `readonly` prop. Used by `form-field` to cascade readonly state to underlying controls. Not intended for direct consumer use.
+
+### `isFieldRequired(fieldName)`
+
+Returns whether the form's validation rules mark a field as required. Used by form fields and related controls to cascade the required state.
+
+| Parameter   | Type     | Description                     |
+| ----------- | -------- | ------------------------------- |
+| `fieldName` | `string` | The name of the field to check. |
+
+### `isCompact`
+
+A reactive boolean that reflects the `compact` prop. Used by form layouts and fieldsets to apply compact spacing and headings.
 
 ## Styling hooks
 

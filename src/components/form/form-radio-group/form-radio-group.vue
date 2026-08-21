@@ -116,9 +116,8 @@ const internalModel = ref({});
 // Access to shared form field boilerplate.
 const { inputId } = useFormField({ id: props.id });
 
-// Retrieve isFieldRequired from an optional parent form-wrapper. The
-// injection may not be defined, so we get it in a safe way.
-const isFieldRequired = inject("form-wrapper", {})?.isFieldRequired;
+// Retrieve isFieldRequired from an optional parent form host.
+const { isFieldRequired } = inject("form", {});
 
 // The field name of our input, preferring the provided name prop.
 const fieldName = computed(() => props.name || inputId.value);
@@ -127,7 +126,7 @@ const fieldName = computed(() => props.name || inputId.value);
 const underlyingValue = computed(() => unwrap(internalModel.value));
 
 // Whether this field is required, from the explicit prop or a `required`
-// rule cascaded from the parent form-wrapper, matching form-field.
+// rule cascaded from the parent form host, matching form-field.
 const isRequired = computed(() => {
 	if (props.required) {
 		return true;

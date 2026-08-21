@@ -18,7 +18,7 @@ const updateFieldValueMock = vi.fn();
 const defaultProps = { name: "username" };
 
 const provide = {
-	"form-wrapper": {
+	form: {
 		fieldErrorsFor: fieldErrorsForMock,
 		registerField: registerFieldMock,
 		unregisterField: unregisterFieldMock,
@@ -95,7 +95,7 @@ describe("form-field", () => {
 				props: defaultProps,
 				global: {
 					provide: {
-						"form-wrapper": {
+						form: {
 							fieldErrorsFor: fieldErrorsForMock,
 							registerField: registerFieldMock,
 							updateFieldValue: updateFieldValueMock,
@@ -333,7 +333,7 @@ describe("form-field", () => {
 				const wrapper = mount({
 					global: {
 						provide: {
-							"form-wrapper": {
+							form: {
 								fieldErrorsFor: fieldErrorsForMock,
 								registerField: registerFieldMock,
 								isReadonly: { value: true },
@@ -516,7 +516,7 @@ describe("form-field", () => {
 				const wrapper = mountDeep({
 					global: {
 						provide: {
-							"form-wrapper": {
+							form: {
 								fieldErrorsFor: () => ["Enter a different username"],
 								registerField: registerFieldMock,
 							},
@@ -533,7 +533,7 @@ describe("form-field", () => {
 				const wrapper = mountDeep({
 					global: {
 						provide: {
-							"form-wrapper": {
+							form: {
 								fieldErrorsFor: () => ["Enter a different username"],
 								registerField: registerFieldMock,
 							},
@@ -566,7 +566,7 @@ describe("form-field", () => {
 				const wrapper = mount({
 					global: {
 						provide: {
-							"form-wrapper": {
+							form: {
 								fieldErrorsFor: fieldErrorsForMock,
 								registerField: registerFieldMock,
 								isFieldRequired: (name) => name === "username",
@@ -582,7 +582,7 @@ describe("form-field", () => {
 				const wrapper = mount({
 					global: {
 						provide: {
-							"form-wrapper": {
+							form: {
 								fieldErrorsFor: fieldErrorsForMock,
 								registerField: registerFieldMock,
 								isFieldRequired: () => false,
@@ -604,7 +604,7 @@ describe("form-field", () => {
 			});
 
 			test("should be false if a field is used in isolation", () => {
-				const wrapper = mount({ global: { provide: { "form-wrapper": { registerField: null } } } });
+				const wrapper = mount({ global: { provide: { form: { registerField: null } } } });
 				const vm = wrapper.vm;
 
 				expect(vm.haveParentForm).toBe(false);
@@ -627,7 +627,7 @@ describe("form-field", () => {
 			});
 
 			test("should be true if no parent form is detected", () => {
-				const wrapper = mount({ global: { provide: { "form-wrapper": { registerField: null } } } });
+				const wrapper = mount({ global: { provide: { form: { registerField: null } } } });
 				const vm = wrapper.vm;
 
 				expect(vm.haveNameIfRequired).toBe(true);
@@ -687,7 +687,7 @@ describe("form-field", () => {
 				const wrapper = mount({
 					global: {
 						provide: {
-							"form-wrapper": {
+							form: {
 								fieldErrorsFor: () => ["Enter a different username"],
 								registerField: registerFieldMock,
 							},
@@ -702,7 +702,7 @@ describe("form-field", () => {
 
 			test("should return an empty array when used outside form-wrapper", () => {
 				const wrapper = mount({
-					global: { provide: { "form-wrapper": {} } },
+					global: { provide: { form: {} } },
 				});
 
 				const vm = wrapper.vm;

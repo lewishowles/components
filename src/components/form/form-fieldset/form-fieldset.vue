@@ -47,7 +47,7 @@ const props = defineProps({
 	},
 });
 
-const { isCompact } = inject("form-wrapper", {});
+const { isCompact } = inject("form", {});
 
 const headerClass = computed(() =>
 	cn("border-border flex flex-col border-b", isCompact?.value ? "mb-4 pb-4" : "mb-6 pb-6 gap-4"),

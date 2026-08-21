@@ -55,7 +55,7 @@ describe("form-fieldset", () => {
 	});
 
 	describe("compact", () => {
-		const compactProvide = { "form-wrapper": { isCompact: { value: true } } };
+		const compactProvide = { form: { isCompact: { value: true } } };
 
 		test("reduces heading size when compact is provided", () => {
 			const wrapper = mount({

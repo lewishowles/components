@@ -98,6 +98,7 @@ interface UseFormReturn {
 	resetSubmitButton: () => void;
 	focusField: (fieldName: string) => void;
 	isFieldRequired: (fieldName: string) => boolean;
+	validate: () => Promise<boolean>;
 	getSubmitData: () => Record<string, unknown>;
 }
 
