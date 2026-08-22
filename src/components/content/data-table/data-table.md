@@ -44,14 +44,6 @@ A slot to allow adding content to the table's title bar, after the search box.
 
 A slot to allow adding content to the table's title bar, before configuration.
 
-#### Slot props
-
-##### `...`
-
-- type: `string`
-
-...
-
 ### `sorted-hint`
 
 - default: "Sorted by {sortedColumn} ascending/descending"

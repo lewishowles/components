@@ -1,0 +1,133 @@
+// Metadata for docs and CLI consumers that need to describe or generate form-flow usage.
+export const formFlowMetadata = {
+	name: "form-flow",
+	category: "form",
+	summary:
+		"A multi-screen form that keeps one model and validates the visible screen before continuing.",
+	props: [
+		{
+			name: "fieldErrors",
+			type: "object",
+			default: "{}",
+			summary: "Field-level errors from an external source such as an API response.",
+		},
+		{
+			name: "submitErrorsCallback",
+			type: "function",
+			default: null,
+			summary: "Maps a rejected submit Promise into field or general errors.",
+		},
+		{
+			name: "onSuccess",
+			type: "function",
+			default: null,
+			summary: "Runs after a successful final submit.",
+		},
+		{
+			name: "onError",
+			type: "function",
+			default: null,
+			summary: "Runs when final submission fails.",
+		},
+		{
+			name: "onSettled",
+			type: "function",
+			default: null,
+			summary: "Runs after every final submit attempt.",
+		},
+		{
+			name: "rules",
+			type: "object",
+			default: "{}",
+			summary: "Form-level rules run against the complete form data.",
+		},
+		{
+			name: "schema",
+			type: "object",
+			default: null,
+			summary: "A whole-object Standard Schema run against the complete form data.",
+		},
+		{
+			name: "status",
+			type: "object",
+			default: null,
+			summary: "Form-wide status feedback displayed below the screens.",
+		},
+		{
+			name: "updatePageTitleOnError",
+			type: "boolean",
+			default: true,
+			summary: "Whether failed validation prefixes document.title.",
+		},
+		{
+			name: "pageTitleErrorPrefix",
+			type: "string",
+			default: '"Error:"',
+			summary: "Prefix added to document.title after failed validation.",
+		},
+		{
+			name: "readonly",
+			type: "boolean",
+			default: false,
+			summary: "Whether child form fields are readonly.",
+		},
+		{
+			name: "unsavedChangesGuard",
+			type: "boolean",
+			default: true,
+			summary: "Whether dirty state guards against losing unsaved changes.",
+		},
+		{
+			name: "compact",
+			type: "boolean",
+			default: false,
+			summary: "Whether child form fields use compact spacing.",
+		},
+		{
+			name: "fieldTypes",
+			type: "object",
+			default: "{}",
+			summary: "Field type transformations applied to seeded and submitted values.",
+		},
+		{
+			name: "initialData",
+			type: "object | function",
+			default: null,
+			summary: "Object or getter used to seed the form.",
+		},
+		{
+			name: "recordId",
+			type: "string | number",
+			default: null,
+			summary: "Stable identifier used when reseeding the form for another record.",
+		},
+	],
+	slots: [
+		{
+			name: "default",
+			summary: "Form-screen components plus other content, scoped with isSubmitting and hasErrors.",
+		},
+		{
+			name: "empty",
+			summary:
+				"Message shown when all screens are removed and no screen is available. Defaults to No screens are available.",
+		},
+		{ name: "back-label", summary: "Label for the Back button. Defaults to Back." },
+		{ name: "continue-label", summary: "Label for Continue before the final screen." },
+		{
+			name: "submit-button-label",
+			summary:
+				"Required label for the final screen submit button. Choose a meaningful action rather than a generic label.",
+		},
+		{ name: "submit-errors", summary: "Custom rendering for general submit errors." },
+		{ name: "error-summary-title", summary: "Title for the validation error summary." },
+	],
+	events: [
+		{ name: "update:modelValue", summary: "Emitted when the form model changes." },
+		{ name: "submit", summary: "Emitted with submit-ready data after final validation passes." },
+	],
+	methods: [
+		{ name: "resetSubmitButton", summary: "Reset the final submit button's loading state." },
+	],
+	examples: [],
+};

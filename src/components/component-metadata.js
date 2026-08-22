@@ -36,11 +36,13 @@ import { formDateMetadata } from "./form/form-date/form-date.metadata.js";
 import { formFieldMetadata } from "./form/form-field/form-field.metadata.js";
 import { formFieldsetMetadata } from "./form/form-fieldset/form-fieldset.metadata.js";
 import { formFileMetadata } from "./form/form-file/form-file.metadata.js";
+import { formFlowMetadata } from "./form/form-flow/form-flow.metadata.js";
 import { formInputGroupMetadata } from "./form/form-input-group/form-input-group.metadata.js";
 import { formInputMetadata } from "./form/form-input/form-input.metadata.js";
 import { formLabelMetadata } from "./form/form-label/form-label.metadata.js";
 import { formLayoutMetadata } from "./form/form-layout/form-layout.metadata.js";
 import { formRadioGroupMetadata } from "./form/form-radio-group/form-radio-group.metadata.js";
+import { formScreenMetadata } from "./form/form-screen/form-screen.metadata.js";
 import { formSelectMetadata } from "./form/form-select/form-select.metadata.js";
 import { formTextareaMetadata } from "./form/form-textarea/form-textarea.metadata.js";
 import { formWrapperMetadata } from "./form/form-wrapper/form-wrapper.metadata.js";
@@ -115,11 +117,13 @@ const componentMetadataRecords = [
 	formFieldMetadata,
 	formFieldsetMetadata,
 	formFileMetadata,
+	formFlowMetadata,
 	formInputGroupMetadata,
 	formInputMetadata,
 	formLabelMetadata,
 	formLayoutMetadata,
 	formRadioGroupMetadata,
+	formScreenMetadata,
 	formSelectMetadata,
 	formTextareaMetadata,
 	formWrapperMetadata,

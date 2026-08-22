@@ -14,7 +14,9 @@
 					<template #title>Form</template>
 
 					<app-menu-link to="/form/form-wrapper">form-wrapper</app-menu-link>
+					<app-menu-link to="/form/form-flow">form-flow</app-menu-link>
 					<app-menu-link to="/form/form-field">form-field</app-menu-link>
+					<app-menu-link to="/form/form-screen">form-screen</app-menu-link>
 				</app-menu-section>
 
 				<app-menu-section>

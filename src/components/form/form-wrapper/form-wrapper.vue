@@ -108,20 +108,11 @@
 </template>
 
 <script setup>
-// fallow-ignore-file -- "submit" emit is used by consumers via `useForm` onSubmit callback, not directly within this component.
-import {
-	camelize,
-	computed,
-	getCurrentInstance,
-	provide,
-	ref,
-	toRefs,
-	toValue,
-	useSlots,
-	watch,
-} from "vue";
-
+// fallow-ignore-file -- "submit" emit is used by consumers via `useForm`
+// onSubmit callback, not directly within this component.
+import { computed, getCurrentInstance, provide, ref, toRefs, toValue, useSlots, watch } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
+import { toCamelCase } from "@lewishowles/helpers/string";
 import { useForm } from "@/composables/use-form/use-form.js";
 
 const props = defineProps({
@@ -231,7 +222,7 @@ const props = defineProps({
 	},
 
 	/**
-	 * Prefix added to document.title after failed validation. Localisable.
+	 * Prefix added to document.title after failed validation.
 	 */
 	pageTitleErrorPrefix: {
 		type: String,
@@ -317,7 +308,7 @@ const instance = getCurrentInstance();
 
 // Whether the caller explicitly supplied an initial data source.
 const haveInitialData = Object.keys(instance?.vnode.props ?? {}).some(
-	(key) => camelize(key) === "initialData",
+	(key) => toCamelCase(key) === "initialData",
 );
 
 const submitButtonRef = ref(null);
@@ -332,12 +323,16 @@ const formInitialData = computed(() => {
 	return haveInitialData ? toValue(props.initialData) : props.modelValue;
 });
 
+// The form-wide status prop overrides submit lifecycle status when provided.
+const formStatus = computed(() => props.status ?? submitStatus.value);
+
 /**
  * Call whatever `@submit` listener(s) the parent attached directly, so their
  * returned Promise can be awaited by useForm.
  *
  * @param  {object}  data
- * @returns {unknown}
+ *     The form data ready to be submitted.
+ * @returns  {unknown}
  *     The first listener's resolved value, passed on to onSuccess as its
  *     submit result.
  */
@@ -382,12 +377,6 @@ watch(formData, (value) => emit("update:modelValue", value), {
 	immediate: haveInitialData && Boolean(formInitialData.value),
 });
 
-const isCompact = computed(() => props.compact);
-
-// The prop overrides the engine's own submit-lifecycle status, for
-// app-driven state (e.g. session expiry) unrelated to a submit outcome.
-const formStatus = computed(() => props.status ?? submitStatus.value);
-
 // Context shared by form-field and form-layout consumers.
 provide("form", {
 	fieldErrorsFor,
@@ -396,7 +385,7 @@ provide("form", {
 	updateFieldValue,
 	isReadonly,
 	isFieldRequired,
-	isCompact,
+	isCompact: computed(() => props.compact),
 });
 
 defineExpose({ isSubmitting, isDirty, resetSubmitButton });
