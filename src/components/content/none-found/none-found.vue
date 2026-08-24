@@ -1,6 +1,7 @@
 <template>
 	<div class="flex flex-col gap-1" data-component="none-found" data-test="none-found">
 		<component
+			v-if="haveTitle"
 			:is="headingLevel"
 			:class="cn('text-content-strong text-2xl font-bold', titleClasses)"
 			data-part="title"
@@ -47,6 +48,8 @@ defineProps({
 });
 
 const slots = useSlots();
+// Whether a title has been provided by the user.
+const haveTitle = computed(() => isNonEmptySlot(slots.title));
 // Whether any actions have been provided by the user.
 const haveActions = computed(() => isNonEmptySlot(slots.actions));
 </script>
