@@ -41,7 +41,7 @@
 
 		<div
 			ref="contentElement"
-			:class="cn('mt-3', detailsClasses)"
+			:class="cn('mbs-3', detailsClasses)"
 			v-bind="{
 				hidden: isOpen ? undefined : 'until-found',
 				role: contentRole,

@@ -8,7 +8,7 @@
 		@close="handleClose"
 	>
 		<template #summary="summarySlotProps">
-			<slot name="summary" v-bind="summarySlotProps" />
+			<slot name="summary" v-bind="summarySlotProps ?? {}" />
 		</template>
 
 		<template #default="contentSlotProps">
@@ -137,7 +137,7 @@ const resolvedDetailsClasses = computed(() =>
 			? "absolute bottom-full animate-fade-in-up"
 			: "absolute top-full animate-fade-in-down",
 		computedAlign.value === "start" ? "inset-s-0" : "inset-e-0",
-		"mt-0",
+		"mbs-0",
 		placementClasses.value,
 		{ invisible: isPositioning.value },
 		props.detailsClasses,
@@ -149,7 +149,7 @@ const summaryDetailsProps = computed(() => ({
 	...attrs,
 	class: cn(!isNarrow.value && "relative", !isNarrow.value && isOpen.value && "z-50", attrs.class),
 	closeWithEscape: !isNarrow.value && props.closeWithEscape,
-	detailsClasses: isNarrow.value ? "mt-0" : resolvedDetailsClasses.value,
+	detailsClasses: isNarrow.value ? "mbs-0" : resolvedDetailsClasses.value,
 	summaryClasses: props.summaryClasses,
 }));
 

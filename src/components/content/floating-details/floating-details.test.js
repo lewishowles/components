@@ -59,7 +59,7 @@ describe("floating-details", () => {
 			isNarrow.value = true;
 			await nextTick();
 
-			expect(summaryDetails.props("detailsClasses")).toBe("mt-0");
+			expect(summaryDetails.props("detailsClasses")).toBe("mbs-0");
 		});
 
 		test("removes the positioning visibility class when crossing to narrow while open", async () => {
@@ -73,7 +73,7 @@ describe("floating-details", () => {
 			isNarrow.value = true;
 			await nextTick();
 
-			expect(summaryDetails.props("detailsClasses")).toBe("mt-0");
+			expect(summaryDetails.props("detailsClasses")).toBe("mbs-0");
 		});
 
 		test("forwards only the disclosure props needed by summary-details", async () => {
@@ -250,9 +250,9 @@ describe("floating-details", () => {
 
 			const contentClasses = wrapper.find('[data-test="floating-details-content"]').classes();
 
-			expect(contentClasses).toContain("mt-3");
-			expect(contentClasses).not.toContain("mt-0");
-			expect(contentClasses).not.toContain("mb-3");
+			expect(contentClasses).toContain("mbs-1");
+			expect(contentClasses).not.toContain("mbs-0");
+			expect(contentClasses).not.toContain("mbe-1");
 		});
 
 		test("cancels summary-details' default margin above the trigger", async () => {
@@ -266,9 +266,9 @@ describe("floating-details", () => {
 
 			const contentClasses = wrapper.find('[data-test="floating-details-content"]').classes();
 
-			expect(contentClasses).toContain("mb-3");
-			expect(contentClasses).toContain("mt-0");
-			expect(contentClasses).not.toContain("mt-3");
+			expect(contentClasses).toContain("mbe-1");
+			expect(contentClasses).toContain("mbs-0");
+			expect(contentClasses).not.toContain("mbs-1");
 		});
 
 		test("closes on outside pointerdown without moving focus", async () => {
