@@ -8,6 +8,8 @@ When 6 or fewer panels are present, the panel content is wrapped in `role="regio
 
 ### `title`
 
+- **required**
+
 The title of the panel, which is used in the show / hide button.
 
 ### `introduction`

@@ -6,7 +6,8 @@ export const accordionPanelMetadata = {
 	slots: [
 		{
 			name: "title",
-			summary: "Panel heading text.",
+			required: true,
+			summary: "Panel heading text used in the show / hide button.",
 		},
 		{
 			name: "introduction",
