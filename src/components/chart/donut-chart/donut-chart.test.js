@@ -1,5 +1,5 @@
 import { createMount } from "@lewishowles/testing/vue";
-import { describe, expect, test, vi } from "vite-plus/test";
+import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import DonutChart from "./donut-chart.vue";
 
 const defaultSegments = [
@@ -13,13 +13,35 @@ const defaultSlots = { label: "Sales by region" };
 const mount = createMount(DonutChart, { props: defaultProps, slots: defaultSlots });
 
 describe("donut-chart", () => {
-	console.warn = vi.fn();
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
 
 	describe("Initialisation", () => {
 		test("should exist as a Vue component", () => {
 			const wrapper = mount();
 
 			expect(wrapper.vm).toBeTypeOf("object");
+		});
+	});
+
+	describe("Accessibility", () => {
+		test("should warn when no label slot is provided", () => {
+			const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+			mount({ slots: { label: null } });
+
+			expect(warn).toHaveBeenCalledWith(
+				"[donut-chart] No accessible name found for the chart. Provide a `label` slot.",
+			);
+		});
+
+		test("should not warn when a label slot is provided", () => {
+			const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+			mount();
+
+			expect(warn).not.toHaveBeenCalled();
 		});
 	});
 
@@ -68,6 +90,8 @@ describe("donut-chart", () => {
 
 		describe("haveLabel", () => {
 			test("Is false when no label slot is provided", () => {
+				vi.spyOn(console, "warn").mockImplementation(() => {});
+
 				const wrapper = mount({ slots: { label: null } });
 
 				expect(wrapper.vm.haveLabel).toBe(false);

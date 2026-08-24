@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { computed, useId, useSlots } from "vue";
+import { computed, onMounted, useId, useSlots } from "vue";
 import { useChartConfig } from "@/composables/use-chart-config/use-chart-config";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
@@ -129,6 +129,12 @@ const slices = computed(() => {
 
 		return slice;
 	});
+});
+
+onMounted(() => {
+	if (import.meta.env.DEV && !haveLabel.value) {
+		console.warn("[donut-chart] No accessible name found for the chart. Provide a `label` slot.");
+	}
 });
 
 /**

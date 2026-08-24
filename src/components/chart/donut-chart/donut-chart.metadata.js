@@ -14,6 +14,7 @@ export const donutChartMetadata = {
 	slots: [
 		{
 			name: "label",
+			required: true,
 			summary: "Accessible chart label.",
 		},
 		{
