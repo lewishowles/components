@@ -178,6 +178,8 @@ All validation lives here, keyed by field name. Each value is an array of rules 
 
 A whole-object Standard Schema (e.g. Zod, Valibot), validated against the full form data in addition to `rules`. Both run together and merge into a single per-field result: schema errors first, then `rules` errors, with identical messages deduplicated. A field is invalid if either source reports an issue.
 
+On final submission, an error on another screen moves the flow to the first screen (in order) with an error, and focuses that screen's error summary. Fixing it and submitting again moves to the next screen with an error, one at a time. Root-level errors, and errors belonging only to a screen that is no longer registered, stay on the current screen and appear in the flow-level error summary, which receives focus.
+
 ## Events
 
 ### `submit`

@@ -363,9 +363,9 @@ Additional actions to appear below the primary and secondary actions, such as "C
 
 Overrides the default general error display near the form's actions. If not provided, a single error is rendered as a `<p>` and multiple errors as a `<ul>`.
 
-| Slot prop | Type       | Description                                                                       |
-| --------- | ---------- | --------------------------------------------------------------------------------- |
-| `errors`  | `string[]` | General errors produced by `submitErrorsCallback` whose keys don't match a field. |
+| Slot prop | Type       | Description                                                                            |
+| --------- | ---------- | -------------------------------------------------------------------------------------- |
+| `errors`  | `string[]` | Parsed submit errors without a matching field, plus root-level rule and schema errors. |
 
 ### `error-summary-title`
 

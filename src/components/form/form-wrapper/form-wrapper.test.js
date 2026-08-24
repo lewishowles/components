@@ -153,6 +153,35 @@ describe("form-wrapper", () => {
 			});
 		});
 
+		describe("schema", () => {
+			test("shows a root-level schema error as a general submit error", async () => {
+				const onSubmit = vi.fn();
+
+				const wrapper = mountDeep({
+					props: {
+						onSubmit,
+						schema: {
+							"~standard": {
+								validate: vi.fn().mockResolvedValue({
+									issues: [{ message: "The form is invalid", path: [] }],
+								}),
+							},
+						},
+					},
+					slots: { "submit-button-label": "Save" },
+				});
+
+				await wrapper.vm.registerField({ name: "email", id: "email-id" });
+				await wrapper.vm.handleFormSubmit();
+				await flushPromises();
+
+				expect(wrapper.get('[data-test="form-wrapper-general-errors"]').text()).toContain(
+					"The form is invalid",
+				);
+				expect(onSubmit).not.toHaveBeenCalled();
+			});
+		});
+
 		describe("fieldTypes", () => {
 			test("coerces submitted data per the declared field types", async () => {
 				const onSubmit = vi.fn();

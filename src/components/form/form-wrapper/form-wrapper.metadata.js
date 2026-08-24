@@ -149,7 +149,7 @@ export const formWrapperMetadata = {
 		{
 			name: "submit-errors",
 			summary:
-				"Custom rendering for general submit errors. Scoped with errors: string[]; all general errors from submitErrorsCallback.",
+				"Custom rendering for general submit errors. Includes parsed submit errors without a matching field and root-level rule and schema errors. Scoped with errors: string[].",
 		},
 		{
 			name: "error-summary-title",

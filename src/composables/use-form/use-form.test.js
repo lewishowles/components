@@ -755,6 +755,25 @@ describe("useForm", () => {
 			expect(formLevelErrors.value).toEqual({});
 		});
 
+		test("includes unregistered errors when unscoped validation is requested", async () => {
+			const { formLevelErrors, registerField, validate } = createForm({
+				initialData: { email: "person@example.com", displayName: "" },
+				props: {
+					rules: {
+						email: [{ rule: "required", message: "Email is required" }],
+						displayName: [{ rule: "required", message: "Display name is required" }],
+					},
+				},
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+
+			const result = await validate({ scoped: false });
+
+			expect(result).toBe(false);
+			expect(formLevelErrors.value).toEqual({ displayName: ["Display name is required"] });
+		});
+
 		test("returns false and resets the submit button before focusing errors", async () => {
 			const focus = vi.fn();
 			const reset = vi.fn();
@@ -1060,6 +1079,34 @@ describe("useForm", () => {
 			await handleFormSubmit();
 
 			expect(formLevelErrors.value).toEqual({ email: ["Required"] });
+		});
+
+		test("retains a schema issue without a path as a root error", async () => {
+			const schema = makeSchema([{ message: "The form is invalid", path: [] }]);
+
+			const { formLevelErrors, registerField, validate } = createForm({
+				props: { schema },
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+			const result = await validate();
+
+			expect(result).toBe(false);
+			expect(formLevelErrors.value).toEqual({ "": ["The form is invalid"] });
+		});
+
+		test("surfaces a root schema issue as a general submit error", async () => {
+			const schema = makeSchema([{ message: "The form is invalid", path: [] }]);
+
+			const { generalSubmitErrors, haveGeneralSubmitErrors, registerField, validate } = createForm({
+				props: { schema },
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+			await validate();
+
+			expect(generalSubmitErrors.value).toEqual(["The form is invalid"]);
+			expect(haveGeneralSubmitErrors.value).toBe(true);
 		});
 
 		test("runs schema and keyed rules together, merging into one per-field result", async () => {

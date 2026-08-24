@@ -22,6 +22,9 @@ import { cloneFormData } from "@/utilities/clone-form-data.js";
 import { registerDirtyForm, unregisterDirtyForm } from "./dirty-forms-registry.js";
 import { validateForm } from "@lewishowles/helpers/form";
 
+// Key used for errors without a field name.
+const ROOT_ERROR_KEY = "";
+
 /**
  * Used by form-wrapper; also usable directly.
  *
@@ -133,8 +136,8 @@ export function useForm({
 	// Overall submit result for form-wide live status feedback.
 	const status = ref(null);
 
-	// Parsed submit errors whose key doesn't match a registered field, surfaced
-	// as general errors rather than field errors.
+	// Parsed submit errors without a matching field, plus root-level rule and
+	// schema errors, surfaced as general errors.
 	const generalSubmitErrors = computed(() => {
 		const messages = [];
 
@@ -149,6 +152,8 @@ export function useForm({
 
 			messages.push(...normaliseFieldErrors(submitErrors.value[key]));
 		}
+
+		messages.push(...normaliseFieldErrors(formLevelErrors.value[ROOT_ERROR_KEY]));
 
 		return messages;
 	});
@@ -515,8 +520,10 @@ export function useForm({
 	}
 
 	/**
-	 * Validate a whole-object Standard Schema against the current form data,
-	 * mapping each issue's path[0] to its field name.
+	 * Validate a whole-object Standard Schema against the current form data. A
+	 * Standard Schema issue's path locates the field it belongs to: path[0] is
+	 * that field's name, or the segment's key when the path entry is an object.
+	 * Issues without a field path use the empty string as their field name.
 	 */
 	async function validateFormLevelSchema() {
 		const currentSchema = toValue(schema);
@@ -533,14 +540,23 @@ export function useForm({
 		}
 
 		for (const issue of result.issues) {
-			const segment = issue.path?.[0];
-			const fieldName = isObject(segment) ? segment.key : segment;
-
-			if (!isNonEmptyString(fieldName)) {
+			// Skip an issue with no message text, regardless of its field name,
+			// since it would render as a blank error.
+			if (!isNonEmptyString(issue.message)) {
 				continue;
 			}
 
-			(errors[fieldName] ??= []).push(issue.message);
+			const segment = issue.path?.[0];
+			const fieldName = isObject(segment) ? segment.key : segment;
+			// A schema issue with no field path is a root issue; group it under the
+			// root error key so it surfaces as a form-level error instead of being dropped.
+			const normalisedFieldName = isNonEmptyString(fieldName) ? fieldName : ROOT_ERROR_KEY;
+
+			if (!errors[normalisedFieldName]) {
+				errors[normalisedFieldName] = [];
+			}
+
+			errors[normalisedFieldName].push(issue.message);
 		}
 
 		return errors;
@@ -551,14 +567,18 @@ export function useForm({
 	 * current form data, merging both into a single per-field result: schema
 	 * errors first, then keyed-rule errors, with duplicate messages removed.
 	 *
-	 * Registered field names are provided to avoid an issue where we validate
-	 * fields that aren't, or haven't yet been, presented to the user, such as a
-	 * future screen of a multi-screen form.
+	 * When scoped is true, errors for fields that are not registered are
+	 * excluded. Root-level errors always remain. Set scoped to false to keep
+	 * every known field, rule, and schema result unconditionally. Use this
+	 * for a final multi-screen submission, once every screen has been visited.
 	 *
 	 * @param  {Set<string>}  registeredFieldNames
 	 *     Field names registered when validation started.
+	 * @param  {boolean}  scoped
+	 *     Whether to keep only errors for registered fields. Set false for final
+	 *     multi-screen submission, when every screen has been visited.
 	 */
-	async function validateFormLevelRules(registeredFieldNames) {
+	async function validateFormLevelRules(registeredFieldNames, scoped = true) {
 		const currentRules = toValue(rules);
 		const schemaErrors = await validateFormLevelSchema();
 
@@ -570,7 +590,10 @@ export function useForm({
 		const fieldNames = new Set([...Object.keys(schemaErrors), ...Object.keys(ruleResults)]);
 
 		for (const fieldName of fieldNames) {
-			if (!registeredFieldNames.has(fieldName)) {
+			// A root-level rule or schema error uses the root error key.
+			const isRootError = fieldName === ROOT_ERROR_KEY;
+
+			if (scoped && !isRootError && !registeredFieldNames.has(fieldName)) {
 				continue;
 			}
 
@@ -592,9 +615,12 @@ export function useForm({
 	/**
 	 * Handle the submit of the form, checking any provided validation, and
 	 * submitting the appropriate event if validation succeeds.
+	 *
+	 * @param  {object}  options
+	 *     Validation options. See validate() for `focus` and `scoped`.
 	 */
-	async function handleFormSubmit() {
-		const valid = await validate();
+	async function handleFormSubmit(options = {}) {
+		const valid = await validate(options);
 
 		if (!valid) {
 			return;
@@ -606,31 +632,47 @@ export function useForm({
 	/**
 	 * Validate the currently registered fields without submitting the form.
 	 *
+	 * @param  {object}  options
+	 *     Validation options.
+	 * @param  {boolean}  [options.focus]
+	 *     Whether to move focus to the error summary on failure.
+	 * @param  {boolean}  [options.scoped]
+	 *     Whether to keep only errors for registered fields. Root-level errors
+	 *     always remain. Set false to validate every known field, rule,
+	 *     and schema result unconditionally for final multi-screen submission,
+	 *     when every screen has been visited.
 	 * @returns {Promise<boolean>}
-	 *     Whether validation passed for the currently registered fields.
+	 *     Whether validation passed for the given fields.
 	 */
-	async function validate() {
+	async function validate(options = {}) {
+		const { focus = true, scoped = true } = options;
+
 		submitErrors.value = {};
 		formLevelErrors.value = {};
 
-		if (!haveFormFields.value) {
+		if (!haveFormFields.value && scoped) {
 			return true;
 		}
 
-		// Scope validation errors to the fields that were present when
-		// validation started.
-		const registeredFieldNames = new Set(Object.keys(formFields));
+		await validateFormLevelRules(new Set(Object.keys(formFields)), scoped);
 
-		await validateFormLevelRules(registeredFieldNames);
+		// haveErrorSummary only reflects currently mounted fields, so this catches
+		// root-level errors (always) and, when unscoped, any error for a field
+		// outside the mounted set.
+		const haveUnsummarisedErrors = scoped
+			? Object.hasOwn(formLevelErrors.value, ROOT_ERROR_KEY)
+			: isNonEmptyObject(formLevelErrors.value);
 
-		if (!haveErrorSummary.value) {
+		if (!haveErrorSummary.value && !haveUnsummarisedErrors) {
 			return true;
 		}
 
 		resetSubmitButton();
 		updatePageTitle();
 
-		await focusErrors();
+		if (focus) {
+			await focusErrors();
+		}
 
 		return false;
 	}
@@ -774,6 +816,7 @@ export function useForm({
 		unregisterField,
 		updateFieldValue,
 		fieldErrorsFor,
+		normaliseFieldErrors,
 		handleFormSubmit,
 		handleSubmitError,
 		resetSubmitButton,

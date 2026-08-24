@@ -300,9 +300,106 @@ describe("form-flow", () => {
 			expect(wrapper.text()).toContain("Passwords must match");
 			expect(wrapper.find('[data-screen-id="password"]').exists()).toBe(false);
 		});
+
+		test("shows a root validation error in the flow summary", async () => {
+			const onSubmit = vi.fn();
+
+			const wrapper = mountDeep({
+				props: {
+					modelValue: { first: "ready" },
+					onSubmit,
+					schema: {
+						"~standard": {
+							validate: vi.fn().mockResolvedValue({
+								issues: [{ message: "The form is not ready to submit", path: [] }],
+							}),
+						},
+					},
+				},
+				slots: { default: () => screen("first", "first") },
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(onSubmit).not.toHaveBeenCalled();
+			expect(wrapper.find('[data-screen-id="first"]').exists()).toBe(true);
+			expect(wrapper.find('[data-test="form-flow-error-summary"]').text()).toContain(
+				"The form is not ready to submit",
+			);
+		});
 	});
 
 	describe("Submit", () => {
+		test("routes final errors to the first visible screen with an error", async () => {
+			const secondRule = vi
+				.fn()
+				.mockReturnValueOnce(true)
+				.mockReturnValueOnce(true)
+				.mockReturnValue(false);
+
+			const wrapper = mountDeep({
+				props: {
+					modelValue: { first: "ready", second: "ready", third: "" },
+					rules: {
+						second: [{ rule: "custom", validate: secondRule, message: "Second is invalid" }],
+						third: [{ rule: "required", message: "Third is required" }],
+					},
+				},
+				slots: {
+					default: () => [
+						screen("first", "first"),
+						screen("second", "second"),
+						screen("third", "third"),
+					],
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(true);
+			expect(wrapper.find('[data-screen-id="third"]').exists()).toBe(false);
+			expect(wrapper.text()).toContain("Second is invalid");
+		});
+
+		test("shows a removed screen's final error in the flow summary", async () => {
+			const state = {
+				first: ref(true),
+				second: ref(true),
+				third: ref(true),
+			};
+
+			const wrapper = mountConditionalFlow(state, ["first", "second", "third"], {
+				modelValue: { first: "ready", second: "ready", third: "" },
+				rules: { third: [{ rule: "required", message: "Third is required" }] },
+			});
+
+			await nextTick();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			state.third.value = false;
+			await nextTick();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(true);
+			expect(wrapper.find('[data-test="form-flow-error-summary"]').text()).toContain(
+				"Third is required",
+			);
+		});
+
 		test("emits submit when no submit listener is attached", async () => {
 			const wrapper = mountDeep({
 				props: { modelValue: { first: "ready" } },

@@ -45,7 +45,8 @@ export const formFlowMetadata = {
 			name: "schema",
 			type: "object",
 			default: null,
-			summary: "A whole-object Standard Schema run against the complete form data.",
+			summary:
+				"A whole-object Standard Schema run against the complete form data. On final submission, errors on another visible screen route to the first visible screen with an error; root-level errors, and errors belonging to a screen that is no longer registered, render in the flow-level summary.",
 		},
 		{
 			name: "status",
@@ -119,7 +120,11 @@ export const formFlowMetadata = {
 			summary:
 				"Required label for the final screen submit button. Choose a meaningful action rather than a generic label.",
 		},
-		{ name: "submit-errors", summary: "Custom rendering for general submit errors." },
+		{
+			name: "submit-errors",
+			summary:
+				"Custom rendering for parsed submit errors without a matching field, plus root-level rule and schema errors.",
+		},
 		{ name: "error-summary-title", summary: "Title for the validation error summary." },
 	],
 	events: [

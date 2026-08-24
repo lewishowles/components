@@ -27,6 +27,11 @@ interface ErrorSummaryEntry {
 	message: string;
 }
 
+interface ValidateOptions {
+	focus?: boolean;
+	scoped?: boolean;
+}
+
 interface StandardSchemaLike {
 	"~standard": {
 		validate: (value: unknown) => unknown;
@@ -93,12 +98,13 @@ interface UseFormReturn {
 	unregisterField: (fieldName: string) => void;
 	updateFieldValue: (name: string, value: unknown) => Promise<void>;
 	fieldErrorsFor: (fieldName: string) => string[];
-	handleFormSubmit: () => Promise<void>;
+	normaliseFieldErrors: (value: unknown) => string[];
+	handleFormSubmit: (options?: ValidateOptions) => Promise<void>;
 	handleSubmitError: (error: unknown) => Promise<void>;
 	resetSubmitButton: () => void;
 	focusField: (fieldName: string) => void;
 	isFieldRequired: (fieldName: string) => boolean;
-	validate: () => Promise<boolean>;
+	validate: (options?: ValidateOptions) => Promise<boolean>;
 	getSubmitData: () => Record<string, unknown>;
 }
 
