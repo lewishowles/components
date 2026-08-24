@@ -1,8 +1,17 @@
 import { createMount } from "@lewishowles/testing/vue";
-import { describe, expect, test, vi } from "vite-plus/test";
+import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import SummaryDetails from "./summary-details.vue";
 
-const mount = createMount(SummaryDetails);
+const defaultSlots = { summary: "Summary details title" };
+
+const mount = createMount(SummaryDetails, { slots: defaultSlots });
+
+const missingSummaryWarning =
+	"[summary-details] No accessible name found for the trigger. Provide a `summary` slot.";
+
+afterEach(() => {
+	vi.restoreAllMocks();
+});
 
 describe("summary-details", () => {
 	describe("Initialisation", () => {
@@ -57,6 +66,24 @@ describe("summary-details", () => {
 			window.dispatchEvent(event);
 
 			expect(preventDefaultSpy).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("Accessibility", () => {
+		test("warns when the summary slot is empty", () => {
+			const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+			mount({ slots: { summary: null } });
+
+			expect(warning).toHaveBeenCalledWith(missingSummaryWarning);
+		});
+
+		test("does not warn when the summary slot has content", () => {
+			const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+			mount();
+
+			expect(warning).not.toHaveBeenCalledWith(missingSummaryWarning);
 		});
 	});
 

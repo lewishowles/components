@@ -76,6 +76,7 @@ export const summaryDetailsMetadata = {
 	slots: [
 		{
 			name: "summary",
+			required: true,
 			summary: "Summary control content; receives open state and toggle helpers.",
 		},
 		{

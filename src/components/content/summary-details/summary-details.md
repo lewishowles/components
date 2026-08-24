@@ -8,6 +8,8 @@ When closed, the content is hidden using `hidden="until-found"`, making it disco
 
 ### `summary`
 
+- **required**
+
 The content to be displayed in the summary.
 
 | Slot prop | Type       | Description                                         |

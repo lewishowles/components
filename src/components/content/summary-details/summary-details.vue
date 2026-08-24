@@ -72,8 +72,9 @@
  * toggled content needs to appear as a floating panel, such as a dropdown menu.
  */
 import { cn } from "@/utilities/cn.js";
-import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from "vue";
+import { computed, nextTick, onMounted, ref, useSlots, useTemplateRef, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { onKeyStroke, useFocusWithin } from "@vueuse/core";
 import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
 
@@ -211,6 +212,8 @@ const isOpen = defineModel({
 	default: false,
 });
 
+// The component's own slots, used to check the summary slot has content.
+const slots = useSlots();
 // A reference to the details element, from which we can determine the current
 // "open" state.
 const detailsElement = useTemplateRef("detailsElement");
@@ -229,6 +232,8 @@ const shouldAnnounce = ref(true);
 const contentRole = computed(() => (props.toggletip ? "status" : null));
 // The ARIA live region type to apply in toggletip mode.
 const contentLive = computed(() => (props.toggletip ? "polite" : null));
+// Whether the summary slot has content for the disclosure trigger.
+const haveSummary = computed(() => isNonEmptySlot(slots.summary));
 
 // The current icon to display. If an override icon is chosen, we always return
 // that, otherwise we return the appropriate icon for the current state.
@@ -253,6 +258,12 @@ const currentIconComponent = computed(() => resolveIconComponent(currentIcon.val
  */
 onMounted(() => {
 	isOpen.value = props.open;
+
+	if (import.meta.env.DEV && !haveSummary.value) {
+		console.warn(
+			"[summary-details] No accessible name found for the trigger. Provide a `summary` slot.",
+		);
+	}
 
 	if (isOpen.value && detailsElement.value.open === false) {
 		detailsElement.value.open = true;
