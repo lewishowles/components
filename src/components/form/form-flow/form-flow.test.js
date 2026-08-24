@@ -300,6 +300,11 @@ describe("form-flow", () => {
 			expect(
 				wrapper.get('[data-test="completion-state"]').attributes("data-completed-second"),
 			).toBe("false");
+
+			await wrapper.get('[data-test="form-flow-back-button"]').trigger("click");
+			await nextTick();
+
+			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(true);
 		});
 
 		test("warns and shows an empty state when mounted without screens", async () => {

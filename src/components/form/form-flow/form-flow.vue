@@ -367,14 +367,11 @@ const errorSummaryToDisplay = computed(() => {
 
 // Screen IDs, kept in order so that screen navigation makes sense.
 const screenIds = ref([]);
-// Fields linked to their screen.
-const screenFields = ref({});
+// Per-screen state. Keep slotOrder when a screen unregisters so it can return
+// to its original position; the other values reset when it unregisters.
+const screens = ref({});
 // The screen whose content is currently rendered.
 const activeScreenId = ref(null);
-// Screen IDs that passed validation when moving forward.
-const completedScreenIds = ref([]);
-// Labels registered by each screen for the default progress display.
-const screenLabels = ref({});
 // Use the registered screen IDs to determine the current navigation position.
 const activeScreenIndex = computed(() => screenIds.value.indexOf(activeScreenId.value));
 // Whether a screen is available to render.
@@ -388,7 +385,9 @@ const activeScreenProgressLabel = computed(() => getScreenProgress(activeScreenI
 // Screen labels and completion state for a custom progress display.
 const progressSlotProps = computed(() => ({
 	current: getScreenProgress(activeScreenId.value),
-	completed: completedScreenIds.value.map((screenId) => getScreenProgress(screenId)),
+	completed: screenIds.value
+		.filter((screenId) => screens.value[screenId]?.completed)
+		.map((screenId) => getScreenProgress(screenId)),
 	remaining: screenIds.value
 		.slice(activeScreenIndex.value + 1)
 		.map((screenId) => getScreenProgress(screenId)),
@@ -407,7 +406,7 @@ const screenFieldNamesById = computed(() => {
 	const namesByScreen = {};
 
 	for (const screenId of screenIds.value) {
-		const fieldNames = screenFields.value[screenId];
+		const fieldNames = screens.value[screenId]?.fields;
 
 		if (fieldNames) {
 			namesByScreen[screenId] = [...fieldNames];
@@ -479,7 +478,7 @@ async function callSubmitListeners(data) {
  *     The screen ID and its plain-text progress label.
  */
 function getScreenProgress(screenId) {
-	const progressLabel = unref(screenLabels.value[screenId]?.progressLabel);
+	const progressLabel = unref(screens.value[screenId]?.label);
 
 	return {
 		id: screenId,
@@ -498,18 +497,32 @@ function getScreenProgress(screenId) {
  *     The label for the dedicated progress section.
  */
 function registerScreen({ id: screenId, progressLabel } = {}) {
-	// We use a unique array, rather than a Set, to provide order-preserving
-	// indexOf and splice.
 	if (!isNonEmptyString(screenId) || screenIds.value.includes(screenId)) {
 		return;
 	}
 
-	screenIds.value.push(screenId);
-	screenLabels.value[screenId] = { progressLabel };
-
-	if (!screenFields.value[screenId]) {
-		screenFields.value[screenId] = [];
+	if (!screens.value[screenId]) {
+		screens.value[screenId] = {
+			slotOrder: Object.values(screens.value).length,
+			label: progressLabel,
+			fields: [],
+			completed: false,
+		};
 	}
+
+	// Re-insert the screen in its original position, if it had one, based on
+	// its `slotOrder`, stored in `screens`.
+	const screen = screens.value[screenId];
+
+	const insertionIndex = screenIds.value.findIndex(
+		(registeredScreenId) => screens.value[registeredScreenId].slotOrder > screen.slotOrder,
+	);
+
+	screenIds.value.splice(
+		insertionIndex === -1 ? screenIds.value.length : insertionIndex,
+		0,
+		screenId,
+	);
 
 	if (!isNonEmptyString(activeScreenId.value)) {
 		activeScreenId.value = screenId;
@@ -517,8 +530,10 @@ function registerScreen({ id: screenId, progressLabel } = {}) {
 }
 
 /**
- * Remove a screen, clear its completion state, and choose the nearest remaining
- * screen if the removed screen was active.
+ * Remove a screen, reset its label, fields, and completion state to fresh
+ * defaults (its slotOrder is kept so a later reappearance restores its
+ * original position), and choose the nearest remaining screen if the removed
+ * screen was active.
  *
  * @param  {string}  screenId
  *     The screen ID.
@@ -534,12 +549,13 @@ function unregisterScreen(screenId) {
 
 	screenIds.value.splice(screenIndex, 1);
 
-	delete screenLabels.value[screenId];
-	delete screenFields.value[screenId];
+	const screen = screens.value[screenId];
 
-	completedScreenIds.value = completedScreenIds.value.filter(
-		(completedScreenId) => completedScreenId !== screenId,
-	);
+	if (screen) {
+		screen.label = undefined;
+		screen.fields = [];
+		screen.completed = false;
+	}
 
 	if (!wasActive) {
 		return;
@@ -571,7 +587,7 @@ function isCurrentScreen(screenId) {
  *     Whether the screen is complete.
  */
 function isScreenComplete(screenId) {
-	return completedScreenIds.value.includes(screenId);
+	return Boolean(screens.value[screenId]?.completed);
 }
 
 /**
@@ -585,7 +601,7 @@ function markScreenComplete(screenId) {
 		return;
 	}
 
-	completedScreenIds.value.push(screenId);
+	screens.value[screenId].completed = true;
 }
 
 /**
@@ -601,9 +617,9 @@ function resetCompletionStartingAtScreen(screenId) {
 		return;
 	}
 
-	completedScreenIds.value = completedScreenIds.value.filter(
-		(completedScreenId) => screenIds.value.indexOf(completedScreenId) < screenIndex,
-	);
+	for (const completedScreenId of screenIds.value.slice(screenIndex)) {
+		screens.value[completedScreenId].completed = false;
+	}
 }
 
 /**
@@ -621,13 +637,13 @@ function registerFlowField(field) {
 		return;
 	}
 
-	const names = screenFields.value[activeScreenId.value] ?? [];
+	const names = screens.value[activeScreenId.value]?.fields ?? [];
 
 	if (!names.includes(field.name)) {
 		names.push(field.name);
 	}
 
-	screenFields.value[activeScreenId.value] = names;
+	screens.value[activeScreenId.value].fields = names;
 }
 
 /**
@@ -648,7 +664,7 @@ async function updateFieldValueAndClearCompletion(name, value) {
 	}
 
 	const screenId = screenIds.value.find((candidate) =>
-		screenFields.value[candidate]?.includes(name),
+		screens.value[candidate]?.fields?.includes(name),
 	);
 
 	if (screenId) {
