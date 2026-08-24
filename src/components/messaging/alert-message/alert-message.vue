@@ -148,7 +148,7 @@ const alertColours = computed(() => {
 		case alertTypes.WARNING:
 			return "border-warning-subtle bg-warning-subtle text-warning";
 		case alertTypes.INFO:
-			return "border-primary-subtle bg-primary-subtle text-primary-800 dark:text-primary-200";
+			return "border-info-subtle bg-info-subtle text-info";
 		default:
 			return "border-border bg-surface-subtle text-grey-800 dark:border-transparent dark:text-grey-200";
 	}
