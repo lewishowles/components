@@ -20,10 +20,24 @@ describe("loading-skeleton", () => {
 			expect(wrapper.find("[data-test='loading-skeleton-no-label']").exists()).toBe(true);
 		});
 
+		test("does not render a live region if no label slot is provided", () => {
+			const wrapper = mount();
+
+			expect(wrapper.find("[data-test='loading-skeleton']").exists()).toBe(false);
+		});
+
 		test("does not show an error if a label slot is provided", () => {
 			const wrapper = mount({ slots: { label: "Loading user data" } });
 
 			expect(wrapper.find("[data-test='loading-skeleton-no-label']").exists()).toBe(false);
+		});
+
+		test("renders the label in a polite live region", () => {
+			const wrapper = mount({ slots: { label: "Loading user data" } });
+			const liveRegion = wrapper.find("[data-test='loading-skeleton']");
+
+			expect(liveRegion.attributes("aria-live")).toBe("polite");
+			expect(liveRegion.text()).toBe("Loading user data");
 		});
 	});
 });

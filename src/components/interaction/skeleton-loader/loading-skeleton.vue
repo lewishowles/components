@@ -11,7 +11,7 @@
 			A `label` is required for accessibility purposes.
 		</alert-message>
 
-		<div class="sr-only" aria-live="polite" data-test="loading-skeleton">
+		<div v-if="haveLabel" class="sr-only" aria-live="polite" data-test="loading-skeleton">
 			<slot name="label" />
 		</div>
 
