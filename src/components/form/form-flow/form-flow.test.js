@@ -1,7 +1,7 @@
 import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test, vi } from "vite-plus/test";
 import { flushPromises } from "@vue/test-utils";
-import { defineComponent, h, nextTick, ref } from "vue";
+import { defineComponent, h, inject, nextTick, ref } from "vue";
 
 import FormField from "../form-field/form-field.vue";
 import FormScreen from "../form-screen/form-screen.vue";
@@ -13,7 +13,7 @@ const mountDeep = createDeepMount(FormFlow);
 function screen(id, fieldName, label = fieldName) {
 	return h(
 		FormScreen,
-		{ id },
+		{ id, key: id },
 		{
 			default: () => h(FormField, { name: fieldName }, { default: () => label }),
 		},
@@ -22,6 +22,26 @@ function screen(id, fieldName, label = fieldName) {
 
 function flowSlots() {
 	return [screen("first", "first", "First answer"), screen("second", "second", "Second answer")];
+}
+
+// Render screen completion state for test assertions.
+function createCompletionStateOutput(screenIds) {
+	return defineComponent({
+		setup() {
+			const formFlow = inject("form-flow", {});
+
+			return () =>
+				h("output", {
+					"data-test": "completion-state",
+					...Object.fromEntries(
+						screenIds.map((screenId) => [
+							`data-completed-${screenId}`,
+							String(formFlow.isScreenComplete?.(screenId) ?? false),
+						]),
+					),
+				});
+		},
+	});
 }
 
 /**
@@ -41,14 +61,16 @@ function createConditionalFlow(state, screenIds, props = {}) {
 		setup() {
 			return () =>
 				h(FormFlow, props, {
-					default: () =>
-						screenIds.map((screenId) => {
+					default: () => [
+						...screenIds.map((screenId) => {
 							if (!state[screenId].value) {
 								return null;
 							}
 
 							return screen(screenId, screenId);
 						}),
+						h(createCompletionStateOutput(screenIds)),
+					],
 				});
 		},
 	});
@@ -103,6 +125,116 @@ describe("form-flow", () => {
 	});
 
 	describe("Navigation", () => {
+		test("marks the last screen completed after a successful final submit", async () => {
+			const wrapper = mountDeep({
+				props: { modelValue: { first: "ready", second: "later" } },
+				slots: {
+					default: () => [...flowSlots(), h(createCompletionStateOutput(["first", "second"]))],
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(
+				wrapper.get('[data-test="completion-state"]').attributes("data-completed-second"),
+			).toBe("true");
+		});
+
+		test("keeps a completed screen marked after moving back", async () => {
+			const wrapper = mountDeep({
+				props: { modelValue: { first: "ready", second: "later" } },
+				slots: {
+					default: () => [...flowSlots(), h(createCompletionStateOutput(["first", "second"]))],
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(wrapper.get('[data-test="completion-state"]').attributes("data-completed-first")).toBe(
+				"true",
+			);
+
+			await wrapper.get('[data-test="form-flow-back-button"]').trigger("click");
+			await nextTick();
+
+			expect(wrapper.get('[data-test="completion-state"]').attributes("data-completed-first")).toBe(
+				"true",
+			);
+		});
+
+		test("clears completion from an edited screen and later screens while retaining values", async () => {
+			const screens = [
+				screen("first", "first"),
+				screen("second", "second"),
+				screen("third", "third"),
+			];
+
+			const wrapper = mountDeep({
+				props: { modelValue: { first: "one", second: "two", third: "three" } },
+				slots: {
+					default: () => [...screens, h(createCompletionStateOutput(["first", "second", "third"]))],
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow-back-button"]').trigger("click");
+			await nextTick();
+			await wrapper.get('[data-test="form-flow-back-button"]').trigger("click");
+			await nextTick();
+			await wrapper.get('[data-screen-id="first"] input').setValue("changed");
+			await nextTick();
+
+			expect(wrapper.get('[data-test="completion-state"]').attributes("data-completed-first")).toBe(
+				"false",
+			);
+			expect(
+				wrapper.get('[data-test="completion-state"]').attributes("data-completed-second"),
+			).toBe("false");
+			expect(wrapper.get('[data-test="completion-state"]').attributes("data-completed-third")).toBe(
+				"false",
+			);
+			expect(wrapper.emitted("update:modelValue").at(-1)).toEqual([
+				{ first: "changed", second: "two", third: "three" },
+			]);
+		});
+
+		test("clears a conditional screen's completion when it disappears and returns", async () => {
+			const state = { first: ref(true), second: ref(true), third: ref(true) };
+
+			const wrapper = mountConditionalFlow(state, ["first", "second", "third"], {
+				modelValue: { first: "one", second: "two", third: "three" },
+			});
+
+			await nextTick();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			state.second.value = false;
+			await nextTick();
+
+			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(false);
+
+			state.second.value = true;
+			await nextTick();
+			await flushPromises();
+
+			expect(
+				wrapper.get('[data-test="completion-state"]').attributes("data-completed-second"),
+			).toBe("false");
+		});
+
 		test("warns and shows an empty state when mounted without screens", async () => {
 			const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
 

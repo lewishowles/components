@@ -362,6 +362,8 @@ const screenIds = ref([]);
 const screenFields = ref({});
 // The screen whose content is currently rendered.
 const activeScreenId = ref(null);
+// Screen IDs that passed validation when moving forward.
+const completedScreenIds = ref([]);
 // Use the registered screen IDs to determine the current navigation position.
 const activeScreenIndex = computed(() => screenIds.value.indexOf(activeScreenId.value));
 // Whether a screen is available to render.
@@ -470,8 +472,8 @@ function registerScreen(screenId) {
 }
 
 /**
- * Remove a screen and choose the nearest remaining screen if the removed screen
- * was active.
+ * Remove a screen, clear its completion state, and choose the nearest remaining
+ * screen if the removed screen was active.
  *
  * @param  {string}  screenId
  *     The screen ID.
@@ -489,6 +491,10 @@ function unregisterScreen(screenId) {
 
 	delete screenFields.value[screenId];
 
+	completedScreenIds.value = completedScreenIds.value.filter(
+		(completedScreenId) => completedScreenId !== screenId,
+	);
+
 	if (!wasActive) {
 		return;
 	}
@@ -502,12 +508,56 @@ function unregisterScreen(screenId) {
  * Check whether a screen is currently active.
  *
  * @param  {string}  screenId
- *     The stable screen ID.
+ *     The screen ID registered with the flow.
  * @returns {boolean}
  *     Whether the screen should render its content.
  */
 function isCurrentScreen(screenId) {
 	return activeScreenId.value === screenId;
+}
+
+/**
+ * Check whether a screen passed validation when moving forward.
+ *
+ * @param  {string}  screenId
+ *     The screen ID registered with the flow.
+ * @returns {boolean}
+ *     Whether the screen is complete.
+ */
+function isScreenComplete(screenId) {
+	return completedScreenIds.value.includes(screenId);
+}
+
+/**
+ * Mark a screen complete after it passes validation when moving forward.
+ *
+ * @param  {string}  screenId
+ *     The screen ID registered with the flow.
+ */
+function markScreenComplete(screenId) {
+	if (!screenIds.value.includes(screenId) || isScreenComplete(screenId)) {
+		return;
+	}
+
+	completedScreenIds.value.push(screenId);
+}
+
+/**
+ * Clear completion for a screen and every later registered screen.
+ *
+ * @param  {string}  screenId
+ *     The registered screen ID whose value changed.
+ */
+function resetCompletionStartingAtScreen(screenId) {
+	const screenIndex = screenIds.value.indexOf(screenId);
+
+	if (screenIndex === -1) {
+		return;
+	}
+
+	completedScreenIds.value = completedScreenIds.value.filter(
+		(completedScreenId) => screenIds.value.indexOf(completedScreenId) < screenIndex,
+	);
 }
 
 /**
@@ -535,47 +585,73 @@ function registerFlowField(field) {
 }
 
 /**
- * Find form-level and submit errors whose field name does not belong to any
- * currently visible screen, so they can be shown as flow-level errors
- * instead of being routed to a screen.
+ * Update a field value and clear completion for its screen and following screens.
+ *
+ * @param  {string}  name
+ *     The field name.
+ * @param  {unknown}  value
+ *     The new field value.
+ */
+async function updateFieldValueAndClearCompletion(name, value) {
+	const previousValue = formData.value?.[name];
+
+	await updateFieldValue(name, value);
+
+	if (Object.is(previousValue, value)) {
+		return;
+	}
+
+	const screenId = screenIds.value.find((candidate) =>
+		screenFields.value[candidate]?.includes(name),
+	);
+
+	if (screenId) {
+		resetCompletionStartingAtScreen(screenId);
+	}
+}
+
+/**
+ * Find errors whose field name is not registered to a screen, so they can be
+ * shown as flow-level errors instead of being routed to a screen.
  *
  * @returns {object[]}
  *     Flow-level error summary entries.
  */
-function getFlowErrors() {
-	const knownFieldNames = new Set(screenFieldNames.value);
-	const errors = [];
-	const seen = new Set();
+function getFlowLevelErrors() {
+	const registeredFieldNames = new Set(screenFieldNames.value);
+	const flowErrors = [];
+	const seenErrorKeys = new Set();
 	const errorSources = [formLevelErrors.value, submitErrors.value, props.fieldErrors];
 
 	for (const source of errorSources) {
 		for (const [fieldName, value] of Object.entries(source ?? {})) {
-			if (knownFieldNames.has(fieldName)) {
+			if (registeredFieldNames.has(fieldName)) {
 				continue;
 			}
 
 			for (const message of normaliseFieldErrors(value)) {
-				const key = `${fieldName}:${message}`;
+				const errorKey = `${fieldName}:${message}`;
 
-				if (seen.has(key)) {
+				if (seenErrorKeys.has(errorKey)) {
 					continue;
 				}
 
-				seen.add(key);
-				errors.push({ fieldName: null, id: null, message });
+				seenErrorKeys.add(errorKey);
+				flowErrors.push({ fieldName: null, id: null, message });
 			}
 		}
 	}
 
-	return errors;
+	return flowErrors;
 }
 
 /**
- * Find the first visible screen, in screen order, with a field error.
+ * Find the first visible screen with a field error, checking screens in their
+ * current order.
  *
  * @returns {object|null}
- *     The screen ID and field name of the first error, or null when no
- *     visible screen has one.
+ *     The screen ID and field name for the first error, or null when no
+ *     visible screen has a field error.
  */
 function getFirstErrorScreen() {
 	for (const screenId of screenIds.value) {
@@ -646,7 +722,7 @@ async function handleFinalErrorRecovery() {
 		return;
 	}
 
-	const flowErrors = getFlowErrors();
+	const flowErrors = getFlowLevelErrors();
 
 	if (flowErrors.length > 0) {
 		await showFlowErrors(flowErrors);
@@ -685,6 +761,11 @@ async function handleContinue() {
 
 		await handleFinalErrorRecovery();
 
+		// Final completion requires no screen-owned error and no flow-level error.
+		if (!getFirstErrorScreen() && getFlowLevelErrors().length === 0) {
+			markScreenComplete(activeScreenId.value);
+		}
+
 		return;
 	}
 
@@ -693,7 +774,7 @@ async function handleContinue() {
 	// unmount, so formFields and validate() see no inactive-screen fields.
 	await validate({ focus: false });
 
-	const flowErrors = getFlowErrors();
+	const flowErrors = getFlowLevelErrors();
 
 	if (isNonEmptyArray(flowErrors)) {
 		await showFlowErrors(flowErrors);
@@ -707,6 +788,7 @@ async function handleContinue() {
 		return;
 	}
 
+	markScreenComplete(activeScreenId.value);
 	activeScreenId.value = screenIds.value[activeScreenIndex.value + 1];
 
 	resetSubmitButton();
@@ -723,6 +805,7 @@ function warnIfEmptyFlow() {
 
 provide("form-flow", {
 	isCurrentScreen,
+	isScreenComplete,
 	registerScreen,
 	unregisterScreen,
 });
@@ -731,7 +814,7 @@ provide("form", {
 	fieldErrorsFor,
 	registerField: registerFlowField,
 	unregisterField,
-	updateFieldValue,
+	updateFieldValue: updateFieldValueAndClearCompletion,
 	isReadonly,
 	isFieldRequired,
 	isCompact: computed(() => props.compact),
