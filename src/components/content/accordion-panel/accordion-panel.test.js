@@ -1,5 +1,5 @@
 import { createMount } from "@lewishowles/testing/vue";
-import { describe, expect, test, vi } from "vite-plus/test";
+import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import { ref } from "vue";
 import AccordionItem from "./accordion-panel.vue";
 
@@ -15,7 +15,19 @@ const defaultProvide = {
 	},
 };
 
-const mount = createMount(AccordionItem, { global: { provide: defaultProvide } });
+const defaultSlots = { title: "Accordion panel title" };
+
+const mount = createMount(AccordionItem, {
+	global: { provide: defaultProvide },
+	slots: defaultSlots,
+});
+
+const missingTitleWarning =
+	"[accordion-panel] No accessible name found for the trigger. Provide a `title` slot.";
+
+afterEach(() => {
+	vi.restoreAllMocks();
+});
 
 describe("accordion-panel", () => {
 	describe("Initialisation", () => {
@@ -98,6 +110,24 @@ describe("accordion-panel", () => {
 					isOpen: false,
 				});
 			});
+		});
+	});
+
+	describe("Accessibility", () => {
+		test("warns when the title slot is empty", () => {
+			const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+			mount({ slots: { title: null } });
+
+			expect(warning).toHaveBeenCalledWith(missingTitleWarning);
+		});
+
+		test("does not warn when the title slot has content", () => {
+			const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+			mount();
+
+			expect(warning).not.toHaveBeenCalledWith(missingTitleWarning);
 		});
 	});
 

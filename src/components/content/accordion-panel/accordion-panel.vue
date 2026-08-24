@@ -91,6 +91,8 @@ const statusIconComponent = computed(() => resolveIconComponent(statusIcon.value
 const useRegion = computed(() => panelCount.value <= 6);
 // Whether we have an introduction to show below the trigger button.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
+// Whether we have content for the title slot.
+const haveTitle = computed(() => isNonEmptySlot(slots.title));
 
 // Accessibility attributes for the panel content region.
 const contentRegionProps = computed(() => ({
@@ -111,6 +113,12 @@ if (isFunction(registerPanel)) {
 }
 
 onMounted(() => {
+	if (import.meta.env.DEV && !haveTitle.value) {
+		console.warn(
+			"[accordion-panel] No accessible name found for the trigger. Provide a `title` slot.",
+		);
+	}
+
 	contentRef.value?.addEventListener("beforematch", show);
 });
 
