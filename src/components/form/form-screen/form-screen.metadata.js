@@ -3,6 +3,7 @@ export const formScreenMetadata = {
 	name: "form-screen",
 	category: "form",
 	summary: "A registered content boundary that displays one screen in a form-flow.",
+	parts: [{ name: "title", summary: "The screen's title heading, rendered from the title slot." }],
 	props: [
 		{
 			name: "id",

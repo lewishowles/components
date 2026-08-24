@@ -1,10 +1,12 @@
 <template>
 	<form-flow v-model="modelValue" v-bind="{ rules }">
 		<form-screen id="account">
+			<template #title>Account details</template>
 			<form-field name="email">Email address</form-field>
 		</form-screen>
 
 		<form-screen id="profile">
+			<template #title>Profile details</template>
 			<form-field name="displayName">Display name</form-field>
 		</form-screen>
 	</form-flow>

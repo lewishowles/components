@@ -5,6 +5,7 @@ import { defineComponent, h, inject, nextTick, ref } from "vue";
 
 import FormField from "../form-field/form-field.vue";
 import FormScreen from "../form-screen/form-screen.vue";
+import StepIndicator from "../../messaging/step-indicator/step-indicator.vue";
 import FormFlow from "./form-flow.vue";
 
 const mount = createMount(FormFlow);
@@ -22,6 +23,17 @@ function screen(id, fieldName, label = fieldName) {
 
 function flowSlots() {
 	return [screen("first", "first", "First answer"), screen("second", "second", "Second answer")];
+}
+
+function titledScreen(id, title) {
+	return h(
+		FormScreen,
+		{ id, key: id },
+		{
+			default: () => h(FormField, { name: id }, { default: () => `${title} answer` }),
+			title: () => title,
+		},
+	);
 }
 
 // Render screen completion state for test assertions.
@@ -121,6 +133,61 @@ describe("form-flow", () => {
 				hasErrors: false,
 			});
 			expect(wrapper.find('[data-screen-id="first"]').exists()).toBe(true);
+		});
+
+		test("passes current, completed, and remaining screens to the progress slot", async () => {
+			const progressSlot = vi.fn(() => "Custom progress");
+
+			const wrapper = mountDeep({
+				slots: {
+					default: flowSlots,
+					progress: progressSlot,
+				},
+			});
+
+			await nextTick();
+
+			expect(progressSlot.mock.calls.at(-1)[0]).toEqual({
+				current: { id: "first", label: "first" },
+				completed: [],
+				remaining: [{ id: "second", label: "second" }],
+			});
+			expect(wrapper.text()).toContain("Custom progress");
+		});
+
+		test("renders default step progress with the current screen label and position", async () => {
+			const wrapper = mountDeep({
+				slots: {
+					default: () => [
+						titledScreen("first", "First details"),
+						titledScreen("second", "Second details"),
+					],
+				},
+			});
+
+			await nextTick();
+
+			const indicator = wrapper.findComponent(StepIndicator);
+
+			expect(indicator.props()).toMatchObject({ currentStep: 1, stepCount: 2 });
+			expect(indicator.get('[data-test="step-indicator-label"]').text()).toBe("First details");
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(indicator.props()).toMatchObject({ currentStep: 2, stepCount: 2 });
+			expect(indicator.get('[data-test="step-indicator-label"]').text()).toBe("Second details");
+		});
+
+		test("falls back to the active screen ID when no progress label or title is supplied", async () => {
+			const wrapper = mountDeep({ slots: { default: flowSlots } });
+
+			await nextTick();
+
+			const indicator = wrapper.findComponent(StepIndicator);
+
+			expect(indicator.props()).toMatchObject({ currentStep: 1, stepCount: 2 });
+			expect(indicator.get('[data-test="step-indicator-label"]').text()).toBe("first");
 		});
 	});
 

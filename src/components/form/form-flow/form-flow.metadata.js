@@ -4,6 +4,12 @@ export const formFlowMetadata = {
 	category: "form",
 	summary:
 		"A multi-screen form that keeps one model and validates the visible screen before continuing.",
+	parts: [
+		{
+			name: "progress",
+			summary: "Container for the default progress display, or replaced progress slot content.",
+		},
+	],
 	props: [
 		{
 			name: "fieldErrors",

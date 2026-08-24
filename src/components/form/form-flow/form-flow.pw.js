@@ -20,6 +20,25 @@ test.describe("form-flow", () => {
 		await expect(page.getByText("Display name")).toBeHidden();
 	});
 
+	test("shows descriptive numeric progress without navigation controls", async ({
+		mount,
+		page,
+	}) => {
+		await mountFormFlow(mount);
+
+		const progress = page.getByTestId("step-indicator");
+
+		await expect(progress).toHaveRole("progressbar");
+		await expect(progress).toContainText("Account details");
+		await expect(progress).toContainText("Step 1 of 2");
+		await expect(progress.locator("a, button")).toHaveCount(0);
+
+		await page.getByTestId("form-flow-continue-button").click();
+
+		await expect(progress).toContainText("Profile details");
+		await expect(progress).toContainText("Step 2 of 2");
+	});
+
 	test("screens can be navigated", async ({ mount, page }) => {
 		await mountFormFlow(mount);
 

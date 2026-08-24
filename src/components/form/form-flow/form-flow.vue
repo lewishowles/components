@@ -35,6 +35,16 @@
 
 		<slot v-bind="{ isSubmitting, hasErrors: haveAnyErrorSummary }" />
 
+		<div v-if="haveCurrentScreen" class="mb-4" data-part="progress" data-test="form-flow-progress">
+			<slot name="progress" v-bind="progressSlotProps">
+				<step-indicator
+					v-bind="{ currentStep: activeScreenIndex + 1, stepCount: screenIds.length }"
+				>
+					{{ activeScreenProgressLabel || activeScreenId }}
+				</step-indicator>
+			</slot>
+		</div>
+
 		<alert-message v-if="haveEmptyFlow" type="info" class="mb-4" data-test="form-flow-empty">
 			<slot name="empty">No screens are available.</slot>
 		</alert-message>
@@ -108,7 +118,7 @@ import {
 	ref,
 	toRefs,
 	toValue,
-	useSlots,
+	unref,
 	useTemplateRef,
 	watch,
 } from "vue";
@@ -289,7 +299,6 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "submit"]);
 
-const slots = useSlots();
 const instance = getCurrentInstance();
 
 // Whether the caller supplied initialData, so its default value can be distinguished.
@@ -364,12 +373,26 @@ const screenFields = ref({});
 const activeScreenId = ref(null);
 // Screen IDs that passed validation when moving forward.
 const completedScreenIds = ref([]);
+// Labels registered by each screen for the default progress display.
+const screenLabels = ref({});
 // Use the registered screen IDs to determine the current navigation position.
 const activeScreenIndex = computed(() => screenIds.value.indexOf(activeScreenId.value));
 // Whether a screen is available to render.
 const haveCurrentScreen = computed(() => activeScreenIndex.value >= 0);
 // Whether the flow has no screen left to display.
 const haveEmptyFlow = computed(() => screenIds.value.length === 0);
+
+// The label for the screen currently shown in the default progress display.
+const activeScreenProgressLabel = computed(() => getScreenProgress(activeScreenId.value).label);
+
+// Screen labels and completion state for a custom progress display.
+const progressSlotProps = computed(() => ({
+	current: getScreenProgress(activeScreenId.value),
+	completed: completedScreenIds.value.map((screenId) => getScreenProgress(screenId)),
+	remaining: screenIds.value
+		.slice(activeScreenIndex.value + 1)
+		.map((screenId) => getScreenProgress(screenId)),
+}));
 
 // Whether the current screen is the last registered screen.
 const isLastScreen = computed(
@@ -448,12 +471,33 @@ async function callSubmitListeners(data) {
 }
 
 /**
- * Register a screen wherever it appears in the default slot.
+ * Return a screen's ID and the label used by progress displays.
  *
  * @param  {string}  screenId
  *     The screen ID.
+ * @returns  {object}
+ *     The screen ID and its plain-text progress label.
  */
-function registerScreen(screenId) {
+function getScreenProgress(screenId) {
+	const progressLabel = unref(screenLabels.value[screenId]?.progressLabel);
+
+	return {
+		id: screenId,
+		label: progressLabel || screenId,
+	};
+}
+
+/**
+ * Register a screen wherever it appears in the default slot.
+ *
+ * @param  {object}  screen
+ *     The screen ID and its plain-text progress label.
+ * @param  {string}  screen.id
+ *     The screen ID.
+ * @param  {ComputedRef<string | undefined>}  screen.progressLabel
+ *     The label for the dedicated progress section.
+ */
+function registerScreen({ id: screenId, progressLabel } = {}) {
 	// We use a unique array, rather than a Set, to provide order-preserving
 	// indexOf and splice.
 	if (!isNonEmptyString(screenId) || screenIds.value.includes(screenId)) {
@@ -461,6 +505,7 @@ function registerScreen(screenId) {
 	}
 
 	screenIds.value.push(screenId);
+	screenLabels.value[screenId] = { progressLabel };
 
 	if (!screenFields.value[screenId]) {
 		screenFields.value[screenId] = [];
@@ -489,6 +534,7 @@ function unregisterScreen(screenId) {
 
 	screenIds.value.splice(screenIndex, 1);
 
+	delete screenLabels.value[screenId];
 	delete screenFields.value[screenId];
 
 	completedScreenIds.value = completedScreenIds.value.filter(
