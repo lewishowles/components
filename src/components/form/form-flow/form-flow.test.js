@@ -11,14 +11,26 @@ import FormFlow from "./form-flow.vue";
 const mount = createMount(FormFlow);
 const mountDeep = createDeepMount(FormFlow);
 
-function screen(id, fieldName, label = fieldName) {
+function screen(id, fieldName, label = fieldName, screenProps = {}) {
 	return h(
 		FormScreen,
-		{ id, key: id },
+		{ id, key: id, ...screenProps },
 		{
 			default: () => h(FormField, { name: fieldName }, { default: () => label }),
 		},
 	);
+}
+
+// Create a promise whose resolution the test controls, allowing async behaviour
+// to be tested.
+function createDeferred() {
+	let resolve;
+
+	const promise = new Promise((deferredResolve) => {
+		resolve = deferredResolve;
+	});
+
+	return { promise, resolve };
 }
 
 function flowSlots() {
@@ -445,6 +457,131 @@ describe("form-flow", () => {
 			expect(wrapper.find('[data-test="form-flow-error-summary"]').attributes("style")).toContain(
 				"display: none",
 			);
+		});
+	});
+
+	describe("Automatic progression", () => {
+		test("advances after a direct change to the configured field", async () => {
+			const wrapper = mountDeep({
+				props: { modelValue: { first: "", second: "" } },
+				slots: {
+					default: () => [
+						screen("first", "first", "First answer", { autoAdvance: "first" }),
+						screen("second", "second"),
+					],
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-screen-id="first"] input').setValue("changed");
+			await flushPromises();
+
+			expect(wrapper.find('[data-screen-id="first"]').exists()).toBe(false);
+			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(true);
+		});
+
+		test("does not advance from seeded or programmatic field values", async () => {
+			const fieldValue = ref("seeded");
+
+			const controlledScreen = defineComponent({
+				setup() {
+					return () =>
+						h(
+							FormScreen,
+							{ id: "first", autoAdvance: "first" },
+							{
+								default: () => h(FormField, { name: "first", modelValue: fieldValue.value }),
+							},
+						);
+				},
+			});
+
+			const wrapper = mountDeep({
+				props: { modelValue: { first: "seeded", second: "" } },
+				slots: {
+					default: () => [h(controlledScreen), screen("second", "second")],
+				},
+			});
+
+			await flushPromises();
+			fieldValue.value = "programmatic";
+			await nextTick();
+			await flushPromises();
+
+			expect(wrapper.find('[data-screen-id="first"]').exists()).toBe(true);
+		});
+
+		test("starts validation for each change and ignores a stale changed value", async () => {
+			const pendingValidations = [];
+
+			const validate = vi.fn(() => {
+				const deferred = createDeferred();
+
+				pendingValidations.push(deferred);
+
+				return deferred.promise;
+			});
+
+			const wrapper = mountDeep({
+				props: {
+					modelValue: { first: "ready", second: "" },
+					rules: { first: [validate] },
+				},
+				slots: {
+					default: () => [
+						screen("first", "first", "First answer", { autoAdvance: "first" }),
+						screen("second", "second"),
+					],
+				},
+			});
+
+			await flushPromises();
+			const input = wrapper.get('[data-screen-id="first"] input');
+
+			await input.setValue("first change");
+			await nextTick();
+			await flushPromises();
+			expect(validate).toHaveBeenCalledTimes(1);
+
+			await input.setValue("latest change");
+			await nextTick();
+			await flushPromises();
+
+			expect(validate).toHaveBeenCalledTimes(2);
+			pendingValidations[0].resolve(true);
+			await flushPromises();
+
+			expect(wrapper.find('[data-screen-id="first"]').exists()).toBe(true);
+			expect(validate).toHaveBeenCalledTimes(2);
+			pendingValidations[1].resolve(true);
+			await flushPromises();
+
+			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(true);
+		});
+
+		test("keeps the current screen and exposes errors when validation fails", async () => {
+			const wrapper = mountDeep({
+				props: {
+					modelValue: { first: "ready", second: "" },
+					rules: {
+						first: [{ rule: "required", message: "First answer is required" }],
+					},
+				},
+				slots: {
+					default: () => [
+						screen("first", "first", "First answer", { autoAdvance: "first" }),
+						screen("second", "second"),
+					],
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-screen-id="first"] input').setValue("");
+			await flushPromises();
+
+			expect(wrapper.find('[data-screen-id="first"]').exists()).toBe(true);
+			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(false);
+			expect(wrapper.text()).toContain("First answer is required");
 		});
 	});
 

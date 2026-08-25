@@ -1,7 +1,13 @@
 <template>
 	<!-- Inactive screen content is unmounted so its fields leave the flow. -->
-	<div v-if="isVisible" data-component="form-screen" data-test="form-screen" :data-screen-id="id">
-		<h2 v-if="haveTitle" data-part="title" data-test="form-screen-title">
+	<div
+		v-if="isVisible"
+		ref="screen-element"
+		data-component="form-screen"
+		data-test="form-screen"
+		:data-screen-id="id"
+	>
+		<h2 v-if="haveTitle" tabindex="-1" data-part="title" data-test="form-screen-title">
 			<slot name="title" />
 		</h2>
 
@@ -10,7 +16,7 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, onUnmounted, useSlots } from "vue";
+import { computed, inject, onMounted, onUnmounted, useSlots, useTemplateRef } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";
 import { getSlotText, isNonEmptySlot } from "@lewishowles/helpers/vue";
 
@@ -23,11 +29,34 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
+
+	/**
+	 * If a field name is provided, the screen automatically advances when that
+	 * field's value changes and successfully validates. Initial model data and
+	 * programmatic updates do not trigger this progression.
+	 */
+	autoAdvance: {
+		type: String,
+		default: undefined,
+	},
+
+	/**
+	 * If a field name is provided, that field is focused when the screen
+	 * becomes active. The error summary receives focus first if it is showing.
+	 * Otherwise, the named field receives focus if it is registered. If not,
+	 * the screen title receives focus.
+	 */
+	autoFocus: {
+		type: String,
+		default: undefined,
+	},
 });
 
 // Data provided by the parent `form-flow`.
-const formFlow = inject("form-flow", {});
+const { registerScreen, unregisterScreen, isCurrentScreen } = inject("form-flow", {});
 const slots = useSlots();
+// The visible screen root, supplied to the flow for heading fallback focus.
+const screenElement = useTemplateRef("screen-element");
 // Whether this screen provides a visible title.
 const haveTitle = computed(() => isNonEmptySlot(slots.title));
 
@@ -41,15 +70,22 @@ const progressLabel = computed(() => {
 // Show this screen when its flow marks it current. Screens without a flow are
 // visible by default.
 const isVisible = computed(() => {
-	if (!isFunction(formFlow.isCurrentScreen)) {
+	if (!isFunction(isCurrentScreen)) {
 		return true;
 	}
 
-	return formFlow.isCurrentScreen(props.id);
+	return isCurrentScreen(props.id);
 });
 
 // Register the screen with the flow.
-formFlow.registerScreen?.({ id: props.id, progressLabel });
+registerScreen?.({
+	id: props.id,
+	progressLabel,
+	autoAdvance: props.autoAdvance,
+	autoFocus: props.autoFocus,
+	// Share the root ref so form-flow can find the title after the screen renders.
+	element: screenElement,
+});
 
 onMounted(() => {
 	if (import.meta.env.DEV && !haveTitle.value) {
@@ -59,6 +95,6 @@ onMounted(() => {
 
 // Unregister the screen when its owner removes it.
 onUnmounted(() => {
-	formFlow.unregisterScreen?.(props.id);
+	unregisterScreen?.(props.id);
 });
 </script>

@@ -442,6 +442,41 @@
 		</component-slots>
 
 		<component-events>
+			<component-event id="event-screen-change">
+				<template #name>screen-change</template>
+				<p>
+					Fired after the flow completes navigation to another screen. The payload is
+					<code>{ sourceId, destinationId, direction, reason }</code>
+					, where
+					<code>direction</code>
+					is
+					<code>"forward"</code>
+					or
+					<code>"backward"</code>
+					and
+					<code>reason</code>
+					is one of
+					<code>back</code>
+					,
+					<code>conditional-screen-recovery</code>
+					,
+					<code>continue</code>
+					,
+					<code>final-error-recovery</code>
+					, or
+					<code>automatic</code>
+					. The
+					<code>conditional-screen-recovery</code>
+					reason means the active conditional screen disappeared, so the flow moved to the next or
+					previous visible screen. The
+					<code>final-error-recovery</code>
+					reason means final validation found an error on another visible screen, so the flow moved
+					to that screen. The internal
+					<code>initial-render</code>
+					reason does not emit this event.
+				</p>
+			</component-event>
+
 			<component-event id="event-submit">
 				<template #name>submit</template>
 				<p>
@@ -692,7 +727,7 @@ const basicUsageExample = `<form-flow v-model="formData">
 	</form-screen>
 
 	<form-screen id="profile">
-		<form-field name="displayName">Display name</form-field>
+		<form-field name="name">Display name</form-field>
 	</form-screen>
 </form-flow>`;
 </script>

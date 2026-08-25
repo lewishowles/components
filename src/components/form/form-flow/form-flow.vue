@@ -4,7 +4,9 @@
 		data-component="form-flow"
 		data-test="form-flow"
 		:aria-busy="isSubmitting"
-		@submit.prevent="handleContinue"
+		@submit.prevent="() => navigateForward()"
+		@input="handleUserFieldInput"
+		@change="handleUserFieldInput"
 	>
 		<div
 			v-show="haveAnyErrorSummary"
@@ -84,7 +86,7 @@
 				v-if="canGoBack"
 				type="button"
 				data-test="form-flow-back-button"
-				@click="handleBack"
+				@click="navigateBack"
 			>
 				<slot name="back-label">Back</slot>
 			</ui-button>
@@ -128,6 +130,21 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { toCamelCase } from "@lewishowles/helpers/string";
 import { until } from "@vueuse/core";
 import { useForm } from "@/composables/use-form/use-form.js";
+
+// Reasons explain what caused each completed navigation reported by the
+// `screen-change` event.
+const navigationReasons = {
+	AUTOMATIC: "automatic",
+	BACK: "back",
+	// The active conditional screen disappeared, so the flow moved to the next
+	// or previous visible screen.
+	CONDITIONAL_RECOVERY: "conditional-screen-recovery",
+	CONTINUE: "continue",
+	// Final validation found an error on another visible screen, so the flow
+	// moved to that screen.
+	FINAL_ERROR_RECOVERY: "final-error-recovery",
+	INITIAL_RENDER: "initial-render",
+};
 
 const props = defineProps({
 	/**
@@ -297,7 +314,7 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits(["update:modelValue", "submit"]);
+const emit = defineEmits(["screen-change", "submit", "update:modelValue"]);
 
 const instance = getCurrentInstance();
 
@@ -372,6 +389,19 @@ const screenIds = ref([]);
 const screens = ref({});
 // The screen whose content is currently rendered.
 const activeScreenId = ref(null);
+
+// Do not auto-advance while initial data is being applied.
+let isAutoAdvanceReady = false;
+// Native input/change events are the only signal that a model watcher update
+// came from the user. Keep that signal until the watcher consumes it.
+let hasUserInputEvent = false;
+// Automatic validation can finish after a newer change or navigation. Keep the
+// latest request so an older result cannot move the flow.
+let latestAutoAdvanceRequest = null;
+// A focus lookup can outlive the screen visit that started it. Keep the visit
+// identity so an older lookup cannot steal focus after the user returns.
+let currentFocusRequest = null;
+
 // Use the registered screen IDs to determine the current navigation position.
 const activeScreenIndex = computed(() => screenIds.value.indexOf(activeScreenId.value));
 // Whether a screen is available to render.
@@ -441,8 +471,24 @@ watch(formData, (value) => emit("update:modelValue", value), {
 // Warn when screen registration changes leave no visible screen.
 watch(haveEmptyFlow, warnIfEmptyFlow);
 
+// Focus the destination after Vue has mounted its screen and registered fields.
+watch(
+	activeScreenId,
+	(destinationScreenId) => {
+		if (!isNonEmptyString(destinationScreenId)) {
+			return;
+		}
+
+		void focusScreen(destinationScreenId);
+	},
+	{ flush: "post" },
+);
+
 // Warn when the flow mounts without any screens to register.
-onMounted(warnIfEmptyFlow);
+onMounted(() => {
+	isAutoAdvanceReady = true;
+	warnIfEmptyFlow();
+});
 
 /**
  * Call whatever `@submit` listener(s) the parent attached directly, so their
@@ -495,8 +541,14 @@ function getScreenProgress(screenId) {
  *     The screen ID.
  * @param  {ComputedRef<string | undefined>}  screen.progressLabel
  *     The label for the dedicated progress section.
+ * @param  {string}  screen.autoAdvance
+ *     The field name that triggers automatic progression on a direct user change.
+ * @param  {string}  screen.autoFocus
+ *     The field name to focus on entry.
+ * @param  {object}  screen.element
+ *     The screen root ref used to find its title after it renders.
  */
-function registerScreen({ id: screenId, progressLabel } = {}) {
+function registerScreen({ id: screenId, progressLabel, autoAdvance, autoFocus, element } = {}) {
 	if (!isNonEmptyString(screenId) || screenIds.value.includes(screenId)) {
 		return;
 	}
@@ -504,7 +556,6 @@ function registerScreen({ id: screenId, progressLabel } = {}) {
 	if (!screens.value[screenId]) {
 		screens.value[screenId] = {
 			slotOrder: Object.values(screens.value).length,
-			label: progressLabel,
 			fields: [],
 			completed: false,
 		};
@@ -513,6 +564,11 @@ function registerScreen({ id: screenId, progressLabel } = {}) {
 	// Re-insert the screen in its original position, if it had one, based on
 	// its `slotOrder`, stored in `screens`.
 	const screen = screens.value[screenId];
+
+	screen.label = progressLabel;
+	screen.autoAdvance = autoAdvance;
+	screen.autoFocus = autoFocus;
+	screen.element = element;
 
 	const insertionIndex = screenIds.value.findIndex(
 		(registeredScreenId) => screens.value[registeredScreenId].slotOrder > screen.slotOrder,
@@ -525,15 +581,17 @@ function registerScreen({ id: screenId, progressLabel } = {}) {
 	);
 
 	if (!isNonEmptyString(activeScreenId.value)) {
-		activeScreenId.value = screenId;
+		navigateToScreen(screenId, {
+			direction: "forward",
+			reason: navigationReasons.INITIAL_RENDER,
+			shouldEmitChange: false,
+		});
 	}
 }
 
 /**
- * Remove a screen, reset its label, fields, and completion state to fresh
- * defaults (its slotOrder is kept so a later reappearance restores its
- * original position), and choose the nearest remaining screen if the removed
- * screen was active.
+ * Remove a screen, preserve its original slot order for later reappearance,
+ * and choose the nearest remaining screen if the removed screen was active.
  *
  * @param  {string}  screenId
  *     The screen ID.
@@ -552,9 +610,8 @@ function unregisterScreen(screenId) {
 	const screen = screens.value[screenId];
 
 	if (screen) {
-		screen.label = undefined;
-		screen.fields = [];
-		screen.completed = false;
+		// Keep slotOrder so a reappearing screen is reinserted at its original position.
+		screens.value[screenId] = { slotOrder: screen.slotOrder };
 	}
 
 	if (!wasActive) {
@@ -563,7 +620,21 @@ function unregisterScreen(screenId) {
 
 	// Fall back to the screen sharing the index this screen had (the next
 	// screen), or the previous screen.
-	activeScreenId.value = screenIds.value[screenIndex] ?? screenIds.value[screenIndex - 1] ?? null;
+	const destinationScreenId =
+		screenIds.value[screenIndex] ?? screenIds.value[screenIndex - 1] ?? null;
+
+	if (destinationScreenId) {
+		navigateToScreen(destinationScreenId, {
+			direction: screenIndex < screenIds.value.length ? "forward" : "backward",
+			reason: navigationReasons.CONDITIONAL_RECOVERY,
+		});
+	} else {
+		// The removed screen must not regain focus or navigate when its async work
+		// finishes. Clear the active ID so a later screen becomes the first screen.
+		latestAutoAdvanceRequest = null;
+		currentFocusRequest = null;
+		activeScreenId.value = null;
+	}
 }
 
 /**
@@ -647,7 +718,16 @@ function registerFlowField(field) {
 }
 
 /**
- * Update a field value and clear completion for its screen and following screens.
+ * Record that the next field update came from a native input or change event.
+ */
+function handleUserFieldInput() {
+	hasUserInputEvent = true;
+}
+
+/**
+ * Update a field value, clear completion for its screen and following
+ * screens, and start automatic progression when the change came directly
+ * from the user.
  *
  * @param  {string}  name
  *     The field name.
@@ -656,6 +736,9 @@ function registerFlowField(field) {
  */
 async function updateFieldValueAndClearCompletion(name, value) {
 	const previousValue = formData.value?.[name];
+	const wasUserInput = hasUserInputEvent;
+
+	hasUserInputEvent = false;
 
 	await updateFieldValue(name, value);
 
@@ -670,6 +753,37 @@ async function updateFieldValueAndClearCompletion(name, value) {
 	if (screenId) {
 		resetCompletionStartingAtScreen(screenId);
 	}
+
+	if (wasUserInput) {
+		startAutoAdvance(name);
+	}
+}
+
+/**
+ * Start validation for a screen's configured field after a direct user change.
+ *
+ * @param  {string}  fieldName
+ *     The field name that changed.
+ */
+function startAutoAdvance(fieldName) {
+	const sourceScreenId = activeScreenId.value;
+
+	if (
+		!isAutoAdvanceReady ||
+		!isNonEmptyString(sourceScreenId) ||
+		screens.value[sourceScreenId]?.autoAdvance !== fieldName
+	) {
+		return;
+	}
+
+	const autoAdvanceRequest = Symbol("auto-advance-request");
+
+	latestAutoAdvanceRequest = autoAdvanceRequest;
+
+	void navigateForward({
+		reason: navigationReasons.AUTOMATIC,
+		isCurrentAutoAdvance: () => latestAutoAdvanceRequest === autoAdvanceRequest,
+	});
 }
 
 /**
@@ -730,11 +844,88 @@ function getFirstErrorScreen() {
 }
 
 /**
+ * Set the visible screen and report the change.
+ *
+ * @param  {string}  destinationScreenId
+ *     The screen to display.
+ * @param  {object}  options
+ *     Navigation direction and reason.
+ * @param  {string}  options.direction
+ *     Whether the destination screen is ahead of or behind the source screen.
+ * @param  {boolean}  options.shouldEmitChange
+ *     Whether to emit `screen-change`; false for registration-time navigation
+ *     that has no prior screen to report leaving.
+ * @param  {string}  options.reason
+ *     The screen-change reason to report.
+ */
+function navigateToScreen(
+	destinationScreenId,
+	{ direction = "forward", shouldEmitChange = true, reason } = {},
+) {
+	// Manual or conditional navigation invalidates automatic validation still in flight.
+	latestAutoAdvanceRequest = null;
+
+	if (!isNonEmptyString(destinationScreenId) || !screenIds.value.includes(destinationScreenId)) {
+		return;
+	}
+
+	const sourceScreenId = activeScreenId.value;
+
+	if (sourceScreenId === destinationScreenId) {
+		void focusScreen(destinationScreenId);
+
+		return;
+	}
+
+	activeScreenId.value = destinationScreenId;
+
+	// The screen being left may still have a focus attempt in flight (e.g.
+	// waiting on a field to register). Invalidate it now, synchronously, rather
+	// than waiting for the post-navigation watcher to call focusScreen and
+	// replace the token; that watcher runs later, leaving a gap where the
+	// stale attempt would still read as current.
+	currentFocusRequest = null;
+
+	if (shouldEmitChange && isNonEmptyString(sourceScreenId)) {
+		emit("screen-change", {
+			destinationId: destinationScreenId,
+			direction,
+			reason,
+			sourceId: sourceScreenId,
+		});
+	}
+}
+
+/**
+ * Find a screen's rendered heading element, once its content has mounted.
+ *
+ * @param  {string}  screenId
+ *     The destination screen ID.
+ * @returns {Element|null}
+ *     The screen heading, when the screen is rendered.
+ */
+function getScreenHeading(screenId) {
+	const screenElement = toValue(screens.value[screenId]?.element);
+
+	return screenElement?.querySelector?.('[data-part="title"]') ?? null;
+}
+
+/**
  * Move focus to the shared error-summary box once its current content
  * (the current screen's own errors, or flow-level errors) has rendered.
+ *
+ * @param  {object}  [focusRequest]
+ *     The focus attempt this call belongs to. Omit when calling outside a
+ *     tracked focus attempt (e.g. showing a flow-level error directly), which
+ *     always proceeds.
  */
-async function focusErrorSummaryBox() {
+async function focusErrorSummaryBox(focusRequest) {
 	await nextTick();
+
+	// If a later focus attempt has started, this one is stale; cancel it.
+	if (focusRequest && focusRequest !== currentFocusRequest) {
+		return;
+	}
 
 	errorSummaryElement.value?.focus?.();
 }
@@ -745,8 +936,16 @@ async function focusErrorSummaryBox() {
  *
  * @param  {string}  fieldName
  *     The field name to focus.
+ * @param  {object}  focusRequest
+ *     The focus attempt this call belongs to.
+ * @returns {boolean}
+ *     Whether the field was focused.
  */
-async function focusRegisteredField(fieldName) {
+async function focusRegisteredField(fieldName, focusRequest) {
+	if (!isNonEmptyString(fieldName)) {
+		return false;
+	}
+
 	if (!formFields[fieldName]) {
 		await until(() => formFields[fieldName]).toBeTruthy({
 			timeout: 1000,
@@ -754,7 +953,69 @@ async function focusRegisteredField(fieldName) {
 		});
 	}
 
+	// If we can't find the field, or a later focus attempt has started, cancel.
+	if (!formFields[fieldName] || focusRequest !== currentFocusRequest) {
+		return false;
+	}
+
 	focusField(fieldName);
+
+	return true;
+}
+
+/**
+ * Focus a screen after its content and errors have rendered.
+ *
+ * @param  {string}  screenId
+ *     The screen whose summary, auto-focus field, or title should receive focus.
+ */
+async function focusScreen(screenId) {
+	// Leaving and quickly returning to the same screen can start a second focus
+	// attempt before the first one's await resolves. Give this attempt its own
+	// identity so an earlier attempt can tell it has been superseded and stop
+	// instead of moving focus after this one already has.
+	const focusRequest = Symbol("focus-request");
+
+	currentFocusRequest = focusRequest;
+
+	await nextTick();
+
+	// If a later focus attempt has started, this one is stale; cancel it.
+	if (focusRequest !== currentFocusRequest) {
+		return;
+	}
+
+	// If we have an error summary, focus it.
+	if (haveAnyErrorSummary.value) {
+		await focusErrorSummaryBox(focusRequest);
+
+		return;
+	}
+
+	const screen = screens.value[screenId];
+
+	if (!screen) {
+		return;
+	}
+
+	const autoFocus = screen.autoFocus;
+
+	// Attempt to focus the listed field.
+	if (isNonEmptyString(autoFocus)) {
+		if (await focusRegisteredField(autoFocus, focusRequest)) {
+			return;
+		}
+
+		// If a later focus attempt has started, this one is stale; cancel it.
+		if (focusRequest !== currentFocusRequest) {
+			return;
+		}
+	}
+
+	// Fall back to focusing the header of the screen.
+	const heading = getScreenHeading(screenId);
+
+	heading?.focus?.();
 }
 
 /**
@@ -773,13 +1034,18 @@ async function showFlowErrors(errors) {
  * After final validation, navigate to the first visible screen with an
  * error, or show any unowned error as a flow-level error.
  */
-async function handleFinalErrorRecovery() {
+async function showFinalErrors() {
 	const firstErrorScreen = getFirstErrorScreen();
 
 	if (firstErrorScreen) {
 		flowErrorSummary.value = [];
-		activeScreenId.value = firstErrorScreen.screenId;
-		await focusRegisteredField(firstErrorScreen.fieldName);
+
+		const destinationIndex = screenIds.value.indexOf(firstErrorScreen.screenId);
+
+		navigateToScreen(firstErrorScreen.screenId, {
+			direction: destinationIndex > activeScreenIndex.value ? "forward" : "backward",
+			reason: navigationReasons.FINAL_ERROR_RECOVERY,
+		});
 
 		return;
 	}
@@ -794,22 +1060,42 @@ async function handleFinalErrorRecovery() {
 /**
  * Move to the previous screen, skipping validation on the current screen.
  */
-function handleBack() {
+function navigateBack() {
 	if (!canGoBack.value) {
 		return;
 	}
 
-	activeScreenId.value = screenIds.value[activeScreenIndex.value - 1];
+	navigateToScreen(screenIds.value[activeScreenIndex.value - 1], {
+		direction: "backward",
+		reason: navigationReasons.BACK,
+	});
+
 	flowErrorSummary.value = [];
 }
 
 /**
  * Validate the visible screen before moving forward or submitting the flow.
+ *
+ * @param  {object}  options
+ *     The navigation reason and optional check for the latest automatic validation.
+ * @param  {string}  options.reason
+ *     The screen-change reason to report; defaults to a manual Continue.
+ * @param  {function}  options.isCurrentAutoAdvance
+ *     Returns whether this automatic validation still belongs to the latest
+ *     field change.
  */
-async function handleContinue() {
+async function navigateForward(options = {}) {
+	const reason = options?.reason ?? navigationReasons.CONTINUE;
+	const isCurrentAutoAdvance = options?.isCurrentAutoAdvance ?? (() => true);
+
 	if (!haveCurrentScreen.value || isSubmitting.value) {
 		return;
 	}
+
+	// Let a same-tick field update settle into formData before validating,
+	// whether Continue was triggered manually or by automatic progression from
+	// that same change.
+	await nextTick();
 
 	flowErrorSummary.value = [];
 
@@ -821,9 +1107,14 @@ async function handleContinue() {
 			scoped: false,
 		});
 
-		await handleFinalErrorRecovery();
+		if (!isCurrentAutoAdvance()) {
+			return;
+		}
 
-		// Final completion requires no screen-owned error and no flow-level error.
+		await showFinalErrors();
+
+		// Final completion requires no screen-owned error and no flow-level
+		// error.
 		if (!getFirstErrorScreen() && getFlowLevelErrors().length === 0) {
 			markScreenComplete(activeScreenId.value);
 		}
@@ -836,6 +1127,10 @@ async function handleContinue() {
 	// unmount, so formFields and validate() see no inactive-screen fields.
 	await validate({ focus: false });
 
+	if (!isCurrentAutoAdvance()) {
+		return;
+	}
+
 	const flowErrors = getFlowLevelErrors();
 
 	if (isNonEmptyArray(flowErrors)) {
@@ -845,13 +1140,16 @@ async function handleContinue() {
 	}
 
 	if (haveCurrentScreenErrors.value) {
-		await focusErrorSummaryBox();
+		navigateToScreen(activeScreenId.value, { reason });
 
 		return;
 	}
 
 	markScreenComplete(activeScreenId.value);
-	activeScreenId.value = screenIds.value[activeScreenIndex.value + 1];
+	navigateToScreen(screenIds.value[activeScreenIndex.value + 1], {
+		direction: "forward",
+		reason,
+	});
 
 	resetSubmitButton();
 }

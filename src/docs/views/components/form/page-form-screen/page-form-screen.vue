@@ -24,6 +24,28 @@
 				<template #required>yes</template>
 				<p>Stable unique identifier used to register the screen with its form-flow.</p>
 			</component-prop>
+
+			<component-prop id="prop-auto-advance">
+				<template #name>autoAdvance</template>
+				<template #type>String</template>
+				<template #default-value>undefined</template>
+				<p>
+					If a field name is provided, the screen automatically advances when that field's value
+					changes and successfully validates. Initial model data and programmatic updates do not
+					trigger this progression.
+				</p>
+			</component-prop>
+
+			<component-prop id="prop-auto-focus">
+				<template #name>autoFocus</template>
+				<template #type>String</template>
+				<template #default-value>undefined</template>
+				<p>
+					If a field name is provided, that field is focused when the screen becomes active. The
+					error summary receives focus first if it is showing. Otherwise, the named field receives
+					focus if it is registered. If not, the screen title receives focus.
+				</p>
+			</component-prop>
 		</component-props>
 
 		<component-slots>

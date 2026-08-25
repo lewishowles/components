@@ -182,6 +182,20 @@ On final submission, an error on another screen moves the flow to the first scre
 
 ## Events
 
+### `screen-change`
+
+Fired after the flow completes navigation to another screen. The payload is
+`{ sourceId, destinationId, direction, reason }`.
+
+| Property        | Type                      | Description                                                                                                                                                                                                                                                                                                                                                          |
+| --------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sourceId`      | `string`                  | ID of the screen being left.                                                                                                                                                                                                                                                                                                                                         |
+| `destinationId` | `string`                  | ID of the screen being entered.                                                                                                                                                                                                                                                                                                                                      |
+| `direction`     | `"forward" \| "backward"` | Direction of the navigation.                                                                                                                                                                                                                                                                                                                                         |
+| `reason`        | `string`                  | One of `back`, `conditional-screen-recovery`, `continue`, `final-error-recovery`, or `automatic`. `conditional-screen-recovery` means the active conditional screen disappeared, so the flow moved to the next or previous visible screen. `final-error-recovery` means final validation found an error on another visible screen, so the flow moved to that screen. |
+
+The internal `initial-render` reason does not emit a `screen-change` event.
+
 ### `submit`
 
 Fired when the user submits the form and validation succeeds, containing submit-ready values. By submit-ready, we mean that the returned data only contains currently registered fields. When a field is unregistered, its value remains in
@@ -270,8 +284,8 @@ A reactive boolean that reflects the `compact` prop. Used by form layouts and fi
 		<form-field name="email">Email address</form-field>
 	</form-screen>
 
-	<form-screen id="profile">
-		<form-field name="displayName">Display name</form-field>
+	<form-screen id="profile" auto-focus="name">
+		<form-field name="name">Display name</form-field>
 	</form-screen>
 </form-flow>
 ```

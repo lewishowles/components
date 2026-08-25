@@ -134,6 +134,11 @@ export const formFlowMetadata = {
 		{ name: "error-summary-title", summary: "Title for the validation error summary." },
 	],
 	events: [
+		{
+			name: "screen-change",
+			summary:
+				"Emitted after navigation with { sourceId, destinationId, direction, reason }; conditional-screen-recovery means the active conditional screen disappeared and the flow moved to the next or previous visible screen, while final-error-recovery means final validation found an error on another visible screen and the flow moved to it.",
+		},
 		{ name: "update:modelValue", summary: "Emitted when the form model changes." },
 		{ name: "submit", summary: "Emitted with submit-ready data after final validation passes." },
 	],

@@ -11,6 +11,19 @@ export const formScreenMetadata = {
 			required: true,
 			summary: "Stable unique identifier used to register the screen with its form-flow.",
 		},
+		{
+			name: "autoAdvance",
+			type: "string",
+			default: undefined,
+			summary:
+				"Field name that triggers automatic progression to the next screen after a direct user change and successful validation.",
+		},
+		{
+			name: "autoFocus",
+			type: "string",
+			default: undefined,
+			summary: "Field name to focus after this screen becomes active.",
+		},
 	],
 	slots: [
 		{ name: "default", summary: "Fields and other content shown when this screen is active." },

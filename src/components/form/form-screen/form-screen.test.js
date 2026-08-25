@@ -123,10 +123,15 @@ describe("form-screen", () => {
 				},
 			});
 
-			expect(registerScreen).toHaveBeenCalledWith({
-				id: "profile",
-				progressLabel: expect.any(Object),
-			});
+			expect(registerScreen).toHaveBeenCalledWith(
+				expect.objectContaining({
+					autoAdvance: undefined,
+					autoFocus: undefined,
+					element: expect.any(Object),
+					id: "profile",
+					progressLabel: expect.any(Object),
+				}),
+			);
 
 			wrapper.unmount();
 
