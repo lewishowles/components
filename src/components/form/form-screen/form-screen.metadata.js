@@ -3,7 +3,13 @@ export const formScreenMetadata = {
 	name: "form-screen",
 	category: "form",
 	summary: "A registered content boundary that displays one screen in a form-flow.",
-	parts: [{ name: "title", summary: "The screen's title heading, rendered from the title slot." }],
+	parts: [
+		{ name: "title", summary: "The screen's title heading, rendered from the title slot." },
+		{
+			name: "introduction",
+			summary: "Introductory paragraph rendered below the title heading.",
+		},
+	],
 	props: [
 		{
 			name: "id",
@@ -27,6 +33,8 @@ export const formScreenMetadata = {
 	],
 	slots: [
 		{ name: "default", summary: "Fields and other content shown when this screen is active." },
+		{ name: "title", summary: "Accessible heading for this screen." },
+		{ name: "introduction", summary: "Introductory content shown below the screen title." },
 	],
 	examples: [],
 };

@@ -8,34 +8,27 @@
 		@input="handleUserFieldInput"
 		@change="handleUserFieldInput"
 	>
-		<div
-			v-show="haveAnyErrorSummary"
+		<form-error-summary
 			ref="error-summary"
-			tabindex="0"
-			class="border-danger-subtle bg-danger-subtle text-danger mbe-4 w-full rounded-sm border px-5 py-3"
-			data-test="form-flow-error-summary"
+			v-bind="{
+				errors: errorSummaryToDisplay,
+				focusField,
+				showErrors: haveAnyErrorSummary,
+				testPrefix: 'form-flow',
+			}"
+			class="mbe-4"
 		>
-			<h2 class="mbe-2 font-bold">
+			<template #title>
 				<slot name="error-summary-title">There is a problem</slot>
-			</h2>
+			</template>
+		</form-error-summary>
 
-			<ul class="list-disc ps-4">
-				<li v-for="(error, index) in errorSummaryToDisplay" :key="`${error.id}-${index}`">
-					<a
-						v-if="error.id"
-						:href="`#${error.id}`"
-						class="text-current"
-						data-test="form-flow-error-summary-message"
-						@click.prevent="focusField(error.fieldName)"
-					>
-						{{ error.message }}
-					</a>
-					<span v-else>{{ error.message }}</span>
-				</li>
-			</ul>
-		</div>
-
-		<div v-if="haveCurrentScreen" class="mbe-4" data-part="progress" data-test="form-flow-progress">
+		<div
+			v-if="haveCurrentScreen"
+			class="border-border mbe-12 border-b pbe-3"
+			data-part="progress"
+			data-test="form-flow-progress"
+		>
 			<slot name="progress" v-bind="progressSlotProps">
 				<step-indicator
 					v-bind="{ currentStep: activeScreenIndex + 1, stepCount: screenIds.length }"
@@ -51,48 +44,42 @@
 			<slot name="empty">No screens are available.</slot>
 		</alert-message>
 
-		<alert-message
-			v-if="haveGeneralSubmitErrors && !haveFlowErrorSummary"
-			ref="general-errors"
-			type="error"
-			data-test="form-flow-general-errors"
-		>
-			<slot name="submit-errors" v-bind="{ errors: generalSubmitErrors }">
-				<ul v-if="generalSubmitErrors.length > 1" class="list-disc ps-4">
-					<li v-for="(error, index) in generalSubmitErrors" :key="index">
-						{{ error }}
-					</li>
-				</ul>
-				<p v-else>{{ generalSubmitErrors[0] }}</p>
-			</slot>
-		</alert-message>
-
-		<alert-message
-			v-if="formStatus?.message"
-			v-bind="{ type: formStatus.type, showIcon: false }"
-			class="mbe-4"
-			data-test="form-flow-status"
-		>
-			<template v-if="Array.isArray(formStatus.message)">
-				<p v-for="(message, index) in formStatus.message" :key="index">{{ message }}</p>
+		<form-actions v-if="haveCurrentScreen" class="mt-12">
+			<template v-if="haveActionsLabel" #label>
+				<slot name="actions-label" />
 			</template>
-			<template v-else>
-				{{ formStatus.message }}
-			</template>
-		</alert-message>
 
-		<form-actions>
-			<ui-button
-				v-if="canGoBack"
-				type="button"
-				data-test="form-flow-back-button"
-				@click="navigateBack"
+			<alert-message
+				v-if="!haveSubmitButtonLabel && isLastScreen"
+				type="error"
+				v-bind="{ live: false }"
+				data-test="form-flow-submit-button-label-error"
 			>
-				<slot name="back-label">Back</slot>
-			</ui-button>
+				<template #title>&lt;form-flow&gt;</template>
+
+				<p>
+					The slot
+					<code>`submit-button-label`</code>
+					is required to provide a meaningful call to action for the form.
+				</p>
+			</alert-message>
+
+			<form-submit-feedback
+				ref="general-errors"
+				v-bind="{
+					errors: generalSubmitErrors,
+					showErrors: !haveFlowErrorSummary && (haveSubmitErrorsSlot || haveGeneralSubmitErrors),
+					status: formStatus,
+				}"
+				test-prefix="form-flow"
+			>
+				<template #submit-errors>
+					<slot name="submit-errors" v-bind="{ errors: generalSubmitErrors }" />
+				</template>
+			</form-submit-feedback>
 
 			<ui-button
-				v-if="haveCurrentScreen"
+				v-if="!isLastScreen || haveSubmitButtonLabel"
 				ref="submit-button"
 				type="submit"
 				v-bind="{ reactive: true }"
@@ -106,6 +93,22 @@
 					<slot name="continue-label">Continue</slot>
 				</template>
 			</ui-button>
+
+			<ui-button
+				v-if="canGoBack"
+				class="button--muted"
+				type="button"
+				data-test="form-flow-back-button"
+				@click="navigateBack"
+			>
+				<slot name="back-label">Go back</slot>
+			</ui-button>
+
+			<slot name="secondary-actions" />
+
+			<template #tertiary-actions>
+				<slot name="tertiary-actions" />
+			</template>
 		</form-actions>
 	</form>
 </template>
@@ -121,14 +124,17 @@ import {
 	toRefs,
 	toValue,
 	unref,
+	useSlots,
 	useTemplateRef,
 	watch,
 } from "vue";
 
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
+import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { toCamelCase } from "@lewishowles/helpers/string";
 import { until } from "@vueuse/core";
+
 import { useForm } from "@/composables/use-form/use-form.js";
 
 // Reasons explain what caused each completed navigation reported by the
@@ -227,6 +233,16 @@ const props = defineProps({
 	},
 
 	/**
+	 * Additional classes passed to every screen's own form-layout, merged via
+	 * `cn` to resolve Tailwind conflicts. Useful for overriding the default
+	 * gap on compact forms.
+	 */
+	layoutClasses: {
+		type: String,
+		default: "",
+	},
+
+	/**
 	 * Whether failed validation prefixes the page title with
 	 * pageTitleErrorPrefix. Disable when using router-managed or app-level
 	 * title handling.
@@ -317,6 +333,7 @@ const props = defineProps({
 const emit = defineEmits(["screen-change", "submit", "update:modelValue"]);
 
 const instance = getCurrentInstance();
+const slots = useSlots();
 
 // Whether the caller supplied initialData, so its default value can be distinguished.
 const haveInitialData = Object.keys(instance?.vnode.props ?? {}).some(
@@ -335,6 +352,12 @@ const submitButtonRef = useTemplateRef("submit-button");
 
 // The form-wide status prop overrides submit lifecycle status when provided.
 const formStatus = computed(() => props.status ?? submitStatus.value);
+// Whether the final screen has a meaningful submit label.
+const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button-label"]));
+// Whether the actions group has an accessible label.
+const haveActionsLabel = computed(() => isNonEmptySlot(slots["actions-label"]));
+// Whether custom submit errors should render without parsed errors.
+const haveSubmitErrorsSlot = computed(() => isNonEmptySlot(slots["submit-errors"]));
 
 const {
 	formData,
@@ -1168,6 +1191,7 @@ function warnIfEmptyFlow() {
 provide("form-flow", {
 	isCurrentScreen,
 	isScreenComplete,
+	layoutClasses: computed(() => props.layoutClasses),
 	registerScreen,
 	unregisterScreen,
 });

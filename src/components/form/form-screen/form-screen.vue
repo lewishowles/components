@@ -7,11 +7,24 @@
 		data-test="form-screen"
 		:data-screen-id="id"
 	>
-		<h2 v-if="haveTitle" tabindex="-1" data-part="title" data-test="form-screen-title">
+		<h2
+			v-if="haveTitle"
+			class="text-content-strong text-2xl font-bold"
+			:class="{ 'mbe-4 lg:mbe-6': !haveIntroduction }"
+			tabindex="-1"
+			data-part="title"
+			data-test="form-screen-title"
+		>
 			<slot name="title" />
 		</h2>
 
-		<slot />
+		<p v-if="haveIntroduction" class="mbe-4 lg:mbe-6" data-part="introduction">
+			<slot name="introduction" />
+		</p>
+
+		<form-layout v-bind="{ class: layoutClasses }">
+			<slot />
+		</form-layout>
 	</div>
 </template>
 
@@ -53,12 +66,18 @@ const props = defineProps({
 });
 
 // Data provided by the parent `form-flow`.
-const { registerScreen, unregisterScreen, isCurrentScreen } = inject("form-flow", {});
+const { isCurrentScreen, layoutClasses, registerScreen, unregisterScreen } = inject(
+	"form-flow",
+	{},
+);
+
 const slots = useSlots();
 // The visible screen root, supplied to the flow for heading fallback focus.
 const screenElement = useTemplateRef("screen-element");
 // Whether this screen provides a visible title.
 const haveTitle = computed(() => isNonEmptySlot(slots.title));
+// Whether this screen provides introductory content below its title.
+const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 
 // The concise label used by the flow's default progress display.
 const progressLabel = computed(() => {

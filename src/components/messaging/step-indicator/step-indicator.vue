@@ -11,12 +11,7 @@
 		data-component="step-indicator"
 		data-test="step-indicator"
 	>
-		<div
-			class="font-semibold"
-			v-bind="{ id: internalId }"
-			data-part="label"
-			data-test="step-indicator-label"
-		>
+		<div v-bind="{ id: internalId }" data-part="label" data-test="step-indicator-label">
 			<slot />
 		</div>
 

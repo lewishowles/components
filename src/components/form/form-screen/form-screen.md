@@ -27,6 +27,14 @@ If a field name is provided, that field is focused when the screen becomes activ
 
 ## Slots
 
+### `title`
+
+The heading for this screen.
+
+### `introduction`
+
+Optional introductory content for this screen.
+
 ### `default`
 
 Any fields and other content shown while this screen is active.

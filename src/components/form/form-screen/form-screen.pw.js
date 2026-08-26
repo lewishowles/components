@@ -11,5 +11,7 @@ test.describe("form-screen", () => {
 		await mountFormScreen(mount);
 
 		await expect(page.getByTestId("form-screen")).toBeVisible();
+		await expect(page.getByTestId("form-screen-title")).toContainText("Profile details");
+		await expect(page.getByTestId("form-screen")).toContainText("Tell us about your profile.");
 	});
 });

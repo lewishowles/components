@@ -37,6 +37,14 @@ The label for the continue button on interim screens.
 
 The label to use on the submit button. This should be representative of what is about to happen, such as "Create account" or "Update settings", not something generic, and as such **no default label is provided**.
 
+### `secondary-actions`
+
+Additional actions to appear beside the submit button, such as "Save and exit" to come back to the form later. Any actions that relate to a particular field (such as "Add another") should appear with that field or group of fields, not in the actions of the form.
+
+### `tertiary-actions`
+
+Additional actions to appear below the primary and secondary actions, such as "Cancel". Navigational actions, such as "Back to …" or "Forgot password" should appear above the form fields, such as in the `pre-form` slot.
+
 ### `submit-errors`
 
 Overrides the default general error display near the form's actions. If not provided, a single error is rendered as a `<p>` and multiple errors as a `<ul>`.
@@ -50,6 +58,10 @@ Overrides the default general error display near the form's actions. If not prov
 - default: "There is a problem"
 
 The title of the error summary that appears if any errors are found in the form.
+
+### `actions-label`
+
+An optional visually hidden label for the form's action group, threaded into `form-actions` via `aria-labelledby`. Omit it for most forms; a single action group doesn't need a label. Provide one when the form has multiple action groups that need to be distinguished (e.g. primary actions alongside a "danger zone"), or in complex layouts where the group's purpose may not be obvious from context.
 
 ## Props
 
@@ -76,7 +88,7 @@ Keys matching registered `form-field` names are shown in the error summary and p
 - type: `object`
 - default: `null`
 
-Form-wide status feedback shown near the submit button in an accessible live region. Defaults to `useForm`'s own submit-lifecycle status, so failed submits show an inline error automatically with no setup. Pass a value to override with app-driven state such as a permission error or session expiry, which takes precedence until cleared. For specific submission failures, use `submitErrorsCallback`.
+Form-wide status feedback shown in the form actions region, beside the flow buttons, in an accessible live region. Defaults to `useForm`'s own submit-lifecycle status, so failed submits show an inline error automatically with no setup. Pass a value to override with app-driven state such as a permission error or session expiry, which takes precedence until cleared. For specific submission failures, use `submitErrorsCallback`.
 
 Shape: `{ type: 'success' | 'error' | 'info', message?: string | string[] }`
 
@@ -163,6 +175,17 @@ Rename fields inline, or with `mapFormData` for larger reshaping. `fieldTypes` o
 The stable identifier for the record that identifies the contents of this form. When the record ID changes to a new truthy value, a clean form waits for `initialData` to resolve and reseeds. A dirty form keeps its edits until they are saved or discarded.
 
 Only needed when the same form later loads a different record. Pair it with a source that refetches when the id changes.
+
+### `layoutClasses`
+
+- type: `string`
+- default: `""`
+
+Additional classes passed to the inner `form-layout`.
+
+```html
+<form-flow layout-classes="gap-y-4">…</form-flow>
+```
 
 ### `rules`
 

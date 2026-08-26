@@ -59,6 +59,17 @@ test.describe("form-flow", () => {
 		});
 	});
 
+	test.describe("actions", () => {
+		test("renders the layout and forwarded action slots", async ({ mount, page }) => {
+			await mountFormFlow(mount, { props: { layoutClasses: "gap-y-4" } });
+
+			await expect(page.getByTestId("form-layout")).toHaveClass(/gap-y-4/);
+			await expect(page.getByTestId("form-actions")).toContainText("Flow actions");
+			await expect(page.getByTestId("flow-secondary-action")).toBeVisible();
+			await expect(page.getByTestId("flow-tertiary-action")).toBeVisible();
+		});
+	});
+
 	test.describe("focus management", () => {
 		test.describe("auto-focus", () => {
 			test("focuses the configured autoFocus field", async ({ mount, page }) => {

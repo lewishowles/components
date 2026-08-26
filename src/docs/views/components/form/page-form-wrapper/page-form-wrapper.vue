@@ -458,6 +458,7 @@
 					password&quot;.
 				</p>
 			</component-slot>
+
 			<component-slot id="slot-default">
 				<template #name>default</template>
 
@@ -490,6 +491,7 @@
 					</tbody>
 				</table>
 			</component-slot>
+
 			<component-slot id="slot-submit-button-label">
 				<template #name>submit-button-label</template>
 
@@ -501,6 +503,7 @@
 					.
 				</p>
 			</component-slot>
+
 			<component-slot id="slot-secondary-actions">
 				<template #name>secondary-actions</template>
 
@@ -511,6 +514,7 @@
 					actions of the form.
 				</p>
 			</component-slot>
+
 			<component-slot id="slot-tertiary-actions">
 				<template #name>tertiary-actions</template>
 
@@ -522,6 +526,7 @@
 					slot.
 				</p>
 			</component-slot>
+
 			<component-slot id="slot-submit-errors">
 				<template #name>submit-errors</template>
 

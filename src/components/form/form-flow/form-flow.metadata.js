@@ -7,7 +7,7 @@ export const formFlowMetadata = {
 	parts: [
 		{
 			name: "title",
-			summary: "Title for the flow as a whole.",
+			summary: "Title styling hook used by screen headings during focus recovery.",
 		},
 		{
 			name: "progress",
@@ -62,7 +62,13 @@ export const formFlowMetadata = {
 			name: "status",
 			type: "object",
 			default: null,
-			summary: "Form-wide status feedback displayed below the screens.",
+			summary: "Form-wide status feedback displayed in the form actions region.",
+		},
+		{
+			name: "layoutClasses",
+			type: "string",
+			default: '""',
+			summary: "Additional classes merged onto the inner form-layout.",
 		},
 		{
 			name: "updatePageTitleOnError",
@@ -125,6 +131,18 @@ export const formFlowMetadata = {
 		},
 		{ name: "back-label", summary: "Label for the Back button. Defaults to Back." },
 		{ name: "continue-label", summary: "Label for Continue before the final screen." },
+		{
+			name: "actions-label",
+			summary: "Accessible label for the form actions group.",
+		},
+		{
+			name: "secondary-actions",
+			summary: "Secondary buttons placed beside the flow actions.",
+		},
+		{
+			name: "tertiary-actions",
+			summary: "Additional actions placed below the primary action row.",
+		},
 		{
 			name: "submit-button-label",
 			summary:

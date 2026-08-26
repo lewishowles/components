@@ -1,9 +1,10 @@
-import { createMount } from "@lewishowles/testing/vue";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test, vi } from "vite-plus/test";
 
 import FormScreen from "./form-screen.vue";
 
 const mount = createMount(FormScreen);
+const mountDeep = createDeepMount(FormScreen);
 
 function mountWithFlow(slots = {}) {
 	const registerScreen = vi.fn();
@@ -36,7 +37,7 @@ describe("form-screen", () => {
 		});
 
 		test("renders its content when used without a flow", () => {
-			const wrapper = mount({
+			const wrapper = mountDeep({
 				props: { id: "profile" },
 				slots: { default: "Profile details" },
 			});
@@ -52,6 +53,21 @@ describe("form-screen", () => {
 
 			expect(wrapper.get('[data-test="form-screen-title"]').element.tagName).toBe("H2");
 			expect(wrapper.get('[data-test="form-screen-title"]').text()).toBe("Profile details");
+		});
+
+		test("renders an introduction", () => {
+			const wrapper = mount({
+				props: { id: "profile" },
+				slots: {
+					introduction: "Tell us about yourself",
+					title: "Profile details",
+				},
+			});
+
+			const introduction = wrapper.get('[data-part="introduction"]');
+
+			expect(introduction.element.tagName).toBe("P");
+			expect(introduction.text()).toBe("Tell us about yourself");
 		});
 
 		test("does not render an h2 without a title slot", () => {

@@ -48,7 +48,7 @@ function parseApiSubmitErrors(error) {
 - type: `object`
 - default: `null`
 
-Form-wide status feedback shown near the submit button in an accessible live region. Defaults to `useForm`'s own submit-lifecycle status, so failed submits show an inline error automatically with no setup. Pass a value to override with app-driven state such as a permission error or session expiry, which takes precedence until cleared. For specific submission failures, use `submitErrorsCallback`.
+Form-wide status feedback shown in the form actions region, beside the submit button, in an accessible live region. Defaults to `useForm`'s own submit-lifecycle status, so failed submits show an inline error automatically with no setup. Pass a value to override with app-driven state such as a permission error or session expiry, which takes precedence until cleared. For specific submission failures, use `submitErrorsCallback`.
 
 Shape: `{ type: 'success' | 'error' | 'info', message?: string | string[] }`
 

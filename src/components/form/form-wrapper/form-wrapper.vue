@@ -6,30 +6,20 @@
 		:aria-busy="isSubmitting"
 		@submit.prevent="handleFormSubmit"
 	>
-		<div
-			v-show="haveErrorSummary"
+		<form-error-summary
 			ref="errorSummaryElement"
-			tabindex="0"
-			class="border-danger-subtle bg-danger-subtle text-danger mb-4 w-full rounded-sm border px-5 py-3"
-			data-test="form-wrapper-error-summary"
+			v-bind="{
+				errors: errorSummary,
+				focusField,
+				showErrors: haveErrorSummary,
+				testPrefix: 'form-wrapper',
+			}"
+			class="mb-4"
 		>
-			<h2 class="mb-2 font-bold">
+			<template #title>
 				<slot name="error-summary-title">There is a problem</slot>
-			</h2>
-
-			<ul class="list-disc ps-4">
-				<li v-for="(error, index) in errorSummary" :key="`${error.id}-${index}`">
-					<a
-						:href="`#${error.id}`"
-						class="text-current"
-						data-test="form-wrapper-error-summary-message"
-						@click.prevent="focusField(error.fieldName)"
-					>
-						{{ error.message }}
-					</a>
-				</li>
-			</ul>
-		</div>
+			</template>
+		</form-error-summary>
 
 		<slot name="pre-form" />
 
@@ -56,35 +46,19 @@
 					</p>
 				</alert-message>
 
-				<alert-message
-					v-if="haveSubmitErrorsSlot || haveGeneralSubmitErrors"
+				<form-submit-feedback
 					ref="generalErrorsElement"
-					type="error"
-					data-test="form-wrapper-general-errors"
+					v-bind="{
+						errors: generalSubmitErrors,
+						showErrors: haveSubmitErrorsSlot || haveGeneralSubmitErrors,
+						status: formStatus,
+					}"
+					test-prefix="form-wrapper"
 				>
-					<slot name="submit-errors" v-bind="{ errors: generalSubmitErrors }">
-						<ul v-if="generalSubmitErrors.length > 1" class="list-disc ps-4">
-							<li v-for="(error, index) in generalSubmitErrors" :key="index">
-								{{ error }}
-							</li>
-						</ul>
-						<p v-else>{{ generalSubmitErrors[0] }}</p>
-					</slot>
-				</alert-message>
-
-				<alert-message
-					v-if="formStatus?.message"
-					v-bind="{ type: formStatus.type, showIcon: false }"
-					class="mb-4"
-					data-test="form-wrapper-status"
-				>
-					<template v-if="Array.isArray(formStatus.message)">
-						<p v-for="(message, index) in formStatus.message" :key="index">{{ message }}</p>
+					<template #submit-errors>
+						<slot name="submit-errors" v-bind="{ errors: generalSubmitErrors }" />
 					</template>
-					<template v-else>
-						{{ formStatus.message }}
-					</template>
-				</alert-message>
+				</form-submit-feedback>
 
 				<ui-button
 					v-if="haveSubmitButtonLabel"
@@ -113,6 +87,7 @@
 import { computed, getCurrentInstance, provide, ref, toRefs, toValue, useSlots, watch } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { toCamelCase } from "@lewishowles/helpers/string";
+
 import { useForm } from "@/composables/use-form/use-form.js";
 
 const props = defineProps({

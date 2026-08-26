@@ -147,6 +147,39 @@ describe("form-flow", () => {
 			expect(wrapper.find('[data-screen-id="first"]').exists()).toBe(true);
 		});
 
+		test("passes layout classes to each screen's form-layout", async () => {
+			const wrapper = mountDeep({
+				props: { layoutClasses: "gap-y-4" },
+				slots: {
+					"actions-label": "Flow actions",
+					default: flowSlots,
+					"secondary-actions": "Save draft",
+					"tertiary-actions": "Cancel",
+				},
+			});
+
+			await nextTick();
+
+			const layout = wrapper.get('[data-screen-id="first"] [data-test="form-layout"]');
+			const actions = wrapper.get('[data-test="form-actions"]');
+
+			expect(layout.classes()).toContain("gap-y-4");
+			expect(actions.text()).toContain("Flow actions");
+			expect(actions.text()).toContain("Save draft");
+			expect(actions.text()).toContain("Cancel");
+		});
+
+		test("shows an error when the final submit label is missing", async () => {
+			const wrapper = mountDeep({
+				slots: { default: () => titledScreen("first", "First details") },
+			});
+
+			await nextTick();
+
+			expect(wrapper.find('[data-test="form-flow-submit-button-label-error"]').exists()).toBe(true);
+			expect(wrapper.find('[data-test="form-flow-continue-button"]').exists()).toBe(false);
+		});
+
 		test("passes current, completed, and remaining screens to the progress slot", async () => {
 			const progressSlot = vi.fn(() => "Custom progress");
 

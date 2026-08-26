@@ -6,10 +6,15 @@
 			<template #submit-button-label>Create account</template>
 
 			<form-screen id="account">
+				<template #title>Your account</template>
+				<template #introduction>Start with the details we need to create your account.</template>
+
 				<form-field type="email" name="email">Email address</form-field>
 			</form-screen>
 
 			<form-screen id="profile" auto-focus="name">
+				<template #title>Your profile</template>
+
 				<form-field name="name">Display name</form-field>
 			</form-screen>
 		</form-flow>
@@ -50,7 +55,7 @@ const template = useTemplateGenerator("form-flow", {
 	].join("\n"),
 	additionalContent: [
 		"\n\t<template #submit-button-label>Create account</template>",
-		'\n\n\t<form-screen id="account">\n\t\t<form-field type="email" name="email">\n\t\t\tEmail address\n\t\t</form-field>\n\t</form-screen>',
+		'\n\n\t<form-screen id="account">\n\t\t<template #title>Your account</template>\n\t\t<template #introduction>Start with the details we need to create your account.</template>\n\n\t\t<form-field type="email" name="email">\n\t\t\tEmail address\n\t\t</form-field>\n\t</form-screen>',
 		'\n\n\t<form-screen id="profile" auto-focus="name">\n\t\t<form-field name="name">\n\t\t\tDisplay name\n\t\t</form-field>\n\t</form-screen>',
 	],
 });

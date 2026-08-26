@@ -22,6 +22,7 @@
 				<template #name>id</template>
 				<template #type>String</template>
 				<template #required>yes</template>
+
 				<p>Stable unique identifier used to register the screen with its form-flow.</p>
 			</component-prop>
 
@@ -29,6 +30,7 @@
 				<template #name>autoAdvance</template>
 				<template #type>String</template>
 				<template #default-value>undefined</template>
+
 				<p>
 					If a field name is provided, the screen automatically advances when that field's value
 					changes and successfully validates. Initial model data and programmatic updates do not
@@ -40,6 +42,7 @@
 				<template #name>autoFocus</template>
 				<template #type>String</template>
 				<template #default-value>undefined</template>
+
 				<p>
 					If a field name is provided, that field is focused when the screen becomes active. The
 					error summary receives focus first if it is showing. Otherwise, the named field receives
@@ -49,8 +52,21 @@
 		</component-props>
 
 		<component-slots>
+			<component-slot id="slot-title">
+				<template #name>title</template>
+
+				<p>The heading for this screen.</p>
+			</component-slot>
+
+			<component-slot id="slot-introduction">
+				<template #name>introduction</template>
+
+				<p>Optional introductory content.</p>
+			</component-slot>
+
 			<component-slot id="slot-default">
 				<template #name>default</template>
+
 				<p>Fields and other content shown while the screen is active.</p>
 			</component-slot>
 		</component-slots>
@@ -58,11 +74,13 @@
 		<component-styling-hooks>
 			<component-styling-hook id="hook-data-component">
 				<template #attribute>data-component="form-screen"</template>
+
 				<p>Present on the active root element. Use it to scope styles to this component.</p>
 			</component-styling-hook>
 
 			<component-styling-hook id="hook-data-screen-id">
 				<template #attribute>data-screen-id</template>
+
 				<p>Present on the active root element with the registered screen ID.</p>
 			</component-styling-hook>
 		</component-styling-hooks>

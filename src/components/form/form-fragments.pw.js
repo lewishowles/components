@@ -4,16 +4,27 @@ import { createMount } from "@lewishowles/testing/playwright";
 import FieldWrapper from "./fragments/field-wrapper/field-wrapper.vue";
 import FormActions from "./form-actions/form-actions.vue";
 import FormError from "./fragments/form-error/form-error.vue";
+import FormErrorSummary from "./fragments/form-error-summary/form-error-summary.vue";
 import FormHelp from "./fragments/form-help/form-help.vue";
 import FormLabel from "./form-label/form-label.vue";
 import FormLayout from "./form-layout/form-layout.vue";
 import FormPrefix from "./fragments/form-prefix/form-prefix.vue";
+import FormSubmitFeedback from "./fragments/form-submit-feedback/form-submit-feedback.vue";
 import FormSuffix from "./fragments/form-suffix/form-suffix.vue";
 import FormSupplementary from "./fragments/form-supplementary/form-supplementary.vue";
 
 const mountFieldWrapper = createMount(FieldWrapper, { slots: { default: "Field" } });
 const mountFormActions = createMount(FormActions, { slots: { default: "Form placeholder" } });
 const mountFormError = createMount(FormError, { slots: { default: "Error message" } });
+
+const mountFormErrorSummary = createMount(FormErrorSummary, {
+	props: {
+		errors: [{ fieldName: "name", id: "id-abc", message: "Enter your name." }],
+		showErrors: true,
+		testPrefix: "form-error-summary",
+	},
+});
+
 const mountFormHelp = createMount(FormHelp, { slots: { default: "Help text" } });
 
 const mountFormLabel = createMount(FormLabel, {
@@ -23,6 +34,15 @@ const mountFormLabel = createMount(FormLabel, {
 
 const mountFormLayout = createMount(FormLayout, { slots: { default: "Form placeholder" } });
 const mountFormPrefix = createMount(FormPrefix, { slots: { default: "£" } });
+
+const mountFormSubmitFeedback = createMount(FormSubmitFeedback, {
+	props: {
+		errors: ["The form could not be saved."],
+		showErrors: true,
+		testPrefix: "form-submit-feedback",
+	},
+});
+
 const mountFormSuffix = createMount(FormSuffix, { slots: { default: ".com" } });
 const mountFormSupplementary = createMount(FormSupplementary, { props: { inputId: "id-abc" } });
 
@@ -48,6 +68,14 @@ test.describe("form fragments", () => {
 			await mountFormError(mount);
 
 			await expect(page.getByTestId("form-error")).toBeVisible();
+		});
+	});
+
+	test.describe("form-error-summary", () => {
+		test("renders validation errors", async ({ mount, page }) => {
+			await mountFormErrorSummary(mount);
+
+			await expect(page.getByTestId("form-error-summary")).toBeVisible();
 		});
 	});
 
@@ -81,6 +109,14 @@ test.describe("form fragments", () => {
 			await mountFormPrefix(mount);
 
 			await expect(page.getByTestId("form-prefix")).toBeVisible();
+		});
+	});
+
+	test.describe("form-submit-feedback", () => {
+		test("renders general submit feedback", async ({ mount, page }) => {
+			await mountFormSubmitFeedback(mount);
+
+			await expect(page.getByTestId("form-submit-feedback-general-errors")).toBeVisible();
 		});
 	});
 

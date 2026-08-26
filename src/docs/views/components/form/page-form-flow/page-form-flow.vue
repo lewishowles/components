@@ -65,7 +65,7 @@
 				<template #type>Object</template>
 				<template #default-value>null</template>
 				<p>
-					Form-wide status feedback shown near the submit button in an accessible live region. It
+					Form-wide status feedback shown in the form actions region beside the flow buttons. It
 					defaults to
 					<code>useForm</code>
 					's own submit-lifecycle status, so failed submits show an inline error automatically with
@@ -302,6 +302,17 @@
 				</p>
 			</component-prop>
 
+			<component-prop id="prop-layout-classes">
+				<template #name>layoutClasses</template>
+				<template #type>String</template>
+				<template #default-value>&quot;&quot;</template>
+				<p>
+					Additional classes passed to each screen's
+					<code>form-layout</code>
+					.
+				</p>
+			</component-prop>
+
 			<component-prop id="prop-rules">
 				<template #name>rules</template>
 				<template #type>Object</template>
@@ -401,6 +412,29 @@
 				</p>
 			</component-slot>
 
+			<component-slot id="slot-secondary-actions">
+				<template #name>secondary-actions</template>
+
+				<p>
+					Additional actions to appear beside the submit button, such as &quot;Save and exit&quot;
+					to come back to the form later. Any actions that relate to a particular field, such as
+					&quot;Add another&quot;, should appear with that field or group of fields, not in the
+					actions of the form.
+				</p>
+			</component-slot>
+
+			<component-slot id="slot-tertiary-actions">
+				<template #name>tertiary-actions</template>
+
+				<p>
+					Additional actions to appear below the primary and secondary actions, such as
+					&quot;Cancel&quot;. Navigational actions, such as &quot;Back to …&quot; or &quot;Forgot
+					password&quot; should appear above the form fields, such as in the
+					<code>pre-form</code>
+					slot.
+				</p>
+			</component-slot>
+
 			<component-slot id="slot-submit-errors">
 				<template #name>submit-errors</template>
 				<p>
@@ -438,6 +472,21 @@
 				<template #name>error-summary-title</template>
 				<template #default-value>There is a problem</template>
 				<p>The title of the error summary that appears if any errors are found in the form.</p>
+			</component-slot>
+
+			<component-slot id="slot-actions-label">
+				<template #name>actions-label</template>
+
+				<p>
+					An optional visually hidden label for the action group, used by screen readers to identify
+					the group's purpose.
+				</p>
+
+				<p>
+					Provide a label when the form has multiple action groups that need to be distinguished
+					(e.g. primary actions and a "danger zone"), or when actions appear far from the form
+					fields.
+				</p>
 			</component-slot>
 		</component-slots>
 
@@ -712,7 +761,6 @@
 		</component-styling-hooks>
 
 		<component-playgrounds>
-			<component-playground id="basic-usage" v-bind="{ copy: basicUsageExample }" />
 			<playground-form-flow />
 		</component-playgrounds>
 	</component-page>
@@ -720,14 +768,4 @@
 
 <script setup>
 import PlaygroundFormFlow from "./fragments/playground-form-flow.vue";
-
-const basicUsageExample = `<form-flow v-model="formData">
-	<form-screen id="account">
-		<form-field name="email">Email address</form-field>
-	</form-screen>
-
-	<form-screen id="profile">
-		<form-field name="name">Display name</form-field>
-	</form-screen>
-</form-flow>`;
 </script>

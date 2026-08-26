@@ -3,6 +3,9 @@
 		<template #title>Form screen</template>
 
 		<form-screen id="example-screen">
+			<template #title>Contact details</template>
+			<template #introduction>Tell us how we can contact you.</template>
+
 			<p>This content is visible when the screen is active inside a form-flow.</p>
 		</form-screen>
 	</component-playground>
@@ -18,6 +21,12 @@ const template = useTemplateGenerator("form-screen", {
 			isInline: true,
 		},
 	},
-	additionalContent: ["\n\tContent shown while this screen is active."],
+	slots: {
+		title: { value: "Contact details" },
+		introduction: { value: "Tell us how we can contact you." },
+		default: {
+			value: "<p>This content is visible when the screen is active inside a form-flow.</p>",
+		},
+	},
 });
 </script>
