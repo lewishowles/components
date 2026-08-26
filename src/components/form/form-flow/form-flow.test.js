@@ -458,6 +458,26 @@ describe("form-flow", () => {
 				"display: none",
 			);
 		});
+
+		test("preserves a field value and error after Back remounts a screen", async () => {
+			const wrapper = mountDeep({
+				props: {
+					modelValue: { first: "ready", second: "later" },
+					rules: { first: [{ rule: "required", message: "First answer is required" }] },
+				},
+				slots: { default: flowSlots },
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.setProps({ fieldErrors: { first: "First answer is required" } });
+			await wrapper.get('[data-test="form-flow-back-button"]').trigger("click");
+			await nextTick();
+
+			expect(wrapper.get('[data-screen-id="first"] input').element.value).toBe("ready");
+			expect(wrapper.get('[data-screen-id="first"]').text()).toContain("First answer is required");
+		});
 	});
 
 	describe("Automatic progression", () => {

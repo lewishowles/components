@@ -319,7 +319,7 @@ watch(
 // If a parent `form-wrapper` is found, register this field with it. We wait
 // until mounted so that composite fields (e.g. form-date) have had a chance
 // to render and expose their focusId.
-onMounted(() => {
+onMounted(async () => {
 	// Log one warning per diagnostic case.
 	if (import.meta.env.DEV) {
 		if (haveUnknownType.value) {
@@ -336,7 +336,7 @@ onMounted(() => {
 		return;
 	}
 
-	registerCurrentField(props.name);
+	await registerCurrentField(props.name);
 });
 
 // Remove the live registration when this field leaves the form.
@@ -350,16 +350,20 @@ onUnmounted(() => {
  * @param  {string}  fieldName
  *     The name of the field to register.
  */
-function registerCurrentField(fieldName) {
+async function registerCurrentField(fieldName) {
 	if (!haveParentForm.value || !haveNameIfRequired.value) {
 		return;
 	}
 
-	registerField({
+	const registration = await registerField({
 		name: fieldName,
 		id: fieldRef.value?.focusId ?? inputId.value,
 		triggerFocus,
 	});
+
+	if (registration?.hasPreviousValue) {
+		model.value = registration.value;
+	}
 }
 
 /**

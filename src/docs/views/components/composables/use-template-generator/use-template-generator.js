@@ -20,6 +20,9 @@ import useTranslationMode from "@/docs/composables/use-translation-mode/use-tran
  * @param  {ref}  options.events
  *     Any additional events to pass to apply to the opening component tag.
  *     The template will extract the key and `.value` to generate pairs.
+ * @param  {string}  options.setup
+ *     Literal code, such as a variable declaration, shown above the generated
+ *     template in the copy output.
  * @param  {mixed}  options.additionalContent
  *     Any additional content to add to the template (after slots). This can be
  *     a string to be used as-is, or an array of strings. It is recommended to
@@ -31,13 +34,22 @@ import useTranslationMode from "@/docs/composables/use-translation-mode/use-tran
  */
 export default function useTemplateGenerator(
 	componentTag,
-	{ slots = null, props = null, events = null, additionalContent = null, indent } = {},
+	{
+		slots = null,
+		props = null,
+		events = null,
+		setup = null,
+		additionalContent = null,
+		indent,
+	} = {},
 ) {
 	const { useTranslation, translationPathPrefix } = useTranslationMode();
 
 	const template = computed(() => {
 		let internalDefaultContent = getPlaygroundSlotContent("default");
-		let internalAdditionalContent = getStandardisedContentString(additionalContent);
+
+		const internalSetupContent = getStandardisedContentString(setup);
+		const internalAdditionalContent = getStandardisedContentString(additionalContent);
 
 		const haveSlots = isNonEmptyObject(slots);
 		const haveDefaultContent = isNonEmptyString(internalDefaultContent);
@@ -45,10 +57,12 @@ export default function useTemplateGenerator(
 
 		// If this is an empty component, render it as self-closing.
 		if (!haveDefaultContent && !haveSlots && !haveAdditionalContent) {
-			return applyIndent(
+			const generatedTemplate = applyIndent(
 				`<${componentTag}${propsTemplate.value}${eventsTemplate.value} />`,
 				indent,
 			);
+
+			return getStandardisedContentString([internalSetupContent, generatedTemplate]);
 		}
 
 		let template = `<${componentTag}${propsTemplate.value}${eventsTemplate.value}>`;
@@ -82,7 +96,9 @@ export default function useTemplateGenerator(
 		template += `\n</${componentTag}>`;
 
 		// Apply indentation if needed
-		return applyIndent(template, indent);
+		const generatedTemplate = applyIndent(template, indent);
+
+		return getStandardisedContentString([internalSetupContent, generatedTemplate]);
 	});
 
 	// Generate a template fragment representing the provided props, extracting
@@ -287,11 +303,23 @@ export default function useTemplateGenerator(
 		const stableContent = unref(content);
 
 		if (isNonEmptyArray(stableContent)) {
-			return stableContent.map((section) => unref(section)).join("\n\n");
+			// Strip each section's own leading/trailing blank lines first, so the
+			// "\n\n" join below always produces exactly one blank line between
+			// sections regardless of how a caller formatted its own entry.
+			return stableContent
+				.map((section) => {
+					const stableSection = unref(section);
+
+					return isNonEmptyString(stableSection)
+						? stableSection.replace(/^\n+|\n+$/g, "")
+						: stableSection;
+				})
+				.filter((section) => isNonEmptyString(section))
+				.join("\n\n");
 		}
 
 		if (isNonEmptyString(stableContent)) {
-			return stableContent;
+			return stableContent.replace(/^\n+|\n+$/g, "");
 		}
 
 		return "";

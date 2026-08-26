@@ -361,9 +361,16 @@ export function useForm({
 	/**
 	 * Allow a field to register itself with the form.
 	 *
-	 * @param  {string}    field.name
-	 * @param  {string}    field.id
+	 * @param  {string}  field.name
+	 *     The name of the field to register.
+	 * @param  {string}  field.id
+	 *     The ID of the field.
 	 * @param  {function}  field.triggerFocus
+	 *     A method to focus the field if required.
+	 * @returns  {Promise<object>}
+	 *     `hasPreviousValue`, true if form data already has a value for this
+	 *     field name (e.g. from an earlier registration), and `value`, the
+	 *     field's current form data value.
 	 */
 	async function registerField(field) {
 		if (!isObject(formData.value)) {
@@ -371,6 +378,8 @@ export function useForm({
 
 			await nextTick();
 		}
+
+		const hasPreviousValue = Object.hasOwn(formData.value, field.name);
 
 		if (Object.hasOwn(formFields, field.name)) {
 			console.error(
@@ -388,6 +397,8 @@ export function useForm({
 				baseline.value[field.name] = null;
 			}
 		}
+
+		return { hasPreviousValue, value: formData.value[field.name] };
 	}
 
 	/**

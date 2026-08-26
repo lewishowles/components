@@ -12,10 +12,10 @@
 			v-show="haveAnyErrorSummary"
 			ref="error-summary"
 			tabindex="0"
-			class="border-danger-subtle bg-danger-subtle text-danger mb-4 w-full rounded-sm border px-5 py-3"
+			class="border-danger-subtle bg-danger-subtle text-danger mbe-4 w-full rounded-sm border px-5 py-3"
 			data-test="form-flow-error-summary"
 		>
-			<h2 class="mb-2 font-bold">
+			<h2 class="mbe-2 font-bold">
 				<slot name="error-summary-title">There is a problem</slot>
 			</h2>
 
@@ -35,9 +35,7 @@
 			</ul>
 		</div>
 
-		<slot v-bind="{ isSubmitting, hasErrors: haveAnyErrorSummary }" />
-
-		<div v-if="haveCurrentScreen" class="mb-4" data-part="progress" data-test="form-flow-progress">
+		<div v-if="haveCurrentScreen" class="mbe-4" data-part="progress" data-test="form-flow-progress">
 			<slot name="progress" v-bind="progressSlotProps">
 				<step-indicator
 					v-bind="{ currentStep: activeScreenIndex + 1, stepCount: screenIds.length }"
@@ -47,7 +45,9 @@
 			</slot>
 		</div>
 
-		<alert-message v-if="haveEmptyFlow" type="info" class="mb-4" data-test="form-flow-empty">
+		<slot v-bind="{ isSubmitting, hasErrors: haveAnyErrorSummary }" />
+
+		<alert-message v-if="haveEmptyFlow" type="info" class="mbe-4" data-test="form-flow-empty">
 			<slot name="empty">No screens are available.</slot>
 		</alert-message>
 
@@ -70,7 +70,7 @@
 		<alert-message
 			v-if="formStatus?.message"
 			v-bind="{ type: formStatus.type, showIcon: false }"
-			class="mb-4"
+			class="mbe-4"
 			data-test="form-flow-status"
 		>
 			<template v-if="Array.isArray(formStatus.message)">
@@ -702,19 +702,21 @@ function resetCompletionStartingAtScreen(screenId) {
  *     The field registration supplied by form-field.
  */
 function registerFlowField(field) {
-	registerField(field);
+	const registration = registerField(field);
 
 	if (!isNonEmptyString(activeScreenId.value) || !isNonEmptyString(field.name)) {
-		return;
+		return registration;
 	}
 
-	const names = screens.value[activeScreenId.value]?.fields ?? [];
+	const fieldNames = screens.value[activeScreenId.value]?.fields ?? [];
 
-	if (!names.includes(field.name)) {
-		names.push(field.name);
+	if (!fieldNames.includes(field.name)) {
+		fieldNames.push(field.name);
 	}
 
-	screens.value[activeScreenId.value].fields = names;
+	screens.value[activeScreenId.value].fields = fieldNames;
+
+	return registration;
 }
 
 /**

@@ -6,6 +6,10 @@ export const formFlowMetadata = {
 		"A multi-screen form that keeps one model and validates the visible screen before continuing.",
 	parts: [
 		{
+			name: "title",
+			summary: "Title for the flow as a whole.",
+		},
+		{
 			name: "progress",
 			summary: "Container for the default progress display, or replaced progress slot content.",
 		},

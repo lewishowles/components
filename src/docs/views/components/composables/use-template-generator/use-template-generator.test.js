@@ -39,10 +39,11 @@ describe("useTemplateGenerator", () => {
 		});
 
 		test("should include `additionalContent` as an array", () => {
-			const template = useTemplateGenerator("foo-bar", { additionalContent: ["A", "B"] });
+			const template = useTemplateGenerator("foo-bar", {
+				additionalContent: ["\nA", "\n\nB\n"],
+			});
 
-			expect(template.value).toContain("A");
-			expect(template.value).toContain("B");
+			expect(template.value).toBe("<foo-bar>\nA\n\nB\n</foo-bar>");
 		});
 
 		test("should handle empty additionalContent", () => {
@@ -62,6 +63,12 @@ describe("useTemplateGenerator", () => {
 		const template = useTemplateGenerator("foo-bar", { props });
 
 		expect(template.value).toContain("v-bind=\"{ propA: 'foo', propB: true, propC }\"");
+	});
+
+	test("should prepend setup code to the generated template", () => {
+		const template = useTemplateGenerator("foo-bar", { setup: "const rules = {};" });
+
+		expect(template.value).toBe("const rules = {};\n\n<foo-bar />");
 	});
 
 	test("should generate a template with slots", () => {
