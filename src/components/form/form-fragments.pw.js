@@ -75,7 +75,7 @@ test.describe("form fragments", () => {
 		test("renders validation errors", async ({ mount, page }) => {
 			await mountFormErrorSummary(mount);
 
-			await expect(page.getByTestId("form-error-summary")).toBeVisible();
+			await expect(page.getByTestId("form-error-summary-error-summary")).toBeVisible();
 		});
 	});
 

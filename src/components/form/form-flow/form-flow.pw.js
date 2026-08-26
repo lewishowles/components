@@ -10,8 +10,10 @@ import FormFlowFocusFixture from "./form-flow-focus.fixture.vue";
 const mountFormFlow = createMount(FormFlowFixture);
 // Flow with a removable screen for empty-state assertions.
 const mountEmptyFormFlow = createMount(FormFlowEmptyFixture);
+
 // Flow with controls for root and cross-screen final-error focus tests.
 const mountErrorRoutingFormFlow = createMount(FormFlowErrorRoutingFixture);
+
 // Flow with a screen configured with autoFocus for focus-target tests.
 const mountFocusFormFlow = createMount(FormFlowFocusFixture);
 
@@ -100,8 +102,10 @@ test.describe("form-flow", () => {
 			await expect(email).toHaveValue("");
 			await page.getByTestId("form-flow-continue-button").click();
 
-			await expect(page.getByTestId("form-flow-error-summary")).toBeVisible();
-			await expect(email).toBeFocused();
+			const errorSummary = page.getByTestId("form-flow-error-summary");
+
+			await expect(errorSummary).toBeVisible();
+			await expect(errorSummary).toBeFocused();
 		});
 
 		test("moves focus to the first visible screen field after final validation fails", async ({

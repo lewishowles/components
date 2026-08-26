@@ -8,6 +8,8 @@
 			<form-screen id="second">
 				<form-field name="second">Second answer</form-field>
 			</form-screen>
+
+			<template #submit-button-label>Save</template>
 		</form-flow>
 
 		<button type="button" data-test="invalidate-first-field" @click="invalidateFirst = true">
