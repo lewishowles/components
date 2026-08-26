@@ -1,3 +1,11 @@
+<template>
+	<loading-skeleton>
+		<loading-skeleton-indicator style="height: 1rem" />
+
+		<template v-if="showLabel" #label>Loading user data</template>
+	</loading-skeleton>
+</template>
+
 <script setup>
 defineProps({
 	// Whether to include a label slot.
@@ -7,13 +15,3 @@ defineProps({
 	},
 });
 </script>
-
-<template>
-	<loading-skeleton>
-		<template #default>
-			<loading-skeleton-indicator style="height: 1rem" />
-		</template>
-
-		<template v-if="showLabel" #label>Loading user data</template>
-	</loading-skeleton>
-</template>

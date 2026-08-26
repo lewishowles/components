@@ -8,7 +8,7 @@ const mountLoadingSkeleton = createMount(LoadingSkeletonFixture);
 
 test.describe("loading-skeleton", () => {
 	test("renders a loading-skeleton", async ({ mount, page }) => {
-		await mountLoadingSkeleton(mount);
+		await mountLoadingSkeleton(mount, { props: { showLabel: true } });
 
 		await expect(page.getByTestId("loading-skeleton")).toBeAttached();
 		await expect(page.getByTestId("loading-skeleton-indicator")).toBeVisible();

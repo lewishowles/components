@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div data-test="loading-skeleton">
 		<alert-message
 			v-if="!haveLabel"
 			type="error"
@@ -11,7 +11,7 @@
 			A `label` is required for accessibility purposes.
 		</alert-message>
 
-		<div v-if="haveLabel" class="sr-only" aria-live="polite" data-test="loading-skeleton">
+		<div v-if="haveLabel" class="sr-only" aria-live="polite">
 			<slot name="label" />
 		</div>
 
