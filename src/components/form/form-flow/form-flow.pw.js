@@ -119,7 +119,7 @@ test.describe("form-flow", () => {
 			await page.getByTestId("form-flow-continue-button").click();
 
 			await expect(page.getByLabel("First answer", { exact: true })).toBeVisible();
-			await expect(page.getByLabel("First answer", { exact: true })).toBeFocused();
+			await expect(page.getByTestId("form-flow-error-summary")).toBeFocused();
 		});
 
 		test("shows root final errors in the flow summary and focuses it", async ({ mount, page }) => {

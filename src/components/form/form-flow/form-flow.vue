@@ -23,21 +23,6 @@
 			</template>
 		</form-error-summary>
 
-		<div
-			v-if="haveCurrentScreen"
-			class="border-border mbe-12 border-b pbe-3"
-			data-part="progress"
-			data-test="form-flow-progress"
-		>
-			<slot name="progress" v-bind="progressSlotProps">
-				<step-indicator
-					v-bind="{ currentStep: activeScreenIndex + 1, stepCount: screenIds.length }"
-				>
-					{{ activeScreenProgressLabel || activeScreenId }}
-				</step-indicator>
-			</slot>
-		</div>
-
 		<slot v-bind="{ isSubmitting, hasErrors: haveAnyErrorSummary }" />
 
 		<alert-message v-if="haveEmptyFlow" type="info" class="mbe-4" data-test="form-flow-empty">
@@ -110,6 +95,21 @@
 				<slot name="tertiary-actions" />
 			</template>
 		</form-actions>
+
+		<div
+			v-if="haveCurrentScreen"
+			class="border-border mbs-12 border-bs pbs-3"
+			data-part="progress"
+			data-test="form-flow-progress"
+		>
+			<slot name="progress" v-bind="progressSlotProps">
+				<step-indicator
+					v-bind="{ currentStep: activeScreenIndex + 1, stepCount: screenIds.length }"
+				>
+					{{ activeScreenProgressLabel || activeScreenId }}
+				</step-indicator>
+			</slot>
+		</div>
 	</form>
 </template>
 
@@ -431,7 +431,6 @@ const activeScreenIndex = computed(() => screenIds.value.indexOf(activeScreenId.
 const haveCurrentScreen = computed(() => activeScreenIndex.value >= 0);
 // Whether the flow has no screen left to display.
 const haveEmptyFlow = computed(() => screenIds.value.length === 0);
-
 // The label for the screen currently shown in the default progress display.
 const activeScreenProgressLabel = computed(() => getScreenProgress(activeScreenId.value).label);
 
