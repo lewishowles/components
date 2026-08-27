@@ -23,7 +23,7 @@ describe("loading-skeleton", () => {
 		test("does not render a live region if no label slot is provided", () => {
 			const wrapper = mount();
 
-			expect(wrapper.find("[data-test='loading-skeleton']").exists()).toBe(false);
+			expect(wrapper.find(".sr-only[aria-live='polite']").exists()).toBe(false);
 		});
 
 		test("does not show an error if a label slot is provided", () => {
@@ -34,7 +34,7 @@ describe("loading-skeleton", () => {
 
 		test("renders the label in a polite live region", () => {
 			const wrapper = mount({ slots: { label: "Loading user data" } });
-			const liveRegion = wrapper.find("[data-test='loading-skeleton']");
+			const liveRegion = wrapper.find(".sr-only[aria-live='polite']");
 
 			expect(liveRegion.attributes("aria-live")).toBe("polite");
 			expect(liveRegion.text()).toBe("Loading user data");
