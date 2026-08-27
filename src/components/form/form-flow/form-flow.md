@@ -4,6 +4,8 @@
 
 Moving forward with continue validates the current screen, while moving back does not.
 
+After a screen passes validation, later screens show its safe answer summaries. The current screen is never included, and changing a completed answer removes that screen and every later screen from the summaries until they pass validation again.
+
 ## Slots
 
 ### `default`
@@ -32,6 +34,12 @@ The label for the Back button.
 - default: "Continue"
 
 The label for the continue button on interim screens.
+
+### `answers-so-far-title`
+
+- default: "Answers so far"
+
+The visible heading for earlier completed screen answers. It labels the answers-so-far region.
 
 ### `submit-button-label`
 
@@ -252,11 +260,13 @@ Returns all error messages for a field, deduplicating identical messages. Combin
 
 Add a field to a form's list of fields.
 
-| Parameter            | Type       | Description                                                |
-| -------------------- | ---------- | ---------------------------------------------------------- |
-| `field.name`         | `string`   | Name of the field to register.                             |
-| `field.id`           | `string`   | The ID of the field, helpful for linking errors to fields. |
-| `field.triggerFocus` | `function` | Method to focus on this field, used by the error summary.  |
+| Parameter            | Type                   | Description                                                              |
+| -------------------- | ---------------------- | ------------------------------------------------------------------------ |
+| `field.name`         | `string`               | Name of the field to register.                                           |
+| `field.id`           | `string`               | The ID of the field, helpful for linking errors to fields.               |
+| `field.label`        | `string`               | The field label used in earlier completed screen summaries.              |
+| `field.displayValue` | `ComputedRef<unknown>` | The current displayable value, or `undefined` when it should be omitted. |
+| `field.triggerFocus` | `function`             | Method to focus on this field, used by the error summary.                |
 
 ### `unregisterField(fieldName)`
 
@@ -293,9 +303,13 @@ A reactive boolean that reflects the `compact` prop. Used by form layouts and fi
 
 ## Styling hooks
 
-| Attribute                    | Element | Notes                          |
-| ---------------------------- | ------- | ------------------------------ |
-| `data-component="form-flow"` | Root    | Scope styles to this component |
+| Attribute                          | Element | Notes                                                                       |
+| ---------------------------------- | ------- | --------------------------------------------------------------------------- |
+| `data-component="form-flow"`       | Root    | Scope styles to this component                                              |
+| `data-part="answers-so-far"`       | Region  | Earlier completed screen answers shown while the active screen is displayed |
+| `data-part="answers-so-far-title"` | Heading | The heading for earlier completed screen answers                            |
+| `data-part="answer-summary"`       | Group   | Answers belonging to one earlier completed screen                           |
+| `data-part="answer-summary-title"` | Heading | The heading for one earlier completed screen's answers                      |
 
 ## Examples
 

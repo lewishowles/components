@@ -15,6 +15,12 @@
 				does not validate the screen being left. Rules and schemas still receive the complete form
 				data.
 			</p>
+
+			<p>
+				After a screen passes validation, later screens show its safe answer summaries. The current
+				screen is never included. Editing a completed answer removes that screen and every later
+				screen from the summaries until they pass validation again.
+			</p>
 		</template>
 
 		<component-props>
@@ -401,6 +407,14 @@
 				<p>The label for the Continue button on interim screens.</p>
 			</component-slot>
 
+			<component-slot id="slot-answers-so-far-title">
+				<template #name>answers-so-far-title</template>
+				<template #default-value>Answers so far</template>
+				<p>
+					Visible heading for earlier completed screen answers. It labels the answers-so-far region.
+				</p>
+			</component-slot>
+
 			<component-slot id="slot-submit-button-label">
 				<template #name>submit-button-label</template>
 				<p>
@@ -757,6 +771,30 @@
 			<component-styling-hook id="hook-data-component">
 				<template #attribute>data-component="form-flow"</template>
 				<p>Present on the root element. Use it to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-answers-so-far">
+				<template #attribute>data-part="answers-so-far"</template>
+
+				<p>Present on the region showing earlier completed screen answers.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-answers-so-far-title">
+				<template #attribute>data-part="answers-so-far-title"</template>
+
+				<p>Present on the visible heading for earlier completed screen answers.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-answer-summary">
+				<template #attribute>data-part="answer-summary"</template>
+
+				<p>Present on each group of answers belonging to one earlier screen.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-answer-summary-title">
+				<template #attribute>data-part="answer-summary-title"</template>
+
+				<p>Present on the heading for one earlier completed screen's answers.</p>
 			</component-styling-hook>
 		</component-styling-hooks>
 

@@ -13,6 +13,22 @@ export const formFlowMetadata = {
 			name: "progress",
 			summary: "Container for the default progress display, or replaced progress slot content.",
 		},
+		{
+			name: "answers-so-far",
+			summary: "Earlier completed screen answers shown while the active screen is displayed.",
+		},
+		{
+			name: "answers-so-far-title",
+			summary: "Visible heading for earlier completed screen answers.",
+		},
+		{
+			name: "answer-summary",
+			summary: "A grouped list of answers from one earlier completed screen.",
+		},
+		{
+			name: "answer-summary-title",
+			summary: "Heading for one earlier completed screen's answers.",
+		},
 	],
 	props: [
 		{
@@ -131,6 +147,10 @@ export const formFlowMetadata = {
 		},
 		{ name: "back-label", summary: "Label for the Back button. Defaults to Back." },
 		{ name: "continue-label", summary: "Label for Continue before the final screen." },
+		{
+			name: "answers-so-far-title",
+			summary: "Visible heading for earlier completed screen answers. Defaults to Answers so far.",
+		},
 		{
 			name: "actions-label",
 			summary: "Accessible label for the form actions group.",

@@ -25,6 +25,48 @@
 
 		<slot v-bind="{ isSubmitting, hasErrors: haveAnyErrorSummary }" />
 
+		<section
+			v-if="haveAnswerSummaries"
+			class="border-border mbs-8 border-bs pbs-6"
+			data-part="answers-so-far"
+			data-test="form-flow-answers-so-far"
+		>
+			<h3
+				class="text-content-strong mbe-4 text-lg font-bold"
+				data-part="answers-so-far-title"
+				data-test="form-flow-answers-so-far-title"
+			>
+				<slot name="answers-so-far-title">Answers so far</slot>
+			</h3>
+
+			<div
+				v-for="summary in answerSummaries"
+				:key="summary.id"
+				class="mbs-6"
+				data-part="answer-summary"
+				data-test="form-flow-answer-summary"
+			>
+				<h4
+					class="text-content-strong mbe-3 text-lg font-bold"
+					data-part="answer-summary-title"
+					data-test="form-flow-answer-summary-title"
+				>
+					{{ summary.title }}
+				</h4>
+
+				<dl class="grid gap-y-2">
+					<div
+						v-for="field in summary.fields"
+						:key="field.fieldName"
+						class="grid gap-x-4 gap-y-1 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]"
+					>
+						<dt class="font-semibold">{{ field.label }}</dt>
+						<dd>{{ field.answer }}</dd>
+					</div>
+				</dl>
+			</div>
+		</section>
+
 		<alert-message v-if="haveEmptyFlow" type="info" class="mbe-4" data-test="form-flow-empty">
 			<slot name="empty">No screens are available.</slot>
 		</alert-message>
@@ -433,6 +475,10 @@ const haveCurrentScreen = computed(() => activeScreenIndex.value >= 0);
 const haveEmptyFlow = computed(() => screenIds.value.length === 0);
 // The label for the screen currently shown in the default progress display.
 const activeScreenProgressLabel = computed(() => getScreenProgress(activeScreenId.value).label);
+// Summaries for completed screens, before the current screen.
+const answerSummaries = computed(() => getAnswerSummaries(activeScreenId.value));
+// Whether there are earlier answers to show.
+const haveAnswerSummaries = computed(() => isNonEmptyArray(answerSummaries.value));
 
 // Screen labels and completion state for a custom progress display.
 const progressSlotProps = computed(() => ({
@@ -563,6 +609,8 @@ function getScreenProgress(screenId) {
  *     The screen ID.
  * @param  {ComputedRef<string | undefined>}  screen.progressLabel
  *     The label for the dedicated progress section.
+ * @param  {string}  screen.answerSummaryTitle
+ *     The title shown above this screen's answers in later summaries.
  * @param  {string}  screen.autoAdvance
  *     The field name that triggers automatic progression on a direct user change.
  * @param  {string}  screen.autoFocus
@@ -570,7 +618,14 @@ function getScreenProgress(screenId) {
  * @param  {object}  screen.element
  *     The screen root ref used to find its title after it renders.
  */
-function registerScreen({ id: screenId, progressLabel, autoAdvance, autoFocus, element } = {}) {
+function registerScreen({
+	id: screenId,
+	progressLabel,
+	answerSummaryTitle,
+	autoAdvance,
+	autoFocus,
+	element,
+} = {}) {
 	if (!isNonEmptyString(screenId) || screenIds.value.includes(screenId)) {
 		return;
 	}
@@ -578,7 +633,6 @@ function registerScreen({ id: screenId, progressLabel, autoAdvance, autoFocus, e
 	if (!screens.value[screenId]) {
 		screens.value[screenId] = {
 			slotOrder: Object.values(screens.value).length,
-			fields: [],
 			completed: false,
 		};
 	}
@@ -587,7 +641,11 @@ function registerScreen({ id: screenId, progressLabel, autoAdvance, autoFocus, e
 	// its `slotOrder`, stored in `screens`.
 	const screen = screens.value[screenId];
 
+	screen.answerFields ??= {};
+	screen.fields ??= [];
+
 	screen.label = progressLabel;
+	screen.answerSummaryTitle = answerSummaryTitle;
 	screen.autoAdvance = autoAdvance;
 	screen.autoFocus = autoFocus;
 	screen.element = element;
@@ -722,6 +780,10 @@ function resetCompletionStartingAtScreen(screenId) {
  *
  * @param  {object}  field
  *     The field registration supplied by form-field.
+ * @param  {string}  field.label
+ *     The field's label text.
+ * @param  {ComputedRef<unknown>}  field.displayValue
+ *     The value available for answer summaries, or undefined when omitted.
  */
 function registerFlowField(field) {
 	const registration = registerField(field);
@@ -738,7 +800,61 @@ function registerFlowField(field) {
 
 	screens.value[activeScreenId.value].fields = fieldNames;
 
+	screens.value[activeScreenId.value].answerFields[field.name] = {
+		displayValue: field.displayValue,
+		label: field.label,
+	};
+
 	return registration;
+}
+
+/**
+ * Return grouped summaries for completed screens before the active screen.
+ *
+ * @param  {string}  screenId
+ *     The active screen whose earlier answers should be returned.
+ * @returns  {object[]}
+ *     Completed screen summaries in visible screen order.
+ */
+function getAnswerSummaries(screenId) {
+	const screenIndex = screenIds.value.indexOf(screenId);
+
+	if (screenIndex <= 0) {
+		return [];
+	}
+
+	const summaries = [];
+
+	for (const previousScreenId of screenIds.value.slice(0, screenIndex)) {
+		const screen = screens.value[previousScreenId];
+
+		if (!screen?.completed) {
+			continue;
+		}
+
+		const fields = [];
+
+		for (const fieldName of screen.fields ?? []) {
+			const field = screen.answerFields?.[fieldName];
+			const displayValue = unref(field?.displayValue);
+
+			if (displayValue === undefined || !isNonEmptyString(field?.label)) {
+				continue;
+			}
+
+			fields.push({ answer: displayValue, fieldName, label: field.label });
+		}
+
+		if (fields.length > 0) {
+			summaries.push({
+				fields,
+				id: previousScreenId,
+				title: unref(screen.answerSummaryTitle) || previousScreenId,
+			});
+		}
+	}
+
+	return summaries;
 }
 
 /**

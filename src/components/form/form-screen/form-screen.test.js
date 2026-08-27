@@ -23,6 +23,7 @@ function mountWithFlow(slots = {}) {
 	});
 
 	return {
+		answerSummaryTitle: registerScreen.mock.calls[0][0].answerSummaryTitle,
 		progressLabel: registerScreen.mock.calls[0][0].progressLabel,
 		wrapper,
 	};
@@ -106,6 +107,25 @@ describe("form-screen", () => {
 			});
 
 			expect(progressLabel.value).toBe("Profile details");
+
+			wrapper.unmount();
+		});
+
+		test("uses the answer-summary-title slot when it has content", () => {
+			const { answerSummaryTitle, wrapper } = mountWithFlow({
+				title: "Profile details",
+				"answer-summary-title": "Profile answers",
+			});
+
+			expect(answerSummaryTitle.value).toBe("Profile answers");
+
+			wrapper.unmount();
+		});
+
+		test("falls back to the title slot for answer-summary-title", () => {
+			const { answerSummaryTitle, wrapper } = mountWithFlow({ title: "Profile details" });
+
+			expect(answerSummaryTitle.value).toBe("Profile details");
 
 			wrapper.unmount();
 		});

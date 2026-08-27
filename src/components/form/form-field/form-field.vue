@@ -44,14 +44,27 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, onUnmounted, ref, useAttrs, useSlots, watch } from "vue";
+import {
+	computed,
+	inject,
+	onMounted,
+	onUnmounted,
+	ref,
+	toRef,
+	useAttrs,
+	useSlots,
+	watch,
+} from "vue";
+
+import { callComponentMethod, getSlotText } from "@lewishowles/helpers/vue";
 import { deepMerge, pick } from "@lewishowles/helpers/object";
+import { ensureArray, isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isFunction } from "@lewishowles/helpers/general";
-import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { callComponentMethod } from "@lewishowles/helpers/vue";
+import { isNumber } from "@lewishowles/helpers/number";
 
 import useInputId from "@/components/form/composables/use-input-id/use-input-id";
+import useOptions from "@/components/form/composables/use-options/use-options";
 
 import FormButtonGroup from "@/components/form/form-button-group/form-button-group.vue";
 import FormCheckbox from "@/components/form/form-checkbox/form-checkbox.vue";
@@ -169,9 +182,8 @@ const slots = useSlots();
 // The default field type.
 const defaultType = "text";
 
-// Each field type's component, plus any fixed props it needs and any other
-// form-field props it accepts directly and forwards (e.g. file also accepts
-// `multiple`).
+// Each field type's component, fixed props, forwarded form-field props, and
+// display flags: `displayValue` hides values and `usesOptions` resolves labels.
 const fieldTypes = {
 	text: {
 		component: FormInput,
@@ -184,6 +196,7 @@ const fieldTypes = {
 	password: {
 		component: FormInput,
 		props: { inputAttributes: { type: "password" } },
+		displayValue: false,
 	},
 	date: {
 		component: FormDate,
@@ -191,6 +204,7 @@ const fieldTypes = {
 	file: {
 		component: FormFile,
 		forward: ["multiple"],
+		displayValue: false,
 	},
 	textarea: {
 		component: FormTextarea,
@@ -202,23 +216,34 @@ const fieldTypes = {
 	"combo-box": {
 		component: FormComboBox,
 		forward: ["displayLabel"],
+		usesOptions: true,
 	},
 	"checkbox-group": {
 		component: FormCheckboxGroup,
 		forward: ["name"],
+		usesOptions: true,
 	},
 	"radio-group": {
 		component: FormRadioGroup,
 		forward: ["name"],
+		usesOptions: true,
 	},
 	"button-group": {
 		component: FormButtonGroup,
+		usesOptions: true,
 	},
 	select: {
 		component: FormSelect,
 		forward: ["displayLabel"],
+		usesOptions: true,
 	},
 };
+
+// Standardised options used to resolve displayed labels for option fields.
+const { options: internalOptions } = useOptions(toRef(attrs, "options"), {
+	labelKey: attrs.labelKey,
+	valueKey: attrs.valueKey,
+});
 
 // The field type to use, falling back to the default if an unknown type is
 // encountered.
@@ -239,6 +264,45 @@ const haveUnknownType = computed(
 const showUnknownTypeDiagnostic = computed(() => import.meta.env.DEV && haveUnknownType.value);
 // The config for the resolved field type.
 const fieldConfiguration = computed(() => fieldTypes[fieldType.value]);
+
+// The current displayable value, or undefined when it should be omitted.
+const fieldDisplayValue = computed(() => {
+	if (fieldConfiguration.value.displayValue === false) {
+		return undefined;
+	}
+
+	const value = model.value;
+
+	// Whether the given value is something we can display.
+	const isDisplayableValue = (value) =>
+		isNonEmptyString(value) || isNumber(value) || typeof value === "boolean";
+
+	if (fieldConfiguration.value.usesOptions) {
+		const selectedValues = ensureArray(value);
+
+		// Get the label for each selected value.
+		const selectedLabels = selectedValues.map((selectedValue) => {
+			const selectedOption = internalOptions.value.find((option) => option.value === selectedValue);
+
+			return selectedOption?.label;
+		});
+
+		if (
+			!isNonEmptyArray(selectedLabels) ||
+			selectedLabels.some((label) => !isDisplayableValue(label))
+		) {
+			return undefined;
+		}
+
+		return selectedLabels.join(", ");
+	}
+
+	if (!isDisplayableValue(value)) {
+		return undefined;
+	}
+
+	return value;
+});
 
 // The appropriate component to use, based on the determined field type.
 const fieldComponent = computed(() => {
@@ -356,6 +420,8 @@ async function registerCurrentField(fieldName) {
 	}
 
 	const registration = await registerField({
+		displayValue: fieldDisplayValue,
+		label: getSlotText(slots.default),
 		name: fieldName,
 		id: fieldRef.value?.focusId ?? inputId.value,
 		triggerFocus,

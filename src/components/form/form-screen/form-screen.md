@@ -35,6 +35,10 @@ The heading for this screen.
 
 Optional introductory content for this screen.
 
+### `answer-summary-title`
+
+The heading used when this screen's answers appear in a later screen's answers-so-far region. It falls back to the `title` slot.
+
 ### `default`
 
 Any fields and other content shown while this screen is active.

@@ -35,6 +35,11 @@ export const formScreenMetadata = {
 		{ name: "default", summary: "Fields and other content shown when this screen is active." },
 		{ name: "title", summary: "Accessible heading for this screen." },
 		{ name: "introduction", summary: "Introductory content shown below the screen title." },
+		{
+			name: "answer-summary-title",
+			summary:
+				"Heading used when this screen's answers are shown later. Falls back to the title slot.",
+		},
 	],
 	examples: [],
 };

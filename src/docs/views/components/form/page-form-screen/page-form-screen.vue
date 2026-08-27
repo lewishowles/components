@@ -64,6 +64,17 @@
 				<p>Optional introductory content.</p>
 			</component-slot>
 
+			<component-slot id="slot-answer-summary-title">
+				<template #name>answer-summary-title</template>
+
+				<p>
+					Heading used when this screen's answers appear in a later screen's answers-so-far region.
+					It falls back to the
+					<code>title</code>
+					slot.
+				</p>
+			</component-slot>
+
 			<component-slot id="slot-default">
 				<template #name>default</template>
 

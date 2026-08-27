@@ -234,9 +234,153 @@ describe("form-flow", () => {
 			expect(indicator.props()).toMatchObject({ currentStep: 1, stepCount: 2 });
 			expect(indicator.get('[data-test="step-indicator-label"]').text()).toBe("first");
 		});
+
+		test("shows earlier completed screen answers without summarising the current screen", async () => {
+			const wrapper = mountDeep({
+				props: { modelValue: { first: "one", second: "two" } },
+				slots: {
+					default: () => [
+						titledScreen("first", "First details"),
+						titledScreen("second", "Second details"),
+					],
+				},
+			});
+
+			await flushPromises();
+
+			expect(wrapper.find('[data-test="form-flow-answers-so-far"]').exists()).toBe(false);
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			const summaryRegion = wrapper.get('[data-test="form-flow-answers-so-far"]');
+
+			expect(summaryRegion.text()).toContain("First details");
+			expect(summaryRegion.text()).toContain("First details answer");
+			expect(summaryRegion.text()).not.toContain("Second details answer");
+		});
+
+		test("uses the answers-so-far-title slot to label earlier answers", async () => {
+			const wrapper = mountDeep({
+				props: { modelValue: { first: "one", second: "two" } },
+				slots: {
+					"answers-so-far-title": "Previous answers",
+					default: () => [
+						titledScreen("first", "First details"),
+						titledScreen("second", "Second details"),
+					],
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			const summaryRegion = wrapper.get('[data-test="form-flow-answers-so-far"]');
+			const summaryHeading = summaryRegion.get('[data-test="form-flow-answers-so-far-title"]');
+
+			expect(summaryHeading.element.tagName).toBe("H3");
+			expect(summaryHeading.text()).toBe("Previous answers");
+		});
+
+		test("renders displayed option labels after their fields unmount", async () => {
+			const wrapper = mountDeep({
+				props: { modelValue: { first: "pilot", second: "two" } },
+				slots: {
+					default: () => [
+						h(
+							FormScreen,
+							{ id: "first" },
+							{
+								default: () =>
+									h(
+										FormField,
+										{
+											name: "first",
+											options: [{ label: "Amelia Earhart", value: "pilot" }],
+											type: "select",
+										},
+										{ default: () => "Pilot" },
+									),
+								title: () => "First details",
+							},
+						),
+						titledScreen("second", "Second details"),
+					],
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(wrapper.get('[data-test="form-flow-answers-so-far"]').text()).toContain(
+				"Amelia Earhart",
+			);
+		});
 	});
 
 	describe("Navigation", () => {
+		test("removes edited and later answers until those screens pass validation again", async () => {
+			const wrapper = mountDeep({
+				props: {
+					modelValue: { first: "one", second: "two", third: "three" },
+					rules: {
+						first: [{ rule: "required" }],
+						second: [{ rule: "required" }],
+						third: [{ rule: "required" }],
+					},
+				},
+				slots: {
+					default: () => [
+						screen("first", "first", "First answer"),
+						screen("second", "second", "Second answer"),
+						screen("third", "third", "Third answer"),
+						h(createCompletionStateOutput(["first", "second", "third"])),
+					],
+					"submit-button-label": "Submit",
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			const initialSummaries = wrapper.get('[data-test="form-flow-answers-so-far"]');
+
+			expect(initialSummaries.text()).toContain("First answer");
+			expect(initialSummaries.text()).toContain("Second answer");
+
+			await wrapper.get('[data-test="form-flow-back-button"]').trigger("click");
+			await nextTick();
+			await wrapper.get('[data-test="form-flow-back-button"]').trigger("click");
+			await nextTick();
+			await wrapper.get('[data-screen-id="first"] input').setValue("updated");
+			await flushPromises();
+
+			expect(
+				wrapper.get('[data-test="completion-state"]').attributes("data-completed-second"),
+			).toBe("false");
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			const editedSummaries = wrapper.get('[data-test="form-flow-answers-so-far"]');
+
+			expect(editedSummaries.text()).toContain("updated");
+			expect(editedSummaries.text()).not.toContain("Second answer");
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			const restoredSummaries = wrapper.get('[data-test="form-flow-answers-so-far"]');
+
+			expect(restoredSummaries.text()).toContain("updated");
+			expect(restoredSummaries.text()).toContain("Second answer");
+		});
+
 		test("marks the last screen completed after a successful final submit", async () => {
 			const wrapper = mountDeep({
 				props: { modelValue: { first: "ready", second: "later" } },

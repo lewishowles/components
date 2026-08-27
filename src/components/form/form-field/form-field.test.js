@@ -82,6 +82,101 @@ describe("form-field", () => {
 			expect(registeredId).toMatch(/-day$/);
 		});
 
+		test("should register a label and displayValue accessor", () => {
+			mount({ props: { modelValue: "Lewis" }, slots: { default: "Username" } });
+
+			const field = registerFieldMock.mock.calls.at(-1)?.[0];
+
+			expect(field.label).toBe("Username");
+			expect(field.displayValue.value).toBe("Lewis");
+		});
+
+		test.for([
+			["a string", "Lewis", "Lewis"],
+			["a number", 42, 42],
+			["true", true, true],
+			["false", false, false],
+		])("should expose %s values as-is", ([, value, displayValue]) => {
+			mount({ props: { modelValue: value }, slots: { default: "Answer" } });
+
+			const field = registerFieldMock.mock.calls.at(-1)?.[0];
+
+			expect(field.displayValue.value).toBe(displayValue);
+		});
+
+		test.for([
+			["an empty string", ""],
+			["null", null],
+			["an object", {}],
+			["an array", ["one"]],
+		])("should not expose %s", ([, value]) => {
+			mount({ props: { modelValue: value }, slots: { default: "Answer" } });
+
+			const field = registerFieldMock.mock.calls.at(-1)?.[0];
+
+			expect(field.displayValue.value).toBeUndefined();
+		});
+
+		test.for(["password", "file"])("should not expose %s values", (type) => {
+			mount({ props: { modelValue: "hidden", type }, slots: { default: "Secret" } });
+
+			const field = registerFieldMock.mock.calls.at(-1)?.[0];
+
+			expect(field.displayValue.value).toBeUndefined();
+		});
+
+		test("should resolve a selected option to its displayed label", () => {
+			mount({
+				props: {
+					labelKey: "name",
+					options: [{ id: "pilot", name: "Amelia Earhart" }],
+					type: "select",
+					valueKey: "id",
+					modelValue: "pilot",
+				},
+				slots: { default: "Pilot" },
+			});
+
+			const field = registerFieldMock.mock.calls.at(-1)?.[0];
+
+			expect(field.displayValue.value).toBe("Amelia Earhart");
+		});
+
+		test("should resolve multiple selected options to displayed labels", () => {
+			mount({
+				props: {
+					modelValue: ["email", "sms"],
+					options: [
+						{ label: "Email", value: "email" },
+						{ label: "SMS", value: "sms" },
+					],
+					type: "checkbox-group",
+				},
+				slots: { default: "Contact methods" },
+			});
+
+			const field = registerFieldMock.mock.calls.at(-1)?.[0];
+
+			expect(field.displayValue.value).toBe("Email, SMS");
+		});
+
+		test("should not expose an option value when its label cannot be resolved", () => {
+			mount({
+				props: {
+					modelValue: "unknown",
+					options: [{ label: "Email", value: "email" }],
+					type: "select",
+				},
+				slots: {
+					default: "Contact method",
+				},
+			});
+
+			const field = registerFieldMock.mock.calls.at(-1)?.[0];
+
+			expect(field.displayValue.value).toBeUndefined();
+		});
+
 		test("should unregister from a parent form when unmounted", () => {
 			const wrapper = mount();
 

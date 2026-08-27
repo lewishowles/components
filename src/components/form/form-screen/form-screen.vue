@@ -79,6 +79,14 @@ const haveTitle = computed(() => isNonEmptySlot(slots.title));
 // Whether this screen provides introductory content below its title.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 
+// The heading for this screen's answers, from the answer-summary-title slot
+// when provided, falling back to title.
+const answerSummaryTitle = computed(() =>
+	getSlotText(
+		isNonEmptySlot(slots["answer-summary-title"]) ? slots["answer-summary-title"] : slots.title,
+	),
+);
+
 // The concise label used by the flow's default progress display.
 const progressLabel = computed(() => {
 	const labelSlot = isNonEmptySlot(slots["progress-label"]) ? slots["progress-label"] : slots.title;
@@ -98,6 +106,7 @@ const isVisible = computed(() => {
 
 // Register the screen with the flow.
 registerScreen?.({
+	answerSummaryTitle,
 	id: props.id,
 	progressLabel,
 	autoAdvance: props.autoAdvance,
