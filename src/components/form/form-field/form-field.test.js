@@ -82,7 +82,7 @@ describe("form-field", () => {
 			expect(registeredId).toMatch(/-day$/);
 		});
 
-		test("should register a label and displayValue accessor", () => {
+		test("should register a label and a display value accessor", () => {
 			mount({ props: { modelValue: "Lewis" }, slots: { default: "Username" } });
 
 			const field = registerFieldMock.mock.calls.at(-1)?.[0];

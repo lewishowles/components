@@ -48,6 +48,39 @@ function titledScreen(id, title) {
 	);
 }
 
+/**
+ * Render a screen whose field name or visibility can change while mounted.
+ *
+ * @param  {string}  screenId
+ *     The screen ID.
+ * @param  {object}  fieldNameRef
+ *     Ref containing the field name.
+ * @param  {object}  showFieldRef
+ *     Ref controlling whether the field is rendered.
+ * @returns  {object}
+ *     The screen VNode.
+ */
+function mutableFieldScreen(screenId, fieldNameRef, showFieldRef) {
+	return h(
+		FormScreen,
+		{ id: screenId, key: screenId },
+		{
+			default: () => {
+				if (!showFieldRef.value) {
+					return null;
+				}
+
+				return h(
+					FormField,
+					{ name: fieldNameRef.value },
+					{ default: () => `${fieldNameRef.value} field` },
+				);
+			},
+			title: () => `${screenId} details`,
+		},
+	);
+}
+
 // Render screen completion state for test assertions.
 function createCompletionStateOutput(screenIds) {
 	return defineComponent({
@@ -244,7 +277,7 @@ describe("form-flow", () => {
 			expect(indicator.get('[data-test="step-indicator-label"]').text()).toBe("first");
 		});
 
-		test("shows earlier completed screen answers without summarising the current screen", async () => {
+		test("freezes an answered screen summary after its field unmounts", async () => {
 			const wrapper = mountDeep({
 				props: { modelValue: { first: "one", second: "two" } },
 				slots: {
@@ -275,8 +308,43 @@ describe("form-flow", () => {
 			const summaryHeading = summaryRegion.get('[data-test="form-flow-answer-summary-title"]');
 
 			expect(summaryHeading.text()).toBe("First answers");
+			expect(summaryRegion.findAll("dd")).toHaveLength(1);
 			expect(summaryRegion.text()).toContain("First details answer");
 			expect(summaryRegion.text()).not.toContain("Second details answer");
+		});
+
+		test("removes a renamed field's stale answer from the completed screen summary", async () => {
+			const fieldName = ref("old");
+			const showField = ref(true);
+
+			const wrapper = mountDeep({
+				props: {
+					modelValue: { old: "old value", new: "new value", second: "later" },
+				},
+				slots: {
+					default: () => [
+						mutableFieldScreen("first", fieldName, showField),
+						titledScreen("second", "Second details"),
+					],
+				},
+			});
+
+			await flushPromises();
+
+			fieldName.value = "new";
+			await nextTick();
+			await flushPromises();
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			const summaryRegion = wrapper.get('[data-test="form-flow-answers-so-far"]');
+
+			expect(summaryRegion.findAll("dt")).toHaveLength(1);
+			expect(summaryRegion.text()).toContain("new field");
+			expect(summaryRegion.text()).toContain("new value");
+			expect(summaryRegion.text()).not.toContain("old field");
+			expect(summaryRegion.text()).not.toContain("old value");
 		});
 
 		test("uses the answers-so-far-title slot to label earlier answers", async () => {
@@ -513,6 +581,37 @@ describe("form-flow", () => {
 			await nextTick();
 
 			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(true);
+		});
+
+		test("omits a conditionally removed field from its completed screen summary", async () => {
+			const fieldName = ref("conditional");
+			const showField = ref(true);
+
+			const wrapper = mountDeep({
+				props: { modelValue: { conditional: "hidden", second: "later" } },
+				slots: {
+					default: () => [
+						mutableFieldScreen("first", fieldName, showField),
+						titledScreen("second", "Second details"),
+					],
+				},
+			});
+
+			await flushPromises();
+
+			expect(wrapper.find('[data-screen-id="first"] input').exists()).toBe(true);
+
+			showField.value = false;
+			await nextTick();
+			await flushPromises();
+
+			expect(wrapper.find('[data-screen-id="first"] input').exists()).toBe(false);
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(true);
+			expect(wrapper.find('[data-test="form-flow-answers-so-far"]').exists()).toBe(false);
 		});
 
 		test("warns and shows an empty state when mounted without screens", async () => {

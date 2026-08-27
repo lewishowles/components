@@ -773,7 +773,7 @@ function resetCompletionStartingAtScreen(screenId) {
  * @param  {string}  field.label
  *     The field's label text.
  * @param  {ComputedRef<unknown>}  field.displayValue
- *     The value available for answer summaries, or undefined when omitted.
+ *     The display value available for answer summaries, or undefined when omitted.
  */
 function registerFlowField(field) {
 	const registration = registerField(field);
@@ -796,6 +796,46 @@ function registerFlowField(field) {
 	};
 
 	return registration;
+}
+
+/**
+ * Remove a field from its screen or freeze its last answer-summary value.
+ * While the screen is still active, a disappearing field was renamed or
+ * conditionally removed, so its screen entry is pruned. Once the screen has
+ * been left, freeze the last known value so earlier answers remain available
+ * after the field unmounts.
+ *
+ * @param  {string}  fieldName
+ *     The name of the field being unregistered.
+ */
+function unregisterFlowField(fieldName) {
+	const ownerScreenId = screenIds.value.find((candidate) =>
+		screens.value[candidate]?.fields?.includes(fieldName),
+	);
+
+	if (isNonEmptyString(ownerScreenId)) {
+		const screen = screens.value[ownerScreenId];
+
+		// If this field belongs to the active screen, it's been conditionally
+		// hidden, so we remove it entirely.
+		if (ownerScreenId === activeScreenId.value) {
+			screen.fields = screen.fields.filter((name) => name !== fieldName);
+
+			delete screen.answerFields[fieldName];
+		} else {
+			// Otherwise, we keep its last answer.
+			const answerField = screen.answerFields?.[fieldName];
+
+			if (answerField) {
+				screen.answerFields[fieldName] = {
+					displayValue: unref(answerField.displayValue),
+					label: answerField.label,
+				};
+			}
+		}
+	}
+
+	unregisterField(fieldName);
 }
 
 /**
@@ -1304,7 +1344,7 @@ provide("form-flow", {
 provide("form", {
 	fieldErrorsFor,
 	registerField: registerFlowField,
-	unregisterField,
+	unregisterField: unregisterFlowField,
 	updateFieldValue: updateFieldValueAndClearCompletion,
 	isReadonly,
 	isFieldRequired,

@@ -260,13 +260,13 @@ Returns all error messages for a field, deduplicating identical messages. Combin
 
 Add a field to a form's list of fields.
 
-| Parameter            | Type                   | Description                                                              |
-| -------------------- | ---------------------- | ------------------------------------------------------------------------ |
-| `field.name`         | `string`               | Name of the field to register.                                           |
-| `field.id`           | `string`               | The ID of the field, helpful for linking errors to fields.               |
-| `field.label`        | `string`               | The field label used in earlier completed screen summaries.              |
-| `field.displayValue` | `ComputedRef<unknown>` | The current displayable value, or `undefined` when it should be omitted. |
-| `field.triggerFocus` | `function`             | Method to focus on this field, used by the error summary.                |
+| Parameter            | Type                   | Description                                                          |
+| -------------------- | ---------------------- | -------------------------------------------------------------------- |
+| `field.name`         | `string`               | Name of the field to register.                                       |
+| `field.id`           | `string`               | The ID of the field, helpful for linking errors to fields.           |
+| `field.label`        | `string`               | The field label used in earlier completed screen summaries.          |
+| `field.displayValue` | `ComputedRef<unknown>` | The current display value, or `undefined` when it should be omitted. |
+| `field.triggerFocus` | `function`             | Method to focus on this field, used by the error summary.            |
 
 ### `unregisterField(fieldName)`
 
