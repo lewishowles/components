@@ -36,9 +36,9 @@ export const formScreenMetadata = {
 		{ name: "title", summary: "Accessible heading for this screen." },
 		{ name: "introduction", summary: "Introductory content shown below the screen title." },
 		{
-			name: "answer-summary-title",
+			name: "label",
 			summary:
-				"Heading used when this screen's answers are shown later. Falls back to the title slot.",
+				"Concise label used by progress displays and answer summaries. Falls back to the title slot.",
 		},
 	],
 	examples: [],

@@ -23,8 +23,7 @@ function mountWithFlow(slots = {}) {
 	});
 
 	return {
-		answerSummaryTitle: registerScreen.mock.calls[0][0].answerSummaryTitle,
-		progressLabel: registerScreen.mock.calls[0][0].progressLabel,
+		label: registerScreen.mock.calls[0][0].label,
 		wrapper,
 	};
 }
@@ -81,60 +80,41 @@ describe("form-screen", () => {
 			);
 		});
 
-		test("uses the progress-label slot when it has content", () => {
-			const { progressLabel, wrapper } = mountWithFlow({
+		test("uses the label slot when it has content", () => {
+			const { label, wrapper } = mountWithFlow({
 				title: "Profile details",
-				"progress-label": "Profile",
+				label: "Profile",
 			});
 
-			expect(progressLabel.value).toBe("Profile");
+			expect(label.value).toBe("Profile");
 
 			wrapper.unmount();
 		});
 
-		test("uses the title slot when progress-label is not supplied", () => {
-			const { progressLabel, wrapper } = mountWithFlow({ title: "Profile details" });
+		test("uses the title slot when label is not supplied", () => {
+			const { label, wrapper } = mountWithFlow({ title: "Profile details" });
 
-			expect(progressLabel.value).toBe("Profile details");
+			expect(label.value).toBe("Profile details");
 
 			wrapper.unmount();
 		});
 
-		test("uses the title slot when progress-label has no content", () => {
-			const { progressLabel, wrapper } = mountWithFlow({
+		test("uses the title slot when label has no content", () => {
+			const { label, wrapper } = mountWithFlow({
 				title: "Profile details",
-				"progress-label": () => [],
+				label: () => [],
 			});
 
-			expect(progressLabel.value).toBe("Profile details");
+			expect(label.value).toBe("Profile details");
 
 			wrapper.unmount();
 		});
 
-		test("uses the answer-summary-title slot when it has content", () => {
-			const { answerSummaryTitle, wrapper } = mountWithFlow({
-				title: "Profile details",
-				"answer-summary-title": "Profile answers",
-			});
-
-			expect(answerSummaryTitle.value).toBe("Profile answers");
-
-			wrapper.unmount();
-		});
-
-		test("falls back to the title slot for answer-summary-title", () => {
-			const { answerSummaryTitle, wrapper } = mountWithFlow({ title: "Profile details" });
-
-			expect(answerSummaryTitle.value).toBe("Profile details");
-
-			wrapper.unmount();
-		});
-
-		test("does not register a progress label when neither slot is supplied", () => {
+		test("does not register a label when neither slot is supplied", () => {
 			const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
-			const { progressLabel, wrapper } = mountWithFlow();
+			const { label, wrapper } = mountWithFlow();
 
-			expect(progressLabel.value).toBe("");
+			expect(label.value).toBe("");
 			expect(warning).toHaveBeenCalledWith(
 				"[form-screen] No accessible title found. Provide a `title` slot.",
 			);
@@ -165,7 +145,7 @@ describe("form-screen", () => {
 					autoFocus: undefined,
 					element: expect.any(Object),
 					id: "profile",
-					progressLabel: expect.any(Object),
+					label: expect.any(Object),
 				}),
 			);
 

@@ -204,7 +204,16 @@ describe("form-flow", () => {
 			const wrapper = mountDeep({
 				slots: {
 					default: () => [
-						titledScreen("first", "First details"),
+						h(
+							FormScreen,
+							{ id: "first", key: "first" },
+							{
+								default: () =>
+									h(FormField, { name: "first" }, { default: () => "First details answer" }),
+								label: () => "First",
+								title: () => "First details",
+							},
+						),
 						titledScreen("second", "Second details"),
 					],
 				},
@@ -215,7 +224,7 @@ describe("form-flow", () => {
 			const indicator = wrapper.findComponent(StepIndicator);
 
 			expect(indicator.props()).toMatchObject({ currentStep: 1, stepCount: 2 });
-			expect(indicator.get('[data-test="step-indicator-label"]').text()).toBe("First details");
+			expect(indicator.get('[data-test="step-indicator-label"]').text()).toBe("First");
 
 			await wrapper.get('[data-test="form-flow"]').trigger("submit");
 			await flushPromises();
@@ -224,7 +233,7 @@ describe("form-flow", () => {
 			expect(indicator.get('[data-test="step-indicator-label"]').text()).toBe("Second details");
 		});
 
-		test("falls back to the active screen ID when no progress label or title is supplied", async () => {
+		test("falls back to the active screen ID when no label or title is supplied", async () => {
 			const wrapper = mountDeep({ slots: { default: flowSlots } });
 
 			await nextTick();
@@ -240,7 +249,16 @@ describe("form-flow", () => {
 				props: { modelValue: { first: "one", second: "two" } },
 				slots: {
 					default: () => [
-						titledScreen("first", "First details"),
+						h(
+							FormScreen,
+							{ id: "first", key: "first" },
+							{
+								default: () =>
+									h(FormField, { name: "first" }, { default: () => "First details answer" }),
+								label: () => "First answers",
+								title: () => "First details",
+							},
+						),
 						titledScreen("second", "Second details"),
 					],
 				},
@@ -254,8 +272,9 @@ describe("form-flow", () => {
 			await flushPromises();
 
 			const summaryRegion = wrapper.get('[data-test="form-flow-answers-so-far"]');
+			const summaryHeading = summaryRegion.get('[data-test="form-flow-answer-summary-title"]');
 
-			expect(summaryRegion.text()).toContain("First details");
+			expect(summaryHeading.text()).toBe("First answers");
 			expect(summaryRegion.text()).toContain("First details answer");
 			expect(summaryRegion.text()).not.toContain("Second details answer");
 		});

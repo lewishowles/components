@@ -79,20 +79,8 @@ const haveTitle = computed(() => isNonEmptySlot(slots.title));
 // Whether this screen provides introductory content below its title.
 const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 
-// The heading for this screen's answers, from the answer-summary-title slot
-// when provided, falling back to title.
-const answerSummaryTitle = computed(() =>
-	getSlotText(
-		isNonEmptySlot(slots["answer-summary-title"]) ? slots["answer-summary-title"] : slots.title,
-	),
-);
-
-// The concise label used by the flow's default progress display.
-const progressLabel = computed(() => {
-	const labelSlot = isNonEmptySlot(slots["progress-label"]) ? slots["progress-label"] : slots.title;
-
-	return getSlotText(labelSlot);
-});
+// The concise label used by progress displays and answer summaries.
+const label = computed(() => getSlotText(isNonEmptySlot(slots.label) ? slots.label : slots.title));
 
 // Show this screen when its flow marks it current. Screens without a flow are
 // visible by default.
@@ -106,9 +94,8 @@ const isVisible = computed(() => {
 
 // Register the screen with the flow.
 registerScreen?.({
-	answerSummaryTitle,
 	id: props.id,
-	progressLabel,
+	label,
 	autoAdvance: props.autoAdvance,
 	autoFocus: props.autoFocus,
 	// Share the root ref so form-flow can find the title after the screen renders.

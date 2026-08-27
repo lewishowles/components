@@ -584,19 +584,19 @@ async function callSubmitListeners(data) {
 }
 
 /**
- * Return a screen's ID and the label used by progress displays.
+ * Return a screen's ID and its concise label.
  *
  * @param  {string}  screenId
  *     The screen ID.
  * @returns  {object}
- *     The screen ID and its plain-text progress label.
+ *     The screen ID and its plain-text label.
  */
 function getScreenProgress(screenId) {
-	const progressLabel = unref(screens.value[screenId]?.label);
+	const screenLabel = unref(screens.value[screenId]?.label);
 
 	return {
 		id: screenId,
-		label: progressLabel || screenId,
+		label: screenLabel || screenId,
 	};
 }
 
@@ -604,13 +604,11 @@ function getScreenProgress(screenId) {
  * Register a screen wherever it appears in the default slot.
  *
  * @param  {object}  screen
- *     The screen ID and its plain-text progress label.
+ *     The screen ID and its plain-text label.
  * @param  {string}  screen.id
  *     The screen ID.
- * @param  {ComputedRef<string | undefined>}  screen.progressLabel
- *     The label for the dedicated progress section.
- * @param  {string}  screen.answerSummaryTitle
- *     The title shown above this screen's answers in later summaries.
+ * @param  {ComputedRef<string | undefined>}  screen.label
+ *     The concise label used by progress displays and answer summaries.
  * @param  {string}  screen.autoAdvance
  *     The field name that triggers automatic progression on a direct user change.
  * @param  {string}  screen.autoFocus
@@ -618,14 +616,7 @@ function getScreenProgress(screenId) {
  * @param  {object}  screen.element
  *     The screen root ref used to find its title after it renders.
  */
-function registerScreen({
-	id: screenId,
-	progressLabel,
-	answerSummaryTitle,
-	autoAdvance,
-	autoFocus,
-	element,
-} = {}) {
+function registerScreen({ id: screenId, label, autoAdvance, autoFocus, element } = {}) {
 	if (!isNonEmptyString(screenId) || screenIds.value.includes(screenId)) {
 		return;
 	}
@@ -644,8 +635,7 @@ function registerScreen({
 	screen.answerFields ??= {};
 	screen.fields ??= [];
 
-	screen.label = progressLabel;
-	screen.answerSummaryTitle = answerSummaryTitle;
+	screen.label = label;
 	screen.autoAdvance = autoAdvance;
 	screen.autoFocus = autoFocus;
 	screen.element = element;
@@ -849,7 +839,7 @@ function getAnswerSummaries(screenId) {
 			summaries.push({
 				fields,
 				id: previousScreenId,
-				title: unref(screen.answerSummaryTitle) || previousScreenId,
+				title: unref(screen.label) || previousScreenId,
 			});
 		}
 	}

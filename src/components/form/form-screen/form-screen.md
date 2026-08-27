@@ -35,9 +35,9 @@ The heading for this screen.
 
 Optional introductory content for this screen.
 
-### `answer-summary-title`
+### `label`
 
-The heading used when this screen's answers appear in a later screen's answers-so-far region. It falls back to the `title` slot.
+The concise label used in progress displays and when this screen's answers appear in a later screen's answers-so-far region. It falls back to the `title` slot.
 
 ### `default`
 
