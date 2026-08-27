@@ -25,48 +25,6 @@
 
 		<slot v-bind="{ isSubmitting, hasErrors: haveAnyErrorSummary }" />
 
-		<section
-			v-if="haveAnswerSummaries"
-			class="border-border mbs-8 border-bs pbs-6"
-			data-part="answers-so-far"
-			data-test="form-flow-answers-so-far"
-		>
-			<h3
-				class="text-content-strong mbe-4 text-lg font-bold"
-				data-part="answers-so-far-title"
-				data-test="form-flow-answers-so-far-title"
-			>
-				<slot name="answers-so-far-title">Answers so far</slot>
-			</h3>
-
-			<div
-				v-for="summary in answerSummaries"
-				:key="summary.id"
-				class="mbs-6"
-				data-part="answer-summary"
-				data-test="form-flow-answer-summary"
-			>
-				<h4
-					class="text-content-strong mbe-3 text-lg font-bold"
-					data-part="answer-summary-title"
-					data-test="form-flow-answer-summary-title"
-				>
-					{{ summary.title }}
-				</h4>
-
-				<dl class="grid gap-y-2">
-					<div
-						v-for="field in summary.fields"
-						:key="field.fieldName"
-						class="grid gap-x-4 gap-y-1 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]"
-					>
-						<dt class="font-semibold">{{ field.label }}</dt>
-						<dd>{{ field.answer }}</dd>
-					</div>
-				</dl>
-			</div>
-		</section>
-
 		<alert-message v-if="haveEmptyFlow" type="info" class="mbe-4" data-test="form-flow-empty">
 			<slot name="empty">No screens are available.</slot>
 		</alert-message>

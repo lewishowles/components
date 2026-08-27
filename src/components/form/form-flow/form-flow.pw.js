@@ -61,33 +61,6 @@ test.describe("form-flow", () => {
 		});
 	});
 
-	test.describe("answers-so-far", () => {
-		test("uses one column on narrow screens and two columns on wider screens", async ({
-			mount,
-			page,
-		}) => {
-			await page.setViewportSize({ width: 800, height: 800 });
-			await mountFormFlow(mount);
-
-			await page.getByTestId("form-flow-continue-button").click();
-
-			const answers = page.getByTestId("form-flow-answers-so-far");
-			const answerRow = answers.locator("dl > div").first();
-
-			const columnCount = () =>
-				answerRow.evaluate(
-					(element) => getComputedStyle(element).gridTemplateColumns.split(" ").length,
-				);
-
-			await expect(answers).toBeVisible();
-			await expect.poll(columnCount).toBe(2);
-
-			await page.setViewportSize({ width: 320, height: 800 });
-
-			await expect.poll(columnCount).toBe(1);
-		});
-	});
-
 	test.describe("actions", () => {
 		test("renders the layout and forwarded action slots", async ({ mount, page }) => {
 			await mountFormFlow(mount, { props: { layoutClasses: "gap-y-4" } });

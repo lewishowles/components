@@ -68,8 +68,7 @@
 				<template #name>label</template>
 
 				<p>
-					The concise label used in progress displays and when this screen's answers appear in a
-					later screen's answers-so-far region. It falls back to the
+					The concise label used in progress displays. It falls back to the
 					<code>title</code>
 					slot.
 				</p>
