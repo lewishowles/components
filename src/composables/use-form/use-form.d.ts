@@ -110,12 +110,3 @@ interface UseFormReturn {
 }
 
 export declare function useForm<T = unknown>(options: UseFormOptions<T>): UseFormReturn;
-
-interface RouterLike {
-	beforeEach(guard: () => unknown): void;
-}
-
-export declare function installUnsavedChangesGuard(
-	router: RouterLike,
-	options?: { message?: string },
-): void;
