@@ -443,12 +443,12 @@ let isAutoAdvanceReady = false;
 // Native input/change events are the only signal that a model watcher update
 // came from the user. Keep that signal until the watcher consumes it.
 let hasUserInputEvent = false;
-// Automatic validation can finish after a newer change or navigation. Keep the
-// latest request so an older result cannot move the flow.
-let latestAutoAdvanceRequest = null;
-// A focus lookup can outlive the screen visit that started it. Keep the visit
-// identity so an older lookup cannot steal focus after the user returns.
-let currentFocusRequest = null;
+// Automatic validation can finish after a newer change or navigation. Advance
+// this generation so an older result cannot move the flow.
+let autoAdvanceGeneration = 0;
+// A focus lookup can outlive the screen visit that started it. Advance this
+// generation so an older lookup cannot steal focus after the user returns.
+let focusGeneration = 0;
 // The field a review Change button asked to focus, until the next focus attempt consumes it.
 let pendingFieldFocus = null;
 
@@ -678,8 +678,8 @@ function unregisterScreen(screenId) {
 	} else {
 		// The removed screen must not regain focus or navigate when its async work
 		// finishes. Clear the active ID so a later screen becomes the first screen.
-		latestAutoAdvanceRequest = null;
-		currentFocusRequest = null;
+		autoAdvanceGeneration += 1;
+		focusGeneration += 1;
 		activeScreenId.value = null;
 	}
 }
@@ -927,13 +927,11 @@ function startAutoAdvance(fieldName) {
 		return;
 	}
 
-	const autoAdvanceRequest = Symbol("auto-advance-request");
-
-	latestAutoAdvanceRequest = autoAdvanceRequest;
+	const requestGeneration = ++autoAdvanceGeneration;
 
 	void navigateForward({
 		reason: navigationReasons.AUTOMATIC,
-		isRequestStillCurrent: () => latestAutoAdvanceRequest === autoAdvanceRequest,
+		isRequestStillCurrent: () => autoAdvanceGeneration === requestGeneration,
 	});
 }
 
@@ -1014,7 +1012,7 @@ function navigateToScreen(
 	{ direction = "forward", shouldEmitChange = true, reason } = {},
 ) {
 	// Manual or conditional navigation invalidates automatic validation still in flight.
-	latestAutoAdvanceRequest = null;
+	autoAdvanceGeneration += 1;
 
 	if (!isNonEmptyString(destinationScreenId) || !screenIds.value.includes(destinationScreenId)) {
 		return;
@@ -1030,12 +1028,9 @@ function navigateToScreen(
 
 	activeScreenId.value = destinationScreenId;
 
-	// The screen being left may still have a focus attempt in flight (e.g.
-	// waiting on a field to register). Invalidate it now, synchronously, rather
-	// than waiting for the post-navigation watcher to call focusScreen and
-	// replace the token; that watcher runs later, leaving a gap where the
-	// stale attempt would still read as current.
-	currentFocusRequest = null;
+	// The screen being left may still have a focus attempt in flight while its
+	// field registers. Invalidate it before the destination renders.
+	focusGeneration += 1;
 
 	if (shouldEmitChange && isNonEmptyString(sourceScreenId)) {
 		emit("screen-change", {
@@ -1065,16 +1060,16 @@ function getScreenHeading(screenId) {
  * Move focus to the shared error-summary box once its current content
  * (the current screen's own errors, or flow-level errors) has rendered.
  *
- * @param  {object}  [focusRequest]
- *     The focus attempt this call belongs to. Omit when calling outside a
+ * @param  {number}  [requestGeneration]
+ *     The focus generation this call belongs to. Omit when calling outside a
  *     tracked focus attempt (e.g. showing a flow-level error directly), which
  *     always proceeds.
  */
-async function focusErrorSummaryBox(focusRequest) {
+async function focusErrorSummaryBox(requestGeneration) {
 	await nextTick();
 
 	// If a later focus attempt has started, this one is stale; cancel it.
-	if (focusRequest && focusRequest !== currentFocusRequest) {
+	if (requestGeneration && requestGeneration !== focusGeneration) {
 		return;
 	}
 
@@ -1087,12 +1082,12 @@ async function focusErrorSummaryBox(focusRequest) {
  *
  * @param  {string}  fieldName
  *     The field name to focus.
- * @param  {object}  focusRequest
- *     The focus attempt this call belongs to.
+ * @param  {number}  requestGeneration
+ *     The focus generation this call belongs to.
  * @returns {boolean}
  *     Whether the field was focused.
  */
-async function focusRegisteredField(fieldName, focusRequest) {
+async function focusRegisteredField(fieldName, requestGeneration) {
 	if (!isNonEmptyString(fieldName)) {
 		return false;
 	}
@@ -1105,7 +1100,7 @@ async function focusRegisteredField(fieldName, focusRequest) {
 	}
 
 	// If we can't find the field, or a later focus attempt has started, cancel.
-	if (!formFields[fieldName] || focusRequest !== currentFocusRequest) {
+	if (!formFields[fieldName] || requestGeneration !== focusGeneration) {
 		return false;
 	}
 
@@ -1125,24 +1120,18 @@ async function focusRegisteredField(fieldName, focusRequest) {
  *     A field to focus instead of the screen's own auto-focus field, set by a review Change button.
  */
 async function focusScreen(screenId = activeScreenId.value, { fieldName } = {}) {
-	// Leaving and quickly returning to the same screen can start a second focus
-	// attempt before the first one's await resolves. Give this attempt its own
-	// identity so an earlier attempt can tell it has been superseded and stop
-	// instead of moving focus after this one already has.
-	const focusRequest = Symbol("focus-request");
-
-	currentFocusRequest = focusRequest;
+	const requestGeneration = ++focusGeneration;
 
 	await nextTick();
 
 	// If a later focus attempt has started, this one is stale; cancel it.
-	if (focusRequest !== currentFocusRequest) {
+	if (requestGeneration !== focusGeneration) {
 		return;
 	}
 
 	// If we have an error summary, focus it.
 	if (haveAnyErrorSummary.value) {
-		await focusErrorSummaryBox(focusRequest);
+		await focusErrorSummaryBox(requestGeneration);
 
 		return;
 	}
@@ -1164,12 +1153,12 @@ async function focusScreen(screenId = activeScreenId.value, { fieldName } = {}) 
 
 	// Attempt to focus the listed field.
 	if (isNonEmptyString(autoFocus)) {
-		if (await focusRegisteredField(autoFocus, focusRequest)) {
+		if (await focusRegisteredField(autoFocus, requestGeneration)) {
 			return;
 		}
 
 		// If a later focus attempt has started, this one is stale; cancel it.
-		if (focusRequest !== currentFocusRequest) {
+		if (requestGeneration !== focusGeneration) {
 			return;
 		}
 	}
