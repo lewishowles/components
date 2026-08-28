@@ -13,6 +13,22 @@ export const formFlowMetadata = {
 			name: "progress",
 			summary: "Container for the default progress display, or replaced progress slot content.",
 		},
+		{
+			name: "review",
+			summary: "Container for the optional answer review shown before final submission.",
+		},
+		{
+			name: "review-title",
+			summary: "Heading for the optional answer review destination.",
+		},
+		{
+			name: "review-screen",
+			summary: "Container for one completed screen in the answer review.",
+		},
+		{
+			name: "review-screen-title",
+			summary: "Heading for one completed screen in the answer review.",
+		},
 	],
 	props: [
 		{
@@ -69,6 +85,12 @@ export const formFlowMetadata = {
 			type: "string",
 			default: '""',
 			summary: "Additional classes merged onto the inner form-layout.",
+		},
+		{
+			name: "enableReview",
+			type: "boolean",
+			default: false,
+			summary: "Whether to show an answer review destination before final submission.",
 		},
 		{
 			name: "updatePageTitleOnError",
@@ -130,7 +152,10 @@ export const formFlowMetadata = {
 				"Message shown when all screens are removed and no screen is available. Defaults to No screens are available.",
 		},
 		{ name: "back-label", summary: "Label for the Back button. Defaults to Back." },
-		{ name: "continue-label", summary: "Label for Continue before the final screen." },
+		{
+			name: "continue-label",
+			summary: "Label for Continue before the final screen and for opening the review.",
+		},
 		{
 			name: "actions-label",
 			summary: "Accessible label for the form actions group.",
@@ -159,7 +184,7 @@ export const formFlowMetadata = {
 		{
 			name: "screen-change",
 			summary:
-				"Emitted after navigation with { sourceId, destinationId, direction, reason }; conditional-screen-recovery means the active conditional screen disappeared and the flow moved to the next or previous visible screen, while final-error-recovery means final validation found an error on another visible screen and the flow moved to it.",
+				"Emitted after navigation with { sourceId, destinationId, direction, reason }; conditional-screen-recovery means the active conditional screen disappeared and the flow moved to the next or previous visible screen, final-error-recovery means final validation found an error on another visible screen and the flow moved to it, and review means a review Change button moved to a different screen.",
 		},
 		{ name: "update:modelValue", summary: "Emitted when the form model changes." },
 		{ name: "submit", summary: "Emitted with submit-ready data after final validation passes." },

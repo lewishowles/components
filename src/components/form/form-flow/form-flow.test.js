@@ -169,13 +169,20 @@ describe("form-flow", () => {
 			expect(actions.text()).toContain("Cancel");
 		});
 
-		test("shows an error when the final submit label is missing", async () => {
+		test("shows the submit-label warning on every screen", async () => {
 			const wrapper = mountDeep({
-				slots: { default: () => titledScreen("first", "First details") },
+				slots: { default: flowSlots },
 			});
 
 			await nextTick();
 
+			expect(wrapper.find('[data-test="form-flow-submit-button-label-error"]').exists()).toBe(true);
+			expect(wrapper.find('[data-test="form-flow-continue-button"]').exists()).toBe(true);
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(true);
 			expect(wrapper.find('[data-test="form-flow-submit-button-label-error"]').exists()).toBe(true);
 			expect(wrapper.find('[data-test="form-flow-continue-button"]').exists()).toBe(false);
 		});
@@ -246,6 +253,154 @@ describe("form-flow", () => {
 	});
 
 	describe("Navigation", () => {
+		test("shows an optional review destination before final submission", async () => {
+			const onSubmit = vi.fn();
+
+			const wrapper = mountDeep({
+				props: {
+					modelValue: { first: "ready" },
+					onSubmit,
+					enableReview: true,
+				},
+				slots: {
+					default: () => titledScreen("first", "First details"),
+					"submit-button-label": "Submit form",
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(wrapper.get('[data-test="form-flow-review"]').text()).toContain("First details");
+			expect(onSubmit).not.toHaveBeenCalled();
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(onSubmit).toHaveBeenCalledWith({ first: "ready" });
+		});
+
+		test("submits retained values from every reviewed screen", async () => {
+			const onSubmit = vi.fn();
+
+			const wrapper = mountDeep({
+				props: {
+					modelValue: { first: "ready", second: "later" },
+					onSubmit,
+					enableReview: true,
+				},
+				slots: {
+					default: flowSlots,
+					"submit-button-label": "Submit form",
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(wrapper.find('[data-test="form-flow-review"]').exists()).toBe(true);
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(onSubmit).toHaveBeenCalledTimes(1);
+			expect(onSubmit).toHaveBeenCalledWith({ first: "ready", second: "later" });
+		});
+
+		test("returns from review to the last visible screen", async () => {
+			const wrapper = mountDeep({
+				props: {
+					modelValue: { first: "ready" },
+					enableReview: true,
+				},
+				slots: {
+					default: () => titledScreen("first", "First details"),
+					"submit-button-label": "Submit form",
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow-back-button"]').trigger("click");
+			await nextTick();
+
+			expect(wrapper.find('[data-test="form-flow-review"]').exists()).toBe(false);
+			expect(wrapper.find('[data-screen-id="first"]').exists()).toBe(true);
+		});
+
+		test("renders screen summaries and contextual Change buttons", async () => {
+			const wrapper = mountDeep({
+				props: {
+					modelValue: { first: "ready" },
+					enableReview: true,
+				},
+				slots: {
+					default: () =>
+						h(
+							FormScreen,
+							{ id: "first", key: "first" },
+							{
+								default: () => h(FormField, { name: "first" }, { default: () => "First name" }),
+								title: () => "Your details",
+							},
+						),
+					"submit-button-label": "Submit form",
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			const review = wrapper.get('[data-test="form-flow-review"]');
+			const changeButton = review.get("button");
+
+			expect(review.get('[data-test="form-flow-review-screen-title"]').text()).toBe("Your details");
+			expect(changeButton.text()).toContain("Change");
+			expect(changeButton.text()).toContain("First name on Your details");
+		});
+
+		test("renders a custom answer summary in place of its default answer", async () => {
+			const wrapper = mountDeep({
+				props: {
+					modelValue: { first: "ready" },
+					enableReview: true,
+				},
+				slots: {
+					default: () =>
+						h(
+							FormScreen,
+							{ id: "first", key: "first" },
+							{
+								default: () =>
+									h(
+										FormField,
+										{ name: "first" },
+										{
+											"answer-summary": ({ answer }) =>
+												h("strong", { "data-test": "custom-answer" }, `Answer: ${answer}`),
+											default: () => "First name",
+										},
+									),
+								title: () => "Your details",
+							},
+						),
+					"submit-button-label": "Submit form",
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(wrapper.get('[data-test="custom-answer"]').text()).toBe("Answer: ready");
+		});
+
 		test("marks the last screen completed after a successful final submit", async () => {
 			const wrapper = mountDeep({
 				props: { modelValue: { first: "ready", second: "later" } },

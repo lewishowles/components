@@ -227,6 +227,13 @@
 				</p>
 			</component-prop>
 
+			<component-prop id="prop-enable-review">
+				<template #name>enableReview</template>
+				<template #type>Boolean</template>
+				<template #default-value>false</template>
+				<p>Whether to show an optional answer review destination before final submission.</p>
+			</component-prop>
+
 			<component-prop id="prop-field-types">
 				<template #name>fieldTypes</template>
 				<template #type>Object</template>
@@ -398,7 +405,7 @@
 			<component-slot id="slot-continue-label">
 				<template #name>continue-label</template>
 				<template #default-value>Continue</template>
-				<p>The label for the Continue button on interim screens.</p>
+				<p>The label for the Continue button on interim screens and the review-opening action.</p>
 			</component-slot>
 
 			<component-slot id="slot-submit-button-label">
@@ -512,6 +519,8 @@
 					<code>continue</code>
 					,
 					<code>final-error-recovery</code>
+					,
+					<code>review</code>
 					, or
 					<code>automatic</code>
 					. The
@@ -520,7 +529,9 @@
 					previous visible screen. The
 					<code>final-error-recovery</code>
 					reason means final validation found an error on another visible screen, so the flow moved
-					to that screen. The internal
+					to that screen. The
+					<code>review</code>
+					reason means a review Change button moved to a different screen. The internal
 					<code>initial-render</code>
 					reason does not emit this event.
 				</p>

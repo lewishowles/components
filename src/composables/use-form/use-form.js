@@ -83,6 +83,9 @@ const ROOT_ERROR_KEY = "";
  *     Prefix added to document.title after failed validation.
  * @param  {boolean|ref|function}  [readonly]
  *     Whether all form fields should be treated as readonly.
+ * @param  {boolean}  [includeUnregisteredFields]
+ *     Whether submit data should include retained values whose fields are not
+ *     currently mounted. Form-flow uses this for its inactive screens.
  * @param  {ref}  [errorSummaryElement]
  *     Ref to the error summary element, focused after a failed submit.
  *     Only needed when calling handleFormSubmit directly; not required for
@@ -111,6 +114,7 @@ export function useForm({
 	updatePageTitleOnError,
 	pageTitleErrorPrefix,
 	readonly,
+	includeUnregisteredFields = false,
 	errorSummaryElement,
 	generalErrorsElement,
 	submitButtonRef,
@@ -695,11 +699,15 @@ export function useForm({
 	 *     A plain object of submit-ready values for registered fields.
 	 */
 	function getSubmitData() {
-		// Keep retained values in formData while excluding fields with no live control.
+		// Form-flow can submit retained values from screens that are not mounted.
 		const registeredData = {};
 
 		if (isObject(formData.value)) {
-			for (const fieldName of Object.keys(formFields)) {
+			const fieldNames = includeUnregisteredFields
+				? Object.keys(formData.value)
+				: Object.keys(formFields);
+
+			for (const fieldName of fieldNames) {
 				if (Object.hasOwn(formData.value, fieldName)) {
 					registeredData[fieldName] = formData.value[fieldName];
 				}

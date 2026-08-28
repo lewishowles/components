@@ -420,6 +420,7 @@ async function registerCurrentField(fieldName) {
 	}
 
 	const registration = await registerField({
+		answerSummary: slots["answer-summary"],
 		displayValue: fieldDisplayValue,
 		label: getSlotText(slots.default),
 		name: fieldName,
@@ -450,11 +451,11 @@ function unregisterFieldByName(fieldName) {
 
 /**
  * Get the names of every slot the consumer has provided, to forward to the
- * selected field. `error` is excluded, since it keeps its own fallback
- * content when the consumer doesn't provide one.
+ * selected field. `error` and `answer-summary` are handled by form-field
+ * itself.
  */
 function getForwardedSlotNames() {
-	return Object.keys(slots).filter((slotName) => slotName !== "error");
+	return Object.keys(slots).filter((slotName) => !["answer-summary", "error"].includes(slotName));
 }
 
 /**

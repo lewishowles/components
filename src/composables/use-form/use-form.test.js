@@ -1313,6 +1313,20 @@ describe("useForm", () => {
 			expect(getSubmitData()).toEqual({ email: "after@example.com", name: "Alice" });
 		});
 
+		test("includes retained values when unregistered fields are allowed", async () => {
+			const { formData, getSubmitData, registerField, unregisterField } = createForm({
+				initialData: { email: "before@example.com", name: "Alice" },
+				props: { includeUnregisteredFields: true },
+			});
+
+			await registerField({ name: "email", id: "email-id" });
+			await registerField({ name: "name", id: "name-id" });
+			unregisterField("email");
+
+			expect(formData.value).toEqual({ email: "before@example.com", name: "Alice" });
+			expect(getSubmitData()).toEqual({ email: "before@example.com", name: "Alice" });
+		});
+
 		test("coerces registered fields per the fieldTypes prop", async () => {
 			const { formData, getSubmitData, registerField } = createForm({
 				props: { fieldTypes: { age: "nullable-number", notes: "nullable-string" } },

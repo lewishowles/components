@@ -8,7 +8,7 @@ Moving forward with continue validates the current screen, while moving back doe
 
 ### `default`
 
-One or more `form-screen` components plus other content. Content outside of `form-screen` is always shown on each page.
+One or more `form-screen` components plus other content. Content outside of `form-screen` is shown while screen content is active and hidden while the review destination is shown.
 
 | Slot prop      | Type      | Description                                         |
 | -------------- | --------- | --------------------------------------------------- |
@@ -31,7 +31,14 @@ The label for the Back button.
 
 - default: "Continue"
 
-The label for the continue button on interim screens.
+The label for the continue button on all but the last screen.
+
+### `enableReview`
+
+- type: `boolean`
+- default: `false`
+
+When `true`, the flow shows a review of completed screen answers after the final screen validates. The final submit button appears on the review destination. Without this option, the final screen submits directly.
 
 ### `submit-button-label`
 
@@ -210,12 +217,12 @@ On final submission, an error on another screen moves the flow to the first scre
 Fired after the flow completes navigation to another screen. The payload is
 `{ sourceId, destinationId, direction, reason }`.
 
-| Property        | Type                      | Description                                                                                                                                                                                                                                                                                                                                                          |
-| --------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sourceId`      | `string`                  | ID of the screen being left.                                                                                                                                                                                                                                                                                                                                         |
-| `destinationId` | `string`                  | ID of the screen being entered.                                                                                                                                                                                                                                                                                                                                      |
-| `direction`     | `"forward" \| "backward"` | Direction of the navigation.                                                                                                                                                                                                                                                                                                                                         |
-| `reason`        | `string`                  | One of `back`, `conditional-screen-recovery`, `continue`, `final-error-recovery`, or `automatic`. `conditional-screen-recovery` means the active conditional screen disappeared, so the flow moved to the next or previous visible screen. `final-error-recovery` means final validation found an error on another visible screen, so the flow moved to that screen. |
+| Property        | Type                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| --------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sourceId`      | `string`                  | ID of the screen being left.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `destinationId` | `string`                  | ID of the screen being entered.                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `direction`     | `"forward" \| "backward"` | Direction of the navigation.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `reason`        | `string`                  | One of `back`, `conditional-screen-recovery`, `continue`, `final-error-recovery`, `review`, or `automatic`. `conditional-screen-recovery` means the active conditional screen disappeared, so the flow moved to the next or previous visible screen. `final-error-recovery` means final validation found an error on another visible screen, so the flow moved to that screen. `review` means a review Change button moved to a different screen. |
 
 The internal `initial-render` reason does not emit a `screen-change` event.
 

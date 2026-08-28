@@ -5,6 +5,7 @@ import FormFlowFixture from "./form-flow.fixture.vue";
 import FormFlowEmptyFixture from "./form-flow-empty.fixture.vue";
 import FormFlowErrorRoutingFixture from "./form-flow-error-routing.fixture.vue";
 import FormFlowFocusFixture from "./form-flow-focus.fixture.vue";
+import FormFlowReviewFixture from "./form-flow-review.fixture.vue";
 
 // Baseline two-screen flow for navigation and progress assertions.
 const mountFormFlow = createMount(FormFlowFixture);
@@ -16,6 +17,9 @@ const mountErrorRoutingFormFlow = createMount(FormFlowErrorRoutingFixture);
 
 // Flow with a screen configured with autoFocus for focus-target tests.
 const mountFocusFormFlow = createMount(FormFlowFocusFixture);
+
+// Flow with an optional review destination and submit journey.
+const mountReviewFormFlow = createMount(FormFlowReviewFixture);
 
 test.describe("form-flow", () => {
 	test.describe("navigation", () => {
@@ -37,6 +41,53 @@ test.describe("form-flow", () => {
 
 			await page.getByTestId("form-flow-back-button").click();
 			await expect(page.getByText("Email address")).toBeVisible();
+		});
+
+		test("supports review, Change navigation, back navigation, and final submission", async ({
+			mount,
+			page,
+		}) => {
+			await mountReviewFormFlow(mount);
+
+			await page.getByTestId("form-flow-continue-button").click();
+			await page.getByLabel("Display name", { exact: true }).fill("Taylor");
+			await expect(page.getByTestId("form-flow-continue-button")).toHaveText("Continue");
+			await page.getByTestId("form-flow-continue-button").click();
+
+			const review = page.getByTestId("form-flow-review");
+
+			await expect(review).toBeVisible();
+			await expect(review).toContainText("Review your answers");
+			await expect(review).toContainText("Taylor");
+			await expect(page.getByTestId("form-flow-continue-button")).toHaveText("Submit application");
+			await expect(page.getByTestId("form-flow-review-title")).toBeFocused();
+
+			await page.getByRole("button", { name: "Change Display name on Profile details" }).click();
+			await expect(page.getByLabel("Display name", { exact: true })).toBeFocused();
+
+			await page.getByTestId("form-flow-continue-button").click();
+			await page.getByTestId("form-flow-back-button").click();
+			await expect(page.getByTestId("form-screen-title")).toBeFocused();
+
+			await page.getByTestId("form-flow-continue-button").click();
+			await page.getByTestId("form-flow-continue-button").click();
+			await expect(page.getByTestId("form-flow-review-submitted")).toBeVisible();
+		});
+
+		test("navigates to and focuses an earlier screen field from review", async ({
+			mount,
+			page,
+		}) => {
+			await mountReviewFormFlow(mount);
+
+			await page.getByTestId("form-flow-continue-button").click();
+			await page.getByLabel("Display name", { exact: true }).fill("Taylor");
+			await page.getByTestId("form-flow-continue-button").click();
+
+			await page.getByRole("button", { name: "Change Email address on Account details" }).click();
+
+			await expect(page.getByText("Email address")).toBeVisible();
+			await expect(page.getByLabel("Email address", { exact: true })).toBeFocused();
 		});
 	});
 

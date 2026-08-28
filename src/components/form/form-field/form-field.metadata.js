@@ -112,6 +112,11 @@ export const formFieldMetadata = {
 			summary: "Custom error content; overrides default validation messages.",
 		},
 		{
+			name: "answer-summary",
+			summary:
+				"Custom answer content shown for this field in a form-flow review. Receives answer, fieldName, and label.",
+		},
+		{
 			name: "help",
 			summary: "Help text shown below the input.",
 		},

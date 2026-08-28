@@ -269,6 +269,22 @@
 				</p>
 			</component-slot>
 
+			<component-slot id="slot-answer-summary">
+				<template #name>answer-summary</template>
+
+				<p>
+					Custom answer content for this field in a
+					<code>form-flow</code>
+					review. The slot receives
+					<code>answer</code>
+					,
+					<code>fieldName</code>
+					, and
+					<code>label</code>
+					.
+				</p>
+			</component-slot>
+
 			<component-slot id="slot-help">
 				<template #name>help</template>
 

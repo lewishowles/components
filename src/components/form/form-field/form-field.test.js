@@ -91,6 +91,21 @@ describe("form-field", () => {
 			expect(field.displayValue.value).toBe("Lewis");
 		});
 
+		test("should register a custom answer-summary slot", () => {
+			const answerSummary = vi.fn();
+
+			mount({
+				slots: {
+					"answer-summary": answerSummary,
+					default: "Username",
+				},
+			});
+
+			const field = registerFieldMock.mock.calls.at(-1)?.[0];
+
+			expect(field.answerSummary).toBeTypeOf("function");
+		});
+
 		test.for([
 			["a string", "Lewis", "Lewis"],
 			["a number", 42, 42],

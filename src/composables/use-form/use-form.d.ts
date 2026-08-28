@@ -65,6 +65,7 @@ interface UseFormOptions<T = unknown> {
 	updatePageTitleOnError?: MaybeRefOrGetter<boolean | undefined>;
 	pageTitleErrorPrefix?: MaybeRefOrGetter<string | undefined>;
 	readonly?: MaybeRefOrGetter<boolean | undefined>;
+	includeUnregisteredFields?: boolean;
 	errorSummaryElement?: Ref<HTMLElement | null>;
 	generalErrorsElement?: Ref<{ $el: HTMLElement } | null>;
 	submitButtonRef?: Ref<{ reset: () => void } | null>;
