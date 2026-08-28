@@ -84,11 +84,9 @@
 <script setup>
 // fallow-ignore-file -- "submit" emit is used by consumers via `useForm`
 // onSubmit callback, not directly within this component.
-import { computed, getCurrentInstance, provide, ref, toRefs, toValue, useSlots, watch } from "vue";
-import { isNonEmptySlot } from "@lewishowles/helpers/vue";
-import { toCamelCase } from "@lewishowles/helpers/string";
+import { provide, ref } from "vue";
 
-import { useForm } from "@/composables/use-form/use-form.js";
+import { useFormHost } from "@/composables/use-form-host/use-form-host.js";
 
 const props = defineProps({
 	/**
@@ -278,46 +276,9 @@ const props = defineProps({
 // directly within this component.
 const emit = defineEmits(["update:modelValue", "submit"]);
 
-const slots = useSlots();
-const instance = getCurrentInstance();
-
-// Whether the caller explicitly supplied an initial data source.
-const haveInitialData = Object.keys(instance?.vnode.props ?? {}).some(
-	(key) => toCamelCase(key) === "initialData",
-);
-
 const submitButtonRef = ref(null);
 const errorSummaryElement = ref(null);
 const generalErrorsElement = ref(null);
-const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button-label"]));
-const haveSubmitErrorsSlot = computed(() => isNonEmptySlot(slots["submit-errors"]));
-const haveActionsLabel = computed(() => isNonEmptySlot(slots["actions-label"]));
-
-// The source used to seed the form.
-const formInitialData = computed(() => {
-	return haveInitialData ? toValue(props.initialData) : props.modelValue;
-});
-
-// The form-wide status prop overrides submit lifecycle status when provided.
-const formStatus = computed(() => props.status ?? submitStatus.value);
-
-/**
- * Call whatever `@submit` listener(s) the parent attached directly, so their
- * returned Promise can be awaited by useForm.
- *
- * @param  {object}  data
- *     The form data ready to be submitted.
- * @returns  {unknown}
- *     The first listener's resolved value, passed on to onSuccess as its
- *     submit result.
- */
-async function callSubmitListeners(data) {
-	const onSubmit = instance?.vnode.props?.onSubmit;
-	const handlers = Array.isArray(onSubmit) ? onSubmit : [onSubmit].filter(Boolean);
-	const results = await Promise.all(handlers.map((handler) => handler(data)));
-
-	return results[0];
-}
 
 const {
 	formData,
@@ -337,31 +298,18 @@ const {
 	resetSubmitButton,
 	focusField,
 	isFieldRequired,
-} = useForm({
-	...toRefs(props),
-	initialData: formInitialData,
-	onSubmit: callSubmitListeners,
+	formContext,
+	formStatus,
+	haveSubmitButtonLabel,
+	haveSubmitErrorsSlot,
+	haveActionsLabel,
+} = useFormHost(props, emit, {
 	errorSummaryElement,
 	generalErrorsElement,
 	submitButtonRef,
 });
 
-// Synchronous initial data seeds before this watcher exists, so emit its current value immediately.
-watch(formData, (value) => emit("update:modelValue", value), {
-	deep: true,
-	immediate: haveInitialData && Boolean(formInitialData.value),
-});
-
-// Context shared by form-field and form-layout consumers.
-provide("form", {
-	fieldErrorsFor,
-	registerField,
-	unregisterField,
-	updateFieldValue,
-	isReadonly,
-	isFieldRequired,
-	isCompact: computed(() => props.compact),
-});
+provide("form", formContext);
 
 defineExpose({ isSubmitting, isDirty, resetSubmitButton });
 </script>

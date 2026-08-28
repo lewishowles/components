@@ -137,26 +137,21 @@
 <script setup>
 import {
 	computed,
-	getCurrentInstance,
 	nextTick,
 	onMounted,
 	provide,
 	ref,
-	toRefs,
 	toValue,
 	unref,
-	useSlots,
 	useTemplateRef,
 	watch,
 } from "vue";
 
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
-import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { toCamelCase } from "@lewishowles/helpers/string";
 import { until } from "@vueuse/core";
 
-import { useForm } from "@/composables/use-form/use-form.js";
+import { useFormHost } from "@/composables/use-form-host/use-form-host.js";
 
 // Reasons explain what caused each completed navigation reported by the
 // `screen-change` event.
@@ -363,30 +358,12 @@ const props = defineProps({
 
 const emit = defineEmits(["screen-change", "submit", "update:modelValue"]);
 
-const instance = getCurrentInstance();
-const slots = useSlots();
-
-// Whether the caller supplied initialData, so its default value can be distinguished.
-const haveInitialData = Object.keys(instance?.vnode.props ?? {}).some(
-	(key) => toCamelCase(key) === "initialData",
-);
-
-// The source used to seed the form.
-const formInitialData = computed(() => {
-	return haveInitialData ? toValue(props.initialData) : props.modelValue;
-});
-
 // References used by useForm for focus and submit-button state.
 const errorSummaryElement = useTemplateRef("error-summary");
 const generalErrorsElement = useTemplateRef("general-errors");
 const submitButtonRef = useTemplateRef("submit-button");
 // Focus target for the review screen's heading when review opens.
 const reviewHeading = useTemplateRef("review-heading");
-
-// The form-wide status prop overrides submit lifecycle status when provided.
-const formStatus = computed(() => props.status ?? submitStatus.value);
-// Whether the final screen has a meaningful submit label.
-const haveSubmitButtonLabel = computed(() => isNonEmptySlot(slots["submit-button-label"]));
 
 // Whether the primary action button should render for the current step.
 const showPrimaryButton = computed(
@@ -400,11 +377,6 @@ const showPrimaryButton = computed(
 const isSubmitStep = computed(
 	() => isShowingReview.value || (isLastScreen.value && !props.enableReview),
 );
-
-// Whether the actions group has an accessible label.
-const haveActionsLabel = computed(() => isNonEmptySlot(slots["actions-label"]));
-// Whether custom submit errors should render without parsed errors.
-const haveSubmitErrorsSlot = computed(() => isNonEmptySlot(slots["submit-errors"]));
 
 const {
 	formData,
@@ -429,14 +401,17 @@ const {
 	focusField,
 	isFieldRequired,
 	validate,
-} = useForm({
-	...toRefs(props),
-	initialData: formInitialData,
-	onSubmit: callSubmitListeners,
+	formContext,
+	formStatus,
+	haveSubmitButtonLabel,
+	haveSubmitErrorsSlot,
+	haveActionsLabel,
+} = useFormHost(props, emit, {
 	includeUnregisteredFields: true,
 	errorSummaryElement,
 	generalErrorsElement,
 	submitButtonRef,
+	handleEmptySubmit,
 });
 
 // Errors that cannot be attributed to a field on a visible screen.
@@ -537,13 +512,6 @@ const haveActiveScreenErrors = computed(() =>
 	),
 );
 
-// Synchronous initial data seeds before this watcher exists, so emit its
-// current value immediately.
-watch(formData, (value) => emit("update:modelValue", value), {
-	deep: true,
-	immediate: haveInitialData && Boolean(formInitialData.value),
-});
-
 // Warn when screen registration changes leave no visible screen.
 watch(haveEmptyFlow, warnIfEmptyFlow);
 
@@ -567,28 +535,13 @@ onMounted(() => {
 });
 
 /**
- * Call whatever `@submit` listener(s) the parent attached directly, so their
- * returned Promise can be awaited by useForm.
+ * Emit the flow submit event when no direct listener is attached.
  *
  * @param  {object}  data
  *     The form data ready to be submitted.
- * @returns  {unknown}
- *     The first listener's resolved value, passed on to onSuccess as its
- *     submit result.
  */
-async function callSubmitListeners(data) {
-	const onSubmit = instance?.vnode.props?.onSubmit;
-	const handlers = Array.isArray(onSubmit) ? onSubmit : [onSubmit].filter(Boolean);
-
-	if (handlers.length === 0) {
-		emit("submit", data);
-
-		return undefined;
-	}
-
-	const results = await Promise.all(handlers.map((handler) => handler(data)));
-
-	return results[0];
+function handleEmptySubmit(data) {
+	emit("submit", data);
 }
 
 /**
@@ -1535,13 +1488,10 @@ provide("form-flow", {
 });
 
 provide("form", {
-	fieldErrorsFor,
+	...formContext,
 	registerField: registerFlowField,
 	unregisterField: unregisterFlowField,
 	updateFieldValue: updateFieldValueAndClearCompletion,
-	isReadonly,
-	isFieldRequired,
-	isCompact: computed(() => props.compact),
 });
 
 defineExpose({ isSubmitting, isDirty, resetSubmitButton });
