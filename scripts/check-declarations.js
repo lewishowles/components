@@ -3,8 +3,8 @@
  * declaration file. Exits with a non-zero code and lists any missing files if
  * the check fails.
  *
- * Composables: every subdirectory of `src/composables/` that contains a
- * primary `.js` file matching the directory name.
+ * Composables: every source path referenced by `src/composables/index.js`
+ * exports.
  *
  * Utilities: every source file referenced by `src/utilities/index.js` exports.
  *
@@ -13,7 +13,7 @@
  * here.
  */
 
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join } from "node:path";
 import process from "node:process";
@@ -26,24 +26,22 @@ const missing = [];
 
 let checked = 0;
 
-// Composables: every subdirectory must have a co-located `.d.ts`.
-for (const entry of readdirSync(composablesDir, { withFileTypes: true })) {
-	if (!entry.isDirectory()) {
-		continue;
-	}
+// Composables: check each path referenced by
+// `src/composables/index.js` exports.
+const composablesIndexSource = readFileSync(join(composablesDir, "index.js"), "utf8");
 
-	const name = entry.name;
-	const jsFile = join(composablesDir, name, `${name}.js`);
-	const dtsFile = join(composablesDir, name, `${name}.d.ts`);
+const composablePaths = [...composablesIndexSource.matchAll(/from\s+"([^"]+)"/g)].map(
+	([, path]) => path,
+);
 
-	if (!existsSync(jsFile)) {
-		continue;
-	}
+for (const importPath of composablePaths) {
+	const dtsPath = importPath.replace(/\.js$/, ".d.ts");
+	const absPath = join(composablesDir, dtsPath);
 
 	checked++;
 
-	if (!existsSync(dtsFile)) {
-		missing.push(`src/composables/${name}/${name}.d.ts`);
+	if (!existsSync(absPath)) {
+		missing.push(`src/composables/${dtsPath}`);
 	}
 }
 
