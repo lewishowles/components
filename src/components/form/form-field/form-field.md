@@ -10,6 +10,14 @@ Every slot passed to `form-field` is forwarded to the selected field, including 
 
 Passed through to the `default` slot of the relevant form field, the `default` slot generally contains the label for the form element.
 
+### `answer-summary`
+
+Custom content for this field's answer value in a `form-flow` review row. The row's label and Change control are rendered separately and are not part of this slot. Receives `answer`, `fieldName`, and `label` for reference, for example to build accessible custom content.
+
+By default, non-empty strings, numbers, and booleans are shown. Option-bearing fields show the selected option labels instead of their stored values. Password and file fields, `File` or `Blob` values, and arbitrary objects or arrays have no default answer summary.
+
+Use this slot to replace a field's default answer or render no content to omit that field's answer. It does not replace or alter validation error summaries.
+
 ### `optional-indicator`
 
 Content shown after the label text when the field is not required. Defaults to `(optional)`.

@@ -114,7 +114,7 @@ export const formFieldMetadata = {
 		{
 			name: "answer-summary",
 			summary:
-				"Custom answer content shown for this field in a form-flow review. Receives answer, fieldName, and label.",
+				"Custom content for this field's answer value in a form-flow review row. The row's label and Change control are rendered separately and are not part of this slot. Receives answer, fieldName, and label for reference. By default, non-empty strings, numbers, and booleans are shown, while option-bearing fields use selected option labels. Password and file fields, File or Blob values, and arbitrary objects or arrays have no default answer summary. Render no content to omit this field's answer. Does not replace or alter validation error summaries.",
 		},
 		{
 			name: "help",
