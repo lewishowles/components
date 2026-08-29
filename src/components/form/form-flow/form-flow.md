@@ -4,11 +4,15 @@
 
 Moving forward with continue validates the current screen, while moving back does not.
 
+`form-flow` uses the same concept as `form-wrapper`. It takes care of one model, validation, and final submission while each `form-screen` supplies one part of the form and its fields.
+
+Final submission validates the whole form. If another visible screen has an error, the flow moves there and focuses its error summary; fixing it and submitting again moves to the next screen with an error. Errors that don't belong to any visible screen stay on the current screen's error summary.
+
 ## Slots
 
 ### `default`
 
-One or more `form-screen` components plus other content. Content outside of `form-screen` is shown while screen content is active and hidden while the review destination is shown.
+One or more `form-screen` components plus other content. Content outside of `form-screen` is shown while screen content is active and hidden while the review is shown.
 
 | Slot prop      | Type      | Description                                         |
 | -------------- | --------- | --------------------------------------------------- |
@@ -23,7 +27,7 @@ The message to show when all screens are removed and no screen is available. The
 
 ### `back-label`
 
-- default: "Back"
+- default: "Go back"
 
 The label for the Back button.
 
@@ -32,13 +36,6 @@ The label for the Back button.
 - default: "Continue"
 
 The label for the continue button on all but the last screen.
-
-### `enableReview`
-
-- type: `boolean`
-- default: `false`
-
-When `true`, the flow shows a review of completed screen answers after the final screen validates. The final submit button appears on the review destination. Without this option, the final screen submits directly.
 
 ### `submit-button-label`
 
@@ -70,7 +67,37 @@ The title of the error summary that appears if any errors are found in the form.
 
 An optional visually hidden label for the form's action group, threaded into `form-actions` via `aria-labelledby`. Omit it for most forms; a single action group doesn't need a label. Provide one when the form has multiple action groups that need to be distinguished (e.g. primary actions alongside a "danger zone"), or in complex layouts where the group's purpose may not be obvious from context.
 
+The Back, Continue, and final Submit buttons share this `form-actions` row with
+`secondary-actions`, `tertiary-actions`, submit feedback, and general submit
+errors.
+
+### `progress`
+
+Replaces the default progress display, which shows a `step-indicator` and the
+active screen's label. The default is informational only; it doesn't let you
+navigate between screens.
+
+| Slot prop   | Type       | Description                                       |
+| ----------- | ---------- | ------------------------------------------------- |
+| `current`   | `object`   | The active screen's `{ id, label }` pair.         |
+| `completed` | `object[]` | Completed screens in visible order.               |
+| `remaining` | `object[]` | Screens after the active screen in visible order. |
+
 ## Props
+
+### `enableReview`
+
+- type: `boolean`
+- default: `false`
+
+When `true`, completing the final screen takes the user to a review screen listing their answers, with the submit button there instead. Without this, the final screen submits directly.
+
+### `modelValue`
+
+- type: `object`
+- default: `{}`
+
+The form values available through `v-model`. The initial value seeds the form once. Later external changes do not replace the in-progress values.
 
 ### `fieldErrors`
 
@@ -118,7 +145,6 @@ outside the inline `status` alert.
 - `onSuccess(result, formData)`: called once `onSubmit` resolves.
 - `onError(error, formData)`: called when `onSubmit` rejects, before `submitErrorsCallback` decides whether to swallow the error.
 - `onSettled(result, error, formData)`: always called after a submit attempt, whichever of `result`/`error` didn't occur is `undefined`.
--
 
 ### `updatePageTitleOnError`
 
@@ -188,7 +214,7 @@ Only needed when the same form later loads a different record. Pair it with a so
 - type: `string`
 - default: `""`
 
-Additional classes passed to the inner `form-layout`.
+Additional classes passed to each active screen's inner `form-layout`.
 
 ```html
 <form-flow layout-classes="gap-y-4">…</form-flow>
@@ -207,8 +233,6 @@ All validation lives here, keyed by field name. Each value is an array of rules 
 - default: `null`
 
 A whole-object Standard Schema (e.g. Zod, Valibot), validated against the full form data in addition to `rules`. Both run together and merge into a single per-field result: schema errors first, then `rules` errors, with identical messages deduplicated. A field is invalid if either source reports an issue.
-
-On final submission, an error on another screen moves the flow to the first screen (in order) with an error, and focuses that screen's error summary. Fixing it and submitting again moves to the next screen with an error, one at a time. Root-level errors, and errors belonging only to a screen that is no longer registered, stay on the current screen and appear in the flow-level error summary, which receives focus.
 
 ## Events
 
@@ -238,6 +262,14 @@ object through `v-model`. Values remain available here after a field is unregist
 they are excluded from submit payloads until the field is registered again.
 
 ## Methods
+
+### `isSubmitting`
+
+`true` while final submission is in progress.
+
+### `isDirty`
+
+`true` when the form values differ from their initial state.
 
 ### `resetSubmitButton`
 
@@ -302,9 +334,14 @@ A reactive boolean that reflects the `compact` prop. Used by form layouts and fi
 
 ## Styling hooks
 
-| Attribute                    | Element | Notes                          |
-| ---------------------------- | ------- | ------------------------------ |
-| `data-component="form-flow"` | Root    | Scope styles to this component |
+| Attribute                         | Element  | Notes                                            |
+| --------------------------------- | -------- | ------------------------------------------------ |
+| `data-component="form-flow"`      | Root     | Scope styles to this component                   |
+| `data-part="progress"`            | Progress | Default progress container                       |
+| `data-part="review"`              | Review   | Optional review screen                           |
+| `data-part="review-title"`        | Review   | Review screen heading                            |
+| `data-part="review-screen"`       | Review   | Container for one completed screen in the review |
+| `data-part="review-screen-title"` | Review   | Heading for one completed screen in the review   |
 
 ## Examples
 

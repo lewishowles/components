@@ -41,5 +41,6 @@ export const formScreenMetadata = {
 				"Concise label used by progress displays and answer summaries. Falls back to the title slot.",
 		},
 	],
+	events: [],
 	examples: [],
 };

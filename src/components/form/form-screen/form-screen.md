@@ -2,6 +2,9 @@
 
 A single `form-screen` contains the fields and any other content for a single screen in a `form-flow`. Only one screen is visible at any one time.
 
+Switching screens keeps field values in the flow's `v-model`, even though
+only the active screen's content is rendered.
+
 ## Props
 
 ### `id`
@@ -37,18 +40,37 @@ Optional introductory content for this screen.
 
 ### `label`
 
-The concise label used in progress displays. It falls back to the `title` slot.
+A short plain-text label for `form-flow`'s progress display and answer
+summaries, falling back to the `title` slot.
 
 ### `default`
 
 Any fields and other content shown while this screen is active.
 
+## Completion and review
+
+A screen becomes complete after a successful Continue or automatic progression.
+Going Back keeps its completed state, but editing an earlier completed screen
+clears completion for that screen and later screens. A screen removed by normal
+conditional rendering is excluded from progress and review until it returns.
+
+When `enable-review` is set on the flow, the review destination shows every
+completed visible screen, using this screen's `label` or `title` as its
+heading.
+
+## Events
+
+`form-screen` emits no public events. Listen for `screen-change` on
+`form-flow` when a parent needs to respond to navigation.
+
 ## Styling hooks
 
-| Attribute                      | Element | Notes                          |
-| ------------------------------ | ------- | ------------------------------ |
-| `data-component="form-screen"` | Root    | Scope styles to this component |
-| `data-screen-id`               | Root    | The registered screen ID       |
+| Attribute                      | Element   | Notes                          |
+| ------------------------------ | --------- | ------------------------------ |
+| `data-component="form-screen"` | Root      | Scope styles to this component |
+| `data-screen-id`               | Root      | The registered screen ID       |
+| `data-part="title"`            | Heading   | Screen title                   |
+| `data-part="introduction"`     | Paragraph | Optional introductory content  |
 
 ## Examples
 

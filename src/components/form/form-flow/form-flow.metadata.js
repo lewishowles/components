@@ -6,10 +6,6 @@ export const formFlowMetadata = {
 		"A multi-screen form that keeps one model and validates the visible screen before continuing.",
 	parts: [
 		{
-			name: "title",
-			summary: "Title styling hook used by screen headings during focus recovery.",
-		},
-		{
 			name: "progress",
 			summary: "Container for the default progress display, or replaced progress slot content.",
 		},
@@ -93,6 +89,12 @@ export const formFlowMetadata = {
 			summary: "Whether to show an answer review destination before final submission.",
 		},
 		{
+			name: "modelValue",
+			type: "object",
+			default: "{}",
+			summary: "Form values, seeded once from the initial value and updated through v-model.",
+		},
+		{
 			name: "updatePageTitleOnError",
 			type: "boolean",
 			default: true,
@@ -151,7 +153,7 @@ export const formFlowMetadata = {
 			summary:
 				"Message shown when all screens are removed and no screen is available. Defaults to No screens are available.",
 		},
-		{ name: "back-label", summary: "Label for the Back button. Defaults to Back." },
+		{ name: "back-label", summary: "Label for the Back button. Defaults to Go back." },
 		{
 			name: "continue-label",
 			summary: "Label for Continue before the final screen and for opening the review.",
@@ -179,6 +181,11 @@ export const formFlowMetadata = {
 				"Custom rendering for parsed submit errors without a matching field, plus root-level rule and schema errors.",
 		},
 		{ name: "error-summary-title", summary: "Title for the validation error summary." },
+		{
+			name: "progress",
+			summary:
+				"Replaces the numeric step-indicator progress display. Scoped with current, completed, and remaining screen labels.",
+		},
 	],
 	events: [
 		{
@@ -190,6 +197,8 @@ export const formFlowMetadata = {
 		{ name: "submit", summary: "Emitted with submit-ready data after final validation passes." },
 	],
 	methods: [
+		{ name: "isSubmitting", summary: "Whether final submission is in progress." },
+		{ name: "isDirty", summary: "Whether the form values differ from their initial state." },
 		{ name: "resetSubmitButton", summary: "Reset the final submit button's loading state." },
 	],
 	examples: [],
