@@ -15,6 +15,25 @@
 				<code>id</code>
 				unchanged while it is part of the flow.
 			</p>
+
+			<p>
+				A screen is marked complete after Continue succeeds or it progresses automatically. Going
+				Back keeps that state, while changing an earlier completed screen marks it and every
+				following screen incomplete.
+			</p>
+
+			<p>
+				Screens removed by conditional rendering are left out of progress and review until they
+				return. With
+				<code>enable-review</code>
+				on
+				<code>form-flow</code>
+				, review uses each screen's
+				<code>label</code>
+				or
+				<code>title</code>
+				as its heading.
+			</p>
 		</template>
 
 		<component-props>
@@ -68,7 +87,7 @@
 				<template #name>label</template>
 
 				<p>
-					The concise label used in progress displays. It falls back to the
+					The concise label used in progress displays and answer summaries. It falls back to the
 					<code>title</code>
 					slot.
 				</p>
@@ -92,6 +111,18 @@
 				<template #attribute>data-screen-id</template>
 
 				<p>Present on the active root element with the registered screen ID.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-title">
+				<template #attribute>data-part="title"</template>
+
+				<p>Present on the screen title heading.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-introduction">
+				<template #attribute>data-part="introduction"</template>
+
+				<p>Present on the optional introductory paragraph.</p>
 			</component-styling-hook>
 		</component-styling-hooks>
 

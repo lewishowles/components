@@ -20,8 +20,11 @@
 		<component-props>
 			<component-prop id="prop-field-errors">
 				<template #name>fieldErrors</template>
+
 				<template #type>Object</template>
+
 				<template #default-value>{}</template>
+
 				<p>
 					Field-level errors managed by the parent, usually from an API response. Keys should match
 					registered
@@ -38,8 +41,11 @@
 
 			<component-prop id="prop-submit-errors-callback">
 				<template #name>submitErrorsCallback</template>
+
 				<template #type>Function</template>
+
 				<template #default-value>null</template>
+
 				<p>
 					An optional callback with the shape
 					<code>(error) =&gt; errors</code>
@@ -62,8 +68,11 @@
 
 			<component-prop id="prop-status">
 				<template #name>status</template>
+
 				<template #type>Object</template>
+
 				<template #default-value>null</template>
+
 				<p>
 					Form-wide status feedback shown in the form actions region beside the flow buttons. It
 					defaults to
@@ -101,8 +110,11 @@
 
 			<component-prop id="prop-on-success">
 				<template #name>onSuccess</template>
+
 				<template #type>Function</template>
+
 				<template #default-value>null</template>
+
 				<p>
 					Called with
 					<code>(result, formData)</code>
@@ -124,8 +136,11 @@
 
 			<component-prop id="prop-on-error">
 				<template #name>onError</template>
+
 				<template #type>Function</template>
+
 				<template #default-value>null</template>
+
 				<p>
 					Called with
 					<code>(error, formData)</code>
@@ -139,8 +154,11 @@
 
 			<component-prop id="prop-on-settled">
 				<template #name>onSettled</template>
+
 				<template #type>Function</template>
+
 				<template #default-value>null</template>
+
 				<p>
 					Called with
 					<code>(result, error, formData)</code>
@@ -158,8 +176,11 @@
 
 			<component-prop id="prop-update-page-title-on-error">
 				<template #name>updatePageTitleOnError</template>
+
 				<template #type>Boolean</template>
+
 				<template #default-value>true</template>
+
 				<p>
 					Whether to update the page title when validation fails. When enabled,
 					<code>pageTitleErrorPrefix</code>
@@ -171,8 +192,11 @@
 
 			<component-prop id="prop-page-title-error-prefix">
 				<template #name>pageTitleErrorPrefix</template>
+
 				<template #type>String</template>
+
 				<template #default-value>&quot;Error:&quot;</template>
+
 				<p>
 					A prefix added to
 					<code>document.title</code>
@@ -182,8 +206,11 @@
 
 			<component-prop id="prop-readonly">
 				<template #name>readonly</template>
+
 				<template #type>Boolean</template>
+
 				<template #default-value>false</template>
+
 				<p>
 					When
 					<code>true</code>
@@ -198,8 +225,11 @@
 
 			<component-prop id="prop-unsaved-changes-guard">
 				<template #name>unsavedChangesGuard</template>
+
 				<template #type>Boolean</template>
+
 				<template #default-value>true</template>
+
 				<p>
 					Whether this form guards against losing unsaved changes: it warns on tab close or refresh
 					while dirty and contributes to the shared dirty-form count that
@@ -214,8 +244,11 @@
 
 			<component-prop id="prop-compact">
 				<template #name>compact</template>
+
 				<template #type>Boolean</template>
+
 				<template #default-value>false</template>
+
 				<p>
 					When
 					<code>true</code>
@@ -229,15 +262,40 @@
 
 			<component-prop id="prop-enable-review">
 				<template #name>enableReview</template>
+
 				<template #type>Boolean</template>
+
 				<template #default-value>false</template>
-				<p>Whether to show an optional answer review destination before final submission.</p>
+
+				<p>
+					When enabled, completing the final screen opens a review of the entered answers before
+					submission. Without it, the final screen submits directly.
+				</p>
+			</component-prop>
+
+			<component-prop id="prop-model-value">
+				<template #name>modelValue</template>
+
+				<template #type>Object</template>
+
+				<template #default-value>{}</template>
+
+				<p>
+					The form's field values, used via
+					<code>v-model</code>
+					. It seeds the form once, only when
+					<code>initialData</code>
+					is not supplied; later changes to this prop from outside the form are not reflected.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-field-types">
 				<template #name>fieldTypes</template>
+
 				<template #type>Object</template>
+
 				<template #default-value>{}</template>
+
 				<p>
 					Field type transformations applied to initial and submitted form data, keyed by field
 					name. Each value is one of
@@ -279,8 +337,11 @@
 
 			<component-prop id="prop-initial-data">
 				<template #name>initialData</template>
+
 				<template #type>Object | Function</template>
+
 				<template #default-value>null</template>
+
 				<p>
 					An object, ref, computed value, or getter used to seed the form once it resolves truthy.
 					The value is resolved when it is read. When this prop is omitted, the form continues to
@@ -294,8 +355,11 @@
 
 			<component-prop id="prop-record-id">
 				<template #name>recordId</template>
+
 				<template #type>String | Number</template>
+
 				<template #default-value>null</template>
+
 				<p>
 					The stable identifier for the record that identifies the contents of this form. When the
 					record ID changes to a new truthy value, a clean form waits for
@@ -311,8 +375,11 @@
 
 			<component-prop id="prop-layout-classes">
 				<template #name>layoutClasses</template>
+
 				<template #type>String</template>
+
 				<template #default-value>&quot;&quot;</template>
+
 				<p>
 					Additional classes passed to each screen's
 					<code>form-layout</code>
@@ -322,8 +389,11 @@
 
 			<component-prop id="prop-rules">
 				<template #name>rules</template>
+
 				<template #type>Object</template>
+
 				<template #default-value>{}</template>
+
 				<p>
 					All validation lives here, keyed by field name. Each value is an array of rules run
 					against the full form data on submit. Rules can rely on other fields, so cross-field
@@ -333,8 +403,11 @@
 
 			<component-prop id="prop-schema">
 				<template #name>schema</template>
+
 				<template #type>Object</template>
+
 				<template #default-value>null</template>
+
 				<p>
 					A whole-object Standard Schema (for example, Zod or Valibot), validated against the full
 					form data in addition to
@@ -350,12 +423,13 @@
 		<component-slots>
 			<component-slot id="slot-default">
 				<template #name>default</template>
+
 				<p>
 					One or more
 					<code>form-screen</code>
-					components plus other content. Content outside of
+					components plus other content. Content outside a
 					<code>form-screen</code>
-					is always shown on each page.
+					is shown while a screen is active and hidden during review.
 				</p>
 
 				<table>
@@ -383,6 +457,7 @@
 
 			<component-slot id="slot-empty">
 				<template #name>empty</template>
+
 				<p>
 					Message shown when all screens are removed and no screen is available. Defaults to
 					<code>No screens are available.</code>
@@ -395,21 +470,27 @@
 
 			<component-slot id="slot-back-label">
 				<template #name>back-label</template>
+
+				<template #default-value>Go back</template>
+
 				<p>
 					The label for the Back button. Defaults to
-					<code>Back</code>
+					<code>Go back</code>
 					.
 				</p>
 			</component-slot>
 
 			<component-slot id="slot-continue-label">
 				<template #name>continue-label</template>
+
 				<template #default-value>Continue</template>
+
 				<p>The label for the Continue button on interim screens and the review-opening action.</p>
 			</component-slot>
 
 			<component-slot id="slot-submit-button-label">
 				<template #name>submit-button-label</template>
+
 				<p>
 					The label to use on the submit button. This should be representative of what is about to
 					happen, such as &quot;Create account&quot; or &quot;Update settings&quot;, not something
@@ -444,6 +525,7 @@
 
 			<component-slot id="slot-submit-errors">
 				<template #name>submit-errors</template>
+
 				<p>
 					Overrides the default general error display near the form's actions. If not provided, a
 					single error is rendered as a
@@ -477,7 +559,9 @@
 
 			<component-slot id="slot-error-summary-title">
 				<template #name>error-summary-title</template>
+
 				<template #default-value>There is a problem</template>
+
 				<p>The title of the error summary that appears if any errors are found in the form.</p>
 			</component-slot>
 
@@ -495,11 +579,49 @@
 					fields.
 				</p>
 			</component-slot>
+
+			<component-slot id="slot-progress">
+				<template #name>progress</template>
+
+				<p>Replaces the default informational progress display.</p>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Slot prop</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>current</code></td>
+							<td><code>object</code></td>
+							<td>
+								The active screen's
+								<code>{ id, label }</code>
+								pair.
+							</td>
+						</tr>
+						<tr>
+							<td><code>completed</code></td>
+							<td><code>object[]</code></td>
+							<td>Completed screens in visible order.</td>
+						</tr>
+						<tr>
+							<td><code>remaining</code></td>
+							<td><code>object[]</code></td>
+							<td>Screens after the active screen in visible order.</td>
+						</tr>
+					</tbody>
+				</table>
+			</component-slot>
 		</component-slots>
 
 		<component-events>
 			<component-event id="event-screen-change">
 				<template #name>screen-change</template>
+
 				<p>
 					Fired after the flow completes navigation to another screen. The payload is
 					<code>{ sourceId, destinationId, direction, reason }</code>
@@ -539,6 +661,7 @@
 
 			<component-event id="event-submit">
 				<template #name>submit</template>
+
 				<p>
 					Fired when the user submits the form and validation succeeds, containing submit-ready
 					values. By submit-ready, we mean that the returned data only contains currently registered
@@ -550,6 +673,7 @@
 
 			<component-event id="event-v-model">
 				<template #name>v-model</template>
+
 				<p>
 					The current values of each of the
 					<code>form-field</code>
@@ -578,6 +702,7 @@
 				<template #name>
 					<code>fieldErrorsFor(fieldName)</code>
 				</template>
+
 				<p>
 					Returns all error messages for a field, deduplicating identical messages. Combines
 					parent-owned
@@ -610,6 +735,7 @@
 				<template #name>
 					<code>registerField(field)</code>
 				</template>
+
 				<p>Add a field to a form's list of fields.</p>
 				<table>
 					<thead>
@@ -631,6 +757,20 @@
 							<td>The ID of the field, helpful for linking errors to fields.</td>
 						</tr>
 						<tr>
+							<td><code>field.label</code></td>
+							<td><code>string</code></td>
+							<td>The label used when formatting an answer summary.</td>
+						</tr>
+						<tr>
+							<td><code>field.displayValue</code></td>
+							<td><code>ComputedRef&lt;unknown&gt;</code></td>
+							<td>
+								The display value, or
+								<code>undefined</code>
+								when it is omitted.
+							</td>
+						</tr>
+						<tr>
 							<td><code>field.triggerFocus</code></td>
 							<td><code>function</code></td>
 							<td>Method to focus on this field, used by the error summary.</td>
@@ -643,6 +783,7 @@
 				<template #name>
 					<code>unregisterField(fieldName)</code>
 				</template>
+
 				<p>
 					Remove a field from a form's list of fields. This does not remove its value or
 					parent-owned errors. Its value remains in
@@ -673,6 +814,7 @@
 				<template #name>
 					<code>updateFieldValue(name, value)</code>
 				</template>
+
 				<p>Allow a field to update its value in the form.</p>
 				<table>
 					<thead>
@@ -701,6 +843,7 @@
 				<template #name>
 					<code>isReadonly</code>
 				</template>
+
 				<p>
 					A reactive boolean that reflects the
 					<code>readonly</code>
@@ -714,6 +857,7 @@
 				<template #name>
 					<code>isFieldRequired(fieldName)</code>
 				</template>
+
 				<p>
 					Returns whether the form's validation rules mark a field as required. Used by form fields
 					and related controls to cascade the required state.
@@ -740,6 +884,7 @@
 				<template #name>
 					<code>isCompact</code>
 				</template>
+
 				<p>
 					A reactive boolean that reflects the
 					<code>compact</code>
@@ -753,8 +898,27 @@
 		</component-provides>
 
 		<component-methods>
+			<component-method id="expose-is-submitting">
+				<template #name>isSubmitting</template>
+
+				<p>
+					<code>true</code>
+					while final submission is in progress.
+				</p>
+			</component-method>
+
+			<component-method id="expose-is-dirty">
+				<template #name>isDirty</template>
+
+				<p>
+					<code>true</code>
+					when the form values differ from their initial state.
+				</p>
+			</component-method>
+
 			<component-method id="method-reset-submit-button">
 				<template #name>resetSubmitButton</template>
+
 				<p>
 					Resets the submit button's loading state. Call this after your
 					<code>@submit</code>
@@ -767,16 +931,49 @@
 		<component-styling-hooks>
 			<component-styling-hook id="hook-data-component">
 				<template #attribute>data-component="form-flow"</template>
+
 				<p>Present on the root element. Use it to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-progress">
+				<template #attribute>data-part="progress"</template>
+
+				<p>Present on the default progress container.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-review">
+				<template #attribute>data-part="review"</template>
+
+				<p>Present on the optional review destination.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-review-title">
+				<template #attribute>data-part="review-title"</template>
+
+				<p>Present on the review destination heading.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-review-screen">
+				<template #attribute>data-part="review-screen"</template>
+
+				<p>Present on each completed screen in the review.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-review-screen-title">
+				<template #attribute>data-part="review-screen-title"</template>
+
+				<p>Present on each completed screen heading in the review.</p>
 			</component-styling-hook>
 		</component-styling-hooks>
 
 		<component-playgrounds>
 			<playground-form-flow />
+			<playground-form-flow-review />
 		</component-playgrounds>
 	</component-page>
 </template>
 
 <script setup>
 import PlaygroundFormFlow from "./fragments/playground-form-flow.vue";
+import PlaygroundFormFlowReview from "./fragments/playground-form-flow-review.vue";
 </script>
