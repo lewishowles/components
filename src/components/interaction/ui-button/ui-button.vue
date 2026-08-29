@@ -206,7 +206,7 @@ const computedIconClasses = computed(() => {
 
 	const baseSizeClass = props.iconOnly ? "size-[1em]" : "size-[0.857em]";
 
-	return cn("stroke-current inline-block align-[0]", baseSizeClass, props.iconClasses, {
+	return cn("stroke-current inline-block", baseSizeClass, props.iconClasses, {
 		invisible: isReacting.value,
 	});
 });
