@@ -110,8 +110,17 @@ describe("component-metadata parts completeness", () => {
 
 		const source = readFileSync(filePath, "utf8");
 
+		// Exclude data-part-shaped selector strings from component script blocks.
+		const templateMatch = source.match(/^<template>([\s\S]*)<\/template>/);
+
+		if (!templateMatch) {
+			throw new Error(`Could not read template from ${component.name}.vue`);
+		}
+
+		const templateSource = templateMatch[1];
+
 		const uniqueParts = [
-			...new Set([...source.matchAll(/data-part="([^"]+)"/g)].map((match) => match[1])),
+			...new Set([...templateSource.matchAll(/data-part="([^"]+)"/g)].map((match) => match[1])),
 		];
 
 		if (uniqueParts.length === 0) {
