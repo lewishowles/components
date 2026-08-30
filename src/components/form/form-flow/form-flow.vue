@@ -27,12 +27,7 @@
 			<slot v-bind="{ isSubmitting, hasErrors: haveAnyErrorSummary }" />
 		</div>
 
-		<section
-			v-if="isShowingReview"
-			class="border-border mbs-8 border-bs pbs-6"
-			data-part="review"
-			data-test="form-flow-review"
-		>
+		<section v-if="isShowingReview" data-part="review" data-test="form-flow-review">
 			<h2
 				ref="review-heading"
 				class="text-content-strong mbe-6 text-2xl font-bold"

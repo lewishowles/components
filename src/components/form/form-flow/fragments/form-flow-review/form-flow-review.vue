@@ -8,18 +8,18 @@
 			data-test="form-flow-review-screen"
 		>
 			<h3
-				class="text-content-strong mbe-4 text-lg font-bold"
+				class="text-content-strong text-lg font-bold"
 				data-part="review-screen-title"
 				data-test="form-flow-review-screen-title"
 			>
 				{{ summary.title }}
 			</h3>
 
-			<dl class="border-border border-bs">
+			<dl>
 				<div
 					v-for="field in summary.fields"
 					:key="field.fieldName"
-					class="border-border grid gap-x-4 gap-y-1 border-be p-4 last:border-be-0 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto]"
+					class="border-border grid gap-x-4 gap-y-1 border-be py-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto]"
 				>
 					<dt class="font-semibold">{{ field.label }}</dt>
 					<dd>
@@ -37,7 +37,7 @@
 					<dd>
 						<ui-button
 							type="button"
-							class="hocus:underline text-primary"
+							class="link"
 							@click="emit('change', { fieldName: field.fieldName, screenId: summary.id })"
 						>
 							Change
