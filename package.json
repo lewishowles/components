@@ -93,6 +93,7 @@
 		"@lewishowles/pkg-checks": "^0.2.3",
 		"@lewishowles/testing": "^1.2.1",
 		"@playwright/experimental-ct-vue": "^1.62.1",
+		"@rollup/plugin-dynamic-import-vars": "^2.1.5",
 		"@stylistic/eslint-plugin": "^5.10.0",
 		"@tailwindcss/forms": "^0.5.11",
 		"@tailwindcss/typography": "^0.5.20",
