@@ -85,12 +85,18 @@ watch(
 );
 </script>
 
+<style>
+:where(.dark, .dark *) {
+	--code-block-pre-alpha: 70%;
+}
+</style>
+
 <style scoped>
 :deep(pre) {
 	overflow-x: auto;
 	white-space: pre;
 	border-radius: var(--radius-md);
-	background-color: rgb(28 25 23 / 30%);
+	background-color: rgb(28 25 23 / var(--code-block-pre-alpha, 92%));
 	backdrop-filter: blur(1rem);
 	color: #cad3f5;
 	padding: 1rem;
