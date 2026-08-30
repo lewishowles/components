@@ -288,8 +288,8 @@
 
 	--surface: var(--color-grey-900);
 	--surface-elevated: var(--color-grey-800);
-	--surface-subtle: color-mix(in oklab, var(--surface), var(--text-primary) 5%);
-	--surface-sunken: color-mix(in oklab, var(--surface), var(--text-primary) 10%);
+	--surface-subtle: color-mix(in oklab, var(--surface), var(--content-strong) 5%);
+	--surface-sunken: color-mix(in oklab, var(--surface), var(--content-strong) 10%);
 	--control-muted-surface: var(--control-overlay);
 	--control-muted-surface-hover: var(--control-overlay-hover);
 	--control-muted-surface-active: var(--control-overlay-active);

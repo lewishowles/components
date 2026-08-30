@@ -1,35 +1,28 @@
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
-const codeTheme = "catppuccin-macchiato";
+// Exclude plain text because MicroLighter has no grammar for it.
+const syntaxSelector = "pre > code:not(.language-text)";
 
-// Only the languages actually used in the docs are bundled, rather than
-// Shiki's full grammar/theme set, to keep the highlighter chunk small.
-const languageImporters = {
-	html: () => import("shiki/langs/html.mjs"),
-	javascript: () => import("shiki/langs/javascript.mjs"),
-	vue: () => import("shiki/langs/vue.mjs"),
-};
-
+// The pending shared scan, which groups updates from multiple code blocks.
+let highlightTimer;
+// The active MicroLighter scan, when one is still loading grammars or painting
+// ranges.
+let highlightPromise;
+// Whether an update arrived while a shared scan was active.
+let highlightQueued = false;
+// The latest docs content region to scan after the active scan completes.
+let queuedContentRoot;
+// The lazily loaded MicroLighter module.
 let highlighterPromise;
 
 /**
- * Lazily create (and cache) a Shiki core highlighter scoped to the languages
- * and theme the docs actually render, using the wasm-free JS regex engine.
+ * Lazily load and memoise the MicroLighter module.
  *
- * @returns {Promise<import("shiki/core").HighlighterCore>}
+ * @returns {Promise<typeof import("microlighter")>}
  */
 function getHighlighter() {
 	if (!highlighterPromise) {
-		highlighterPromise = Promise.all([
-			import("shiki/core"),
-			import("shiki/engine/javascript"),
-		]).then(([{ createHighlighterCore }, { createJavaScriptRegexEngine }]) =>
-			createHighlighterCore({
-				themes: [import("shiki/themes/catppuccin-macchiato.mjs")],
-				langs: Object.values(languageImporters).map((importLanguage) => importLanguage()),
-				engine: createJavaScriptRegexEngine(),
-			}),
-		);
+		highlighterPromise = import("microlighter");
 	}
 
 	return highlighterPromise;
@@ -70,8 +63,7 @@ export function normaliseCodeText(code) {
 }
 
 /**
- * Render an unhighlighted fallback synchronously, so a code block has
- * immediate content while Shiki loads off the critical path.
+ * Render escaped code synchronously as the permanent code block content.
  *
  * @param  {string}  code
  *     The code sample to render.
@@ -86,32 +78,85 @@ export function renderFallbackHtml(code, language) {
 }
 
 /**
- * Render a code sample as highlighted HTML, with an escaped fallback for plain
- * text or unsupported languages. Shiki is loaded lazily so it does not sit on
- * the critical path for the docs app.
+ * Queue one shared docs-content scan after a code block updates.
  *
- * @param  {string}  code
- *     The code sample to render.
- * @param  {string|null}  language
- *     The requested language.
- * @returns {Promise<string>}
+ * @param  {HTMLElement|null}  codeContainer
+ *     The rendered code block container.
+ * @returns {void}
  */
-export async function renderCodeHtml(code, language) {
-	const resolvedLanguage = resolveLanguage(code, language);
+export function queueCodeHighlight(codeContainer) {
+	if (typeof CSS === "undefined" || !CSS.highlights || !codeContainer) {
+		return;
+	}
 
-	if (!isNonEmptyString(code) || resolvedLanguage === "text") {
-		return renderPlainCodeHtml(code, resolvedLanguage);
+	const contentRoot = codeContainer.closest("main") ?? codeContainer.ownerDocument;
+
+	clearTimeout(highlightTimer);
+
+	highlightTimer = setTimeout(() => {
+		if (highlightPromise) {
+			highlightQueued = true;
+			queuedContentRoot = contentRoot;
+
+			return;
+		}
+
+		startHighlight(contentRoot);
+	}, 0);
+}
+
+/**
+ * Run one shared scan and schedule the latest queued update after it completes.
+ *
+ * @param  {ParentNode}  contentRoot
+ *     The docs content region containing code blocks.
+ * @returns {void}
+ */
+function startHighlight(contentRoot) {
+	highlightPromise = highlightCodeBlocks(contentRoot);
+
+	void highlightPromise.then(runQueuedHighlight, runQueuedHighlight);
+}
+
+/**
+ * Run one queued scan after the active scan completes.
+ *
+ * @returns {void}
+ */
+function runQueuedHighlight() {
+	highlightPromise = undefined;
+
+	if (!highlightQueued) {
+		return;
+	}
+
+	highlightQueued = false;
+
+	const contentRoot = queuedContentRoot;
+
+	queuedContentRoot = undefined;
+
+	startHighlight(contentRoot);
+}
+
+/**
+ * Highlight every supported code block in the current docs content region.
+ *
+ * @param  {ParentNode}  contentRoot
+ *     The docs content region containing code blocks.
+ * @returns {Promise<void>}
+ */
+async function highlightCodeBlocks(contentRoot) {
+	if (typeof CSS === "undefined" || !CSS.highlights || !contentRoot.querySelector(syntaxSelector)) {
+		return;
 	}
 
 	try {
-		const highlighter = await getHighlighter();
+		const { highlightAll } = await getHighlighter();
 
-		return highlighter.codeToHtml(code, {
-			lang: resolvedLanguage,
-			theme: codeTheme,
-		});
+		await highlightAll({ root: contentRoot, selector: syntaxSelector });
 	} catch {
-		return renderPlainCodeHtml(code, resolvedLanguage);
+		// Escaped code remains readable when syntax enhancement cannot load.
 	}
 }
 
@@ -143,7 +188,7 @@ function resolveLanguage(code, language) {
 }
 
 /**
- * Normalise common language aliases for Shiki.
+ * Normalise common language aliases for MicroLighter.
  *
  * @param  {string}  language
  *     The provided code language.
@@ -177,7 +222,7 @@ function normaliseLanguage(language) {
  * @returns {string}
  */
 function renderPlainCodeHtml(code, language) {
-	return `<pre class="shiki ${codeTheme}" style="background-color:#24273a;color:#cad3f5" tabindex="0"><code class="language-${language}">${escapeHtml(code)}</code></pre>`;
+	return `<pre tabindex="0"><code class="language-${language}">${escapeHtml(code)}</code></pre>`;
 }
 
 /**

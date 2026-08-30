@@ -1,6 +1,6 @@
 <template>
 	<div class="relative max-w-none">
-		<div class="peer" v-html="codeHtml" />
+		<div ref="codeContainer" class="peer" v-html="codeHtml" />
 
 		<div
 			v-if="haveFileName"
@@ -19,12 +19,12 @@
 </template>
 
 <script setup>
-import { computed, ref, useSlots, watch } from "vue";
+import { computed, nextTick, ref, useSlots, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { getSlotText } from "@lewishowles/helpers/vue";
 import {
 	normaliseCodeText,
-	renderCodeHtml,
+	queueCodeHighlight,
 	renderFallbackHtml,
 } from "@/docs/helpers/code-highlighter.js";
 
@@ -55,6 +55,9 @@ const props = defineProps({
 
 const slots = useSlots();
 
+// The container MicroLighter scans after Vue has rendered the escaped code.
+const codeContainer = ref(null);
+
 // The text from the default slot.
 const defaultText = computed(() => getSlotText(slots.default));
 // Whether default text has been provided.
@@ -67,36 +70,98 @@ const textToDisplay = computed(() =>
 	normaliseCodeText(haveDefaultText.value ? defaultText.value : props.code),
 );
 
-// Show unhighlighted code immediately so the block is never empty while
-// Shiki loads off the critical path.
-const codeHtml = ref(renderFallbackHtml(textToDisplay.value, props.language));
+// Escaped code remains in the DOM while MicroLighter applies CSS highlights.
+const codeHtml = computed(() => renderFallbackHtml(textToDisplay.value, props.language));
 
-let highlightRequestId = 0;
-
-// Re-render when the displayed code or language changes.
+// Wait for the updated code DOM before scheduling the shared docs-content scan.
 watch(
 	[textToDisplay, () => props.language],
-	async ([code, language]) => {
-		const requestId = (highlightRequestId += 1);
-		const html = await renderCodeHtml(code, language);
-
-		if (requestId !== highlightRequestId) {
-			return;
-		}
-
-		codeHtml.value = html;
+	() => {
+		nextTick(() => {
+			queueCodeHighlight(codeContainer.value);
+		});
 	},
 	{ immediate: true },
 );
 </script>
 
 <style scoped>
-:deep(.shiki) {
+:deep(pre) {
 	overflow-x: auto;
 	white-space: pre;
 	border-radius: var(--radius-md);
+	background-color: rgb(28 25 23 / 30%);
+	backdrop-filter: blur(1rem);
+	color: #cad3f5;
 	padding: 1rem;
 	font-size: var(--text-sm);
 	line-height: 1.625;
+}
+
+/* Fixed Catppuccin Macchiato colours keep code samples independent of the docs theme. */
+:deep(::highlight(comment)),
+:deep(::highlight(quote)) {
+	color: #939ab7;
+}
+
+:deep(::highlight(keyword)),
+:deep(::highlight(storage)),
+:deep(::highlight(at-rule)),
+:deep(::highlight(doctype)),
+:deep(::highlight(important)),
+:deep(::highlight(section)) {
+	color: #c6a0f6;
+}
+
+:deep(::highlight(operator)),
+:deep(::highlight(punctuation)) {
+	color: #91d7e3;
+}
+
+:deep(::highlight(string)),
+:deep(::highlight(regexp)),
+:deep(::highlight(attribute-value)),
+:deep(::highlight(link)),
+:deep(::highlight(raw)) {
+	color: #a6da95;
+}
+
+:deep(::highlight(numeric)),
+:deep(::highlight(boolean)),
+:deep(::highlight(constant)),
+:deep(::highlight(symbol)),
+:deep(::highlight(character-entity)),
+:deep(::highlight(anchor)),
+:deep(::highlight(entity)) {
+	color: #f5a97f;
+}
+
+:deep(::highlight(function)),
+:deep(::highlight(decorator)),
+:deep(::highlight(animation)) {
+	color: #8aadf4;
+}
+
+:deep(::highlight(type)),
+:deep(::highlight(support)),
+:deep(::highlight(tag)),
+:deep(::highlight(inserted)) {
+	color: #eed49f;
+}
+
+:deep(::highlight(variable)),
+:deep(::highlight(interpolation)) {
+	color: #f0c6c6;
+}
+
+:deep(::highlight(property)),
+:deep(::highlight(key)),
+:deep(::highlight(attribute-name)),
+:deep(::highlight(selector)) {
+	color: #8bd5ca;
+}
+
+:deep(::highlight(deleted)) {
+	color: #ed8796;
 }
 </style>

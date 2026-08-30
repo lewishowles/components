@@ -36,6 +36,9 @@ export default defineConfig({
 	},
 	fmt,
 	lint,
+	optimizeDeps: {
+		exclude: ["microlighter"],
+	},
 	plugins: lazyPlugins(() => [
 		vue(),
 		componentAutoImports(),
