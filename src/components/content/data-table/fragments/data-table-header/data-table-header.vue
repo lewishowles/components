@@ -1,14 +1,16 @@
 <template>
 	<div
 		v-if="haveTitle || haveIntroduction"
-		class="border-border mb-6 flex flex-col gap-4 border-b pb-6"
+		class="border-border mb-6 border-b pb-6"
 		data-test="data-table-header"
 	>
 		<component :is="headingLevel" v-if="haveTitle" class="text-content-strong text-3xl font-bold">
 			<slot name="table-title" />
 		</component>
 
-		<slot name="table-introduction" />
+		<div v-if="haveIntroduction" class="text-content-muted text-base">
+			<slot name="table-introduction" />
+		</div>
 	</div>
 </template>
 

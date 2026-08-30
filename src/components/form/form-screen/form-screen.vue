@@ -9,7 +9,7 @@
 	>
 		<h2
 			v-if="haveTitle"
-			class="text-content-strong text-2xl font-bold"
+			class="text-content-strong text-3xl font-bold"
 			:class="{ 'mbe-4 lg:mbe-6': !haveIntroduction }"
 			tabindex="-1"
 			data-part="title"
@@ -18,7 +18,7 @@
 			<slot name="title" />
 		</h2>
 
-		<p v-if="haveIntroduction" class="mbe-4 lg:mbe-6" data-part="introduction">
+		<p v-if="haveIntroduction" class="mbe-4 text-base lg:mbe-6" data-part="introduction">
 			<slot name="introduction" />
 		</p>
 
