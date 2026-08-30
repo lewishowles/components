@@ -2,6 +2,33 @@
 
 ## Unreleased
 
+## 3.2.0 - 2026-08-30
+
+### New features
+
+- Add `form-flow` and `form-screen` for building multi-step, multi-page forms.
+- Add `form-combo-box`, a searchable form field that filters options. Registered as the `combo-box` field type in `form-field`.
+- `form-input-group` supports `optionClasses` for custom option styling.
+- `accordion-panel` warns in development when a title has no accessible text.
+- `useForm`'s return value adds `validate()`.
+
+### Fixes
+
+- `form-wrapper` and `form-field` share a single `form` provide/inject key (previously `form-wrapper`).
+- Unregistered form fields are unregistered on unmount or type change, and excluded from submitted form data, so removed fields no longer linger in validation state or submissions.
+- `form-field` preserves a supplied `id` instead of always regenerating one, warns when an unknown field type is provided, and shows an error if a required field has no `name`.
+- `form-field` forwards slots that are added or removed after mount.
+- `form-button-group` styles its segmented layout entirely through CSS.
+- `form-input-group`'s container query now correctly picks up theme colour changes, instead of freezing at the value present on load.
+- `alert-message` uses dedicated info tokens for the info intent colour.
+- `donut-chart` warns when no accessible label is provided.
+- `summary-details` warns if the summary contains no content.
+- `loading-skeleton` omits the live region when no label is provided.
+- Focus rings are no longer clipped by overflow in more cases.
+- The font stack now matches Tailwind's, fixing Japanese character rendering on Windows.
+- Buttons align better at smaller font sizes.
+- Unused colour families are no longer stripped from the build.
+
 ## 3.1.4 - 2026-08-11
 
 ### Fixes
