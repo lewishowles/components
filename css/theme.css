@@ -25,23 +25,13 @@
 	--color-blue-900: var(--color-sky-900);
 	--color-blue-950: var(--color-sky-950);
 
-	/* Remove unused colour families */
-	--color-amber-*: initial;
-	--color-lime-*: initial;
-	--color-emerald-*: initial;
-	--color-violet-*: initial;
-	--color-fuchsia-*: initial;
-	--color-rose-*: initial;
-	--color-zinc-*: initial;
-	--color-neutral-*: initial;
-	--color-gray-*: initial;
-
 	--color-neon-pink: #e61980;
 	--color-neon-blue: #19cbe6;
 
 	--font-sans:
-		"Funnel Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-		"Segoe UI Symbol", "Noto Color Emoji";
+		"Funnel Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+		"Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+		"Noto Color Emoji";
 	--font-mono:
 		"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
 		"Courier New", monospace;
@@ -296,10 +286,10 @@
 	--info-subtle: color-mix(in oklab, var(--info-500) 25%, transparent);
 	--info-border-subtle: transparent;
 
-	--surface: var(--color-grey-950);
+	--surface: var(--color-grey-900);
 	--surface-elevated: var(--color-grey-800);
-	--surface-subtle: rgb(255 255 255 / 10%);
-	--surface-sunken: rgb(255 255 255 / 20%);
+	--surface-subtle: color-mix(in oklab, var(--surface), var(--content-strong) 5%);
+	--surface-sunken: color-mix(in oklab, var(--surface), var(--content-strong) 10%);
 	--control-muted-surface: var(--control-overlay);
 	--control-muted-surface-hover: var(--control-overlay-hover);
 	--control-muted-surface-active: var(--control-overlay-active);

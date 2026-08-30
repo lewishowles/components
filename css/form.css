@@ -183,11 +183,27 @@
 	}
 
 	:where([data-part="option"][data-variant="card"]) {
+		align-items: center;
+		background-color: var(--surface-elevated);
 		border: 1px solid var(--border);
 		gap: calc(var(--spacing) * 3);
 		padding: calc(var(--spacing) * 3);
 		position: relative;
 		z-index: 0;
+
+		[data-part="indicator"] {
+			margin-block-start: 0;
+		}
+
+		[data-part="label"]::after {
+			content: "";
+			inset: 0;
+			position: absolute;
+		}
+
+		&:is(:hover, :focus-within) {
+			background-color: var(--surface-subtle);
+		}
 
 		&[data-position="only"] {
 			border-radius: var(--radius-lg);
@@ -198,6 +214,25 @@
 			border-color: var(--primary-text);
 			z-index: 10;
 		}
+	}
+
+	:where([data-part="options"][data-layout="stacked"]) {
+		flex-direction: column;
+		gap: calc(var(--spacing) * 2);
+
+		&:has([data-variant="card"]) {
+			gap: 0;
+		}
+
+		[data-part="option"][data-variant="card"]:is([data-position="middle"], [data-position="last"]) {
+			margin-block-start: -1px;
+		}
+	}
+
+	:where(
+		[data-part="options"] [data-part="option"]:not([data-variant="card"]) [data-part="label"]
+	) {
+		padding-inline: calc(var(--spacing) * 3);
 	}
 
 	[data-part="options"][data-layout="stacked"] {
@@ -213,6 +248,13 @@
 	}
 
 	[data-part="options"][data-layout="inline"] {
+		flex-direction: column;
+
+		@container (min-width: theme(--container-xs)) {
+			flex-direction: row;
+			gap: calc(var(--spacing) * 10);
+		}
+
 		[data-part="option"][data-variant="card"] {
 			border-radius: var(--radius-lg);
 		}
@@ -232,21 +274,19 @@
 		width: calc(var(--spacing) * 1);
 	}
 
-	:where([data-component="form-button-group"]) {
+	[data-component="form-button-group"] {
 		[data-part="options"] {
 			flex-direction: row;
 			gap: 0;
 		}
 
 		[data-part="option"] {
-			display: contents;
-
 			&:is([data-position="first"], [data-position="only"]) [data-part="label"] {
 				border-start-start-radius: var(--radius-lg);
 				border-end-start-radius: var(--radius-lg);
 			}
 
-			&:is([data-position="middle"], [data-position="last"]) [data-part="label"] {
+			&:is([data-position="middle"], [data-position="last"]) {
 				margin-inline-start: -1px;
 			}
 
