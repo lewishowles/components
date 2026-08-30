@@ -201,5 +201,60 @@ export const formFlowMetadata = {
 		{ name: "isDirty", summary: "Whether the form values differ from their initial state." },
 		{ name: "resetSubmitButton", summary: "Reset the final submit button's loading state." },
 	],
-	examples: [],
+	examples: [
+		{
+			name: "application",
+			label: "Two-step application",
+			summary:
+				"A two-screen application with seeded contact details, validation, and a submit handler.",
+			snippet: {
+				props: {
+					initialData: {
+						label: "Initial application data",
+						value: "initialData",
+						isVariable: true,
+					},
+					rules: {
+						label: "Validation rules",
+						value: "rules",
+						isVariable: true,
+					},
+				},
+				events: {
+					submit: {
+						label: "Submit handler",
+						value: "submitApplication",
+					},
+				},
+				slots: {
+					default: {
+						label: "Screens",
+						value:
+							'<form-screen id="contact">\n  <template #title>Your contact details</template>\n</form-screen>\n\n<form-screen id="application">\n  <template #title>Your application</template>\n</form-screen>',
+					},
+				},
+			},
+		},
+		{
+			name: "review",
+			label: "Application with review",
+			summary: "A two-screen application that shows the answer review before final submission.",
+			snippet: {
+				props: {
+					enableReview: {
+						label: "Enable review",
+						value: true,
+						type: "boolean",
+					},
+				},
+				slots: {
+					default: {
+						label: "Screens",
+						value:
+							'<form-screen id="contact">\n  <template #title>Your contact details</template>\n</form-screen>\n\n<form-screen id="application">\n  <template #title>Your application</template>\n</form-screen>',
+					},
+				},
+			},
+		},
+	],
 };

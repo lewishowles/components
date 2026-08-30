@@ -2,20 +2,27 @@
 	<component-playground v-bind="{ copy: template }" id="playground-form-flow">
 		<template #title>Form flow</template>
 
-		<form-flow v-model="componentModel" v-bind="{ rules }">
-			<template #submit-button-label>Create account</template>
+		<form-flow
+			v-model="componentModel"
+			v-bind="{ initialData, rules, status: submissionStatus }"
+			@submit="submitApplication"
+		>
+			<template #submit-button-label>Send application</template>
 
-			<form-screen id="account">
-				<template #title>Your account</template>
-				<template #introduction>Start with the details we need to create your account.</template>
+			<form-screen id="contact">
+				<template #title>Your contact details</template>
+				<template #introduction>We will use these details to respond to your application.</template>
+
+				<form-field name="fullName">Full name</form-field>
 
 				<form-field type="email" name="email">Email address</form-field>
 			</form-screen>
 
-			<form-screen id="profile" auto-focus="name">
-				<template #title>Your profile</template>
+			<form-screen id="application" auto-focus="organisation">
+				<template #title>Your application</template>
+				<template #introduction>Tell us where you work.</template>
 
-				<form-field name="name">Display name</form-field>
+				<form-field name="organisation">Organisation</form-field>
 			</form-screen>
 		</form-flow>
 	</component-playground>
@@ -28,35 +35,87 @@ import useTemplateGenerator from "@/docs/views/components/composables/use-templa
 // Observed via v-model on form-flow; passed to component-playground to display.
 const componentModel = ref({});
 
-// A required email lets this playground demonstrate a blocked Continue, with the resulting error summary and focus landing on the invalid field.
-const rules = {
-	email: [
-		{ rule: "required", message: "Enter your email address" },
-		{ rule: "email", message: "Enter an email address" },
-	],
+// Values shown when the application form first loads.
+const initialData = {
+	fullName: "Avery Taylor",
+	email: "avery.taylor@example.com",
 };
 
+// Form-level validation for each stage of the application.
+const rules = {
+	fullName: [{ rule: "required", message: "Enter your full name." }],
+	email: [
+		{ rule: "required", message: "Enter your email address." },
+		{ rule: "email", message: "Enter an email address in the correct format." },
+	],
+	organisation: [{ rule: "required", message: "Enter your organisation." }],
+};
+
+// Feedback rendered beside the form actions after a successful submission.
+const submissionStatus = ref(null);
+
+/**
+ * Show a success message after the valid application is submitted.
+ *
+ * @param  {object}  application
+ *     Submitted application values.
+ */
+function submitApplication(application) {
+	submissionStatus.value = {
+		type: "success",
+		message: `Application sent for ${application.email}.`,
+	};
+}
+
+// Source code displayed in the playground's copy panel.
 const template = useTemplateGenerator("form-flow", {
 	props: {
+		initialData: {
+			type: "object",
+			variableName: "initialData",
+		},
 		rules: {
 			type: "object",
 			variableName: "rules",
 		},
+		status: {
+			type: "object",
+			variableName: "submissionStatus",
+		},
 	},
-	// Displayed literally in the copy-code panel; keep this in sync with the
-	// `rules` const above if either changes.
+	events: {
+		submit: { value: "submitApplication" },
+	},
 	setup: [
-		"const rules = {",
-		"\temail: [",
-		'\t\t{ rule: "required", message: "Enter your email address" },',
-		'\t\t{ rule: "email", message: "Enter an email address" },',
-		"\t],",
+		'import { ref } from "vue";',
+		"",
+		"const initialData = {",
+		'\tfullName: "Avery Taylor",',
+		'\temail: "avery.taylor@example.com",',
 		"};",
+		"",
+		"const rules = {",
+		'\tfullName: [{ rule: "required", message: "Enter your full name." }],',
+		"\temail: [",
+		'\t\t{ rule: "required", message: "Enter your email address." },',
+		'\t\t{ rule: "email", message: "Enter an email address in the correct format." },',
+		"\t],",
+		'\torganisation: [{ rule: "required", message: "Enter your organisation." }],',
+		"};",
+		"",
+		"const submissionStatus = ref(null);",
+		"",
+		"function submitApplication(application) {",
+		"\tsubmissionStatus.value = {",
+		'\t\ttype: "success",',
+		"\t\tmessage: `Application sent for ${application.email}.`,",
+		"\t};",
+		"}",
 	].join("\n"),
 	additionalContent: [
-		"\n\t<template #submit-button-label>Create account</template>",
-		'\n\n\t<form-screen id="account">\n\t\t<template #title>Your account</template>\n\t\t<template #introduction>Start with the details we need to create your account.</template>\n\n\t\t<form-field type="email" name="email">\n\t\t\tEmail address\n\t\t</form-field>\n\t</form-screen>',
-		'\n\n\t<form-screen id="profile" auto-focus="name">\n\t\t<form-field name="name">\n\t\t\tDisplay name\n\t\t</form-field>\n\t</form-screen>',
+		"\n\t<template #submit-button-label>Send application</template>",
+		'\n\n\t<form-screen id="contact">\n\t\t<template #title>Your contact details</template>\n\t\t<template #introduction>We will use these details to respond to your application.</template>\n\n\t\t<form-field name="fullName">\n\t\t\tFull name\n\t\t</form-field>\n\n\t\t<form-field type="email" name="email">\n\t\t\tEmail address\n\t\t</form-field>\n\t</form-screen>',
+		'\n\n\t<form-screen id="application" auto-focus="organisation">\n\t\t<template #title>Your application</template>\n\t\t<template #introduction>Tell us where you work.</template>\n\n\t\t<form-field name="organisation">\n\t\t\tOrganisation\n\t\t</form-field>\n\t</form-screen>',
 	],
 });
 </script>

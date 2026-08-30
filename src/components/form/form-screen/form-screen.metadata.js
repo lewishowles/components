@@ -42,5 +42,35 @@ export const formScreenMetadata = {
 		},
 	],
 	events: [],
-	examples: [],
+	examples: [
+		{
+			name: "contact",
+			label: "Contact details screen",
+			summary:
+				"A contact screen registered inside form-flow, with a title, introduction, and email field.",
+			snippet: {
+				props: {
+					id: {
+						label: "Screen ID",
+						value: "contact",
+						isInline: true,
+					},
+				},
+				slots: {
+					title: {
+						label: "Screen title",
+						value: "Contact details",
+					},
+					introduction: {
+						label: "Introduction",
+						value: "Tell us how we can contact you.",
+					},
+					default: {
+						label: "Screen fields",
+						value: '<form-field type="email" name="email">Email address</form-field>',
+					},
+				},
+			},
+		},
+	],
 };
