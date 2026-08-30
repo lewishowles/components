@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 3.2.1 - 2026-08-30
+
+### Fixes
+
+- Bring font sizes in line across `data-table` and `form-screen`.
+
 ## 3.2.0 - 2026-08-30
 
 ### New features
