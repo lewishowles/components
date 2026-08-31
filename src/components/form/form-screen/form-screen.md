@@ -26,7 +26,7 @@ If a field name is provided, the screen automatically advances when that field's
 - type: `string`
 - default: `undefined`
 
-If a field name is provided, that field is focused when the screen becomes active. The error summary receives focus first if it is showing. Otherwise, the named field receives focus if it is registered. If not, the screen title receives focus.
+During the flow's initial render, focus stays where it is. After that, if a field name is provided, that field is focused when the screen becomes active. The error summary receives focus first if it is showing. Otherwise, the named field receives focus if it is registered. If not, the screen title receives focus.
 
 ## Slots
 

@@ -9,7 +9,7 @@
 	>
 		<h2
 			v-if="haveTitle"
-			class="text-content-strong text-3xl font-bold"
+			class="text-content-strong text-3xl font-bold focus-visible:shadow-none focus-visible:outline-none"
 			:class="{ 'mbe-4 lg:mbe-6': !haveIntroduction }"
 			tabindex="-1"
 			data-part="title"

@@ -30,7 +30,7 @@
 		<section v-if="isShowingReview" data-part="review" data-test="form-flow-review">
 			<h2
 				ref="review-heading"
-				class="text-content-strong mbe-6 text-2xl font-bold"
+				class="text-content-strong mbe-6 text-2xl font-bold focus-visible:shadow-none focus-visible:outline-none"
 				tabindex="-1"
 				data-part="review-title"
 				data-test="form-flow-review-title"
@@ -160,6 +160,7 @@ const navigationReasons = {
 	// Final validation found an error on another visible screen, so the flow
 	// moved to that screen.
 	FINAL_ERROR_RECOVERY: "final-error-recovery",
+	// The first registered screen renders without a screen-change event or focus move.
 	INITIAL_RENDER: "initial-render",
 	REVIEW: "review",
 };
@@ -444,6 +445,10 @@ let autoAdvanceGeneration = 0;
 // A focus lookup can outlive the screen visit that started it. Advance this
 // generation so an older lookup cannot steal focus after the user returns.
 let focusGeneration = 0;
+// Initial screen registration must not move focus before the user navigates.
+let shouldSkipInitialFocus = false;
+// Only the first screen activation can suppress its focus move.
+let isBeforeFirstScreenActivation = true;
 // The field a review Change button asked to focus, until the next focus attempt consumes it.
 let pendingFieldFocus = null;
 
@@ -515,6 +520,12 @@ watch(
 	activeScreenId,
 	(destinationScreenId) => {
 		if (!isNonEmptyString(destinationScreenId)) {
+			return;
+		}
+
+		if (shouldSkipInitialFocus) {
+			shouldSkipInitialFocus = false;
+
 			return;
 		}
 
@@ -1020,6 +1031,12 @@ function navigateToScreen(
 
 		return;
 	}
+
+	if (reason === navigationReasons.INITIAL_RENDER && isBeforeFirstScreenActivation) {
+		shouldSkipInitialFocus = true;
+	}
+
+	isBeforeFirstScreenActivation = false;
 
 	activeScreenId.value = destinationScreenId;
 

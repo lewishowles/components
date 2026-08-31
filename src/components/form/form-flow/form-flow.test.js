@@ -134,6 +134,20 @@ describe("form-flow", () => {
 			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(false);
 		});
 
+		test("does not focus the first screen title or field on initial mount", async () => {
+			const wrapper = mountDeep({
+				attachTo: document.body,
+				slots: { default: () => titledScreen("first", "First details") },
+			});
+
+			await flushPromises();
+
+			expect(document.activeElement).not.toBe(
+				wrapper.get('[data-test="form-screen-title"]').element,
+			);
+			expect(document.activeElement).not.toBe(wrapper.get("input").element);
+		});
+
 		test("passes submit and error state to the default slot", async () => {
 			const defaultSlot = vi.fn(() => screen("first", "first"));
 			const wrapper = mountDeep({ slots: { default: defaultSlot } });
@@ -566,6 +580,27 @@ describe("form-flow", () => {
 			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(false);
 		});
 
+		test("focuses a screen title when it reappears after an empty flow", async () => {
+			const isScreenVisible = ref(true);
+
+			const wrapper = mountDeep({
+				attachTo: document.body,
+				slots: {
+					default: () => (isScreenVisible.value ? titledScreen("first", "First details") : null),
+				},
+			});
+
+			await flushPromises();
+
+			isScreenVisible.value = false;
+			await nextTick();
+
+			isScreenVisible.value = true;
+			await flushPromises();
+
+			expect(document.activeElement).toBe(wrapper.get('[data-test="form-screen-title"]').element);
+		});
+
 		test("shows an empty state and prevents submission when all screens are removed", async () => {
 			const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
 			const onSubmit = vi.fn();
@@ -610,6 +645,30 @@ describe("form-flow", () => {
 			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(true);
 			expect(wrapper.find('[data-test="form-flow-error-summary"]').attributes("style")).toContain(
 				"display: none",
+			);
+		});
+
+		test("focuses the destination screen title after moving forward", async () => {
+			const wrapper = mountDeep({
+				attachTo: document.body,
+				props: {
+					modelValue: { first: "ready", second: "later" },
+					rules: { first: [{ rule: "required", message: "First answer is required" }] },
+				},
+				slots: {
+					default: () => [
+						titledScreen("first", "First details"),
+						titledScreen("second", "Second details"),
+					],
+				},
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(document.activeElement).toBe(
+				wrapper.get('[data-screen-id="second"] [data-test="form-screen-title"]').element,
 			);
 		});
 
