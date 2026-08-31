@@ -24,6 +24,15 @@ Any additional text to introduce the options, which appears between the label an
 
 Custom content for one option. The existing input and label stay in place, while the slot receives `option`, `selected`, `id`, and `name`.
 
+| Slot prop  | Type      | Description                                                                                             |
+| ---------- | --------- | ------------------------------------------------------------------------------------------------------- |
+| `option`   | `object`  | The resolved option: `label`, `value`, optional `description`, `id`, `first`, `last`, `originalOption`. |
+| `selected` | `boolean` | Whether this option is selected.                                                                        |
+| `id`       | `string`  | The generated ID linking the label and input.                                                           |
+| `name`     | `string`  | The field's input name.                                                                                 |
+
+`option.originalOption` is the exact item you passed in `options`, unmodified, letting custom option content use any of its fields without re-mapping.
+
 ### `error`
 
 Any error text to display below the field.

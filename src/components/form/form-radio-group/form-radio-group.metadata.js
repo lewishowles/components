@@ -72,7 +72,8 @@ export const formRadioGroupMetadata = {
 		},
 		{
 			name: "option",
-			summary: "Custom content for one option. Scoped with option, selected, id, and name.",
+			summary:
+				"Custom content for one option. Scoped with option, selected, id, and name, where option.originalOption is the exact item passed to options.",
 		},
 		{
 			name: "help",
