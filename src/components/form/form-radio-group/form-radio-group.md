@@ -105,7 +105,14 @@ Use `card` to give each option a bordered card treatment, with the selected opti
 - type: `string|array|object`
 - default: `null`
 
-Additional classes to merge onto every option row. Use this with the `option` slot when the card preset does not match the required design. Conditional styling for selected, first, or last options can target the option row's `data-state` and `data-position` attributes in your own CSS.
+Additional classes to merge onto the options wrapper around option rows. Use this with the `option` slot when the card preset does not match the required design. Conditional styling for selected, first, or last options can target the option row's `data-state` and `data-position` attributes in your own CSS.
+
+### `optionsClasses`
+
+- type: `string|array|object`
+- default: `null`
+
+Additional classes to merge onto the options wrapper around every option row. Use this to apply layout classes to the whole options collection.
 
 ### `required`
 

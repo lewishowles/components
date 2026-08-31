@@ -41,6 +41,12 @@ export const formCheckboxGroupMetadata = {
 			default: null,
 			summary: "Additional classes to merge onto every option row.",
 		},
+		{
+			name: "optionsClasses",
+			type: "string | array | object",
+			default: null,
+			summary: "Additional classes to merge onto the options wrapper around option rows.",
+		},
 	],
 	slots: [
 		{

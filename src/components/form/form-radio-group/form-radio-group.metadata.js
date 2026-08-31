@@ -47,7 +47,13 @@ export const formRadioGroupMetadata = {
 			name: "optionClasses",
 			type: "string | array | object",
 			default: null,
-			summary: "Additional classes to merge onto every option row.",
+			summary: "Additional classes to merge onto the options wrapper around option rows.",
+		},
+		{
+			name: "optionsClasses",
+			type: "string | array | object",
+			default: null,
+			summary: "Additional classes to merge onto the options wrapper around every option row.",
 		},
 	],
 	slots: [

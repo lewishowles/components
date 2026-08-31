@@ -131,6 +131,17 @@ describe("form-radio-group", () => {
 			});
 		});
 
+		describe("optionsClasses", () => {
+			test("passes custom options wrapper classes to the input group", () => {
+				const optionsClasses = { "grid-cols-2": true };
+				const wrapper = mount({ props: { optionsClasses } });
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("optionsClasses")).toEqual(
+					optionsClasses,
+				);
+			});
+		});
+
 		describe("Slots", () => {
 			test("forwards custom option content with selection details", () => {
 				const wrapper = deepMount({

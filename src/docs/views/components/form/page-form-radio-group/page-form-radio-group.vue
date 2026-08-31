@@ -89,6 +89,16 @@
 				</p>
 			</component-prop>
 
+			<component-prop id="prop-options-classes">
+				<template #name>optionsClasses</template>
+
+				<template #type>String | Array | Object</template>
+
+				<template #default-value>null</template>
+
+				<p>Additional classes to merge onto the options wrapper around option rows.</p>
+			</component-prop>
+
 			<component-prop id="prop-label-key">
 				<template #name>labelKey</template>
 

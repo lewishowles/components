@@ -30,7 +30,12 @@
 			</conditional-wrapper>
 		</div>
 
-		<div class="mt-2 mb-1 flex" :data-layout="inline ? 'inline' : 'stacked'" data-part="options">
+		<div
+			:class="cn('mt-2 mb-1 flex', optionsClasses)"
+			:data-layout="inline ? 'inline' : 'stacked'"
+			data-part="options"
+			data-test="form-input-group-options"
+		>
 			<template v-for="option in internalOptions" :key="option.id">
 				<div
 					:class="cn('group flex', optionClasses)"
@@ -215,6 +220,16 @@ const props = defineProps({
 	 * arrays, or conditional objects, matching Vue class bindings.
 	 */
 	optionClasses: {
+		type: [String, Array, Object],
+		default: null,
+	},
+
+	/**
+	 * Additional classes to merge onto the options wrapper around option rows.
+	 * Accepts strings, arrays, or conditional objects, matching Vue class
+	 * bindings.
+	 */
+	optionsClasses: {
 		type: [String, Array, Object],
 		default: null,
 	},

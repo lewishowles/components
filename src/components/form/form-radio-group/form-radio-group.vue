@@ -10,6 +10,7 @@
 			descriptionKey,
 			variant,
 			optionClasses,
+			optionsClasses,
 		}"
 		data-component="form-radio-group"
 		data-test="form-radio-group"
@@ -104,6 +105,16 @@ const props = defineProps({
 	 * arrays, or conditional objects, matching Vue class bindings.
 	 */
 	optionClasses: {
+		type: [String, Array, Object],
+		default: null,
+	},
+
+	/**
+	 * Additional classes to merge onto the options wrapper around option rows.
+	 * Accepts strings, arrays, or conditional objects, matching Vue class
+	 * bindings.
+	 */
+	optionsClasses: {
 		type: [String, Array, Object],
 		default: null,
 	},

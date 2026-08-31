@@ -2,7 +2,15 @@
 	<form-input-group
 		ref="input-group"
 		v-model="internalModel"
-		v-bind="{ type: 'checkbox', required, name, descriptionKey, variant, optionClasses }"
+		v-bind="{
+			type: 'checkbox',
+			required,
+			name,
+			descriptionKey,
+			variant,
+			optionClasses,
+			optionsClasses,
+		}"
 		data-component="form-checkbox-group"
 		data-test="form-checkbox-group"
 	>
@@ -80,10 +88,20 @@ const props = defineProps({
 	},
 
 	/**
-	 * Additional classes to merge onto every option row. Accepts strings,
-	 * arrays, or conditional objects, matching Vue class bindings.
+	 * Additional classes to merge onto the options wrapper around option rows.
+	 * Accepts strings, arrays, or conditional objects, matching Vue class
+	 * bindings.
 	 */
 	optionClasses: {
+		type: [String, Array, Object],
+		default: null,
+	},
+
+	/**
+	 * Additional classes to merge onto the options wrapper around every option row.
+	 * Accepts strings, arrays, or conditional objects, matching Vue class bindings.
+	 */
+	optionsClasses: {
 		type: [String, Array, Object],
 		default: null,
 	},
