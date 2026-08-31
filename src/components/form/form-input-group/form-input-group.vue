@@ -72,7 +72,7 @@
 
 					<form-label
 						v-bind="{ id: option.id, styled: false, showOptionalIndicator: false }"
-						class="w-full leading-6"
+						class="w-full"
 						data-part="label"
 					>
 						<slot
