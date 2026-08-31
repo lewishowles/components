@@ -7,8 +7,6 @@
 			v-bind="{ initialData, rules, status: submissionStatus }"
 			@submit="submitApplication"
 		>
-			<template #submit-button-label>Send application</template>
-
 			<form-screen id="contact">
 				<template #title>Your contact details</template>
 				<template #introduction>We will use these details to respond to your application.</template>
@@ -24,6 +22,8 @@
 
 				<form-field name="organisation">Organisation</form-field>
 			</form-screen>
+
+			<template #submit-button-label>Send application</template>
 		</form-flow>
 	</component-playground>
 </template>
@@ -72,11 +72,9 @@ const template = useTemplateGenerator("form-flow", {
 	props: {
 		initialData: {
 			type: "object",
-			variableName: "initialData",
 		},
 		rules: {
 			type: "object",
-			variableName: "rules",
 		},
 		status: {
 			type: "object",
@@ -113,9 +111,9 @@ const template = useTemplateGenerator("form-flow", {
 		"}",
 	].join("\n"),
 	additionalContent: [
-		"\n\t<template #submit-button-label>Send application</template>",
-		'\n\n\t<form-screen id="contact">\n\t\t<template #title>Your contact details</template>\n\t\t<template #introduction>We will use these details to respond to your application.</template>\n\n\t\t<form-field name="fullName">\n\t\t\tFull name\n\t\t</form-field>\n\n\t\t<form-field type="email" name="email">\n\t\t\tEmail address\n\t\t</form-field>\n\t</form-screen>',
+		'\n\t<form-screen id="contact">\n\t\t<template #title>Your contact details</template>\n\t\t<template #introduction>We will use these details to respond to your application.</template>\n\n\t\t<form-field name="fullName">\n\t\t\tFull name\n\t\t</form-field>\n\n\t\t<form-field type="email" name="email">\n\t\t\tEmail address\n\t\t</form-field>\n\t</form-screen>',
 		'\n\n\t<form-screen id="application" auto-focus="organisation">\n\t\t<template #title>Your application</template>\n\t\t<template #introduction>Tell us where you work.</template>\n\n\t\t<form-field name="organisation">\n\t\t\tOrganisation\n\t\t</form-field>\n\t</form-screen>',
+		"\n\n\t<template #submit-button-label>Send application</template>",
 	],
 });
 </script>

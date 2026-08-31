@@ -72,11 +72,9 @@ const template = useTemplateGenerator("form-flow", {
 		},
 		initialData: {
 			type: "object",
-			variableName: "initialData",
 		},
 		rules: {
 			type: "object",
-			variableName: "rules",
 		},
 		status: {
 			type: "object",

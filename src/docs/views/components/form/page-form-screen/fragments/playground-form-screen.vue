@@ -3,8 +3,6 @@
 		<template #title>Form screen</template>
 
 		<form-flow v-model="componentModel" v-bind="{ rules }">
-			<template #submit-button-label>Save contact details</template>
-
 			<form-screen id="contact">
 				<template #title>Contact details</template>
 				<template #introduction>Tell us how we can contact you.</template>
@@ -17,6 +15,8 @@
 
 				<form-field name="preferredContact">Preferred contact method</form-field>
 			</form-screen>
+
+			<template #submit-button-label>Save contact details</template>
 		</form-flow>
 	</component-playground>
 </template>
@@ -42,7 +42,6 @@ const template = useTemplateGenerator("form-flow", {
 	props: {
 		rules: {
 			type: "object",
-			variableName: "rules",
 		},
 	},
 	setup: [
@@ -55,9 +54,9 @@ const template = useTemplateGenerator("form-flow", {
 		"};",
 	].join("\n"),
 	additionalContent: [
-		"\n\t<template #submit-button-label>Save contact details</template>",
-		'\n\n\t<form-screen id="contact">\n\t\t<template #title>Contact details</template>\n\t\t<template #introduction>Tell us how we can contact you.</template>\n\n\t\t<form-field type="email" name="email">\n\t\t\tEmail address\n\t\t</form-field>\n\t</form-screen>',
+		'\n\t<form-screen id="contact">\n\t\t<template #title>Contact details</template>\n\t\t<template #introduction>Tell us how we can contact you.</template>\n\n\t\t<form-field type="email" name="email">\n\t\t\tEmail address\n\t\t</form-field>\n\t</form-screen>',
 		'\n\n\t<form-screen id="preferences">\n\t\t<template #title>Contact preferences</template>\n\n\t\t<form-field name="preferredContact">\n\t\t\tPreferred contact method\n\t\t</form-field>\n\t</form-screen>',
+		"\n\n\t<template #submit-button-label>Save contact details</template>",
 	],
 });
 </script>

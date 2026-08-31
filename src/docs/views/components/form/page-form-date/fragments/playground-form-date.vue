@@ -73,7 +73,6 @@ const props = ref({
 	dateHelpers: {
 		label: "Date helpers",
 		type: "array",
-		variableName: "dateHelpers",
 	},
 });
 
