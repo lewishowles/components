@@ -138,19 +138,12 @@ Whether to display the field label. When `false`, the label remains available to
 
 Preferred placement of the results list. The list flips above or below the input when it would clip the viewport edge.
 
-### `align`
-
-- type: `string`
-- default: `"start"`
-
-Whether to align the results list to the start or end of the input. The alignment also flips when the list would clip the viewport edge.
-
 ### `dropdownClasses`
 
 - type: `string|array|object`
 - default: `null`
 
-Additional classes for the results list. Classes that conflict with the base styles override them.
+Additional classes for the results list. The results list always matches the input's own position and width, so a width or position class here has no effect.
 
 ## Methods
 

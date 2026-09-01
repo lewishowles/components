@@ -68,16 +68,11 @@ export const formComboBoxMetadata = {
 				"Preferred placement of the results list. It flips above or below the input when needed.",
 		},
 		{
-			name: "align",
-			type: "string",
-			default: "start",
-			summary: "Align the results list to the start or end of the input. It flips when needed.",
-		},
-		{
 			name: "dropdownClasses",
 			type: "string | array | object",
 			default: null,
-			summary: "Additional classes for the results list.",
+			summary:
+				"Additional classes for the results list. It always matches the input's own position and width, so a width or position class here has no effect.",
 		},
 	],
 	slots: [

@@ -112,21 +112,13 @@
 				edge.
 			</component-prop>
 
-			<component-prop id="prop-align">
-				<template #name>align</template>
-				<template #type>String</template>
-				<template #default-value>start</template>
-
-				Whether to align the results list to the start or end of the input. The alignment also flips
-				when the list would clip the viewport edge.
-			</component-prop>
-
 			<component-prop id="prop-dropdown-classes">
 				<template #name>dropdownClasses</template>
 				<template #type>String | Array | Object</template>
 				<template #default-value>null</template>
 
-				Additional classes for the results list.
+				Additional classes for the results list. It always matches the input's own position and
+				width, so a width or position class here has no effect.
 			</component-prop>
 		</component-props>
 

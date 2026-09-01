@@ -251,18 +251,9 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether to align the results to the start or end of the input. The list
-	 * flips to the opposite side if it would clip the viewport edge.
-	 */
-	align: {
-		type: String,
-		default: "start",
-	},
-
-	/**
 	 * Additional classes to apply to the results list, merged on top of its base
-	 * styles. Any provided classes that conflict with base classes will override
-	 * as necessary.
+	 * styles. The results list always matches the input's own position and
+	 * width, so a width or position class provided here has no effect.
 	 */
 	dropdownClasses: {
 		type: [String, Array, Object],
@@ -411,7 +402,6 @@ const dropdownElement = useTemplateRef("dropdown");
 
 const {
 	computedPlacement,
-	computedAlign,
 	isPositioning,
 	placementClasses,
 	positioningTick,
@@ -421,7 +411,9 @@ const {
 	triggerElement: fieldWrapperElement,
 	panelElement: dropdownElement,
 	initialPlacement: toRef(props, "placement"),
-	initialAlign: toRef(props, "align"),
+	// The dropdown always matches the field wrapper's own width, so there is
+	// no opposite side for it to align to.
+	initialAlign: ref("start"),
 });
 
 // The number of results currently shown.
@@ -437,23 +429,26 @@ const selectedItem = computed(() =>
 );
 
 // The full class list for the results list: base styling merged with the
-// resolved position, alignment, and any caller overrides.
+// resolved position and any caller overrides. Width and horizontal position
+// come from resolvedDropdownStyle instead, since the field wrapper can be
+// narrower than the root (e.g. once an error marker adds start padding).
 const resolvedDropdownClasses = computed(() =>
 	cn(
-		"absolute z-10 w-full overflow-hidden rounded-md border border-border bg-surface-elevated shadow-lg",
+		"absolute z-10 overflow-hidden rounded-md border border-border bg-surface-elevated shadow-lg",
 		placementClasses.value,
-		computedAlign.value === "end" ? "inset-e-0" : "inset-s-0",
 		{ "opacity-0": isPositioning.value },
 		props.dropdownClasses,
 	),
 );
 
-// Position the dropdown against the field wrapper while keeping the root as
-// its containing block for the existing absolute layout.
+// Position and size the dropdown against the field wrapper while keeping the
+// root as its containing block for the existing absolute layout. Matching the
+// field wrapper's own left and width, rather than assuming it spans the root,
+// keeps the dropdown aligned when an error marker narrows the field wrapper.
 const resolvedDropdownStyle = computed(() => {
-	// Geometry can change on resize or reopen without placement or alignment
-	// flipping, which a reference check on those alone would miss. Reading
-	// positioningTick here forces a re-evaluation on every recalculation.
+	// Geometry can change on resize or reopen without placement flipping,
+	// which a reference check alone would miss. Reading positioningTick here
+	// forces a re-evaluation on every recalculation.
 	void positioningTick.value;
 
 	const container = containerElement.value;
@@ -469,14 +464,21 @@ const resolvedDropdownStyle = computed(() => {
 	const fieldWrapperTop = fieldWrapperRect.top - containerRectangle.top;
 	const fieldWrapperBottom = fieldWrapperTop + fieldWrapperRect.height;
 
+	const horizontalStyle = {
+		left: `${fieldWrapperRect.left - containerRectangle.left}px`,
+		width: `${fieldWrapperRect.width}px`,
+	};
+
 	if (placement === "above") {
 		return {
+			...horizontalStyle,
 			bottom: `${containerRectangle.height - fieldWrapperTop}px`,
 			top: undefined,
 		};
 	}
 
 	return {
+		...horizontalStyle,
 		bottom: undefined,
 		top: `${fieldWrapperBottom}px`,
 	};

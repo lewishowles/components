@@ -435,4 +435,33 @@ describe("form-combo-box", () => {
 			expect(wrapper.text()).toContain("Choose a valid pilot");
 		});
 	});
+
+	describe("Dropdown positioning", () => {
+		test("matches the field wrapper's own position and width", async () => {
+			const wrapper = mountDeep({ slots: { default: "Pilot" } });
+
+			wrapper.vm.openResults();
+			await nextTick();
+
+			const dropdown = wrapper.find('[data-test="form-combo-box-dropdown"]');
+
+			expect(dropdown.attributes("style")).toContain("left");
+			expect(dropdown.attributes("style")).toContain("width");
+		});
+
+		test("ignores a width class in dropdownClasses, since the dropdown always matches the input", async () => {
+			const wrapper = mountDeep({
+				props: { dropdownClasses: "w-96" },
+				slots: { default: "Pilot" },
+			});
+
+			wrapper.vm.openResults();
+			await nextTick();
+
+			const dropdown = wrapper.find('[data-test="form-combo-box-dropdown"]');
+
+			expect(dropdown.classes()).toContain("w-96");
+			expect(dropdown.attributes("style")).toContain("width");
+		});
+	});
 });
