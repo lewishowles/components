@@ -26,12 +26,13 @@
 
 		<div
 			v-if="haveActiveScreen && !isShowingReview"
-			class="border-border mbe-8 border-be pbe-4"
+			class="border-border mbe-8 border-be pbe-10"
 			data-part="progress"
 			data-test="form-flow-progress"
 		>
 			<slot name="progress" v-bind="progressSlotProps">
 				<step-indicator
+					class="max-w-lg"
 					v-bind="{ currentStep: activeScreenIndex + 1, stepCount: screenIds.length }"
 				>
 					{{ activeScreenProgressLabel || activeScreenId }}

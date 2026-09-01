@@ -12,12 +12,12 @@
 		data-test="step-indicator"
 	>
 		<div class="flex flex-col gap-3" data-part="progress" data-test="step-indicator-progress">
-			<div class="flex items-center gap-2 text-sm">
-				<span class="text-content-muted" data-test="step-indicator-current-step">
+			<div class="flex items-start gap-2 text-sm">
+				<span class="text-content-muted shrink-0" data-test="step-indicator-current-step">
 					<slot name="current-step">Step {{ currentStep }} of {{ stepCount }}</slot>
 				</span>
 
-				<span aria-hidden="true">{{ " · " }}</span>
+				<span class="shrink-0" aria-hidden="true">{{ " · " }}</span>
 
 				<span
 					class="text-content-strong font-semibold"
@@ -29,7 +29,7 @@
 				</span>
 			</div>
 
-			<div class="flex h-1 w-full gap-1">
+			<div class="flex h-1 w-full gap-2">
 				<div
 					v-for="segment in segments"
 					:key="segment.step"
