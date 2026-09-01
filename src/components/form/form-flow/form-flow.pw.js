@@ -141,7 +141,37 @@ test.describe("form-flow", () => {
 			});
 		});
 
-		test("scrolls the flow to the viewport top after a screen change", async ({ mount, page }) => {
+		test("does not scroll the flow when its top is visible after a screen change", async ({
+			mount,
+			page,
+		}) => {
+			await mountFormFlow(mount);
+
+			const formFlow = page.getByTestId("form-flow");
+			const continueButton = page.getByTestId("form-flow-continue-button");
+
+			await formFlow.evaluate((element) => {
+				element.style.marginBlock = "200vh";
+				const flowTop = element.getBoundingClientRect().top + window.scrollY;
+
+				window.scrollTo(0, flowTop - 100);
+			});
+
+			await expect
+				.poll(() => formFlow.evaluate((element) => element.getBoundingClientRect().top))
+				.toBe(100);
+
+			const scrollPosition = await page.evaluate(() => window.scrollY);
+
+			await continueButton.evaluate((button) => button.click());
+			await expect(page.getByText("Display name")).toBeVisible();
+			await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(scrollPosition);
+		});
+
+		test("scrolls the flow to the viewport top when its top is off-screen after a screen change", async ({
+			mount,
+			page,
+		}) => {
 			await mountFormFlow(mount);
 
 			const formFlow = page.getByTestId("form-flow");

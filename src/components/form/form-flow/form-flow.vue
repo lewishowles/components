@@ -1144,7 +1144,11 @@ async function focusScreen(screenId = activeScreenId.value, { fieldName } = {}) 
 		return;
 	}
 
-	formFlow.value?.scrollIntoView?.({ block: "start" });
+	const flowTop = formFlow.value?.getBoundingClientRect().top;
+
+	if (flowTop === undefined || flowTop < 0 || flowTop >= window.innerHeight) {
+		formFlow.value?.scrollIntoView?.({ block: "start" });
+	}
 
 	// If we have an error summary, focus it.
 	if (haveAnyErrorSummary.value) {

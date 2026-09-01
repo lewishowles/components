@@ -267,6 +267,77 @@ describe("form-flow", () => {
 	});
 
 	describe("Navigation", () => {
+		test("scrolls to the flow when a screen change leaves its top above the viewport", async () => {
+			const wrapper = mountDeep({
+				props: { modelValue: { first: "ready", second: "later" } },
+				slots: { default: flowSlots },
+			});
+
+			await flushPromises();
+
+			const formElement = wrapper.get('[data-test="form-flow"]').element;
+			const scrollIntoView = vi.fn();
+
+			Object.defineProperty(formElement, "scrollIntoView", {
+				configurable: true,
+				value: scrollIntoView,
+			});
+			vi.spyOn(formElement, "getBoundingClientRect").mockReturnValue({ top: -1 });
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(scrollIntoView).toHaveBeenCalledWith({ block: "start" });
+		});
+
+		test("scrolls to the flow when a screen change leaves its top below the viewport", async () => {
+			const wrapper = mountDeep({
+				props: { modelValue: { first: "ready", second: "later" } },
+				slots: { default: flowSlots },
+			});
+
+			await flushPromises();
+
+			const formElement = wrapper.get('[data-test="form-flow"]').element;
+			const scrollIntoView = vi.fn();
+
+			Object.defineProperty(formElement, "scrollIntoView", {
+				configurable: true,
+				value: scrollIntoView,
+			});
+			vi.spyOn(formElement, "getBoundingClientRect").mockReturnValue({
+				top: window.innerHeight,
+			});
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(scrollIntoView).toHaveBeenCalledWith({ block: "start" });
+		});
+
+		test("does not scroll when a screen change leaves the flow top visible", async () => {
+			const wrapper = mountDeep({
+				props: { modelValue: { first: "ready", second: "later" } },
+				slots: { default: flowSlots },
+			});
+
+			await flushPromises();
+
+			const formElement = wrapper.get('[data-test="form-flow"]').element;
+			const scrollIntoView = vi.fn();
+
+			Object.defineProperty(formElement, "scrollIntoView", {
+				configurable: true,
+				value: scrollIntoView,
+			});
+			vi.spyOn(formElement, "getBoundingClientRect").mockReturnValue({ top: 0 });
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(scrollIntoView).not.toHaveBeenCalled();
+		});
+
 		test("shows an optional review destination before final submission", async () => {
 			const onSubmit = vi.fn();
 
