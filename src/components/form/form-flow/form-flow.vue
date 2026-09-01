@@ -650,8 +650,13 @@ function unregisterScreen(screenId) {
 	const screen = screens.value[screenId];
 
 	if (screen) {
-		// Keep slotOrder so a reappearing screen is reinserted at its original position.
-		screens.value[screenId] = { slotOrder: screen.slotOrder };
+		// Keep completion, answer summaries, and slotOrder when a conditional screen reappears.
+		screens.value[screenId] = {
+			answerFields: screen.answerFields,
+			completed: screen.completed,
+			fields: screen.fields,
+			slotOrder: screen.slotOrder,
+		};
 	}
 
 	if (!wasActive) {
@@ -729,24 +734,6 @@ function markScreenComplete(screenId) {
 	}
 
 	screens.value[screenId].completed = true;
-}
-
-/**
- * Clear completion for a screen and every later registered screen.
- *
- * @param  {string}  screenId
- *     The registered screen ID whose value changed.
- */
-function resetCompletionStartingAtScreen(screenId) {
-	const screenIndex = screenIds.value.indexOf(screenId);
-
-	if (screenIndex === -1) {
-		return;
-	}
-
-	for (const completedScreenId of screenIds.value.slice(screenIndex)) {
-		screens.value[completedScreenId].completed = false;
-	}
 }
 
 /**
@@ -829,10 +816,10 @@ function unregisterFlowField(fieldName) {
 }
 
 /**
- * Build the answer summary for every completed screen, for the review screen.
+ * Build the answer summary for every registered screen, for the review screen.
  *
  * @returns  {object[]}
- *     One summary per completed screen, in registration order.
+ *     One summary per registered screen, in registration order.
  */
 function getAnswerSummaries() {
 	const summaries = [];
@@ -840,7 +827,7 @@ function getAnswerSummaries() {
 	for (const screenId of screenIds.value) {
 		const screen = screens.value[screenId];
 
-		if (!screen?.completed) {
+		if (!screen) {
 			continue;
 		}
 
@@ -885,16 +872,15 @@ function handleUserFieldInput() {
 }
 
 /**
- * Update a field value, clear completion for its screen and following
- * screens, and start automatic progression when the change came directly
- * from the user.
+ * Update a field value and start automatic progression when the change came
+ * directly from the user.
  *
  * @param  {string}  name
  *     The field name.
  * @param  {unknown}  value
  *     The new field value.
  */
-async function updateFieldValueAndClearCompletion(name, value) {
+async function updateFieldValueAndAutoAdvance(name, value) {
 	const previousValue = formData.value?.[name];
 	const wasUserInput = hasUserInputEvent;
 
@@ -904,14 +890,6 @@ async function updateFieldValueAndClearCompletion(name, value) {
 
 	if (Object.is(previousValue, value)) {
 		return;
-	}
-
-	const screenId = screenIds.value.find((candidate) =>
-		screens.value[candidate]?.fields?.includes(name),
-	);
-
-	if (screenId) {
-		resetCompletionStartingAtScreen(screenId);
 	}
 
 	if (wasUserInput) {
@@ -1125,7 +1103,8 @@ async function focusRegisteredField(fieldName, requestGeneration) {
 }
 
 /**
- * Scroll to the top of the flow and focus a screen after its content and errors have rendered.
+ * Scroll the flow into view when its top is outside the viewport, then focus a screen after its
+ * content and errors have rendered.
  *
  * @param  {string}  screenId
  *     The screen whose summary, requested field, auto-focus field, or title should receive focus.
@@ -1501,8 +1480,21 @@ provide("form", {
 	...formContext,
 	registerField: registerFlowField,
 	unregisterField: unregisterFlowField,
-	updateFieldValue: updateFieldValueAndClearCompletion,
+	updateFieldValue: updateFieldValueAndAutoAdvance,
 });
 
-defineExpose({ isSubmitting, isDirty, resetSubmitButton });
+/**
+ * Set a named field value from outside the form flow without changing completion
+ * or triggering automatic progression.
+ *
+ * @param  {string}  name
+ *     The field name.
+ * @param  {unknown}  value
+ *     The value to store for the field.
+ */
+async function setValue(name, value) {
+	await updateFieldValueAndAutoAdvance(name, value);
+}
+
+defineExpose({ isSubmitting, isDirty, resetSubmitButton, setValue });
 </script>

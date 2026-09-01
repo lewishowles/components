@@ -19,11 +19,11 @@ export const formFlowMetadata = {
 		},
 		{
 			name: "review-screen",
-			summary: "Container for one completed screen in the answer review.",
+			summary: "Container for one screen in the answer review.",
 		},
 		{
 			name: "review-screen-title",
-			summary: "Heading for one completed screen in the answer review.",
+			summary: "Heading for one screen in the answer review.",
 		},
 	],
 	props: [
@@ -200,6 +200,10 @@ export const formFlowMetadata = {
 		{ name: "isSubmitting", summary: "Whether final submission is in progress." },
 		{ name: "isDirty", summary: "Whether the form values differ from their initial state." },
 		{ name: "resetSubmitButton", summary: "Reset the final submit button's loading state." },
+		{
+			name: "setValue",
+			summary: "Set a field value without changing completion or automatically advancing.",
+		},
 	],
 	examples: [
 		{

@@ -396,6 +396,35 @@ describe("form-flow", () => {
 			expect(onSubmit).toHaveBeenCalledWith({ first: "ready", second: "later" });
 		});
 
+		test("shows an incomplete conditional screen's answer when it reappears in review", async () => {
+			const state = { first: ref(true), second: ref(true), third: ref(true) };
+
+			const wrapper = mountConditionalFlow(state, ["first", "second", "third"], {
+				enableReview: true,
+				modelValue: { first: "one", second: "two", third: "three" },
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow-back-button"]').trigger("click");
+			await nextTick();
+
+			state.second.value = false;
+			await nextTick();
+
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			state.second.value = true;
+			await nextTick();
+			await flushPromises();
+
+			expect(wrapper.get('[data-test="form-flow-review"]').text()).toContain("two");
+		});
+
 		test("returns from review to the last visible screen", async () => {
 			const wrapper = mountDeep({
 				props: {
@@ -529,9 +558,9 @@ describe("form-flow", () => {
 			);
 		});
 
-		test("clears completion from an edited screen and later screens while retaining values", async () => {
+		test("keeps completion when setValue changes a field without automatically advancing", async () => {
 			const screens = [
-				screen("first", "first"),
+				screen("first", "first", "first", { autoAdvance: "first" }),
 				screen("second", "second"),
 				screen("third", "third"),
 			];
@@ -552,24 +581,25 @@ describe("form-flow", () => {
 			await nextTick();
 			await wrapper.get('[data-test="form-flow-back-button"]').trigger("click");
 			await nextTick();
-			await wrapper.get('[data-screen-id="first"] input').setValue("changed");
-			await nextTick();
+			await wrapper.vm.setValue("first", "changed");
+			await flushPromises();
 
 			expect(wrapper.get('[data-test="completion-state"]').attributes("data-completed-first")).toBe(
-				"false",
+				"true",
 			);
 			expect(
 				wrapper.get('[data-test="completion-state"]').attributes("data-completed-second"),
-			).toBe("false");
+			).toBe("true");
 			expect(wrapper.get('[data-test="completion-state"]').attributes("data-completed-third")).toBe(
 				"false",
 			);
+			expect(wrapper.find('[data-screen-id="first"]').exists()).toBe(true);
 			expect(wrapper.emitted("update:modelValue").at(-1)).toEqual([
 				{ first: "changed", second: "two", third: "three" },
 			]);
 		});
 
-		test("clears a conditional screen's completion when it disappears and returns", async () => {
+		test("keeps a conditional screen marked complete when it disappears and returns", async () => {
 			const state = { first: ref(true), second: ref(true), third: ref(true) };
 
 			const wrapper = mountConditionalFlow(state, ["first", "second", "third"], {
@@ -593,7 +623,7 @@ describe("form-flow", () => {
 
 			expect(
 				wrapper.get('[data-test="completion-state"]').attributes("data-completed-second"),
-			).toBe("false");
+			).toBe("true");
 
 			await wrapper.get('[data-test="form-flow-back-button"]').trigger("click");
 			await nextTick();
@@ -1121,12 +1151,13 @@ describe("form-flow", () => {
 	});
 
 	describe("Expose", () => {
-		test("exposes submit state and resetSubmitButton", () => {
+		test("exposes submit state, resetSubmitButton, and setValue", () => {
 			const wrapper = mount();
 
 			expect(wrapper.vm.isSubmitting).toBe(false);
 			expect(wrapper.vm.isDirty).toBe(false);
 			expect(wrapper.vm.resetSubmitButton).toBeTypeOf("function");
+			expect(wrapper.vm.setValue).toBeTypeOf("function");
 		});
 	});
 });

@@ -453,6 +453,15 @@ describe("form-wrapper", () => {
 			expect(wrapper.vm.isSubmitting).toBe(false);
 		});
 
+		test("sets and emits a named value", async () => {
+			const wrapper = mount();
+
+			await wrapper.vm.setValue("username", "wall-e");
+
+			expect(wrapper.vm.formData).toEqual({ username: "wall-e" });
+			expect(wrapper.emitted("update:modelValue").at(-1)).toEqual([{ username: "wall-e" }]);
+		});
+
 		test("exposes readonly", () => {
 			const wrapper = mount({ props: { readonly: true } });
 

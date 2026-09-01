@@ -956,13 +956,13 @@
 			<component-styling-hook id="hook-data-part-review-screen">
 				<template #attribute>data-part="review-screen"</template>
 
-				<p>Present on each completed screen in the review.</p>
+				<p>Present for each screen in the review.</p>
 			</component-styling-hook>
 
 			<component-styling-hook id="hook-data-part-review-screen-title">
 				<template #attribute>data-part="review-screen-title"</template>
 
-				<p>Present on each completed screen heading in the review.</p>
+				<p>Present for each screen heading in the review.</p>
 			</component-styling-hook>
 		</component-styling-hooks>
 

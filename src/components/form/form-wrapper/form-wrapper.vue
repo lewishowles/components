@@ -311,5 +311,17 @@ const {
 
 provide("form", formContext);
 
-defineExpose({ isSubmitting, isDirty, resetSubmitButton });
+/**
+ * Set a named field value from outside the form.
+ *
+ * @param  {string}  name
+ *     The field name.
+ * @param  {unknown}  value
+ *     The value to store for the field.
+ */
+async function setValue(name, value) {
+	await updateFieldValue(name, value);
+}
+
+defineExpose({ isSubmitting, isDirty, resetSubmitButton, setValue });
 </script>

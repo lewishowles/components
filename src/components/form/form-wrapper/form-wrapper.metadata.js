@@ -163,6 +163,12 @@ export const formWrapperMetadata = {
 			summary: "Emitted when the form passes validation and the user activates the submit button.",
 		},
 	],
+	methods: [
+		{ name: "isSubmitting", summary: "Whether form submission is in progress." },
+		{ name: "isDirty", summary: "Whether the form values differ from their initial state." },
+		{ name: "resetSubmitButton", summary: "Reset the submit button's loading state." },
+		{ name: "setValue", summary: "Set the value for a named field." },
+	],
 	examples: [
 		{
 			name: "basic-form",

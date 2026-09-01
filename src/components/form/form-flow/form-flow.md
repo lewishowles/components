@@ -271,6 +271,15 @@ they are excluded from submit payloads until the field is registered again.
 
 `true` when the form values differ from their initial state.
 
+### `setValue(name, value)`
+
+Sets the value for a named field without changing screen completion or triggering automatic progression.
+
+| Parameter | Type      | Description                     |
+| --------- | --------- | ------------------------------- |
+| `name`    | `string`  | The name of the field to set.   |
+| `value`   | `unknown` | The value to set for the field. |
+
 ### `resetSubmitButton`
 
 Resets the submit button's loading state. Call this after your `@submit` handler completes if it does not return a Promise, for example when the async work is deferred or the result comes back via a separate channel.
@@ -334,14 +343,14 @@ A reactive boolean that reflects the `compact` prop. Used by form layouts and fi
 
 ## Styling hooks
 
-| Attribute                         | Element  | Notes                                            |
-| --------------------------------- | -------- | ------------------------------------------------ |
-| `data-component="form-flow"`      | Root     | Scope styles to this component                   |
-| `data-part="progress"`            | Progress | Default progress container                       |
-| `data-part="review"`              | Review   | Optional review screen                           |
-| `data-part="review-title"`        | Review   | Review screen heading                            |
-| `data-part="review-screen"`       | Review   | Container for one completed screen in the review |
-| `data-part="review-screen-title"` | Review   | Heading for one completed screen in the review   |
+| Attribute                         | Element  | Notes                                  |
+| --------------------------------- | -------- | -------------------------------------- |
+| `data-component="form-flow"`      | Root     | Scope styles to this component         |
+| `data-part="progress"`            | Progress | Default progress container             |
+| `data-part="review"`              | Review   | Optional review screen                 |
+| `data-part="review-title"`        | Review   | Review screen heading                  |
+| `data-part="review-screen"`       | Review   | Container for one screen in the review |
+| `data-part="review-screen-title"` | Review   | Heading for one screen in the review   |
 
 ## Examples
 

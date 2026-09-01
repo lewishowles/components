@@ -392,6 +392,15 @@ they are excluded from submit payloads until the field is registered again.
 
 ## Methods
 
+### `setValue(name, value)`
+
+Sets the value for a named field.
+
+| Parameter | Type      | Description                     |
+| --------- | --------- | ------------------------------- |
+| `name`    | `string`  | The name of the field to set.   |
+| `value`   | `unknown` | The value to set for the field. |
+
 ### `resetSubmitButton`
 
 Resets the submit button's loading state. Call this after your `@submit` handler completes if it does not return a Promise, for example when the async work is deferred or the result comes back via a separate channel.
