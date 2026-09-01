@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+## 3.3.0 - 2026-09-01
+
+### New features
+
+- `form-flow` exposes the active screen's id on the default slot.
+- `form-date` syncs its value when the date is changed from outside the field.
+- `form-field` syncs its value when `formData` changes externally.
+- `form-input-group` now supports `optionsClasses` for the options wrapper.
+
+### Fixes
+
+- `form-flow` no longer clears screen completion on every field edit.
+- `form-flow` scrolls to the top on screen change, but not when the flow is already visible.
+- `form-flow` no longer focuses a screen's title on the form's initial render.
+- `form-input-group` labels no longer collapse in on themselves in inline mode.
+- `form-input-group` joins inline card options into one divided box.
+- `step-indicator` renders equal-width step segments instead of a continuous progress bar, improving its appearance when used in a form.
+- Form fields always have a surface background.
+
 ## 3.2.1 - 2026-08-30
 
 ### Fixes
