@@ -252,6 +252,100 @@ describe("form-field", () => {
 		});
 	});
 
+	describe("Form data", () => {
+		test("updates the displayed value when parent form data changes", async () => {
+			const formData = ref({ username: "initial" });
+
+			const wrapper = mountDeep({
+				props: { modelValue: "initial" },
+				global: {
+					provide: {
+						form: { ...provide.form, formData },
+					},
+				},
+			});
+
+			formData.value.username = "updated";
+			await nextTick();
+
+			expect(wrapper.findComponent(FormInput).props("modelValue")).toBe("updated");
+		});
+
+		test.for([
+			["a primitive value", "text", "initial", "updated"],
+			[
+				"an object-shaped date value",
+				"date",
+				{ day: 1, month: 1, year: 2026 },
+				{ day: 2, month: 1, year: 2026 },
+			],
+		])("does not write %s back to the parent form twice", async ([, type, initialValue, value]) => {
+			const formData = ref({ username: initialValue });
+
+			updateFieldValueMock.mockImplementationOnce((name, updatedValue) => {
+				formData.value[name] = updatedValue;
+			});
+
+			const wrapper = mount({
+				props: { modelValue: initialValue, type },
+				global: {
+					provide: {
+						form: { ...provide.form, formData },
+					},
+				},
+			});
+
+			await wrapper.setProps({ modelValue: value });
+			await nextTick();
+
+			expect(updateFieldValueMock).toHaveBeenCalledTimes(1);
+			expect(updateFieldValueMock).toHaveBeenCalledWith("username", value);
+		});
+
+		test("ignores form data changes without a parent form", async () => {
+			const formData = ref({ username: "initial" });
+
+			const wrapper = mountDeep({
+				props: { modelValue: "initial" },
+				global: {
+					provide: {
+						form: { formData, registerField: null },
+					},
+				},
+			});
+
+			formData.value.username = "updated";
+			await nextTick();
+
+			expect(wrapper.findComponent(FormInput).props("modelValue")).toBe("initial");
+		});
+
+		test("uses the renamed key's existing value without rewriting the old key", async () => {
+			const formData = ref({ displayName: "Lewis", username: "Ada" });
+
+			const updateFieldValue = vi.fn((name, value) => {
+				formData.value[name] = value;
+			});
+
+			const wrapper = mountDeep({
+				props: { modelValue: "Ada" },
+				global: {
+					provide: {
+						form: { ...provide.form, formData, updateFieldValue },
+					},
+				},
+			});
+
+			await wrapper.setProps({ name: "displayName" });
+			await nextTick();
+
+			expect(wrapper.findComponent(FormInput).props("modelValue")).toBe("Lewis");
+			expect(updateFieldValue).toHaveBeenCalledTimes(1);
+			expect(updateFieldValue).toHaveBeenCalledWith("displayName", "Lewis");
+			expect(formData.value).toEqual({ displayName: "Lewis", username: "Ada" });
+		});
+	});
+
 	describe("Computed", () => {
 		describe("fieldType", () => {
 			test("should ignore an unknown field type", () => {

@@ -157,6 +157,7 @@ const { inputId } = useInputId(attrs.id);
 const formContext = inject("form", {});
 // The injection may not be defined, so we get its properties in a safe way.
 const fieldErrorsFor = formContext?.fieldErrorsFor;
+const formData = formContext?.formData;
 const registerField = formContext?.registerField;
 const unregisterField = formContext?.unregisterField;
 const updateFieldValue = formContext?.updateFieldValue;
@@ -370,6 +371,19 @@ watch(model, () => {
 		updateFieldValue(props.name, model.value);
 	}
 });
+
+// Mirrors an external formData change (e.g. a programmatic value update) back into
+// the local model, the reverse of the watcher above.
+watch(
+	() => formData?.value?.[props.name],
+	(value) => {
+		if (!haveParentForm.value) {
+			return;
+		}
+
+		model.value = value;
+	},
+);
 
 // Move the live registration when the reactive field name changes.
 watch(

@@ -56,6 +56,7 @@ export function useFormHost(props, emit, options = {}) {
 	// Context shared by form-field and form-layout consumers.
 	const formContext = {
 		fieldErrorsFor: form.fieldErrorsFor,
+		formData: form.formData,
 		registerField: form.registerField,
 		unregisterField: form.unregisterField,
 		updateFieldValue: form.updateFieldValue,

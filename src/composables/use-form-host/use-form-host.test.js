@@ -82,6 +82,7 @@ describe("useFormHost", () => {
 			});
 
 			expect(instance.formContext.fieldErrorsFor).toBeTypeOf("function");
+			expect(instance.formContext.formData).toBe(instance.formData);
 			expect(instance.formContext.isCompact.value).toBe(true);
 			expect(instance.formContext.isReadonly.value).toBe(true);
 			expect(instance.haveActionsLabel.value).toBe(true);
