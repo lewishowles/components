@@ -290,6 +290,10 @@
 				padding-inline: calc(var(--spacing) * 5);
 			}
 
+			[data-part="option"][data-variant="card"] [data-part="label"] {
+				white-space: nowrap;
+			}
+
 			[data-part="option"][data-variant="card"][data-position="only"] {
 				border-radius: var(--radius-lg);
 			}
