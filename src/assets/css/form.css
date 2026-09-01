@@ -265,13 +265,29 @@
 
 	[data-part="options"][data-layout="inline"] {
 		flex-direction: column;
+		gap: calc(var(--spacing) * 2);
 
-		[data-part="option"][data-variant="card"] {
-			border-radius: var(--radius-lg);
+		&:has([data-variant="card"]) {
+			gap: 0;
 		}
 
-		@container (min-width: theme(--container-xs)) {
+		[data-part="option"][data-variant="card"]:is([data-position="middle"], [data-position="last"]) {
+			margin-block-start: -1px;
+		}
+
+		[data-part="option"][data-variant="card"][data-position="first"] {
+			border-start-end-radius: var(--radius-lg);
+			border-start-start-radius: var(--radius-lg);
+		}
+
+		[data-part="option"][data-variant="card"][data-position="last"] {
+			border-end-end-radius: var(--radius-lg);
+			border-end-start-radius: var(--radius-lg);
+		}
+
+		@container (min-width: theme(--container-sm)) {
 			flex-direction: row;
+			flex-wrap: wrap;
 			gap: calc(var(--spacing) * 10);
 
 			&:has([data-variant="card"]) {
