@@ -41,7 +41,7 @@
 		</div>
 
 		<div v-show="!isShowingReview" class="contents">
-			<slot v-bind="{ isSubmitting, hasErrors: haveAnyErrorSummary }" />
+			<slot v-bind="{ activeScreenId, isSubmitting, hasErrors: haveAnyErrorSummary }" />
 		</div>
 
 		<section v-if="isShowingReview" data-part="review" data-test="form-flow-review">

@@ -146,7 +146,8 @@ export const formFlowMetadata = {
 	slots: [
 		{
 			name: "default",
-			summary: "Form-screen components plus other content, scoped with isSubmitting and hasErrors.",
+			summary:
+				"Form-screen components plus other content, scoped with activeScreenId, isSubmitting, and hasErrors.",
 		},
 		{
 			name: "empty",

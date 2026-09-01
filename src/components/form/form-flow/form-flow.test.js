@@ -155,6 +155,7 @@ describe("form-flow", () => {
 			await nextTick();
 
 			expect(defaultSlot.mock.calls.at(-1)[0]).toEqual({
+				activeScreenId: "first",
 				isSubmitting: false,
 				hasErrors: false,
 			});

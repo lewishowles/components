@@ -14,10 +14,11 @@ Final submission validates the whole form. If another visible screen has an erro
 
 One or more `form-screen` components plus other content. Content outside of `form-screen` is shown while screen content is active and hidden while the review is shown.
 
-| Slot prop      | Type      | Description                                         |
-| -------------- | --------- | --------------------------------------------------- |
-| `isSubmitting` | `boolean` | Whether a form submission is currently in progress. |
-| `hasErrors`    | `boolean` | Whether the form currently has validation errors.   |
+| Slot prop        | Type             | Description                                                |
+| ---------------- | ---------------- | ---------------------------------------------------------- |
+| `activeScreenId` | `string \| null` | The current screen ID, or `null` when no screen is active. |
+| `isSubmitting`   | `boolean`        | Whether a form submission is currently in progress.        |
+| `hasErrors`      | `boolean`        | Whether the form currently has validation errors.          |
 
 ### `empty`
 
