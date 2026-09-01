@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 3.3.1 - 2026-09-02
+
+### Fixes
+
+- `form-flow` exposes `activeScreenId` via `defineExpose`.
+- `form-combo-box` aligns the dropdown with the field wrapper when showing an error.
+- `form` improves styling for wrapped inline style input-group cards.
+
 ## 3.3.0 - 2026-09-01
 
 ### New features
