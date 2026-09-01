@@ -272,6 +272,10 @@ they are excluded from submit payloads until the field is registered again.
 
 `true` when the form values differ from their initial state.
 
+### `activeScreenId`
+
+The current screen ID, or `null` when no screen is active.
+
 ### `setValue(name, value)`
 
 Sets the value for a named field without changing screen completion or triggering automatic progression.

@@ -200,6 +200,7 @@ export const formFlowMetadata = {
 	methods: [
 		{ name: "isSubmitting", summary: "Whether final submission is in progress." },
 		{ name: "isDirty", summary: "Whether the form values differ from their initial state." },
+		{ name: "activeScreenId", summary: "The current screen ID, or null when no screen is active." },
 		{ name: "resetSubmitButton", summary: "Reset the final submit button's loading state." },
 		{
 			name: "setValue",

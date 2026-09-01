@@ -1152,11 +1152,12 @@ describe("form-flow", () => {
 	});
 
 	describe("Expose", () => {
-		test("exposes submit state, resetSubmitButton, and setValue", () => {
+		test("exposes submit state, active screen ID, resetSubmitButton, and setValue", () => {
 			const wrapper = mount();
 
 			expect(wrapper.vm.isSubmitting).toBe(false);
 			expect(wrapper.vm.isDirty).toBe(false);
+			expect(wrapper.vm.activeScreenId).toBe(null);
 			expect(wrapper.vm.resetSubmitButton).toBeTypeOf("function");
 			expect(wrapper.vm.setValue).toBeTypeOf("function");
 		});

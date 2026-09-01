@@ -1496,5 +1496,5 @@ async function setValue(name, value) {
 	await updateFieldValueAndAutoAdvance(name, value);
 }
 
-defineExpose({ isSubmitting, isDirty, resetSubmitButton, setValue });
+defineExpose({ isSubmitting, isDirty, activeScreenId, resetSubmitButton, setValue });
 </script>
