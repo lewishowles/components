@@ -11,21 +11,37 @@
 		data-component="step-indicator"
 		data-test="step-indicator"
 	>
-		<div v-bind="{ id: internalId }" data-part="label" data-test="step-indicator-label">
-			<slot />
-		</div>
+		<div class="flex flex-col gap-3" data-part="progress" data-test="step-indicator-progress">
+			<div class="flex items-center gap-2 text-sm">
+				<span class="text-content-muted" data-test="step-indicator-current-step">
+					<slot name="current-step">Step {{ currentStep }} of {{ stepCount }}</slot>
+				</span>
 
-		<div class="flex items-center gap-2" data-part="progress" data-test="step-indicator-progress">
-			<div class="bg-border h-1 w-full max-w-16 rounded-full">
-				<div
-					class="bg-primary h-full rounded-full transition-all ease-out"
-					:style="{ width: `${percentageValue}%` }"
-				/>
+				<span aria-hidden="true">{{ " · " }}</span>
+
+				<span
+					class="text-content-strong font-semibold"
+					v-bind="{ id: internalId }"
+					data-part="label"
+					data-test="step-indicator-label"
+				>
+					<slot />
+				</span>
 			</div>
 
-			<span class="text-content-muted text-sm" data-test="step-indicator-current-step">
-				<slot name="current-step">Step {{ currentStep }} of {{ stepCount }}</slot>
-			</span>
+			<div class="flex h-1 w-full gap-1">
+				<div
+					v-for="segment in segments"
+					:key="segment.step"
+					:class="{
+						'bg-primary': segment.complete,
+						'bg-border': !segment.complete,
+					}"
+					class="h-full flex-1 rounded-full transition-colors ease-out"
+					:data-complete="segment.complete"
+					data-part="segment"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -70,4 +86,12 @@ const proportionalValue = computed(() => {
 
 // The percentage bar width - as a number between 0 and 100.
 const percentageValue = computed(() => proportionalValue.value * 100);
+
+// The completion status for each step in the indicator.
+const segments = computed(() =>
+	Array.from({ length: props.stepCount }, (_, index) => ({
+		step: index + 1,
+		complete: index < internalCurrentStep.value,
+	})),
+);
 </script>

@@ -126,13 +126,10 @@ const inputGroupRef = useTemplateRef("input-group");
 const internalModel = ref({});
 // Access to shared form field boilerplate.
 const { inputId } = useFormField({ id: props.id });
-
 // Retrieve isFieldRequired from an optional parent form host.
 const { isFieldRequired } = inject("form", {});
-
 // The field name of our input, preferring the provided name prop.
 const fieldName = computed(() => props.name || inputId.value);
-
 // The underlying value of our field.
 const underlyingValue = computed(() => unwrap(internalModel.value));
 

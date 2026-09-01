@@ -23,6 +23,21 @@
 			</template>
 		</form-error-summary>
 
+		<div
+			v-if="haveActiveScreen && !isShowingReview"
+			class="border-border mbe-8 border-be pbe-4"
+			data-part="progress"
+			data-test="form-flow-progress"
+		>
+			<slot name="progress" v-bind="progressSlotProps">
+				<step-indicator
+					v-bind="{ currentStep: activeScreenIndex + 1, stepCount: screenIds.length }"
+				>
+					{{ activeScreenProgressLabel || activeScreenId }}
+				</step-indicator>
+			</slot>
+		</div>
+
 		<div v-show="!isShowingReview" class="contents">
 			<slot v-bind="{ isSubmitting, hasErrors: haveAnyErrorSummary }" />
 		</div>
@@ -111,21 +126,6 @@
 				<slot name="tertiary-actions" />
 			</template>
 		</form-actions>
-
-		<div
-			v-if="haveActiveScreen && !isShowingReview"
-			class="border-border mbs-12 border-bs pbs-3"
-			data-part="progress"
-			data-test="form-flow-progress"
-		>
-			<slot name="progress" v-bind="progressSlotProps">
-				<step-indicator
-					v-bind="{ currentStep: activeScreenIndex + 1, stepCount: screenIds.length }"
-				>
-					{{ activeScreenProgressLabel || activeScreenId }}
-				</step-indicator>
-			</slot>
-		</div>
 	</form>
 </template>
 

@@ -55,5 +55,29 @@ describe("step-indicator", () => {
 				expect(wrapper.vm.percentageValue).toBe(50);
 			});
 		});
+
+		describe("segments", () => {
+			test("Marks completed steps", async () => {
+				const wrapper = mount({ currentStep: 2, stepCount: 5 });
+
+				expect(wrapper.vm.segments).toEqual([
+					{ step: 1, complete: true },
+					{ step: 2, complete: true },
+					{ step: 3, complete: false },
+					{ step: 4, complete: false },
+					{ step: 5, complete: false },
+				]);
+
+				await wrapper.setProps({ currentStep: 5 });
+
+				expect(wrapper.vm.segments).toEqual([
+					{ step: 1, complete: true },
+					{ step: 2, complete: true },
+					{ step: 3, complete: true },
+					{ step: 4, complete: true },
+					{ step: 5, complete: true },
+				]);
+			});
+		});
 	});
 });

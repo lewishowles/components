@@ -20,16 +20,20 @@ export const stepIndicatorMetadata = {
 	slots: [
 		{
 			name: "default",
-			summary: "Label shown before the progress value.",
+			summary: "Label shown after the current-step text.",
 		},
 		{
 			name: "current-step",
-			summary: "Custom current-step label.",
+			summary: "Custom current-step text shown before the label.",
 		},
 	],
 	parts: [
 		{ name: "label", summary: "Step label text." },
-		{ name: "progress", summary: "Progress indicator between steps." },
+		{ name: "progress", summary: "Current-step text, label, and step segments." },
+		{
+			name: "segment",
+			summary: "Individual step segment. data-complete is true or false.",
+		},
 	],
 	examples: [],
 };

@@ -6,13 +6,13 @@ Display the user's current progress through a discrete number of steps.
 
 ### `default`
 
-The name of the current step.
+The label shown after the current-step text.
 
 ### `current-step`
 
 - default: `Step {{ currentStep }} of {{ stepCount }}`
 
-The indicator for the current step.
+The current-step text shown before the label.
 
 ## Props
 
@@ -31,11 +31,12 @@ The number of steps that the user can expect in this workflow.
 
 ## Styling hooks
 
-| Attribute                         | Element                     | Notes                          |
-| --------------------------------- | --------------------------- | ------------------------------ |
-| `data-component="step-indicator"` | Root                        | Scope styles to this component |
-| `data-part="label"`               | Label element               | —                              |
-| `data-part="progress"`            | Progress bar and step count | —                              |
+| Attribute                         | Element                                     | Notes                                |
+| --------------------------------- | ------------------------------------------- | ------------------------------------ |
+| `data-component="step-indicator"` | Root                                        | Scope styles to this component       |
+| `data-part="label"`               | Label text                                  | Shown after the current-step text    |
+| `data-part="progress"`            | Current-step text, label, and step segments | Text is shown above the segments     |
+| `data-part="segment"`             | Individual step segment                     | `data-complete` is `true` or `false` |
 
 ## Examples
 

@@ -16,12 +16,24 @@ test.describe("step-indicator", () => {
 		const stepIndicator = page.getByTestId("step-indicator");
 		const label = page.getByTestId("step-indicator-label");
 		const currentStep = page.getByTestId("step-indicator-current-step");
+		const progress = page.getByTestId("step-indicator-progress");
 
 		await expect(stepIndicator).toBeVisible();
 		await expect(label).toBeVisible();
 		await expect(label).toHaveText("Address details");
 		await expect(currentStep).toBeVisible();
 		await expect(currentStep).toHaveText("Step 2 of 5");
+		await expect(progress).toHaveText("Step 2 of 5 · Address details");
+	});
+
+	test("shows complete and incomplete step segments", async ({ mount, page }) => {
+		await mountStepIndicator(mount);
+
+		const segments = page.locator('[data-part="segment"]');
+
+		await expect(segments).toHaveCount(5);
+		await expect(page.locator('[data-part="segment"][data-complete="true"]')).toHaveCount(2);
+		await expect(page.locator('[data-part="segment"][data-complete="false"]')).toHaveCount(3);
 	});
 
 	test("the appropriate accessibility attributes are included", async ({ mount, page }) => {
