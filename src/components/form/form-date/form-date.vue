@@ -105,6 +105,7 @@ import { Temporal } from "temporal-polyfill";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { computed, ref, useTemplateRef, watch } from "vue";
 import { formatDate, getDateParts, toDateFromParts } from "@lewishowles/helpers/date";
+import { isEqual } from "@lewishowles/helpers/general";
 import { getPathValue, isNonEmptyObject } from "@lewishowles/helpers/object";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
@@ -153,6 +154,10 @@ const model = defineModel({
 
 // Our internal representation of the date, which the inputs bind to.
 const date = ref({ day: "", month: "", year: "" });
+
+// Whether the next date update comes from normalising an incoming model.
+let shouldSkipModelUpdate = false;
+
 // A reference to the day input, which we will use to focus this field.
 const dayInput = useTemplateRef("dayInput");
 // The display date last applied via a date helper, announced to assistive
@@ -206,10 +211,46 @@ initialise();
 watch(
 	date,
 	() => {
+		// Skip an update caused by the model watcher below normalising our
+		// date, rather than a real local edit.
+		if (shouldSkipModelUpdate) {
+			shouldSkipModelUpdate = false;
+
+			return;
+		}
+
 		model.value = { ...date.value };
 	},
 	{ deep: true },
 );
+
+// Re-initialise after a parent changes the model.
+watch(model, () => {
+	// The parsed model date for comparing ISO strings by their calendar day.
+	const modelDate = isNonEmptyString(model.value) ? getDateParts(model.value) : null;
+	// The parsed internal date, so model formatting does not affect comparison.
+	const currentDate = toDateFromParts(date.value);
+
+	// Whether the incoming ISO string represents the date already held internally.
+	const modelMatchesDate =
+		modelDate !== null &&
+		currentDate !== null &&
+		modelDate.day === currentDate.day &&
+		modelDate.month === currentDate.month &&
+		modelDate.year === currentDate.year;
+
+	if (isEqual(model.value, date.value) || modelMatchesDate) {
+		return;
+	}
+
+	const previousDate = { ...date.value };
+
+	initialise();
+
+	// Skip the update this causes only if it actually changed the date. If
+	// nothing changed, the next update is a real edit and should still happen.
+	shouldSkipModelUpdate = !isEqual(date.value, previousDate);
+});
 
 /**
  * Initialise our date, either by setting a default value for our model, or

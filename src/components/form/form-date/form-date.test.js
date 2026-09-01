@@ -95,6 +95,53 @@ describe("form-date", () => {
 
 			expect(vm.date).toEqual({ day: "24", month: "2", year: "2025" });
 		});
+
+		test("should update the date when an object model changes after mount", async () => {
+			const wrapper = mount();
+
+			await wrapper.setProps({ modelValue: { day: 1, month: 2, year: 2000 } });
+
+			expect(wrapper.vm.date).toEqual({ day: "1", month: "2", year: "2000" });
+		});
+
+		test("should update the date when an ISO model changes after mount", async () => {
+			const wrapper = mount();
+
+			await wrapper.setProps({ modelValue: "2025-02-24" });
+
+			expect(wrapper.vm.date).toEqual({ day: "24", month: "2", year: "2025" });
+		});
+
+		test("should not emit when an ISO model matches the current date", async () => {
+			const wrapper = mount({ modelValue: { day: "24", month: "2", year: "2025" } });
+
+			await wrapper.setProps({ modelValue: "2025-02-24" });
+
+			expect(wrapper.emitted("update:modelValue")).toBeUndefined();
+		});
+
+		test("should not emit when an ISO model with a time matches the current date", async () => {
+			const wrapper = mount({ modelValue: { day: "24", month: "2", year: "2025" } });
+
+			await wrapper.setProps({ modelValue: "2025-02-24T00:00:00" });
+
+			expect(wrapper.emitted("update:modelValue")).toBeUndefined();
+		});
+
+		test("should not emit when normalising an incoming model", async () => {
+			const wrapper = mount();
+
+			await wrapper.setProps({ modelValue: { day: 1, month: 2, year: 2000 } });
+
+			expect(wrapper.emitted("update:modelValue")).toBeUndefined();
+
+			wrapper.vm.date.day = "2";
+			await nextTick();
+
+			expect(wrapper.emitted("update:modelValue")).toEqual([
+				[{ day: "2", month: "2", year: "2000" }],
+			]);
+		});
 	});
 
 	describe("Computed", () => {
