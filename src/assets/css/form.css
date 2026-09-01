@@ -266,13 +266,43 @@
 	[data-part="options"][data-layout="inline"] {
 		flex-direction: column;
 
+		[data-part="option"][data-variant="card"] {
+			border-radius: var(--radius-lg);
+		}
+
 		@container (min-width: theme(--container-xs)) {
 			flex-direction: row;
 			gap: calc(var(--spacing) * 10);
-		}
 
-		[data-part="option"][data-variant="card"] {
-			border-radius: var(--radius-lg);
+			&:has([data-variant="card"]) {
+				gap: 0;
+			}
+
+			[data-part="option"][data-variant="card"]:is(
+					[data-position="middle"],
+					[data-position="last"]
+				) {
+				margin-inline-start: -1px;
+			}
+
+			[data-part="option"][data-variant="card"] {
+				border-radius: 0;
+				padding-inline: calc(var(--spacing) * 5);
+			}
+
+			[data-part="option"][data-variant="card"][data-position="only"] {
+				border-radius: var(--radius-lg);
+			}
+
+			[data-part="option"][data-variant="card"][data-position="first"] {
+				border-end-start-radius: var(--radius-lg);
+				border-start-start-radius: var(--radius-lg);
+			}
+
+			[data-part="option"][data-variant="card"][data-position="last"] {
+				border-end-end-radius: var(--radius-lg);
+				border-start-end-radius: var(--radius-lg);
+			}
 		}
 	}
 
