@@ -1,5 +1,6 @@
 <template>
 	<form
+		ref="form-flow"
 		novalidate
 		data-component="form-flow"
 		data-test="form-flow"
@@ -354,7 +355,8 @@ const props = defineProps({
 
 const emit = defineEmits(["screen-change", "submit", "update:modelValue"]);
 
-// References used by useForm for focus and submit-button state.
+// References used to scroll the flow and manage focus or submit-button state.
+const formFlow = useTemplateRef("form-flow");
 const errorSummaryElement = useTemplateRef("error-summary");
 const generalErrorsElement = useTemplateRef("general-errors");
 const submitButtonRef = useTemplateRef("submit-button");
@@ -1122,7 +1124,7 @@ async function focusRegisteredField(fieldName, requestGeneration) {
 }
 
 /**
- * Focus a screen after its content and errors have rendered.
+ * Scroll to the top of the flow and focus a screen after its content and errors have rendered.
  *
  * @param  {string}  screenId
  *     The screen whose summary, requested field, auto-focus field, or title should receive focus.
@@ -1140,6 +1142,8 @@ async function focusScreen(screenId = activeScreenId.value, { fieldName } = {}) 
 	if (requestGeneration !== focusGeneration) {
 		return;
 	}
+
+	formFlow.value?.scrollIntoView?.({ block: "start" });
 
 	// If we have an error summary, focus it.
 	if (haveAnyErrorSummary.value) {

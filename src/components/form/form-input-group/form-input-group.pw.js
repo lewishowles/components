@@ -13,17 +13,23 @@ const mountFormInputGroup = createMount(FormInputGroup, {
  *
  * @param  {object}  options
  *   The card option locator.
+ * @param  {object}  edges
+ *   Which edge of the first card should overlap which edge of the second, for stacked or inline layouts.
+ * @param  {string}  edges.end
+ *   The edge of the first card that the second card overlaps.
+ * @param  {string}  edges.start
+ *   The edge of the second card that overlaps the first.
  */
-async function expectOverlappingCards(options) {
+async function expectOverlappingCards(options, { end = "bottom", start = "top" } = {}) {
 	const optionBounds = await options.evaluateAll((elements) =>
 		elements.map((element) => {
-			const { bottom, top } = element.getBoundingClientRect();
+			const { bottom, left, right, top } = element.getBoundingClientRect();
 
-			return { bottom, top };
+			return { bottom, left, right, top };
 		}),
 	);
 
-	expect(optionBounds[1].top).toBeCloseTo(optionBounds[0].bottom - 1);
+	expect(optionBounds[1][start]).toBeCloseTo(optionBounds[0][end] - 1);
 }
 
 test.describe("form-input-group", () => {
@@ -93,6 +99,25 @@ test.describe("form-input-group", () => {
 			await expect(options.nth(1)).toHaveCSS("border-top-width", "1px");
 			await expect(options.nth(1)).toHaveCSS("z-index", "0");
 			await expectOverlappingCards(options);
+		});
+
+		test("joins inline cards into one divided box", async ({ mount, page }) => {
+			await mountFormInputGroup(mount, { inline: true, variant: "card" });
+
+			const optionsContainer = page.getByTestId("form-input-group-options");
+			const options = page.getByTestId("form-input-group-option");
+
+			await expect(optionsContainer).toHaveCSS("column-gap", "0px");
+			await expect(optionsContainer).toHaveCSS("flex-direction", "row");
+			await expect(options.first()).not.toHaveCSS("border-bottom-left-radius", "0px");
+			await expect(options.first()).toHaveCSS("border-bottom-right-radius", "0px");
+			await expect(options.first()).not.toHaveCSS("border-top-left-radius", "0px");
+			await expect(options.first()).toHaveCSS("border-top-right-radius", "0px");
+			await expect(options.last()).toHaveCSS("border-bottom-left-radius", "0px");
+			await expect(options.last()).not.toHaveCSS("border-bottom-right-radius", "0px");
+			await expect(options.last()).toHaveCSS("border-top-left-radius", "0px");
+			await expect(options.last()).not.toHaveCSS("border-top-right-radius", "0px");
+			await expectOverlappingCards(options, { end: "right", start: "left" });
 		});
 
 		test("stacks a selected card above an unselected option", async ({ mount, page }) => {

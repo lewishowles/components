@@ -30,7 +30,7 @@ test.describe("form-flow", () => {
 				page.getByTestId("form-screen").filter({ has: page.getByText("Email address") }),
 			).toBeVisible();
 			await expect(page.getByText("Display name")).toBeHidden();
-			await expect(page.getByTestId("form-screen-title")).toBeFocused();
+			await expect(page.getByTestId("form-screen-title")).not.toBeFocused();
 		});
 
 		test("screens can be navigated", async ({ mount, page }) => {
@@ -139,6 +139,30 @@ test.describe("form-flow", () => {
 
 				await expect(page.getByTestId("form-screen-title")).toBeFocused();
 			});
+		});
+
+		test("scrolls the flow to the viewport top after a screen change", async ({ mount, page }) => {
+			await mountFormFlow(mount);
+
+			const formFlow = page.getByTestId("form-flow");
+			const continueButton = page.getByTestId("form-flow-continue-button");
+
+			await formFlow.evaluate((element) => {
+				element.style.marginBlock = "200vh";
+				window.scrollTo(
+					0,
+					element.getBoundingClientRect().top + window.scrollY + window.innerHeight,
+				);
+			});
+
+			await expect
+				.poll(() => formFlow.evaluate((element) => element.getBoundingClientRect().top))
+				.toBeLessThan(0);
+			await continueButton.evaluate((button) => button.click());
+			await expect(page.getByText("Display name")).toBeVisible();
+			await expect
+				.poll(() => formFlow.evaluate((element) => element.getBoundingClientRect().top))
+				.toBe(0);
 		});
 
 		test("focuses the error summary before the first invalid current field", async ({
