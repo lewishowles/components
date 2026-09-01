@@ -69,7 +69,7 @@
 		</div>
 
 		<template v-if="haveDateHelpers">
-			<div class="mb-1 flex flex-wrap gap-2 text-xs">
+			<div class="mb-1 flex flex-wrap gap-2 text-sm">
 				<ui-button
 					v-for="(dateHelperItem, dateHelperIndex) in dateHelperItems"
 					:key="dateHelperIndex"
