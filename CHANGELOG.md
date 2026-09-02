@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 3.3.2 - 2026-09-02
+
+### Fixes
+
+- `form-screen` keeps `autoFocus` and `autoAdvance` reactive after registration.
+- `form-combo-box` highlights the selected dropdown option.
+- `form` removes a leftover rounded corner on row-mode card options.
+
 ## 3.3.1 - 2026-09-02
 
 ### Fixes
