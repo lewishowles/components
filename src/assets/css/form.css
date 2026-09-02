@@ -316,11 +316,13 @@
 
 			[data-part="option"][data-variant="card"][data-position="first"] {
 				border-end-start-radius: var(--radius-lg);
+				border-start-end-radius: 0;
 				border-start-start-radius: var(--radius-lg);
 			}
 
 			[data-part="option"][data-variant="card"][data-position="last"] {
 				border-end-end-radius: var(--radius-lg);
+				border-end-start-radius: 0;
 				border-start-end-radius: var(--radius-lg);
 			}
 		}
