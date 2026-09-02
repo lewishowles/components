@@ -81,6 +81,10 @@ const haveIntroduction = computed(() => isNonEmptySlot(slots.introduction));
 
 // The concise label used by progress displays and answer summaries.
 const label = computed(() => getSlotText(isNonEmptySlot(slots.label) ? slots.label : slots.title));
+// The field name that triggers automatic progression on a direct user change.
+const autoAdvance = computed(() => props.autoAdvance);
+// The field name to focus when this screen becomes active.
+const autoFocus = computed(() => props.autoFocus);
 
 // Show this screen when its flow marks it current. Screens without a flow are
 // visible by default.
@@ -96,8 +100,8 @@ const isVisible = computed(() => {
 registerScreen?.({
 	id: props.id,
 	label,
-	autoAdvance: props.autoAdvance,
-	autoFocus: props.autoFocus,
+	autoAdvance,
+	autoFocus,
 	// Share the root ref so form-flow can find the title after the screen renders.
 	element: screenElement,
 });

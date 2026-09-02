@@ -579,9 +579,9 @@ function getScreenProgress(screenId) {
  *     The screen ID.
  * @param  {ComputedRef<string | undefined>}  screen.label
  *     The concise label used by progress displays and answer summaries.
- * @param  {string}  screen.autoAdvance
+ * @param  {ComputedRef<string | undefined>}  screen.autoAdvance
  *     The field name that triggers automatic progression on a direct user change.
- * @param  {string}  screen.autoFocus
+ * @param  {ComputedRef<string | undefined>}  screen.autoFocus
  *     The field name to focus on entry.
  * @param  {object}  screen.element
  *     The screen root ref used to find its title after it renders.
@@ -909,7 +909,7 @@ function startAutoAdvance(fieldName) {
 	if (
 		!isAutoAdvanceReady ||
 		!isNonEmptyString(sourceScreenId) ||
-		screens.value[sourceScreenId]?.autoAdvance !== fieldName
+		unref(screens.value[sourceScreenId]?.autoAdvance) !== fieldName
 	) {
 		return;
 	}
@@ -1149,7 +1149,7 @@ async function focusScreen(screenId = activeScreenId.value, { fieldName } = {}) 
 		return;
 	}
 
-	const autoFocus = isNonEmptyString(fieldName) ? fieldName : screen.autoFocus;
+	const autoFocus = isNonEmptyString(fieldName) ? fieldName : unref(screen.autoFocus);
 
 	// Attempt to focus the listed field.
 	if (isNonEmptyString(autoFocus)) {

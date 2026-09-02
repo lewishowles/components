@@ -1,5 +1,6 @@
 import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test, vi } from "vite-plus/test";
+import { unref } from "vue";
 
 import FormScreen from "./form-screen.vue";
 
@@ -122,7 +123,7 @@ describe("form-screen", () => {
 			wrapper.unmount();
 		});
 
-		test("registers and unregisters with its flow", () => {
+		test("registers and unregisters with its flow", async () => {
 			const registerScreen = vi.fn();
 			const unregisterScreen = vi.fn();
 
@@ -139,15 +140,22 @@ describe("form-screen", () => {
 				},
 			});
 
-			expect(registerScreen).toHaveBeenCalledWith(
+			const screen = registerScreen.mock.calls[0][0];
+
+			expect(screen).toEqual(
 				expect.objectContaining({
-					autoAdvance: undefined,
-					autoFocus: undefined,
 					element: expect.any(Object),
 					id: "profile",
 					label: expect.any(Object),
 				}),
 			);
+			expect(unref(screen.autoAdvance)).toBeUndefined();
+			expect(unref(screen.autoFocus)).toBeUndefined();
+
+			await wrapper.setProps({ autoAdvance: "email", autoFocus: "name" });
+
+			expect(unref(screen.autoAdvance)).toBe("email");
+			expect(unref(screen.autoFocus)).toBe("name");
 
 			wrapper.unmount();
 
