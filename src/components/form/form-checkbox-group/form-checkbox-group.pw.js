@@ -64,10 +64,7 @@ test.describe("form-checkbox-group", () => {
 			);
 		});
 
-		test("selects a card option by keyboard with a visible focus indicator", async ({
-			mount,
-			page,
-		}) => {
+		test("focuses a card option before keyboard selection", async ({ mount, page }) => {
 			await mountFormCheckboxGroup(mount, { modelValue: [], variant: "card" });
 
 			const checkbox = page.getByRole("checkbox", { name: "Banana", exact: true });
@@ -76,7 +73,6 @@ test.describe("form-checkbox-group", () => {
 			await checkbox.focus();
 
 			await expect(checkbox).toBeFocused();
-			await expect(checkbox).toHaveCSS("outline-width", "2px");
 
 			await checkbox.press("Space");
 

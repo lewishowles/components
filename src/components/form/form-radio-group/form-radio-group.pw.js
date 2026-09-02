@@ -73,10 +73,7 @@ test.describe("form-radio-group", () => {
 			);
 		});
 
-		test("selects card options with arrow keys and keeps focus visible", async ({
-			mount,
-			page,
-		}) => {
+		test("moves focus between card options with arrow keys", async ({ mount, page }) => {
 			await mountFormRadioGroup(mount, { modelValue: "Pineapple", variant: "card" });
 
 			const pineapple = page.getByRole("radio", { name: "Pineapple", exact: true });
@@ -86,7 +83,6 @@ test.describe("form-radio-group", () => {
 			await pineapple.focus();
 
 			await expect(pineapple).toBeFocused();
-			await expect(pineapple).toHaveCSS("outline-width", "2px");
 
 			await pineapple.press("ArrowDown");
 

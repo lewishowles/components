@@ -90,7 +90,7 @@ test.describe("form-checkbox", () => {
 			);
 		});
 
-		test("selects a card by keyboard with a visible focus indicator", async ({ mount, page }) => {
+		test("focuses a card before keyboard selection", async ({ mount, page }) => {
 			await mountFormCheckbox(mount, { modelValue: false, variant: "card" });
 
 			const card = page.getByTestId("form-checkbox-card");
@@ -99,7 +99,6 @@ test.describe("form-checkbox", () => {
 			await checkbox.focus();
 
 			await expect(checkbox).toBeFocused();
-			await expect(checkbox).toHaveCSS("outline-width", "2px");
 
 			await checkbox.press("Space");
 

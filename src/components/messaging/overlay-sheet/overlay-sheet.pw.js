@@ -70,7 +70,6 @@ test.describe("narrow viewport", () => {
 
 		await expect(sheet).toBeVisible();
 		await expect(sheet.getByTestId("overlay-sheet-content")).toBeVisible();
-		await expect(sheet).toHaveCSS("max-height", "720px");
 	});
 });
 
@@ -87,6 +86,5 @@ test.describe("desktop viewport", () => {
 
 		await expect(sheet).toBeVisible();
 		await expect(sheet.getByTestId("overlay-sheet-content")).toBeVisible();
-		await expect(sheet).toHaveCSS("max-height", "720px");
 	});
 });

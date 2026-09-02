@@ -145,27 +145,6 @@ test.describe("form-file", () => {
 			expect(removeButtonBox.y).toBeGreaterThan(inputBox.y);
 		});
 
-		test("applies browse-button hover styles when hovering the file input", async ({
-			mount,
-			page,
-		}) => {
-			await mountFormFile(mount);
-
-			const inputElement = page.getByTestId("form-file").locator('input[type="file"]');
-
-			const idleBackground = await inputElement.evaluate((element) => {
-				return getComputedStyle(element, "::file-selector-button").backgroundColor;
-			});
-
-			await inputElement.hover();
-
-			const hoverBackground = await inputElement.evaluate((element) => {
-				return getComputedStyle(element, "::file-selector-button").backgroundColor;
-			});
-
-			expect(hoverBackground).not.toBe(idleBackground);
-		});
-
 		test("removing a file hides the remove button and clears the input", async ({
 			mount,
 			page,

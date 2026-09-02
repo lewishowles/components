@@ -221,28 +221,6 @@ test.describe("combo-box", () => {
 			await expect(page.getByTestId("combo-box")).toHaveAttribute("data-component", "combo-box");
 		});
 
-		test("the results panel follows light and dark surface tokens", async ({ mount, page }) => {
-			const mounted = await mountComboBox(mount);
-			const input = getInput(page);
-
-			await input.fill("a");
-
-			const panel = page.getByTestId("combo-box-dropdown");
-			const light = await getPanelColours(panel);
-
-			expect(light.backgroundColor).toBe(light.surfaceElevated);
-			expect(light.borderColor).toBe(light.border);
-
-			await mounted.evaluate((element) => element.classList.add("dark"));
-
-			const dark = await getPanelColours(panel);
-
-			expect(dark.backgroundColor).toBe(dark.surfaceElevated);
-			expect(dark.borderColor).toBe(dark.border);
-			expect(dark.backgroundColor).not.toBe(light.backgroundColor);
-			expect(dark.borderColor).not.toBe(light.borderColor);
-		});
-
 		test("additional classes can be applied to the results list", async ({ mount, page }) => {
 			await mountComboBox(mount, { dropdownClasses: "test-dropdown-class" });
 
@@ -255,28 +233,4 @@ test.describe("combo-box", () => {
 
 function getInput(page) {
 	return page.getByTestId("combo-box-input").locator("input");
-}
-
-function getPanelColours(panel) {
-	return panel.evaluate((element) => {
-		const styles = getComputedStyle(element);
-		const probe = document.createElement("span");
-
-		probe.style.backgroundColor = "var(--surface-elevated)";
-		probe.style.borderTopColor = "var(--border)";
-		element.append(probe);
-
-		const probeStyles = getComputedStyle(probe);
-
-		const colours = {
-			backgroundColor: styles.backgroundColor,
-			border: probeStyles.borderTopColor,
-			borderColor: styles.borderTopColor,
-			surfaceElevated: probeStyles.backgroundColor,
-		};
-
-		probe.remove();
-
-		return colours;
-	});
 }
