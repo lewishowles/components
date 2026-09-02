@@ -249,6 +249,16 @@
 				<p>Targets each option row.</p>
 			</component-styling-hook>
 
+			<component-styling-hook id="hook-option-selected">
+				<template #attribute>data-state="selected|unselected"</template>
+				<p>Whether the option matches the selected value.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-option-active">
+				<template #attribute>data-active</template>
+				<p>Present for the highlighted option.</p>
+			</component-styling-hook>
+
 			<component-styling-hook id="hook-status">
 				<template #attribute>data-part="status"</template>
 				<p>Targets loading, empty, and no-results content.</p>

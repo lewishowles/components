@@ -95,9 +95,10 @@
 					v-bind="{
 						id: entry.id,
 						key: entry.id,
-						'aria-selected': entry.option.value === selectedValue,
+						'data-active': entry.id === activeId ? 'true' : undefined,
+						'data-state': entry.selected ? 'selected' : 'unselected',
+						'aria-selected': entry.selected,
 					}"
-					:class="{ 'bg-surface-sunken': entry.id === activeId }"
 					class="cursor-pointer rounded-md px-3 py-2"
 					role="option"
 					data-part="option"
@@ -112,7 +113,7 @@
 							label: entry.option.label,
 							value: entry.option.value,
 							highlighted: entry.id === activeId,
-							selected: entry.option.value === selectedValue,
+							selected: entry.selected,
 						}"
 					>
 						{{ entry.option.label }}
@@ -337,15 +338,16 @@ watch(
 const listboxId = nanoid();
 
 // Each result paired with the ID used for its element and for keyboard
-// navigation, together with its original option for richer slot content. The
-// ID is derived from the result's position rather than the item itself, so
-// callers can merge results from several sources without worrying about their
-// IDs clashing.
+// navigation, together with its original option, selection state, and richer
+// slot content. The ID is derived from the result's position rather than the
+// item itself, so callers can merge results from several sources without
+// worrying about their IDs clashing.
 const internalItems = computed(() =>
 	resolvedOptions.value.uniqueOptions.map((option, index) => ({
 		id: `${listboxId}-${index}`,
 		option,
 		originalOption: option.originalOption,
+		selected: option.value === selectedValue.value,
 	})),
 );
 

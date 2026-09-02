@@ -163,16 +163,18 @@ Move focus to the text input.
 
 ## Styling hooks
 
-| Attribute                         | Element        | Notes                                                 |
-| --------------------------------- | -------------- | ----------------------------------------------------- |
-| `data-component="form-combo-box"` | Root           | Scope styles to this component.                       |
-| `data-invalid`                    | Root           | Present when error content is supplied.               |
-| `data-state="open \| closed"`     | Root           | Current results-panel state.                          |
-| `data-part="text-control"`        | Input wrapper  | Wraps the text input and form fragments.              |
-| `data-part="dropdown"`            | Results panel  | Positioned panel containing the current result state. |
-| `data-part="listbox"`             | Listbox        | Ordered, filtered options.                            |
-| `data-part="option"`              | Option row     | Individual result row.                                |
-| `data-part="status"`              | Status content | Loading, empty, or no-results message.                |
+| Attribute                             | Element        | Notes                                                 |
+| ------------------------------------- | -------------- | ----------------------------------------------------- |
+| `data-component="form-combo-box"`     | Root           | Scope styles to this component.                       |
+| `data-invalid`                        | Root           | Present when error content is supplied.               |
+| `data-state="open \| closed"`         | Root           | Current results-panel state.                          |
+| `data-part="text-control"`            | Input wrapper  | Wraps the text input and form fragments.              |
+| `data-part="dropdown"`                | Results panel  | Positioned panel containing the current result state. |
+| `data-part="listbox"`                 | Listbox        | Ordered, filtered options.                            |
+| `data-part="option"`                  | Option row     | Individual result row.                                |
+| `data-state="selected \| unselected"` | Option row     | Whether the option matches the selected value.        |
+| `data-active`                         | Option row     | Present for the highlighted option.                   |
+| `data-part="status"`                  | Status content | Loading, empty, or no-results message.                |
 
 ## Examples
 

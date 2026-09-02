@@ -61,20 +61,29 @@ test.describe("form-combo-box", () => {
 
 			await input.focus();
 			await expect(options.nth(0)).toHaveAttribute("aria-selected", "true");
+			await expect(options.nth(0)).toHaveAttribute("data-state", "selected");
 			await expect(options.nth(1)).toHaveAttribute("aria-selected", "false");
+			await expect(options.nth(1)).toHaveAttribute("data-state", "unselected");
 
 			await input.press("ArrowDown");
 			const firstOptionId = await options.nth(0).getAttribute("id");
 
 			await expect(input).toHaveAttribute("aria-activedescendant", firstOptionId);
 			await expect(options.nth(0)).toHaveAttribute("aria-selected", "true");
+			await expect(options.nth(0)).toHaveAttribute("data-active", "true");
+			await expect(options.nth(0)).toHaveAttribute("data-state", "selected");
+			await expect(options.nth(1)).not.toHaveAttribute("data-active");
 
 			await input.press("ArrowDown");
 			const secondOptionId = await options.nth(1).getAttribute("id");
 
 			await expect(input).toHaveAttribute("aria-activedescendant", secondOptionId);
 			await expect(options.nth(0)).toHaveAttribute("aria-selected", "true");
+			await expect(options.nth(0)).not.toHaveAttribute("data-active");
+			await expect(options.nth(0)).toHaveAttribute("data-state", "selected");
 			await expect(options.nth(1)).toHaveAttribute("aria-selected", "false");
+			await expect(options.nth(1)).toHaveAttribute("data-active", "true");
+			await expect(options.nth(1)).toHaveAttribute("data-state", "unselected");
 		});
 
 		test("keeps DOM focus on the input while arrow keys move the highlight", async ({

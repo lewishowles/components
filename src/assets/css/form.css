@@ -342,6 +342,21 @@
 		width: calc(var(--spacing) * 1);
 	}
 
+	[data-component="form-combo-box"] {
+		[data-part="option"] {
+			border: 1px solid transparent;
+		}
+
+		[data-part="option"][data-active] {
+			background-color: var(--surface-sunken);
+		}
+
+		[data-part="option"][data-state="selected"] {
+			background-color: var(--primary-subtle);
+			border-color: var(--primary-text);
+		}
+	}
+
 	[data-component="form-button-group"] {
 		[data-part="options"] {
 			flex-direction: row;
