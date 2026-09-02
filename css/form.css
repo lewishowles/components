@@ -316,11 +316,13 @@
 
 			[data-part="option"][data-variant="card"][data-position="first"] {
 				border-end-start-radius: var(--radius-lg);
+				border-start-end-radius: 0;
 				border-start-start-radius: var(--radius-lg);
 			}
 
 			[data-part="option"][data-variant="card"][data-position="last"] {
 				border-end-end-radius: var(--radius-lg);
+				border-end-start-radius: 0;
 				border-start-end-radius: var(--radius-lg);
 			}
 		}
@@ -338,6 +340,21 @@
 		inset-inline-start: 0;
 		position: absolute;
 		width: calc(var(--spacing) * 1);
+	}
+
+	[data-component="form-combo-box"] {
+		[data-part="option"] {
+			border: 1px solid transparent;
+		}
+
+		[data-part="option"][data-active] {
+			background-color: var(--surface-sunken);
+		}
+
+		[data-part="option"][data-state="selected"] {
+			background-color: var(--primary-subtle);
+			border-color: var(--primary-text);
+		}
 	}
 
 	[data-component="form-button-group"] {
