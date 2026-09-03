@@ -33,7 +33,7 @@ const attrsWithoutClass = computed(() => {
 // The classes applied to the section root, varying by column layout.
 const sectionClasses = computed(() =>
 	cn(
-		"flex flex-col justify-center px-[1em] py-[0.75em]",
+		"bg-surface flex flex-col justify-center px-[1em] py-[0.75em]",
 		{
 			"flex-1 not-first:border-border not-first:border-s": inColumns,
 			"border-border border not-first:border-t-0 first:rounded-t-xl last:rounded-b-xl": !inColumns,
