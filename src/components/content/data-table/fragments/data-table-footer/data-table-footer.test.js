@@ -30,7 +30,7 @@ describe("data-table-footer", () => {
 		});
 	});
 
-	describe("Render contracts", () => {
+	describe("Render", () => {
 		test("should pass the configured page size to pagination", () => {
 			const wrapper = mount({ itemsPerPage: 25, totalCount: 100 });
 

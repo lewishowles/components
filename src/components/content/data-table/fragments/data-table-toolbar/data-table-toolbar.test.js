@@ -38,7 +38,29 @@ describe("data-table-toolbar", () => {
 		});
 	});
 
-	describe("Render contracts", () => {
+	describe("Render", () => {
+		test("renders the post-search slot when search and configuration are absent", () => {
+			const wrapper = mountWithoutName({
+				props: { enableSearch: false },
+				slots: { "post-search": "Post-search controls" },
+			});
+
+			expect(wrapper.get('[data-test="data-table-toolbar"]').text()).toContain(
+				"Post-search controls",
+			);
+		});
+
+		test("renders the pre-configuration slot when search and configuration are absent", () => {
+			const wrapper = mountWithoutName({
+				props: { enableSearch: false },
+				slots: { "pre-configuration": "Pre-configuration controls" },
+			});
+
+			expect(wrapper.get('[data-test="data-table-toolbar"]').text()).toContain(
+				"Pre-configuration controls",
+			);
+		});
+
 		test("should hide the search input when search is disabled", () => {
 			const wrapper = mountWithName({ enableSearch: false });
 

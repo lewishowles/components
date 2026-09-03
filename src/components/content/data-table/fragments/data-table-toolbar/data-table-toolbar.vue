@@ -1,31 +1,46 @@
 <template>
 	<div
-		v-if="enableSearch || showUserConfiguration"
+		v-if="
+			enableSearch || showUserConfiguration || $slots['post-search'] || $slots['pre-configuration']
+		"
 		class="flex items-end gap-4"
 		data-test="data-table-toolbar"
 	>
-		<data-table-search v-if="enableSearch" ref="searchComponent" v-model="searchQuery" class="grow">
-			<template #search-label>
-				<slot name="search-label" />
-			</template>
-			<template #search-introduction>
-				<slot name="search-introduction" />
-			</template>
-			<template #search-help>
-				<slot name="search-help" />
-			</template>
-			<template #reset-search-label>
-				<slot name="reset-search-label" />
-			</template>
-		</data-table-search>
+		<div v-if="enableSearch || $slots['post-search']" class="flex grow items-end gap-4">
+			<data-table-search
+				v-if="enableSearch"
+				ref="searchComponent"
+				v-model="searchQuery"
+				class="grow"
+			>
+				<template #search-label>
+					<slot name="search-label" />
+				</template>
+				<template #search-introduction>
+					<slot name="search-introduction" />
+				</template>
+				<template #search-help>
+					<slot name="search-help" />
+				</template>
+				<template #reset-search-label>
+					<slot name="reset-search-label" />
+				</template>
+			</data-table-search>
 
-		<slot name="post-search" />
-		<slot name="pre-configuration" />
+			<div v-if="$slots['post-search']" class="shrink-0">
+				<slot name="post-search" />
+			</div>
+		</div>
+
+		<div v-if="$slots['pre-configuration']" class="shrink-0">
+			<slot name="pre-configuration" />
+		</div>
 
 		<floating-details
 			v-if="showUserConfiguration"
 			align="end"
 			details-classes="min-w-3xs py-2 rounded-lg border"
+			class="shrink-0"
 			data-test="data-table-display-options"
 		>
 			<template #summary>

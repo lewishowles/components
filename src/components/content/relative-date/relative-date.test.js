@@ -19,7 +19,7 @@ describe("relative-date", () => {
 		});
 	});
 
-	describe("Render contracts", () => {
+	describe("Render", () => {
 		test("Keeps the current-time fallback in the default slot", () => {
 			const wrapper = mount({ date: relativeTo });
 

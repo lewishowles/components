@@ -40,9 +40,9 @@ The label to use for the "Reset search" button.
 
 A slot to allow adding content to the table's title bar, after the search box.
 
-### `pre-configure`
+### `pre-configuration`
 
-A slot to allow adding content to the table's title bar, before configuration.
+A slot to allow adding content to the table's title bar, before configuration controls.
 
 ### `sorted-hint`
 

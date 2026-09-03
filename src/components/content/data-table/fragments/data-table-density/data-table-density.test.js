@@ -22,7 +22,7 @@ describe("data-table-density", () => {
 		localStorage.setItem.mockClear();
 	});
 
-	describe("Render contracts", () => {
+	describe("Render", () => {
 		test("should retrieve a custom density from localStorage", () => {
 			localStorage.getItem.mockReturnValue("compact");
 

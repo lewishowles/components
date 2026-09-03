@@ -416,10 +416,12 @@
 				<p>A slot to allow adding content to the table's title bar, after the search box.</p>
 			</component-slot>
 
-			<component-slot id="slot-pre-configure">
-				<template #name>pre-configure</template>
+			<component-slot id="slot-pre-configuration">
+				<template #name>pre-configuration</template>
 
-				<p>A slot to allow adding content to the table's title bar, before configuration.</p>
+				<p>
+					A slot to allow adding content to the table's title bar, before configuration controls.
+				</p>
 			</component-slot>
 
 			<component-slot id="slot-search-label">

@@ -57,10 +57,10 @@
 					<template #reset-search-label>
 						<slot name="reset-search-label" />
 					</template>
-					<template #post-search>
+					<template v-if="$slots['post-search']" #post-search>
 						<slot name="post-search" />
 					</template>
-					<template #pre-configuration>
+					<template v-if="$slots['pre-configuration']" #pre-configuration>
 						<slot name="pre-configuration" />
 					</template>
 					<template #configure-label>

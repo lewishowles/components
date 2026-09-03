@@ -125,7 +125,7 @@ export const dataTableMetadata = {
 		{ name: "search-label", summary: "Search input label." },
 		{ name: "reset-search-label", summary: "Reset search button label." },
 		{ name: "post-search", summary: "Content placed after the search controls." },
-		{ name: "pre-configure", summary: "Content placed before configuration controls." },
+		{ name: "pre-configuration", summary: "Content placed before configuration controls." },
 		{ name: "sorted-hint", summary: "Screen-reader hint for the current sort state." },
 		{ name: "no-data-message", summary: "Message shown when no data is available." },
 		{ name: "no-results-message", summary: "Message shown when search has no results." },

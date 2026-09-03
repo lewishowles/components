@@ -23,7 +23,7 @@ describe("form-label", () => {
 		});
 	});
 
-	describe("Render contracts", () => {
+	describe("Render", () => {
 		test("shows the optional indicator when inside a form-wrapper and not required", () => {
 			const wrapper = mountInForm();
 

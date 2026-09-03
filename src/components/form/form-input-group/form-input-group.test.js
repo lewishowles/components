@@ -16,6 +16,16 @@ describe("form-input-group", () => {
 
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
+
+		test("adds a container query only for inline layouts", () => {
+			const inlineWrapper = deepMount({ props: { inline: true } });
+			const stackedWrapper = deepMount();
+			const inlineRoot = inlineWrapper.get('[data-test="form-input-group"]');
+			const stackedRoot = stackedWrapper.get('[data-test="form-input-group"]');
+
+			expect(inlineRoot.classes()).toContain("@container");
+			expect(stackedRoot.classes()).not.toContain("@container");
+		});
 	});
 
 	describe("Props", () => {

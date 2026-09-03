@@ -49,7 +49,7 @@ describe("form-button-group", () => {
 		});
 	});
 
-	describe("Render contracts", () => {
+	describe("Render", () => {
 		test("renders option labels as indicator siblings", () => {
 			const wrapper = deepMount();
 

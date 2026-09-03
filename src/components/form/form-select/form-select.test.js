@@ -187,7 +187,7 @@ describe("form-select", () => {
 		});
 	});
 
-	describe("Render contracts", () => {
+	describe("Render", () => {
 		test("The empty option defaults to the field label", () => {
 			const wrapper = mountDeep({ slots: { default: "Favourite flavour" } });
 

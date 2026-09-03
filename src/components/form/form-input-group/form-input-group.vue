@@ -1,4 +1,5 @@
 <template>
+	<!-- A container query means that this wrapper could shrink to zero width, so we only apply it when needed. -->
 	<field-wrapper
 		v-bind="{
 			tag: 'fieldset',
@@ -9,7 +10,7 @@
 			'aria-required': required ? 'true' : null,
 			'data-invalid': haveError || null,
 		}"
-		class="@container"
+		:class="{ '@container': inline }"
 		data-component="form-input-group"
 		data-test="form-input-group"
 	>

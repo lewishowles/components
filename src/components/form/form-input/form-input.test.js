@@ -43,7 +43,7 @@ describe("form-input", () => {
 		});
 	});
 
-	describe("Render contracts", () => {
+	describe("Render", () => {
 		test("hides the optional indicator when disabled", () => {
 			const wrapper = mount({
 				props: { showOptionalIndicator: false },

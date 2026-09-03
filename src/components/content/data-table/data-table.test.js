@@ -2,7 +2,7 @@ import DataTable from "./data-table.vue";
 import DataTableFooter from "./fragments/data-table-footer/data-table-footer.vue";
 import DataTableStatus from "./fragments/data-table-status/data-table-status.vue";
 import DataTableToolbar from "./fragments/data-table-toolbar/data-table-toolbar.vue";
-import { createMount } from "@lewishowles/testing/vue";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import { getPathValue } from "@lewishowles/helpers/object";
 import { nextTick } from "vue";
@@ -10,6 +10,7 @@ import { nextTick } from "vue";
 const sampleRow = { id: "123", title: "Toy Story", release_year: "1995" };
 const defaultProps = { data: [sampleRow] };
 const mount = createMount(DataTable, { props: defaultProps });
+const deepMount = createDeepMount(DataTable, { props: defaultProps });
 
 describe("data-table", () => {
 	afterEach(() => {
@@ -59,7 +60,13 @@ describe("data-table", () => {
 		});
 	});
 
-	describe("Render contracts", () => {
+	describe("Render", () => {
+		test("hides the toolbar when search, configuration, and toolbar slots are absent", () => {
+			const wrapper = deepMount({ enableSearch: false });
+
+			expect(wrapper.find('[data-test="data-table-toolbar"]').exists()).toBe(false);
+		});
+
 		test("should expose the component styling hook", () => {
 			const wrapper = mount();
 
