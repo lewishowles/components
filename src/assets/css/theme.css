@@ -295,7 +295,7 @@
 
 	--surface-sunken: color-mix(in oklab, var(--surface), var(--color-grey-950) 90%);
 
-	--control-muted-surface: var(--control-overlay);
+	--control-muted-surface: var(--control-surface);
 	--control-muted-surface-hover: var(--control-overlay-hover);
 	--control-muted-surface-active: var(--control-overlay-active);
 

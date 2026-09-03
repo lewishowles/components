@@ -154,8 +154,6 @@
 		&:where(.dark, .dark *) {
 			--ring-colour: var(--control-ring);
 
-			background-color: var(--control-overlay);
-
 			&:hover {
 				--ring-colour: var(--control-ring-hover);
 			}
