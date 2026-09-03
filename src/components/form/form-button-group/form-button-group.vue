@@ -45,6 +45,8 @@ import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { resolveIconComponent } from "@/utilities/resolve-icon-component/resolve-icon-component.js";
 
 defineProps({
+	// Any other props will pass directly to `form-radio-group`
+
 	/**
 	 * Whether this field is required.
 	 */

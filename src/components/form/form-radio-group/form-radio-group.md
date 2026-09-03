@@ -43,6 +43,8 @@ Any help text to display below the field.
 
 ## Props
 
+Any additional props will pass directly to `form-input-group`.
+
 ### `options`
 
 - type: `array|object`

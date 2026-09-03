@@ -48,6 +48,8 @@ import { callComponentMethod } from "@lewishowles/helpers/vue";
 import useFormField from "@/components/form/composables/use-form-field/use-form-field";
 
 const props = defineProps({
+	// Any additional props will pass directly to form-input-group.
+
 	/**
 	 * Any ID to apply to this field. If an ID is not provided, one will be
 	 * generated at random. Note that when providing an ID, please make sure

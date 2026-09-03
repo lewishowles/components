@@ -46,6 +46,8 @@ import { computed, ref, useTemplateRef, watch } from "vue";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
 
 const props = defineProps({
+	// Any additional props will pass directly to form-input-group.
+
 	/**
 	 * Our provided model value for our input. We convert this internally into
 	 * something that can be provided to our input group.

@@ -34,6 +34,8 @@ Any help text to display below the field.
 
 ## Props
 
+Any additional props will pass directly to `form-radio-group`.
+
 ### `options`
 
 - type: `array|object`
