@@ -365,6 +365,10 @@
 	--control-invalid: var(--danger-300);
 }
 
+:where(.dark, .dark *) {
+	--control-surface: rgb(from var(--content-strong) r g b / 10%);
+}
+
 /**
  * Semantic utilities.
  */

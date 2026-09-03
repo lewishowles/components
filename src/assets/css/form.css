@@ -483,8 +483,6 @@
 		}
 
 		&:where(.dark, .dark *) {
-			background-color: var(--control-overlay);
-
 			&:has(:hover) {
 				--ring-colour: var(--control-ring-hover);
 			}
