@@ -1,19 +1,20 @@
 import { computed } from "vue";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
-import { isNonEmptyObject, keys } from "@lewishowles/helpers/object";
+import { getPathValue, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 
 /**
  * Transform the provided data into the internal shape the data table works
- * with: each row gains a unique id, its raw form, and per-cell searchable and
- * sortable content (honouring any per-column content callbacks). Invalid rows
- * are dropped.
+ * with: each row gains a unique id, its raw form, and per-cell display,
+ * searchable, and sortable content (honouring any configured column source
+ * or content callbacks). Invalid rows are dropped.
  *
  * @param  {object}  data
  *     A ref of the data provided to the table.
  * @param  {object}  columns
- *     A ref of the user's column configuration, used for content callbacks.
+ *     A ref of the user's column configuration, used to resolve each
+ *     cell's source and content callbacks.
  */
 export default function useTableData(data, columns) {
 	// Transform the provided data into something more suitable for display in our
@@ -32,13 +33,15 @@ export default function useTableData(data, columns) {
 			// We update the structure of our data, allowing for both row and cell
 			// configuration in addition to the provided data, but we avoid the user
 			// having to know what that structure is.
-			const rowContent = keys(row).reduce((rowData, columnKey) => {
+			const columnKeys = [...new Set([...keys(row), ...keys(columns.value)])];
+
+			const rowContent = columnKeys.reduce((rowData, columnKey) => {
 				rowData[columnKey] = {
 					configuration: {
 						searchable: getSearchableContent(row, columnKey),
 						sortable: getSortableContent(row, columnKey),
 					},
-					content: row[columnKey],
+					content: getDisplayContent(row, columnKey),
 				};
 
 				return rowData;
@@ -122,6 +125,25 @@ export default function useTableData(data, columns) {
 		}
 
 		return sortableContent;
+	}
+
+	/**
+	 * Get the display content for a cell from its configured source or the column
+	 * key, while keeping the raw row available.
+	 *
+	 * @param  {object}  row
+	 *     The raw row provided to the table.
+	 * @param  {string}  columnKey
+	 *     The key for the column.
+	 */
+	function getDisplayContent(row, columnKey) {
+		const source = columns.value[columnKey]?.source;
+
+		if (isFunction(source)) {
+			return source(row);
+		}
+
+		return getPathValue(row, isNonEmptyString(source) ? source : columnKey);
 	}
 
 	return {

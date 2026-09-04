@@ -89,6 +89,36 @@ describe("useTableData", () => {
 
 			expect(internalData.value[0].content.title.configuration.sortable).toBe("custom");
 		});
+
+		test("Uses a column's source path for display content", () => {
+			const { internalData } = createComposable({
+				data: [{ aircraft: { registration: "G-ABCD" } }],
+				columns: { registration: { source: "aircraft.registration" } },
+			});
+
+			expect(internalData.value[0].content.registration.content).toBe("G-ABCD");
+		});
+
+		test("Uses a column's source callback with the unchanged raw row", () => {
+			const rawRow = { aircraft: { registration: "G-ABCD" } };
+
+			let receivedRow;
+
+			const source = (row) => {
+				receivedRow = row;
+
+				return row.aircraft.registration;
+			};
+
+			const { internalData } = createComposable({
+				data: [rawRow],
+				columns: { registration: { source } },
+			});
+
+			expect(internalData.value[0].content.registration.content).toBe("G-ABCD");
+			expect(receivedRow).toBe(internalData.value[0].raw);
+			expect(receivedRow).toEqual(rawRow);
+		});
 	});
 });
 
