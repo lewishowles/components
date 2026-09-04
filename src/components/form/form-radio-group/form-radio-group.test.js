@@ -112,6 +112,38 @@ describe("form-radio-group", () => {
 			});
 		});
 
+		describe("displayLabel", () => {
+			test("passes its default to the input group", () => {
+				const wrapper = mount();
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("displayLabel")).toBe(true);
+			});
+
+			test("passes false to visually hide the group label", () => {
+				const wrapper = mount({ props: { displayLabel: false } });
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("displayLabel")).toBe(false);
+			});
+		});
+
+		describe("componentName", () => {
+			test("uses its default for root styling hooks", () => {
+				const wrapper = deepMount();
+				const fieldset = wrapper.find("fieldset");
+
+				expect(fieldset.attributes("data-component")).toBe("form-radio-group");
+				expect(fieldset.attributes("data-test")).toBe("form-radio-group");
+			});
+
+			test("uses a custom value for root styling hooks", () => {
+				const wrapper = deepMount({ props: { componentName: "custom-radio-group" } });
+				const fieldset = wrapper.find("fieldset");
+
+				expect(fieldset.attributes("data-component")).toBe("custom-radio-group");
+				expect(fieldset.attributes("data-test")).toBe("custom-radio-group");
+			});
+		});
+
 		describe("variant", () => {
 			test("passes the card variant to the input group", () => {
 				const wrapper = mount({ props: { variant: "card" } });

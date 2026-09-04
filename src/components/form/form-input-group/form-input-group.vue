@@ -7,15 +7,24 @@
 			'aria-describedby': describedBy,
 			'aria-errormessage': haveError ? errorId : null,
 			'aria-invalid': haveError ? 'true' : null,
+			'aria-labelledby': labelId,
 			'aria-required': required ? 'true' : null,
 			'data-invalid': haveError || null,
 		}"
 		:class="{ '@container': inline }"
-		data-component="form-input-group"
-		data-test="form-input-group"
+		:data-component="componentName"
+		:data-test="componentName"
 	>
 		<div class="flex flex-col">
-			<form-label v-bind="{ tag: 'legend', required, showOptionalIndicator: !isCheckbox }">
+			<form-label
+				v-bind="{
+					id: labelId,
+					tag: 'legend',
+					required,
+					hidden: !displayLabel,
+					showOptionalIndicator: !isCheckbox,
+				}"
+			>
 				<slot />
 
 				<template #optional-indicator>
@@ -242,6 +251,26 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+
+	/**
+	 * Whether to display the field label. The label remains available to screen
+	 * readers when hidden.
+	 */
+	displayLabel: {
+		type: Boolean,
+		default: true,
+	},
+
+	/**
+	 * Overrides the root data-component and data-test hooks. Set internally by
+	 * form-radio-group, form-checkbox-group, and form-button-group so each
+	 * exposes its own identity instead of form-input-group's default. Not
+	 * part of the public API; consumers never set this.
+	 */
+	componentName: {
+		type: String,
+		default: "form-input-group",
+	},
 });
 
 // The internal model for an input group is always an object, and the parent
@@ -269,6 +298,9 @@ const { options: internalOptions } = useOptions(props.options, {
 const { inputId, errorId, describedBy, haveIntroduction, haveHelp, haveError } = useFormField({
 	id: props.id,
 });
+
+// The id used to associate the fieldset with its legend via aria-labelledby.
+const labelId = computed(() => `${inputId.value}-label`);
 
 // The computed name of this field, either the one provided, or one generated
 // for the user.

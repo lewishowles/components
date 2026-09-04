@@ -473,8 +473,16 @@ describe("form-field", () => {
 				});
 			});
 
-			test("should pass displayLabel to text, select, checkbox, and combo-box fields", () => {
-				for (const type of ["checkbox", "combo-box", "select", "text"]) {
+			test("should pass displayLabel to fields that support visually hidden labels", () => {
+				for (const type of [
+					"button-group",
+					"checkbox",
+					"checkbox-group",
+					"combo-box",
+					"radio-group",
+					"select",
+					"text",
+				]) {
 					const wrapper = mount({ props: { displayLabel: false, type } });
 
 					expect(wrapper.vm.fieldProps).toEqual(expect.objectContaining({ displayLabel: false }));

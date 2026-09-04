@@ -134,8 +134,18 @@
 				<p>
 					Whether to display the label for
 					<code>text</code>
-					and
+					,
 					<code>select</code>
+					,
+					<code>checkbox</code>
+					,
+					<code>combo-box</code>
+					,
+					<code>radio-group</code>
+					,
+					<code>checkbox-group</code>
+					, and
+					<code>button-group</code>
 					fields. When false, the label remains available to screen readers but is visually hidden.
 				</p>
 			</component-prop>

@@ -78,6 +78,12 @@ export const formInputGroupMetadata = {
 			default: false,
 			summary: "Mark the group as required.",
 		},
+		{
+			name: "displayLabel",
+			type: "boolean",
+			default: true,
+			summary: "Show the group label; when false, keep it available to screen readers only.",
+		},
 	],
 	slots: [
 		{

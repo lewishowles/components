@@ -23,7 +23,7 @@
 
 	<component
 		:is="tag"
-		v-bind="{ for: id, ...$attrs }"
+		v-bind="{ [tag === 'label' ? 'for' : 'id']: id, ...$attrs }"
 		:class="{
 			'sr-only': hidden,
 			'text-content-strong font-semibold': styled,

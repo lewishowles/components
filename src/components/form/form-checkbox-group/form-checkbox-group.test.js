@@ -66,6 +66,38 @@ describe("form-checkbox-group", () => {
 			});
 		});
 
+		describe("displayLabel", () => {
+			test("passes its default to the input group", () => {
+				const wrapper = mount();
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("displayLabel")).toBe(true);
+			});
+
+			test("passes false to visually hide the group label", () => {
+				const wrapper = mount({ props: { displayLabel: false } });
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("displayLabel")).toBe(false);
+			});
+		});
+
+		describe("componentName", () => {
+			test("uses its default for root styling hooks", () => {
+				const wrapper = deepMount();
+				const fieldset = wrapper.find("fieldset");
+
+				expect(fieldset.attributes("data-component")).toBe("form-checkbox-group");
+				expect(fieldset.attributes("data-test")).toBe("form-checkbox-group");
+			});
+
+			test("uses a custom value for root styling hooks", () => {
+				const wrapper = deepMount({ props: { componentName: "custom-checkbox-group" } });
+				const fieldset = wrapper.find("fieldset");
+
+				expect(fieldset.attributes("data-component")).toBe("custom-checkbox-group");
+				expect(fieldset.attributes("data-test")).toBe("custom-checkbox-group");
+			});
+		});
+
 		describe("variant", () => {
 			test("passes the card variant to the input group", () => {
 				const wrapper = mount({ props: { variant: "card" } });

@@ -9,11 +9,11 @@
 			name,
 			descriptionKey,
 			variant,
+			displayLabel,
+			componentName,
 			optionClasses,
 			optionsClasses,
 		}"
-		data-component="form-radio-group"
-		data-test="form-radio-group"
 	>
 		<slot />
 
@@ -76,6 +76,26 @@ const props = defineProps({
 	required: {
 		type: Boolean,
 		default: false,
+	},
+
+	/**
+	 * Whether to display the group label. The label remains available to screen
+	 * readers when hidden.
+	 */
+	displayLabel: {
+		type: Boolean,
+		default: true,
+	},
+
+	/**
+	 * The root data-component and data-test hook value, forwarded to
+	 * form-input-group. Defaults to this component's own name but is
+	 * overridden by form-button-group when it wraps this component. Not
+	 * part of the public API; consumers never set this.
+	 */
+	componentName: {
+		type: String,
+		default: "form-radio-group",
 	},
 
 	/**

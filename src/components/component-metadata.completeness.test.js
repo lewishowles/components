@@ -12,7 +12,12 @@ const root = fileURLToPath(new URL("../..", import.meta.url));
 const globalPropNames = new Set(["class", "style", "key", "ref", "ref_key", "ref_for"]);
 
 // Props that are part of the v-model contract or internal testing hooks; not consumer-facing API.
-const internalPropNames = new Set(["modelValue", "onUpdate:modelValue", "dataTest"]);
+const internalPropNames = new Set([
+	"componentName",
+	"modelValue",
+	"onUpdate:modelValue",
+	"dataTest",
+]);
 
 const checker = createCheckerByJson(root, {
 	include: ["src/components/**/*.vue"],

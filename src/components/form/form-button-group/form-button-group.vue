@@ -2,9 +2,7 @@
 	<form-radio-group
 		ref="radio-group"
 		v-model="model"
-		v-bind="{ required }"
-		data-component="form-button-group"
-		data-test="form-button-group"
+		v-bind="{ required, componentName: 'form-button-group' }"
 	>
 		<slot />
 

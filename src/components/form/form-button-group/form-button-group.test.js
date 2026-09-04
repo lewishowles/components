@@ -30,6 +30,30 @@ describe("form-button-group", () => {
 				expect(wrapper.findComponent({ name: "FormRadioGroup" }).props("required")).toBe(false);
 			});
 		});
+
+		describe("displayLabel", () => {
+			test("passes its default to the input group", () => {
+				const wrapper = deepMount();
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("displayLabel")).toBe(true);
+			});
+
+			test("passes false to visually hide the group label", () => {
+				const wrapper = deepMount({ props: { displayLabel: false } });
+
+				expect(wrapper.findComponent({ name: "FormInputGroup" }).props("displayLabel")).toBe(false);
+			});
+		});
+
+		describe("componentName", () => {
+			test("uses its own root styling hooks", () => {
+				const wrapper = deepMount();
+				const fieldset = wrapper.find("fieldset");
+
+				expect(fieldset.attributes("data-component")).toBe("form-button-group");
+				expect(fieldset.attributes("data-test")).toBe("form-button-group");
+			});
+		});
 	});
 
 	describe("Slots", () => {

@@ -8,11 +8,11 @@
 			name,
 			descriptionKey,
 			variant,
+			displayLabel,
+			componentName,
 			optionClasses,
 			optionsClasses,
 		}"
-		data-component="form-checkbox-group"
-		data-test="form-checkbox-group"
 	>
 		<slot />
 
@@ -63,6 +63,25 @@ const props = defineProps({
 	required: {
 		type: Boolean,
 		default: false,
+	},
+
+	/**
+	 * Whether to display the group label. The label remains available to screen
+	 * readers when hidden.
+	 */
+	displayLabel: {
+		type: Boolean,
+		default: true,
+	},
+
+	/**
+	 * The root data-component and data-test hook value, forwarded to
+	 * form-input-group. Not part of the public API; consumers never set
+	 * this.
+	 */
+	componentName: {
+		type: String,
+		default: "form-checkbox-group",
 	},
 
 	/**

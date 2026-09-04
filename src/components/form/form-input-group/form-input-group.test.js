@@ -231,6 +231,49 @@ describe("form-input-group", () => {
 			});
 		});
 
+		describe("displayLabel", () => {
+			test("keeps the legend visible by default", () => {
+				const wrapper = deepMount();
+
+				expect(wrapper.findComponent({ name: "FormLabel" }).props("hidden")).toBe(false);
+			});
+
+			test("visually hides the legend while keeping it available to screen readers", () => {
+				const wrapper = deepMount({ props: { displayLabel: false } });
+
+				expect(wrapper.findComponent({ name: "FormLabel" }).props("hidden")).toBe(true);
+			});
+		});
+
+		describe("labelId", () => {
+			test("links the fieldset to its legend", () => {
+				const wrapper = deepMount({ props: { id: "access-level" } });
+				const fieldset = wrapper.find("fieldset");
+				const legend = wrapper.find("legend");
+
+				expect(fieldset.attributes("aria-labelledby")).toBe("access-level-label");
+				expect(legend.attributes("id")).toBe("access-level-label");
+			});
+		});
+
+		describe("componentName", () => {
+			test("uses its default for root styling hooks", () => {
+				const wrapper = deepMount();
+				const fieldset = wrapper.find("fieldset");
+
+				expect(fieldset.attributes("data-component")).toBe("form-input-group");
+				expect(fieldset.attributes("data-test")).toBe("form-input-group");
+			});
+
+			test("uses a custom value for root styling hooks", () => {
+				const wrapper = deepMount({ props: { componentName: "custom-input-group" } });
+				const fieldset = wrapper.find("fieldset");
+
+				expect(fieldset.attributes("data-component")).toBe("custom-input-group");
+				expect(fieldset.attributes("data-test")).toBe("custom-input-group");
+			});
+		});
+
 		describe("type", () => {
 			test("suppresses the optional indicator on the legend when type is checkbox", () => {
 				const wrapper = deepMount({ props: { type: "checkbox" } });

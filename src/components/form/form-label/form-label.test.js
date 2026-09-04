@@ -1,9 +1,10 @@
-import { createMount } from "@lewishowles/testing/vue";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
 import FormLabel from "./form-label.vue";
 
 const defaultProps = { id: "id-abc" };
 const mount = createMount(FormLabel, { props: defaultProps });
+const deepMount = createDeepMount(FormLabel, { props: defaultProps });
 
 // Provide a minimal form-wrapper context so the optional indicator renders
 // inside a form. Use an empty object; form-label only checks for presence.
@@ -24,6 +25,20 @@ describe("form-label", () => {
 	});
 
 	describe("Render", () => {
+		test("associates label tags with their input", () => {
+			const wrapper = deepMount();
+
+			expect(wrapper.find("label").attributes("for")).toBe("id-abc");
+			expect(wrapper.find("label").attributes("id")).toBeUndefined();
+		});
+
+		test("gives non-label tags their own ID", () => {
+			const wrapper = deepMount({ props: { tag: "legend" } });
+
+			expect(wrapper.find("legend").attributes("for")).toBeUndefined();
+			expect(wrapper.find("legend").attributes("id")).toBe("id-abc");
+		});
+
 		test("shows the optional indicator when inside a form-wrapper and not required", () => {
 			const wrapper = mountInForm();
 

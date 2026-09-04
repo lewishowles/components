@@ -128,8 +128,9 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether to display the label for text, select, and checkbox fields. The
-	 * label remains available to screen readers when hidden.
+	 * Whether to display the label for text, select, checkbox, combo-box,
+	 * radio-group, checkbox-group, and button-group fields. The label remains
+	 * available to screen readers when hidden.
 	 */
 	displayLabel: {
 		type: Boolean,
@@ -221,16 +222,17 @@ const fieldTypes = {
 	},
 	"checkbox-group": {
 		component: FormCheckboxGroup,
-		forward: ["name"],
+		forward: ["displayLabel", "name"],
 		usesOptions: true,
 	},
 	"radio-group": {
 		component: FormRadioGroup,
-		forward: ["name"],
+		forward: ["displayLabel", "name"],
 		usesOptions: true,
 	},
 	"button-group": {
 		component: FormButtonGroup,
+		forward: ["displayLabel"],
 		usesOptions: true,
 	},
 	select: {

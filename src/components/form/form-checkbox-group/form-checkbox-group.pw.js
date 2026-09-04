@@ -30,6 +30,19 @@ test.describe("form-checkbox-group", () => {
 		await expect(formCheckboxGroup.getByTestId("form-label-optional-indicator")).toHaveCount(0);
 	});
 
+	test("keeps a visually hidden legend available to screen readers", async ({ mount, page }) => {
+		await mountFormCheckboxGroup(mount, { displayLabel: false });
+
+		const formCheckboxGroup = page.getByTestId("form-checkbox-group");
+		const legend = formCheckboxGroup.getByTestId("form-label").first();
+
+		await expect(formCheckboxGroup).toHaveAccessibleName("Best smoothie");
+		await expect(formCheckboxGroup).toHaveAttribute("aria-labelledby", "id-abc-label");
+		await expect(legend).toBeAttached();
+		await expect(legend).toHaveAttribute("id", "id-abc-label");
+		await expect(legend).toHaveClass(/sr-only/);
+	});
+
 	test.describe("supplementary information", () => {
 		testSupplementaryInfo(mountFormCheckboxGroup, {
 			ariaTarget: (page) => page.getByTestId("form-checkbox-group"),

@@ -10,6 +10,12 @@ export const formButtonGroupMetadata = {
 			default: false,
 			summary: "Whether this field is required.",
 		},
+		{
+			name: "displayLabel",
+			type: "boolean",
+			default: true,
+			summary: "Show the group label; when false, keep it available to screen readers only.",
+		},
 	],
 	slots: [
 		{

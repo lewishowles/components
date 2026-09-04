@@ -142,6 +142,19 @@
 					unforeseen issues.
 				</p>
 			</component-prop>
+
+			<component-prop id="prop-display-label">
+				<template #name>displayLabel</template>
+
+				<template #type>Boolean</template>
+
+				<template #default-value>true</template>
+
+				<p>
+					Whether to display the group label. When false, the label remains available to screen
+					readers but is visually hidden.
+				</p>
+			</component-prop>
 		</component-props>
 
 		<component-slots>

@@ -30,6 +30,19 @@ test.describe("form-radio-group", () => {
 		await expect(formRadioGroup.getByTestId("form-label-optional-indicator")).toHaveCount(0);
 	});
 
+	test("keeps a visually hidden legend available to screen readers", async ({ mount, page }) => {
+		await mountFormRadioGroup(mount, { displayLabel: false });
+
+		const formRadioGroup = page.getByTestId("form-radio-group");
+		const legend = formRadioGroup.getByTestId("form-label").first();
+
+		await expect(formRadioGroup).toHaveAccessibleName("Best smoothie");
+		await expect(formRadioGroup).toHaveAttribute("aria-labelledby", "id-abc-label");
+		await expect(legend).toBeAttached();
+		await expect(legend).toHaveAttribute("id", "id-abc-label");
+		await expect(legend).toHaveClass(/sr-only/);
+	});
+
 	test.describe("supplementary information", () => {
 		test("an introduction can be supplied", async ({ mount, page }) => {
 			await mountFormRadioGroup(mount, { slots: { introduction: "Introductory text" } });

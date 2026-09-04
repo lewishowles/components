@@ -30,6 +30,19 @@ test.describe("form-button-group", () => {
 		await expect(buttonGroup.getByTestId("form-label-optional-indicator")).toHaveCount(0);
 	});
 
+	test("keeps a visually hidden legend available to screen readers", async ({ mount, page }) => {
+		await mountButtonGroup(mount, { displayLabel: false });
+
+		const buttonGroup = page.getByTestId("form-button-group");
+		const legend = buttonGroup.getByTestId("form-label").first();
+
+		await expect(buttonGroup).toHaveAccessibleName("Best smoothie");
+		await expect(buttonGroup).toHaveAttribute("aria-labelledby", "id-abc-label");
+		await expect(legend).toBeAttached();
+		await expect(legend).toHaveAttribute("id", "id-abc-label");
+		await expect(legend).toHaveClass(/sr-only/);
+	});
+
 	test.describe("supplementary information", () => {
 		test("an introduction can be supplied", async ({ mount, page }) => {
 			await mountButtonGroup(mount, { slots: { introduction: "Introductory text" } });

@@ -64,6 +64,13 @@ A name for this button group. If not set, the input ID is used.
 
 Any ID to apply to this field. If an ID is not provided, one will be generated at random. Note that when providing an ID, please make sure that it is unique to avoid any unforeseen issues.
 
+### `displayLabel`
+
+- type: `boolean`
+- default: `true`
+
+Whether to display the group label. When `false`, the label remains available to screen readers but is visually hidden.
+
 ## Methods
 
 ### `triggerFocus`

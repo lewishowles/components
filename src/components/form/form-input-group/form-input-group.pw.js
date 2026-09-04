@@ -15,6 +15,22 @@ test.describe("form-input-group", () => {
 		await expect(page.getByTestId("form-input-group")).toBeVisible();
 	});
 
+	test("keeps a visually hidden legend available to screen readers", async ({ mount, page }) => {
+		await mountFormInputGroup(mount, {
+			props: { displayLabel: false, id: "access-level" },
+			slots: { default: "Access level" },
+		});
+
+		const formInputGroup = page.getByTestId("form-input-group");
+		const legend = formInputGroup.getByTestId("form-label").first();
+
+		await expect(formInputGroup).toHaveAccessibleName("Access level");
+		await expect(formInputGroup).toHaveAttribute("aria-labelledby", "access-level-label");
+		await expect(legend).toBeAttached();
+		await expect(legend).toHaveAttribute("id", "access-level-label");
+		await expect(legend).toHaveClass(/sr-only/);
+	});
+
 	test.describe("aria-invalid", () => {
 		test("is set on the fieldset when an error is provided", async ({ mount, page }) => {
 			await mountFormInputGroup(mount, { slots: { error: "Error text" } });

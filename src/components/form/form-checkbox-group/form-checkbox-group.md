@@ -94,6 +94,13 @@ A name for this checkbox group. If not set, the input ID is used.
 
 Any ID to apply to this checkbox group. If an ID is not provided, one will be generated at random. Note that when providing an ID, please make sure that it is unique to avoid any unforeseen issues.
 
+### `displayLabel`
+
+- type: `boolean`
+- default: `true`
+
+Whether to display the group label. When `false`, the label remains available to screen readers but is visually hidden.
+
 ### `variant`
 
 - type: `string`
