@@ -26,6 +26,14 @@
 			>
 				<slot />
 
+				<template v-if="havePrefix" #prefix>
+					<slot name="prefix" />
+				</template>
+
+				<template v-if="haveSuffix" #suffix>
+					<slot name="suffix" />
+				</template>
+
 				<template #optional-indicator>
 					<slot name="optional-indicator" />
 				</template>
@@ -280,6 +288,10 @@ const isReadonly = computed(
 
 // Whether validation error content has been supplied for the field state hook.
 const haveError = computed(() => isNonEmptySlot(slots.error));
+// Whether prefix adornment content has been supplied.
+const havePrefix = computed(() => isNonEmptySlot(slots.prefix));
+// Whether suffix adornment content has been supplied.
+const haveSuffix = computed(() => isNonEmptySlot(slots.suffix));
 
 // The current input value.
 const query = ref("");

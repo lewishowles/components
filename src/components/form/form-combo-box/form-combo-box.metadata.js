@@ -81,6 +81,14 @@ export const formComboBoxMetadata = {
 			summary: "The field label.",
 		},
 		{
+			name: "prefix",
+			summary: "Content placed before the input.",
+		},
+		{
+			name: "suffix",
+			summary: "Content placed after the input.",
+		},
+		{
 			name: "optional-indicator",
 			summary:
 				"Content shown after the label when the field is not required. Defaults to (optional).",

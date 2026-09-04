@@ -83,6 +83,54 @@ describe("form-combo-box", () => {
 			expect(input.attributes("role")).toBe("combobox");
 			expect(input.attributes("readonly")).toBeDefined();
 		});
+
+		test("forwards prefix content to the input with an empty value", () => {
+			const wrapper = mountDeep({
+				slots: {
+					default: "Pilot",
+					prefix: "Search",
+				},
+			});
+
+			expect(wrapper.find('[data-test="form-prefix"]').text()).toBe("Search");
+			expect(wrapper.find('[data-test="form-suffix"]').exists()).toBe(false);
+		});
+
+		test("forwards suffix content to the input with a selected value", () => {
+			const wrapper = mountDeep({
+				props: {
+					options,
+					labelKey: "name",
+					valueKey: "id",
+					modelValue: "pilot-42",
+				},
+				slots: {
+					default: "Pilot",
+					suffix: "Clear",
+				},
+			});
+
+			expect(wrapper.find('[data-test="form-prefix"]').exists()).toBe(false);
+			expect(wrapper.find('[data-test="form-suffix"]').text()).toBe("Clear");
+		});
+
+		test("forwards both adornments while the results are open", async () => {
+			const wrapper = mountDeep({
+				props: { options, labelKey: "name", valueKey: "id" },
+				slots: {
+					default: "Pilot",
+					prefix: "Search",
+					suffix: "Clear",
+				},
+			});
+
+			wrapper.vm.openResults();
+			await nextTick();
+
+			expect(wrapper.find('[data-test="form-prefix"]').text()).toBe("Search");
+			expect(wrapper.find('[data-test="form-suffix"]').text()).toBe("Clear");
+			expect(wrapper.find('[data-test="form-combo-box-dropdown"]').exists()).toBe(true);
+		});
 	});
 
 	describe("Selected value", () => {

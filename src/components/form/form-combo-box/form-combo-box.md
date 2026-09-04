@@ -18,6 +18,10 @@ The default slot contains the field label.
 
 _A label is always required, even when it is visually hidden, so that the input has an accessible name._
 
+### `prefix` and `suffix`
+
+Any element (text or icon) to place at the start or end of the field.
+
 ### `optional-indicator`
 
 Content shown after the label when the field is not required. Defaults to `(optional)`.

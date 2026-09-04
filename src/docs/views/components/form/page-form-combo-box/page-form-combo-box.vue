@@ -135,6 +135,18 @@
 				</p>
 			</component-slot>
 
+			<component-slot id="slot-prefix">
+				<template #name>prefix</template>
+
+				Any element (text or icon) to place at the start of the field.
+			</component-slot>
+
+			<component-slot id="slot-suffix">
+				<template #name>suffix</template>
+
+				Any element (text or icon) to place at the end of the field.
+			</component-slot>
+
 			<component-slot id="slot-optional-indicator">
 				<template #name>optional-indicator</template>
 
