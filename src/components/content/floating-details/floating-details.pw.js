@@ -2,11 +2,11 @@ import { expect, test } from "@playwright/experimental-ct-vue";
 import { createMount } from "@lewishowles/testing/playwright";
 
 import FloatingDetails from "./floating-details.vue";
-import FloatingDetailsWithClose from "./floating-details.fixture.vue";
+import FloatingDetailsInTable from "./floating-details.fixture.vue";
 
 const defaultSlots = { summary: "Summary label", default: "Details content" };
 const mountFloatingDetails = createMount(FloatingDetails, { slots: defaultSlots });
-const mountWithClose = createMount(FloatingDetailsWithClose);
+const mountInTable = createMount(FloatingDetailsInTable);
 
 test.describe("floating-details", () => {
 	test("a summary is rendered", async ({ mount, page }) => {
@@ -24,7 +24,7 @@ test.describe("floating-details", () => {
 			await page.getByTestId("floating-details-summary").click();
 			await expect(page.getByTestId("floating-details")).toHaveAttribute("open");
 			await expect(page.getByTestId("floating-details-content")).toBeVisible();
-			await expect(page.getByTestId("floating-details-content")).toHaveClass(/absolute/);
+			await expect(page.getByTestId("floating-details-content")).toHaveClass(/fixed/);
 
 			await page.getByTestId("floating-details-summary").click();
 			await expect(page.getByTestId("floating-details")).not.toHaveAttribute("open");
@@ -65,7 +65,7 @@ test.describe("floating-details", () => {
 
 	test.describe("slot props", () => {
 		test("the close slot prop dismisses the panel", async ({ mount, page }) => {
-			await mountWithClose(mount);
+			await mountInTable(mount);
 
 			await page.getByTestId("floating-details-summary").click();
 			await expect(page.getByTestId("floating-details")).toHaveAttribute("open");
@@ -80,7 +80,11 @@ test.describe("floating-details", () => {
 			await mountFloatingDetails(mount);
 
 			await page.getByTestId("floating-details-summary").click();
-			await expect(page.getByTestId("floating-details-content")).toHaveClass(/top-full/);
+
+			const panel = page.getByTestId("floating-details-content");
+			const panelTop = await panel.evaluate((element) => getComputedStyle(element).top);
+
+			expect(panelTop).not.toBe("auto");
 		});
 
 		test("flips above when the trigger is near the bottom of the viewport", async ({
@@ -96,7 +100,113 @@ test.describe("floating-details", () => {
 			});
 
 			await page.getByTestId("floating-details-summary").click();
-			await expect(page.getByTestId("floating-details-content")).toHaveClass(/bottom-full/);
+
+			const panel = page.getByTestId("floating-details-content");
+			const panelBottom = await panel.evaluate((element) => getComputedStyle(element).bottom);
+
+			expect(panelBottom).not.toBe("auto");
+		});
+	});
+
+	test.describe("scrolling tables", () => {
+		test("keeps the panel outside the table scroll height", async ({ mount, page }) => {
+			await mountInTable(mount);
+
+			const scrollRegion = page.getByTestId("data-table-scroll-region");
+
+			await scrollRegion.evaluate((element) => {
+				element.scrollLeft = element.scrollWidth;
+			});
+			await page.getByTestId("floating-details-summary").click();
+			await expect(page.getByTestId("floating-details-content")).toBeVisible();
+
+			const scrollSize = await scrollRegion.evaluate((element) => ({
+				clientHeight: element.clientHeight,
+				scrollHeight: element.scrollHeight,
+			}));
+
+			expect(scrollSize.scrollHeight).toBe(scrollSize.clientHeight);
+		});
+
+		test("aligns its end edge with the summary trigger", async ({ mount, page }) => {
+			await mountInTable(mount);
+
+			const scrollRegion = page.getByTestId("data-table-scroll-region");
+
+			await scrollRegion.evaluate((element) => {
+				element.scrollLeft = element.scrollWidth;
+			});
+			await page.getByTestId("floating-details-summary").click();
+			await expect(page.getByTestId("floating-details-content")).toBeVisible();
+
+			const edgeOffset = await page.evaluate(() => {
+				const panel = document.querySelector('[data-test="floating-details-content"]');
+				const summary = document.querySelector('[data-test="floating-details-summary"]');
+
+				return Math.abs(
+					panel.getBoundingClientRect().right - summary.getBoundingClientRect().right,
+				);
+			});
+
+			expect(edgeOffset).toBeLessThan(1);
+		});
+
+		test("aligns its start edge with the summary trigger in RTL", async ({ mount, page }) => {
+			await page.evaluate(() => {
+				document.documentElement.dir = "rtl";
+			});
+			await mountInTable(mount, { align: "start" });
+
+			const scrollRegion = page.getByTestId("data-table-scroll-region");
+
+			await scrollRegion.evaluate((element) => {
+				element.scrollLeft = element.scrollWidth;
+			});
+
+			await page.getByTestId("floating-details-summary").click();
+			await expect(page.getByTestId("floating-details-content")).toBeVisible();
+
+			const edgeOffset = await page.evaluate(() => {
+				const panel = document.querySelector('[data-test="floating-details-content"]');
+				const summary = document.querySelector('[data-test="floating-details-summary"]');
+
+				return Math.abs(
+					panel.getBoundingClientRect().right - summary.getBoundingClientRect().right,
+				);
+			});
+
+			// A single device-pixel rounding difference is expected here: the RTL
+			// coordinate is derived via an extra subtraction (viewport width minus
+			// the trigger's right edge) that the LTR case doesn't need.
+			expect(edgeOffset).toBeLessThanOrEqual(1);
+		});
+
+		test("tracks the summary trigger while the table scrolls", async ({ mount, page }) => {
+			await mountInTable(mount);
+
+			const panel = page.getByTestId("floating-details-content");
+			const scrollRegion = page.getByTestId("data-table-scroll-region");
+			const summary = page.getByTestId("floating-details-summary");
+
+			await summary.click();
+			await expect(panel).toBeVisible();
+			await scrollRegion.evaluate((element) => {
+				element.scrollLeft = element.scrollWidth;
+			});
+
+			await expect
+				.poll(() =>
+					page.evaluate(() => {
+						const panel = document.querySelector('[data-test="floating-details-content"]');
+						const summary = document.querySelector('[data-test="floating-details-summary"]');
+
+						return Math.min(
+							Math.abs(panel.getBoundingClientRect().left - summary.getBoundingClientRect().left),
+							Math.abs(panel.getBoundingClientRect().right - summary.getBoundingClientRect().right),
+						);
+					}),
+				)
+				.toBeLessThan(1);
 		});
 	});
 

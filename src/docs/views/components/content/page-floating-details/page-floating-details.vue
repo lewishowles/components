@@ -134,7 +134,7 @@
 				<p>
 					The preferred panel alignment:
 					<code>start</code>
-					aligns the panel's leading edge with the trigger's,
+					aligns the panel's leading edge with the summary trigger's,
 					<code>end</code>
 					aligns the trailing edges. The panel flips to the opposite side if it would clip the
 					viewport edge. This prop does not affect placement or visibility in the narrow sheet

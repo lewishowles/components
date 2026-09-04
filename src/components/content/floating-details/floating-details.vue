@@ -117,6 +117,7 @@ const {
 	computedAlign,
 	isPositioning,
 	placementClasses,
+	positioningTick,
 	handleOpen: handleFloatingOpen,
 	handleClose: handleFloatingClose,
 } = useFloatingPosition({
@@ -130,13 +131,12 @@ const {
 // summaryDetailsProps); narrow mode presents through overlay-sheet instead.
 const resolvedDetailsClasses = computed(() =>
 	cn(
-		"w-screen rounded-md border p-4 shadow",
+		"fixed z-50 w-screen rounded-md border p-4 shadow",
 		"border-border bg-surface-elevated backdrop-blur-lg",
 		"max-w-lg",
-		computedPlacement.value === "above"
-			? "absolute bottom-full animate-fade-in-up"
-			: "absolute top-full animate-fade-in-down",
-		computedAlign.value === "start" ? "inset-s-0" : "inset-e-0",
+		"top-[var(--floating-details-top)] bottom-[var(--floating-details-bottom)]",
+		"inset-s-[var(--floating-details-inline-start)] inset-e-[var(--floating-details-inline-end)]",
+		computedPlacement.value === "above" ? "animate-fade-in-up" : "animate-fade-in-down",
 		"mbs-0",
 		placementClasses.value,
 		{ invisible: isPositioning.value },
@@ -144,13 +144,55 @@ const resolvedDetailsClasses = computed(() =>
 	),
 );
 
+// Dropdowns used fixed positioning to avoid any interaction with overflow.
+const resolvedDetailsStyle = computed(() => {
+	// getBoundingClientRect() isn't reactive; re-read it whenever the composable recalculates
+	// on scroll or resize.
+	void positioningTick.value;
+
+	const summaryElement = summaryElementRef.value;
+
+	if (!summaryElement) {
+		return {};
+	}
+
+	const summaryRectangle = summaryElement.getBoundingClientRect();
+	const isRightToLeft = getComputedStyle(summaryElement).direction === "rtl";
+	const isStart = computedAlign.value === "start";
+	const isAlignedToRight = isStart ? isRightToLeft : !isRightToLeft;
+
+	const offset = isAlignedToRight
+		? window.innerWidth - summaryRectangle.right
+		: summaryRectangle.left;
+
+	const horizontalStyle = {
+		"--floating-details-inline-start": isStart ? `${offset}px` : undefined,
+		"--floating-details-inline-end": isStart ? undefined : `${offset}px`,
+	};
+
+	if (computedPlacement.value === "above") {
+		return {
+			...horizontalStyle,
+			"--floating-details-bottom": `${window.innerHeight - summaryRectangle.top}px`,
+			"--floating-details-top": undefined,
+		};
+	}
+
+	return {
+		...horizontalStyle,
+		"--floating-details-bottom": undefined,
+		"--floating-details-top": `${summaryRectangle.bottom}px`,
+	};
+});
+
 // The summary and panel props forwarded to summary-details.
 const summaryDetailsProps = computed(() => ({
 	...attrs,
-	class: cn(!isNarrow.value && "relative", !isNarrow.value && isOpen.value && "z-50", attrs.class),
+	class: cn(attrs.class),
 	closeWithEscape: !isNarrow.value && props.closeWithEscape,
 	detailsClasses: isNarrow.value ? "mbs-0" : resolvedDetailsClasses.value,
 	summaryClasses: props.summaryClasses,
+	style: [attrs.style, !isNarrow.value && resolvedDetailsStyle.value],
 }));
 
 onClickOutside(

@@ -343,21 +343,84 @@ describe("floating-details", () => {
 		});
 	});
 
-	describe("Root positioning class", () => {
-		test("adds relative positioning when wide", () => {
+	describe("Wide positioning", () => {
+		test("uses fixed positioning without making the disclosure root a containing block", () => {
 			const wrapper = mountWithRawSummaryDetails();
 			const summaryDetails = wrapper.findComponent({ name: "SummaryDetails" });
+			const detailsClasses = summaryDetails.vm.$attrs.detailsClasses;
 
-			expect(summaryDetails.vm.$attrs.class.split(" ")).toContain("relative");
+			expect(detailsClasses).toContain("fixed");
+			expect(detailsClasses).not.toContain("absolute");
+			expect(summaryDetails.vm.$attrs.class).not.toContain("relative");
 		});
 
-		test("does not add relative positioning when narrow", () => {
-			isNarrow.value = true;
+		test("positions the panel below the summary trigger", async () => {
+			const wrapper = mountDeep({
+				slots: { default: "Details content", summary: "Summary" },
+			});
 
-			const wrapper = mountWithRawSummaryDetails();
-			const summaryDetails = wrapper.findComponent({ name: "SummaryDetails" });
+			const summary = wrapper.find('[data-test="floating-details-summary"]');
 
-			expect(summaryDetails.vm.$attrs.class.split(" ")).not.toContain("relative");
+			vi.spyOn(summary.element, "getBoundingClientRect").mockReturnValue({
+				bottom: 132,
+				left: 300,
+				right: 420,
+				top: 100,
+			});
+
+			await summary.trigger("click");
+			await nextTick();
+			await nextTick();
+
+			const details = wrapper.find("details").element;
+
+			expect(details.style.getPropertyValue("--floating-details-top")).toBe("132px");
+			expect(details.style.getPropertyValue("--floating-details-inline-start")).toBe("300px");
+		});
+
+		test("removes the start coordinate after the panel flips to end", async () => {
+			vi.stubGlobal("innerWidth", 800);
+			vi.spyOn(window, "requestAnimationFrame").mockImplementation((callback) => {
+				callback();
+
+				return 1;
+			});
+
+			try {
+				const wrapper = mountDeep({
+					props: { align: "start" },
+					slots: { default: "Details content", summary: "Summary" },
+				});
+
+				const content = wrapper.find('[data-test="floating-details-content"]');
+				const summary = wrapper.find('[data-test="floating-details-summary"]');
+
+				let summaryRectangle = { bottom: 132, left: 0, right: 50, top: 100 };
+
+				Object.defineProperty(content.element, "offsetWidth", { value: 200 });
+				vi.spyOn(summary.element, "getBoundingClientRect").mockImplementation(
+					() => summaryRectangle,
+				);
+
+				await summary.trigger("click");
+				await nextTick();
+				await nextTick();
+
+				const details = wrapper.find("details").element;
+
+				expect(details.style.getPropertyValue("--floating-details-inline-start")).toBe("0px");
+				expect(details.style.getPropertyValue("--floating-details-inline-end")).toBe("");
+
+				summaryRectangle = { bottom: 132, left: 700, right: 750, top: 100 };
+				window.dispatchEvent(new Event("resize"));
+				await nextTick();
+
+				expect(details.style.getPropertyValue("--floating-details-inline-start")).toBe("");
+				expect(details.style.getPropertyValue("--floating-details-inline-end")).toBe("50px");
+			} finally {
+				vi.restoreAllMocks();
+				vi.unstubAllGlobals();
+			}
 		});
 	});
 });

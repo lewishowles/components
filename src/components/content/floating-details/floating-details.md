@@ -104,7 +104,7 @@ Whether to only include a summary icon, hiding any provided text. When used, tex
 - type: `string`
 - default: `start`
 
-The preferred panel alignment: `start` aligns the panel's leading edge with the trigger's, `end` aligns the trailing edges. The panel flips to the opposite side if it would clip the viewport edge. This prop does not affect placement or visibility in the narrow sheet presentation.
+The preferred panel alignment: `start` aligns the panel's leading edge with the summary trigger's, `end` aligns the trailing edges. The panel flips to the opposite side if it would clip the viewport edge. This prop does not affect placement or visibility in the narrow sheet presentation.
 
 ### `placement`
 

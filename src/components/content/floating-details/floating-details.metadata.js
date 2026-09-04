@@ -38,7 +38,12 @@ export const floatingDetailsMetadata = {
 			default: false,
 			summary: "Visually hide summary text and show only the icon.",
 		},
-		{ name: "align", type: "string", default: "left", summary: "Panel alignment." },
+		{
+			name: "align",
+			type: "string",
+			default: "start",
+			summary: "Align the panel with the summary trigger.",
+		},
 		{ name: "placement", type: "string", default: "bottom", summary: "Panel placement." },
 		{
 			name: "summaryClasses",
