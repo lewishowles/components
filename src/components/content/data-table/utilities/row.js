@@ -40,7 +40,7 @@ export function getRawRow(row) {
  *     The key for the column.
  */
 export function getRowContent(row, columnKey) {
-	const cell = getPathValue(row, `content.${columnKey}.content`);
+	const cell = row?.content?.[columnKey]?.content;
 
 	if (!isNonEmptyString(cell) && !isNumber(cell) && typeof cell !== "boolean") {
 		return "";

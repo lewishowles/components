@@ -72,10 +72,9 @@ export default function useTableData(data, columns, options = {}) {
 
 	/**
 	 * Get the searchable content of a cell: a configured searchSource, falling
-	 * back to the cell's resolved display content, then lowercased. A search
-	 * content callback overrides the resolved value when it returns a string.
-	 * searchSource is skipped in server mode, where search is handled
-	 * server-side.
+	 * back to the cell's display content, then lowercased. A search content
+	 * callback overrides that value when it returns a string. searchSource is
+	 * skipped in server mode, where search is handled server-side.
 	 *
 	 * @param  {object}  row
 	 *     The raw row provided to the table.
@@ -118,9 +117,9 @@ export default function useTableData(data, columns, options = {}) {
 
 	/**
 	 * Get the sortable content of a cell: a configured sortSource, falling back
-	 * to the cell's resolved display content. A sortable content callback
-	 * overrides the resolved value when it returns a string. sortSource is
-	 * skipped in server mode, where sorting is handled server-side.
+	 * to the cell's display content. A sortable content callback overrides that
+	 * value when it returns a string. sortSource is skipped in server mode,
+	 * where sorting is handled server-side.
 	 *
 	 * @param  {object}  row
 	 *     The raw row provided to the table.

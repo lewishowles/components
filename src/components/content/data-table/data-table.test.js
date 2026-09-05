@@ -67,6 +67,62 @@ describe("data-table", () => {
 			expect(wrapper.find('[data-test="data-table-toolbar"]').exists()).toBe(false);
 		});
 
+		test("passes cell content and the original row to a cell slot", () => {
+			const rawRow = { aircraft: { registration: "G-ABCD" } };
+
+			let receivedCell;
+			let receivedRow;
+
+			const wrapper = deepMount({
+				props: {
+					columns: { registration: { source: "aircraft.registration" } },
+					data: [rawRow],
+					enableSearch: false,
+				},
+				slots: {
+					registration: ({ cell, row }) => {
+						receivedCell = cell;
+						receivedRow = row;
+
+						return cell;
+					},
+				},
+			});
+
+			expect(receivedCell).toBe("G-ABCD");
+			expect(receivedRow).toBe(wrapper.vm.internalData[0].raw);
+			expect(receivedRow).toEqual(rawRow);
+			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("G-ABCD");
+		});
+
+		test("passes a dotted column key value and the original row to a cell slot", () => {
+			const rawRow = { aircraft: { registration: "G-ABCD" } };
+
+			let receivedCell;
+			let receivedRow;
+
+			const wrapper = deepMount({
+				props: {
+					columns: { "aircraft.registration": { label: "Registration" } },
+					data: [rawRow],
+					enableSearch: false,
+				},
+				slots: {
+					"aircraft.registration": ({ cell, row }) => {
+						receivedCell = cell;
+						receivedRow = row;
+
+						return cell;
+					},
+				},
+			});
+
+			expect(receivedCell).toBe("G-ABCD");
+			expect(receivedRow).toBe(wrapper.vm.internalData[0].raw);
+			expect(receivedRow).toEqual(rawRow);
+			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("G-ABCD");
+		});
+
 		test("should expose the component styling hook", () => {
 			const wrapper = mount();
 
@@ -833,6 +889,19 @@ describe("data-table", () => {
 				const content = vm.getRowContent(row, "title");
 
 				expect(content).toEqual("Toy Story");
+			});
+
+			test("should return content for a dotted column key", () => {
+				const wrapper = mount();
+				const vm = wrapper.vm;
+
+				const row = {
+					content: {
+						"aircraft.registration": { content: "G-ABCD" },
+					},
+				};
+
+				expect(vm.getRowContent(row, "aircraft.registration")).toEqual("G-ABCD");
 			});
 
 			describe("should correctly retrieve supported values", () => {

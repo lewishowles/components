@@ -390,6 +390,18 @@ test.describe("data-table", () => {
 			await expect(page.getByTestId("data-table-cell")).toHaveCount(15);
 		});
 
+		test("renders a column source without a cell slot", async ({ mount, page }) => {
+			await mountDataTableRaw(mount, {
+				props: {
+					columns: { registration: { label: "Registration", source: "aircraft.registration" } },
+					data: [{ aircraft: { registration: "G-ABCD" } }],
+					enableSearch: false,
+				},
+			});
+
+			await expect(rowCell(page, 0, 0)).toHaveText("G-ABCD");
+		});
+
 		test("a primary column can be defined", async ({ mount, page }) => {
 			await mountDataTable(mount);
 
