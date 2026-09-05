@@ -7,7 +7,7 @@ export const flashMessagesMetadata = {
 		{
 			name: "namespace",
 			type: "string",
-			default: "default",
+			default: null,
 			summary: "Flash-message namespace to display.",
 		},
 	],

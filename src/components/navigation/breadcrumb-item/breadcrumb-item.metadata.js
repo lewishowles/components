@@ -7,7 +7,7 @@ export const breadcrumbItemMetadata = {
 		{
 			name: "href",
 			type: "string",
-			default: null,
+			default: undefined,
 			summary: "URL for the breadcrumb link.",
 		},
 		{
