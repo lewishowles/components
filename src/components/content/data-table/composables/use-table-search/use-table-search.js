@@ -56,8 +56,7 @@ export default function useTableSearch(internalData, columns, options = {}) {
 				// those, `searchable: false` opts a column out.
 				const columnDefined = columnKey in (columns.value ?? {});
 
-				const searchableColumn =
-					columnDefined && getPathValue(columns.value, `${columnKey}.searchable`) !== false;
+				const searchableColumn = columnDefined && columns.value[columnKey]?.searchable !== false;
 
 				// If this column isn't searchable, we don't need to check it.
 				if (!searchableColumn) {

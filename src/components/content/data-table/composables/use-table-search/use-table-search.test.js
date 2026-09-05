@@ -83,11 +83,30 @@ describe("useTableSearch", () => {
 			expect(filteredRows.value).toEqual([]);
 		});
 
+		test("Honours searchable false for a dotted column key", () => {
+			const columnKey = "aircraft.registration";
+			const rows = [createRow({ [columnKey]: "g-abcd" })];
+			const columns = { [columnKey]: { searchable: false } };
+			const { filteredRows, searchQuery } = createComposable({ rows, columns });
+
+			searchQuery.value = "g-abcd";
+
+			expect(filteredRows.value).toEqual([]);
+		});
+
 		test("Uses a column's searchCallback in place of the default match", () => {
 			const rows = [createRow({ name: "alice" }), createRow({ name: "bob" })];
 
+			let receivedRow;
+
 			const columns = {
-				name: { searchCallback: ({ row }) => row.content.name.configuration.searchable === "bob" },
+				name: {
+					searchCallback: ({ cell, row }) => {
+						receivedRow = row;
+
+						return cell === "bob";
+					},
+				},
 			};
 
 			const { filteredRows, searchQuery } = createComposable({ rows, columns });
@@ -95,6 +114,7 @@ describe("useTableSearch", () => {
 			searchQuery.value = "anything";
 
 			expect(filteredRows.value).toEqual([rows[1]]);
+			expect(receivedRow).toEqual(rows[1]);
 		});
 	});
 });

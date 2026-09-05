@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vite-plus/test";
+import { describe, expect, test, vi } from "vite-plus/test";
 import { ref } from "vue";
 import useTableData from "./use-table-data.js";
 
@@ -81,6 +81,72 @@ describe("useTableData", () => {
 			expect(internalData.value[0].content.title.configuration.searchable).toBe("custom");
 		});
 
+		test("Uses a column's searchSource callback with the unchanged raw row", () => {
+			const rawRow = { aircraft: { registration: "G-ABCD" } };
+
+			let receivedRow;
+
+			const searchSource = (row) => {
+				receivedRow = row;
+
+				return row.aircraft.registration;
+			};
+
+			const { internalData } = createComposable({
+				data: [rawRow],
+				columns: { registration: { searchSource } },
+			});
+
+			expect(internalData.value[0].content.registration.configuration.searchable).toBe("g-abcd");
+			expect(receivedRow).toBe(internalData.value[0].raw);
+			expect(receivedRow).toEqual(rawRow);
+		});
+
+		test("Uses a column's searchSource path", () => {
+			const { internalData } = createComposable({
+				data: [{ aircraft: { registration: "G-ABCD" } }],
+				columns: { registration: { searchSource: "aircraft.registration" } },
+			});
+
+			expect(internalData.value[0].content.registration.configuration.searchable).toBe("g-abcd");
+		});
+
+		test("Skips a column's searchSource callback in server mode", () => {
+			const searchSource = vi.fn(() => "Not searched");
+
+			const { internalData } = createComposable({
+				data: [{ aircraft: { registration: "G-ABCD" } }],
+				columns: { registration: { searchSource, source: "aircraft.registration" } },
+				isServerMode: true,
+			});
+
+			expect(searchSource).not.toHaveBeenCalled();
+			expect(internalData.value[0].content.registration.configuration.searchable).toBe("g-abcd");
+		});
+
+		test("Uses a column's source for searchable content when searchSource is omitted", () => {
+			const { internalData } = createComposable({
+				data: [{ aircraft: { registration: "G-ABCD" } }],
+				columns: { registration: { source: "aircraft.registration" } },
+			});
+
+			expect(internalData.value[0].content.registration.configuration.searchable).toBe("g-abcd");
+		});
+
+		describe("Reduces non-string searchSource content to an empty string", () => {
+			test.for([
+				["boolean", true],
+				["number", 1],
+			])("%s", ([, searchSource]) => {
+				const { internalData } = createComposable({
+					data: [{ title: "Toy Story" }],
+					columns: { title: { searchSource: () => searchSource } },
+				});
+
+				expect(internalData.value[0].content.title.configuration.searchable).toBe("");
+			});
+		});
+
 		test("Uses a column's sortableContentCallback when provided", () => {
 			const { internalData } = createComposable({
 				data: [{ title: "Toy Story" }],
@@ -129,12 +195,20 @@ describe("useTableData", () => {
  *     Test inputs.
  * @param  {object[]}  options.data
  *     The data provided to the table.
+ * @param  {boolean}  options.isServerMode
+ *     Whether the table delegates search to the consumer.
  * @param  {object}  options.columns
  *     The column configuration.
  */
-function createComposable({ data = [], columns = {} } = {}) {
+function createComposable({ data = [], columns = {}, isServerMode = false } = {}) {
 	const dataRef = ref(data);
 	const columnsRef = ref(columns);
+	const isServerModeRef = ref(isServerMode);
 
-	return { data: dataRef, columns: columnsRef, ...useTableData(dataRef, columnsRef) };
+	return {
+		data: dataRef,
+		columns: columnsRef,
+		isServerMode: isServerModeRef,
+		...useTableData(dataRef, columnsRef, { isServerMode: isServerModeRef }),
+	};
 }

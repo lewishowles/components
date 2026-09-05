@@ -600,6 +600,7 @@ watchEffect(() => {
 const { haveData: haveLocalData, internalData } = useTableData(
 	toRef(props, "data"),
 	toRef(props, "columns"),
+	{ isServerMode },
 );
 
 // Whether to show the table controls and result presentation.

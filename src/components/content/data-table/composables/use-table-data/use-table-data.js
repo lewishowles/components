@@ -1,4 +1,4 @@
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { getPathValue, isNonEmptyObject, keys } from "@lewishowles/helpers/object";
 import { isFunction } from "@lewishowles/helpers/general";
@@ -15,8 +15,15 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
  * @param  {object}  columns
  *     A ref of the user's column configuration, used to resolve each
  *     cell's source and content callbacks.
+ * @param  {object}  [options]
+ *     Table-wide state shared with sibling composables.
+ * @param  {object}  [options.isServerMode]
+ *     A ref indicating whether the table is in server mode. When true,
+ *     a configured searchSource is not invoked.
  */
-export default function useTableData(data, columns) {
+export default function useTableData(data, columns, options = {}) {
+	const { isServerMode = ref(false) } = options;
+
 	// Transform the provided data into something more suitable for display in our
 	// table. This includes adding cell configuration for internal tracking, and
 	// removing any rows that seem to be invalid.
@@ -64,9 +71,11 @@ export default function useTableData(data, columns) {
 	const haveData = computed(() => isNonEmptyArray(internalData.value));
 
 	/**
-	 * Get the searchable content of a cell; that is, either the content provided
-	 * by the column searchable content callback, or the lowercase content of the
-	 * cell itself.
+	 * Get the searchable content of a cell: a configured searchSource, falling
+	 * back to the cell's resolved display content, then lowercased. A search
+	 * content callback overrides the resolved value when it returns a string.
+	 * searchSource is skipped in server mode, where search is handled
+	 * server-side.
 	 *
 	 * @param  {object}  row
 	 *     The raw row provided to the table.
@@ -74,10 +83,16 @@ export default function useTableData(data, columns) {
 	 *     The key for the column.
 	 */
 	function getSearchableContent(row, columnKey) {
-		let searchableContent = row[columnKey];
+		const searchSource = columns.value[columnKey]?.searchSource;
 
-		if (!isNonEmptyString(searchableContent)) {
-			searchableContent = "";
+		let searchableContent;
+
+		if (!isServerMode.value && isFunction(searchSource)) {
+			searchableContent = searchSource(row);
+		} else if (!isServerMode.value && isNonEmptyString(searchSource)) {
+			searchableContent = getPathValue(row, searchSource);
+		} else {
+			searchableContent = getDisplayContent(row, columnKey);
 		}
 
 		const searchableContentCallback = columns.value[columnKey]?.searchableContentCallback;
@@ -88,6 +103,10 @@ export default function useTableData(data, columns) {
 			if (isNonEmptyString(callbackResponse)) {
 				searchableContent = callbackResponse;
 			}
+		}
+
+		if (!isNonEmptyString(searchableContent)) {
+			searchableContent = "";
 		}
 
 		if (isNonEmptyString(searchableContent)) {
