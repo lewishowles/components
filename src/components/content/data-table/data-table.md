@@ -256,21 +256,24 @@ Any additional configuration for columns. **Note:** Any column without configura
 
 #### Available configuration keys
 
-| Key                         | Type                | Default | Description                                                                                                                                                          |
-| --------------------------- | ------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `label`                     | `string`            | `""`    | The label to display in the column header.                                                                                                                           |
-| `hidden`                    | `boolean`           | `false` | Whether this column is hidden, allowing hidden columns to be more explicitly defined where helpful.                                                                  |
-| `searchable`                | `boolean`           | `true`  | Whether this column is included in searches. If false, search will ignore this column entirely.                                                                      |
-| `searchCallback`            | `function`          | `null`  | A custom search matcher to apply when searching this column. Given the `searchQuery`, `columnKey`, `cell` and `row`, returns `true` for a matching search.           |
-| `searchableContentCallback` | `function`          | `null`  | Provides custom searchable content for this column. Given the `columnKey` and `rowData`, returns a string to use instead of the cell content.                        |
-| `sortable`                  | `boolean`           | `true`  | Whether this column can be sorted.                                                                                                                                   |
-| `sortableContentCallback`   | `function`          | `null`  | Provides custom sortable content for this column. Given the `columnKey` and `rowData`, returns a string to use instead of the cell content.                          |
-| `align`                     | `string`            | `left`  | The alignment of the column. Anything but "right" will be treated as "left".                                                                                         |
-| `primary`                   | `boolean`           | `false` | Whether this is the primary column. Primary cells render as `<th scope="row">` rather than `<td>`, which helps screen readers associate row headers with their data. |
-| `headingClasses`            | `Vue class binding` | `""`    | Classes to apply only to this column's heading.                                                                                                                      |
-| `cellClasses`               | `Vue class binding` | `""`    | Classes to apply only to this column's cells.                                                                                                                        |
-| `columnClasses`             | `Vue class binding` | `""`    | Classes to apply to both this column's heading and cells.                                                                                                            |
-| `tabularNums`               | `boolean`           | `false` | Whether to apply tabular number formatting (`tabular-nums`) to cells in this column. Useful for numeric columns to ensure digits align vertically.                   |
+| Key                         | Type                 | Default | Description                                                                                                                                                                                  |
+| --------------------------- | -------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`                     | `string`             | `""`    | The label to display in the column header.                                                                                                                                                   |
+| `source`                    | `string \| function` | `null`  | A property path or callback that receives the raw row and returns the cell content. Defaults to the column key.                                                                              |
+| `hidden`                    | `boolean`            | `false` | Whether this column is hidden, allowing hidden columns to be more explicitly defined where helpful.                                                                                          |
+| `searchable`                | `boolean`            | `true`  | Whether this column is included in searches. If false, search will ignore this column entirely.                                                                                              |
+| `searchSource`              | `string \| function` | `null`  | A property path or callback that receives the raw row and returns client-search content. Defaults to `source`. Ignored in server mode.                                                       |
+| `searchCallback`            | `function`           | `null`  | A custom search matcher to apply when searching this column. Given the `searchQuery`, `columnKey`, `cell` and `row`, returns `true` for a matching search.                                   |
+| `searchableContentCallback` | `function`           | `null`  | Provides custom searchable content for this column. Given the `columnKey` and `rowData`, returns a string to use instead of the cell content. It remains supported alongside `searchSource`. |
+| `sortable`                  | `boolean`            | `true`  | Whether this column can be sorted.                                                                                                                                                           |
+| `sortSource`                | `string \| function` | `null`  | A property path or callback that receives the raw row and returns client-sort content. Defaults to `source`. Ignored in server mode.                                                         |
+| `sortableContentCallback`   | `function`           | `null`  | Provides custom sortable content for this column. Given the `columnKey` and `rowData`, returns a string to use instead of the cell content. It remains supported alongside `sortSource`.     |
+| `align`                     | `string`             | `left`  | The alignment of the column. Anything but "right" will be treated as "left".                                                                                                                 |
+| `primary`                   | `boolean`            | `false` | Whether this is the primary column. Primary cells render as `<th scope="row">` rather than `<td>`, which helps screen readers associate row headers with their data.                         |
+| `headingClasses`            | `Vue class binding`  | `""`    | Classes to apply only to this column's heading.                                                                                                                                              |
+| `cellClasses`               | `Vue class binding`  | `""`    | Classes to apply only to this column's cells.                                                                                                                                                |
+| `columnClasses`             | `Vue class binding`  | `""`    | Classes to apply to both this column's heading and cells.                                                                                                                                    |
+| `tabularNums`               | `boolean`            | `false` | Whether to apply tabular number formatting (`tabular-nums`) to cells in this column. Useful for numeric columns to ensure digits align vertically.                                           |
 
 Each heading and cell has a default `min-w-32`, preventing cells from getting too small and allowing a narrow table to scroll. This can be overridden with `columnClasses` (the heading and cells), `headingClasses`, or `cellClasses`.
 
@@ -310,7 +313,7 @@ The current server loading error, or `null` when there is no error. Required in 
 - type: `string`
 - default: `"id"`
 
-The raw row property used to match controlled selection. Dotted paths are supported. In server mode, this identity also preserves selected rows across page windows, so every selectable server row needs a non-null value at this path.
+The raw row property used to match controlled selection. In server mode, this identity also preserves selected rows across page windows, so every selectable server row needs a non-null value at this path.
 
 ### `name`
 

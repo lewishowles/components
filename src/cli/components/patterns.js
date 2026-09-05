@@ -41,8 +41,7 @@ export const patterns = [
 		name: "data-table-server-example",
 		label: "Data table server example",
 		category: "table",
-		summary:
-			"A manually controlled server data table where the consumer fetches and adapts each page.",
+		summary: "A manually controlled server data table where the consumer fetches each page.",
 		stability: "illustrative",
 		template: `<script setup>
 import { isNumber } from "@lewishowles/helpers/number";
@@ -50,8 +49,8 @@ import { isObject } from "@lewishowles/helpers/object";
 import { ref, watch } from "vue";
 
 const columns = {
-  name: { label: "Name", primary: true },
-  email: { label: "Email" },
+  name: { label: "Name", primary: true, source: "profile.name" },
+  email: { label: "Email", source: "profile.email" },
 };
 
 const data = ref([]);
@@ -89,7 +88,7 @@ async function fetchUsers(currentState, signal) {
       throw new Error("The server returned invalid user data.");
     }
 
-    data.value = result.items.map(({ id, name, email }) => ({ id, name, email }));
+    data.value = result.items;
     totalRows.value = result.total;
   } catch (requestError) {
     if (!signal.aborted) {

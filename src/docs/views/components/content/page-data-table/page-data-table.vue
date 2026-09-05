@@ -1017,10 +1017,12 @@
 			<h3 class="text-content-strong mt-8 mb-4 text-lg font-bold">Server-controlled data</h3>
 
 			<p class="mb-4">
-				The application fetches and adapts each page of rows. The table reports search, sort, and
-				pagination changes through
+				The application fetches each page of raw resource rows. Use
+				<code>source</code>
+				to display a nested field or combination of fields directly, with no need to modify the data
+				first. The table reports search, sort, and pagination changes through
 				<code>state</code>
-				without transforming the supplied rows.
+				.
 			</p>
 
 			<code-block v-bind="{ code: serverDataTableSource }" />

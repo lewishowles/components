@@ -12,8 +12,8 @@ import { isObject } from "@lewishowles/helpers/object";
 import { ref, watch } from "vue";
 
 const columns = {
-	name: { label: "Name", primary: true },
-	email: { label: "Email" },
+	name: { label: "Name", primary: true, source: "profile.name" },
+	email: { label: "Email", source: "profile.email" },
 };
 
 const data = ref([]);
@@ -29,7 +29,7 @@ const state = ref({
 });
 
 /**
- * Load and adapt the current page of users.
+ * Load the current page of users.
  *
  * @param  {object}  currentState
  *     The search, sort, and pagination state reported by the table.
@@ -61,11 +61,7 @@ async function fetchUsers(currentState, signal) {
 			throw new Error("The server returned invalid user data.");
 		}
 
-		data.value = result.items.map(({ id, name, email }) => ({
-			id,
-			name,
-			email,
-		}));
+		data.value = result.items;
 
 		totalRows.value = result.total;
 	} catch (requestError) {
