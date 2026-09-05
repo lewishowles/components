@@ -6,8 +6,8 @@ export const accordionGroupMetadata = {
 	props: [
 		{
 			name: "headingLevel",
-			type: "number",
-			default: 2,
+			type: "String",
+			default: "h2",
 			summary: "Heading level used by child accordion panels.",
 		},
 	],
