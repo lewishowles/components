@@ -13,8 +13,8 @@ export const dataTableMetadata = {
 		},
 		{
 			name: "columns",
-			type: "array | object",
-			default: null,
+			type: "object",
+			default: "{}",
 			summary: "Column configuration.",
 		},
 		{
@@ -34,7 +34,7 @@ export const dataTableMetadata = {
 		{
 			name: "name",
 			type: "string",
-			default: "items",
+			default: null,
 			summary:
 				"A name for the table so it can remember column visibility and density choices between visits.",
 		},

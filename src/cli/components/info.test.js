@@ -1,4 +1,5 @@
 import { describe, expect, test, vi } from "vite-plus/test";
+import { dataTableMetadata } from "../../components/content/data-table/data-table.metadata.js";
 import { _test, printInfo } from "./info.js";
 
 const { formatProp, formatSlot, parseInfoArguments, pushSection } = _test;
@@ -172,5 +173,19 @@ describe("printInfo", () => {
 		printInfo({ name: "ui-button", category: "interaction", summary: "A button.", props: [] }, ui);
 
 		expect(ui.print.mock.calls[0][0]).toContain("snippet ui-button");
+	});
+
+	test("prints data-table columns and name metadata accurately", () => {
+		const ui = createUi();
+
+		printInfo(dataTableMetadata, ui);
+
+		const output = ui.print.mock.calls[0][0];
+
+		expect(output).toContain("columns");
+		expect(output).toContain("object");
+		expect(output).toContain("default: {}");
+		expect(output).toContain("name");
+		expect(output).not.toContain("default: items");
 	});
 });
