@@ -80,7 +80,7 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 		}
 
 		const definitions = keys(columns.value).reduce((definitions, columnKey) => {
-			const userConfiguration = getPathValue(columns.value, columnKey) || {};
+			const userConfiguration = columns.value[columnKey] || {};
 
 			// If this column is hidden by configuration, we don't add it at all.
 			const hiddenByConfiguration = getPathValue(userConfiguration, "hidden") === true;
@@ -93,7 +93,7 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 			// to add it (as that preference may change, and we want to show the
 			// checkbox), but we want to mark it as hidden.
 
-			const hiddenByPreference = getPathValue(columnVisibility.value, columnKey) === false;
+			const hiddenByPreference = columnVisibility.value[columnKey] === false;
 
 			definitions[columnKey] = {
 				label: columnKey,
@@ -154,7 +154,7 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 		const visibility = {};
 
 		for (const columnKey of keys(columns.value)) {
-			const userConfiguration = getPathValue(columns.value, columnKey) || {};
+			const userConfiguration = columns.value[columnKey] || {};
 			const hiddenByConfiguration = getPathValue(userConfiguration, "hidden") === true;
 
 			if (hiddenByConfiguration) {
@@ -206,7 +206,7 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 	 *     The column key to retrieve the label for.
 	 */
 	function getColumnLabel(columnKey) {
-		return getPathValue(columnDefinitions.value, `${columnKey}.label`);
+		return columnDefinitions.value[columnKey]?.label;
 	}
 
 	/**

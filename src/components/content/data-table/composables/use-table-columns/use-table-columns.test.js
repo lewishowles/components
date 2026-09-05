@@ -92,6 +92,25 @@ describe("useTableColumns", () => {
 			expect(visibleColumnDefinitions.value).toHaveProperty("year");
 		});
 
+		test("Keeps a dotted column ID as a literal configuration and visibility key", () => {
+			localStorage.getItem.mockReturnValue(JSON.stringify({ "nested.key": false }));
+
+			const { columnDefinitions, columnVisibility, getColumnLabel } = createComposable({
+				columns: {
+					"nested.key": { label: "Nested", sortable: false },
+				},
+				name: "nested-table",
+			});
+
+			expect(columnVisibility.value).toEqual({ "nested.key": false });
+
+			expect(columnDefinitions.value["nested.key"]).toEqual(
+				expect.objectContaining({ label: "Nested", sortable: false, visible: false }),
+			);
+
+			expect(getColumnLabel("nested.key")).toBe("Nested");
+		});
+
 		test("Switches to the new table's stored column visibility when the name changes", async () => {
 			localStorage.getItem.mockImplementation((key) => {
 				if (key === "data-table:new-table:columns") {
