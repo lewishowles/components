@@ -19,7 +19,7 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
  *     Table-wide state shared with sibling composables.
  * @param  {object}  [options.isServerMode]
  *     A ref indicating whether the table is in server mode. When true,
- *     a configured searchSource is not invoked.
+ *     configured searchSource and sortSource callbacks are not invoked.
  */
 export default function useTableData(data, columns, options = {}) {
 	const { isServerMode = ref(false) } = options;
@@ -117,9 +117,10 @@ export default function useTableData(data, columns, options = {}) {
 	}
 
 	/**
-	 * Get the sortable content of a cell; that is, either the content provided by
-	 * the column sortable content callback, or the lowercase content of the cell
-	 * itself.
+	 * Get the sortable content of a cell: a configured sortSource, falling back
+	 * to the cell's resolved display content. A sortable content callback
+	 * overrides the resolved value when it returns a string. sortSource is
+	 * skipped in server mode, where sorting is handled server-side.
 	 *
 	 * @param  {object}  row
 	 *     The raw row provided to the table.
@@ -127,7 +128,17 @@ export default function useTableData(data, columns, options = {}) {
 	 *     The key for the column.
 	 */
 	function getSortableContent(row, columnKey) {
-		let sortableContent = row[columnKey];
+		const sortSource = columns.value[columnKey]?.sortSource;
+
+		let sortableContent;
+
+		if (!isServerMode.value && isFunction(sortSource)) {
+			sortableContent = sortSource(row);
+		} else if (!isServerMode.value && isNonEmptyString(sortSource)) {
+			sortableContent = getPathValue(row, sortSource);
+		} else {
+			sortableContent = getDisplayContent(row, columnKey);
+		}
 
 		const sortableContentCallback = columns.value[columnKey]?.sortableContentCallback;
 

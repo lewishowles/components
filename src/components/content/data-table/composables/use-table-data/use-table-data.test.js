@@ -156,6 +156,72 @@ describe("useTableData", () => {
 			expect(internalData.value[0].content.title.configuration.sortable).toBe("custom");
 		});
 
+		test("Uses a column's sortSource callback with the unchanged raw row", () => {
+			const rawRow = { aircraft: { passengerCount: 4 } };
+
+			let receivedRow;
+
+			const sortSource = (row) => {
+				receivedRow = row;
+
+				return row.aircraft.passengerCount;
+			};
+
+			const { internalData } = createComposable({
+				data: [rawRow],
+				columns: { passengers: { sortSource } },
+			});
+
+			expect(internalData.value[0].content.passengers.configuration.sortable).toBe(4);
+			expect(receivedRow).toBe(internalData.value[0].raw);
+			expect(receivedRow).toEqual(rawRow);
+		});
+
+		test("Uses a column's sortSource path", () => {
+			const { internalData } = createComposable({
+				data: [{ aircraft: { registration: "G-ABCD" } }],
+				columns: { registration: { sortSource: "aircraft.registration" } },
+			});
+
+			expect(internalData.value[0].content.registration.configuration.sortable).toBe("g-abcd");
+		});
+
+		test("Skips a column's sortSource callback in server mode", () => {
+			const sortSource = vi.fn(() => "Not sorted");
+
+			const { internalData } = createComposable({
+				data: [{ aircraft: { registration: "G-ABCD" } }],
+				columns: { registration: { sortSource, source: "aircraft.registration" } },
+				isServerMode: true,
+			});
+
+			expect(sortSource).not.toHaveBeenCalled();
+			expect(internalData.value[0].content.registration.configuration.sortable).toBe("g-abcd");
+		});
+
+		test("Uses a column's source for sortable content when sortSource is omitted", () => {
+			const { internalData } = createComposable({
+				data: [{ aircraft: { registration: "G-ABCD" } }],
+				columns: { registration: { source: "aircraft.registration" } },
+			});
+
+			expect(internalData.value[0].content.registration.configuration.sortable).toBe("g-abcd");
+		});
+
+		describe("Preserves non-string sortSource content", () => {
+			test.for([
+				["boolean", true],
+				["number", 1],
+			])("%s", ([, sortSource]) => {
+				const { internalData } = createComposable({
+					data: [{ title: "Toy Story" }],
+					columns: { title: { sortSource: () => sortSource } },
+				});
+
+				expect(internalData.value[0].content.title.configuration.sortable).toBe(sortSource);
+			});
+		});
+
 		test("Uses a column's source path for display content", () => {
 			const { internalData } = createComposable({
 				data: [{ aircraft: { registration: "G-ABCD" } }],
