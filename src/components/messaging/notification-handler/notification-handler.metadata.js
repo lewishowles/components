@@ -13,13 +13,13 @@ export const notificationHandlerMetadata = {
 		{
 			name: "dateFormat",
 			type: "object",
-			default: undefined,
+			default: { year: "numeric", day: "numeric", month: "long" },
 			summary: "Intl date formatting options for notification dates.",
 		},
 		{
 			name: "align",
 			type: "string",
-			default: "right",
+			default: "end",
 			values: ["left", "right"],
 			summary: "Horizontal alignment for the notification panel.",
 		},
@@ -32,7 +32,7 @@ export const notificationHandlerMetadata = {
 		{
 			name: "allowReload",
 			type: "boolean",
-			default: false,
+			default: true,
 			summary: "Show the reload action.",
 		},
 		{
@@ -50,7 +50,7 @@ export const notificationHandlerMetadata = {
 		{
 			name: "readNotificationCount",
 			type: "number",
-			default: 0,
+			default: null,
 			summary: "Externally supplied read notification count.",
 		},
 	],

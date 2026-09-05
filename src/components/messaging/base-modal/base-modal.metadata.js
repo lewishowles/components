@@ -7,7 +7,7 @@ export const baseModalMetadata = {
 		{
 			name: "initiallyOpen",
 			type: "boolean",
-			default: false,
+			default: true,
 			summary: "Open the dialog when it mounts.",
 		},
 		{
