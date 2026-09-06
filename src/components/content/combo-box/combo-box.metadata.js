@@ -37,13 +37,13 @@ export const comboBoxMetadata = {
 		{
 			name: "placement",
 			type: "string",
-			default: "bottom",
+			default: "below",
 			summary: "Preferred dropdown placement.",
 		},
 		{
 			name: "align",
 			type: "string",
-			default: "left",
+			default: "start",
 			summary: "Dropdown alignment.",
 		},
 		{

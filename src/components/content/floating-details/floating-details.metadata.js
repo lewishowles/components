@@ -44,11 +44,11 @@ export const floatingDetailsMetadata = {
 			default: "start",
 			summary: "Align the panel with the summary trigger.",
 		},
-		{ name: "placement", type: "string", default: "bottom", summary: "Panel placement." },
+		{ name: "placement", type: "string", default: "below", summary: "Panel placement." },
 		{
 			name: "summaryClasses",
 			type: "string | array | object",
-			default: null,
+			default: "button--muted",
 			summary: "Classes applied to the summary control.",
 		},
 		{
