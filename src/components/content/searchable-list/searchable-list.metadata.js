@@ -7,9 +7,9 @@ export const searchableListMetadata = {
 		{ name: "data", type: "array", required: true, summary: "Items to search and render." },
 		{
 			name: "search",
-			type: "string",
-			default: "",
-			summary: "Initial or externally controlled search query.",
+			type: "function",
+			default: (item) => item,
+			summary: "A function used to map each item to the content that should be searched.",
 		},
 		{
 			name: "placeholder",
@@ -20,13 +20,13 @@ export const searchableListMetadata = {
 		{
 			name: "exclude",
 			type: "array",
-			default: null,
+			default: [],
 			summary: "Fields to exclude from search.",
 		},
 		{
 			name: "include",
 			type: "array",
-			default: null,
+			default: [],
 			summary: "Fields to include in search.",
 		},
 	],

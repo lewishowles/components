@@ -7,8 +7,8 @@ export const tabGroupMetadata = {
 		{
 			name: "activation",
 			type: "string",
-			default: "manual",
-			values: ["manual", "automatic"],
+			default: "auto",
+			values: ["auto", "manual"],
 			summary: "Whether tabs activate on focus or explicit selection.",
 		},
 		{
@@ -20,7 +20,7 @@ export const tabGroupMetadata = {
 		{
 			name: "wrap",
 			type: "boolean",
-			default: true,
+			default: false,
 			summary: "Wrap keyboard navigation from last tab to first.",
 		},
 	],
