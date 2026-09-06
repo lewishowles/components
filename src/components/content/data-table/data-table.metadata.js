@@ -77,14 +77,14 @@ export const dataTableMetadata = {
 		},
 		{
 			name: "headingClasses",
-			type: "string | array | object",
-			default: null,
+			type: "string",
+			default: "font-bold text-content-strong",
 			summary: "Classes applied to heading cells.",
 		},
 		{
 			name: "cellClasses",
-			type: "string | array | object",
-			default: null,
+			type: "string",
+			default: "text-content-muted",
 			summary: "Classes applied to body cells.",
 		},
 		{

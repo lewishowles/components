@@ -367,14 +367,14 @@ The heading level to use for any introduction to this table. Choose it based on 
 ### `headingClasses`
 
 - type: `string`
-- default: `font-bold text-grey-700 dark:text-white/60`
+- default: `font-bold text-content-strong`
 
 Additional classes to apply to all headings in the table, merged with any column-level `headingClasses`. Cell padding will always apply.
 
 ### `cellClasses`
 
 - type: `string`
-- default: `text-sm text-grey-800 dark:text-grey-100`
+- default: `text-content-muted`
 
 Additional classes to apply to all standard cells in the table, merged with any column-level `cellClasses`. Cell padding will always apply.
 

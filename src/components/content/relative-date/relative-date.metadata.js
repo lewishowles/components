@@ -18,8 +18,8 @@ export const relativeDateMetadata = {
 		},
 		{
 			name: "relativeTo",
-			type: "string | number | Date",
-			default: undefined,
+			type: "string | number | Date | object",
+			default: null,
 			summary: "Reference date used for comparison.",
 		},
 		{

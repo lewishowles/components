@@ -10,19 +10,19 @@ export const sparkBarMetadata = {
 		{
 			name: "trackClasses",
 			type: "string | array | object",
-			default: "h-1 rounded-full bg-grey-200 dark:bg-white/20",
+			default: undefined,
 			summary: "Classes applied to the track.",
 		},
 		{
 			name: "barClasses",
 			type: "string | array | object",
-			default: "h-full rounded-full bg-primary",
+			default: undefined,
 			summary: "Classes applied to the filled bar.",
 		},
 		{
 			name: "valueClasses",
 			type: "string | array | object",
-			default: "text-sm",
+			default: undefined,
 			summary: "Classes applied to the value display.",
 		},
 	],
