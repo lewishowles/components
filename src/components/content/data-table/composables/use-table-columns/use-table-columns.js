@@ -16,14 +16,12 @@ import { useStorage } from "@vueuse/core";
  * @param  {string|Ref<string>|Function}  options.name
  *     The table's name as a plain value, ref, or getter. It identifies where
  *     column visibility is stored. Without a name, visibility is not stored.
- * @param  {object}  options.haveData
- *     A ref reflecting whether the table has any data.
  * @param  {object}  options.headingClasses
  *     A ref of the table-level heading classes.
  * @param  {object}  options.cellClasses
  *     A ref of the table-level cell classes.
  */
-export default function useTableColumns({ columns, name, haveData, headingClasses, cellClasses }) {
+export default function useTableColumns({ columns, name, headingClasses, cellClasses }) {
 	// Our user-selected table density from the fragment component.
 	const tableDensity = ref(null);
 	// Our available table density options, as provided by the `data-table-density`
@@ -75,7 +73,7 @@ export default function useTableColumns({ columns, name, haveData, headingClasse
 	// the user, which means that any column not configured will not be displayed by
 	// default.
 	const columnDefinitions = computed(() => {
-		if (!haveData.value || !isNonEmptyObject(columns.value)) {
+		if (!isNonEmptyObject(columns.value)) {
 			return {};
 		}
 

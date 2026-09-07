@@ -59,7 +59,7 @@ A screen-reader-only hint rendered inside the caption area, announcing which col
 
 - default: "No data to display."
 
-The message to display when no data could be found for the table.
+The message to display in place of the table when no data could be found. Search, custom toolbar controls, and configuration remain available above the message when enabled.
 
 ### `loading-label`
 

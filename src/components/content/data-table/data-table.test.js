@@ -61,6 +61,69 @@ describe("data-table", () => {
 	});
 
 	describe("Render", () => {
+		test.each(["client", "server"])(
+			"Keeps toolbar controls when %s data becomes empty",
+			async (mode) => {
+				// Start with rows to verify that filtering preserves the existing controls.
+				const wrapper = deepMount({
+					props: {
+						mode,
+						totalRows: 1,
+						name: `empty-results-${mode}`,
+						columns: { title: { label: "Title" }, release_year: { label: "Release year" } },
+						loading: false,
+						error: null,
+					},
+					slots: {
+						"post-search": '<button type="button">Filter rows</button>',
+						"pre-configuration": '<button type="button">Export rows</button>',
+					},
+				});
+
+				// The toolbar must stay mounted as results disappear and return.
+				const toolbar = wrapper.get('[data-test="data-table-toolbar"]').element;
+
+				await wrapper.setProps({ data: [], totalRows: 0 });
+
+				expect(wrapper.get('[data-test="data-table-toolbar"]').element).toBe(toolbar);
+				expect(wrapper.find('[data-test="data-table-search-input"]').exists()).toBe(true);
+				expect(wrapper.get('[data-test="data-table-toolbar"]').text()).toContain("Filter rows");
+				expect(wrapper.get('[data-test="data-table-toolbar"]').text()).toContain("Export rows");
+				expect(wrapper.find('[data-test="data-table-display-options"]').exists()).toBe(true);
+				expect(
+					wrapper
+						.findAll('[data-test="data-table-columns-checkbox"]')
+						.map((checkbox) => checkbox.text()),
+				).toEqual(["Title", "Release year"]);
+				expect(
+					wrapper.findAll('[data-test="data-table-columns"] input[type="checkbox"]'),
+				).toHaveLength(2);
+				expect(wrapper.get('[data-test="data-table-no-data"]').text()).toContain(
+					"No data to display.",
+				);
+				expect(wrapper.find('[data-test="data-table-table"]').exists()).toBe(false);
+
+				await wrapper.setProps({ data: [sampleRow], totalRows: 1 });
+
+				expect(wrapper.get('[data-test="data-table-toolbar"]').element).toBe(toolbar);
+				expect(wrapper.find('[data-test="data-table-no-data"]').exists()).toBe(false);
+				expect(wrapper.find('[data-test="data-table-table"]').exists()).toBe(true);
+			},
+		);
+
+		test("Shows a custom empty message and hides the toolbar when it has nothing to show", () => {
+			// Empty tables retain the same toolbar visibility condition as populated tables.
+			const wrapper = deepMount({
+				props: { data: [], enableSearch: false },
+				slots: { "no-data-message": "No matching records." },
+			});
+
+			expect(wrapper.find('[data-test="data-table-toolbar"]').exists()).toBe(false);
+			expect(wrapper.get('[data-test="data-table-no-data"]').text()).toContain(
+				"No matching records.",
+			);
+		});
+
 		test("hides the toolbar when search, configuration, and toolbar slots are absent", () => {
 			const wrapper = deepMount({ enableSearch: false });
 

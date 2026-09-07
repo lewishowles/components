@@ -476,7 +476,10 @@
 
 				<template #default-value>"No data to display."</template>
 
-				<p>The message to display when no data could be found for the table.</p>
+				<p>
+					The message to display in place of the table when no data could be found. Search, custom
+					toolbar controls, and configuration remain available above the message when enabled.
+				</p>
 			</component-slot>
 
 			<component-slot id="slot-loading-label">
@@ -1030,6 +1033,7 @@
 
 		<component-playgrounds>
 			<playground-data-table />
+			<playground-data-table-empty-results />
 		</component-playgrounds>
 	</component-page>
 </template>
@@ -1037,4 +1041,5 @@
 <script setup>
 import serverDataTableSource from "./examples/server-data-table.vue?raw";
 import PlaygroundDataTable from "./fragments/playground-data-table.vue";
+import PlaygroundDataTableEmptyResults from "./fragments/playground-data-table-empty-results.vue";
 </script>

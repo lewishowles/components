@@ -33,11 +33,7 @@
 		</data-table-header>
 
 		<div class="text-sm">
-			<alert-message v-if="!haveData" data-test="data-table-no-data">
-				<slot name="no-data-message">No data to display.</slot>
-			</alert-message>
-
-			<div v-else class="flex flex-col gap-6">
+			<div class="flex flex-col gap-6">
 				<data-table-toolbar
 					ref="dataTableToolbar"
 					v-bind="{ enableSearch, tableDensityOptions }"
@@ -77,7 +73,12 @@
 					</template>
 				</data-table-toolbar>
 
+				<alert-message v-if="!haveData" data-test="data-table-no-data">
+					<slot name="no-data-message">No data to display.</slot>
+				</alert-message>
+
 				<div
+					v-else
 					:class="scrollIndicatorClasses"
 					data-part="scroll-indicators"
 					data-test="data-table-scroll-indicators"
@@ -276,6 +277,7 @@
 				</div>
 
 				<data-table-footer
+					v-if="haveData"
 					v-bind="{
 						enableSelection,
 						selectedCount: selectedRowCount,
@@ -627,7 +629,6 @@ const {
 } = useTableColumns({
 	columns: toRef(props, "columns"),
 	name: toRef(props, "name"),
-	haveData,
 	headingClasses: toRef(props, "headingClasses"),
 	cellClasses: toRef(props, "cellClasses"),
 });

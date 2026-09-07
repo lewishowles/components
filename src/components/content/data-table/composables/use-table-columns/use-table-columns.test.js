@@ -37,12 +37,6 @@ describe("useTableColumns", () => {
 	});
 
 	describe("columnDefinitions", () => {
-		test("Is empty when there is no data", () => {
-			const { columnDefinitions } = createComposable({ columns: { title: {} }, haveData: false });
-
-			expect(columnDefinitions.value).toEqual({});
-		});
-
 		test("Is empty when no columns are configured", () => {
 			const { columnDefinitions } = createComposable({ columns: {} });
 
@@ -221,34 +215,23 @@ describe("useTableColumns", () => {
  *     The user's column configuration.
  * @param  {string|Ref<string>}  options.name
  *     The table name used to identify stored column visibility.
- * @param  {boolean}  options.haveData
- *     Whether the table has data.
  * @param  {string}  options.headingClasses
  *     The table-level heading classes.
  * @param  {string}  options.cellClasses
  *     The table-level cell classes.
  */
-function createComposable({
-	columns = {},
-	name,
-	haveData = true,
-	headingClasses = "",
-	cellClasses = "",
-} = {}) {
+function createComposable({ columns = {}, name, headingClasses = "", cellClasses = "" } = {}) {
 	const columnsRef = ref(columns);
 	const nameRef = ref(name);
-	const haveDataRef = ref(haveData);
 	const headingClassesRef = ref(headingClasses);
 	const cellClassesRef = ref(cellClasses);
 
 	return {
 		columns: columnsRef,
 		name: nameRef,
-		haveData: haveDataRef,
 		...useTableColumns({
 			columns: columnsRef,
 			name,
-			haveData: haveDataRef,
 			headingClasses: headingClassesRef,
 			cellClasses: cellClassesRef,
 		}),
