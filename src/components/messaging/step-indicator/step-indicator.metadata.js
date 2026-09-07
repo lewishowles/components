@@ -7,7 +7,8 @@ export const stepIndicatorMetadata = {
 		{
 			name: "currentStep",
 			type: "number",
-			required: true,
+			required: false,
+			default: 1,
 			summary: "The current 1-based step.",
 		},
 		{

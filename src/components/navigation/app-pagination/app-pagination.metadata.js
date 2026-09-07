@@ -7,7 +7,8 @@ export const appPaginationMetadata = {
 		{
 			name: "count",
 			type: "number",
-			required: true,
+			required: false,
+			default: 0,
 			summary: "Total number of items.",
 		},
 		{
