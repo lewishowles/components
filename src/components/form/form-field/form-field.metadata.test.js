@@ -57,6 +57,12 @@ describe("form-field metadata", () => {
 	});
 
 	describe("type prop", () => {
+		test("Reports the runtime type default", () => {
+			expect(formFieldMetadata.props.find((prop) => prop.name === "type")).toMatchObject({
+				default: null,
+			});
+		});
+
 		test("documents all supported field types", () => {
 			const typeProp = formFieldMetadata.props.find((p) => p.name === "type");
 

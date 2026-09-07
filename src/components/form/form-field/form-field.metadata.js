@@ -8,7 +8,7 @@ export const formFieldMetadata = {
 		{
 			name: "type",
 			type: "string",
-			default: "text",
+			default: null,
 			values: [
 				"text",
 				"email",

@@ -38,7 +38,7 @@ export const userAvatarsMetadata = {
 		{
 			name: "initialsColourClasses",
 			type: "string | array | object",
-			default: "bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200",
+			default: "bg-primary-subtle text-primary",
 			summary: "Classes applied to initials fallback avatars.",
 		},
 		{

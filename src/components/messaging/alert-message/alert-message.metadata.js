@@ -7,7 +7,7 @@ export const alertMessageMetadata = {
 		{
 			name: "type",
 			type: "string",
-			default: "info",
+			default: "muted",
 			values: ["success", "error", "warning", "info", "muted"],
 			summary: "Visual and semantic status for the alert.",
 		},
