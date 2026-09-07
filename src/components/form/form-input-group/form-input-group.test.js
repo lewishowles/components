@@ -247,7 +247,11 @@ describe("form-input-group", () => {
 
 		describe("labelId", () => {
 			test("links the fieldset to its legend", () => {
-				const wrapper = deepMount({ props: { id: "access-level" } });
+				const wrapper = deepMount({
+					props: { id: "access-level" },
+					slots: { default: () => "Access level" },
+				});
+
 				const fieldset = wrapper.find("fieldset");
 				const legend = wrapper.find("legend");
 
