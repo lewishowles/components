@@ -15,14 +15,14 @@
 
 	.form-input {
 		padding-block: 0.375em;
-		padding-inline: calc(var(--spacing) * 3);
+		padding-inline: 0.75em;
 	}
 
 	.form-select {
 		appearance: none;
 		padding-block: 0.375em;
 		padding-inline-end: 2.5em;
-		padding-inline-start: calc(var(--spacing) * 3);
+		padding-inline-start: 0.75em;
 	}
 
 	:where([data-part="field-wrapper"]:has(.form-select)) {
@@ -61,7 +61,7 @@
 			border-radius: inherit;
 			color: var(--control-content);
 			cursor: pointer;
-			margin-inline-end: calc(var(--spacing) * 3);
+			margin-inline-end: 0.75em;
 			padding-block: calc(0.375em - 1px);
 			padding-inline: 1em;
 			transition-duration: var(--default-transition-duration);
@@ -124,13 +124,13 @@
 		appearance: none;
 		box-shadow: 0 0 0 var(--ring-size) var(--ring-colour);
 		flex-shrink: 0;
-		height: calc(var(--spacing) * 4);
-		margin-block-start: var(--spacing);
+		height: 1em;
+		margin-block-start: 0.25em;
 		outline: 0;
 		transition-duration: var(--default-transition-duration);
 		transition-property: all;
 		transition-timing-function: var(--default-transition-timing-function);
-		width: calc(var(--spacing) * 4);
+		width: 1em;
 
 		&:hover {
 			--ring-size: 2px;
@@ -200,8 +200,8 @@
 		align-items: center;
 		background-color: var(--surface-elevated);
 		border: 1px solid var(--border);
-		gap: calc(var(--spacing) * 3);
-		padding: calc(var(--spacing) * 3);
+		gap: 0.75em;
+		padding: 0.75em;
 		position: relative;
 		z-index: 0;
 
@@ -232,7 +232,7 @@
 
 	:where([data-part="options"][data-layout="stacked"]) {
 		flex-direction: column;
-		gap: calc(var(--spacing) * 2);
+		gap: 0.5em;
 
 		&:has([data-variant="card"]) {
 			gap: 0;
@@ -246,7 +246,7 @@
 	:where(
 		[data-part="options"] [data-part="option"]:not([data-variant="card"]) [data-part="label"]
 	) {
-		padding-inline: calc(var(--spacing) * 3);
+		padding-inline: 0.75em;
 	}
 
 	[data-part="options"][data-layout="stacked"] {
@@ -263,7 +263,7 @@
 
 	[data-part="options"][data-layout="inline"] {
 		flex-direction: column;
-		gap: calc(var(--spacing) * 2);
+		gap: 0.5em;
 
 		&:has([data-variant="card"]) {
 			gap: 0;
@@ -286,7 +286,7 @@
 		@container (min-width: theme(--container-sm)) {
 			flex-direction: row;
 			flex-wrap: wrap;
-			gap: calc(var(--spacing) * 10);
+			gap: 2.5em;
 
 			&:has([data-variant="card"]) {
 				gap: 0;
@@ -301,7 +301,7 @@
 
 			[data-part="option"][data-variant="card"] {
 				border-radius: 0;
-				padding-inline: calc(var(--spacing) * 5);
+				padding-inline: 1.25em;
 			}
 
 			[data-part="option"][data-variant="card"] [data-part="label"] {
@@ -327,7 +327,7 @@
 	}
 
 	[data-part="field"][data-state="invalid"] {
-		padding-inline-start: calc(var(--spacing) * 5);
+		padding-inline-start: 1.25em;
 		position: relative;
 	}
 
@@ -337,7 +337,7 @@
 		inset-block: 0;
 		inset-inline-start: 0;
 		position: absolute;
-		width: calc(var(--spacing) * 1);
+		width: 0.25em;
 	}
 
 	[data-component="form-combo-box"] {
@@ -415,7 +415,7 @@
 				color: var(--control-content);
 				cursor: pointer;
 				display: inline-flex;
-				gap: calc(var(--spacing) * 2);
+				gap: 0.5em;
 				padding-block: calc(0.375em - 1px);
 				padding-inline: 1em;
 				position: relative;
@@ -493,9 +493,9 @@
 
 		& > svg {
 			flex-shrink: 0;
-			height: calc(var(--spacing) * 4);
+			height: 1em;
 			stroke: currentColor;
-			width: calc(var(--spacing) * 4);
+			width: 1em;
 		}
 	}
 
