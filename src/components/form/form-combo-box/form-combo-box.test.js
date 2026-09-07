@@ -406,6 +406,76 @@ describe("form-combo-box", () => {
 	});
 
 	describe("Status and slots", () => {
+		test("keeps the default visible and announced status messages", async () => {
+			const wrapper = mountDeep({
+				props: { loading: true },
+				slots: { default: "Pilot" },
+			});
+
+			wrapper.vm.openResults();
+			await nextTick();
+
+			expect(wrapper.find('[data-part="status"]').text()).toContain("Loading…");
+			expect(wrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
+				"Loading options.",
+			);
+
+			await wrapper.setProps({ loading: false });
+
+			expect(wrapper.find('[data-part="status"]').text()).toBe("No options available.");
+			expect(wrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
+				"No options available.",
+			);
+
+			await wrapper.setProps({ options: ["Amelia Earhart"] });
+			wrapper.vm.query = "Unknown";
+			await nextTick();
+
+			expect(wrapper.find('[data-part="status"]').text()).toBe('No results found for "Unknown"');
+			expect(wrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
+				'No results found for "Unknown".',
+			);
+		});
+
+		test("keeps result counts and selection announcements independent of status slots", async () => {
+			const wrapper = mountDeep({
+				props: { options, labelKey: "name", valueKey: "id" },
+				slots: {
+					default: "Pilot",
+					loading: "Loading pilots",
+					empty: "No pilots",
+					"no-results": "No matches",
+				},
+			});
+
+			wrapper.vm.openResults();
+			await nextTick();
+
+			expect(wrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
+				"2 results found. Use the arrow keys to navigate.",
+			);
+
+			wrapper.vm.query = "Amelia";
+			await nextTick();
+
+			expect(wrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
+				"1 result found. Use the arrow keys to navigate.",
+			);
+
+			wrapper.vm.selectOption(wrapper.vm.internalItems[0].id);
+			await nextTick();
+
+			expect(wrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
+				"Selected Amelia Earhart.",
+			);
+
+			await wrapper.setProps({ modelValue: null });
+
+			expect(wrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
+				"Selection cleared.",
+			);
+		});
+
 		test("shows the loading slot before the empty state", async () => {
 			const loadingWrapper = mountDeep({
 				props: { loading: true },
@@ -420,6 +490,9 @@ describe("form-combo-box", () => {
 			await nextTick();
 
 			expect(loadingWrapper.find('[data-part="status"]').text()).toContain("Loading pilots");
+			expect(loadingWrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
+				"Loading pilots",
+			);
 			expect(loadingWrapper.find('[data-test="form-combo-box-empty"]').exists()).toBe(false);
 		});
 
@@ -433,6 +506,9 @@ describe("form-combo-box", () => {
 			await nextTick();
 
 			expect(emptyWrapper.find('[data-part="status"]').text()).toContain("No pilots");
+			expect(emptyWrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
+				"No pilots",
+			);
 		});
 
 		test("shows the no-results slot when the query has no matches", async () => {
@@ -449,6 +525,9 @@ describe("form-combo-box", () => {
 			await nextTick();
 
 			expect(noResultsWrapper.find('[data-part="status"]').text()).toBe("No pilot matches Unknown");
+			expect(noResultsWrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
+				"No pilot matches Unknown",
+			);
 			expect(noResultsWrapper.find('[data-test="form-combo-box-empty"]').exists()).toBe(false);
 		});
 

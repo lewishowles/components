@@ -54,19 +54,21 @@ Keep option content non-interactive. Nested buttons, links, and other controls c
 
 ### `loading`
 
-Content shown while `loading` is true. Loading takes priority over the empty and no-results states.
+Content shown while `loading` is true and used for the aria-live announcement while the results are open. Loading takes priority over the empty and no-results states.
 
 ### `empty`
 
-Content shown when no options were supplied.
+Content shown when no options were supplied and used for the aria-live announcement while the results are open.
 
 ### `no-results`
 
-Content shown when options exist but none match the current query.
+Content shown when options exist but none match the current query and used for the aria-live announcement while the results are open.
 
 | Slot prop | Type     | Description        |
 | --------- | -------- | ------------------ |
 | `query`   | `string` | The current query. |
+
+Keep loading, empty, and no-results slot content suitable for reading aloud; any non-text markup, such as icons, is included in the live region too.
 
 ## Props
 

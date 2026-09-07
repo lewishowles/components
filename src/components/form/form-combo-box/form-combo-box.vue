@@ -54,13 +54,19 @@
 
 		<span aria-live="polite" class="sr-only" data-test="form-combo-box-announcement">
 			<template v-if="isOpen">
-				<template v-if="loading">Loading options.</template>
-				<template v-else-if="!haveOptions">No options available.</template>
+				<template v-if="loading">
+					<slot name="loading">Loading options.</slot>
+				</template>
+				<template v-else-if="!haveOptions">
+					<slot name="empty">No options available.</slot>
+				</template>
 				<template v-else-if="haveItems">
 					{{ itemCount }} {{ itemCount === 1 ? "result" : "results" }} found. Use the arrow keys to
 					navigate.
 				</template>
-				<template v-else>No results found for "{{ query }}".</template>
+				<template v-else>
+					<slot name="no-results" v-bind="{ query }">No results found for "{{ query }}".</slot>
+				</template>
 			</template>
 			<template v-else-if="selectionMessage?.type === 'selected'">
 				Selected {{ selectionMessage.label }}.

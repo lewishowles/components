@@ -113,15 +113,17 @@ export const formComboBoxMetadata = {
 		{
 			name: "loading",
 			summary:
-				"Content shown while loading is true. Loading takes priority over the empty and no-results states.",
+				"Content shown while loading is true and used for the aria-live announcement while the results are open. Loading takes priority over the empty and no-results states. Non-text markup is also included in the live region.",
 		},
 		{
 			name: "empty",
-			summary: "Content shown when no options were supplied.",
+			summary:
+				"Content shown when no options were supplied and used for the aria-live announcement while the results are open. Non-text markup is also included in the live region.",
 		},
 		{
 			name: "no-results",
-			summary: "Content shown when options exist but none match the current query. Receives query.",
+			summary:
+				"Content shown when options exist but none match the current query and used for the aria-live announcement while the results are open. Receives query. Non-text markup is also included in the live region.",
 		},
 	],
 	methods: [

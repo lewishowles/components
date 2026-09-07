@@ -187,19 +187,40 @@
 			<component-slot id="slot-loading">
 				<template #name>loading</template>
 
-				Content shown while options are loading.
+				<p>
+					Content shown while options are loading and used for the aria-live announcement while the
+					results are open.
+				</p>
+				<p>
+					Keep this content suitable for reading aloud; any non-text markup, such as icons, is
+					included in that live region too.
+				</p>
 			</component-slot>
 
 			<component-slot id="slot-empty">
 				<template #name>empty</template>
 
-				Content shown when no options were supplied.
+				<p>
+					Content shown when no options were supplied and used for the aria-live announcement while
+					the results are open.
+				</p>
+				<p>
+					Keep this content suitable for reading aloud; any non-text markup, such as icons, is
+					included in that live region too.
+				</p>
 			</component-slot>
 
 			<component-slot id="slot-no-results">
 				<template #name>no-results</template>
 
-				<p>Content shown when options exist but none match the query.</p>
+				<p>
+					Content shown when options exist but none match the query and used for the aria-live
+					announcement while the results are open.
+				</p>
+				<p>
+					Keep this content suitable for reading aloud; any non-text markup, such as icons, is
+					included in that live region too.
+				</p>
 				<p>The slot receives the current `query`.</p>
 			</component-slot>
 		</component-slots>
