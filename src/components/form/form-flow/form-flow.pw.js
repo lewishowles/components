@@ -139,6 +139,22 @@ test.describe("form-flow", () => {
 
 				await expect(page.getByTestId("form-screen-title")).toBeFocused();
 			});
+
+			test("scrolls an off-screen autoFocus field, and its label, into view", async ({
+				mount,
+				page,
+			}) => {
+				await mountFocusFormFlow(mount);
+
+				await page.getByTestId("form-flow-continue-button").click();
+
+				const secondAnswer = page.getByLabel("Second answer", { exact: true });
+				const secondAnswerLabel = page.getByText("Second answer", { exact: true });
+
+				await expect(secondAnswer).toBeFocused();
+				await expect(secondAnswer).toBeInViewport({ ratio: 1 });
+				await expect(secondAnswerLabel).toBeInViewport({ ratio: 1 });
+			});
 		});
 
 		test("does not scroll the flow when its top is visible after a screen change", async ({

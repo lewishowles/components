@@ -1103,6 +1103,29 @@ async function focusRegisteredField(fieldName, requestGeneration) {
 }
 
 /**
+ * Scroll the currently focused element into view when it isn't already fully
+ * visible. Native focus already does this in real browsers, but aligns to
+ * whichever edge needs the least scrolling, which can leave a field's own
+ * label off-screen above it; scrolling the field's own wrapper instead of
+ * the bare input keeps the label with it, and matches the flow-level
+ * scroll's "start" alignment below.
+ */
+function scrollFocusedElementIntoView() {
+	const focused = document.activeElement;
+
+	if (!focused || focused === document.body) {
+		return;
+	}
+
+	const target = focused.closest('[data-part="field"]') ?? focused;
+	const { bottom, top } = target.getBoundingClientRect();
+
+	if (top < 0 || bottom > window.innerHeight) {
+		target.scrollIntoView?.({ block: "start" });
+	}
+}
+
+/**
  * Scroll the flow into view when its top is outside the viewport, then focus a screen after its
  * content and errors have rendered.
  *
@@ -1154,6 +1177,8 @@ async function focusScreen(screenId = activeScreenId.value, { fieldName } = {}) 
 	// Attempt to focus the listed field.
 	if (isNonEmptyString(autoFocus)) {
 		if (await focusRegisteredField(autoFocus, requestGeneration)) {
+			scrollFocusedElementIntoView();
+
 			return;
 		}
 
@@ -1167,6 +1192,7 @@ async function focusScreen(screenId = activeScreenId.value, { fieldName } = {}) 
 	const heading = getScreenHeading(screenId);
 
 	heading?.focus?.();
+	scrollFocusedElementIntoView();
 }
 
 /**
