@@ -22,6 +22,7 @@
 	</alert-message>
 
 	<component
+		v-if="haveLabel"
 		:is="tag"
 		v-bind="{ [tag === 'label' ? 'for' : 'id']: id, ...$attrs }"
 		:class="{

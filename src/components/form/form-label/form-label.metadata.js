@@ -45,7 +45,8 @@ export const formLabelMetadata = {
 	slots: [
 		{
 			name: "default",
-			summary: "The visible label text.",
+			summary:
+				"The visible label text. When the slot is empty, only the missing-label warning shows, with no empty label or legend.",
 		},
 		{
 			name: "optional-indicator",
