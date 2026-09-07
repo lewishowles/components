@@ -353,16 +353,6 @@
 	--control-selected-foreground: var(--primary-foreground);
 
 	--control-invalid: var(--danger-600);
-
-	--control-content-hover: color-mix(in oklab, var(--content), var(--surface) 2%);
-
-	--control-content-active: var(--content);
-	--control-ring-hover: rgb(from var(--content-strong) r g b / 50%);
-	--control-selected-surface: var(--primary-500);
-	--control-selected-surface-focus: var(--primary-600);
-	--control-selected-border: var(--primary-400);
-	--control-selected-border-focus: var(--primary-500);
-	--control-invalid: var(--danger-300);
 }
 
 :where(.dark, .dark *) {
