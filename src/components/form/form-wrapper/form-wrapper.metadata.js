@@ -19,7 +19,7 @@ export const formWrapperMetadata = {
 		{
 			name: "layoutClasses",
 			type: "string",
-			default: '""',
+			default: "",
 			summary: "Additional classes merged onto the inner form-layout.",
 		},
 		{
@@ -74,7 +74,7 @@ export const formWrapperMetadata = {
 		{
 			name: "pageTitleErrorPrefix",
 			type: "string",
-			default: '"Error:"',
+			default: "Error:",
 			summary: "Localisable prefix added to document.title after failed validation.",
 		},
 		{

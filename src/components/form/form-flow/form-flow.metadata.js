@@ -79,7 +79,7 @@ export const formFlowMetadata = {
 		{
 			name: "layoutClasses",
 			type: "string",
-			default: '""',
+			default: "",
 			summary: "Additional classes merged onto the inner form-layout.",
 		},
 		{
@@ -103,7 +103,7 @@ export const formFlowMetadata = {
 		{
 			name: "pageTitleErrorPrefix",
 			type: "string",
-			default: '"Error:"',
+			default: "Error:",
 			summary: "Prefix added to document.title after failed validation.",
 		},
 		{

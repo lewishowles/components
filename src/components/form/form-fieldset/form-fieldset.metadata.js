@@ -13,7 +13,7 @@ export const formFieldsetMetadata = {
 		{
 			name: "titleClasses",
 			type: "string | array | object",
-			default: "null",
+			default: null,
 			summary: "Additional classes merged onto the title element.",
 		},
 		{
