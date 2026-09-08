@@ -2,15 +2,15 @@
 	<form-wrapper v-bind="{ rules }">
 		<form-field
 			v-bind="{
-				id: 'pilot',
+				id: 'person',
 				labelKey: 'name',
-				name: 'pilot',
+				name: 'person',
 				options,
 				type: 'combo-box',
 				valueKey: 'id',
 			}"
 		>
-			Pilot
+			Person
 		</form-field>
 
 		<template #submit-button-label>Submit</template>
@@ -20,11 +20,11 @@
 <script setup>
 // The wrapper validates the selected option value, not the visible query text.
 const options = [
-	{ id: "pilot-42", name: "Amelia Earhart" },
-	{ id: "pilot-7", name: "Bessie Coleman" },
+	{ id: "person-42", name: "Avery Lane" },
+	{ id: "person-7", name: "Basil Morgan" },
 ];
 
 const rules = {
-	pilot: [{ rule: "required", message: "Choose a pilot" }],
+	person: [{ rule: "required", message: "Choose a person" }],
 };
 </script>

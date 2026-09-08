@@ -144,17 +144,17 @@ describe("form-field", () => {
 			mount({
 				props: {
 					labelKey: "name",
-					options: [{ id: "pilot", name: "Amelia Earhart" }],
+					options: [{ id: "person", name: "Avery Lane" }],
 					type: "select",
 					valueKey: "id",
-					modelValue: "pilot",
+					modelValue: "person",
 				},
-				slots: { default: "Pilot" },
+				slots: { default: "Person" },
 			});
 
 			const field = registerFieldMock.mock.calls.at(-1)?.[0];
 
-			expect(field.displayValue.value).toBe("Amelia Earhart");
+			expect(field.displayValue.value).toBe("Avery Lane");
 		});
 
 		test("should resolve multiple selected options to displayed labels", () => {
@@ -667,10 +667,10 @@ describe("form-field", () => {
 			test("should forward combo-box option content with selection details", async () => {
 				const wrapper = mountDeep({
 					props: {
-						modelValue: "pilot-42",
-						name: "pilot",
+						modelValue: "person-42",
+						name: "person",
 						labelKey: "name",
-						options: [{ id: "pilot-42", name: "Amelia Earhart" }],
+						options: [{ id: "person-42", name: "Avery Lane" }],
 						type: "combo-box",
 						valueKey: "id",
 					},
@@ -689,7 +689,7 @@ describe("form-field", () => {
 
 				const option = wrapper.get('[data-test="custom-combo-box-option"]');
 
-				expect(option.text()).toBe("Amelia Earhart:Amelia Earhart:pilot-42:false:true");
+				expect(option.text()).toBe("Avery Lane:Avery Lane:person-42:false:true");
 			});
 
 			test("should forward description content to checkbox fields", () => {

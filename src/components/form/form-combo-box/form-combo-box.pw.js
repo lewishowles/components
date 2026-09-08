@@ -4,18 +4,18 @@ import { createMount } from "@lewishowles/testing/playwright";
 import FormComboBox from "./form-combo-box.vue";
 
 const options = [
-	{ id: "pilot-42", name: "Amelia Earhart" },
-	{ id: "pilot-7", name: "Bessie Coleman" },
+	{ id: "person-42", name: "Avery Lane" },
+	{ id: "person-7", name: "Basil Morgan" },
 ];
 
 const mountFormComboBox = createMount(FormComboBox, {
 	props: {
-		id: "pilot",
+		id: "person",
 		labelKey: "name",
 		options,
 		valueKey: "id",
 	},
-	slots: { default: "Pilot" },
+	slots: { default: "Person" },
 });
 
 test.describe("form-combo-box", () => {
@@ -25,8 +25,8 @@ test.describe("form-combo-box", () => {
 		const input = getInput(page);
 
 		await expect(page.getByTestId("form-combo-box")).toBeVisible();
-		await expect(input).toHaveAttribute("id", "pilot");
-		await expect(page.getByTestId("form-label")).toHaveAttribute("for", "pilot");
+		await expect(input).toHaveAttribute("id", "person");
+		await expect(page.getByTestId("form-label")).toHaveAttribute("for", "person");
 	});
 
 	test.describe("ARIA and focus", () => {
@@ -54,7 +54,7 @@ test.describe("form-combo-box", () => {
 			mount,
 			page,
 		}) => {
-			await mountFormComboBox(mount, { modelValue: "pilot-42" });
+			await mountFormComboBox(mount, { modelValue: "person-42" });
 
 			const input = getInput(page);
 			const options = page.getByTestId("form-combo-box-option");
@@ -118,7 +118,7 @@ test.describe("form-combo-box", () => {
 			await input.press("ArrowUp");
 			await input.press("Enter");
 
-			await expect(input).toHaveValue("Bessie Coleman");
+			await expect(input).toHaveValue("Basil Morgan");
 			await expect(page.getByTestId("form-combo-box-dropdown")).not.toBeAttached();
 			await expect(input).toBeFocused();
 
@@ -196,7 +196,7 @@ test.describe("form-combo-box", () => {
 			await input.focus();
 			await page.getByTestId("form-combo-box-option").nth(1).click();
 
-			await expect(input).toHaveValue("Bessie Coleman");
+			await expect(input).toHaveValue("Basil Morgan");
 			await expect(page.getByTestId("form-combo-box-dropdown")).not.toBeAttached();
 			await expect(input).toBeFocused();
 		});
@@ -205,11 +205,11 @@ test.describe("form-combo-box", () => {
 			mount,
 			page,
 		}) => {
-			await mountFormComboBox(mount, { modelValue: "pilot-42" });
+			await mountFormComboBox(mount, { modelValue: "person-42" });
 
 			const input = getInput(page);
 
-			await input.fill("Amelia");
+			await input.fill("Avery");
 			await input.press("Tab");
 			await expect(input).toHaveValue("");
 
@@ -226,7 +226,7 @@ test.describe("form-combo-box", () => {
 
 			const input = getInput(page);
 
-			await input.fill("Amelia Earhart");
+			await input.fill("Avery Lane");
 			await input.press("Tab");
 			await expect(input).toHaveValue("");
 
@@ -251,21 +251,21 @@ test.describe("form-combo-box", () => {
 
 			await input.press("ArrowDown");
 			await input.press("Enter");
-			await expect(announcement).toHaveText("Selected Amelia Earhart.");
+			await expect(announcement).toHaveText("Selected Avery Lane.");
 		});
 
 		test("announces loading state and renders the loading slot", async ({ mount, page }) => {
 			await mountFormComboBox(mount, {
 				props: { loading: true },
-				slots: { loading: "Loading pilots" },
+				slots: { loading: "Loading people" },
 			});
 
 			const input = getInput(page);
 
 			await input.focus();
 
-			await expect(page.getByTestId("form-combo-box-loading")).toHaveText("Loading pilots");
-			await expect(page.getByTestId("form-combo-box-announcement")).toHaveText("Loading options.");
+			await expect(page.getByTestId("form-combo-box-loading")).toHaveText("Loading people");
+			await expect(page.getByTestId("form-combo-box-announcement")).toHaveText("Loading people");
 		});
 
 		test("announces no results for the current query", async ({ mount, page }) => {
@@ -286,17 +286,15 @@ test.describe("form-combo-box", () => {
 		test("announces and renders an empty option list", async ({ mount, page }) => {
 			await mountFormComboBox(mount, {
 				props: { options: [] },
-				slots: { empty: "No pilots" },
+				slots: { empty: "No people" },
 			});
 
 			const input = getInput(page);
 
 			await input.focus();
 
-			await expect(page.getByTestId("form-combo-box-empty")).toHaveText("No pilots");
-			await expect(page.getByTestId("form-combo-box-announcement")).toHaveText(
-				"No options available.",
-			);
+			await expect(page.getByTestId("form-combo-box-empty")).toHaveText("No people");
+			await expect(page.getByTestId("form-combo-box-announcement")).toHaveText("No people");
 		});
 	});
 
@@ -304,7 +302,7 @@ test.describe("form-combo-box", () => {
 		test("exposes required and invalid state on the text input", async ({ mount, page }) => {
 			await mountFormComboBox(mount, {
 				props: { required: true },
-				slots: { error: "Choose a pilot" },
+				slots: { error: "Choose a person" },
 			});
 
 			const input = getInput(page);
@@ -312,37 +310,37 @@ test.describe("form-combo-box", () => {
 			await expect(input).toHaveAttribute("required");
 			await expect(input).toHaveAttribute("aria-required", "true");
 			await expect(input).toHaveAttribute("aria-invalid", "true");
-			await expect(input).toHaveAttribute("aria-errormessage", "pilot-error");
-			await expect(input).toHaveAttribute("aria-describedby", /pilot-error/);
+			await expect(input).toHaveAttribute("aria-errormessage", "person-error");
+			await expect(input).toHaveAttribute("aria-describedby", /person-error/);
 		});
 
 		test("keeps a readonly selection visible without opening or changing it", async ({
 			mount,
 			page,
 		}) => {
-			await mountFormComboBox(mount, { modelValue: "pilot-42", readonly: true });
+			await mountFormComboBox(mount, { modelValue: "person-42", readonly: true });
 
 			const input = getInput(page);
 
 			await expect(input).toHaveAttribute("readonly");
-			await expect(input).toHaveValue("Amelia Earhart");
+			await expect(input).toHaveValue("Avery Lane");
 			await input.focus();
 			await input.press("ArrowDown");
 
 			await expect(page.getByTestId("form-combo-box-dropdown")).not.toBeAttached();
-			await expect(input).toHaveValue("Amelia Earhart");
+			await expect(input).toHaveValue("Avery Lane");
 		});
 
 		test("renders rich non-interactive option content", async ({ mount, page }) => {
 			await mountFormComboBox(mount, {
-				slots: { option: '<span data-test="rich-option">Pilot details</span>' },
+				slots: { option: '<span data-test="rich-option">Person details</span>' },
 			});
 
 			const input = getInput(page);
 
 			await input.focus();
 
-			await expect(page.getByTestId("rich-option").first()).toHaveText("Pilot details");
+			await expect(page.getByTestId("rich-option").first()).toHaveText("Person details");
 		});
 	});
 
@@ -351,7 +349,7 @@ test.describe("form-combo-box", () => {
 		page,
 	}) => {
 		await mountFormComboBox(mount, {
-			slots: { option: '<span data-test="rich-option">Pilot details</span>' },
+			slots: { option: '<span data-test="rich-option">Person details</span>' },
 		});
 
 		const input = getInput(page);

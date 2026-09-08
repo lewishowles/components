@@ -9,7 +9,10 @@ const defaultProps = {
 };
 
 // Mount donut-chart with sensible defaults for testing.
-const mountDonutChart = createMount(DonutChart, { props: defaultProps });
+const mountDonutChart = createMount(DonutChart, {
+	props: defaultProps,
+	slots: { label: "Sales by region" },
+});
 
 test.describe("donut-chart", () => {
 	test("a chart is rendered", async ({ mount, page }) => {

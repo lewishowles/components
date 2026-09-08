@@ -131,19 +131,19 @@ describe("data-table", () => {
 		});
 
 		test("passes cell content and the original row to a cell slot", () => {
-			const rawRow = { aircraft: { registration: "G-ABCD" } };
+			const rawRow = { address: { city: "Bristol" } };
 
 			let receivedCell;
 			let receivedRow;
 
 			const wrapper = deepMount({
 				props: {
-					columns: { registration: { source: "aircraft.registration" } },
+					columns: { city: { source: "address.city" } },
 					data: [rawRow],
 					enableSearch: false,
 				},
 				slots: {
-					registration: ({ cell, row }) => {
+					city: ({ cell, row }) => {
 						receivedCell = cell;
 						receivedRow = row;
 
@@ -152,10 +152,10 @@ describe("data-table", () => {
 				},
 			});
 
-			expect(receivedCell).toBe("G-ABCD");
+			expect(receivedCell).toBe("Bristol");
 			expect(receivedRow).toBe(wrapper.vm.internalData[0].raw);
 			expect(receivedRow).toEqual(rawRow);
-			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("G-ABCD");
+			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("Bristol");
 		});
 
 		test("renders the actions slot in the injected column", () => {
@@ -237,19 +237,19 @@ describe("data-table", () => {
 		});
 
 		test("passes a dotted column key value and the original row to a cell slot", () => {
-			const rawRow = { aircraft: { registration: "G-ABCD" } };
+			const rawRow = { address: { city: "Bristol" } };
 
 			let receivedCell;
 			let receivedRow;
 
 			const wrapper = deepMount({
 				props: {
-					columns: { "aircraft.registration": { label: "Registration" } },
+					columns: { "address.city": { label: "City" } },
 					data: [rawRow],
 					enableSearch: false,
 				},
 				slots: {
-					"aircraft.registration": ({ cell, row }) => {
+					"address.city": ({ cell, row }) => {
 						receivedCell = cell;
 						receivedRow = row;
 
@@ -258,10 +258,10 @@ describe("data-table", () => {
 				},
 			});
 
-			expect(receivedCell).toBe("G-ABCD");
+			expect(receivedCell).toBe("Bristol");
 			expect(receivedRow).toBe(wrapper.vm.internalData[0].raw);
 			expect(receivedRow).toEqual(rawRow);
-			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("G-ABCD");
+			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("Bristol");
 		});
 
 		test("should expose the component styling hook", () => {
@@ -1038,11 +1038,11 @@ describe("data-table", () => {
 
 				const row = {
 					content: {
-						"aircraft.registration": { content: "G-ABCD" },
+						"address.city": { content: "Bristol" },
 					},
 				};
 
-				expect(vm.getRowContent(row, "aircraft.registration")).toEqual("G-ABCD");
+				expect(vm.getRowContent(row, "address.city")).toEqual("Bristol");
 			});
 
 			describe("should correctly retrieve supported values", () => {

@@ -7,8 +7,8 @@ const mount = createMount(FormComboBox);
 const mountDeep = createDeepMount(FormComboBox);
 
 const options = [
-	{ id: "pilot-42", name: "Amelia Earhart" },
-	{ id: "pilot-7", name: "Bessie Coleman" },
+	{ id: "person-42", name: "Avery Lane" },
+	{ id: "person-7", name: "Basil Morgan" },
 ];
 
 afterEach(() => {
@@ -33,19 +33,19 @@ describe("form-combo-box", () => {
 
 			expect(wrapper.vm.internalItems).toEqual([
 				expect.objectContaining({
-					option: expect.objectContaining({ label: "Amelia Earhart", value: "pilot-42" }),
+					option: expect.objectContaining({ label: "Avery Lane", value: "person-42" }),
 					originalOption: options[0],
 				}),
 				expect.objectContaining({
-					option: expect.objectContaining({ label: "Bessie Coleman", value: "pilot-7" }),
+					option: expect.objectContaining({ label: "Basil Morgan", value: "person-7" }),
 					originalOption: options[1],
 				}),
 			]);
 		});
 
 		test.for([
-			["object options", { "pilot-42": "Amelia Earhart" }, "Amelia Earhart"],
-			["string options", ["Amelia Earhart"], "Amelia Earhart"],
+			["object options", { "person-42": "Avery Lane" }, "Avery Lane"],
+			["string options", ["Avery Lane"], "Avery Lane"],
 			["number options", [42], 42],
 		])("retains the original option for %s", ([, input, originalOption]) => {
 			const wrapper = mount({ options: input });
@@ -58,12 +58,12 @@ describe("form-combo-box", () => {
 		test("keeps a hidden label available to screen readers", () => {
 			const wrapper = mountDeep({
 				props: { displayLabel: false },
-				slots: { default: "Pilot" },
+				slots: { default: "Person" },
 			});
 
 			const label = wrapper.find('[data-test="form-label"]');
 
-			expect(label.text()).toBe("Pilot");
+			expect(label.text()).toBe("Person");
 			expect(label.classes()).toContain("sr-only");
 		});
 
@@ -73,7 +73,7 @@ describe("form-combo-box", () => {
 				props: {
 					inputAttributes: { autocomplete: "off", inputmode: "search" },
 				},
-				slots: { default: "Pilot" },
+				slots: { default: "Person" },
 			});
 
 			const input = wrapper.find("input");
@@ -87,7 +87,7 @@ describe("form-combo-box", () => {
 		test("forwards prefix content to the input with an empty value", () => {
 			const wrapper = mountDeep({
 				slots: {
-					default: "Pilot",
+					default: "Person",
 					prefix: "Search",
 				},
 			});
@@ -102,10 +102,10 @@ describe("form-combo-box", () => {
 					options,
 					labelKey: "name",
 					valueKey: "id",
-					modelValue: "pilot-42",
+					modelValue: "person-42",
 				},
 				slots: {
-					default: "Pilot",
+					default: "Person",
 					suffix: "Clear",
 				},
 			});
@@ -118,7 +118,7 @@ describe("form-combo-box", () => {
 			const wrapper = mountDeep({
 				props: { options, labelKey: "name", valueKey: "id" },
 				slots: {
-					default: "Pilot",
+					default: "Person",
 					prefix: "Search",
 					suffix: "Clear",
 				},
@@ -139,14 +139,14 @@ describe("form-combo-box", () => {
 				options,
 				labelKey: "name",
 				valueKey: "id",
-				modelValue: "pilot-42",
+				modelValue: "person-42",
 			});
 
-			expect(wrapper.vm.query).toBe("Amelia Earhart");
+			expect(wrapper.vm.query).toBe("Avery Lane");
 
-			await wrapper.setProps({ modelValue: "pilot-7" });
+			await wrapper.setProps({ modelValue: "person-7" });
 
-			expect(wrapper.vm.query).toBe("Bessie Coleman");
+			expect(wrapper.vm.query).toBe("Basil Morgan");
 		});
 
 		test("updates the displayed label when options refresh", async () => {
@@ -154,14 +154,14 @@ describe("form-combo-box", () => {
 				options,
 				labelKey: "name",
 				valueKey: "id",
-				modelValue: "pilot-42",
+				modelValue: "person-42",
 			});
 
-			const refreshedOptions = [{ id: "pilot-42", name: "Amelia Mary Earhart" }];
+			const refreshedOptions = [{ id: "person-42", name: "Avery James Lane" }];
 
 			await wrapper.setProps({ options: refreshedOptions });
 
-			expect(wrapper.vm.query).toBe("Amelia Mary Earhart");
+			expect(wrapper.vm.query).toBe("Avery James Lane");
 			expect(wrapper.emitted("update:modelValue")).toBeUndefined();
 		});
 
@@ -170,7 +170,7 @@ describe("form-combo-box", () => {
 				options,
 				labelKey: "name",
 				valueKey: "id",
-				modelValue: "pilot-42",
+				modelValue: "person-42",
 			});
 
 			await wrapper.setProps({ modelValue: null });
@@ -189,8 +189,8 @@ describe("form-combo-box", () => {
 
 			wrapper.vm.selectItem(wrapper.vm.internalItems[0].id);
 
-			expect(wrapper.emitted("update:modelValue")).toEqual([["pilot-42"]]);
-			expect(wrapper.vm.query).toBe("Amelia Earhart");
+			expect(wrapper.emitted("update:modelValue")).toEqual([["person-42"]]);
+			expect(wrapper.vm.query).toBe("Avery Lane");
 		});
 
 		test("clears the selected value when typing a new query", () => {
@@ -198,10 +198,10 @@ describe("form-combo-box", () => {
 				options,
 				labelKey: "name",
 				valueKey: "id",
-				modelValue: "pilot-42",
+				modelValue: "person-42",
 			});
 
-			wrapper.vm.handleInput("Amelia");
+			wrapper.vm.handleInput("Avery");
 
 			expect(wrapper.emitted("update:modelValue").at(-1)).toEqual([null]);
 			expect(wrapper.vm.isOpen).toBe(true);
@@ -213,10 +213,10 @@ describe("form-combo-box", () => {
 				options,
 				labelKey: "name",
 				valueKey: "id",
-				modelValue: "pilot-42",
+				modelValue: "person-42",
 			});
 
-			wrapper.vm.query = "Amelia";
+			wrapper.vm.query = "Avery";
 			await nextTick();
 
 			expect(wrapper.emitted("update:modelValue").at(-1)).toEqual([null]);
@@ -233,26 +233,26 @@ describe("form-combo-box", () => {
 		test("filters labels case-insensitively while preserving caller order", async () => {
 			const wrapper = mount({
 				options: [
-					{ id: "pilot-7", name: "Bessie Coleman" },
-					{ id: "pilot-42", name: "Amelia Earhart" },
-					{ id: "pilot-9", name: "Sabiha Gökçen" },
+					{ id: "person-7", name: "Basil Morgan" },
+					{ id: "person-42", name: "Avery Lane" },
+					{ id: "person-9", name: "Skyler Brooks" },
 				],
 				labelKey: "name",
 				valueKey: "id",
 			});
 
 			expect(wrapper.vm.filteredItems.map(({ option }) => option.value)).toEqual([
-				"pilot-7",
-				"pilot-42",
-				"pilot-9",
+				"person-7",
+				"person-42",
+				"person-9",
 			]);
 
 			wrapper.vm.query = "S";
 			await nextTick();
 
 			expect(wrapper.vm.filteredItems.map(({ option }) => option.value)).toEqual([
-				"pilot-7",
-				"pilot-9",
+				"person-7",
+				"person-9",
 			]);
 		});
 
@@ -261,23 +261,23 @@ describe("form-combo-box", () => {
 				options,
 				labelKey: "name",
 				valueKey: "id",
-				modelValue: "pilot-42",
+				modelValue: "person-42",
 			});
 
 			wrapper.vm.handleFocusin();
 			await nextTick();
 
 			expect(wrapper.vm.filteredItems.map(({ option }) => option.value)).toEqual([
-				"pilot-42",
-				"pilot-7",
+				"person-42",
+				"person-7",
 			]);
 		});
 
 		test("keeps duplicate labels selectable by their distinct values", async () => {
 			const wrapper = mount({
 				options: [
-					{ id: "pilot-1", name: "Alex Johnson" },
-					{ id: "pilot-2", name: "Alex Johnson" },
+					{ id: "person-1", name: "Alex Johnson" },
+					{ id: "person-2", name: "Alex Johnson" },
 				],
 				labelKey: "name",
 				valueKey: "id",
@@ -287,7 +287,7 @@ describe("form-combo-box", () => {
 			await nextTick();
 			wrapper.vm.selectItem(wrapper.vm.filteredItems[1].id);
 
-			expect(wrapper.emitted("update:modelValue")).toEqual([["pilot-2"]]);
+			expect(wrapper.emitted("update:modelValue")).toEqual([["person-2"]]);
 			expect(wrapper.vm.query).toBe("Alex Johnson");
 		});
 
@@ -298,33 +298,33 @@ describe("form-combo-box", () => {
 			const wrapper = mountDeep({
 				props: {
 					options: [
-						{ id: "pilot-1", name: "Alex Johnson" },
-						{ id: "pilot-1", name: "Alexandra Johnson" },
-						{ id: "pilot-2", name: "Bessie Coleman" },
+						{ id: "person-1", name: "Alex Johnson" },
+						{ id: "person-1", name: "Alexandra Johnson" },
+						{ id: "person-2", name: "Basil Morgan" },
 					],
 					labelKey: "name",
 					valueKey: "id",
 				},
-				slots: { default: "Pilot" },
+				slots: { default: "Person" },
 			});
 
 			wrapper.vm.openResults();
 			await nextTick();
 
 			expect(warningSpy).toHaveBeenCalledWith(
-				'[form-combo-box] Duplicate option value "pilot-1". Keeping the first option.',
+				'[form-combo-box] Duplicate option value "person-1". Keeping the first option.',
 			);
 			expect(
 				wrapper.findAll('[data-test="form-combo-box-option"]').map((option) => option.text()),
-			).toEqual(["Alex Johnson", "Bessie Coleman"]);
+			).toEqual(["Alex Johnson", "Basil Morgan"]);
 			expect(wrapper.vm.internalItems.map(({ option }) => option.value)).toEqual([
-				"pilot-1",
-				"pilot-2",
+				"person-1",
+				"person-2",
 			]);
 
 			wrapper.vm.selectItem(wrapper.vm.internalItems[0].id);
 
-			expect(wrapper.emitted("update:modelValue")).toEqual([["pilot-1"]]);
+			expect(wrapper.emitted("update:modelValue")).toEqual([["person-1"]]);
 		});
 	});
 
@@ -334,7 +334,7 @@ describe("form-combo-box", () => {
 				options,
 				labelKey: "name",
 				valueKey: "id",
-				modelValue: "pilot-42",
+				modelValue: "person-42",
 				loading: true,
 			});
 
@@ -352,13 +352,13 @@ describe("form-combo-box", () => {
 				options,
 				labelKey: "name",
 				valueKey: "id",
-				modelValue: "pilot-42",
+				modelValue: "person-42",
 			});
 
 			await wrapper.setProps({ options: [] });
 
 			expect(wrapper.emitted("update:modelValue")).toBeUndefined();
-			expect(wrapper.vm.query).toBe("Amelia Earhart");
+			expect(wrapper.vm.query).toBe("Avery Lane");
 		});
 	});
 
@@ -370,19 +370,19 @@ describe("form-combo-box", () => {
 					options,
 					labelKey: "name",
 					valueKey: "id",
-					modelValue: "pilot-42",
+					modelValue: "person-42",
 				},
-				slots: { default: "Pilot" },
+				slots: { default: "Person" },
 			});
 
 			expect(wrapper.find("input").attributes("readonly")).toBeDefined();
-			expect(wrapper.vm.query).toBe("Amelia Earhart");
+			expect(wrapper.vm.query).toBe("Avery Lane");
 
-			await wrapper.find("input").setValue("Bessie Coleman");
+			await wrapper.find("input").setValue("Basil Morgan");
 			wrapper.vm.selectItem(wrapper.vm.internalItems[1].id);
 			await nextTick();
 
-			expect(wrapper.vm.query).toBe("Amelia Earhart");
+			expect(wrapper.vm.query).toBe("Avery Lane");
 			expect(wrapper.vm.isOpen).toBe(false);
 			expect(wrapper.emitted("update:modelValue")).toBeUndefined();
 		});
@@ -394,7 +394,7 @@ describe("form-combo-box", () => {
 					options,
 					labelKey: "name",
 					valueKey: "id",
-					modelValue: "pilot-42",
+					modelValue: "person-42",
 					loading: true,
 				},
 			});
@@ -409,7 +409,7 @@ describe("form-combo-box", () => {
 		test("keeps the default visible and announced status messages", async () => {
 			const wrapper = mountDeep({
 				props: { loading: true },
-				slots: { default: "Pilot" },
+				slots: { default: "Person" },
 			});
 
 			wrapper.vm.openResults();
@@ -427,7 +427,7 @@ describe("form-combo-box", () => {
 				"No options available.",
 			);
 
-			await wrapper.setProps({ options: ["Amelia Earhart"] });
+			await wrapper.setProps({ options: ["Avery Lane"] });
 			wrapper.vm.query = "Unknown";
 			await nextTick();
 
@@ -441,9 +441,9 @@ describe("form-combo-box", () => {
 			const wrapper = mountDeep({
 				props: { options, labelKey: "name", valueKey: "id" },
 				slots: {
-					default: "Pilot",
-					loading: "Loading pilots",
-					empty: "No pilots",
+					default: "Person",
+					loading: "Loading people",
+					empty: "No people",
 					"no-results": "No matches",
 				},
 			});
@@ -455,7 +455,7 @@ describe("form-combo-box", () => {
 				"2 results found. Use the arrow keys to navigate.",
 			);
 
-			wrapper.vm.query = "Amelia";
+			wrapper.vm.query = "Avery";
 			await nextTick();
 
 			expect(wrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
@@ -466,7 +466,7 @@ describe("form-combo-box", () => {
 			await nextTick();
 
 			expect(wrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
-				"Selected Amelia Earhart.",
+				"Selected Avery Lane.",
 			);
 
 			await wrapper.setProps({ modelValue: null });
@@ -480,18 +480,18 @@ describe("form-combo-box", () => {
 			const loadingWrapper = mountDeep({
 				props: { loading: true },
 				slots: {
-					default: "Pilot",
-					loading: "Loading pilots",
-					empty: "No pilots",
+					default: "Person",
+					loading: "Loading people",
+					empty: "No people",
 				},
 			});
 
 			loadingWrapper.vm.openResults();
 			await nextTick();
 
-			expect(loadingWrapper.find('[data-part="status"]').text()).toContain("Loading pilots");
+			expect(loadingWrapper.find('[data-part="status"]').text()).toContain("Loading people");
 			expect(loadingWrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
-				"Loading pilots",
+				"Loading people",
 			);
 			expect(loadingWrapper.find('[data-test="form-combo-box-empty"]').exists()).toBe(false);
 		});
@@ -499,15 +499,15 @@ describe("form-combo-box", () => {
 		test("shows the empty slot when there are no options", async () => {
 			const emptyWrapper = mountDeep({
 				props: { options: [] },
-				slots: { default: "Pilot", empty: "No pilots" },
+				slots: { default: "Person", empty: "No people" },
 			});
 
 			emptyWrapper.vm.openResults();
 			await nextTick();
 
-			expect(emptyWrapper.find('[data-part="status"]').text()).toContain("No pilots");
+			expect(emptyWrapper.find('[data-part="status"]').text()).toContain("No people");
 			expect(emptyWrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
-				"No pilots",
+				"No people",
 			);
 		});
 
@@ -515,8 +515,8 @@ describe("form-combo-box", () => {
 			const noResultsWrapper = mountDeep({
 				props: { options, labelKey: "name", valueKey: "id" },
 				slots: {
-					default: "Pilot",
-					"no-results": ({ query }) => `No pilot matches ${query}`,
+					default: "Person",
+					"no-results": ({ query }) => `No person matches ${query}`,
 				},
 			});
 
@@ -524,9 +524,11 @@ describe("form-combo-box", () => {
 			noResultsWrapper.vm.openResults();
 			await nextTick();
 
-			expect(noResultsWrapper.find('[data-part="status"]').text()).toBe("No pilot matches Unknown");
+			expect(noResultsWrapper.find('[data-part="status"]').text()).toBe(
+				"No person matches Unknown",
+			);
 			expect(noResultsWrapper.find('[data-test="form-combo-box-announcement"]').text()).toBe(
-				"No pilot matches Unknown",
+				"No person matches Unknown",
 			);
 			expect(noResultsWrapper.find('[data-test="form-combo-box-empty"]').exists()).toBe(false);
 		});
@@ -535,11 +537,11 @@ describe("form-combo-box", () => {
 			const wrapper = mountDeep({
 				props: { options, labelKey: "name", valueKey: "id" },
 				slots: {
-					default: "Pilot",
+					default: "Person",
 					"optional-indicator": "(optional)",
-					introduction: "Choose a pilot",
+					introduction: "Choose a person",
 					help: "Search by name",
-					error: "Choose a valid pilot",
+					error: "Choose a valid person",
 					option: ({ option, label, value, highlighted, selected }) =>
 						`${option.name}|${label}|${value}|${highlighted}|${selected}`,
 				},
@@ -555,17 +557,17 @@ describe("form-combo-box", () => {
 			expect(wrapper.find('[data-part="listbox"]').exists()).toBe(true);
 			expect(wrapper.findAll('[data-part="option"]')).toHaveLength(2);
 			expect(wrapper.find('[data-part="option"]').text()).toContain(
-				"Amelia Earhart|Amelia Earhart|pilot-42",
+				"Avery Lane|Avery Lane|person-42",
 			);
-			expect(wrapper.text()).toContain("Choose a pilot");
+			expect(wrapper.text()).toContain("Choose a person");
 			expect(wrapper.text()).toContain("Search by name");
-			expect(wrapper.text()).toContain("Choose a valid pilot");
+			expect(wrapper.text()).toContain("Choose a valid person");
 		});
 	});
 
 	describe("Dropdown positioning", () => {
 		test("matches the field wrapper's own position and width", async () => {
-			const wrapper = mountDeep({ slots: { default: "Pilot" } });
+			const wrapper = mountDeep({ slots: { default: "Person" } });
 
 			wrapper.vm.openResults();
 			await nextTick();
@@ -579,7 +581,7 @@ describe("form-combo-box", () => {
 		test("ignores a width class in dropdownClasses, since the dropdown always matches the input", async () => {
 			const wrapper = mountDeep({
 				props: { dropdownClasses: "w-96" },
-				slots: { default: "Pilot" },
+				slots: { default: "Person" },
 			});
 
 			wrapper.vm.openResults();

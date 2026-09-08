@@ -444,13 +444,13 @@ test.describe("data-table", () => {
 		test("renders a column source without a cell slot", async ({ mount, page }) => {
 			await mountDataTableRaw(mount, {
 				props: {
-					columns: { registration: { label: "Registration", source: "aircraft.registration" } },
-					data: [{ aircraft: { registration: "G-ABCD" } }],
+					columns: { city: { label: "City", source: "address.city" } },
+					data: [{ address: { city: "Bristol" } }],
 					enableSearch: false,
 				},
 			});
 
-			await expect(rowCell(page, 0, 0)).toHaveText("G-ABCD");
+			await expect(rowCell(page, 0, 0)).toHaveText("Bristol");
 		});
 
 		test("a primary column can be defined", async ({ mount, page }) => {

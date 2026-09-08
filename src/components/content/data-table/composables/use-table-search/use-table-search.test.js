@@ -84,12 +84,12 @@ describe("useTableSearch", () => {
 		});
 
 		test("Honours searchable false for a dotted column key", () => {
-			const columnKey = "aircraft.registration";
-			const rows = [createRow({ [columnKey]: "g-abcd" })];
+			const columnKey = "address.city";
+			const rows = [createRow({ [columnKey]: "bristol" })];
 			const columns = { [columnKey]: { searchable: false } };
 			const { filteredRows, searchQuery } = createComposable({ rows, columns });
 
-			searchQuery.value = "g-abcd";
+			searchQuery.value = "bristol";
 
 			expect(filteredRows.value).toEqual([]);
 		});

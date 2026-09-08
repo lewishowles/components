@@ -82,55 +82,55 @@ describe("useTableData", () => {
 		});
 
 		test("Uses a column's searchSource callback with the unchanged raw row", () => {
-			const rawRow = { aircraft: { registration: "G-ABCD" } };
+			const rawRow = { address: { city: "Bristol" } };
 
 			let receivedRow;
 
 			const searchSource = (row) => {
 				receivedRow = row;
 
-				return row.aircraft.registration;
+				return row.address.city;
 			};
 
 			const { internalData } = createComposable({
 				data: [rawRow],
-				columns: { registration: { searchSource } },
+				columns: { city: { searchSource } },
 			});
 
-			expect(internalData.value[0].content.registration.configuration.searchable).toBe("g-abcd");
+			expect(internalData.value[0].content.city.configuration.searchable).toBe("bristol");
 			expect(receivedRow).toBe(internalData.value[0].raw);
 			expect(receivedRow).toEqual(rawRow);
 		});
 
 		test("Uses a column's searchSource path", () => {
 			const { internalData } = createComposable({
-				data: [{ aircraft: { registration: "G-ABCD" } }],
-				columns: { registration: { searchSource: "aircraft.registration" } },
+				data: [{ address: { city: "Bristol" } }],
+				columns: { city: { searchSource: "address.city" } },
 			});
 
-			expect(internalData.value[0].content.registration.configuration.searchable).toBe("g-abcd");
+			expect(internalData.value[0].content.city.configuration.searchable).toBe("bristol");
 		});
 
 		test("Skips a column's searchSource callback in server mode", () => {
 			const searchSource = vi.fn(() => "Not searched");
 
 			const { internalData } = createComposable({
-				data: [{ aircraft: { registration: "G-ABCD" } }],
-				columns: { registration: { searchSource, source: "aircraft.registration" } },
+				data: [{ address: { city: "Bristol" } }],
+				columns: { city: { searchSource, source: "address.city" } },
 				isServerMode: true,
 			});
 
 			expect(searchSource).not.toHaveBeenCalled();
-			expect(internalData.value[0].content.registration.configuration.searchable).toBe("g-abcd");
+			expect(internalData.value[0].content.city.configuration.searchable).toBe("bristol");
 		});
 
 		test("Uses a column's source for searchable content when searchSource is omitted", () => {
 			const { internalData } = createComposable({
-				data: [{ aircraft: { registration: "G-ABCD" } }],
-				columns: { registration: { source: "aircraft.registration" } },
+				data: [{ address: { city: "Bristol" } }],
+				columns: { city: { source: "address.city" } },
 			});
 
-			expect(internalData.value[0].content.registration.configuration.searchable).toBe("g-abcd");
+			expect(internalData.value[0].content.city.configuration.searchable).toBe("bristol");
 		});
 
 		describe("Reduces non-string searchSource content to an empty string", () => {
@@ -157,55 +157,55 @@ describe("useTableData", () => {
 		});
 
 		test("Uses a column's sortSource callback with the unchanged raw row", () => {
-			const rawRow = { aircraft: { passengerCount: 4 } };
+			const rawRow = { city: { population: 4 } };
 
 			let receivedRow;
 
 			const sortSource = (row) => {
 				receivedRow = row;
 
-				return row.aircraft.passengerCount;
+				return row.city.population;
 			};
 
 			const { internalData } = createComposable({
 				data: [rawRow],
-				columns: { passengers: { sortSource } },
+				columns: { population: { sortSource } },
 			});
 
-			expect(internalData.value[0].content.passengers.configuration.sortable).toBe(4);
+			expect(internalData.value[0].content.population.configuration.sortable).toBe(4);
 			expect(receivedRow).toBe(internalData.value[0].raw);
 			expect(receivedRow).toEqual(rawRow);
 		});
 
 		test("Uses a column's sortSource path", () => {
 			const { internalData } = createComposable({
-				data: [{ aircraft: { registration: "G-ABCD" } }],
-				columns: { registration: { sortSource: "aircraft.registration" } },
+				data: [{ address: { city: "Bristol" } }],
+				columns: { city: { sortSource: "address.city" } },
 			});
 
-			expect(internalData.value[0].content.registration.configuration.sortable).toBe("g-abcd");
+			expect(internalData.value[0].content.city.configuration.sortable).toBe("bristol");
 		});
 
 		test("Skips a column's sortSource callback in server mode", () => {
 			const sortSource = vi.fn(() => "Not sorted");
 
 			const { internalData } = createComposable({
-				data: [{ aircraft: { registration: "G-ABCD" } }],
-				columns: { registration: { sortSource, source: "aircraft.registration" } },
+				data: [{ address: { city: "Bristol" } }],
+				columns: { city: { sortSource, source: "address.city" } },
 				isServerMode: true,
 			});
 
 			expect(sortSource).not.toHaveBeenCalled();
-			expect(internalData.value[0].content.registration.configuration.sortable).toBe("g-abcd");
+			expect(internalData.value[0].content.city.configuration.sortable).toBe("bristol");
 		});
 
 		test("Uses a column's source for sortable content when sortSource is omitted", () => {
 			const { internalData } = createComposable({
-				data: [{ aircraft: { registration: "G-ABCD" } }],
-				columns: { registration: { source: "aircraft.registration" } },
+				data: [{ address: { city: "Bristol" } }],
+				columns: { city: { source: "address.city" } },
 			});
 
-			expect(internalData.value[0].content.registration.configuration.sortable).toBe("g-abcd");
+			expect(internalData.value[0].content.city.configuration.sortable).toBe("bristol");
 		});
 
 		describe("Preserves non-string sortSource content", () => {
@@ -224,30 +224,30 @@ describe("useTableData", () => {
 
 		test("Uses a column's source path for display content", () => {
 			const { internalData } = createComposable({
-				data: [{ aircraft: { registration: "G-ABCD" } }],
-				columns: { registration: { source: "aircraft.registration" } },
+				data: [{ address: { city: "Bristol" } }],
+				columns: { city: { source: "address.city" } },
 			});
 
-			expect(internalData.value[0].content.registration.content).toBe("G-ABCD");
+			expect(internalData.value[0].content.city.content).toBe("Bristol");
 		});
 
 		test("Uses a column's source callback with the unchanged raw row", () => {
-			const rawRow = { aircraft: { registration: "G-ABCD" } };
+			const rawRow = { address: { city: "Bristol" } };
 
 			let receivedRow;
 
 			const source = (row) => {
 				receivedRow = row;
 
-				return row.aircraft.registration;
+				return row.address.city;
 			};
 
 			const { internalData } = createComposable({
 				data: [rawRow],
-				columns: { registration: { source } },
+				columns: { city: { source } },
 			});
 
-			expect(internalData.value[0].content.registration.content).toBe("G-ABCD");
+			expect(internalData.value[0].content.city.content).toBe("Bristol");
 			expect(receivedRow).toBe(internalData.value[0].raw);
 			expect(receivedRow).toEqual(rawRow);
 		});
