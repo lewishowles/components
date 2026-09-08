@@ -31,8 +31,9 @@ const props = defineProps({
 	 * The formatting options to apply to the displayed date. Accepts a named
 	 * format string (e.g. "date", "dateTime", "shortDate"), a Day.js-style
 	 * token string (e.g. "DD/MM/YYYY"), or an Intl.DateTimeFormat options
-	 * object. By default, "date" is used for date-only inputs and "dateTime"
-	 * for inputs with time information.
+	 * object. By default, the global "date" or "dateTime" format configured
+	 * with configureDateHelpers is used, based on whether the input has time
+	 * information.
 	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat#using_options
 	 */
 	format: {

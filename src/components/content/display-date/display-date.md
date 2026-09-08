@@ -25,7 +25,7 @@ The locale to use when formatting dates. By default, the user's locale is used.
 - type: `string` | `object`
 - default: `undefined`
 
-The formatting to apply to the displayed date. Accepts a named format string (e.g. `"date"`, `"dateTime"`, `"shortDate"`), a Day.js-style token string (e.g. `"DD/MM/YYYY"`), or an [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat#using_options) options object. By default, `"date"` is used for date-only inputs and `"dateTime"` for inputs with time information.
+The formatting to apply to the displayed date. Accepts a named format string (e.g. `"date"`, `"dateTime"`, `"shortDate"`), a Day.js-style token string (e.g. `"DD/MM/YYYY"`), or an [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat#using_options) options object. By default, the global `"date"` or `"dateTime"` format configured with [`configureDateHelpers`](/helpers/configure-date-helpers) is used, based on whether the input has time information.
 
 ## Styling hooks
 

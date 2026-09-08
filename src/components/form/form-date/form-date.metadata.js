@@ -64,7 +64,7 @@ export const formDateMetadata = {
 		{
 			name: "date-helper-status",
 			summary:
-				"Screen-reader status announcement shown after a date helper button is activated. Receives a date slot prop with the resolved display date. Defaults to 'Date set to {date}.'",
+				"Screen-reader status announcement shown after a date helper button is activated. Receives a date slot prop with the resolved display date. Defaults to 'Date set to {date}.' The resolved display date uses the global 'date' format configured with configureDateHelpers.",
 		},
 	],
 	parts: [{ name: "date-helper", summary: "A quick-select date helper button." }],

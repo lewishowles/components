@@ -130,6 +130,12 @@
 				</app-menu-section>
 
 				<app-menu-section>
+					<template #title>Helpers</template>
+
+					<app-menu-link to="/helpers/configure-date-helpers">configureDateHelpers</app-menu-link>
+				</app-menu-section>
+
+				<app-menu-section>
 					<template #title>Utilities</template>
 
 					<app-menu-link to="/utilities/extend-component">extendComponent</app-menu-link>

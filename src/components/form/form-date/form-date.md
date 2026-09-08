@@ -46,6 +46,8 @@ Any help text to display below the field.
 
 The screen-reader status announcement shown after a date helper button (see the `dateHelpers` prop) is activated. Receives a `date` slot prop containing the resolved, formatted date. Defaults to `Date set to {date}.`.
 
+The formatted date uses the global `"date"` format configured with [`configureDateHelpers`](/helpers/configure-date-helpers).
+
 Only rendered when `dateHelpers` resolves at least one valid entry.
 
 ## Props

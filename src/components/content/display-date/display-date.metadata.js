@@ -21,7 +21,7 @@ export const displayDateMetadata = {
 			type: "string | object",
 			default: undefined,
 			summary:
-				'Named format string (e.g. "date", "dateTime", "shortDate"), Day.js token string, or Intl.DateTimeFormat options. Defaults to "date" for date-only inputs and "dateTime" for inputs with time.',
+				'Named format string (e.g. "date", "dateTime", "shortDate"), Day.js token string, or Intl.DateTimeFormat options. By default, the global "date" or "dateTime" format configured with configureDateHelpers is used, based on whether the input has time information.',
 		},
 	],
 	examples: [],
