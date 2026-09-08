@@ -171,12 +171,52 @@ describe("data-table", () => {
 			});
 
 			expect(
-				wrapper.findAll('[data-test="data-table-heading"]').map((heading) => heading.text()),
-			).toContain("Actions");
+				wrapper.findAll('[data-test="data-table-heading"]').at(-1).get(".sr-only").text(),
+			).toBe("Actions");
 
 			const cells = wrapper.findAll('[data-test="data-table-cell"]');
 
 			expect(cells.at(cells.length - 1).text()).toBe(sampleRow.id);
+		});
+
+		test("renders an actions heading slot visibly in the injected column", () => {
+			const wrapper = deepMount({
+				props: {
+					columns: { title: { label: "Title" } },
+					data: [sampleRow],
+					enableSearch: false,
+				},
+				slots: {
+					actions: ({ row }) => row.id,
+					actions_heading: "Row actions",
+				},
+			});
+
+			const actionHeading = wrapper.findAll('[data-test="data-table-heading"]').at(-1);
+
+			expect(actionHeading.text()).toBe("Row actions");
+			expect(actionHeading.find(".sr-only").exists()).toBe(false);
+		});
+
+		test("renders an explicit actions column with a visible heading", () => {
+			const wrapper = deepMount({
+				props: {
+					columns: {
+						title: { label: "Title" },
+						actions: { label: "More", sortable: false },
+					},
+					data: [sampleRow],
+					enableSearch: false,
+				},
+				slots: {
+					actions: ({ row }) => row.id,
+				},
+			});
+
+			const actionHeading = wrapper.findAll('[data-test="data-table-heading"]').at(-1);
+
+			expect(actionHeading.text()).toBe("More");
+			expect(actionHeading.find(".sr-only").exists()).toBe(false);
 		});
 
 		test("does not inject an actions column when configuration hides it", () => {

@@ -36,7 +36,6 @@ export default function useTableColumns({
 	// sub-component. This means we can provide slots for their labels, without
 	// having to know what those available densities are from this component.
 	const tableDensityOptions = ref([]);
-
 	// Our user-selected column visibility.
 	const columnVisibility = ref({});
 
@@ -121,6 +120,7 @@ export default function useTableColumns({
 		if (haveActionsSlot.value && !haveConfiguredActionsColumn) {
 			definitions.actions = {
 				label: "Actions",
+				visuallyHiddenHeading: true,
 				first: false,
 				last: false,
 				sortable: false,

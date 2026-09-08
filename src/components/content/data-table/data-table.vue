@@ -196,7 +196,11 @@
 											:name="`${columnKey}_heading`"
 											v-bind="{ key: columnKey, label: columnKey }"
 										>
-											{{ column.label }}
+											<!-- The auto-injected actions column hides its heading text from view. An #actions_heading slot replaces that text and shows it visibly. -->
+											<span v-if="column.visuallyHiddenHeading" class="sr-only">
+												{{ column.label }}
+											</span>
+											<template v-else>{{ column.label }}</template>
 										</slot>
 									</th>
 								</tr>

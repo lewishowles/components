@@ -22,6 +22,7 @@ const columnDefinitionsWithAutoActions = ref({
 	...columnDefinitions.value,
 	actions: {
 		label: "Actions",
+		visuallyHiddenHeading: true,
 		configurable: false,
 	},
 });

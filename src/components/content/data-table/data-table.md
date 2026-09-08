@@ -81,6 +81,16 @@ The message to display when no data could be found for the current search term.
 | ------------- | -------- | -------------------------------------- |
 | `searchQuery` | `string` | The current search query in the table. |
 
+### Actions column
+
+Use the `#actions` slot to render row actions. The slot receives `cell` and `row` props, like the other column slots.
+
+When `#actions` has content and `columns` does not contain an `actions` key, the table appends an actions column after the configured columns. The injected column is visible, non-sortable, narrow (`w-px`), and has a visually hidden `Actions` heading. No `columns` configuration is needed.
+
+Use `#actions_heading` to replace the injected heading with different text or an icon. The supplied heading content is rendered visibly.
+
+Adding an `actions` key to `columns` opts out of automatic injection. The configured column behaves like any other column and its fallback heading is visible. To hide the heading, provide an `#actions_heading` slot containing `<span class="sr-only">Actions</span>`, matching the injected column's default. To place the actions column anywhere other than last, configure `columns.actions` explicitly.
+
 ### `<columnName>_heading`
 
 - default: The heading provided within `configuration`, or the column key.

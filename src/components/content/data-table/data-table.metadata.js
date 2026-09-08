@@ -131,6 +131,15 @@ export const dataTableMetadata = {
 		{ name: "no-results-message", summary: "Message shown when search has no results." },
 		{ name: "loading-label", summary: "Accessible label shown in the loading row." },
 		{ name: "error", summary: "Server error content shown in the table body." },
+		{
+			name: "actions",
+			summary:
+				"Renders row actions and adds an actions column with a visually hidden heading when columns has no actions key.",
+		},
+		{
+			name: "actions_heading",
+			summary: "Replaces the automatic actions heading with visible content.",
+		},
 		{ name: "<columnName>_heading", summary: "Custom heading for a column." },
 		{ name: "<columnName>", summary: "Custom cell renderer for a column." },
 		{ name: "select-all-rows-label", summary: "Label for selecting all rows." },

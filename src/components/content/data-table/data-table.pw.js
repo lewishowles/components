@@ -413,7 +413,7 @@ test.describe("data-table", () => {
 				(element) => element.getBoundingClientRect().width,
 			);
 
-			await expect(actionHeading).toContainText("Actions");
+			await expect(actionHeading.locator(".sr-only")).toBeAttached();
 			expect(actionHeadingWidth).toBeLessThan(adjacentHeadingWidth);
 			await expect(actionHeading).toHaveClass(/ps-3/);
 			await expect(actionHeading).not.toHaveClass(/pe-3/);
@@ -421,6 +421,24 @@ test.describe("data-table", () => {
 			await expect(actionCell).not.toHaveClass(/pe-3/);
 			await expect(adjacentHeading.getByTestId("data-table-sort")).toHaveClass(/pe-3/);
 			await expect(adjacentCell).toHaveClass(/pe-3/);
+		});
+
+		test("renders an actions heading slot visibly in the injected column", async ({
+			mount,
+			page,
+		}) => {
+			await mountDataTableRaw(mount, {
+				props: { columns, data, enableSearch: false },
+				slots: {
+					actions: '<button type="button">View</button>',
+					actions_heading: "Row actions",
+				},
+			});
+
+			const actionHeading = heading(page, Object.keys(columns).length);
+
+			await expect(actionHeading).toContainText("Row actions");
+			await expect(actionHeading.locator(".sr-only")).toHaveCount(0);
 		});
 
 		test("renders a column source without a cell slot", async ({ mount, page }) => {

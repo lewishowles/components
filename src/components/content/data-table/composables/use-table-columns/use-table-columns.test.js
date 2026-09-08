@@ -65,6 +65,7 @@ describe("useTableColumns", () => {
 			expect(Object.keys(columnDefinitions.value)).toEqual(["title", "actions"]);
 			expect(columnDefinitions.value.actions).toEqual({
 				label: "Actions",
+				visuallyHiddenHeading: true,
 				first: false,
 				last: true,
 				sortable: false,
@@ -81,6 +82,7 @@ describe("useTableColumns", () => {
 			expect(columnDefinitions.value).toEqual({
 				actions: {
 					label: "Actions",
+					visuallyHiddenHeading: true,
 					first: true,
 					last: true,
 					sortable: false,
