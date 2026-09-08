@@ -2,6 +2,29 @@
 
 ## Unreleased
 
+## 3.4.0 - 2026-09-08
+
+### Features
+
+- `data-table` columns can take their display content from a `source`, so a column can show a value the row doesn't hold directly.
+- `data-table` columns can sort by a nested or computed value rather than the displayed cell content.
+- `data-table` adds the actions column for you when you define an `#actions` slot.
+
+### Fixes
+
+- `data-table` treats dotted column IDs as literal config keys, so a key containing a dot no longer breaks cell content, search, or sorting.
+- `data-table` keeps the toolbar and column configuration visible when there is no data to display.
+- `data-table` keeps button and radio groups from collapsing when they sit next to items that grow.
+- `floating-details` aligns to its trigger without being affected by overflow further up the tree.
+- `form-combo-box` forwards its `prefix` and `suffix` slots to `form-input`.
+- `form-flow` scrolls the auto-focused field or title into view when it starts off-screen.
+- `form-label` no longer renders an empty label when there is no label text.
+- `form` honours `displayLabel` on radio, checkbox, and button group fields.
+- `form` scales control spacing with font size.
+- `donut-chart` requires a `label` slot. Without one it logs a development warning and doesn't render.
+- `content-card` gives card sections a default surface colour.
+- Dark mode surfaces get darker as they sink, matching light mode, and field styles are tweaked to suit.
+
 ## 3.3.2 - 2026-09-02
 
 ### Fixes
