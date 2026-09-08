@@ -4,7 +4,7 @@
 			<slot name="title" />
 		</template>
 
-		<div class="docs-component-tab *:animate-fade-in *:delay mb-4">
+		<div class="docs-component-tab *:animate-fade-in *:delay mb-4 space-y-4">
 			<h2 class="text-content-strong mt-8 mb-4 text-xl font-bold"><slot name="title" /></h2>
 
 			<slot name="post-title" />
