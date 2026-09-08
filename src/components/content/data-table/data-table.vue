@@ -538,6 +538,9 @@ const dataTableToolbar = ref(null);
 const haveTableName = computed(() => isNonEmptyString(props.name));
 // Whether this table includes a caption.
 const haveCaption = computed(() => isNonEmptySlot(slots.caption));
+// Whether an #actions slot has been declared. Its column is injected regardless
+// of the slot's output for individual rows.
+const haveActionsSlot = computed(() => typeof slots.actions === "function");
 // Whether an explicit label is available for an overflowing table.
 const haveOverflowLabel = computed(() => isNonEmptyString(props.overflowLabel));
 // Which type of announcement is currently active in the status live region.
@@ -631,6 +634,7 @@ const {
 	name: toRef(props, "name"),
 	headingClasses: toRef(props, "headingClasses"),
 	cellClasses: toRef(props, "cellClasses"),
+	haveActionsSlot,
 });
 
 // The number of visible columns, including the optional selection control.

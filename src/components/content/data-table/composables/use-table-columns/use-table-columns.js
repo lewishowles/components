@@ -20,8 +20,16 @@ import { useStorage } from "@vueuse/core";
  *     A ref of the table-level heading classes.
  * @param  {object}  options.cellClasses
  *     A ref of the table-level cell classes.
+ * @param  {object}  options.haveActionsSlot
+ *     A ref of whether the consumer declared an #actions slot.
  */
-export default function useTableColumns({ columns, name, headingClasses, cellClasses }) {
+export default function useTableColumns({
+	columns,
+	name,
+	headingClasses,
+	cellClasses,
+	haveActionsSlot,
+}) {
 	// Our user-selected table density from the fragment component.
 	const tableDensity = ref(null);
 	// Our available table density options, as provided by the `data-table-density`
@@ -73,18 +81,16 @@ export default function useTableColumns({ columns, name, headingClasses, cellCla
 	// the user, which means that any column not configured will not be displayed by
 	// default.
 	const columnDefinitions = computed(() => {
-		if (!isNonEmptyObject(columns.value)) {
-			return {};
-		}
+		const definitions = {};
 
-		const definitions = keys(columns.value).reduce((definitions, columnKey) => {
+		for (const columnKey of keys(columns.value)) {
 			const userConfiguration = columns.value[columnKey] || {};
 
 			// If this column is hidden by configuration, we don't add it at all.
 			const hiddenByConfiguration = getPathValue(userConfiguration, "hidden") === true;
 
 			if (hiddenByConfiguration) {
-				return definitions;
+				continue;
 			}
 
 			// However, if this column is hidden by the user's preferences, we want
@@ -102,9 +108,28 @@ export default function useTableColumns({ columns, name, headingClasses, cellCla
 				visible: !hiddenByPreference,
 				...userConfiguration,
 			};
+		}
 
-			return definitions;
-		}, {});
+		// An explicit `actions` entry in the raw prop opts out of the automatic
+		// column, even when that entry is hidden and so never reaches `definitions`.
+		const haveConfiguredActionsColumn =
+			isNonEmptyObject(columns.value) &&
+			Object.prototype.hasOwnProperty.call(columns.value, "actions");
+
+		// With an `#actions` slot but no column configured for it, append the column
+		// here so consumers don't repeat its fixed settings on every table.
+		if (haveActionsSlot.value && !haveConfiguredActionsColumn) {
+			definitions.actions = {
+				label: "Actions",
+				first: false,
+				last: false,
+				sortable: false,
+				tabularNums: false,
+				visible: true,
+				configurable: false,
+				columnClasses: "w-px min-w-0",
+			};
+		}
 
 		// After we determine which columns are present, we need to determine which
 		// column is first and which is last, as columns may have been removed or

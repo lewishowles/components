@@ -56,6 +56,77 @@ describe("useTableColumns", () => {
 			);
 		});
 
+		test("Appends a non-sortable actions column when its slot is present", () => {
+			const { columnDefinitions } = createComposable({
+				columns: { title: {} },
+				haveActionsSlot: true,
+			});
+
+			expect(Object.keys(columnDefinitions.value)).toEqual(["title", "actions"]);
+			expect(columnDefinitions.value.actions).toEqual({
+				label: "Actions",
+				first: false,
+				last: true,
+				sortable: false,
+				tabularNums: false,
+				visible: true,
+				configurable: false,
+				columnClasses: "w-px min-w-0",
+			});
+		});
+
+		test("Adds an actions column when no columns are configured", () => {
+			const { columnDefinitions } = createComposable({ haveActionsSlot: true });
+
+			expect(columnDefinitions.value).toEqual({
+				actions: {
+					label: "Actions",
+					first: true,
+					last: true,
+					sortable: false,
+					tabularNums: false,
+					visible: true,
+					configurable: false,
+					columnClasses: "w-px min-w-0",
+				},
+			});
+		});
+
+		test("Keeps an explicitly configured actions column without adding another", () => {
+			const { columnDefinitions } = createComposable({
+				columns: {
+					title: {},
+					actions: { label: "More", sortable: true, visible: false, columnClasses: "custom" },
+				},
+				haveActionsSlot: true,
+			});
+
+			expect(Object.keys(columnDefinitions.value)).toEqual(["title", "actions"]);
+			expect(columnDefinitions.value.actions).toEqual(
+				expect.objectContaining({
+					label: "More",
+					sortable: true,
+					visible: false,
+					columnClasses: "custom",
+				}),
+			);
+		});
+
+		test("Does not add an actions column when its key is hidden by configuration", () => {
+			const { columnDefinitions } = createComposable({
+				columns: { title: {}, actions: { hidden: true } },
+				haveActionsSlot: true,
+			});
+
+			expect(columnDefinitions.value).not.toHaveProperty("actions");
+		});
+
+		test("Does not add an actions column when its slot is absent", () => {
+			const { columnDefinitions } = createComposable({ columns: { title: {} } });
+
+			expect(columnDefinitions.value).not.toHaveProperty("actions");
+		});
+
 		test("Excludes a column hidden by configuration", () => {
 			const { columnDefinitions } = createComposable({
 				columns: { title: {}, secret: { hidden: true } },
@@ -219,12 +290,21 @@ describe("useTableColumns", () => {
  *     The table-level heading classes.
  * @param  {string}  options.cellClasses
  *     The table-level cell classes.
+ * @param  {boolean}  options.haveActionsSlot
+ *     Whether the table has an actions slot.
  */
-function createComposable({ columns = {}, name, headingClasses = "", cellClasses = "" } = {}) {
+function createComposable({
+	columns = {},
+	name,
+	headingClasses = "",
+	cellClasses = "",
+	haveActionsSlot = false,
+} = {}) {
 	const columnsRef = ref(columns);
 	const nameRef = ref(name);
 	const headingClassesRef = ref(headingClasses);
 	const cellClassesRef = ref(cellClasses);
+	const haveActionsSlotRef = ref(haveActionsSlot);
 
 	return {
 		columns: columnsRef,
@@ -234,6 +314,7 @@ function createComposable({ columns = {}, name, headingClasses = "", cellClasses
 			name,
 			headingClasses: headingClassesRef,
 			cellClasses: cellClassesRef,
+			haveActionsSlot: haveActionsSlotRef,
 		}),
 	};
 }

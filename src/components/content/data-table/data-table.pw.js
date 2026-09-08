@@ -390,6 +390,39 @@ test.describe("data-table", () => {
 			await expect(page.getByTestId("data-table-cell")).toHaveCount(15);
 		});
 
+		test("appends an actions column that stays narrow and spaced from its neighbour", async ({
+			mount,
+			page,
+		}) => {
+			await mountDataTableRaw(mount, {
+				props: { columns, data, enableSearch: false },
+				slots: { actions: '<button type="button">View</button>' },
+			});
+
+			const actionsColumnIndex = Object.keys(columns).length;
+			const actionHeading = heading(page, actionsColumnIndex);
+			const adjacentHeading = heading(page, actionsColumnIndex - 1);
+			const actionCell = rowCell(page, 0, actionsColumnIndex);
+			const adjacentCell = rowCell(page, 0, actionsColumnIndex - 1);
+
+			const actionHeadingWidth = await actionHeading.evaluate(
+				(element) => element.getBoundingClientRect().width,
+			);
+
+			const adjacentHeadingWidth = await adjacentHeading.evaluate(
+				(element) => element.getBoundingClientRect().width,
+			);
+
+			await expect(actionHeading).toContainText("Actions");
+			expect(actionHeadingWidth).toBeLessThan(adjacentHeadingWidth);
+			await expect(actionHeading).toHaveClass(/ps-3/);
+			await expect(actionHeading).not.toHaveClass(/pe-3/);
+			await expect(actionCell).toHaveClass(/ps-3/);
+			await expect(actionCell).not.toHaveClass(/pe-3/);
+			await expect(adjacentHeading.getByTestId("data-table-sort")).toHaveClass(/pe-3/);
+			await expect(adjacentCell).toHaveClass(/pe-3/);
+		});
+
 		test("renders a column source without a cell slot", async ({ mount, page }) => {
 			await mountDataTableRaw(mount, {
 				props: {

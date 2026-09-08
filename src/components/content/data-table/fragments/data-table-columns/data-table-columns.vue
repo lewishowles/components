@@ -34,6 +34,11 @@ const columns = computed(() => {
 
 		const definition = columnDefinitions.value[columnKey];
 
+		// Columns marked as not configurable never appear in the visibility picker.
+		if (definition.configurable === false) {
+			continue;
+		}
+
 		columns.push({ key: columnKey, label: definition.label });
 	}
 

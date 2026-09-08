@@ -18,6 +18,14 @@ const columnDefinitions = ref({
 	},
 });
 
+const columnDefinitionsWithAutoActions = ref({
+	...columnDefinitions.value,
+	actions: {
+		label: "Actions",
+		configurable: false,
+	},
+});
+
 const modelValue = { title: true, release_year: true };
 const global = { provide: { "data-table": { columnDefinitions } } };
 const mount = createMount(DataTableColumns, { global, props: { modelValue } });
@@ -48,6 +56,27 @@ describe("data-table-columns", () => {
 				const vm = wrapper.vm;
 
 				expect(vm.columns).toEqual([
+					{
+						key: "title",
+						label: "Title",
+					},
+					{
+						key: "release_year",
+						label: "Release year",
+					},
+				]);
+			});
+
+			test("omits non-configurable columns from the picker", () => {
+				const wrapper = mount({
+					global: {
+						provide: {
+							"data-table": { columnDefinitions: columnDefinitionsWithAutoActions },
+						},
+					},
+				});
+
+				expect(wrapper.vm.columns).toEqual([
 					{
 						key: "title",
 						label: "Title",

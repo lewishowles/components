@@ -158,6 +158,44 @@ describe("data-table", () => {
 			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("G-ABCD");
 		});
 
+		test("renders the actions slot in the injected column", () => {
+			const wrapper = deepMount({
+				props: {
+					columns: { title: { label: "Title" } },
+					data: [sampleRow],
+					enableSearch: false,
+				},
+				slots: {
+					actions: ({ row }) => row.id || "Actions",
+				},
+			});
+
+			expect(
+				wrapper.findAll('[data-test="data-table-heading"]').map((heading) => heading.text()),
+			).toContain("Actions");
+
+			const cells = wrapper.findAll('[data-test="data-table-cell"]');
+
+			expect(cells.at(cells.length - 1).text()).toBe(sampleRow.id);
+		});
+
+		test("does not inject an actions column when configuration hides it", () => {
+			const wrapper = deepMount({
+				props: {
+					columns: { title: { label: "Title" }, actions: { hidden: true } },
+					data: [sampleRow],
+					enableSearch: false,
+				},
+				slots: {
+					actions: ({ row }) => row.id || "Actions",
+				},
+			});
+
+			expect(wrapper.vm.columnDefinitions).not.toHaveProperty("actions");
+			expect(wrapper.findAll('[data-test="data-table-heading"]')).toHaveLength(1);
+			expect(wrapper.findAll('[data-test="data-table-cell"]')).toHaveLength(1);
+		});
+
 		test("passes a dotted column key value and the original row to a cell slot", () => {
 			const rawRow = { aircraft: { registration: "G-ABCD" } };
 
