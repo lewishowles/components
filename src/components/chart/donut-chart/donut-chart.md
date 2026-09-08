@@ -2,7 +2,7 @@
 
 Create a donut chart from a set of segments. The chart automatically determines proportions based on the total.
 
-A `label` slot is required. Use the `description` slot for additional context about the chart's findings.
+A `label` slot is required. Omitting it logs a development warning and stops the chart from rendering, rather than falling back to placeholder text. Use the `description` slot for additional context about the chart's findings.
 
 ## Slots
 

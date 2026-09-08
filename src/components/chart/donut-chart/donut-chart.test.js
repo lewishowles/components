@@ -26,22 +26,34 @@ describe("donut-chart", () => {
 	});
 
 	describe("Accessibility", () => {
-		test("should warn when no label slot is provided", () => {
+		test("Warns and omits chart output when no label slot is provided", () => {
 			const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
 
-			mount({ slots: { label: null } });
+			const wrapper = mount({ slots: { label: null } });
 
 			expect(warn).toHaveBeenCalledWith(
 				"[donut-chart] No accessible name found for the chart. Provide a `label` slot.",
 			);
+			expect(wrapper.find("svg").exists()).toBe(false);
+			expect(wrapper.find("table").exists()).toBe(false);
 		});
 
-		test("should not warn when a label slot is provided", () => {
+		test("Keeps labelled chart and table output without a warning", () => {
 			const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
 
-			mount();
+			const wrapper = mount();
+			const chart = wrapper.get("svg");
+			const label = wrapper.get("span[id]");
+			const table = wrapper.get("table");
 
 			expect(warn).not.toHaveBeenCalled();
+			expect(chart.attributes("role")).toBe("img");
+			expect(chart.attributes("aria-labelledby")).toBe(label.attributes("id"));
+			expect(label.text()).toBe("Sales by region");
+			expect(table.get("caption").text()).toBe(label.text());
+			expect(chart.findAll("path")).toHaveLength(3);
+			expect(table.findAll("th").map((heading) => heading.text())).toEqual(["A", "B", "C"]);
+			expect(table.findAll("td").map((cell) => cell.text())).toEqual(["50", "25", "25"]);
 		});
 	});
 

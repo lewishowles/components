@@ -1,6 +1,6 @@
 <template>
-	<div v-if="haveSlices" data-component="donut-chart" data-test="donut-chart">
-		<span v-if="haveLabel" :id="labelId" class="sr-only">
+	<div v-if="haveSlices && haveLabel" data-component="donut-chart" data-test="donut-chart">
+		<span :id="labelId" class="sr-only">
 			<slot name="label" />
 		</span>
 
