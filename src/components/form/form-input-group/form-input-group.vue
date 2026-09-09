@@ -15,13 +15,13 @@
 		:data-component="componentName"
 		:data-test="componentName"
 	>
-		<div class="flex flex-col">
+		<!-- Hiding this wrapper rather than the legend alone takes the introduction with it, and stops an invisible label leaving a gap above the options. -->
+		<div :class="{ 'sr-only': !displayLabel }" class="flex flex-col">
 			<form-label
 				v-bind="{
 					id: labelId,
 					tag: 'legend',
 					required,
-					hidden: !displayLabel,
 					showOptionalIndicator: !isCheckbox,
 				}"
 			>
@@ -41,7 +41,7 @@
 		</div>
 
 		<div
-			:class="cn('mt-2 mb-1 flex', optionsClasses)"
+			:class="cn('flex', optionsClasses)"
 			:data-layout="inline ? 'inline' : 'stacked'"
 			data-part="options"
 			data-test="form-input-group-options"

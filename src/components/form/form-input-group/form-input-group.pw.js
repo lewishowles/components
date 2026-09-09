@@ -28,7 +28,7 @@ test.describe("form-input-group", () => {
 		await expect(formInputGroup).toHaveAttribute("aria-labelledby", "access-level-label");
 		await expect(legend).toBeAttached();
 		await expect(legend).toHaveAttribute("id", "access-level-label");
-		await expect(legend).toHaveClass(/sr-only/);
+		await expect(legend.locator("xpath=..")).toHaveClass(/sr-only/);
 	});
 
 	test.describe("aria-invalid", () => {

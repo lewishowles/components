@@ -40,7 +40,7 @@ test.describe("form-radio-group", () => {
 		await expect(formRadioGroup).toHaveAttribute("aria-labelledby", "id-abc-label");
 		await expect(legend).toBeAttached();
 		await expect(legend).toHaveAttribute("id", "id-abc-label");
-		await expect(legend).toHaveClass(/sr-only/);
+		await expect(legend.locator("xpath=..")).toHaveClass(/sr-only/);
 	});
 
 	test.describe("supplementary information", () => {

@@ -233,15 +233,24 @@ describe("form-input-group", () => {
 
 		describe("displayLabel", () => {
 			test("keeps the legend visible by default", () => {
-				const wrapper = deepMount();
+				const wrapper = deepMount({ slots: { default: () => "Access level" } });
+				const legend = wrapper.find("legend");
 
-				expect(wrapper.findComponent({ name: "FormLabel" }).props("hidden")).toBe(false);
+				expect(legend.exists()).toBe(true);
+				expect(legend.element.parentElement?.classList.contains("sr-only")).toBe(false);
 			});
 
-			test("visually hides the legend while keeping it available to screen readers", () => {
-				const wrapper = deepMount({ props: { displayLabel: false } });
+			test("visually hides the label wrapper while keeping the legend available to screen readers", () => {
+				const wrapper = deepMount({
+					props: { displayLabel: false, id: "access-level" },
+					slots: { default: () => "Access level" },
+				});
 
-				expect(wrapper.findComponent({ name: "FormLabel" }).props("hidden")).toBe(true);
+				const legend = wrapper.find("legend");
+
+				expect(legend.exists()).toBe(true);
+				expect(legend.attributes("id")).toBe("access-level-label");
+				expect(legend.element.parentElement?.classList.contains("sr-only")).toBe(true);
 			});
 		});
 
@@ -371,9 +380,7 @@ describe("form-input-group", () => {
 
 				const options = wrapper.get('[data-test="form-input-group-options"]');
 
-				expect(options.classes()).toEqual(
-					expect.arrayContaining(["mt-2", "mb-1", "flex", ...customClasses]),
-				);
+				expect(options.classes()).toEqual(expect.arrayContaining(["flex", ...customClasses]));
 			});
 		});
 
