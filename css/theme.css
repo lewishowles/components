@@ -106,8 +106,10 @@
 	--info-950: var(--color-blue-950);
 }
 
+/**
+ * Chart palette
+ */
 :root {
-	/* Chart palette (Okabe-Ito, colour-blind safe). Wraps at 8. */
 	--color-chart-1: #e69f00;
 	--color-chart-2: #56b4e9;
 	--color-chart-3: #009e73;
@@ -118,7 +120,7 @@
 	--color-chart-8: #404040;
 }
 
-/*
+/**
  * Tailwind scale utilities — bg-primary-500, text-danger-700,
  * border-success-200, etc.
  */
@@ -196,7 +198,7 @@
 	--color-border-strong: var(--border-strong);
 }
 
-/*
+/**
  * Semantic roles
  * Each intent has:
  * - a fill (bg),
@@ -208,7 +210,6 @@
  * Fill and text use different shades where the accessible text shade differs
  * from the fill shade.
  */
-/* Keep defaults zero-specificity so theme modes can override them on the root. */
 :where(:root) {
 	--primary-fill: var(--primary-800);
 	--primary-text: var(--primary-800);
@@ -256,7 +257,7 @@
 	--border-strong: var(--color-grey-300);
 }
 
-/*
+/**
  * Semantic roles (dark mode)
  */
 :where(.dark, .dark *) {
@@ -286,11 +287,15 @@
 	--info-subtle: color-mix(in oklab, var(--info-500) 25%, transparent);
 	--info-border-subtle: transparent;
 
-	--surface: var(--color-grey-900);
-	--surface-elevated: var(--color-grey-800);
-	--surface-subtle: color-mix(in oklab, var(--surface), var(--content-strong) 5%);
-	--surface-sunken: color-mix(in oklab, var(--surface), var(--content-strong) 10%);
-	--control-muted-surface: var(--control-overlay);
+	--surface: color-mix(in oklab, var(--color-grey-900), var(--primary-500) 12%);
+
+	--surface-elevated: color-mix(in oklab, var(--color-grey-800), var(--primary-500) 12%);
+
+	--surface-subtle: color-mix(in oklab, var(--surface), var(--color-grey-950) 55%);
+
+	--surface-sunken: color-mix(in oklab, var(--surface), var(--color-grey-950) 90%);
+
+	--control-muted-surface: var(--control-surface);
 	--control-muted-surface-hover: var(--control-overlay-hover);
 	--control-muted-surface-active: var(--control-overlay-active);
 
@@ -311,20 +316,29 @@
 	--color-chart-8: #aaaaaa;
 }
 
-/* Derive control states where the active semantic roles are in scope. */
+/**
+ * Form controls
+ */
 :where(:root, .dark, .dark *) {
 	--control-surface: var(--surface);
+
 	--control-surface-hover: color-mix(in oklab, var(--surface), var(--content-strong) 2%);
+
 	--control-surface-active: color-mix(in oklab, var(--surface), var(--content-strong) 4%);
 
 	--control-border: var(--border-strong);
+
 	--control-border-hover: color-mix(in oklab, var(--border-strong), var(--content-strong) 20%);
+
 	--control-border-active: color-mix(in oklab, var(--border-strong), var(--content-strong) 45%);
+
 	--control-ring: var(--control-border);
 	--control-ring-hover: var(--control-border-active);
 
 	--control-content: var(--content);
+
 	--control-content-hover: color-mix(in oklab, var(--content), var(--content-strong) 24%);
+
 	--control-content-active: color-mix(in oklab, var(--content), var(--content-strong) 60%);
 
 	--control-focus: var(--primary-fill);
@@ -342,17 +356,10 @@
 }
 
 :where(.dark, .dark *) {
-	--control-content-hover: color-mix(in oklab, var(--content), var(--surface) 2%);
-	--control-content-active: var(--content);
-	--control-ring-hover: rgb(from var(--content-strong) r g b / 50%);
-	--control-selected-surface: var(--primary-500);
-	--control-selected-surface-focus: var(--primary-600);
-	--control-selected-border: var(--primary-400);
-	--control-selected-border-focus: var(--primary-500);
-	--control-invalid: var(--danger-300);
+	--control-surface: rgb(from var(--content-strong) r g b / 10%);
 }
 
-/*
+/**
  * Semantic utilities.
  */
 
