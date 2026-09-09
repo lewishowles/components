@@ -3,16 +3,11 @@
 		v-if="
 			enableSearch || showUserConfiguration || $slots['post-search'] || $slots['pre-configuration']
 		"
-		class="flex items-end gap-4"
+		class="flex flex-wrap items-end gap-4"
 		data-test="data-table-toolbar"
 	>
-		<div v-if="enableSearch || $slots['post-search']" class="flex grow items-end gap-4">
-			<data-table-search
-				v-if="enableSearch"
-				ref="searchComponent"
-				v-model="searchQuery"
-				class="grow"
-			>
+		<div v-if="enableSearch || $slots['post-search']" class="flex grow flex-wrap items-end gap-4">
+			<data-table-search v-if="enableSearch" ref="searchComponent" v-model="searchQuery">
 				<template #search-label>
 					<slot name="search-label" />
 				</template>

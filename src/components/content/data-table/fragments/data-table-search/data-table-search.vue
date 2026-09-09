@@ -1,10 +1,10 @@
 <template>
-	<div class="flex items-end gap-4" data-test="data-table-search">
+	<div class="flex w-full max-w-md items-end gap-4" data-test="data-table-search">
 		<form-input
 			ref="searchQueryInput"
 			v-bind="{ placeholder: searchPlaceholder, showOptionalIndicator: false }"
 			v-model="searchQuery"
-			class="w-full max-w-sm"
+			class="w-full"
 			data-test="data-table-search-input"
 		>
 			<slot name="search-label">Search</slot>
@@ -20,7 +20,7 @@
 
 		<ui-button
 			v-show="haveSearchQuery"
-			class="button--muted"
+			class="button--muted shrink-0"
 			data-test="data-table-search-reset-button"
 			@click="resetSearchQuery"
 		>
