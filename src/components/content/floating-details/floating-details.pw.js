@@ -139,16 +139,18 @@ test.describe("floating-details", () => {
 			await page.getByTestId("floating-details-summary").click();
 			await expect(page.getByTestId("floating-details-content")).toBeVisible();
 
-			const edgeOffset = await page.evaluate(() => {
-				const panel = document.querySelector('[data-test="floating-details-content"]');
-				const summary = document.querySelector('[data-test="floating-details-summary"]');
+			await expect
+				.poll(() =>
+					page.evaluate(() => {
+						const panel = document.querySelector('[data-test="floating-details-content"]');
+						const summary = document.querySelector('[data-test="floating-details-summary"]');
 
-				return Math.abs(
-					panel.getBoundingClientRect().right - summary.getBoundingClientRect().right,
-				);
-			});
-
-			expect(edgeOffset).toBeLessThan(1);
+						return Math.abs(
+							panel.getBoundingClientRect().right - summary.getBoundingClientRect().right,
+						);
+					}),
+				)
+				.toBeLessThan(1);
 		});
 
 		test("aligns its start edge with the summary trigger in RTL", async ({ mount, page }) => {
@@ -166,19 +168,21 @@ test.describe("floating-details", () => {
 			await page.getByTestId("floating-details-summary").click();
 			await expect(page.getByTestId("floating-details-content")).toBeVisible();
 
-			const edgeOffset = await page.evaluate(() => {
-				const panel = document.querySelector('[data-test="floating-details-content"]');
-				const summary = document.querySelector('[data-test="floating-details-summary"]');
-
-				return Math.abs(
-					panel.getBoundingClientRect().right - summary.getBoundingClientRect().right,
-				);
-			});
-
 			// A single device-pixel rounding difference is expected here: the RTL
 			// coordinate is derived via an extra subtraction (viewport width minus
 			// the trigger's right edge) that the LTR case doesn't need.
-			expect(edgeOffset).toBeLessThanOrEqual(1);
+			await expect
+				.poll(() =>
+					page.evaluate(() => {
+						const panel = document.querySelector('[data-test="floating-details-content"]');
+						const summary = document.querySelector('[data-test="floating-details-summary"]');
+
+						return Math.abs(
+							panel.getBoundingClientRect().right - summary.getBoundingClientRect().right,
+						);
+					}),
+				)
+				.toBeLessThanOrEqual(1);
 		});
 
 		test("tracks the summary trigger while the table scrolls", async ({ mount, page }) => {
