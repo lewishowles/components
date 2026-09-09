@@ -109,16 +109,22 @@ test.describe("floating-details", () => {
 	});
 
 	test.describe("scrolling tables", () => {
+		// Enough to move the trigger through the overflow, while leaving room beside it
+		// for the panel. Scrolling the region fully carries the trigger back towards the
+		// viewport edge it is aligned away from, where the panel no longer fits and
+		// floating-details correctly flips to the opposite alignment.
+		const scrollDistance = 200;
+
 		test("keeps the panel outside the table scroll height", async ({ mount, page }) => {
 			await mountInTable(mount);
 
 			const scrollRegion = page.getByTestId("data-table-scroll-region");
 
+			await page.getByTestId("floating-details-summary").click();
+			await expect(page.getByTestId("floating-details-content")).toBeVisible();
 			await scrollRegion.evaluate((element) => {
 				element.scrollLeft = element.scrollWidth;
 			});
-			await page.getByTestId("floating-details-summary").click();
-			await expect(page.getByTestId("floating-details-content")).toBeVisible();
 
 			const scrollSize = await scrollRegion.evaluate((element) => ({
 				clientHeight: element.clientHeight,
@@ -133,11 +139,11 @@ test.describe("floating-details", () => {
 
 			const scrollRegion = page.getByTestId("data-table-scroll-region");
 
-			await scrollRegion.evaluate((element) => {
-				element.scrollLeft = element.scrollWidth;
-			});
 			await page.getByTestId("floating-details-summary").click();
 			await expect(page.getByTestId("floating-details-content")).toBeVisible();
+			await scrollRegion.evaluate((element, distance) => {
+				element.scrollLeft = distance;
+			}, scrollDistance);
 
 			await expect
 				.poll(() =>
@@ -161,16 +167,17 @@ test.describe("floating-details", () => {
 
 			const scrollRegion = page.getByTestId("data-table-scroll-region");
 
-			await scrollRegion.evaluate((element) => {
-				element.scrollLeft = element.scrollWidth;
-			});
-
 			await page.getByTestId("floating-details-summary").click();
 			await expect(page.getByTestId("floating-details-content")).toBeVisible();
+			// Chromium reports an RTL container's scrollLeft as 0 at its rightmost position,
+			// going negative as it scrolls left, so the distance is negated here. The
+			// assertion below catches a positive value silently clamping to 0, which would
+			// leave this test scrolling nothing.
+			await scrollRegion.evaluate((element, distance) => {
+				element.scrollLeft = distance;
+			}, -scrollDistance);
+			expect(await scrollRegion.evaluate((element) => element.scrollLeft)).toBeLessThan(0);
 
-			// A single device-pixel rounding difference is expected here: the RTL
-			// coordinate is derived via an extra subtraction (viewport width minus
-			// the trigger's right edge) that the LTR case doesn't need.
 			await expect
 				.poll(() =>
 					page.evaluate(() => {
@@ -182,7 +189,17 @@ test.describe("floating-details", () => {
 						);
 					}),
 				)
-				.toBeLessThanOrEqual(1);
+				.toBeLessThan(1);
+
+			// The right-edge check above still passes if the panel hangs off the left of the
+			// viewport, since only one edge is compared.
+			const panelLeft = await page.evaluate(
+				() =>
+					document.querySelector('[data-test="floating-details-content"]').getBoundingClientRect()
+						.left,
+			);
+
+			expect(panelLeft).toBeGreaterThanOrEqual(0);
 		});
 
 		test("tracks the summary trigger while the table scrolls", async ({ mount, page }) => {
