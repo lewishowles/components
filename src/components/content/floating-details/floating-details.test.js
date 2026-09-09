@@ -380,8 +380,12 @@ describe("floating-details", () => {
 
 		test("removes the start coordinate after the panel flips to end", async () => {
 			vi.stubGlobal("innerWidth", 800);
+			// Defer the callback rather than running it inline. Running it inline
+			// clears the composable's frame guard before requestAnimationFrame returns
+			// the id that sets it, leaving the guard stuck so the resize below never
+			// remeasures and the panel never flips.
 			vi.spyOn(window, "requestAnimationFrame").mockImplementation((callback) => {
-				callback();
+				queueMicrotask(callback);
 
 				return 1;
 			});
@@ -413,6 +417,10 @@ describe("floating-details", () => {
 
 				summaryRectangle = { bottom: 132, left: 700, right: 750, top: 100 };
 				window.dispatchEvent(new Event("resize"));
+				// Two ticks: the first lets the queued animation frame run the
+				// measurement, the second lets the resulting alignment change reach
+				// the element's style.
+				await nextTick();
 				await nextTick();
 
 				expect(details.style.getPropertyValue("--floating-details-inline-start")).toBe("");
