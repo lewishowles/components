@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
-import { defineComponent, h, ref } from "vue";
+import { defineComponent, h, nextTick, ref } from "vue";
 import { mount } from "@vue/test-utils";
 import { useFloatingPosition } from "./use-floating-position.js";
 
@@ -10,8 +10,10 @@ describe("useFloatingPosition", () => {
 		vi.spyOn(window, "addEventListener").mockImplementation(() => {});
 		vi.spyOn(window, "removeEventListener").mockImplementation(() => {});
 
+		// Defer the callback rather than running it inline, so the frame that
+		// handleOpen schedules does not run part way through it.
 		vi.spyOn(window, "requestAnimationFrame").mockImplementation((callback) => {
-			callback();
+			queueMicrotask(callback);
 
 			return 1;
 		});
@@ -85,6 +87,69 @@ describe("useFloatingPosition", () => {
 				});
 			});
 
+			test("Queues a remeasure after the initial measurement", async () => {
+				const frameCallbacks = [];
+
+				window.requestAnimationFrame.mockImplementation((callback) => {
+					frameCallbacks.push(callback);
+
+					return frameCallbacks.length;
+				});
+
+				const { instance } = createComposable();
+				const openPromise = instance.handleOpen();
+
+				await nextTick();
+
+				const initialTick = instance.positioningTick.value;
+
+				expect(frameCallbacks).toHaveLength(1);
+
+				frameCallbacks[0]();
+
+				expect(instance.positioningTick.value).toBe(initialTick + 1);
+
+				await openPromise;
+			});
+
+			test("Remeasures when scroll occurs before opening resolves", async () => {
+				const frameCallbacks = [];
+
+				window.requestAnimationFrame.mockImplementation((callback) => {
+					frameCallbacks.push(callback);
+
+					return frameCallbacks.length;
+				});
+
+				const { instance } = createComposable();
+				const openPromise = instance.handleOpen();
+
+				await nextTick();
+
+				const initialTick = instance.positioningTick.value;
+
+				const scrollHandler = window.addEventListener.mock.calls.find(
+					([eventName]) => eventName === "scroll",
+				)?.[1];
+
+				expect(scrollHandler).toBeTypeOf("function");
+				expect(frameCallbacks).toHaveLength(1);
+
+				frameCallbacks[0]();
+
+				expect(instance.positioningTick.value).toBe(initialTick + 1);
+
+				scrollHandler();
+
+				expect(frameCallbacks).toHaveLength(2);
+
+				frameCallbacks[1]();
+
+				expect(instance.positioningTick.value).toBe(initialTick + 2);
+
+				await openPromise;
+			});
+
 			test("isPositioning is false after positioning completes", async () => {
 				const { instance } = createComposable();
 
@@ -110,6 +175,7 @@ describe("useFloatingPosition", () => {
 				expect(resizeHandler).toBeTypeOf("function");
 
 				resizeHandler();
+				await nextTick();
 
 				expect(instance.positioningTick.value).toBe(initialTick + 1);
 			});

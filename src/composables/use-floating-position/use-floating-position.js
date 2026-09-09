@@ -128,8 +128,11 @@ export function useFloatingPosition({
 
 	/**
 	 * Reset positioning state, measure available space, then reveal the panel.
-	 * Also attaches scroll and resize listeners for the duration the panel is
-	 * open. Call this when the floating panel opens.
+	 * Scroll and resize listeners are attached before that first measurement and
+	 * stay attached until the panel closes, and a further measurement is
+	 * scheduled for the next frame, so a trigger still settling as the panel
+	 * opens is followed rather than missed. Call this when the floating panel
+	 * opens.
 	 */
 	async function handleOpen() {
 		computedPlacement.value = initialPlacement.value;
@@ -138,16 +141,22 @@ export function useFloatingPosition({
 
 		await nextTick();
 
+		// Listen before the first measurement, so a scroll that settles while the
+		// panel is opening still moves the panel with its trigger.
+		window.addEventListener("scroll", schedulePositioningUpdate, { capture: true, passive: true });
+		window.addEventListener("resize", schedulePositioningUpdate, { passive: true });
+
 		updatePositioning();
+
+		// Measure again before the frame paints, in case the trigger is still
+		// settling as the panel opens.
+		schedulePositioningUpdate();
 		isPositioning.value = false;
 
 		// Wait for the DOM update that removes the `invisible` class before
 		// returning, so callers that focus panel children find a visible
 		// element.
 		await nextTick();
-
-		window.addEventListener("scroll", schedulePositioningUpdate, { capture: true, passive: true });
-		window.addEventListener("resize", schedulePositioningUpdate, { passive: true });
 	}
 
 	/**
