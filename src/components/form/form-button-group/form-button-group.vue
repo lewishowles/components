@@ -2,7 +2,7 @@
 	<form-radio-group
 		ref="radio-group"
 		v-model="model"
-		v-bind="{ required, componentName: 'form-button-group' }"
+		v-bind="{ inline: true, required, componentName: 'form-button-group' }"
 	>
 		<slot />
 

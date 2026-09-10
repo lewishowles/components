@@ -10,6 +10,7 @@
 			descriptionKey,
 			variant,
 			displayLabel,
+			inline,
 			componentName,
 			optionClasses,
 			optionsClasses,
@@ -85,6 +86,16 @@ const props = defineProps({
 	displayLabel: {
 		type: Boolean,
 		default: true,
+	},
+
+	/**
+	 * Whether to display options inline (horizontally). This is only
+	 * recommended when there are two to three options. Any more than that, and
+	 * vertical display is more clear for the user.
+	 */
+	inline: {
+		type: Boolean,
+		default: false,
 	},
 
 	/**

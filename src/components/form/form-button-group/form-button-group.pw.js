@@ -43,6 +43,53 @@ test.describe("form-button-group", () => {
 		await expect(legend.locator("xpath=..")).toHaveClass(/sr-only/);
 	});
 
+	test("stacks options below the container breakpoint", async ({ mount, page }) => {
+		await mountButtonGroup(mount);
+
+		const buttonGroup = page.getByTestId("form-button-group");
+		const options = buttonGroup.getByTestId("form-input-group-options");
+		const optionLabels = options.getByTestId("form-label");
+
+		await expect(options).toHaveAttribute("data-layout", "inline");
+		await expect(options).toHaveCSS("flex-direction", "row");
+		await expect(options).toHaveCSS("gap", "0px");
+		await expect(optionLabels.first()).toHaveCSS("border-start-end-radius", "0px");
+		await expect(optionLabels.last()).toHaveCSS("border-end-start-radius", "0px");
+
+		await page.setViewportSize({ width: 375, height: 640 });
+
+		await expect(options).toHaveCSS("flex-direction", "column");
+		await expect(options).toHaveCSS("gap", "0px");
+		await test.info().attach("form-button-group-stacked", {
+			body: await buttonGroup.screenshot(),
+			contentType: "image/png",
+		});
+	});
+
+	test("rounds all corners for a single option in the row layout", async ({ mount, page }) => {
+		await mountButtonGroup(mount, { props: { options: ["Pineapple"] } });
+
+		const buttonGroup = page.getByTestId("form-button-group");
+		const options = buttonGroup.getByTestId("form-input-group-options");
+		const optionLabel = options.getByTestId("form-label");
+
+		await expect(options).toHaveCSS("flex-direction", "row");
+
+		const cornerRadii = await optionLabel.evaluate((element) => {
+			const styles = getComputedStyle(element);
+
+			return [
+				styles.borderStartStartRadius,
+				styles.borderStartEndRadius,
+				styles.borderEndStartRadius,
+				styles.borderEndEndRadius,
+			];
+		});
+
+		expect(cornerRadii[0]).not.toBe("0px");
+		expect(new Set(cornerRadii).size).toBe(1);
+	});
+
 	test.describe("supplementary information", () => {
 		test("an introduction can be supplied", async ({ mount, page }) => {
 			await mountButtonGroup(mount, { slots: { introduction: "Introductory text" } });

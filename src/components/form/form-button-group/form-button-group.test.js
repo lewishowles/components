@@ -31,6 +31,14 @@ describe("form-button-group", () => {
 			});
 		});
 
+		describe("inline", () => {
+			test("passes true to the radio group", () => {
+				const wrapper = mount();
+
+				expect(wrapper.findComponent({ name: "FormRadioGroup" }).props("inline")).toBe(true);
+			});
+		});
+
 		describe("displayLabel", () => {
 			test("passes its default to the input group", () => {
 				const wrapper = deepMount();
@@ -74,6 +82,12 @@ describe("form-button-group", () => {
 	});
 
 	describe("Render", () => {
+		test("reports the inline layout on the options", () => {
+			const wrapper = deepMount();
+
+			expect(wrapper.get('[data-part="options"]').attributes("data-layout")).toBe("inline");
+		});
+
 		test("renders option labels as indicator siblings", () => {
 			const wrapper = deepMount();
 

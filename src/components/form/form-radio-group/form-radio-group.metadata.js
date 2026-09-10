@@ -31,6 +31,12 @@ export const formRadioGroupMetadata = {
 			summary: "Show the group label; when false, keep it available to screen readers only.",
 		},
 		{
+			name: "inline",
+			type: "boolean",
+			default: false,
+			summary: "Display options horizontally.",
+		},
+		{
 			name: "name",
 			type: "string",
 			default: null,
