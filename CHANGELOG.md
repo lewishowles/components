@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 3.4.3 - 2026-09-10
+
+### Fixes
+
+- `use-form` no longer leaves a form reading as having unsaved changes on submit.
+- `use-messages` now allows messages to be cleared individually.
+
 ## 3.4.2 - 2026-09-10
 
 ### Fixes
