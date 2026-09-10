@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 3.4.2 - 2026-09-10
+
+### Fixes
+
+- `data-table` fixes an issue where some elements in the toolbar would be squashed to zero width.
+
 ## 3.4.1 - 2026-09-10
 
 ### Fixes
