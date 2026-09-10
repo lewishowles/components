@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## 3.4.1 - 2026-09-10
+
+### Fixes
+
+- `form-button-group` stacks its options vertically in narrow containers, keeping the joined horizontal styling at wider ones.
+- `form-input-group` no longer leaves an empty label wrapper and its spacing behind when `displayLabel` is false. The legend stays available to screen readers.
+- `data-table` lets the toolbar wrap and its items shrink at small widths, so the search field and controls stay usable.
+- `form-radio-group` declares its `inline` option directly rather than relying on it reaching `form-input-group` as a fallthrough attribute. The layout it produces is unchanged.
+
 ## 3.4.0 - 2026-09-08
 
 ### Features
