@@ -16,6 +16,7 @@ interface StoredFlashMessage extends FlashMessage {
 
 export declare function useFlashMessages(): {
 	_clearMessages(): void;
+	clearMessage(id: string): void;
 	clearMessages(namespace?: string): void;
 	getMessages(namespace?: string): StoredFlashMessage[];
 	sendMessage(message: FlashMessage): void;

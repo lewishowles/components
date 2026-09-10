@@ -43,6 +43,7 @@ describe("useFlashMessages", () => {
 			expect(response).toBeTypeOf("object");
 			expect(response.sendMessage).toBeTypeOf("function");
 			expect(response.getMessages).toBeTypeOf("function");
+			expect(response.clearMessage).toBeTypeOf("function");
 			expect(response.clearMessages).toBeTypeOf("function");
 		});
 	});
@@ -135,6 +136,52 @@ describe("useFlashMessages", () => {
 					expectStoredMessage(secondMessage),
 					expectStoredMessage(thirdMessage),
 				]);
+			});
+		});
+
+		describe("clearMessage", () => {
+			test("should clear only the message with the provided ID", () => {
+				const { clearMessage, getMessages, sendMessage } = useFlashMessages();
+
+				const otherGlobalMessage = {
+					...globalMessage,
+					title: "Alert rejected",
+				};
+
+				sendMessage(globalMessage);
+				sendMessage(otherGlobalMessage);
+
+				const [storedGlobalMessage] = getMessages();
+
+				clearMessage(storedGlobalMessage.id);
+
+				expect(getMessages()).toEqual([expectStoredMessage(otherGlobalMessage)]);
+			});
+
+			test("should clear a namespaced message by its ID", () => {
+				const { clearMessage, getMessages, sendMessage } = useFlashMessages();
+
+				sendMessage(globalMessage);
+				sendMessage(namespacedMessage);
+
+				const [storedNamespacedMessage] = getMessages("user-alert");
+
+				clearMessage(storedNamespacedMessage.id);
+
+				expect(getMessages()).toEqual([expectStoredMessage(globalMessage)]);
+				expect(getMessages("user-alert")).toEqual([]);
+			});
+
+			test("should leave all messages in place when no message has the provided ID", () => {
+				const { clearMessage, getMessages, sendMessage } = useFlashMessages();
+
+				sendMessage(globalMessage);
+				sendMessage(namespacedMessage);
+
+				clearMessage("00000000-0000-0000-0000-000000000000");
+
+				expect(getMessages()).toEqual([expectStoredMessage(globalMessage)]);
+				expect(getMessages("user-alert")).toEqual([expectStoredMessage(namespacedMessage)]);
 			});
 		});
 

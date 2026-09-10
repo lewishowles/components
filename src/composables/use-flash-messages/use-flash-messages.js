@@ -73,6 +73,21 @@ export function useFlashMessages() {
 	}
 
 	/**
+	 * Clear a single message by its ID, wherever it is stored. The ID is the one
+	 * generated when the message was sent, and is present on the messages
+	 * returned by `getMessages`.
+	 *
+	 * Namespace is ignored, so a caller holding an ID does not need to know where
+	 * the message was sent. Clearing an ID that is no longer stored does nothing.
+	 *
+	 * @param  {string}  id
+	 *     The ID of the message to clear
+	 */
+	function clearMessage(id) {
+		messages.value = messages.value.filter((message) => message.id !== id);
+	}
+
+	/**
 	 * Clear all flash messages. Intended for test isolation and exceptional
 	 * global resets.
 	 */
@@ -82,6 +97,7 @@ export function useFlashMessages() {
 
 	return {
 		_clearMessages,
+		clearMessage,
 		clearMessages,
 		getMessages,
 		sendMessage,

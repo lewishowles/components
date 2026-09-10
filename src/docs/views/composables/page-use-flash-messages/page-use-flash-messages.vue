@@ -58,6 +58,18 @@
 				</p>
 			</component-method>
 
+			<component-method id="method-clear-message">
+				<template #name>
+					<code>clearMessage(id)</code>
+				</template>
+
+				<p>
+					Clear one stored message by its ID, using the ID from a message returned by
+					<code>getMessages</code>
+					. The namespace is ignored, and clearing an ID that is no longer stored does nothing.
+				</p>
+			</component-method>
+
 			<component-method id="method-clear-messages">
 				<template #name>
 					<code>clearMessages(namespace?)</code>
