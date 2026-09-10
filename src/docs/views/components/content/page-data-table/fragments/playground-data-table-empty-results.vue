@@ -7,7 +7,13 @@
 
 		<data-table v-bind="componentProps" v-model="componentModel">
 			<template #post-search>
-				<form-checkbox v-model="onlyFavourites" class="mb-1.5">Only show favourites</form-checkbox>
+				<form-button-group
+					v-model="resultFilter"
+					name="result-filter"
+					:options="['All', 'Favourites', 'Recent']"
+				>
+					Filter results
+				</form-button-group>
 			</template>
 		</data-table>
 
@@ -25,7 +31,7 @@ import useTemplateGenerator from "@/docs/views/components/composables/use-templa
 // The current model value.
 const componentModel = ref(null);
 // A custom filter that remains available when there are no matching rows.
-const onlyFavourites = ref(true);
+const resultFilter = ref("Favourites");
 
 // An empty result set keeps the toolbar and column controls available.
 const data = [];
@@ -55,12 +61,16 @@ const componentProps = computed(() => {
 // Include the custom filter and its initial value in the copied example.
 const template = useTemplateGenerator("data-table", {
 	props,
-	setup: "const onlyFavourites = ref(true);",
+	setup: 'const resultFilter = ref("Favourites");',
 	additionalContent: [
 		"\t<template #post-search>",
-		'\t\t<form-checkbox v-model="onlyFavourites" class="mb-1.5">',
-		"\t\t\tOnly show favourites",
-		"\t\t</form-checkbox>",
+		"\t\t<form-button-group",
+		'\t\t\tv-model="resultFilter"',
+		'\t\t\tname="result-filter"',
+		"\t\t\t:options=\"['All', 'Favourites', 'Recent']\"",
+		"\t\t>",
+		"\t\t\tFilter results",
+		"\t\t</form-button-group>",
 		"\t</template>",
 	].join("\n"),
 });

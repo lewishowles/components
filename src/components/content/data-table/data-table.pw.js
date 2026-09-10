@@ -8,6 +8,7 @@ import ServerFixture from "./fixtures/server.fixture.vue";
 import ShowingItemsFixture from "./fixtures/showing-items.fixture.vue";
 import SortableContentFixture from "./fixtures/sortable-content.fixture.vue";
 import ToolbarFixture from "./fixtures/toolbar.fixture.vue";
+import ToolbarPostSearchFixture from "./fixtures/toolbar-post-search.fixture.vue";
 
 const columns = {
 	title: { label: "Title", primary: true },
@@ -119,6 +120,7 @@ const mountDataTable = createMount(DataTable, { props: { data, columns } });
 const mountDataTableRaw = createMount(DataTable);
 
 const mountDataTableToolbar = createMount(ToolbarFixture);
+const mountDataTableToolbarWithPostSearch = createMount(ToolbarPostSearchFixture);
 
 test.describe("data-table", () => {
 	test("a component is rendered", async ({ mount, page }) => {
@@ -1079,6 +1081,29 @@ test.describe("data-table fragments", () => {
 			await expect(page.getByTestId("data-table-display-options").locator("summary")).toHaveText(
 				"Options",
 			);
+		});
+
+		test("sizes and bottom-aligns a container-query post-search control", async ({
+			mount,
+			page,
+		}) => {
+			await page.setViewportSize({ width: 1200, height: 800 });
+			await mountDataTableToolbarWithPostSearch(mount);
+
+			const searchControl = page.getByTestId("data-table-search");
+			const buttonGroup = page.getByTestId("form-button-group");
+			const searchBounds = await searchControl.boundingBox();
+			const buttonGroupBounds = await buttonGroup.boundingBox();
+
+			expect(searchBounds).not.toBeNull();
+			expect(buttonGroupBounds).not.toBeNull();
+			expect(buttonGroupBounds.width).toBeGreaterThan(0);
+
+			const searchBottom = searchBounds.y + searchBounds.height;
+			const buttonGroupBottom = buttonGroupBounds.y + buttonGroupBounds.height;
+			const bottomEdgeDifference = Math.abs(searchBottom - buttonGroupBottom);
+
+			expect(bottomEdgeDifference).toBeLessThanOrEqual(2);
 		});
 	});
 });

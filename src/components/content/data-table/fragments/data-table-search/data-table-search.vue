@@ -1,5 +1,5 @@
 <template>
-	<div class="flex w-full max-w-md items-end gap-4" data-test="data-table-search">
+	<div class="flex w-full max-w-xs items-end gap-4" data-test="data-table-search">
 		<form-input
 			ref="searchQueryInput"
 			v-bind="{ placeholder: searchPlaceholder, showOptionalIndicator: false }"

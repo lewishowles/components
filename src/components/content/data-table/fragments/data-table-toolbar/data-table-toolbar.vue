@@ -1,12 +1,26 @@
 <template>
+	<!--
+		Grid tracks size the slotted controls from the toolbar's own width. A slotted control that
+		establishes a container query reports no intrinsic width, so a content-sized track (flex, or
+		auto/max-content columns) collapses it to nothing.
+	-->
 	<div
 		v-if="
 			enableSearch || showUserConfiguration || $slots['post-search'] || $slots['pre-configuration']
 		"
-		class="flex flex-wrap items-end gap-4"
+		class="grid gap-4 lg:items-end"
+		:class="$slots['pre-configuration'] ? 'lg:grid-cols-2' : 'lg:grid-cols-[minmax(0,1fr)_auto]'"
 		data-test="data-table-toolbar"
 	>
-		<div v-if="enableSearch || $slots['post-search']" class="flex grow flex-wrap items-end gap-4">
+		<div
+			v-if="enableSearch || $slots['post-search']"
+			class="grid items-end gap-4"
+			:class="
+				enableSearch && $slots['post-search']
+					? 'lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]'
+					: 'lg:auto-cols-fr lg:grid-flow-col'
+			"
+		>
 			<data-table-search v-if="enableSearch" ref="searchComponent" v-model="searchQuery">
 				<template #search-label>
 					<slot name="search-label" />
@@ -22,44 +36,53 @@
 				</template>
 			</data-table-search>
 
-			<div v-if="$slots['post-search']" class="min-w-0">
+			<div v-if="$slots['post-search']">
 				<slot name="post-search" />
 			</div>
 		</div>
 
-		<div v-if="$slots['pre-configuration']" class="min-w-0">
-			<slot name="pre-configuration" />
-		</div>
-
-		<floating-details
-			v-if="showUserConfiguration"
-			align="end"
-			details-classes="min-w-3xs py-2 rounded-lg border"
-			class="shrink-0"
-			data-test="data-table-display-options"
+		<div
+			v-if="showUserConfiguration || $slots['pre-configuration']"
+			class="grid items-end gap-4 lg:col-start-2 lg:auto-cols-fr lg:grid-flow-col"
 		>
-			<template #summary>
-				<slot name="configure-label">Configure</slot>
-			</template>
+			<div v-if="$slots['pre-configuration']">
+				<slot name="pre-configuration" />
+			</div>
 
-			<template v-if="haveTableName">
-				<h4 class="text-content-strong my-2 px-4 font-semibold">
-					<slot name="display-options-label">Display options</slot>
-				</h4>
+			<floating-details
+				v-if="showUserConfiguration"
+				align="end"
+				details-classes="min-w-3xs py-2 rounded-lg border"
+				class="lg:justify-self-end"
+				data-test="data-table-display-options"
+			>
+				<template #summary>
+					<slot name="configure-label">Configure</slot>
+				</template>
 
-				<data-table-density v-model="density">
-					<template v-for="key in tableDensityOptions" #[`display-option-${key}-label`] :key="key">
-						<slot :name="`display-option-${key}-label`" />
-					</template>
-				</data-table-density>
+				<template v-if="haveTableName">
+					<h4 class="text-content-strong my-2 px-4 font-semibold">
+						<slot name="display-options-label">Display options</slot>
+					</h4>
 
-				<h4 class="text-content-strong my-2 px-4 font-semibold">
-					<slot name="column-visibility-label">Columns</slot>
-				</h4>
+					<data-table-density v-model="density">
+						<template
+							v-for="key in tableDensityOptions"
+							#[`display-option-${key}-label`]
+							:key="key"
+						>
+							<slot :name="`display-option-${key}-label`" />
+						</template>
+					</data-table-density>
 
-				<data-table-columns v-model="columnVisibility" />
-			</template>
-		</floating-details>
+					<h4 class="text-content-strong my-2 px-4 font-semibold">
+						<slot name="column-visibility-label">Columns</slot>
+					</h4>
+
+					<data-table-columns v-model="columnVisibility" />
+				</template>
+			</floating-details>
+		</div>
 	</div>
 </template>
 
