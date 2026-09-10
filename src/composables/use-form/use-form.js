@@ -252,14 +252,20 @@ export function useForm({
 		window.addEventListener("beforeunload", handleBeforeUnload);
 
 		// Contribute to the shared dirty-form count that
-		// installUnsavedChangesGuard's router guard checks.
-		watch(isDirty, (dirty) => {
-			if (dirty) {
-				registerDirtyForm();
-			} else {
-				unregisterDirtyForm();
-			}
-		});
+		// installUnsavedChangesGuard's router guard checks. Flushed
+		// synchronously so the count is already right when a submit handler
+		// navigates in the same tick that the form becomes clean.
+		watch(
+			isDirty,
+			(dirty) => {
+				if (dirty) {
+					registerDirtyForm();
+				} else {
+					unregisterDirtyForm();
+				}
+			},
+			{ flush: "sync" },
+		);
 
 		onUnmounted(() => {
 			window.removeEventListener("beforeunload", handleBeforeUnload);
@@ -287,7 +293,20 @@ export function useForm({
 		},
 		rules: toValue(rules),
 		schema: toValue(schema),
-		onSubmit,
+		// form-wrapper drives submission through its own inner instance, so
+		// this outer instance's handleFormSubmit never runs and its baseline
+		// would stay stuck at the pre-submit values. Snapshot it here instead.
+		onSubmit: async (submittedData) => {
+			const restoreBaseline = snapshotSubmitBaseline();
+
+			try {
+				return await onSubmit?.(submittedData);
+			} catch (error) {
+				restoreBaseline();
+
+				throw error;
+			}
+		},
 		unsavedChangesGuard: toValue(unsavedChangesGuard),
 	}));
 
@@ -351,6 +370,38 @@ export function useForm({
 
 		formData.value = seededData;
 		baseline.value = cloneFormData(toRaw(seededData));
+	}
+
+	/**
+	 * Treat the live form values as the form's new clean state, and
+	 * return a callback that puts the previous one back.
+	 *
+	 * Applied before the submit handler is awaited rather than after it
+	 * resolves, because a handler commonly navigates while it is still
+	 * running; by then a later reset is too late to stop the unsaved-changes
+	 * guard firing. A failed submit calls the returned callback so the form
+	 * stays dirty and guarded.
+	 *
+	 * @returns  {Function}
+	 *   Restores the baseline held before this call, unless a later submit has
+	 *   already replaced it.
+	 */
+	function snapshotSubmitBaseline() {
+		const previousBaseline = baseline.value;
+
+		baseline.value = cloneFormData(toRaw(formData.value));
+
+		// Read the baseline back rather than holding on to the clone: the ref
+		// hands out a reactive proxy, and only that same proxy will match on
+		// the way out. If two submits overlap, the newer baseline wins and the
+		// older call restores nothing.
+		const ownBaseline = baseline.value;
+
+		return () => {
+			if (baseline.value === ownBaseline) {
+				baseline.value = previousBaseline;
+			}
+		};
 	}
 
 	/**
@@ -730,11 +781,13 @@ export function useForm({
 		try {
 			let result;
 
+			const restoreBaseline = snapshotSubmitBaseline();
+
 			try {
 				result = await onSubmit?.(submittedData);
 			} catch (error) {
 				try {
-					await handleSubmitError(error, submittedData);
+					await handleSubmitError(error, submittedData, restoreBaseline);
 				} finally {
 					await unref(onSettled)?.(undefined, error, submittedData);
 				}
@@ -757,8 +810,13 @@ export function useForm({
 	 *
 	 * @param  {unknown}  error
 	 * @param  {object}  [submittedData]
+	 * @param  {Function}  [restoreBaseline]
+	 *   Undoes the clean state taken when the submit began, so a failed submit
+	 *   leaves the form dirty.
 	 */
-	async function handleSubmitError(error, submittedData = getSubmitData()) {
+	async function handleSubmitError(error, submittedData = getSubmitData(), restoreBaseline) {
+		restoreBaseline?.();
+
 		await unref(onError)?.(error, submittedData);
 
 		const callback = unref(submitErrorsCallback);

@@ -575,6 +575,47 @@ describe("form-wrapper", () => {
 			expect(formData.value).toEqual({ email: "person@example.com" });
 		});
 
+		test("clears the outer useForm dirty state after a successful submit", async () => {
+			const onSubmit = vi.fn().mockResolvedValue(undefined);
+
+			const { form, isDirty } = useForm({
+				initialData: { email: "person@example.com" },
+				onSubmit,
+			});
+
+			const wrapper = mount({ props: { ...form.value } });
+
+			wrapper.vm.registerField({ name: "email", id: "email-id" });
+			await wrapper.vm.updateFieldValue("email", "updated@example.com");
+
+			expect(isDirty.value).toBe(true);
+
+			await wrapper.vm.handleFormSubmit();
+
+			expect(isDirty.value).toBe(false);
+		});
+
+		test("keeps the outer useForm dirty state after a failing submit", async () => {
+			const error = new Error("Request failed");
+			const onSubmit = vi.fn().mockRejectedValue(error);
+
+			const { form, isDirty } = useForm({
+				initialData: { email: "person@example.com" },
+				onSubmit,
+			});
+
+			const wrapper = mount({ props: { ...form.value } });
+
+			wrapper.vm.registerField({ name: "email", id: "email-id" });
+			await wrapper.vm.updateFieldValue("email", "updated@example.com");
+
+			expect(isDirty.value).toBe(true);
+
+			await expect(wrapper.vm.handleFormSubmit()).rejects.toThrow(error);
+
+			expect(isDirty.value).toBe(true);
+		});
+
 		test("propagates the outer useForm's unsavedChangesGuard to the wrapper's own instance", () => {
 			vi.spyOn(window, "addEventListener");
 

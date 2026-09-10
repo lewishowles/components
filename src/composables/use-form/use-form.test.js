@@ -365,6 +365,41 @@ describe("useForm", () => {
 			expect(hasDirtyForms()).toBe(false);
 		});
 
+		test("is clean during an in-flight submit", async () => {
+			let formInstance;
+			let resolveSubmit;
+
+			const observed = {};
+
+			const handler = vi.fn(() => {
+				observed.isDirty = formInstance.isDirty.value;
+				observed.hasDirtyForms = hasDirtyForms();
+
+				return new Promise((resolve) => {
+					resolveSubmit = resolve;
+				});
+			});
+
+			({ instance: formInstance } = mountForm({
+				initialData: { name: "Alice" },
+				props: { onSubmit: handler, unsavedChangesGuard: true },
+			}));
+
+			await formInstance.registerField({ name: "name", id: "name-id" });
+			formInstance.formData.value.name = "Bob";
+
+			await nextTick();
+
+			const submitPromise = formInstance.handleFormSubmit();
+
+			await vi.waitFor(() => expect(handler).toHaveBeenCalled());
+
+			resolveSubmit();
+			await submitPromise;
+
+			expect(observed).toEqual({ isDirty: false, hasDirtyForms: false });
+		});
+
 		test("does not contribute to the shared dirty-form count when disabled", async () => {
 			const { instance } = mountForm({
 				initialData: { name: "Alice" },
@@ -408,11 +443,14 @@ describe("useForm", () => {
 			expect(form.value.schema).toBe(schema);
 		});
 
-		test("onSubmit is the provided onSubmit handler", () => {
-			const onSubmit = vi.fn();
+		test("onSubmit forwards to the provided onSubmit handler", async () => {
+			const onSubmit = vi.fn().mockResolvedValue("saved");
 			const { form } = createForm({ props: { onSubmit } });
+			const submittedData = { name: "Alice" };
 
-			expect(form.value.onSubmit).toBe(onSubmit);
+			await expect(form.value.onSubmit(submittedData)).resolves.toBe("saved");
+
+			expect(onSubmit).toHaveBeenCalledWith(submittedData);
 		});
 	});
 
@@ -850,6 +888,126 @@ describe("useForm", () => {
 	});
 
 	describe("handleFormSubmit", () => {
+		test("clears the dirty state after a successful submit", async () => {
+			const handler = vi.fn().mockResolvedValue(undefined);
+
+			const { formData, handleFormSubmit, isDirty, registerField } = createForm({
+				initialData: { name: "Alice" },
+				props: { onSubmit: handler },
+			});
+
+			await registerField({ name: "name", id: "name-id" });
+			formData.value.name = "Bob";
+
+			await handleFormSubmit();
+
+			expect(isDirty.value).toBe(false);
+		});
+
+		test("clears the dirty state when initial data includes an unregistered key", async () => {
+			const handler = vi.fn().mockResolvedValue(undefined);
+
+			const { formData, handleFormSubmit, isDirty, registerField } = createForm({
+				initialData: { id: 1, name: "Alice" },
+				props: { onSubmit: handler },
+			});
+
+			await registerField({ name: "name", id: "name-id" });
+			formData.value.name = "Bob";
+
+			await handleFormSubmit();
+
+			expect(isDirty.value).toBe(false);
+		});
+
+		test("clears the dirty state when nullable-number submission coerces a string", async () => {
+			const handler = vi.fn().mockResolvedValue(undefined);
+
+			const { formData, handleFormSubmit, isDirty, registerField } = createForm({
+				initialData: { age: 30 },
+				props: { fieldTypes: { age: "nullable-number" }, onSubmit: handler },
+			});
+
+			await registerField({ name: "age", id: "age-id" });
+			formData.value.age = "31";
+
+			await handleFormSubmit();
+
+			expect(isDirty.value).toBe(false);
+		});
+
+		test("keeps the dirty state after a failing submit", async () => {
+			const error = new Error("Server error");
+			const handler = vi.fn().mockRejectedValue(error);
+
+			const { formData, handleFormSubmit, isDirty, registerField } = createForm({
+				initialData: { name: "Alice" },
+				props: { onSubmit: handler },
+			});
+
+			await registerField({ name: "name", id: "name-id" });
+			formData.value.name = "Bob";
+
+			await expect(handleFormSubmit()).rejects.toThrow(error);
+
+			expect(isDirty.value).toBe(true);
+		});
+
+		test("keeps the dirty state when submitErrorsCallback handles a failure", async () => {
+			const handler = vi.fn().mockRejectedValue(new Error("Server error"));
+
+			const { formData, handleFormSubmit, isDirty, registerField } = createForm({
+				initialData: { name: "Alice" },
+				props: {
+					onSubmit: handler,
+					submitErrorsCallback: () => ({ name: "That name is taken" }),
+				},
+			});
+
+			await registerField({ name: "name", id: "name-id" });
+			formData.value.name = "Bob";
+
+			await handleFormSubmit();
+
+			expect(isDirty.value).toBe(true);
+		});
+
+		test("does not restore an older baseline over a newer overlapping submit", async () => {
+			const pendingSubmits = [];
+
+			const handler = vi.fn(
+				() =>
+					new Promise((resolve, reject) => {
+						pendingSubmits.push({ reject, resolve });
+					}),
+			);
+
+			const { formData, handleFormSubmit, isDirty, registerField } = createForm({
+				initialData: { name: "Alice" },
+				props: { onSubmit: handler },
+			});
+
+			await registerField({ name: "name", id: "name-id" });
+			formData.value.name = "Bob";
+
+			const firstSubmit = handleFormSubmit();
+
+			await vi.waitFor(() => expect(handler).toHaveBeenCalledOnce());
+
+			formData.value.name = "Carol";
+			const secondSubmit = handleFormSubmit();
+
+			await vi.waitFor(() => expect(handler).toHaveBeenCalledTimes(2));
+
+			pendingSubmits[0].reject(new Error("First submit failed"));
+			await expect(firstSubmit).rejects.toThrow("First submit failed");
+
+			pendingSubmits[1].resolve();
+			await secondSubmit;
+
+			expect(isDirty.value).toBe(false);
+		});
+
 		test("calls the onSubmit handler when there are no registered fields", async () => {
 			const handler = vi.fn().mockResolvedValue(undefined);
 			const { handleFormSubmit } = createForm({ props: { onSubmit: handler } });
