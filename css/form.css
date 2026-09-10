@@ -357,23 +357,50 @@
 
 	[data-component="form-button-group"] {
 		[data-part="options"] {
-			flex-direction: row;
 			gap: 0;
+
+			@container (min-width: theme(--container-sm)) {
+				flex-direction: row;
+				flex-wrap: nowrap;
+
+				[data-part="option"] {
+					&[data-position="only"] [data-part="label"] {
+						border-radius: var(--radius-lg);
+					}
+
+					&[data-position="first"] [data-part="label"] {
+						border-end-start-radius: var(--radius-lg);
+						border-start-end-radius: 0;
+						border-start-start-radius: var(--radius-lg);
+					}
+
+					&:is([data-position="middle"], [data-position="last"]) {
+						margin-block-start: 0;
+						margin-inline-start: -1px;
+					}
+
+					&[data-position="last"] [data-part="label"] {
+						border-end-end-radius: var(--radius-lg);
+						border-end-start-radius: 0;
+						border-start-end-radius: var(--radius-lg);
+					}
+				}
+			}
 		}
 
 		[data-part="option"] {
 			&:is([data-position="first"], [data-position="only"]) [data-part="label"] {
+				border-start-end-radius: var(--radius-lg);
 				border-start-start-radius: var(--radius-lg);
-				border-end-start-radius: var(--radius-lg);
 			}
 
 			&:is([data-position="middle"], [data-position="last"]) {
-				margin-inline-start: -1px;
+				margin-block-start: -1px;
 			}
 
 			&:is([data-position="last"], [data-position="only"]) [data-part="label"] {
-				border-start-end-radius: var(--radius-lg);
 				border-end-end-radius: var(--radius-lg);
+				border-end-start-radius: var(--radius-lg);
 			}
 
 			[data-part="indicator"] {
