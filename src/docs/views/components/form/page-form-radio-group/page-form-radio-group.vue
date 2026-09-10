@@ -169,11 +169,6 @@
 					Whether to display options inline (horizontally). This is only recommended when there are
 					two to three options. Any more than that, and vertical display is more clear for the user.
 				</p>
-				<p>
-					Note that this only takes effect when the radio buttons are in a
-					<em>container</em>
-					that is at least 320px wide.
-				</p>
 			</component-prop>
 		</component-props>
 
