@@ -22,12 +22,12 @@
 				</template>
 			</data-table-search>
 
-			<div v-if="$slots['post-search']" class="shrink-0">
+			<div v-if="$slots['post-search']" class="min-w-0">
 				<slot name="post-search" />
 			</div>
 		</div>
 
-		<div v-if="$slots['pre-configuration']" class="shrink-0">
+		<div v-if="$slots['pre-configuration']" class="min-w-0">
 			<slot name="pre-configuration" />
 		</div>
 
