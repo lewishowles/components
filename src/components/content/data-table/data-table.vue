@@ -226,7 +226,7 @@
 									<tr
 										v-for="(row, rowIndex) in paginatedRows"
 										:key="row.configuration.id"
-										class="border-border hover:bg-surface-subtle border-b transition-colors"
+										class="border-border hover:bg-surface-subtle border-b transition-colors last:border-b-0"
 										data-test="data-table-row"
 									>
 										<td v-if="enableSelection" class="px-4">
