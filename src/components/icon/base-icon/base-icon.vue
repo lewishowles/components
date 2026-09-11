@@ -1,12 +1,11 @@
 <template>
 	<svg
-		xmlns="http://www.w3.org/2000/svg"
 		v-bind="{ viewBox }"
 		fill-rule="evenodd"
 		stroke-linecap="round"
 		stroke-linejoin="round"
 		stroke-width="1.5"
-		role="presentation"
+		aria-hidden="true"
 	>
 		<slot />
 	</svg>
