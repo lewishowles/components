@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 3.4.4 - 2026-09-11
+
+### Fixes
+
+- `modal-dialog` keeps the close button focus ring clear, and hides the focus ring when the dialog is opened with a pointer.
+- `form-flow` scrolls the focused field into view instead of the top of the screen.
+- Standard icons are removed from the accessibility tree, since they are always paired with a label.
+
 ## 3.4.3 - 2026-09-10
 
 ### Fixes
