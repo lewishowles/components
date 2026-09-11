@@ -165,7 +165,11 @@ test.describe("form-flow", () => {
 					await page.getByTestId("form-flow-continue-button").evaluate((button) => button.click());
 
 					const secondAnswer = page.getByLabel("Second answer", { exact: true });
-					const secondAnswerField = page.getByTestId("field-wrapper").filter({ has: secondAnswer });
+
+					const secondAnswerField = page
+						.locator('[data-part="field"]')
+						.filter({ has: secondAnswer });
+
 					const secondAnswerLabel = page.getByText("Second answer", { exact: true });
 
 					await expect(secondAnswer).toBeFocused();
@@ -199,7 +203,10 @@ test.describe("form-flow", () => {
 					await page.getByTestId("form-flow-continue-button").evaluate((button) => button.click());
 
 					const secondAnswer = page.getByLabel("Second answer", { exact: true });
-					const secondAnswerField = page.getByTestId("field-wrapper").filter({ has: secondAnswer });
+
+					const secondAnswerField = page
+						.locator('[data-part="field"]')
+						.filter({ has: secondAnswer });
 
 					await expect(secondAnswer).toBeFocused();
 					await expect(secondAnswerField).toBeInViewport({ ratio: 1 });
