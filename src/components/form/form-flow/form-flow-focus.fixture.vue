@@ -10,7 +10,7 @@
 			<form-screen id="second" auto-focus="second">
 				<template #title>Second details</template>
 				<!-- Pushes the field off-screen so a scroll-to-field test has something to assert. -->
-				<div style="block-size: 150vh" />
+				<div data-test="form-flow-focus-spacer" style="block-size: 150vh" />
 				<form-field name="second">Second answer</form-field>
 			</form-screen>
 		</form-flow>

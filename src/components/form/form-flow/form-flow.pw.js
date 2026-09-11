@@ -140,20 +140,71 @@ test.describe("form-flow", () => {
 				await expect(page.getByTestId("form-screen-title")).toBeFocused();
 			});
 
-			test("scrolls an off-screen autoFocus field, and its label, into view", async ({
-				mount,
-				page,
-			}) => {
-				await mountFocusFormFlow(mount);
+			test.describe("narrow viewport", () => {
+				test.use({ viewport: { width: 500, height: 400 } });
 
-				await page.getByTestId("form-flow-continue-button").click();
+				test("scrolls an off-screen autoFocus field, and its label, into view", async ({
+					mount,
+					page,
+				}) => {
+					await mountFocusFormFlow(mount);
 
-				const secondAnswer = page.getByLabel("Second answer", { exact: true });
-				const secondAnswerLabel = page.getByText("Second answer", { exact: true });
+					const formFlow = page.getByTestId("form-flow");
 
-				await expect(secondAnswer).toBeFocused();
-				await expect(secondAnswer).toBeInViewport({ ratio: 1 });
-				await expect(secondAnswerLabel).toBeInViewport({ ratio: 1 });
+					await formFlow.evaluate((element) => {
+						element.style.marginBlock = "200vh";
+						window.scrollTo(
+							0,
+							element.getBoundingClientRect().top + window.scrollY + window.innerHeight,
+						);
+					});
+					await expect
+						.poll(() => formFlow.evaluate((element) => element.getBoundingClientRect().top))
+						.toBeLessThan(0);
+
+					await page.getByTestId("form-flow-continue-button").evaluate((button) => button.click());
+
+					const secondAnswer = page.getByLabel("Second answer", { exact: true });
+					const secondAnswerField = page.getByTestId("field-wrapper").filter({ has: secondAnswer });
+					const secondAnswerLabel = page.getByText("Second answer", { exact: true });
+
+					await expect(secondAnswer).toBeFocused();
+					await expect(secondAnswerField).toBeInViewport({ ratio: 1 });
+					await expect(secondAnswerLabel).toBeInViewport({ ratio: 1 });
+					await expect
+						.poll(() =>
+							secondAnswerField.evaluate((element) =>
+								Math.round(element.getBoundingClientRect().top),
+							),
+						)
+						.toBeLessThanOrEqual(1);
+				});
+			});
+
+			test.describe("wide viewport", () => {
+				test.use({ viewport: { width: 1280, height: 720 } });
+
+				test("does not force a visible autoFocus field to the viewport top", async ({
+					mount,
+					page,
+				}) => {
+					await mountFocusFormFlow(mount);
+
+					await page.addStyleTag({
+						content: "[data-test='form-flow-focus-spacer'] { display: none; }",
+					});
+
+					const initialScrollPosition = await page.evaluate(() => window.scrollY);
+
+					await page.getByTestId("form-flow-continue-button").evaluate((button) => button.click());
+
+					const secondAnswer = page.getByLabel("Second answer", { exact: true });
+					const secondAnswerField = page.getByTestId("field-wrapper").filter({ has: secondAnswer });
+
+					await expect(secondAnswer).toBeFocused();
+					await expect(secondAnswerField).toBeInViewport({ ratio: 1 });
+					await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(initialScrollPosition);
+				});
 			});
 		});
 

@@ -146,7 +146,7 @@ import {
 
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { until } from "@vueuse/core";
+import { until, useMediaQuery } from "@vueuse/core";
 
 import { useFormHost } from "@/composables/use-form-host/use-form-host.js";
 
@@ -363,6 +363,9 @@ const generalErrorsElement = useTemplateRef("general-errors");
 const submitButtonRef = useTemplateRef("submit-button");
 // Focus target for the review screen's heading when review opens.
 const reviewHeading = useTemplateRef("review-heading");
+// Whether the viewport is narrow enough to assume a virtual keyboard, which covers part of the
+// page once a field takes focus.
+const isNarrow = useMediaQuery("(width < 1024px)");
 
 // Whether the primary action button should render for the current step.
 const showPrimaryButton = computed(
@@ -1103,14 +1106,21 @@ async function focusRegisteredField(fieldName, requestGeneration) {
 }
 
 /**
- * Scroll the currently focused element into view when it isn't already fully
- * visible. Native focus already does this in real browsers, but aligns to
- * whichever edge needs the least scrolling, which can leave a field's own
- * label off-screen above it; scrolling the field's own wrapper instead of
- * the bare input keeps the label with it, and matches the flow-level
- * scroll's "start" alignment below.
+ * Scroll the currently focused element into view. Native focus already does
+ * this in real browsers, but aligns to whichever edge needs the least
+ * scrolling, which can leave a field's own label off-screen above it;
+ * scrolling the field's own wrapper instead of the bare input keeps the
+ * label with it, and matches the flow-level scroll's "start" alignment.
+ *
+ * @param  {object}  options
+ *     Options for this scroll.
+ * @param  {boolean}  options.force
+ *     Scroll even when the target is already fully visible. The field path
+ *     sets this on narrow viewports, where the keyboard opens after focus and
+ *     hides part of the page without changing window.innerHeight, so the
+ *     measurement below would call a covered field visible.
  */
-function scrollFocusedElementIntoView() {
+function scrollFocusedElementIntoView({ force = false } = {}) {
 	const focused = document.activeElement;
 
 	if (!focused || focused === document.body) {
@@ -1120,14 +1130,27 @@ function scrollFocusedElementIntoView() {
 	const target = focused.closest('[data-part="field"]') ?? focused;
 	const { bottom, top } = target.getBoundingClientRect();
 
-	if (top < 0 || bottom > window.innerHeight) {
+	if (force || top < 0 || bottom > window.innerHeight) {
 		target.scrollIntoView?.({ block: "start" });
 	}
 }
 
 /**
- * Scroll the flow into view when its top is outside the viewport, then focus a screen after its
- * content and errors have rendered.
+ * Scroll the top of the flow into view when it sits outside the viewport.
+ * The paths that focus something at the top of the flow use this, so whatever
+ * sits above that target, such as the step indicator, stays visible with it.
+ */
+function scrollFlowIntoView() {
+	const flowTop = formFlow.value?.getBoundingClientRect().top;
+
+	if (flowTop === undefined || flowTop < 0 || flowTop >= window.innerHeight) {
+		formFlow.value?.scrollIntoView?.({ block: "start" });
+	}
+}
+
+/**
+ * Focus a screen once its content and errors have rendered, scrolling to whichever target takes
+ * focus.
  *
  * @param  {string}  screenId
  *     The screen whose summary, requested field, auto-focus field, or title should receive focus.
@@ -1146,14 +1169,10 @@ async function focusScreen(screenId = activeScreenId.value, { fieldName } = {}) 
 		return;
 	}
 
-	const flowTop = formFlow.value?.getBoundingClientRect().top;
-
-	if (flowTop === undefined || flowTop < 0 || flowTop >= window.innerHeight) {
-		formFlow.value?.scrollIntoView?.({ block: "start" });
-	}
-
 	// If we have an error summary, focus it.
 	if (haveAnyErrorSummary.value) {
+		scrollFlowIntoView();
+
 		await focusErrorSummaryBox(requestGeneration);
 
 		return;
@@ -1161,6 +1180,8 @@ async function focusScreen(screenId = activeScreenId.value, { fieldName } = {}) 
 
 	// The review screen has no per-field target; focus its own heading.
 	if (isShowingReview.value) {
+		scrollFlowIntoView();
+
 		reviewHeading.value?.focus?.();
 
 		return;
@@ -1177,7 +1198,7 @@ async function focusScreen(screenId = activeScreenId.value, { fieldName } = {}) 
 	// Attempt to focus the listed field.
 	if (isNonEmptyString(autoFocus)) {
 		if (await focusRegisteredField(autoFocus, requestGeneration)) {
-			scrollFocusedElementIntoView();
+			scrollFocusedElementIntoView({ force: isNarrow.value });
 
 			return;
 		}
@@ -1189,6 +1210,8 @@ async function focusScreen(screenId = activeScreenId.value, { fieldName } = {}) 
 	}
 
 	// Fall back to focusing the header of the screen.
+	scrollFlowIntoView();
+
 	const heading = getScreenHeading(screenId);
 
 	heading?.focus?.();
