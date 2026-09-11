@@ -2,6 +2,7 @@
 	<dialog
 		ref="dialog"
 		aria-modal="true"
+		tabindex="-1"
 		v-bind="{
 			...attributes,
 			'aria-labelledby': ariaLabelledby,
@@ -62,10 +63,10 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether to focus the dialog itself on open, or the first focusable
-	 * element within it. Defaults to false so that the autofocus element inside
-	 * the dialog (typically the title) receives focus instead, letting screen
-	 * readers announce the dialog purpose before reaching the close button.
+	 * Whether to always focus the dialog itself on open. Defaults to false so
+	 * that an autofocus element inside the dialog (typically the title) receives
+	 * focus, letting screen readers announce the dialog purpose before reaching
+	 * the close button. A dialog with no autofocus element is focused itself.
 	 */
 	focusDialogOnOpen: {
 		type: Boolean,
@@ -149,7 +150,9 @@ function initialiseDialog() {
 }
 
 /**
- * Open the dialog.
+ * Open the dialog and decide where initial focus lands: the dialog itself when
+ * focusDialogOnOpen is set or no autofocus element exists inside it, otherwise
+ * the autofocus element.
  */
 function openDialog() {
 	if (!dialog.value) {
@@ -160,7 +163,7 @@ function openDialog() {
 
 	isOpen.value = true;
 
-	if (props.focusDialogOnOpen !== true) {
+	if (props.focusDialogOnOpen !== true && dialog.value.querySelector("[autofocus]")) {
 		return;
 	}
 

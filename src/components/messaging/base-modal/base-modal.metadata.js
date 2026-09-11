@@ -14,7 +14,7 @@ export const baseModalMetadata = {
 			name: "focusDialogOnOpen",
 			type: "boolean",
 			default: false,
-			summary: "Move focus to the dialog when it opens.",
+			summary: "Focus the dialog instead of an autofocus descendant when it opens.",
 		},
 		{
 			name: "dialogRole",

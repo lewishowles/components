@@ -45,9 +45,9 @@ const props = defineProps({
 	},
 
 	/**
-	 * Whether to focus the dialog itself on open, or the first focusable
-	 * element within it. Defaults to false so the autofocus title receives
-	 * focus first, announcing the dialog purpose before the close button.
+	 * Whether to always focus the dialog itself on open. Defaults to false so
+	 * the autofocus title receives focus first, announcing the dialog purpose
+	 * before the close button. A dialog with no title is focused itself.
 	 */
 	focusDialogOnOpen: {
 		type: Boolean,

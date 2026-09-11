@@ -55,11 +55,15 @@
 
 				<template #type>Boolean</template>
 
-				<template #default-value>true</template>
+				<template #default-value>false</template>
 
 				<p>
-					When opening the dialog, determine whether to focus the dialog itself, or the first
-					focusable element within it.
+					When
+					<code>true</code>
+					, focus the dialog itself when it opens. When
+					<code>false</code>
+					, an autofocus descendant receives focus when provided; otherwise, the dialog receives
+					focus.
 				</p>
 			</component-prop>
 

@@ -15,7 +15,7 @@ export const modalDialogMetadata = {
 			name: "focusDialogOnOpen",
 			type: "boolean",
 			default: false,
-			summary: "Move focus to the dialog when it opens.",
+			summary: "Focus the dialog when it opens, including when an autofocus descendant exists.",
 		},
 		{
 			name: "variant",

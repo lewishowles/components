@@ -40,9 +40,9 @@ Whether the dialog should open itself immediately. This is true by default for u
 ### `focusDialogOnOpen`
 
 - type: `boolean`
-- default: `true`
+- default: `false`
 
-When opening the dialog, determine whether to focus the dialog itself, or the first focusable element within it.
+When `true`, focus the dialog itself when it opens. When `false`, an autofocus descendant receives focus when provided; otherwise, the dialog receives focus.
 
 ### `inert`
 
