@@ -348,8 +348,8 @@
 
 	--control-selected-surface: var(--primary-fill);
 	--control-selected-surface-focus: var(--primary-fill);
-	--control-selected-border: var(--primary-900);
-	--control-selected-border-focus: var(--primary-900);
+	--control-selected-border: var(--primary-fill);
+	--control-selected-border-focus: var(--primary-fill);
 	--control-selected-foreground: var(--primary-foreground);
 
 	--control-invalid: var(--danger-600);
