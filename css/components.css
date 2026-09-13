@@ -1,4 +1,17 @@
 @layer components {
+	:where(code:not(pre code)) {
+		background-color: var(--surface-sunken);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
+		color: var(--content);
+		font-size: 0.875em;
+		padding: 0.125em 0.375em;
+
+		&:where(.dark, .dark *) {
+			background-color: var(--surface-elevated);
+		}
+	}
+
 	:where([data-component="tab-group"] [data-part="nav"]),
 	:where([data-component="breadcrumb-list"] [data-part="nav"]),
 	:where([data-component="data-table"] [data-part="scroll-indicators"]) {
