@@ -13,7 +13,7 @@
 		</div>
 
 		<div
-			class="border-grey-200 bg-grey-50 dark:bg-grey-950/20 flex justify-end gap-3 rounded-md border p-3 text-sm backdrop-blur-sm dark:border-transparent"
+			class="border-grey-200 bg-grey-50 dark:bg-grey-950/20 flex justify-end gap-3 rounded-md border p-3 text-sm dark:border-transparent"
 			:class="{ 'z-10': isTextSlotsOpen }"
 		>
 			<copy-content v-bind="{ content: copy }" class="button--muted">Copy code</copy-content>
