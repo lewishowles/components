@@ -144,7 +144,7 @@ const resolvedPanelClasses = computed(() => {
 	}
 
 	return cn(
-		"absolute animate-fade-in-down animate-fast min-w-3xs py-2 rounded-lg border border-border bg-surface-elevated backdrop-blur-lg z-50",
+		"absolute animate-fade-in-down animate-fast min-w-3xs py-2 rounded-lg border border-border bg-surface backdrop-blur-lg z-50",
 		placementClasses.value,
 		computedPlacement.value === "above" ? "bottom-full" : "top-full",
 		computedAlign.value === "end" ? "inset-e-0" : "inset-s-0",

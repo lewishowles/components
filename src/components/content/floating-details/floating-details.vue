@@ -131,8 +131,8 @@ const {
 // summaryDetailsProps); narrow mode presents through overlay-sheet instead.
 const resolvedDetailsClasses = computed(() =>
 	cn(
-		"fixed z-50 w-screen rounded-md border p-4 shadow",
-		"border-border bg-surface-elevated backdrop-blur-lg",
+		"fixed z-50 w-screen rounded-md border p-4 shadow-lg",
+		"border-border bg-surface backdrop-blur-lg",
 		"max-w-lg",
 		"top-[var(--floating-details-top)] bottom-[var(--floating-details-bottom)]",
 		"inset-s-[var(--floating-details-inline-start)] inset-e-[var(--floating-details-inline-end)]",

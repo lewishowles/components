@@ -454,7 +454,7 @@ const selectedItem = computed(() =>
 // narrower than the root (e.g. once an error marker adds start padding).
 const resolvedDropdownClasses = computed(() =>
 	cn(
-		"absolute z-10 overflow-hidden rounded-md border border-border bg-surface-elevated shadow-lg",
+		"absolute z-10 overflow-hidden rounded-md border border-border bg-surface shadow-lg",
 		placementClasses.value,
 		{ "opacity-0": isPositioning.value },
 		props.dropdownClasses,
