@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 3.4.5 - 2026-09-13
+
+### Fixes
+
+- Dark mode colours should be more consistent across the board, and follow a more similar hierarchy to light mode.
+
 ## 3.4.4 - 2026-09-11
 
 ### Fixes
