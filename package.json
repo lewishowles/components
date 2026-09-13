@@ -75,22 +75,22 @@
 		"prepare": "vp config --no-agent"
 	},
 	"dependencies": {
-		"@clack/prompts": "^1.7.0",
-		"@lewishowles/cli-style": "^0.12.1",
+		"@clack/prompts": "^1.8.0",
+		"@lewishowles/cli-style": "^0.13.0",
 		"@lewishowles/helpers": "^1.7.1",
 		"@vueuse/core": "^14.4.0",
 		"cli-highlight": "^2.1.11",
 		"clsx": "^2.1.1",
-		"microlighter": "^2.1.0",
+		"microlighter": "^2.2.0",
 		"nanoid": "^6.0.1",
 		"tailwind-merge": "^3.6.0",
-		"temporal-polyfill": "^1.0.4"
+		"temporal-polyfill": "^1.0.5"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.5",
 		"@eslint/js": "^10.0.1",
-		"@lewishowles/lint-config": "0.2.0",
-		"@lewishowles/pkg-checks": "^0.2.3",
+		"@lewishowles/lint-config": "0.5.0",
+		"@lewishowles/pkg-checks": "^0.2.4",
 		"@lewishowles/testing": "^1.2.1",
 		"@playwright/experimental-ct-vue": "^1.62.1",
 		"@rollup/plugin-dynamic-import-vars": "^2.1.5",
@@ -99,32 +99,32 @@
 		"@tailwindcss/typography": "^0.5.20",
 		"@tailwindcss/vite": "^4.3.3",
 		"@vitejs/plugin-vue": "^6.0.8",
-		"@vue/test-utils": "^2.4.11",
+		"@vue/test-utils": "^2.5.0",
 		"axe-core": "^4.13.0",
-		"eslint-plugin-vue": "^10.10.0",
+		"eslint-plugin-vue": "^10.11.0",
 		"gh-pages": "^6.3.0",
-		"globals": "^17.11.0",
-		"happy-dom": "^20.11.6",
+		"globals": "^17.12.0",
+		"happy-dom": "^20.14.5",
 		"publint": "^0.3.24",
 		"tailwindcss": "^4.3.3",
 		"tailwindcss-hocus": "^1.0.0",
 		"typescript": "6.0.3",
 		"unplugin-vue-components": "^32.1.0",
-		"vite": "npm:@voidzero-dev/vite-plus-core@0.3.0",
+		"vite": "npm:@voidzero-dev/vite-plus-core@0.3.1",
 		"vite-plugin-vue-devtools": "^8.2.1",
-		"vite-plus": "0.3.0",
+		"vite-plus": "0.3.1",
 		"vue-component-meta": "^3.3.11",
 		"vue-eslint-parser": "^10.4.1",
-		"vue-router": "^5.2.0"
+		"vue-router": "^5.3.1"
 	},
 	"peerDependencies": {
 		"vue": "^3.4.0"
 	},
 	"overrides": {
-		"temporal-polyfill": "^1.0.4"
+		"temporal-polyfill": "^1.0.5"
 	},
 	"engines": {
 		"node": ">=20"
 	},
-	"packageManager": "bun@1.4.0"
+	"packageManager": "bun@1.4.2"
 }
