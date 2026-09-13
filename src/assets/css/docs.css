@@ -3,8 +3,6 @@
 @plugin "@tailwindcss/typography";
 
 :where(code:not(pre code)) {
-	color: var(--content-strong);
-	font-size: 0.875em;
 	font-weight: 600;
 
 	&::before,

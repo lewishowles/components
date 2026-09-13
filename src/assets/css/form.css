@@ -25,6 +25,11 @@
 		padding-inline-start: 0.75em;
 	}
 
+	:is(.form-input, .form-select, textarea):disabled {
+		color: var(--control-content-muted);
+		cursor: not-allowed;
+	}
+
 	:where([data-part="field-wrapper"]:has(.form-select)) {
 		position: relative;
 
@@ -91,29 +96,6 @@
 		&.form-field--error {
 			border-color: var(--control-invalid);
 		}
-
-		&:where(.dark, .dark *) {
-			background-color: transparent;
-
-			&::file-selector-button {
-				background-color: var(--control-overlay);
-				border-color: var(--control-overlay);
-			}
-
-			&:hover::file-selector-button,
-			&::file-selector-button:hover {
-				background-color: var(--control-overlay-hover);
-				border-color: var(--control-overlay);
-				color: var(--control-content-hover);
-			}
-
-			&:active::file-selector-button,
-			&::file-selector-button:active {
-				background-color: var(--control-overlay-active);
-				border-color: transparent;
-				color: var(--control-content-active);
-			}
-		}
 	}
 
 	.form-checkbox,
@@ -152,16 +134,23 @@
 		}
 
 		&:where(.dark, .dark *) {
-			--ring-colour: var(--control-ring);
+			--ring-colour: var(--control-border);
 
 			&:hover {
+				--ring-size: 1px;
 				--ring-colour: var(--control-ring-hover);
 			}
 
-			&:checked {
-				--ring-colour: currentColor;
+			&:focus {
+				outline: 2px solid var(--control-focus);
+			}
 
-				color: var(--control-selected-surface);
+			&:checked {
+				--ring-colour: var(--control-selected-border);
+				--ring-size: 1px;
+
+				background-color: var(--primary-500);
+				color: var(--control-content);
 			}
 		}
 	}
@@ -217,6 +206,15 @@
 
 		&:is(:hover, :focus-within) {
 			background-color: var(--surface-subtle);
+		}
+
+		&:where(.dark, .dark *) {
+			background-color: var(--control-surface);
+			border-color: var(--control-border);
+
+			&:is(:hover, :focus-within) {
+				background-color: var(--control-surface-elevated);
+			}
 		}
 
 		&[data-position="only"] {
@@ -347,6 +345,10 @@
 
 		[data-part="option"][data-active] {
 			background-color: var(--surface-sunken);
+
+			&:where(.dark, .dark *) {
+				background-color: var(--control-surface-elevated);
+			}
 		}
 
 		[data-part="option"][data-state="selected"] {
@@ -433,6 +435,14 @@
 					background-color: var(--control-selected-surface-focus);
 					border-color: var(--control-selected-border-focus);
 				}
+
+				&:where(.dark, .dark *) {
+					&:checked ~ [data-part="label"] {
+						color: var(--control-content);
+						position: relative;
+						z-index: 2;
+					}
+				}
 			}
 
 			[data-part="label"] {
@@ -451,11 +461,6 @@
 				transition-timing-function: var(--default-transition-timing-function);
 				z-index: 0;
 
-				&:where(.dark, .dark *) {
-					background-color: var(--control-overlay);
-					border-color: var(--control-overlay);
-				}
-
 				&:is(:hover, :active) {
 					z-index: 1;
 				}
@@ -464,23 +469,12 @@
 					background-color: var(--control-surface-hover);
 					border-color: var(--control-border-hover);
 					color: var(--control-content-hover);
-
-					&:where(.dark, .dark *) {
-						background-color: var(--control-overlay-hover);
-						border-color: var(--control-overlay);
-					}
 				}
 
 				&:active {
 					background-color: var(--control-surface-active);
 					border-color: var(--control-border-active);
 					color: var(--control-content-active);
-
-					&:where(.dark, .dark *) {
-						background-color: var(--control-overlay-active);
-						border-color: transparent;
-						color: var(--control-content-active);
-					}
 				}
 			}
 		}
@@ -497,19 +491,39 @@
 			--ring-colour: var(--control-ring);
 		}
 
-		&:has(:hover) {
+		&:not(.form-field--error):not(:has(:focus)):not(:has(:disabled)):has(:hover) {
 			--ring-size: 1px;
 			--ring-colour: var(--control-border-hover);
 		}
 
-		&:has(:focus) {
+		&:not(.form-field--error):has(:focus) {
 			--ring-size: 2px;
 			--ring-colour: var(--control-focus);
 		}
 
+		&.form-field--error {
+			--ring-colour: var(--control-invalid);
+
+			&:is(:has(:hover), :has(:focus)) {
+				--ring-size: 2px;
+			}
+		}
+
 		&:where(.dark, .dark *) {
-			&:has(:hover) {
+			&:not(.form-field--error):not(:has(:focus)):not(:has(:disabled)):has(:hover) {
 				--ring-colour: var(--control-ring-hover);
+			}
+		}
+
+		&:not(.form-field--error):has(:disabled) {
+			--ring-size: 1px;
+			--ring-colour: var(--border-strong);
+
+			background-color: var(--surface-subtle);
+			cursor: not-allowed;
+
+			:is(.form-input, .form-select):disabled {
+				background-color: transparent;
 			}
 		}
 	}

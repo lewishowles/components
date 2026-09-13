@@ -28,7 +28,7 @@
 				{{ textSlots.default.value }}
 			</content-card-section>
 
-			<content-card-footer class="bg-grey-50">
+			<content-card-footer class="bg-surface-subtle">
 				{{ textSlots.footer.value }}
 			</content-card-footer>
 		</content-card>

@@ -238,27 +238,27 @@
 			<tbody>
 				<tr>
 					<td>Primary</td>
-					<td>800 → 500</td>
-					<td>800 → 300</td>
+					<td>800 → 500 dimmed towards the surface</td>
+					<td>800 → 200</td>
 				</tr>
 				<tr>
 					<td>Danger</td>
-					<td>700 → 500</td>
+					<td>700 → 500 dimmed towards the surface</td>
 					<td>800 → 200</td>
 				</tr>
 				<tr>
 					<td>Warning</td>
-					<td>300 → 300</td>
+					<td>300 → 500 dimmed towards the surface</td>
 					<td>800 → 200</td>
 				</tr>
 				<tr>
 					<td>Success</td>
-					<td>600 → 500</td>
+					<td>600 → 500 dimmed towards the surface</td>
 					<td>800 → 200</td>
 				</tr>
 				<tr>
 					<td>Info</td>
-					<td>600 → 500</td>
+					<td>600 → 500 dimmed towards the surface</td>
 					<td>800 → 200</td>
 				</tr>
 			</tbody>
@@ -267,24 +267,35 @@
 		<p>
 			The subtle wash uses the
 			<code>50</code>
-			shade in light mode and a half-transparent
+			shade in light mode and a 10% tint of the
 			<code>500</code>
-			in dark mode. The foreground is white, except on the light warning fill, where it's near-black
+			shade mixed into the surface in dark mode. The matching subtle border utility, such as
+			<code>border-primary-subtle</code>
+			, derives from that background and mixes in the intent's
+			<code>500</code>
+			shade at 35%. The foreground is white, except on the light warning fill, where it's near-black
 			so the text stays legible.
 		</p>
 
 		<h2>Neutral tokens</h2>
 
 		<p>
-			Surfaces, body text, and borders that aren't tied to an intent have their own colour tokens.
-			These carry the bulk of a page's appearance and are available anywhere Tailwind expects a
-			colour, including backgrounds, text, borders, dividers, rings, and outlines:
+			Surfaces, body text, borders, and control states that aren't tied to an intent have their own
+			colour tokens. Surface, text, and border utilities are available anywhere Tailwind expects a
+			colour, including backgrounds, text, borders, dividers, rings, and outlines. Control tokens
+			provide matching values for component states. In the dark column,
+			<code>a + b/N%</code>
+			means
+			<code>a</code>
+			mixed towards
+			<code>b</code>
+			by N% in oklab:
 		</p>
 
 		<table>
 			<thead>
 				<tr>
-					<th>Utility</th>
+					<th>Utility or token</th>
 					<th>Role</th>
 					<th>Light</th>
 					<th>Dark</th>
@@ -295,25 +306,31 @@
 					<td><code>bg-surface</code></td>
 					<td>Page and card background</td>
 					<td><code>white</code></td>
-					<td><code>grey-950</code></td>
+					<td><code>surface-subtle + white/4%</code></td>
 				</tr>
 				<tr>
 					<td><code>bg-surface-subtle</code></td>
 					<td>A slightly raised panel</td>
 					<td><code>grey-50</code></td>
-					<td><code>white/10%</code></td>
+					<td><code>grey-950 + primary-500/10%</code></td>
 				</tr>
 				<tr>
 					<td><code>bg-surface-sunken</code></td>
 					<td>A recessed well</td>
 					<td><code>grey-100</code></td>
-					<td><code>white/20%</code></td>
+					<td><code>surface-subtle + grey-950/24%</code></td>
+				</tr>
+				<tr>
+					<td><code>bg-surface-elevated</code></td>
+					<td>A raised panel above the page surface</td>
+					<td><code>white</code></td>
+					<td><code>surface-subtle + white/12%</code></td>
 				</tr>
 				<tr>
 					<td><code>text-content</code></td>
 					<td>Body text</td>
 					<td><code>grey-600</code></td>
-					<td><code>grey-50</code></td>
+					<td><code>grey-300</code></td>
 				</tr>
 				<tr>
 					<td><code>text-content-strong</code></td>
@@ -325,7 +342,7 @@
 					<td><code>text-content-muted</code></td>
 					<td>Secondary text</td>
 					<td><code>grey-500</code></td>
-					<td><code>white/60%</code></td>
+					<td><code>grey-400</code></td>
 				</tr>
 				<tr>
 					<td>
@@ -335,7 +352,7 @@
 					</td>
 					<td>Default border and divider colour</td>
 					<td><code>grey-200</code></td>
-					<td><code>white/20%</code></td>
+					<td><code>surface-subtle + white/12%</code></td>
 				</tr>
 				<tr>
 					<td>
@@ -345,7 +362,31 @@
 					</td>
 					<td>A stronger border and divider colour</td>
 					<td><code>grey-300</code></td>
-					<td><code>white/30%</code></td>
+					<td><code>surface-subtle + white/22%</code></td>
+				</tr>
+				<tr>
+					<td><code>--control-content-muted</code></td>
+					<td>The muted content step for component states</td>
+					<td><code>content-muted</code></td>
+					<td><code>content-muted</code></td>
+				</tr>
+				<tr>
+					<td><code>--control-surface-elevated</code></td>
+					<td>The elevated surface step for component states</td>
+					<td><code>surface-elevated</code></td>
+					<td><code>surface-elevated</code></td>
+				</tr>
+				<tr>
+					<td><code>--control-surface-subtle</code></td>
+					<td>The subtle surface step for component states</td>
+					<td><code>surface-subtle</code></td>
+					<td><code>surface-subtle</code></td>
+				</tr>
+				<tr>
+					<td><code>--control-surface-sunken</code></td>
+					<td>The sunken surface step for component states</td>
+					<td><code>surface-sunken</code></td>
+					<td><code>surface-sunken</code></td>
 				</tr>
 			</tbody>
 		</table>
