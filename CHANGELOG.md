@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 3.4.6 - 2026-09-14
+
+### Fixes
+
+- `combo-box`: adds missing `prefix` and `suffix` slots for the underlying `form-input`.
+
 ## 3.4.5 - 2026-09-13
 
 ### Fixes
