@@ -18,6 +18,14 @@
 			>
 				<slot name="label" />
 
+				<template v-if="havePrefix" #prefix>
+					<slot name="prefix" />
+				</template>
+
+				<template v-if="haveSuffix" #suffix>
+					<slot name="suffix" />
+				</template>
+
 				<template #introduction>
 					<slot name="introduction" />
 				</template>
@@ -103,7 +111,8 @@
 import { arrayLength } from "@lewishowles/helpers/array";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { cn } from "@/utilities/cn.js";
-import { computed, toRef, useTemplateRef, watch } from "vue";
+import { computed, toRef, useSlots, useTemplateRef, watch } from "vue";
+import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
 import { onClickOutside } from "@vueuse/core";
@@ -185,6 +194,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["select"]);
+const slots = useSlots();
 
 // The current search query, exposed for two-way binding. Nothing is chosen
 // until the user activates a result, so the query is the only model.
@@ -229,6 +239,10 @@ const containerElement = useTemplateRef("container");
 const inputComponent = useTemplateRef("input");
 // A reference to the results list, used to measure and position it.
 const dropdownElement = useTemplateRef("dropdown");
+// Whether prefix adornment content has been supplied.
+const havePrefix = computed(() => isNonEmptySlot(slots.prefix));
+// Whether suffix adornment content has been supplied.
+const haveSuffix = computed(() => isNonEmptySlot(slots.suffix));
 
 const {
 	computedPlacement,
