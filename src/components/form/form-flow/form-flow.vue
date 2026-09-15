@@ -146,7 +146,7 @@ import {
 
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { until, useMediaQuery } from "@vueuse/core";
+import { breakpointsTailwind, until, useBreakpoints } from "@vueuse/core";
 
 import { useFormHost } from "@/composables/use-form-host/use-form-host.js";
 
@@ -363,9 +363,9 @@ const generalErrorsElement = useTemplateRef("general-errors");
 const submitButtonRef = useTemplateRef("submit-button");
 // Focus target for the review screen's heading when review opens.
 const reviewHeading = useTemplateRef("review-heading");
-// Whether the viewport is narrow enough to assume a virtual keyboard, which covers part of the
-// page once a field takes focus.
-const isNarrow = useMediaQuery("(width < 1024px)");
+// Whether the viewport is below the Tailwind `lg` breakpoint, narrow enough to assume a virtual
+// keyboard that covers part of the page once a field takes focus.
+const isNarrow = useBreakpoints(breakpointsTailwind).smaller("lg");
 
 // Whether the primary action button should render for the current step.
 const showPrimaryButton = computed(

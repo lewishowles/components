@@ -10,7 +10,7 @@
 
 ## 3.4.5 - 2026-09-13
 
-### Fixes
+### Changes
 
 - Dark mode colours should be more consistent across the board, and follow a more similar hierarchy to light mode.
 
@@ -27,7 +27,7 @@
 ### Fixes
 
 - `use-form` no longer leaves a form reading as having unsaved changes on submit.
-- `use-messages` now allows messages to be cleared individually.
+- `use-flash-messages` adds `clearMessage(id)` to remove a single message.
 
 ## 3.4.2 - 2026-09-10
 
