@@ -47,9 +47,7 @@
 			</floating-details>
 		</div>
 
-		<div
-			class="border-grey-300 relative rounded-md border p-4 inset-shadow-sm lg:p-24 dark:border-white/20"
-		>
+		<div class="border-border relative rounded-md border p-4 inset-shadow-sm lg:p-24">
 			<slot />
 
 			<div

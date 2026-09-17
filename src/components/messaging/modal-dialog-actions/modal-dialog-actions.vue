@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="bg-surface-subtle border-border flex flex-wrap items-center gap-6 border-t"
+		class="lg:border-border lg:bg-surface-subtle flex flex-wrap items-center gap-6 lg:border-t"
 		data-part="actions"
 		data-test="modal-dialog-actions"
 	>

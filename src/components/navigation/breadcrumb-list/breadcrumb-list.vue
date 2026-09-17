@@ -15,7 +15,7 @@
 	>
 		<ol
 			ref="listReference"
-			class="-mx-1 flex items-center gap-2 overflow-x-auto p-1"
+			class="flex items-center gap-2 overflow-x-auto"
 			data-part="list"
 			data-test="breadcrumb-list-list"
 		>

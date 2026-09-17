@@ -77,7 +77,7 @@ body:has(dialog[data-part="sheet"]:modal) {
 
 @layer components {
 	:where(dialog[data-part="sheet"]) {
-		background-color: var(--surface-elevated);
+		background-color: var(--surface);
 		border-top: 1px solid var(--border);
 		box-shadow: var(--shadow-2xl);
 		box-sizing: border-box;
@@ -105,9 +105,8 @@ body:has(dialog[data-part="sheet"]:modal) {
 		& > :where([data-part="actions"]) {
 			flex: 0 0 auto;
 			padding-inline: calc(var(--spacing) * 6);
-			padding-block: calc(var(--spacing) * 6);
+			padding-block-start: calc(var(--spacing) * 6);
 			margin-block-start: calc(var(--spacing) * 6);
-			margin-block-end: calc(var(--spacing) * -6);
 			margin-inline: calc(var(--spacing) * -6);
 		}
 
