@@ -11,5 +11,11 @@ describe("modal-dialog-actions", () => {
 
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
+
+		test("should expose the component styling hook", () => {
+			const wrapper = mount();
+
+			expect(wrapper.attributes("data-component")).toBe("modal-dialog-actions");
+		});
 	});
 });

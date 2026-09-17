@@ -15,7 +15,7 @@
 		data-part="sheet"
 		data-test="modal-dialog"
 	>
-		<div class="modal-dialog-header flex justify-end">
+		<div class="modal-dialog-header">
 			<ui-button
 				class="button--ghost"
 				icon-start="icon-cross"

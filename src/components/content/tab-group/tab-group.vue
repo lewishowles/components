@@ -4,12 +4,7 @@
 			<slot name="label" />
 		</span>
 
-		<div
-			ref="tabBarReference"
-			class="border-border mb-8 border-b"
-			:class="tabBarClasses"
-			data-part="nav"
-		>
+		<div ref="tabBarReference" :class="tabBarClasses" data-part="nav">
 			<ol
 				ref="tabListReference"
 				class="-mb-px flex items-end"
