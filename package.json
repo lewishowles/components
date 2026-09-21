@@ -75,15 +75,15 @@
 		"prepare": "vp config --no-agent"
 	},
 	"dependencies": {
-		"@clack/prompts": "^1.8.0",
+		"@clack/prompts": "^1.8.1",
 		"@lewishowles/cli-style": "^0.13.0",
 		"@lewishowles/helpers": "^1.7.1",
-		"@vueuse/core": "^14.4.0",
+		"@vueuse/core": "^15.0.0",
 		"cli-highlight": "^2.1.11",
 		"clsx": "^2.1.1",
 		"microlighter": "^2.2.0",
 		"nanoid": "^6.0.1",
-		"tailwind-merge": "^3.6.0",
+		"tailwind-merge": "^3.7.0",
 		"temporal-polyfill": "^1.0.5"
 	},
 	"devDependencies": {
@@ -98,8 +98,8 @@
 		"@tailwindcss/forms": "^0.5.11",
 		"@tailwindcss/typography": "^0.5.20",
 		"@tailwindcss/vite": "^4.3.3",
-		"@vitejs/plugin-vue": "^6.0.8",
-		"@vue/test-utils": "^2.5.0",
+		"@vitejs/plugin-vue": "^6.0.9",
+		"@vue/test-utils": "^2.5.1",
 		"axe-core": "^4.13.0",
 		"eslint-plugin-vue": "^10.11.0",
 		"gh-pages": "^6.3.0",
@@ -110,9 +110,9 @@
 		"tailwindcss-hocus": "^1.0.0",
 		"typescript": "6.0.3",
 		"unplugin-vue-components": "^32.1.0",
-		"vite": "npm:@voidzero-dev/vite-plus-core@0.3.1",
+		"vite": "npm:@voidzero-dev/vite-plus-core@0.3.3",
 		"vite-plugin-vue-devtools": "^8.2.1",
-		"vite-plus": "0.3.1",
+		"vite-plus": "0.3.3",
 		"vue-component-meta": "^3.3.11",
 		"vue-eslint-parser": "^10.4.1",
 		"vue-router": "^5.3.1"

@@ -2,7 +2,7 @@
 	<div
 		:class="
 			cn(
-				'border-border dark:bg-surface flex flex-wrap items-center justify-between gap-4 border px-[1em] py-[0.75em] not-first:border-t-0 first:rounded-t-xl last:rounded-b-xl',
+				'border-border bg-surface flex flex-wrap items-center justify-between gap-4 border px-[1em] py-[0.75em] not-first:border-t-0 first:rounded-t-xl last:rounded-b-xl',
 				attributes.class,
 			)
 		"
