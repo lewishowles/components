@@ -1,7 +1,7 @@
 @layer components {
 	.link,
 	.link--muted,
-	.list--ghost {
+	.link--ghost {
 		text-decoration: underline;
 		text-decoration-skip-ink: auto;
 		text-underline-offset: 4px;
