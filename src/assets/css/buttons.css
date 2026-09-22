@@ -1,60 +1,62 @@
-.link,
-.link--muted,
-.list--ghost {
-	text-decoration: underline;
-	text-decoration-skip-ink: auto;
-	text-underline-offset: 4px;
+@layer components {
+	.link,
+	.link--muted,
+	.list--ghost {
+		text-decoration: underline;
+		text-decoration-skip-ink: auto;
+		text-underline-offset: 4px;
 
-	&:is(:hover, :focus) {
-		text-decoration: none;
-	}
-}
-
-.link {
-	color: var(--primary-text);
-
-	&:is(:hover, :focus) {
-		color: var(--primary-900);
-	}
-
-	&:where(.dark, .dark *) {
 		&:is(:hover, :focus) {
-			color: var(--primary-200);
+			text-decoration: none;
 		}
 	}
-}
 
-.link--muted {
-	color: var(--content-muted);
+	.link {
+		color: var(--primary-text);
 
-	&:is(:hover, :focus) {
-		color: var(--content-strong);
+		&:is(:hover, :focus) {
+			color: var(--primary-900);
+		}
+
+		&:where(.dark, .dark *) {
+			&:is(:hover, :focus) {
+				color: var(--primary-200);
+			}
+		}
 	}
-}
 
-.link--ghost {
-	color: currentColor;
-	text-decoration: none;
+	.link--muted {
+		color: var(--content-muted);
 
-	&:is(:hover, :focus) {
-		color: var(--content-strong);
-		text-decoration: underline;
+		&:is(:hover, :focus) {
+			color: var(--content-strong);
+		}
 	}
-}
 
-.button-padding-x {
-	padding-inline: 1em;
-}
+	.link--ghost {
+		color: currentColor;
+		text-decoration: none;
 
-.button-padding-y {
-	padding-block: calc(0.375em - 1px);
-}
+		&:is(:hover, :focus) {
+			color: var(--content-strong);
+			text-decoration: underline;
+		}
+	}
 
-.button {
-	border: 1px solid transparent;
-	border-radius: var(--radius-md);
-	padding-block: calc(0.375em - 1px);
-	padding-inline: 1em;
+	.button-padding-x {
+		padding-inline: 1em;
+	}
+
+	.button-padding-y {
+		padding-block: calc(0.375em - 1px);
+	}
+
+	.button {
+		border: 1px solid transparent;
+		border-radius: var(--radius-md);
+		padding-block: calc(0.375em - 1px);
+		padding-inline: 1em;
+	}
 }
 
 /* Each semantic variant duplicates this shared base because Tailwind requires an @utility block to be self-contained for responsive variants (e.g. lg:button--ghost) to be generated. */
@@ -333,6 +335,8 @@
 	}
 }
 
+/* This rule stays outside every cascade layer so no variant recipe or consumer
+ * utility can make a disabled control look interactive. */
 .button--disabled {
 	background-color: var(--surface-sunken);
 	border-color: transparent;
