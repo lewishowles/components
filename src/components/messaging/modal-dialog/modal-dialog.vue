@@ -12,6 +12,10 @@
 
 		<modal-dialog-title v-if="haveTitle" data-part="title">
 			<slot name="title" />
+
+			<template #subtitle>
+				<slot name="subtitle" />
+			</template>
 		</modal-dialog-title>
 
 		<conditional-wrapper :id="descriptionId" :wrap="props.variant === 'alert'">
