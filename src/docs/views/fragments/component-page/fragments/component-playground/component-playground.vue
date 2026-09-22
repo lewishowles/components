@@ -13,6 +13,7 @@
 		</div>
 
 		<div
+			v-if="copy"
 			class="border-grey-200 bg-grey-50 dark:bg-grey-950/20 flex justify-end gap-3 rounded-md border p-3 text-sm dark:border-transparent"
 			:class="{ 'z-10': isTextSlotsOpen }"
 		>
@@ -60,7 +61,7 @@
 			</div>
 		</div>
 
-		<code-block>{{ copy }}</code-block>
+		<code-block v-if="copy">{{ copy }}</code-block>
 
 		<slot name="additional-code" />
 	</div>

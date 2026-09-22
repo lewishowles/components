@@ -332,6 +332,58 @@ export const uiButtonMetadata = {
 			},
 		},
 		{
+			name: "ghost",
+			label: "Ghost button",
+			summary: "A low-emphasis action button.",
+			snippet: {
+				slots: {
+					default: {
+						label: "Button label",
+						value: "Cancel",
+					},
+				},
+				props: {
+					class: {
+						label: "Button classes",
+						value: "button--ghost",
+						isInline: true,
+					},
+				},
+				events: {
+					click: {
+						label: "Click handler",
+						value: "cancel",
+					},
+				},
+			},
+		},
+		{
+			name: "danger",
+			label: "Danger button",
+			summary: "A button for a destructive action.",
+			snippet: {
+				slots: {
+					default: {
+						label: "Button label",
+						value: "Delete account",
+					},
+				},
+				props: {
+					class: {
+						label: "Button classes",
+						value: "button--danger",
+						isInline: true,
+					},
+				},
+				events: {
+					click: {
+						label: "Click handler",
+						value: "deleteAccount",
+					},
+				},
+			},
+		},
+		{
 			name: "full-width",
 			label: "Wide button",
 			summary: "A full-width button that centres its contents.",

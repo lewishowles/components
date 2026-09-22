@@ -291,6 +291,7 @@
 
 		<component-playgrounds>
 			<playground-ui-button-overview />
+			<playground-ui-button-variants />
 			<playground-ui-button />
 			<playground-ui-button-loading-auto />
 			<playground-ui-button-trigger-reactive-state />
@@ -305,4 +306,5 @@ import PlaygroundUiButtonLoadingAuto from "./fragments/playground-ui-button-load
 import PlaygroundUiButtonOverview from "./fragments/playground-ui-button-overview.vue";
 import PlaygroundUiButtonPressed from "./fragments/playground-ui-button-pressed.vue";
 import PlaygroundUiButtonTriggerReactiveState from "./fragments/playground-ui-button-trigger-reactive-state.vue";
+import PlaygroundUiButtonVariants from "./fragments/playground-ui-button-variants.vue";
 </script>
