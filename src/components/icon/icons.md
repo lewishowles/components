@@ -54,6 +54,7 @@ Each icon in the library is created using strokes, and can be coloured using the
 - icon-location
 - icon-map
 - icon-megaphone
+- icon-minus
 - icon-moon
 - icon-object
 - icon-padlock
