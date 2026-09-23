@@ -194,11 +194,15 @@
 		position: relative;
 		z-index: 0;
 
+		/**
+		 * Stays weighted and after the base radio and checkbox rules so their
+		top margin can't pull the indicator below the centred label.
+		 */
 		[data-part="indicator"] {
 			margin-block-start: 0;
 		}
 
-		[data-part="label"]::after {
+		:where([data-part="label"])::after {
 			content: "";
 			inset: 0;
 			position: absolute;
@@ -217,10 +221,14 @@
 			}
 		}
 
-		&[data-position="only"] {
+		&:where([data-position="only"]) {
 			border-radius: var(--radius-lg);
 		}
 
+		/**
+		 * Stays weighted so a selected card keeps its colours over the
+		 * zero-weight card defaults.
+		 */
 		&[data-state="selected"] {
 			background-color: var(--primary-subtle);
 			border-color: var(--primary-text);
@@ -232,11 +240,13 @@
 		flex-direction: column;
 		gap: 0.5em;
 
-		&:has([data-variant="card"]) {
+		&:where(:has([data-variant="card"])) {
 			gap: 0;
 		}
 
-		[data-part="option"][data-variant="card"]:is([data-position="middle"], [data-position="last"]) {
+		:where(
+			[data-part="option"][data-variant="card"]:is([data-position="middle"], [data-position="last"])
+		) {
 			margin-block-start: -1px;
 		}
 	}
@@ -247,36 +257,38 @@
 		padding-inline: 0.75em;
 	}
 
-	[data-part="options"][data-layout="stacked"] {
-		[data-part="option"][data-variant="card"][data-position="first"] {
+	:where([data-part="options"][data-layout="stacked"]) {
+		:where([data-part="option"][data-variant="card"][data-position="first"]) {
 			border-start-end-radius: var(--radius-lg);
 			border-start-start-radius: var(--radius-lg);
 		}
 
-		[data-part="option"][data-variant="card"][data-position="last"] {
+		:where([data-part="option"][data-variant="card"][data-position="last"]) {
 			border-end-end-radius: var(--radius-lg);
 			border-end-start-radius: var(--radius-lg);
 		}
 	}
 
-	[data-part="options"][data-layout="inline"] {
+	:where([data-part="options"][data-layout="inline"]) {
 		flex-direction: column;
 		gap: 0.5em;
 
-		&:has([data-variant="card"]) {
+		&:where(:has([data-variant="card"])) {
 			gap: 0;
 		}
 
-		[data-part="option"][data-variant="card"]:is([data-position="middle"], [data-position="last"]) {
+		:where(
+			[data-part="option"][data-variant="card"]:is([data-position="middle"], [data-position="last"])
+		) {
 			margin-block-start: -1px;
 		}
 
-		[data-part="option"][data-variant="card"][data-position="first"] {
+		:where([data-part="option"][data-variant="card"][data-position="first"]) {
 			border-start-end-radius: var(--radius-lg);
 			border-start-start-radius: var(--radius-lg);
 		}
 
-		[data-part="option"][data-variant="card"][data-position="last"] {
+		:where([data-part="option"][data-variant="card"][data-position="last"]) {
 			border-end-end-radius: var(--radius-lg);
 			border-end-start-radius: var(--radius-lg);
 		}
@@ -286,37 +298,39 @@
 			flex-wrap: wrap;
 			gap: 2.5em;
 
-			&:has([data-variant="card"]) {
+			&:where(:has([data-variant="card"])) {
 				gap: 0;
 			}
 
-			[data-part="option"][data-variant="card"]:is(
-					[data-position="middle"],
-					[data-position="last"]
-				) {
+			:where(
+				[data-part="option"][data-variant="card"]:is(
+						[data-position="middle"],
+						[data-position="last"]
+					)
+			) {
 				margin-inline-start: -1px;
 			}
 
-			[data-part="option"][data-variant="card"] {
+			:where([data-part="option"][data-variant="card"]) {
 				border-radius: 0;
 				padding-inline: 1.25em;
 			}
 
-			[data-part="option"][data-variant="card"] [data-part="label"] {
+			:where([data-part="option"][data-variant="card"] [data-part="label"]) {
 				white-space: nowrap;
 			}
 
-			[data-part="option"][data-variant="card"][data-position="only"] {
+			:where([data-part="option"][data-variant="card"][data-position="only"]) {
 				border-radius: var(--radius-lg);
 			}
 
-			[data-part="option"][data-variant="card"][data-position="first"] {
+			:where([data-part="option"][data-variant="card"][data-position="first"]) {
 				border-end-start-radius: var(--radius-lg);
 				border-start-end-radius: 0;
 				border-start-start-radius: var(--radius-lg);
 			}
 
-			[data-part="option"][data-variant="card"][data-position="last"] {
+			:where([data-part="option"][data-variant="card"][data-position="last"]) {
 				border-end-end-radius: var(--radius-lg);
 				border-end-start-radius: 0;
 				border-start-end-radius: var(--radius-lg);
@@ -324,6 +338,10 @@
 		}
 	}
 
+	/**
+	 * Stays weighted because the padding makes room for the error marker and
+	 * the position anchors it.
+	 */
 	[data-part="field"][data-state="invalid"] {
 		padding-inline-start: 1.25em;
 		position: relative;
@@ -338,8 +356,8 @@
 		width: 0.25em;
 	}
 
-	[data-component="form-combo-box"] {
-		[data-part="option"] {
+	:where([data-component="form-combo-box"]) {
+		:where([data-part="option"]) {
 			border: 1px solid transparent;
 		}
 
@@ -351,60 +369,46 @@
 			}
 		}
 
+		/**
+		 * Comes after the active rule at the same weight, so an option that is
+		 * both active and selected shows as selected.
+		 */
 		[data-part="option"][data-state="selected"] {
 			background-color: var(--primary-subtle);
 			border-color: var(--primary-text);
 		}
 	}
 
-	[data-component="form-button-group"] {
-		[data-part="options"] {
+	:where([data-component="form-button-group"]) {
+		:where([data-part="options"]) {
 			gap: 0;
 
 			@container (min-width: theme(--container-sm)) {
 				flex-direction: row;
 				flex-wrap: nowrap;
-
-				[data-part="option"] {
-					&[data-position="only"] [data-part="label"] {
-						border-radius: var(--radius-lg);
-					}
-
-					&[data-position="first"] [data-part="label"] {
-						border-end-start-radius: var(--radius-lg);
-						border-start-end-radius: 0;
-						border-start-start-radius: var(--radius-lg);
-					}
-
-					&:is([data-position="middle"], [data-position="last"]) {
-						margin-block-start: 0;
-						margin-inline-start: -1px;
-					}
-
-					&[data-position="last"] [data-part="label"] {
-						border-end-end-radius: var(--radius-lg);
-						border-end-start-radius: 0;
-						border-start-end-radius: var(--radius-lg);
-					}
-				}
 			}
 		}
 
-		[data-part="option"] {
-			&:is([data-position="first"], [data-position="only"]) [data-part="label"] {
+		:where([data-part="option"]) {
+			&:where(:is([data-position="first"], [data-position="only"])) :where([data-part="label"]) {
 				border-start-end-radius: var(--radius-lg);
 				border-start-start-radius: var(--radius-lg);
 			}
 
-			&:is([data-position="middle"], [data-position="last"]) {
+			&:where(:is([data-position="middle"], [data-position="last"])) {
 				margin-block-start: -1px;
 			}
 
-			&:is([data-position="last"], [data-position="only"]) [data-part="label"] {
+			&:where(:is([data-position="last"], [data-position="only"])) :where([data-part="label"]) {
 				border-end-end-radius: var(--radius-lg);
 				border-end-start-radius: var(--radius-lg);
 			}
 
+			/**
+			 * Hides the native radio or checkbox while keeping it focusable. It
+			 * stays weighted and after the base radio and checkbox rules, so
+			 * their size and margin cannot make it visible again.
+			 */
 			[data-part="indicator"] {
 				clip: rect(0, 0, 0, 0);
 				clip-path: inset(50%);
@@ -431,6 +435,10 @@
 					color: var(--control-selected-foreground);
 				}
 
+				/**
+				 * Outranks the plain checked rule, so a focused selection uses
+				 * the focus colours.
+				 */
 				&:checked:focus-visible ~ [data-part="label"] {
 					background-color: var(--control-selected-surface-focus);
 					border-color: var(--control-selected-border-focus);
@@ -445,7 +453,7 @@
 				}
 			}
 
-			[data-part="label"] {
+			:where([data-part="label"]) {
 				align-items: center;
 				background-color: var(--control-surface);
 				border: 1px solid var(--control-border);
@@ -471,10 +479,43 @@
 					color: var(--control-content-hover);
 				}
 
+				/**
+				 * Comes after hover so the pressed colours win while the
+				pointer is still over the label.
+				 */
 				&:active {
 					background-color: var(--control-surface-active);
 					border-color: var(--control-border-active);
 					color: var(--control-content-active);
+				}
+			}
+		}
+
+		/**
+		 * Comes after the stacked rules so that, at the same zero weight, the
+		 * side-by-side corners and seams win once the group is wide enough.
+		 */
+		:where([data-part="options"]) {
+			@container (min-width: theme(--container-sm)) {
+				:where([data-part="option"][data-position="only"] [data-part="label"]) {
+					border-radius: var(--radius-lg);
+				}
+
+				:where([data-part="option"][data-position="first"] [data-part="label"]) {
+					border-end-start-radius: var(--radius-lg);
+					border-start-end-radius: 0;
+					border-start-start-radius: var(--radius-lg);
+				}
+
+				:where([data-part="option"]:is([data-position="middle"], [data-position="last"])) {
+					margin-block-start: 0;
+					margin-inline-start: -1px;
+				}
+
+				:where([data-part="option"][data-position="last"] [data-part="label"]) {
+					border-end-end-radius: var(--radius-lg);
+					border-end-start-radius: 0;
+					border-start-end-radius: var(--radius-lg);
 				}
 			}
 		}
