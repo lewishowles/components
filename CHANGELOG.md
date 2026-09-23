@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+## 3.5.0 - 2026-09-23
+
+### Features
+
+- Adds the `icon-minus` icon.
+- `modal-dialog` passes its subtitle slot through to the title.
+
+### Changes
+
+- `content-card` headers and footers now have a default background.
+- The library now declares its CSS cascade layer order and places button styles in a layer. Check project overrides that relied on unlayered specificity.
+
+### Fixes
+
+- Projects can override the layout of form options.
+- Projects can resize icon-only buttons.
+- Fixes the `link--ghost` selector typo.
+- `content-card` aligns its footer correctly.
+- `modal-dialog` displays correctly in dark mode.
+- Breadcrumb spacing and styling are tidied.
+- `form-flow` uses the Tailwind `lg` breakpoint for scrolling on narrow viewports.
+
 ## 3.4.6 - 2026-09-14
 
 ### Fixes
