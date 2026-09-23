@@ -58,8 +58,10 @@
 		padding-inline: 1em;
 	}
 
-	/* Kept in the components layer so utility classes can still resize a
-	disabled icon-only button. */
+	/**
+	 * Kept in the components layer so utility classes can still resize a
+	 * disabled icon-only button.
+	 */
 	.button--disabled:has(:where([data-part="label"].sr-only)) {
 		min-block-size: calc(1lh + 0.75em);
 		min-inline-size: calc(1lh + 0.75em);
@@ -357,8 +359,10 @@
 	}
 }
 
-/* Deliberately outside any layer, so no button style or utility class can make
-a disabled button look clickable. */
+/**
+ * Deliberately outside any layer, so no button style or utility class can make
+ * a disabled button look clickable.
+ */
 .button--disabled {
 	background-color: var(--surface-sunken);
 	border-color: transparent;
@@ -366,6 +370,12 @@ a disabled button look clickable. */
 	cursor: not-allowed;
 	font-weight: normal;
 
+	/**
+	 * Keep the icon at a readable size when the disabled button has no visible
+	 * label. It wins over the layered button icon sizing, and over utility
+	 * classes on the icon, because this rule sits outside any layer. Keep it
+	 * here rather than moving it into the components layer or a button utility.
+	 */
 	&:has([data-part="label"].sr-only) {
 		svg {
 			min-block-size: 1lh;

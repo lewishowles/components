@@ -1,6 +1,8 @@
 :root {
 	font-family: "Funnel Sans", sans-serif;
-	/*font-feature-settings: "liga" 1, "dlig" 1, "calt" 1, "tnum" 1, "ss01" 1, "ss04" 1;*/
+	/**
+	 * font-feature-settings: "liga" 1, "dlig" 1, "calt" 1, "tnum" 1, "ss01" 1, "ss04" 1;
+	 */
 	font-optical-sizing: auto;
 }
 

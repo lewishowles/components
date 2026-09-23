@@ -196,7 +196,7 @@
 
 		/**
 		 * Stays weighted and after the base radio and checkbox rules so their
-		top margin can't pull the indicator below the centred label.
+		 * top margin can't pull the indicator below the centred label.
 		 */
 		[data-part="indicator"] {
 			margin-block-start: 0;
@@ -361,6 +361,11 @@
 			border: 1px solid transparent;
 		}
 
+		/**
+		 * The active background must show while keyboard navigation moves between
+		 * options. Its state selector outweighs the base option rule, while the
+		 * selected rule below has the same weight and wins by coming later.
+		 */
 		[data-part="option"][data-active] {
 			background-color: var(--surface-sunken);
 
@@ -481,7 +486,7 @@
 
 				/**
 				 * Comes after hover so the pressed colours win while the
-				pointer is still over the label.
+				 * pointer is still over the label.
 				 */
 				&:active {
 					background-color: var(--control-surface-active);
