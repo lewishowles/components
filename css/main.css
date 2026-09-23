@@ -1,8 +1,18 @@
 @import "tailwindcss";
 
-/* Explicitly scan src/ for class names. In Playwright CT, the module graph
+/**
+ * Tailwind declares this same order when it is imported above. Repeating it
+ * here keeps the order correct if anything is ever imported before Tailwind,
+ * and makes it visible that component styles are always beaten by the
+ * utility classes a consumer writes.
+ */
+@layer theme, base, components, utilities;
+
+/**
+ * Explicitly scan src/ for class names. In Playwright CT, the module graph
  * only includes the CSS entry at first — component .vue files are imported
- * dynamically by the mount mechanism, so Tailwind's auto-detection misses them. */
+ * dynamically by the mount mechanism, so Tailwind's auto-detection misses them.
+ */
 @source "../../";
 
 @import "./theme.css";

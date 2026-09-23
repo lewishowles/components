@@ -53,6 +53,23 @@
 		}
 	}
 
+	:where([data-component="tab-group"] [data-part="nav"]) {
+		border-block-end: 1px solid var(--border);
+		margin-block-end: calc(var(--spacing) * 8);
+	}
+
+	:where([data-component="modal-dialog-actions"]) {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: calc(var(--spacing) * 6);
+	}
+
+	:where(.modal-dialog-header) {
+		display: flex;
+		justify-content: flex-end;
+	}
+
 	:where([data-component="link-tag"]:has([data-part="label"].sr-only)) {
 		min-block-size: calc(1lh + 0.75em);
 		min-inline-size: calc(1lh + 0.75em);
@@ -68,6 +85,13 @@
 			display: none;
 		}
 	}
+
+	@media (width >= theme(--breakpoint-lg)) {
+		:where([data-component="modal-dialog-actions"]) {
+			background-color: var(--surface-subtle);
+			border-block-start: 1px solid var(--border);
+		}
+	}
 }
 
 html:has(dialog[data-part="sheet"]:modal),
@@ -77,7 +101,7 @@ body:has(dialog[data-part="sheet"]:modal) {
 
 @layer components {
 	:where(dialog[data-part="sheet"]) {
-		background-color: var(--surface-elevated);
+		background-color: var(--surface);
 		border-top: 1px solid var(--border);
 		box-shadow: var(--shadow-2xl);
 		box-sizing: border-box;
@@ -105,9 +129,8 @@ body:has(dialog[data-part="sheet"]:modal) {
 		& > :where([data-part="actions"]) {
 			flex: 0 0 auto;
 			padding-inline: calc(var(--spacing) * 6);
-			padding-block: calc(var(--spacing) * 6);
+			padding-block-start: calc(var(--spacing) * 6);
 			margin-block-start: calc(var(--spacing) * 6);
-			margin-block-end: calc(var(--spacing) * -6);
 			margin-inline: calc(var(--spacing) * -6);
 		}
 

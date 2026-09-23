@@ -1,5 +1,7 @@
 @theme {
-	/* Allow us to use UK spelling */
+	/**
+	 * Allow us to use UK spelling
+	 */
 	--color-grey-50: var(--color-stone-50);
 	--color-grey-100: var(--color-stone-100);
 	--color-grey-200: var(--color-stone-200);
@@ -12,7 +14,9 @@
 	--color-grey-900: var(--color-stone-900);
 	--color-grey-950: var(--color-stone-950);
 
-	/* Choose our preferred blue */
+	/**
+	 * Choose our preferred blue
+	 */
 	--color-blue-50: var(--color-sky-50);
 	--color-blue-100: var(--color-sky-100);
 	--color-blue-200: var(--color-sky-200);
@@ -37,7 +41,7 @@
 		"Courier New", monospace;
 }
 
-/*
+/**
  * Raw named scales. Override these at :root to re-theme the whole library
  * without a rebuild. e.g. :root { --primary-500: oklch(0.6 0.2 250); }
  */
@@ -379,7 +383,9 @@
  * Semantic utilities.
  */
 
-/* Intent fills — bg-primary, bg-danger, … */
+/**
+ * Intent fills — bg-primary, bg-danger, …
+ */
 @utility bg-primary {
 	background-color: var(--primary-fill);
 }
@@ -400,7 +406,9 @@
 	background-color: var(--info-fill);
 }
 
-/* Intent text — text-primary, text-danger, … */
+/**
+ * Intent text — text-primary, text-danger, …
+ */
 @utility text-primary {
 	color: var(--primary-text);
 }
@@ -421,7 +429,9 @@
 	color: var(--info-text);
 }
 
-/* Intent borders — border-primary, border-danger, … (match text shade) */
+/**
+ * Intent borders — border-primary, border-danger, … (match text shade)
+ */
 @utility border-primary {
 	border-color: var(--primary-text);
 }
@@ -442,7 +452,9 @@
 	border-color: var(--info-text);
 }
 
-/* Intent text backgrounds — bg-primary-text, bg-danger-text, … */
+/**
+ * Intent text backgrounds — bg-primary-text, bg-danger-text, …
+ */
 @utility bg-primary-text {
 	background-color: var(--primary-text);
 }
@@ -463,7 +475,9 @@
 	background-color: var(--info-text);
 }
 
-/* Intent subtle backgrounds — bg-primary-subtle, bg-danger-subtle, … */
+/**
+ * Intent subtle backgrounds — bg-primary-subtle, bg-danger-subtle, …
+ */
 @utility bg-primary-subtle {
 	background-color: var(--primary-subtle);
 }
@@ -484,7 +498,9 @@
 	background-color: var(--info-subtle);
 }
 
-/* Intent subtle borders — border-primary-subtle, border-danger-subtle, … */
+/**
+ * Intent subtle borders — border-primary-subtle, border-danger-subtle, …
+ */
 @utility border-primary-subtle {
 	border-color: var(--primary-border-subtle);
 }
@@ -505,7 +521,9 @@
 	border-color: var(--info-border-subtle);
 }
 
-/* Intent foregrounds — text-primary-foreground, text-danger-foreground, … (text on fills) */
+/**
+ * Intent foregrounds — text-primary-foreground, text-danger-foreground, … (text on fills)
+ */
 @utility text-primary-foreground {
 	color: var(--primary-foreground);
 }
