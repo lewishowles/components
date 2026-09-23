@@ -57,9 +57,16 @@
 		padding-block: calc(0.375em - 1px);
 		padding-inline: 1em;
 	}
+
+	/* Kept in the components layer so utility classes can still resize a
+	disabled icon-only button. */
+	.button--disabled:has(:where([data-part="label"].sr-only)) {
+		min-block-size: calc(1lh + 0.75em);
+		min-inline-size: calc(1lh + 0.75em);
+		padding-inline: calc(0.375em - 1px);
+	}
 }
 
-/* Each semantic variant duplicates this shared base because Tailwind requires an @utility block to be self-contained for responsive variants (e.g. lg:button--ghost) to be generated. */
 @utility button--primary {
 	--background-colour: var(--primary-fill);
 	--outline-colour: var(--primary-fill);
@@ -74,9 +81,12 @@
 	padding-inline: 1em;
 	white-space: nowrap;
 
-	&:has([data-part="label"].sr-only) {
+	:where(&:has([data-part="label"].sr-only)) {
 		min-block-size: calc(1lh + 0.75em);
 		min-inline-size: calc(1lh + 0.75em);
+	}
+
+	&:has(:where([data-part="label"].sr-only)) {
 		padding-inline: calc(0.375em - 1px);
 
 		svg {
@@ -127,9 +137,12 @@
 	text-decoration: none;
 	white-space: nowrap;
 
-	&:has([data-part="label"].sr-only) {
+	:where(&:has([data-part="label"].sr-only)) {
 		min-block-size: calc(1lh + 0.75em);
 		min-inline-size: calc(1lh + 0.75em);
+	}
+
+	&:has(:where([data-part="label"].sr-only)) {
 		padding-inline: calc(0.375em - 1px);
 
 		svg {
@@ -158,9 +171,12 @@
 	text-decoration: none;
 	white-space: nowrap;
 
-	&:has([data-part="label"].sr-only) {
+	:where(&:has([data-part="label"].sr-only)) {
 		min-block-size: calc(1lh + 0.75em);
 		min-inline-size: calc(1lh + 0.75em);
+	}
+
+	&:has(:where([data-part="label"].sr-only)) {
 		padding-inline: calc(0.375em - 1px);
 
 		svg {
@@ -268,9 +284,12 @@
 	text-decoration: none;
 	white-space: nowrap;
 
-	&:has([data-part="label"].sr-only) {
+	:where(&:has([data-part="label"].sr-only)) {
 		min-block-size: calc(1lh + 0.75em);
 		min-inline-size: calc(1lh + 0.75em);
+	}
+
+	&:has(:where([data-part="label"].sr-only)) {
 		padding-inline: calc(0.375em - 1px);
 
 		svg {
@@ -305,9 +324,12 @@
 	padding-inline: 1em;
 	white-space: nowrap;
 
-	&:has([data-part="label"].sr-only) {
+	:where(&:has([data-part="label"].sr-only)) {
 		min-block-size: calc(1lh + 0.75em);
 		min-inline-size: calc(1lh + 0.75em);
+	}
+
+	&:has(:where([data-part="label"].sr-only)) {
 		padding-inline: calc(0.375em - 1px);
 
 		svg {
@@ -335,8 +357,8 @@
 	}
 }
 
-/* This rule stays outside every cascade layer so no variant recipe or consumer
- * utility can make a disabled control look interactive. */
+/* Deliberately outside any layer, so no button style or utility class can make
+a disabled button look clickable. */
 .button--disabled {
 	background-color: var(--surface-sunken);
 	border-color: transparent;
@@ -345,10 +367,6 @@
 	font-weight: normal;
 
 	&:has([data-part="label"].sr-only) {
-		min-block-size: calc(1lh + 0.75em);
-		min-inline-size: calc(1lh + 0.75em);
-		padding-inline: calc(0.375em - 1px);
-
 		svg {
 			min-block-size: 1lh;
 		}
