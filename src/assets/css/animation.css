@@ -1,6 +1,65 @@
 @utility animate-fast {
 	@media (prefers-reduced-motion: no-preference) {
 		--animation-duration: 150ms;
+		--reveal-duration: 150ms;
+		--reveal-exit-duration: 90ms;
+	}
+}
+
+/**
+ * Fades content in when it appears. To fade it out as well, set
+ * data-state="closed" on it, or close it if it is a dialog. Closed content is
+ * hidden. Details elements are skipped, so their summary stays visible.
+ */
+@utility reveal-fade {
+	&[data-state="closed"]:not(details) {
+		display: none;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		opacity: 1;
+		filter: none;
+		transition-property: opacity, filter, display, overlay;
+		transition-duration: var(--reveal-duration, 250ms);
+		transition-timing-function: ease-out;
+		transition-behavior: allow-discrete;
+
+		@starting-style {
+			opacity: 0;
+		}
+
+		&[data-state="closed"]:not(details),
+		&:is(dialog:not([open])) {
+			opacity: 0;
+			filter: blur(2px);
+			transition-duration: var(--reveal-exit-duration, 150ms);
+		}
+	}
+}
+
+@utility reveal-fade-up {
+	@apply reveal-fade;
+
+	@media (prefers-reduced-motion: no-preference) {
+		translate: none;
+		transition-property: opacity, filter, translate, display, overlay;
+
+		@starting-style {
+			translate: 0 calc(var(--spacing) * 2);
+		}
+	}
+}
+
+@utility reveal-fade-down {
+	@apply reveal-fade;
+
+	@media (prefers-reduced-motion: no-preference) {
+		translate: none;
+		transition-property: opacity, filter, translate, display, overlay;
+
+		@starting-style {
+			translate: 0 calc(var(--spacing) * -2);
+		}
 	}
 }
 
