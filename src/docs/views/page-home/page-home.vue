@@ -1,5 +1,5 @@
 <template>
-	<div class="prose prose-stone dark:prose-invert *:animate-fade-in *:delay">
+	<div class="prose prose-stone dark:prose-invert *:animate-fade-in *:stagger">
 		<h1>@lewishowles/components</h1>
 
 		<p>
@@ -36,10 +36,11 @@
 
 	<div class="mt-12 grid gap-8 lg:grid-cols-4">
 		<div
-			v-for="section in internalSections"
+			v-for="(section, index) in internalSections"
 			:key="section.label"
-			class="animate-fade-in delay rounded-md px-6 py-5 dark:ring-0"
+			class="animate-fade-in stagger rounded-md px-6 py-5 dark:ring-0"
 			:class="section.colours"
+			:style="{ '--stagger-index': index + 1 }"
 		>
 			<component :is="section.icon" class="mb-6 block size-12" />
 

@@ -113,16 +113,57 @@
 	}
 }
 
-@utility delay-micro {
+/**
+ * Delay each item by 10ms per position, for quick list reveals. Loops set
+ * --stagger-index inline; otherwise the element's place among its siblings is used.
+ */
+@utility stagger-micro {
 	@media (prefers-reduced-motion: no-preference) {
-		animation-delay: calc(sibling-index() * 10ms);
+		animation-delay: calc(
+			var(--stagger-index, var(--stagger-fallback-index, sibling-index())) * 10ms
+		);
+
+		transition-delay: calc(
+			var(--stagger-index, var(--stagger-fallback-index, sibling-index())) * 10ms
+		);
 	}
 }
 
-@utility delay {
+/**
+ * Delay each item by 50ms per position. Loops set --stagger-index inline;
+ * otherwise the element's place among its siblings is used.
+ */
+@utility stagger {
 	@media (prefers-reduced-motion: no-preference) {
-		animation-delay: calc(sibling-index() * 50ms);
+		animation-delay: calc(
+			var(--stagger-index, var(--stagger-fallback-index, sibling-index())) * 50ms
+		);
+
+		transition-delay: calc(
+			var(--stagger-index, var(--stagger-fallback-index, sibling-index())) * 50ms
+		);
 	}
+}
+
+/**
+ * Delay by a typed-out position, such as stagger-3, for hand-written markup.
+ * Tailwind cannot see class names built at runtime, so loops use stagger instead.
+ */
+@utility stagger-* {
+	@media (prefers-reduced-motion: no-preference) {
+		animation-delay: calc(--value(integer) * 50ms);
+		transition-delay: calc(--value(integer) * 50ms);
+	}
+}
+
+/* Deprecated: use stagger-micro instead. */
+@utility delay-micro {
+	@apply stagger-micro;
+}
+
+/* Deprecated: use stagger instead. */
+@utility delay {
+	@apply stagger;
 }
 
 /**
@@ -130,52 +171,52 @@
  */
 @media (prefers-reduced-motion: no-preference) {
 	@supports not (animation-delay: calc(sibling-index() * 1ms)) {
-		:where(.delay-micro) {
-			animation-delay: 10ms;
+		:where(.stagger-micro, .delay-micro) {
+			--stagger-fallback-index: 1;
 		}
 
-		:where(.delay-micro:nth-child(2)) {
-			animation-delay: 20ms;
+		:where(.stagger-micro:nth-child(2), .delay-micro:nth-child(2)) {
+			--stagger-fallback-index: 2;
 		}
 
-		:where(.delay-micro:nth-child(3)) {
-			animation-delay: 30ms;
+		:where(.stagger-micro:nth-child(3), .delay-micro:nth-child(3)) {
+			--stagger-fallback-index: 3;
 		}
 
-		:where(.delay-micro:nth-child(4)) {
-			animation-delay: 40ms;
+		:where(.stagger-micro:nth-child(4), .delay-micro:nth-child(4)) {
+			--stagger-fallback-index: 4;
 		}
 
-		:where(.delay-micro:nth-child(5)) {
-			animation-delay: 50ms;
+		:where(.stagger-micro:nth-child(5), .delay-micro:nth-child(5)) {
+			--stagger-fallback-index: 5;
 		}
 
-		:where(.delay-micro:nth-child(6)) {
-			animation-delay: 60ms;
+		:where(.stagger-micro:nth-child(6), .delay-micro:nth-child(6)) {
+			--stagger-fallback-index: 6;
 		}
 
-		:where(.delay) {
-			animation-delay: 50ms;
+		:where(.stagger, .delay) {
+			--stagger-fallback-index: 1;
 		}
 
-		:where(.delay:nth-child(2)) {
-			animation-delay: 100ms;
+		:where(.stagger:nth-child(2), .delay:nth-child(2)) {
+			--stagger-fallback-index: 2;
 		}
 
-		:where(.delay:nth-child(3)) {
-			animation-delay: 150ms;
+		:where(.stagger:nth-child(3), .delay:nth-child(3)) {
+			--stagger-fallback-index: 3;
 		}
 
-		:where(.delay:nth-child(4)) {
-			animation-delay: 200ms;
+		:where(.stagger:nth-child(4), .delay:nth-child(4)) {
+			--stagger-fallback-index: 4;
 		}
 
-		:where(.delay:nth-child(5)) {
-			animation-delay: 250ms;
+		:where(.stagger:nth-child(5), .delay:nth-child(5)) {
+			--stagger-fallback-index: 5;
 		}
 
-		:where(.delay:nth-child(6)) {
-			animation-delay: 300ms;
+		:where(.stagger:nth-child(6), .delay:nth-child(6)) {
+			--stagger-fallback-index: 6;
 		}
 	}
 }

@@ -1,5 +1,5 @@
 <template>
-	<div class="prose prose-stone dark:prose-invert *:animate-fade-in *:delay">
+	<div class="prose prose-stone dark:prose-invert *:animate-fade-in *:stagger">
 		<h1>Styling hooks</h1>
 
 		<p>

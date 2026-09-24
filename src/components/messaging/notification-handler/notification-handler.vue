@@ -25,7 +25,7 @@
 			</div>
 		</template>
 
-		<define-template v-slot="{ notification }">
+		<define-template v-slot="{ notification, index }">
 			<slot
 				:name="getNotificationSlotName(notification)"
 				v-bind="{ notification, markNotificationRead: () => markNotificationRead(notification.id) }"
@@ -33,7 +33,8 @@
 				<component
 					:is="getNotificationComponent(notification)"
 					v-bind="{ notification, locale, dateFormat }"
-					class="animate-fade-in delay"
+					class="animate-fade-in stagger"
+					:style="{ '--stagger-index': index }"
 					@notification:read="markNotificationRead"
 				>
 					<template #view-more-label>
@@ -84,26 +85,28 @@
 					data-part="list"
 					data-test="notification-handler-notifications"
 				>
-					<template v-for="notification in pinnedNotifications" :key="notification.id">
+					<template v-for="(notification, index) in pinnedNotifications" :key="notification.id">
 						<slot name="notification-pinned-template" v-bind="{ notification }">
-							<reuse-template v-bind="{ notification }" />
+							<reuse-template v-bind="{ notification, index: index + 1 }" />
 						</slot>
 					</template>
 
 					<hr v-if="havePinnedNotifications && haveUnpinnedNotifications" class="border-border" />
 
-					<template v-for="notification in unpinnedNotifications" :key="notification.id">
-						<reuse-template v-bind="{ notification }" />
+					<template v-for="(notification, index) in unpinnedNotifications" :key="notification.id">
+						<reuse-template
+							v-bind="{ notification, index: pinnedNotifications.length + index + 1 }"
+						/>
 					</template>
 				</div>
 			</div>
 
 			<div v-else class="flex flex-col items-center gap-2 py-4">
 				<icon-bell
-					class="animate-fade-in delay bg-primary-100 text-primary-800 size-10 rounded-full p-3"
+					class="animate-fade-in stagger bg-primary-100 text-primary-800 size-10 rounded-full p-3"
 				/>
 
-				<span class="animate-fade-in delay">
+				<span class="animate-fade-in stagger">
 					<slot name="no-notifications-label">No new notifications</slot>
 				</span>
 			</div>

@@ -20,8 +20,8 @@
 			<path
 				v-for="(slice, index) in slices"
 				:key="slice.id"
-				class="animate-fade-in delay origin-center"
-				:style="{ fill: series[index]?.color }"
+				class="animate-fade-in stagger origin-center"
+				:style="{ fill: series[index]?.color, '--stagger-index': index + 1 }"
 				v-bind="{
 					d: slice.commands,
 					transform: `rotate(${slice.rotation})`,
