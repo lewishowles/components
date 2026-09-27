@@ -14,6 +14,7 @@
 		data-component="base-modal"
 		data-part="sheet"
 		data-test="modal-dialog"
+		@close="handleClose"
 	>
 		<div class="modal-dialog-header">
 			<ui-button
@@ -119,6 +120,11 @@ const dialog = useTemplateRef("dialog");
 // Whether the dialog is currently open.
 const isOpen = ref(false);
 
+// Whether the next native close event comes from closeDialog. Chromium fires
+// that event after closeDialog has already emitted dialog:close, so it is
+// skipped instead of being reported twice.
+let isProgrammaticClose = false;
+
 // Fallthrough attributes aside from class, applied explicitly since
 // inheritAttrs is disabled so class can be merged via cn() instead.
 const attributes = computed(() => {
@@ -171,15 +177,44 @@ function openDialog() {
 }
 
 /**
- * Close the dialog.
+ * Close the dialog and tell the owner it has closed. Does nothing if the
+ * dialog is already closed.
  */
 function closeDialog() {
-	if (!dialog.value) {
+	if (!dialog.value || !isOpen.value) {
 		return;
 	}
 
+	isProgrammaticClose = true;
+
 	callComponentMethod(dialog.value, "close");
 
+	finishClose();
+}
+
+/**
+ * Tell the owner the dialog has closed when the browser closes it, such as
+ * when the user presses Escape.
+ */
+function handleClose() {
+	if (isProgrammaticClose) {
+		isProgrammaticClose = false;
+
+		return;
+	}
+
+	if (!isOpen.value) {
+		return;
+	}
+
+	finishClose();
+}
+
+/**
+ * Mark the dialog as closed and emit dialog:close. Both ways of closing call
+ * this, so the event fires once for each close.
+ */
+function finishClose() {
 	isOpen.value = false;
 
 	emit("dialog:close");

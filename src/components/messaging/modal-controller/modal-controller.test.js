@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, test, vi } from "vite-plus/test";
-import { createMount } from "@lewishowles/testing/vue";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { useModalDialog } from "@/composables/use-modal-dialog/use-modal-dialog.js";
+import { defineComponent, h, nextTick } from "vue";
+import BaseModal from "../base-modal/base-modal.vue";
 import ModalController from "./modal-controller.vue";
 
 const mount = createMount(ModalController);
@@ -47,6 +49,35 @@ describe("modal-controller", () => {
 	});
 
 	describe("closeModal", () => {
+		test("calls onClose and removes a modal after its native dialog closes", async () => {
+			const wrapper = createDeepMount(ModalController)();
+
+			try {
+				const { openModal } = useModalDialog();
+				const onClose = vi.fn();
+
+				const TestModal = defineComponent({
+					props: ["onClose"],
+					setup(props) {
+						return () => h(BaseModal, { "onDialog:close": props.onClose });
+					},
+				});
+
+				openModal(TestModal, { onClose });
+				await nextTick();
+
+				const dialog = document.querySelector('[data-test="modal-dialog"]');
+
+				dialog.dispatchEvent(new Event("close"));
+				await nextTick();
+
+				expect(onClose).toHaveBeenCalledOnce();
+				expect(wrapper.vm.modals).toHaveLength(0);
+			} finally {
+				wrapper.unmount();
+			}
+		});
+
 		test("calls the caller-supplied onClose before removing the modal from the stack", () => {
 			const wrapper = mount();
 			const { openModal } = useModalDialog();

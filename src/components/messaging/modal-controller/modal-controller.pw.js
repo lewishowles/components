@@ -86,5 +86,16 @@ test.describe("modal-controller", () => {
 
 			expect(inert).toBe(false);
 		});
+
+		test("Escape pops the stack, restoring the modal underneath", async ({ mount, page }) => {
+			await mountStackingTest(mount);
+
+			await page.getByTestId("stacking-test-open-first").click();
+			await page.getByTestId("stacking-test-open-second").click();
+			await page.keyboard.press("Escape");
+
+			await expect(page.getByTestId("stacking-test-second-content")).not.toBeAttached();
+			await expect(page.getByTestId("stacking-test-first-content")).toBeVisible();
+		});
 	});
 });

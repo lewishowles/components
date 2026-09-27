@@ -1,5 +1,5 @@
 import { createMount } from "@lewishowles/testing/vue";
-import { describe, expect, test } from "vite-plus/test";
+import { describe, expect, test, vi } from "vite-plus/test";
 import { h } from "vue";
 import BaseModal from "./base-modal.vue";
 
@@ -38,6 +38,51 @@ describe("base-modal", () => {
 
 			expect(wrapper.vm.open).toBeTypeOf("function");
 			expect(wrapper.vm.close).toBeTypeOf("function");
+		});
+	});
+
+	describe("Closing", () => {
+		test("emits dialog:close once when closed through the exposed method", async () => {
+			const wrapper = mount();
+
+			wrapper.vm.close();
+			await wrapper.trigger("close");
+
+			expect(wrapper.emitted("dialog:close")).toHaveLength(1);
+			expect(wrapper.vm.isOpen).toBe(false);
+		});
+
+		test("emits dialog:close when the native dialog closes", async () => {
+			const wrapper = mount();
+
+			await wrapper.trigger("close");
+
+			expect(wrapper.emitted("dialog:close")).toHaveLength(1);
+			expect(wrapper.vm.isOpen).toBe(false);
+		});
+
+		test("ignores a late programmatic close event after reopening", async () => {
+			const wrapper = mount();
+
+			const close = vi.spyOn(wrapper.element, "close").mockImplementation(() => {
+				wrapper.element.open = false;
+			});
+
+			try {
+				wrapper.vm.close();
+				wrapper.vm.open();
+				await wrapper.trigger("close");
+
+				expect(wrapper.emitted("dialog:close")).toHaveLength(1);
+				expect(wrapper.vm.isOpen).toBe(true);
+
+				await wrapper.trigger("close");
+
+				expect(wrapper.emitted("dialog:close")).toHaveLength(2);
+				expect(wrapper.vm.isOpen).toBe(false);
+			} finally {
+				close.mockRestore();
+			}
 		});
 	});
 
