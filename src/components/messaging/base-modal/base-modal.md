@@ -48,7 +48,7 @@ When `true`, focus the dialog itself when it opens. When `false`, an autofocus d
 
 ### `@dialog:close`
 
-Fired when the dialog is closed by the user.
+Fired after the dialog closes and its exit animation finishes. This also fires when the dialog closes with Escape or through the `close` method. With reduced motion, it fires immediately.
 
 ## Methods
 

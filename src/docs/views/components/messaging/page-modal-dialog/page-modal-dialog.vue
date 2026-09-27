@@ -114,7 +114,10 @@
 			<component-event id="event-dialog:close">
 				<template #name>dialog:close</template>
 
-				<p>Fired when the dialog is closed by the user.</p>
+				<p>
+					Fired after the dialog finishes closing, including its exit animation. Reduced motion
+					keeps it immediate.
+				</p>
 			</component-event>
 		</component-events>
 

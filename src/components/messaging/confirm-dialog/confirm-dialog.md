@@ -47,7 +47,7 @@ Called when the confirm action is chosen. Dialogs close immediately, so user-fee
 - type: `function`
 - default: `null`
 
-Called when this dialog closes, for any reason.
+Called after this dialog finishes closing, for any reason. The exit animation delays the callback; reduced motion keeps it immediate. `onConfirm` runs before `onClose`.
 
 ## Examples
 
@@ -76,7 +76,7 @@ Called when this dialog closes, for any reason.
 		},
 
 		/**
-		 * Called when this dialog closes, for any reason.
+		 * Called after this dialog finishes closing, for any reason.
 		 */
 		onClose: {
 			type: Function,

@@ -52,7 +52,10 @@
 
 				<template #default-value>null</template>
 
-				<p>Called when this dialog closes, for any reason.</p>
+				<p>
+					Called after this dialog finishes closing, including its exit animation. Reduced motion
+					keeps it immediate.
+				</p>
 			</component-prop>
 		</component-props>
 

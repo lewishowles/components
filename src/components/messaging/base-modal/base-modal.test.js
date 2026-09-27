@@ -1,4 +1,5 @@
 import { createMount } from "@lewishowles/testing/vue";
+import { flushPromises } from "@vue/test-utils";
 import { describe, expect, test, vi } from "vite-plus/test";
 import { h } from "vue";
 import BaseModal from "./base-modal.vue";
@@ -42,6 +43,76 @@ describe("base-modal", () => {
 	});
 
 	describe("Closing", () => {
+		test("emits dialog:close immediately when no exit animation is running", () => {
+			const wrapper = mount();
+
+			wrapper.element.getAnimations = vi.fn(() => []);
+
+			wrapper.vm.close();
+
+			expect(wrapper.emitted("dialog:close")).toHaveLength(1);
+		});
+
+		test("emits dialog:close once after the exit animations settle", async () => {
+			const wrapper = mount();
+
+			let finishAnimation;
+
+			const finished = new Promise((resolve) => {
+				finishAnimation = resolve;
+			});
+
+			wrapper.element.getAnimations = vi.fn(() => [{ finished }]);
+
+			wrapper.vm.close();
+
+			expect(wrapper.vm.isOpen).toBe(false);
+			expect(wrapper.emitted("dialog:close")).toBeUndefined();
+
+			finishAnimation();
+			await vi.waitFor(() => {
+				expect(wrapper.emitted("dialog:close")).toHaveLength(1);
+			});
+		});
+
+		test("emits dialog:close without waiting for a looping animation", () => {
+			const wrapper = mount();
+
+			const loopingAnimation = {
+				effect: { getComputedTiming: () => ({ endTime: Infinity }) },
+				finished: new Promise(() => {}),
+			};
+
+			wrapper.element.getAnimations = vi.fn(() => [loopingAnimation]);
+
+			wrapper.vm.close();
+
+			expect(wrapper.emitted("dialog:close")).toHaveLength(1);
+		});
+
+		test("emits a pending close before reopening, once", async () => {
+			const wrapper = mount();
+
+			let finishAnimation;
+
+			const finished = new Promise((resolve) => {
+				finishAnimation = resolve;
+			});
+
+			wrapper.element.getAnimations = vi.fn(() => [{ finished }]);
+
+			wrapper.vm.close();
+			wrapper.vm.open();
+
+			expect(wrapper.emitted("dialog:close")).toHaveLength(1);
+			expect(wrapper.vm.isOpen).toBe(true);
+
+			finishAnimation();
+			await flushPromises();
+
+			expect(wrapper.emitted("dialog:close")).toHaveLength(1);
+		});
+
 		test("emits dialog:close once when closed through the exposed method", async () => {
 			const wrapper = mount();
 

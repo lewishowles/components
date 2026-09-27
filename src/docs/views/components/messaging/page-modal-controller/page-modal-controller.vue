@@ -26,7 +26,8 @@
 				<a href="/messaging/modal-dialog"><code>modal-dialog</code></a>
 				, and calls the
 				<code>onClose</code>
-				prop it receives when its dialog closes. This avoids nesting a second dialog inside the one
+				prop it receives after its dialog finishes closing, including its exit animation (or
+				immediately with reduced motion). This avoids nesting a second dialog inside the one
 				<code>modal-controller</code>
 				would otherwise provide.
 				<code>inert</code>

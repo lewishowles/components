@@ -55,7 +55,7 @@ Whether this dialog is inert (disabled and not interactive), forwarded to the un
 
 ### `@dialog:close`
 
-Fired when the dialog is closed by the user.
+Fired after the dialog closes and its exit animation finishes. This also fires when the dialog closes with Escape or through the `close` method. With reduced motion, it fires immediately.
 
 ## Methods
 

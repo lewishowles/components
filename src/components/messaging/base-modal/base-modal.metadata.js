@@ -59,7 +59,7 @@ export const baseModalMetadata = {
 	events: [
 		{
 			name: "dialog:close",
-			summary: "Emitted when the dialog closes.",
+			summary: "Emitted after the dialog finishes closing, including its exit animation.",
 		},
 	],
 	methods: [

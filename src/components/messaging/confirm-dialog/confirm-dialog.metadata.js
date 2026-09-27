@@ -20,7 +20,7 @@ export const confirmDialogMetadata = {
 			name: "onClose",
 			type: "function",
 			default: null,
-			summary: "Called when this dialog closes for any reason.",
+			summary: "Called after this dialog finishes closing, including its exit animation.",
 		},
 	],
 	slots: [

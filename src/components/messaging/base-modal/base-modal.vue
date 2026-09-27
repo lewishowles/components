@@ -121,9 +121,13 @@ const dialog = useTemplateRef("dialog");
 const isOpen = ref(false);
 
 // Whether the next native close event comes from closeDialog. Chromium fires
-// that event after closeDialog has already emitted dialog:close, so it is
-// skipped instead of being reported twice.
+// that event after closeDialog has already handled the close, so it is
+// skipped instead of being handled twice.
 let isProgrammaticClose = false;
+
+// Whether the dialog has closed but dialog:close is still waiting for the exit
+// animation to finish.
+let isClosePending = false;
 
 // Fallthrough attributes aside from class, applied explicitly since
 // inheritAttrs is disabled so class can be merged via cn() instead.
@@ -136,9 +140,7 @@ const attributes = computed(() => {
 // Root dialog classes. Merged via cn() so a consumer's own classes reliably
 // override defaults like padding or overflow, rather than competing with them
 // as separate same-layer Tailwind utilities.
-const dialogClasses = computed(() =>
-	cn("animate-fade-in-up", { hidden: props.inert }, attrs.class),
-);
+const dialogClasses = computed(() => cn("reveal-fade-up", { hidden: props.inert }, attrs.class));
 
 onMounted(() => {
 	initialiseDialog();
@@ -164,6 +166,10 @@ function openDialog() {
 	if (!dialog.value) {
 		return;
 	}
+
+	// Report a close that is still waiting on its exit animation before
+	// reopening, so the owner isn't told the reopened dialog has closed.
+	emitPendingClose();
 
 	callComponentMethod(dialog.value, "showModal");
 
@@ -211,12 +217,41 @@ function handleClose() {
 }
 
 /**
- * Mark the dialog as closed and emit dialog:close. Both ways of closing call
- * this, so the event fires once for each close.
+ * Mark the dialog as closed, then emit dialog:close once the exit animation
+ * finishes, or straight away when nothing is animating. Both ways of closing
+ * call this, so the event fires once for each close.
  */
 function finishClose() {
 	isOpen.value = false;
+	isClosePending = true;
 
+	// Only animations with an end are awaited, so a looping animation on the
+	// dialog, such as a pulse class added by the user, can't hold back the event.
+	const animations = (dialog.value?.getAnimations?.() ?? []).filter(
+		(animation) => animation.effect?.getComputedTiming().endTime !== Infinity,
+	);
+
+	if (animations.length === 0) {
+		emitPendingClose();
+
+		return;
+	}
+
+	Promise.allSettled(animations.map((animation) => animation.finished)).then(emitPendingClose);
+}
+
+/**
+ * Emit dialog:close if a close is still waiting to be reported. Reopening the
+ * dialog reports it early, so the exit animation then has nothing to report.
+ * If code closes, reopens and closes the dialog in one go, the second close
+ * may be reported before its own exit finishes. It is still reported once.
+ */
+function emitPendingClose() {
+	if (!isClosePending) {
+		return;
+	}
+
+	isClosePending = false;
 	emit("dialog:close");
 }
 
