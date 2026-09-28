@@ -136,7 +136,7 @@ const resolvedDetailsClasses = computed(() =>
 		"max-w-lg",
 		"top-[var(--floating-details-top)] bottom-[var(--floating-details-bottom)]",
 		"inset-s-[var(--floating-details-inline-start)] inset-e-[var(--floating-details-inline-end)]",
-		computedPlacement.value === "above" ? "animate-fade-in-up" : "animate-fade-in-down",
+		computedPlacement.value === "above" ? "reveal-fade-up" : "reveal-fade-down",
 		"mbs-0",
 		placementClasses.value,
 		{ invisible: isPositioning.value },

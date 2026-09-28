@@ -18,6 +18,52 @@ test.describe("floating-details", () => {
 	});
 
 	test.describe("details", () => {
+		test("fades the panel in on every wide-screen open and hides it as soon as it closes", async ({
+			mount,
+			page,
+		}) => {
+			await page.emulateMedia({ reducedMotion: "no-preference" });
+			await page.setViewportSize({ width: 1200, height: 800 });
+			await mountFloatingDetails(mount);
+
+			const details = page.getByTestId("floating-details");
+			const summary = page.getByTestId("floating-details-summary");
+			const panel = page.getByTestId("floating-details-content");
+
+			await summary.click();
+			await expect(panel).toBeVisible();
+			await expect(panel).toHaveCSS("opacity", "1");
+
+			const transitionProperties = await panel.evaluate((element) => ({
+				panel: getComputedStyle(element).transitionProperty,
+				content: getComputedStyle(element.parentElement, "::details-content").transitionProperty,
+			}));
+
+			expect(transitionProperties.panel).toContain("opacity");
+			expect(transitionProperties.content).not.toContain("content-visibility");
+
+			await summary.click();
+
+			expect(await panel.isVisible()).toBe(false);
+
+			await expect
+				.poll(() => panel.evaluate((element) => getComputedStyle(element).opacity))
+				.toBe("0");
+
+			await expect(details).not.toHaveAttribute("open");
+			await expect(summary).toBeVisible();
+
+			const secondOpenOpacity = await panel.evaluate((element) => {
+				element.parentElement.querySelector("summary").click();
+
+				return getComputedStyle(element).opacity;
+			});
+
+			expect(secondOpenOpacity).toBe("0");
+			await expect(details).toHaveAttribute("open");
+			await expect(panel).toHaveCSS("opacity", "1");
+		});
+
 		test("details can be toggled", async ({ mount, page }) => {
 			await mountFloatingDetails(mount);
 

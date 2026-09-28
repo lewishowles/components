@@ -224,7 +224,6 @@ describe("floating-details", () => {
 			expect(details.open).toBe(true);
 
 			wrapper.findComponent({ name: "OverlaySheet" }).vm.$emit("dismiss");
-			await nextTick();
 
 			expect(details.open).toBe(false);
 		});
@@ -251,6 +250,7 @@ describe("floating-details", () => {
 			const contentClasses = wrapper.find('[data-test="floating-details-content"]').classes();
 
 			expect(contentClasses).toContain("mbs-1");
+			expect(contentClasses).toContain("reveal-fade-down");
 			expect(contentClasses).not.toContain("mbs-0");
 			expect(contentClasses).not.toContain("mbe-1");
 		});
@@ -267,6 +267,7 @@ describe("floating-details", () => {
 			const contentClasses = wrapper.find('[data-test="floating-details-content"]').classes();
 
 			expect(contentClasses).toContain("mbe-1");
+			expect(contentClasses).toContain("reveal-fade-up");
 			expect(contentClasses).toContain("mbs-0");
 			expect(contentClasses).not.toContain("mbs-1");
 		});

@@ -16,6 +16,27 @@ test.describe("overlay-sheet", () => {
 		await expect(page.locator('[data-part="sheet"]')).toBeVisible();
 	});
 
+	test("fades the sheet in and hides it immediately on close", async ({ mount, page }) => {
+		await page.emulateMedia({ reducedMotion: "no-preference" });
+
+		const component = await mountOverlaySheet(mount, {
+			props: { isOpen: true, isSheet: true, label: "Details" },
+		});
+
+		const sheet = page.locator('[data-part="sheet"]');
+
+		await expect(sheet).toHaveClass(/animate-fade-in-up/);
+		await expect(sheet).toHaveCSS("animation-name", "fadeInUp");
+
+		await component.update({ props: { isOpen: false, isSheet: true, label: "Details" } });
+		await expect(sheet).not.toHaveAttribute("open");
+		await expect(sheet).not.toHaveClass(/animate-fade-in-up/);
+
+		expect(await sheet.evaluate((element) => getComputedStyle(element).display)).toBe("none");
+
+		await expect(sheet).toBeHidden();
+	});
+
 	test.describe("Accessibility", () => {
 		test("has aria-modal=true", async ({ mount, page }) => {
 			await mountOverlaySheet(mount, {

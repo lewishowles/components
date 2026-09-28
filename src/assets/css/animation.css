@@ -9,7 +9,9 @@
 /**
  * Fades content in when it appears. To fade it out as well, set
  * data-state="closed" on it, or close it if it is a dialog. Closed content is
- * hidden. Details elements are skipped, so their summary stays visible.
+ * hidden. Content placed directly inside a details element fades in each time
+ * the details opens and disappears straight away when it closes. A details
+ * element with the utility is never hidden, so its summary stays visible.
  */
 @utility reveal-fade {
 	&[data-state="closed"]:not(details) {
@@ -34,6 +36,16 @@
 			filter: blur(2px);
 			transition-duration: var(--reveal-exit-duration, 150ms);
 		}
+
+		/* A closed details keeps its content in the page, so @starting-style
+		 * only applies the first time it opens. This state gives every later
+		 * open the same starting point. It applies at once because the browser
+		 * stops running transitions inside a closed details, so a fade-out would
+		 * stall at full opacity and leave nothing to fade in. */
+		details:not([open]) > &:not(summary) {
+			opacity: 0;
+			transition-duration: 0s;
+		}
 	}
 }
 
@@ -47,6 +59,10 @@
 		@starting-style {
 			translate: 0 calc(var(--spacing) * 2);
 		}
+
+		details:not([open]) > &:not(summary) {
+			translate: 0 calc(var(--spacing) * 2);
+		}
 	}
 }
 
@@ -58,6 +74,10 @@
 		transition-property: opacity, filter, translate, display, overlay;
 
 		@starting-style {
+			translate: 0 calc(var(--spacing) * -2);
+		}
+
+		details:not([open]) > &:not(summary) {
 			translate: 0 calc(var(--spacing) * -2);
 		}
 	}
