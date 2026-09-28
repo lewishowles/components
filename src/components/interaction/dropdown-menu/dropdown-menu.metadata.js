@@ -51,7 +51,10 @@ export const dropdownMenuMetadata = {
 	],
 	parts: [
 		{ name: "trigger", summary: "Button that opens the dropdown." },
-		{ name: "panel", summary: "Dropdown panel containing menu items." },
+		{
+			name: "panel",
+			summary: "Dropdown panel containing menu items; stays in the page and hides when closed.",
+		},
 	],
 	examples: [],
 };

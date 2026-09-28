@@ -89,7 +89,11 @@ export const comboBoxMetadata = {
 	],
 	parts: [
 		{ name: "input", summary: "Text input field." },
-		{ name: "dropdown", summary: "Dropdown panel containing options." },
+		{
+			name: "dropdown",
+			summary:
+				"Results panel stays in the page and hides when closed; data-state is open or closed.",
+		},
 		{ name: "option", summary: "Individual option item in the dropdown." },
 	],
 	examples: [],

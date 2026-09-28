@@ -105,7 +105,7 @@ test.describe("form-field", () => {
 			await page.getByRole("option", { name: "Basil Morgan" }).click();
 
 			await expect(input).toHaveValue("Basil Morgan");
-			await expect(page.getByTestId("form-combo-box-dropdown")).not.toBeAttached();
+			await expect(page.getByTestId("form-combo-box-dropdown")).toBeHidden();
 			await expect(input).toBeFocused();
 		});
 
@@ -125,7 +125,10 @@ test.describe("form-field", () => {
 			await input.focus();
 			await input.press("ArrowDown");
 
-			await expect(page.getByTestId("form-combo-box-dropdown")).not.toBeAttached();
+			await expect(page.getByTestId("form-combo-box-dropdown")).toHaveAttribute(
+				"data-state",
+				"closed",
+			);
 			await expect(input).toHaveValue("Avery Lane");
 		});
 

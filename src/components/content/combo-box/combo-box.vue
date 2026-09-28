@@ -43,9 +43,10 @@
 		</span>
 
 		<div
-			v-if="isOpen"
 			ref="dropdown"
 			:class="resolvedDropdownClasses"
+			:inert="!isOpen"
+			:data-state="isOpen ? 'open' : 'closed'"
 			data-part="dropdown"
 			data-test="combo-box-dropdown"
 		>
@@ -269,7 +270,7 @@ const haveQuery = computed(() => isNonEmptyString(query.value));
 // resolved position, alignment, and any caller overrides.
 const resolvedDropdownClasses = computed(() =>
 	cn(
-		"absolute z-10 w-full overflow-hidden rounded-md border border-border bg-surface shadow-lg",
+		"absolute reveal-fade-down animate-fast z-10 w-full overflow-hidden rounded-md border border-border bg-surface shadow-lg",
 		placementClasses.value,
 		computedPlacement.value === "above" ? "bottom-full" : "top-full",
 		computedAlign.value === "end" ? "inset-e-0" : "inset-s-0",
@@ -280,9 +281,16 @@ const resolvedDropdownClasses = computed(() =>
 
 // Measure and position the results whenever they open, and tear the positioning
 // listeners down again when they close.
-watch(isOpen, (currentlyOpen) => {
+watch(isOpen, async (currentlyOpen) => {
 	if (currentlyOpen) {
-		handleFloatingOpen();
+		await handleFloatingOpen();
+
+		// The results can close while they are still being measured. Stop
+		// positioning them again, or the listeners added on open would stay
+		// attached to a closed list.
+		if (!isOpen.value) {
+			handleFloatingClose();
+		}
 
 		return;
 	}

@@ -270,6 +270,24 @@
 
 				<p>Present on the root element. Use to scope styles to this component.</p>
 			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-dropdown">
+				<template #attribute>data-part="dropdown"</template>
+
+				<p>The results panel stays in the page and hides when closed.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-state">
+				<template #attribute>data-state</template>
+
+				<p>
+					Set to
+					<code>"open"</code>
+					when the results are open, or
+					<code>"closed"</code>
+					when they are not. Present on the results panel.
+				</p>
+			</component-styling-hook>
 		</component-styling-hooks>
 
 		<component-playgrounds>

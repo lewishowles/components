@@ -25,12 +25,62 @@ test.describe("combo-box", () => {
 	test("the results are hidden until a query is entered", async ({ mount, page }) => {
 		await mountComboBox(mount);
 
-		await expect(page.getByTestId("combo-box-dropdown")).not.toBeAttached();
+		const dropdown = page.getByTestId("combo-box-dropdown");
+
+		await expect(dropdown).toBeAttached();
+		await expect(dropdown).toBeHidden();
+		await expect(dropdown).toHaveAttribute("data-state", "closed");
+		await expect(dropdown).toHaveAttribute("inert", "");
 
 		await getInput(page).fill("a");
 
-		await expect(page.getByTestId("combo-box-dropdown")).toBeVisible();
+		await expect(dropdown).toBeVisible();
+		await expect(dropdown).toHaveAttribute("data-state", "open");
+		await expect(dropdown).not.toHaveAttribute("inert");
 		await expect(page.getByTestId("combo-box-option")).toHaveCount(3);
+	});
+
+	test("hides the closed results immediately with reduced motion", async ({ mount, page }) => {
+		await page.setViewportSize({ width: 1200, height: 800 });
+		await page.emulateMedia({ reducedMotion: "reduce" });
+		await mountComboBox(mount);
+
+		const dropdown = page.getByTestId("combo-box-dropdown");
+		const input = getInput(page);
+
+		await expect(dropdown).toBeHidden();
+		await input.fill("a");
+		await expect(dropdown).toBeVisible();
+		await input.press("Escape");
+		await expect(dropdown).toHaveAttribute("data-state", "closed");
+		expect(await dropdown.evaluate((element) => getComputedStyle(element).display)).toBe("none");
+		await expect(dropdown).toBeHidden();
+	});
+
+	test("fades out without losing its flipped position", async ({ mount, page }) => {
+		await page.setViewportSize({ width: 1200, height: 800 });
+		await page.emulateMedia({ reducedMotion: "no-preference" });
+		await mountComboBox(mount);
+
+		const dropdown = page.getByTestId("combo-box-dropdown");
+		const input = getInput(page);
+
+		await page.getByTestId("combo-box").evaluate((element) => {
+			element.style.position = "fixed";
+			element.style.bottom = "8px";
+		});
+		await dropdown.evaluate((element) => {
+			element.style.setProperty("--reveal-exit-duration", "1s");
+		});
+
+		await input.fill("a");
+		await expect(dropdown).toBeVisible();
+		await expect(dropdown).toHaveClass(/bottom-full/);
+		await input.press("Escape");
+		await expect(dropdown).toHaveAttribute("data-state", "closed");
+		await expect(dropdown).toHaveClass(/bottom-full/);
+		await expect(dropdown).toBeVisible();
+		await expect(dropdown).toBeHidden();
 	});
 
 	test.describe("ARIA", () => {
@@ -112,16 +162,20 @@ test.describe("combo-box", () => {
 			await getInput(page).press("Enter");
 
 			await expect(getInput(page)).toHaveValue("");
-			await expect(page.getByTestId("combo-box-dropdown")).not.toBeAttached();
+			await expect(page.getByTestId("combo-box-dropdown")).toBeHidden();
 		});
 
 		test("Escape closes the results", async ({ mount, page }) => {
 			await mountComboBox(mount);
 
+			const dropdown = page.getByTestId("combo-box-dropdown");
+
 			await getInput(page).fill("a");
 			await getInput(page).press("Escape");
 
-			await expect(page.getByTestId("combo-box-dropdown")).not.toBeAttached();
+			await expect(dropdown).toHaveAttribute("data-state", "closed");
+			await expect(dropdown).toHaveAttribute("inert", "");
+			await expect(dropdown).toBeHidden();
 		});
 	});
 
@@ -144,7 +198,7 @@ test.describe("combo-box", () => {
 			await page.getByTestId("combo-box-option").first().click();
 
 			await expect(getInput(page)).toHaveValue("");
-			await expect(page.getByTestId("combo-box-dropdown")).not.toBeAttached();
+			await expect(page.getByTestId("combo-box-dropdown")).toBeHidden();
 		});
 	});
 
@@ -164,7 +218,7 @@ test.describe("combo-box", () => {
 			await getInput(page).fill("a");
 			await page.getByTestId("click-target").click();
 
-			await expect(page.getByTestId("combo-box-dropdown")).not.toBeAttached();
+			await expect(page.getByTestId("combo-box-dropdown")).toBeHidden();
 
 			await page.evaluate(() => {
 				document.querySelector("[data-test='click-target']")?.remove();
@@ -186,7 +240,7 @@ test.describe("combo-box", () => {
 			await getInput(page).fill("a");
 			await page.getByTestId("focus-target").focus();
 
-			await expect(page.getByTestId("combo-box-dropdown")).not.toBeAttached();
+			await expect(page.getByTestId("combo-box-dropdown")).toBeHidden();
 
 			await page.evaluate(() => {
 				document.querySelector("[data-test='focus-target']")?.remove();

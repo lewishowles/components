@@ -35,11 +35,15 @@
 			data-test="dropdown-menu-sheet"
 			@dismiss="closeAndRestoreFocus"
 		>
+			<!-- The panel stays in the page so it can fade out on wide screens. In
+			the narrow sheet it has no fade, so it is hidden as soon as the menu closes. -->
 			<div
-				v-if="isOpen"
 				ref="menuElement"
 				v-bind="{ id: menuId, class: resolvedPanelClasses }"
 				:role="isNarrow ? undefined : 'menu'"
+				:inert="!isOpen"
+				:hidden="isNarrow && !isOpen"
+				:data-state="isOpen ? 'open' : 'closed'"
 				data-part="panel"
 				data-test="dropdown-menu-panel"
 				@keydown="onMenuKeydown"
@@ -98,6 +102,10 @@ const props = defineProps({
 
 const emit = defineEmits(["open", "close"]);
 
+// The menu items that can take keyboard focus, shared by every lookup so
+// that clearing their focus order on close reaches the same items.
+const menuItemSelector = ":is(button, a, summary):not([disabled])";
+
 // A unique ID for the menu panel, referenced by aria-controls on the trigger.
 const menuId = useId();
 // Whether the menu panel is currently open.
@@ -144,7 +152,7 @@ const resolvedPanelClasses = computed(() => {
 	}
 
 	return cn(
-		"absolute animate-fade-in-down animate-fast min-w-3xs py-2 rounded-lg border border-border bg-surface backdrop-blur-lg z-50",
+		"absolute reveal-fade-down animate-fast min-w-3xs py-2 rounded-lg border border-border bg-surface backdrop-blur-lg z-50",
 		placementClasses.value,
 		computedPlacement.value === "above" ? "bottom-full" : "top-full",
 		computedAlign.value === "end" ? "inset-e-0" : "inset-s-0",
@@ -191,10 +199,20 @@ onKeyStroke("Escape", (event) => {
 	closeAndRestoreFocus();
 });
 
+// Position the panel when the menu opens on a wide screen, and stop positioning
+// it when the menu closes or switches to the narrow-screen sheet. This runs as a
+// watcher because positioning measures the rendered panel after each change.
 watch(
 	[isOpen, isNarrow],
 	async ([open, narrow], [wasOpen, wasNarrow]) => {
 		if (!open) {
+			// The panel stays in the page while closed, so clear the keyboard focus
+			// order set on its items. Otherwise the next open would start from the
+			// item that was focused last time. This queries the items directly
+			// because getMenuItems returns nothing once the menu is closed.
+			menuElement.value
+				?.querySelectorAll(menuItemSelector)
+				.forEach((item) => item.removeAttribute("tabindex"));
 			handleFloatingClose();
 
 			return;
@@ -222,16 +240,17 @@ watch(
 );
 
 /**
- * Get all focusable menu items within the panel.
+ * Get all focusable menu items within the panel, or none while the menu is
+ * closed.
  *
  * @returns  {HTMLElement[]}
  */
 function getMenuItems() {
-	if (!menuElement.value) {
+	if (!isOpen.value || !menuElement.value) {
 		return [];
 	}
 
-	return Array.from(menuElement.value.querySelectorAll(":is(button, a, summary):not([disabled])"));
+	return Array.from(menuElement.value.querySelectorAll(menuItemSelector));
 }
 
 /**
@@ -377,6 +396,14 @@ async function openMenu() {
 	}
 
 	await handleFloatingOpen();
+
+	// The menu can close, or the screen can narrow, while its position is being
+	// worked out. Stop following the trigger and leave focus where it is.
+	if (!isOpen.value || isNarrow.value) {
+		handleFloatingClose();
+
+		return;
+	}
 
 	const items = getMenuItems();
 

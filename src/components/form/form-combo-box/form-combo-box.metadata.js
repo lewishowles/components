@@ -134,7 +134,11 @@ export const formComboBoxMetadata = {
 	],
 	parts: [
 		{ name: "text-control", summary: "Wrapper around the text input and form fragments." },
-		{ name: "dropdown", summary: "Results panel positioned around the text input." },
+		{
+			name: "dropdown",
+			summary:
+				"Results panel positioned around the text input; stays in the page and hides when its data-state is closed.",
+		},
 		{ name: "listbox", summary: "Listbox containing the filtered options." },
 		{ name: "option", summary: "Individual option row in the listbox." },
 		{ name: "status", summary: "Loading, empty, or no-results content." },

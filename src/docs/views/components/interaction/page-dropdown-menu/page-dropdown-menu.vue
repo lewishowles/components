@@ -276,8 +276,8 @@
 			<component-styling-hook id="hook-data-part-panel">
 				<template #attribute>data-part="panel"</template>
 				<p>
-					The floating panel containing the menu items. Only present in the DOM when the menu is
-					open.
+					The floating panel containing the menu items. It stays in the page and hides when the menu
+					closes.
 				</p>
 			</component-styling-hook>
 
@@ -288,7 +288,7 @@
 					<code>"open"</code>
 					when the menu is open,
 					<code>"closed"</code>
-					when it is not. Present on the root element.
+					when it is not. Present on the root element and the panel.
 				</p>
 			</component-styling-hook>
 		</component-styling-hooks>

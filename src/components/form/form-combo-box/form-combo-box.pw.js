@@ -29,6 +29,68 @@ test.describe("form-combo-box", () => {
 		await expect(page.getByTestId("form-label")).toHaveAttribute("for", "person");
 	});
 
+	test("keeps the results panel mounted and inert while closed", async ({ mount, page }) => {
+		await mountFormComboBox(mount);
+
+		const dropdown = page.getByTestId("form-combo-box-dropdown");
+		const input = getInput(page);
+
+		await expect(dropdown).toBeAttached();
+		await expect(dropdown).toBeHidden();
+		await expect(dropdown).toHaveAttribute("data-state", "closed");
+		await expect(dropdown).toHaveAttribute("inert", "");
+
+		await input.focus();
+
+		await expect(dropdown).toBeVisible();
+		await expect(dropdown).toHaveAttribute("data-state", "open");
+		await expect(dropdown).not.toHaveAttribute("inert");
+	});
+
+	test("hides the closed results immediately with reduced motion", async ({ mount, page }) => {
+		await page.setViewportSize({ width: 1200, height: 800 });
+		await page.emulateMedia({ reducedMotion: "reduce" });
+		await mountFormComboBox(mount);
+
+		const dropdown = page.getByTestId("form-combo-box-dropdown");
+		const input = getInput(page);
+
+		await expect(dropdown).toBeHidden();
+		await input.focus();
+		await expect(dropdown).toBeVisible();
+		await input.press("Escape");
+		await expect(dropdown).toHaveAttribute("data-state", "closed");
+		expect(await dropdown.evaluate((element) => getComputedStyle(element).display)).toBe("none");
+		await expect(dropdown).toBeHidden();
+	});
+
+	test("fades out without losing its flipped position", async ({ mount, page }) => {
+		await page.setViewportSize({ width: 1200, height: 800 });
+		await page.emulateMedia({ reducedMotion: "no-preference" });
+		await mountFormComboBox(mount);
+
+		const dropdown = page.getByTestId("form-combo-box-dropdown");
+		const input = getInput(page);
+
+		await page.getByTestId("form-combo-box").evaluate((element) => {
+			element.style.position = "fixed";
+			element.style.bottom = "8px";
+		});
+		await dropdown.evaluate((element) => {
+			element.style.setProperty("--reveal-exit-duration", "1s");
+		});
+
+		await input.focus();
+		await expect(dropdown).toBeVisible();
+		await expect(dropdown).toHaveAttribute("style", /bottom:/);
+		await input.press("Escape");
+		await expect(dropdown).toHaveAttribute("data-state", "closed");
+		await expect(dropdown).toHaveAttribute("inert", "");
+		await expect(dropdown).toHaveAttribute("style", /bottom:/);
+		await expect(dropdown).toBeVisible();
+		await expect(dropdown).toBeHidden();
+	});
+
 	test.describe("ARIA and focus", () => {
 		test("focus opens the ordered list and connects the combobox to its listbox", async ({
 			mount,
@@ -119,7 +181,7 @@ test.describe("form-combo-box", () => {
 			await input.press("Enter");
 
 			await expect(input).toHaveValue("Basil Morgan");
-			await expect(page.getByTestId("form-combo-box-dropdown")).not.toBeAttached();
+			await expect(page.getByTestId("form-combo-box-dropdown")).toBeHidden();
 			await expect(input).toBeFocused();
 
 			await input.press("ArrowDown");
@@ -137,7 +199,7 @@ test.describe("form-combo-box", () => {
 			await input.press("ArrowDown");
 			await input.press("Escape");
 
-			await expect(page.getByTestId("form-combo-box-dropdown")).not.toBeAttached();
+			await expect(page.getByTestId("form-combo-box-dropdown")).toBeHidden();
 			await expect(input).toBeFocused();
 		});
 
@@ -179,7 +241,7 @@ test.describe("form-combo-box", () => {
 			await input.press("ArrowDown");
 			await input.press("Tab");
 
-			await expect(page.getByTestId("form-combo-box-dropdown")).not.toBeAttached();
+			await expect(page.getByTestId("form-combo-box-dropdown")).toBeHidden();
 			await expect(input).toHaveValue("");
 		});
 	});
@@ -197,7 +259,7 @@ test.describe("form-combo-box", () => {
 			await page.getByTestId("form-combo-box-option").nth(1).click();
 
 			await expect(input).toHaveValue("Basil Morgan");
-			await expect(page.getByTestId("form-combo-box-dropdown")).not.toBeAttached();
+			await expect(page.getByTestId("form-combo-box-dropdown")).toBeHidden();
 			await expect(input).toBeFocused();
 		});
 
@@ -327,7 +389,7 @@ test.describe("form-combo-box", () => {
 			await input.focus();
 			await input.press("ArrowDown");
 
-			await expect(page.getByTestId("form-combo-box-dropdown")).not.toBeAttached();
+			await expect(page.getByTestId("form-combo-box-dropdown")).toBeHidden();
 			await expect(input).toHaveValue("Avery Lane");
 		});
 

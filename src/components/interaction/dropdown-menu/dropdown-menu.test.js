@@ -95,5 +95,77 @@ describe("dropdown-menu", () => {
 			expect(firstItem.attributes("tabindex")).toBeUndefined();
 			expect(secondItem.attributes("tabindex")).toBeUndefined();
 		});
+
+		test("clears desktop roving tabindex before a closed menu reopens as a sheet", async () => {
+			const wrapper = mountDeep({
+				slots: {
+					default: () => [
+						h("button", { "data-test": "first-item" }, "First"),
+						h("button", { "data-test": "second-item" }, "Second"),
+					],
+					summary: "Actions",
+				},
+			});
+
+			const firstItem = wrapper.find('[data-test="first-item"]');
+			const secondItem = wrapper.find('[data-test="second-item"]');
+
+			await wrapper.vm.openMenu();
+
+			expect(secondItem.attributes("tabindex")).toBe("-1");
+
+			wrapper.vm.closeMenu();
+			await nextTick();
+			isNarrow.value = true;
+			await nextTick();
+			await wrapper.vm.openMenu();
+
+			expect(firstItem.attributes("tabindex")).toBeUndefined();
+			expect(secondItem.attributes("tabindex")).toBeUndefined();
+		});
+	});
+
+	describe("Panel state", () => {
+		test("Keeps the closed panel mounted and inert", () => {
+			const wrapper = mountDeep();
+			const panel = wrapper.find('[data-test="dropdown-menu-panel"]');
+
+			expect(panel.exists()).toBe(true);
+			expect(panel.attributes("data-state")).toBe("closed");
+			expect(panel.attributes("inert")).toBeDefined();
+		});
+
+		test("Removes inert while open and restores it on close", async () => {
+			const wrapper = mountDeep();
+			const panel = wrapper.find('[data-test="dropdown-menu-panel"]');
+
+			await wrapper.vm.openMenu();
+
+			expect(panel.attributes("data-state")).toBe("open");
+			expect(panel.attributes("inert")).toBeUndefined();
+
+			wrapper.vm.closeMenu();
+			await nextTick();
+
+			expect(panel.attributes("data-state")).toBe("closed");
+			expect(panel.attributes("inert")).toBeDefined();
+		});
+
+		test("Hides the narrow sheet panel immediately when closed", async () => {
+			isNarrow.value = true;
+			const wrapper = mountDeep();
+			const panel = wrapper.find('[data-test="dropdown-menu-panel"]');
+
+			expect(panel.attributes("hidden")).toBeDefined();
+
+			await wrapper.vm.openMenu();
+
+			expect(panel.attributes("hidden")).toBeUndefined();
+
+			wrapper.vm.closeMenu();
+			await nextTick();
+
+			expect(panel.attributes("hidden")).toBeDefined();
+		});
 	});
 });

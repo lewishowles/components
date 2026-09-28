@@ -93,12 +93,12 @@ Close the menu programmatically.
 
 ## Styling hooks
 
-| Attribute                        | Element        | Notes                          |
-| -------------------------------- | -------------- | ------------------------------ |
-| `data-component="dropdown-menu"` | Root element   | Scope styles to this component |
-| `data-part="trigger"`            | Trigger button | —                              |
-| `data-part="panel"`              | Floating panel | Only in DOM when open          |
-| `data-state`                     | Root           | `"open"` or `"closed"`         |
+| Attribute                        | Element        | Notes                                    |
+| -------------------------------- | -------------- | ---------------------------------------- |
+| `data-component="dropdown-menu"` | Root element   | Scope styles to this component           |
+| `data-part="trigger"`            | Trigger button | —                                        |
+| `data-part="panel"`              | Floating panel | Stays in the page and hides when closed. |
+| `data-state`                     | Root and panel | `"open"` or `"closed"`                   |
 
 ## Examples
 

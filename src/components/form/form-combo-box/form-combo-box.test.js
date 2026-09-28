@@ -54,6 +54,38 @@ describe("form-combo-box", () => {
 		});
 	});
 
+	describe("Dropdown state", () => {
+		test("Keeps the closed dropdown mounted and inert", () => {
+			const wrapper = mount();
+			const dropdown = wrapper.find('[data-test="form-combo-box-dropdown"]');
+
+			expect(dropdown.exists()).toBe(true);
+			expect(dropdown.attributes("data-state")).toBe("closed");
+			expect(dropdown.attributes("inert")).toBeDefined();
+		});
+
+		test("Exposes the dropdown while open and makes it inert on close", async () => {
+			const wrapper = mountDeep({
+				props: { options, labelKey: "name", valueKey: "id" },
+				slots: { default: "Person" },
+			});
+
+			const dropdown = wrapper.find('[data-test="form-combo-box-dropdown"]');
+			const input = wrapper.find('[data-test="form-combo-box-input"] input');
+
+			await input.trigger("focusin");
+
+			expect(dropdown.attributes("data-state")).toBe("open");
+			expect(dropdown.attributes("inert")).toBeUndefined();
+
+			await input.trigger("keydown", { key: "Escape" });
+			await nextTick();
+
+			expect(dropdown.attributes("data-state")).toBe("closed");
+			expect(dropdown.attributes("inert")).toBeDefined();
+		});
+	});
+
 	describe("Input presentation", () => {
 		test("keeps a hidden label available to screen readers", () => {
 			const wrapper = mountDeep({

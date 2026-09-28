@@ -67,6 +67,71 @@ test.describe("dropdown-menu", () => {
 	});
 
 	test.describe("interaction", () => {
+		test("hides the closed panel immediately with reduced motion", async ({ mount, page }) => {
+			await page.setViewportSize({ width: 1200, height: 800 });
+			await page.emulateMedia({ reducedMotion: "reduce" });
+			await mountDropdownMenu(mount);
+
+			const panel = page.getByTestId("dropdown-menu-panel");
+			const trigger = page.getByTestId("dropdown-menu-trigger");
+
+			await expect(panel).toBeHidden();
+			await trigger.click();
+			await expect(panel).toBeVisible();
+			await trigger.click();
+			await expect(panel).toHaveAttribute("data-state", "closed");
+			expect(await panel.evaluate((element) => getComputedStyle(element).display)).toBe("none");
+			await expect(panel).toBeHidden();
+		});
+
+		test("fades out without losing its flipped position", async ({ mount, page }) => {
+			await page.setViewportSize({ width: 1200, height: 800 });
+			await page.emulateMedia({ reducedMotion: "no-preference" });
+			await mountDropdownMenu(mount);
+
+			const panel = page.getByTestId("dropdown-menu-panel");
+			const trigger = page.getByTestId("dropdown-menu-trigger");
+
+			await page.getByTestId("dropdown-menu").evaluate((element) => {
+				element.style.position = "fixed";
+				element.style.bottom = "8px";
+			});
+			await panel.evaluate((element) => {
+				element.style.setProperty("--reveal-exit-duration", "1s");
+			});
+
+			await trigger.click();
+			await expect(panel).toBeVisible();
+			await expect(panel).toHaveClass(/bottom-full/);
+			await trigger.click();
+			await expect(panel).toHaveAttribute("data-state", "closed");
+			await expect(panel).toHaveClass(/bottom-full/);
+			await expect(panel).toBeVisible();
+			await expect(panel).toBeHidden();
+		});
+
+		test("keeps the closed panel mounted and inert after its exit", async ({ mount, page }) => {
+			await mountDropdownMenu(mount);
+
+			const panel = page.getByTestId("dropdown-menu-panel");
+			const trigger = page.getByTestId("dropdown-menu-trigger");
+
+			await expect(panel).toBeAttached();
+			await expect(panel).toHaveAttribute("data-state", "closed");
+			await expect(panel).toHaveAttribute("inert", "");
+
+			await trigger.click();
+
+			await expect(panel).toHaveAttribute("data-state", "open");
+			await expect(panel).not.toHaveAttribute("inert");
+
+			await trigger.click();
+
+			await expect(panel).toHaveAttribute("data-state", "closed");
+			await expect(panel).toHaveAttribute("inert", "");
+			await expect(panel).toBeHidden();
+		});
+
 		test("clicking on the trigger opens the menu", async ({ mount, page }) => {
 			await mountDropdownMenu(mount);
 
@@ -289,11 +354,13 @@ test.describe("narrow viewport", () => {
 		await mountDropdownMenu(mount);
 
 		const trigger = page.getByTestId("dropdown-menu-trigger");
+		const panel = page.getByTestId("dropdown-menu-panel");
+
+		await expect(panel).toBeHidden();
 
 		await trigger.click();
 
 		const sheet = page.getByTestId("dropdown-menu-sheet");
-		const panel = page.getByTestId("dropdown-menu-panel");
 
 		await expect(sheet).toBeVisible();
 		await expect(sheet).toHaveAttribute("aria-modal", "true");

@@ -269,7 +269,12 @@
 
 			<component-styling-hook id="hook-dropdown">
 				<template #attribute>data-part="dropdown"</template>
-				<p>Targets the positioned results panel.</p>
+				<p>Targets the positioned results panel, which stays in the page and hides when closed.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-dropdown-state">
+				<template #attribute>data-state="open|closed"</template>
+				<p>Present on the results panel with its current state.</p>
 			</component-styling-hook>
 
 			<component-styling-hook id="hook-listbox">

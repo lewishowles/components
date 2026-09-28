@@ -75,10 +75,11 @@
 		</span>
 
 		<div
-			v-if="isOpen"
 			ref="dropdown"
 			:class="resolvedDropdownClasses"
 			:style="resolvedDropdownStyle"
+			:inert="!isOpen"
+			:data-state="isOpen ? 'open' : 'closed'"
 			data-part="dropdown"
 			data-test="form-combo-box-dropdown"
 		>
@@ -454,7 +455,7 @@ const selectedItem = computed(() =>
 // narrower than the root (e.g. once an error marker adds start padding).
 const resolvedDropdownClasses = computed(() =>
 	cn(
-		"absolute z-10 overflow-hidden rounded-md border border-border bg-surface shadow-lg",
+		"absolute reveal-fade-down animate-fast z-10 overflow-hidden rounded-md border border-border bg-surface shadow-lg",
 		placementClasses.value,
 		{ "opacity-0": isPositioning.value },
 		props.dropdownClasses,
@@ -506,9 +507,16 @@ const resolvedDropdownStyle = computed(() => {
 
 // Measure and position the results whenever they open, and tear the positioning
 // listeners down again when they close.
-watch(isOpen, (currentlyOpen) => {
+watch(isOpen, async (currentlyOpen) => {
 	if (currentlyOpen) {
-		handleFloatingOpen();
+		await handleFloatingOpen();
+
+		// The results can close while they are still being measured. Stop
+		// positioning them again, or the listeners added on open would stay
+		// attached to a closed list.
+		if (!isOpen.value) {
+			handleFloatingClose();
+		}
 
 		return;
 	}

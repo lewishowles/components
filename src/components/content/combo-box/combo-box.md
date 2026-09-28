@@ -123,12 +123,13 @@ Move focus to the input.
 
 ## Styling hooks
 
-| Attribute                    | Element       | Notes                                |
-| ---------------------------- | ------------- | ------------------------------------ |
-| `data-component="combo-box"` | Root          | Scope styles to this component       |
-| `data-part="input"`          | Input wrapper | Wraps the text input.                |
-| `data-part="dropdown"`       | Results panel | Positioned panel containing results. |
-| `data-part="option"`         | Option row    | Individual result row.               |
+| Attribute                    | Element       | Notes                                    |
+| ---------------------------- | ------------- | ---------------------------------------- |
+| `data-component="combo-box"` | Root          | Scope styles to this component           |
+| `data-part="input"`          | Input wrapper | Wraps the text input.                    |
+| `data-part="dropdown"`       | Results panel | Stays in the page and hides when closed. |
+| `data-state`                 | Results panel | `"open"` or `"closed"`.                  |
+| `data-part="option"`         | Option row    | Individual result row.                   |
 
 ## Examples
 
