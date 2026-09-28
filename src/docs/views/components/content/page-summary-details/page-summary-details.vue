@@ -21,26 +21,6 @@
 			</p>
 		</template>
 
-		<component-keyboard-interaction>
-			<table>
-				<thead>
-					<tr>
-						<th>Key</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td><code>Escape</code></td>
-						<td>
-							When enabled, close the open details. When focus is inside the component, move it to
-							the summary.
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</component-keyboard-interaction>
-
 		<component-props>
 			<component-prop id="prop-open">
 				<template #name>open</template>
@@ -272,6 +252,26 @@
 				</table>
 			</component-slot>
 		</component-slots>
+
+		<component-keyboard-interaction>
+			<table>
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><code>Escape</code></td>
+						<td>
+							When enabled, close the open details. When focus is inside the component, move it to
+							the summary.
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</component-keyboard-interaction>
 
 		<component-events>
 			<component-event id="event-v-model">

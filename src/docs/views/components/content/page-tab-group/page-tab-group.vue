@@ -36,49 +36,6 @@
 			<p>If tabs only contain content, an Accordion may be a better choice.</p>
 		</template>
 
-		<component-keyboard-interaction>
-			<table>
-				<thead>
-					<tr>
-						<th>Key</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<code>ArrowLeft</code>
-							/
-							<code>ArrowUp</code>
-						</td>
-						<td>
-							Move focus to the previous tab, wrapping to the last tab. In automatic activation
-							mode, also activate it.
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<code>ArrowRight</code>
-							/
-							<code>ArrowDown</code>
-						</td>
-						<td>
-							Move focus to the next tab, wrapping to the first tab. In automatic activation mode,
-							also activate it.
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<code>Enter</code>
-							/
-							<code>Space</code>
-						</td>
-						<td>In manual activation mode, activate the focused tab.</td>
-					</tr>
-				</tbody>
-			</table>
-		</component-keyboard-interaction>
-
 		<component-props>
 			<component-prop id="prop-activation">
 				<template #name>activation</template>
@@ -235,6 +192,49 @@
 				</table>
 			</component-slot>
 		</component-slots>
+
+		<component-keyboard-interaction>
+			<table>
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<code>ArrowLeft</code>
+							/
+							<code>ArrowUp</code>
+						</td>
+						<td>
+							Move focus to the previous tab, wrapping to the last tab. In automatic activation
+							mode, also activate it.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code>ArrowRight</code>
+							/
+							<code>ArrowDown</code>
+						</td>
+						<td>
+							Move focus to the next tab, wrapping to the first tab. In automatic activation mode,
+							also activate it.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<code>Enter</code>
+							/
+							<code>Space</code>
+						</td>
+						<td>In manual activation mode, activate the focused tab.</td>
+					</tr>
+				</tbody>
+			</table>
+		</component-keyboard-interaction>
 
 		<component-methods>
 			<component-method id="method-select">

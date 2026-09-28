@@ -42,58 +42,6 @@
 			</ul>
 		</template>
 
-		<component-keyboard-interaction>
-			<table>
-				<thead>
-					<tr>
-						<th>Key</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<code>Enter</code>
-							/
-							<code>Space</code>
-						</td>
-						<td>Open the menu from its trigger.</td>
-					</tr>
-					<tr>
-						<td>
-							<code>ArrowDown</code>
-							/
-							<code>ArrowUp</code>
-						</td>
-						<td>
-							Open the menu and focus its first item from the trigger; move between items in the
-							menu.
-						</td>
-					</tr>
-					<tr>
-						<td><code>Home</code></td>
-						<td>Focus the first menu item.</td>
-					</tr>
-					<tr>
-						<td><code>End</code></td>
-						<td>Focus the last menu item.</td>
-					</tr>
-					<tr>
-						<td>Character keys</td>
-						<td>Focus the first item whose label starts with the typed text.</td>
-					</tr>
-					<tr>
-						<td><code>Escape</code></td>
-						<td>Close the menu and return focus to its trigger.</td>
-					</tr>
-					<tr>
-						<td><code>Tab</code></td>
-						<td>Close the menu and move focus to the next element.</td>
-					</tr>
-				</tbody>
-			</table>
-		</component-keyboard-interaction>
-
 		<component-props>
 			<component-prop id="prop-button-classes">
 				<template #name>buttonClasses</template>
@@ -229,6 +177,58 @@
 				</table>
 			</component-slot>
 		</component-slots>
+
+		<component-keyboard-interaction>
+			<table>
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<code>Enter</code>
+							/
+							<code>Space</code>
+						</td>
+						<td>Open the menu from its trigger.</td>
+					</tr>
+					<tr>
+						<td>
+							<code>ArrowDown</code>
+							/
+							<code>ArrowUp</code>
+						</td>
+						<td>
+							Open the menu and focus its first item from the trigger; move between items in the
+							menu.
+						</td>
+					</tr>
+					<tr>
+						<td><code>Home</code></td>
+						<td>Focus the first menu item.</td>
+					</tr>
+					<tr>
+						<td><code>End</code></td>
+						<td>Focus the last menu item.</td>
+					</tr>
+					<tr>
+						<td>Character keys</td>
+						<td>Focus the first item whose label starts with the typed text.</td>
+					</tr>
+					<tr>
+						<td><code>Escape</code></td>
+						<td>Close the menu and return focus to its trigger.</td>
+					</tr>
+					<tr>
+						<td><code>Tab</code></td>
+						<td>Close the menu and move focus to the next element.</td>
+					</tr>
+				</tbody>
+			</table>
+		</component-keyboard-interaction>
 
 		<component-events>
 			<component-event id="event-open">
