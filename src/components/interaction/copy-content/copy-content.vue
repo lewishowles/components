@@ -19,8 +19,9 @@
 		</span>
 
 		<span
-			v-if="showCopySuccess"
-			class="animate-fade-in absolute inset-0 flex items-center justify-center gap-1"
+			class="reveal-fade absolute inset-0 flex items-center justify-center gap-1"
+			:aria-hidden="showCopySuccess ? undefined : 'true'"
+			:data-state="showCopySuccess ? 'open' : 'closed'"
 			data-part="success"
 			data-test="copy-content-success"
 		>
@@ -30,8 +31,9 @@
 		</span>
 
 		<span
-			v-if="showCopyError"
-			class="animate-fade-in absolute inset-0 flex items-center justify-center gap-1"
+			class="reveal-fade absolute inset-0 flex items-center justify-center gap-1"
+			:aria-hidden="showCopyError ? undefined : 'true'"
+			:data-state="showCopyError ? 'open' : 'closed'"
 			data-part="error"
 			data-test="copy-content-error"
 		>

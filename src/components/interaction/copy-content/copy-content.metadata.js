@@ -18,8 +18,16 @@ export const copyContentMetadata = {
 	],
 	parts: [
 		{ name: "label", summary: "Default copy button label." },
-		{ name: "success", summary: "Success state shown after copying." },
-		{ name: "error", summary: "Error state shown when copying fails." },
+		{
+			name: "success",
+			summary:
+				"Success feedback stays in the page with data-state=open while shown and closed otherwise.",
+		},
+		{
+			name: "error",
+			summary:
+				"Error feedback stays in the page with data-state=open while shown and closed otherwise.",
+		},
 	],
 	examples: [],
 };

@@ -1,10 +1,11 @@
-import { createMount } from "@lewishowles/testing/vue";
+import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 import { nextTick } from "vue";
 import CopyContent from "./copy-content.vue";
 
 const defaultProps = { content: "Content to copy" };
 const mount = createMount(CopyContent, { props: defaultProps });
+const deepMount = createDeepMount(CopyContent, { props: defaultProps });
 
 describe("copy-content", () => {
 	describe("Initialisation", () => {
@@ -98,6 +99,42 @@ describe("copy-content", () => {
 
 				expect(vm.statusMessage).toBe("Copied");
 			});
+		});
+	});
+
+	describe("Feedback", () => {
+		beforeEach(() => {
+			vi.useFakeTimers();
+		});
+
+		afterEach(() => {
+			vi.useRealTimers();
+		});
+
+		test.each([
+			["success", "displayCopySuccess"],
+			["error", "displayCopyError"],
+		])("keeps the %s feedback mounted and hides it after the timeout", async (name, method) => {
+			const wrapper = deepMount();
+			const feedback = wrapper.find(`[data-test="copy-content-${name}"]`);
+
+			expect(feedback.exists()).toBe(true);
+			expect(feedback.classes()).toContain("reveal-fade");
+			expect(feedback.attributes("data-state")).toBe("closed");
+			expect(feedback.attributes("aria-hidden")).toBe("true");
+
+			wrapper.vm[method]();
+			await nextTick();
+
+			expect(feedback.attributes("data-state")).toBe("open");
+			expect(feedback.attributes("aria-hidden")).toBeUndefined();
+
+			vi.advanceTimersByTime(2000);
+			await nextTick();
+
+			expect(feedback.exists()).toBe(true);
+			expect(feedback.attributes("data-state")).toBe("closed");
+			expect(feedback.attributes("aria-hidden")).toBe("true");
 		});
 	});
 });

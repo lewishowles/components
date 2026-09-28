@@ -73,4 +73,16 @@ describe("flash-messages", () => {
 			});
 		});
 	});
+
+	test("new messages use the fade-in entrance", () => {
+		const { sendMessage } = useFlashMessages();
+
+		sendMessage(globalMessage);
+
+		const wrapper = mount();
+		const messages = wrapper.find('[data-test="flash-messages"]');
+
+		expect(messages.exists()).toBe(true);
+		expect(messages.classes()).toContain("*:animate-fade-in");
+	});
 });

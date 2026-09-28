@@ -27,6 +27,42 @@ test.describe("copy-content", () => {
 			await expect(page.getByTestId("copy-content-label")).toHaveClass(/opacity-0/);
 		});
 
+		test("fades the success message out before hiding it", async ({ mount, page }) => {
+			await page.emulateMedia({ reducedMotion: "no-preference" });
+			await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
+			await mountCopyContent(mount, { props: { content: "Test content" } });
+
+			const success = page.getByTestId("copy-content-success");
+
+			await expect(success).toHaveAttribute("data-state", "closed");
+			await expect(success).toBeHidden();
+			await page.getByTestId("copy-content").click();
+			await expect(success).toBeVisible();
+
+			const displayDuringExit = await success.evaluate(
+				(element) =>
+					new Promise((resolve) => {
+						const observer = new MutationObserver(() => {
+							if (element.dataset.state !== "closed") {
+								return;
+							}
+
+							observer.disconnect();
+
+							requestAnimationFrame(() => {
+								resolve(getComputedStyle(element).display);
+							});
+						});
+
+						observer.observe(element, { attributes: true, attributeFilter: ["data-state"] });
+					}),
+			);
+
+			expect(displayDuringExit).not.toBe("none");
+			await expect(success).toHaveAttribute("aria-hidden", "true");
+			await expect(success).toBeHidden();
+		});
+
 		test("shows error message when no content is provided", async ({ mount, page }) => {
 			await mountCopyContent(mount, { props: { content: "" } });
 

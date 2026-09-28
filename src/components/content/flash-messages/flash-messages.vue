@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="haveMessages"
-		class="flex flex-col gap-2"
+		class="*:animate-fade-in flex flex-col gap-2"
 		data-component="flash-messages"
 		data-test="flash-messages"
 	>
