@@ -10,7 +10,7 @@ Creating a modal for display comes in two parts.
 
 ### The modal itself
 
-Each component opened via `openModal` must be fully self-contained: it renders its own [`modal-dialog`](/src/components/messaging/modal-dialog/modal-dialog.md), and calls the `onClose` prop it receives when its dialog closes. This avoids nesting a second dialog inside the one `modal-controller` would otherwise provide.
+Each component opened via `openModal` must be fully self-contained: it renders its own [`modal-dialog`](/src/components/messaging/modal-dialog/modal-dialog.md), and calls the `onClose` prop it receives when its dialog closes.
 
 You don't need to declare or forward the `inert` prop yourself: `modal-controller` still passes it, but as long as your component's own root is (directly or transitively) a `modal-dialog` and you haven't declared `inert` as one of your own props, Vue's attribute fallthrough carries it straight through. Only declare it explicitly if your component needs to reference `inert` itself.
 
@@ -60,7 +60,7 @@ openModal(DeleteUser, componentProps);
 
 ### Reacting to the modal closing
 
-Pass your own `onClose` in the props given to `openModal` to run something whenever the modal closes, for any reason (a specific action like confirm, the built-in close button, or Escape). It runs after the dialog's exit animation, or immediately with reduced motion. `modal-controller` runs it before removing that modal from the stack, so you don't need to manage the stack yourself, and it composes with any other callback the component defines for a more specific outcome:
+Pass your own `onClose` in the props given to `openModal` to run something whenever the modal closes, for any reason (a specific action like confirm, the built-in close button, or Escape). `modal-controller` runs it before removing that modal from the stack, so you don't need to manage the stack yourself, and it composes with any other callback the component defines for a more specific outcome:
 
 ```javascript
 openModal(DeleteAccountConfirm, {

@@ -20,16 +20,23 @@
 			</p>
 
 			<p>
+				Pass a modal component to
+				<code>openModal</code>
+				from
+				<code>useModalDialog</code>
+				to display it. Use
+				<code>closeTopModal</code>
+				from the same composable to close the top-most modal.
+			</p>
+
+			<p>
 				Each component opened via
 				<code>openModal</code>
 				must be fully self-contained: it renders its own
 				<a href="/messaging/modal-dialog"><code>modal-dialog</code></a>
 				, and calls the
 				<code>onClose</code>
-				prop it receives after its dialog finishes closing, including its exit animation (or
-				immediately with reduced motion). This avoids nesting a second dialog inside the one
-				<code>modal-controller</code>
-				would otherwise provide.
+				prop it receives after its dialog finishes closing.
 				<code>inert</code>
 				doesn't need declaring or forwarding yourself, it falls through automatically as long as
 				your component doesn't declare it as one of its own props.
