@@ -22,9 +22,9 @@
  * emits `dialog:close` (covering the built-in close button, Escape, and any
  * confirm/cancel actions of its own).
  *
- * All modals in the stack stay in the DOM. Non-current modals receive the
- * `inert` prop so they are visible but not interactive, which preserves
- * focus context when a stacked modal closes.
+ * All modals in the stack stay in the DOM, which preserves focus context when
+ * a stacked modal closes. Every modal except the top one receives the `inert`
+ * prop, which hides it and stops interaction until it is on top again.
  */
 import { computed } from "vue";
 import { isFunction } from "@lewishowles/helpers/general";

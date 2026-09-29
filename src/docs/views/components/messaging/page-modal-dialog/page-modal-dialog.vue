@@ -75,11 +75,11 @@
 				<template #default-value>false</template>
 
 				<p>
-					Whether this dialog is inert (disabled and not interactive), forwarded to the underlying
+					When true, hides this dialog and prevents interaction. Forwarded to the underlying
 					<code>base-modal</code>
-					. Used when stacking modals via
+					and set on covered dialogs by
 					<code>modal-controller</code>
-					, so background dialogs stay visible but not interactive.
+					.
 				</p>
 			</component-prop>
 		</component-props>

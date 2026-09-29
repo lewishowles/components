@@ -49,7 +49,7 @@ When `true`, focus the dialog itself when it opens. When `false`, an autofocus d
 - type: `boolean`
 - default: `false`
 
-Whether this dialog is inert (disabled and not interactive), forwarded to the underlying `base-modal`. Used when stacking modals via `modal-controller`, so background dialogs stay visible but not interactive.
+When `true`, hides this dialog and prevents interaction. Forwarded to the underlying `base-modal` and set on covered dialogs by `modal-controller`.
 
 ## Events
 
