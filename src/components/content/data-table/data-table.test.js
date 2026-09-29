@@ -61,6 +61,25 @@ describe("data-table", () => {
 	});
 
 	describe("Render", () => {
+		test("Only shows the caption sort hint while a column is sorted", async () => {
+			const wrapper = deepMount({
+				props: { columns: { title: { label: "Title" } } },
+				slots: { caption: "Films" },
+			});
+
+			const caption = wrapper.get("caption");
+
+			expect(caption.text()).toBe("Films");
+
+			await wrapper.get('[data-test="data-table-sort"]').trigger("click");
+
+			expect(caption.text()).toContain("Sorted by Title ascending");
+
+			await wrapper.setProps({ enableSort: false });
+
+			expect(caption.text()).toBe("Films");
+		});
+
 		test("Hides sort controls and keeps client rows in order when sorting is disabled", () => {
 			const firstRow = { id: "a", title: "Zulu" };
 			const secondRow = { id: "b", title: "Alpha" };

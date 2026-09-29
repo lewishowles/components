@@ -105,7 +105,7 @@
 							>
 								<slot name="caption" />
 
-								<span v-if="enableSort" class="sr-only">
+								<span v-if="enableSort && sortedColumn" class="sr-only">
 									<slot
 										name="sorted-hint"
 										v-bind="{
