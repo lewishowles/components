@@ -8,8 +8,8 @@
 
 		<ui-button class="button--primary" @click="openDialog">Open dialog</ui-button>
 
-		<modal-dialog v-bind="componentProps" v-model="componentModel">
-			<template #title>Delete "Sophie Wardhaugh"</template>
+		<modal-dialog v-bind="componentProps">
+			<template #title>{{ textSlots.title.value }}</template>
 
 			<p>Are you sure you want to delete this user? This cannot be undone.</p>
 
@@ -19,20 +19,12 @@
 		</modal-dialog>
 
 		<template #additional-code>
-			<code-block
-				:code="
-					useTemplateGenerator('ui-button', {
-						props: { class: { value: 'button--primary', isInline: true } },
-						slots: { default: { value: 'Delete user' } },
-						events: { click: { value: 'openDialog' } },
-					})
-				"
-			/>
-
-			<code-block code='const deleteUserDialog = useTemplateRef("delete-user-dialog");' />
+			<code-block :code="buttonCode" />
 
 			<code-block
-				code='function openDialog() {
+				code='const deleteUserDialog = useTemplateRef("delete-user-dialog");
+
+function openDialog() {
 	callComponentMethod(deleteUserDialog.value, "open");
 }'
 			/>
@@ -55,28 +47,41 @@ const props = ref({
 	// This playground opens the dialog on demand via the button below, so it
 	// shouldn't also open itself immediately on mount.
 	initiallyOpen: {
+		type: "boolean",
 		value: false,
 	},
 });
 
-const slots = computed(() => ({
+// The dialog title, which the playground controls change in both the preview
+// and the copied template.
+const textSlots = ref({
 	title: {
+		label: "Dialog title",
 		value: 'Delete "Sophie Wardhaugh"',
 	},
-	default: {
-		value: useTemplateGenerator("p", {
-			slots: {
-				default: { value: "Are you sure you want to delete this user? This cannot be undone." },
-			},
-		}),
+});
+
+// The code for the dialog's body in the copied template.
+const bodyCode = useTemplateGenerator("p", {
+	slots: {
+		default: { value: "Are you sure you want to delete this user? This cannot be undone." },
 	},
-	actions: {
-		value: useTemplateGenerator("ui-button", {
-			props: { class: { value: "button--primary", isInline: true } },
-			slots: { default: { value: "Delete user" } },
-			indent: 1,
-		}),
-	},
+});
+
+// The code for the dialog's delete button in the copied template.
+const actionsCode = useTemplateGenerator("ui-button", {
+	props: { class: { value: "button--primary", isInline: true } },
+	slots: { default: { value: "Delete user" } },
+	indent: 1,
+});
+
+// Every dialog slot for the copied template. The body and actions stay fixed
+// because they hold generated markup, which a text control can't update in the
+// preview.
+const slots = computed(() => ({
+	title: textSlots.value.title,
+	default: { value: bodyCode },
+	actions: { value: actionsCode },
 }));
 
 // Our dialog for the demonstration.
@@ -87,7 +92,16 @@ const componentProps = computed(() => {
 	return Object.fromEntries(Object.entries(props.value).map(([key, prop]) => [key, prop.value]));
 });
 
-const template = useTemplateGenerator("modal-dialog", { slots: slots.value, props });
+// The dialog template that users copy from the playground.
+const template = useTemplateGenerator("modal-dialog", { slots, props });
+
+// The code for the button that opens the dialog, shown under the dialog
+// template.
+const buttonCode = useTemplateGenerator("ui-button", {
+	props: { class: { value: "button--primary", isInline: true } },
+	slots: { default: { value: "Delete user" } },
+	events: { click: { value: "openDialog" } },
+});
 
 /**
  * Open our demonstration dialog.
