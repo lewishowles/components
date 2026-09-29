@@ -438,7 +438,10 @@ async function registerCurrentField(fieldName) {
 	const registration = await registerField({
 		answerSummary: slots["answer-summary"],
 		displayValue: fieldDisplayValue,
-		label: getSlotText(slots.default),
+		// Read the label text on demand, so the form reads it while rendering.
+		// Calling the slot here, outside a render, makes Vue warn and stops the
+		// label from tracking reactive data.
+		label: () => getSlotText(slots.default),
 		name: fieldName,
 		id: fieldRef.value?.focusId ?? inputId.value,
 		triggerFocus,

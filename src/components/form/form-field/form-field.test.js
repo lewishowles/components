@@ -1,5 +1,6 @@
 import { createDeepMount, createMount } from "@lewishowles/testing/vue";
-import { defineComponent, h, nextTick, ref } from "vue";
+import { flushPromises } from "@vue/test-utils";
+import { defineComponent, h, nextTick, ref, renderSlot } from "vue";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vite-plus/test";
 
 import FormButtonGroup from "@/components/form/form-button-group/form-button-group.vue";
@@ -87,8 +88,61 @@ describe("form-field", () => {
 
 			const field = registerFieldMock.mock.calls.at(-1)?.[0];
 
-			expect(field.label).toBe("Username");
+			expect(field.label()).toBe("Username");
 			expect(field.displayValue.value).toBe("Lewis");
+		});
+
+		describe("slots passed through from a parent component", () => {
+			/**
+			 * Mount form-field inside a wrapper that passes its own named slot
+			 * into one of form-field's slots, as an app component would with
+			 * `<form-field><slot name="label" /></form-field>`.
+			 *
+			 * @param  {string}  slotName
+			 *     The form-field slot that receives the wrapper's slot.
+			 * @returns  {object}
+			 *     The mounted wrapper.
+			 */
+			function mountWithParentSlot(slotName) {
+				const wrapperComponent = defineComponent({
+					setup(_, { slots }) {
+						return () =>
+							h(
+								FormField,
+								{ name: "start_time" },
+								{ [slotName]: () => renderSlot(slots, "outer") },
+							);
+					},
+				});
+
+				return createDeepMount(wrapperComponent, {
+					global: { provide },
+					slots: { outer: () => h("span", "Start time") },
+				})();
+			}
+
+			test.each(["default", "help", "error"])(
+				"should render the %s slot without a Vue warning",
+				async (slotName) => {
+					const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+					const wrapper = mountWithParentSlot(slotName);
+
+					await flushPromises();
+
+					expect(wrapper.text()).toContain("Start time");
+					expect(warning).not.toHaveBeenCalled();
+				},
+			);
+
+			test("should register the label text from the parent slot", async () => {
+				mountWithParentSlot("default");
+
+				await flushPromises();
+
+				const field = registerFieldMock.mock.calls.at(-1)?.[0];
+
+				expect(field.label()).toBe("Start time");
+			});
 		});
 
 		test("should register a custom answer-summary slot", () => {

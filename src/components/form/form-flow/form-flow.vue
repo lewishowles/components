@@ -746,8 +746,9 @@ function markScreenComplete(screenId) {
  *
  * @param  {object}  field
  *     The field registration supplied by form-field.
- * @param  {string}  field.label
- *     The field's label text.
+ * @param  {string | Function}  field.label
+ *     The field's label text, or a function that returns it. Read it while
+ *     rendering, since form-field builds it from its default slot.
  * @param  {ComputedRef<unknown>}  field.displayValue
  *     The display value available for answer summaries, or undefined when omitted.
  * @param  {Function}  field.answerSummary
@@ -841,7 +842,8 @@ function getAnswerSummaries() {
 			const displayValue = unref(field?.displayValue);
 
 			const hasDisplayableAnswer = displayValue !== undefined || Boolean(field?.answerSummary);
-			const hasFieldLabel = isNonEmptyString(field?.label);
+			const label = toValue(field?.label);
+			const hasFieldLabel = isNonEmptyString(label);
 
 			if (!hasDisplayableAnswer || !hasFieldLabel) {
 				continue;
@@ -851,7 +853,7 @@ function getAnswerSummaries() {
 				answer: displayValue,
 				answerSummary: field.answerSummary,
 				fieldName,
-				label: field.label,
+				label,
 			});
 		}
 

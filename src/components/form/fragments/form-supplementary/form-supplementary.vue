@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { computed, useSlots, watch } from "vue";
+import { computed, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import useFormSupplementary from "@/components/form/composables/use-form-supplementary/use-form-supplementary";
 
@@ -28,20 +28,10 @@ const props = defineProps({
 	},
 });
 
-const emit = defineEmits(["update:describedby"]);
 const slots = useSlots();
 const { errorId, helpId } = useFormSupplementary(props.inputId);
 // Whether help text has been provided.
 const haveHelp = computed(() => isNonEmptySlot(slots.help));
 // Whether error text has been provided.
 const haveError = computed(() => isNonEmptySlot(slots.error));
-
-// Notify any listening form element to update its describedby value.
-watch(
-	[haveHelp, haveError],
-	() => {
-		emit("update:describedby");
-	},
-	{ immediate: true },
-);
 </script>
