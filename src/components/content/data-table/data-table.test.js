@@ -61,6 +61,48 @@ describe("data-table", () => {
 	});
 
 	describe("Render", () => {
+		test("Hides sort controls and keeps client rows in order when sorting is disabled", () => {
+			const firstRow = { id: "a", title: "Zulu" };
+			const secondRow = { id: "b", title: "Alpha" };
+
+			const wrapper = deepMount({
+				props: {
+					columns: { title: { label: "Title" } },
+					data: [firstRow, secondRow],
+					enableSort: false,
+					state: { sort: { column: "title", direction: "ascending" } },
+				},
+				slots: {
+					caption: "Films",
+					"sort-instruction": "Sort this column",
+				},
+			});
+
+			expect(wrapper.find('[data-test="data-table-sort"]').exists()).toBe(false);
+			expect(
+				wrapper.get('[data-test="data-table-heading"]').attributes("aria-sort"),
+			).toBeUndefined();
+			expect(wrapper.text()).not.toContain("Sort this column");
+			expect(wrapper.text()).not.toContain("Sorted by");
+			expect(wrapper.vm.paginatedRows.map((row) => row.raw)).toEqual([firstRow, secondRow]);
+		});
+
+		test("Clears the sort announcement when sorting is turned off", async () => {
+			const wrapper = deepMount({
+				props: { columns: { title: { label: "Title" } } },
+			});
+
+			const status = wrapper.get('[data-test="data-table-status"]');
+
+			await wrapper.get('[data-test="data-table-sort"]').trigger("click");
+			await nextTick();
+			expect(status.text()).toContain("Sorted by Title ascending");
+
+			await wrapper.setProps({ enableSort: false });
+
+			expect(status.text()).toBe("");
+		});
+
 		test.each(["client", "server"])(
 			"Keeps toolbar controls when %s data becomes empty",
 			async (mode) => {
@@ -311,6 +353,31 @@ describe("data-table", () => {
 	});
 
 	describe("Server mode", () => {
+		test("Shows no sort indicator for a controlled sort when sorting is disabled", () => {
+			const wrapper = deepMount({
+				props: {
+					columns: { title: { label: "Title" } },
+					enableSort: false,
+					error: null,
+					loading: false,
+					mode: "server",
+					state: {
+						page: 1,
+						itemsPerPage: 10,
+						sort: { column: "title", direction: "descending" },
+						filters: { search: "" },
+					},
+					totalRows: 1,
+				},
+			});
+
+			expect(
+				wrapper.get('[data-test="data-table-heading"]').attributes("aria-sort"),
+			).toBeUndefined();
+			expect(wrapper.find('[data-test="data-table-sort"]').exists()).toBe(false);
+			expect(wrapper.find('[data-test="data-table-status"]').text()).toBe("");
+		});
+
 		test("warns when required server props are missing", () => {
 			const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
 
@@ -870,50 +937,58 @@ describe("data-table", () => {
 				expect(vm.paginatedRows.length).toBe(15);
 			});
 
-			test("should re-calculate if sortedColumn is changed", async () => {
+			test("Recalculates paginated rows when the sorted column changes", async () => {
 				const data = Array.from({ length: 15 }, (_, i) => ({
 					id: i + 1,
 					title: `Title ${i + 1}`,
 					release_year: 2000 - i,
 				}));
 
-				const wrapper = mount({ data });
+				const wrapper = mount({
+					columns: { title: { label: "Title" }, release_year: { label: "Release year" } },
+					data,
+				});
+
 				const vm = wrapper.vm;
 
-				vm.sortedColumn = "title";
+				vm.sortColumn("title");
 
 				await nextTick();
 
 				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 1 }));
 
-				vm.sortedColumn = "release_year";
+				vm.sortColumn("release_year");
 
 				await nextTick();
 
 				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 15 }));
 			});
 
-			test("should re-calculate if sortDirection is changed", async () => {
+			test("Recalculates paginated rows when the sort direction changes", async () => {
 				const data = Array.from({ length: 15 }, (_, i) => ({
 					id: i + 1,
 					title: `Title ${i + 1}`,
 					release_year: 2000 - i,
 				}));
 
-				const wrapper = mount({ data });
+				const wrapper = mount({
+					columns: { release_year: { label: "Release year" } },
+					data,
+				});
+
 				const vm = wrapper.vm;
 
-				vm.sortedColumn = "title";
-
-				await nextTick();
-
-				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 1 }));
-
-				vm.sortedColumn = "release_year";
+				vm.sortColumn("release_year");
 
 				await nextTick();
 
 				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 15 }));
+
+				vm.sortColumn("release_year");
+
+				await nextTick();
+
+				expect(vm.paginatedRows[0].raw).toEqual(expect.objectContaining({ id: 1 }));
 			});
 
 			test("should re-calculate if currentPage is changed", async () => {
@@ -1148,11 +1223,10 @@ describe("data-table", () => {
 			});
 
 			test("describes the ascending state and offers descending", () => {
-				const wrapper = mount();
+				const wrapper = mount({ columns: { title: { label: "Title" } } });
 				const vm = wrapper.vm;
 
-				vm.sortedColumn = "title";
-				vm.sortDirection = "ascending";
+				vm.sortColumn("title");
 
 				expect(vm.getSortInstruction("title")).toBe(
 					"(sorted ascending: activate to sort descending)",
@@ -1160,11 +1234,11 @@ describe("data-table", () => {
 			});
 
 			test("describes the descending state and offers ascending", () => {
-				const wrapper = mount();
+				const wrapper = mount({ columns: { title: { label: "Title" } } });
 				const vm = wrapper.vm;
 
-				vm.sortedColumn = "title";
-				vm.sortDirection = "descending";
+				vm.sortColumn("title");
+				vm.sortColumn("title");
 
 				expect(vm.getSortInstruction("title")).toBe(
 					"(sorted descending: activate to sort ascending)",

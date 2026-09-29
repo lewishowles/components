@@ -330,7 +330,8 @@
 
 				<p>
 					Whether to enable the table sort. When enabled, columns marked as sortable (the default)
-					can be ordered ascending or descending.
+					can be ordered ascending or descending. While sorting is off, the table ignores any sort
+					in its state and never changes it.
 				</p>
 			</component-prop>
 

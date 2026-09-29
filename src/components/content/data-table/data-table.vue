@@ -2,7 +2,7 @@
 	<div data-component="data-table" data-test="data-table">
 		<data-table-status
 			v-bind="{
-				type: statusType,
+				type: activeStatusType,
 				sortColumn: getColumnLabel(sortedColumn),
 				ascending: isAscending,
 				resultCount: rowCount,
@@ -105,7 +105,7 @@
 							>
 								<slot name="caption" />
 
-								<span class="sr-only">
+								<span v-if="enableSort" class="sr-only">
 									<slot
 										name="sorted-hint"
 										v-bind="{
@@ -145,17 +145,17 @@
 										class="py-4"
 										:class="[
 											{
-												'ps-3': !column.sortable && !column.first,
-												'pe-3': !column.sortable && !column.last,
+												'ps-3': !isColumnSortable(column) && !column.first,
+												'pe-3': !isColumnSortable(column) && !column.last,
 												'text-start': column.align !== 'right',
 												'text-end': column.align === 'right',
 											},
-											!column.sortable ? getHeadingClasses(column) : null,
+											!isColumnSortable(column) ? getHeadingClasses(column) : null,
 										]"
 										data-test="data-table-heading"
 									>
 										<ui-button
-											v-if="column.sortable"
+											v-if="isColumnSortable(column)"
 											v-bind="{ iconEnd: getSortIcon(columnKey) }"
 											class="hocus:border-primary hocus:bg-surface-sunken -mt-4 -mb-4.25 w-full border-b border-transparent py-4"
 											:class="[
@@ -389,7 +389,9 @@ const props = defineProps({
 
 	/**
 	 * Whether to enable the table sort. When enabled, columns marked as
-	 * sortable (the default) can be ordered ascending or descending.
+	 * sortable (the default) can be ordered ascending or descending. While
+	 * sorting is off, the table ignores any sort in its state and never
+	 * changes it.
 	 */
 	enableSort: {
 		type: Boolean,
@@ -663,7 +665,32 @@ const {
 	sortDirection,
 	sortedColumn,
 	sortedRows,
-} = useTableSort(filteredRows, columnDefinitions, { isServerMode, state });
+} = useTableSort(filteredRows, columnDefinitions, {
+	enabled: toRef(props, "enableSort"),
+	isServerMode,
+	state,
+});
+
+// The announcement for the status live region. A sort announcement is dropped
+// once sorting is turned off, since there is no longer a sorted column to name.
+const activeStatusType = computed(() => {
+	if (!props.enableSort && statusType.value === statusTypes.SORT) {
+		return null;
+	}
+
+	return statusType.value;
+});
+
+/**
+ * Whether a column shows a sort button. Sorting must be turned on for the table
+ * and for the column itself.
+ *
+ * @param  {object}  column
+ *     The column definition to check.
+ */
+function isColumnSortable(column) {
+	return props.enableSort && column.sortable;
+}
 
 /**
  * The default screen-reader instruction for a column's sort button, describing

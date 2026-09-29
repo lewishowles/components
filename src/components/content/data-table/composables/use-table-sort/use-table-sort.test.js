@@ -28,6 +28,8 @@ function createRow(values) {
  *     The filtered rows to sort.
  * @param  {object}  options.columns
  *     The column definitions.
+ * @param  {boolean}  options.enabled
+ *     Whether sorting is enabled.
  * @param  {boolean}  options.serverMode
  *     Whether server mode is active.
  * @param  {object|null}  options.stateValue
@@ -36,19 +38,26 @@ function createRow(values) {
 function createComposable({
 	rows = [],
 	columns = { name: { label: "Name" } },
+	enabled = true,
 	serverMode = false,
 	stateValue = null,
 } = {}) {
 	const filteredRows = ref(rows);
 	const columnDefinitions = ref(columns);
+	const sortingEnabled = ref(enabled);
 	const isServerMode = ref(serverMode);
 	const state = ref(stateValue);
 
 	return {
 		columnDefinitions,
 		filteredRows,
+		sortingEnabled,
 		state,
-		...useTableSort(filteredRows, columnDefinitions, { isServerMode, state }),
+		...useTableSort(filteredRows, columnDefinitions, {
+			enabled: sortingEnabled,
+			isServerMode,
+			state,
+		}),
 	};
 }
 
@@ -83,6 +92,21 @@ describe("useTableSort", () => {
 			const { sortedRows } = createComposable({ rows });
 
 			expect(sortedRows.value).toEqual(rows);
+		});
+
+		test("Ignores an initial client sort while sorting is disabled", () => {
+			const rows = [createRow({ name: "zulu" }), createRow({ name: "alpha" })];
+
+			const { getColumnSortDirection, getSortIcon, sortedColumn, sortedRows } = createComposable({
+				enabled: false,
+				rows,
+				stateValue: { sort: { column: "name", direction: sortDirections.ASCENDING } },
+			});
+
+			expect(sortedColumn.value).toBeNull();
+			expect(sortedRows.value).toEqual(rows);
+			expect(getColumnSortDirection("name")).toBeNull();
+			expect(getSortIcon("name")).toBeNull();
 		});
 	});
 
@@ -120,6 +144,17 @@ describe("useTableSort", () => {
 
 			expect(sortedColumn.value).toBeNull();
 		});
+
+		test("Ignores sort requests while sorting is disabled", () => {
+			const { sortColumn, sortedColumn, sortingEnabled } = createComposable({ enabled: false });
+
+			sortColumn("name");
+
+			expect(sortedColumn.value).toBeNull();
+
+			sortingEnabled.value = true;
+			expect(sortedColumn.value).toBeNull();
+		});
 	});
 
 	describe("Server state", () => {
@@ -152,6 +187,32 @@ describe("useTableSort", () => {
 			expect(state.value).toEqual({
 				page: 1,
 				sort: { column: "name", direction: sortDirections.ASCENDING },
+			});
+		});
+
+		test("Ignores server sort state and leaves it unchanged while sorting is disabled", async () => {
+			const initialState = {
+				page: 3,
+				sort: { column: "name", direction: sortDirections.DESCENDING },
+			};
+
+			const { getColumnSortDirection, sortColumn, sortedColumn, state } = createComposable({
+				enabled: false,
+				serverMode: true,
+				stateValue: initialState,
+			});
+
+			sortColumn("name");
+			expect(state.value).toEqual(initialState);
+
+			state.value = { ...initialState, sort: { column: "name", direction: "ascending" } };
+			await nextTick();
+
+			expect(sortedColumn.value).toBeNull();
+			expect(getColumnSortDirection("name")).toBeNull();
+			expect(state.value).toEqual({
+				page: 3,
+				sort: { column: "name", direction: "ascending" },
 			});
 		});
 	});

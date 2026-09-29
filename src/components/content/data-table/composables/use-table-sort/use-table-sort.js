@@ -15,17 +15,37 @@ export const sortDirections = { ASCENDING: "ascending", DESCENDING: "descending"
  *     A ref of the rows to sort, already filtered by any search.
  * @param  {object}  columnDefinitions
  *     A ref of the column definitions, used to validate sort targets.
+ * @param  {object}  options
+ *     Optional settings for the sort.
+ * @param  {object}  options.enabled
+ *     A ref of whether sorting is turned on. While it is off, no column counts as
+ *     sorted, rows keep their given order, and the table never writes a sort to
+ *     the state. Defaults to on.
+ * @param  {object}  options.isServerMode
+ *     A ref of whether the server sorts the rows. When it does, rows are returned
+ *     unsorted and sort changes are written to the state instead.
+ * @param  {object}  options.state
+ *     A ref of the table state. Its sort sets the starting sort, and in server
+ *     mode it receives every sort change.
  */
 export default function useTableSort(filteredRows, columnDefinitions, options = {}) {
-	const { isServerMode = ref(false), state = ref(null) } = options;
+	const { enabled = ref(true), isServerMode = ref(false), state = ref(null) } = options;
+
+	// The column the user or state last chose to sort by. It is kept while sorting
+	// is turned off, so the same sort comes back when sorting is turned on again.
+	const selectedColumn = ref(state.value?.sort?.column ?? null);
 
 	// The column currently sorted. When null, rows are shown in their provided
-	// order.
-	const sortedColumn = ref(state.value?.sort?.column ?? null);
+	// order, which is always the case while sorting is turned off.
+	const sortedColumn = computed(() => (enabled.value ? selectedColumn.value : null));
+
 	// The direction the sorted column is sorted in.
 	const sortDirection = ref(state.value?.sort?.direction ?? sortDirections.ASCENDING);
-	// The server-controlled sort state, when server mode is active.
-	const serverSort = computed(() => (isServerMode.value ? state.value?.sort : null));
+
+	// The sort held in the server state. It is ignored while sorting is turned off.
+	const serverSort = computed(() => {
+		return enabled.value && isServerMode.value ? state.value?.sort : null;
+	});
 
 	// The column used for sort indicators and status text.
 	const activeSortedColumn = computed(
@@ -67,6 +87,10 @@ export default function useTableSort(filteredRows, columnDefinitions, options = 
 	 *     The key of the column to sort.
 	 */
 	function sortColumn(columnKey) {
+		if (!enabled.value) {
+			return;
+		}
+
 		if (!isNonEmptyString(columnKey)) {
 			return;
 		}
@@ -84,7 +108,7 @@ export default function useTableSort(filteredRows, columnDefinitions, options = 
 			return;
 		}
 
-		sortedColumn.value = columnKey;
+		selectedColumn.value = columnKey;
 		sortDirection.value = sortDirections.ASCENDING;
 		updateServerState();
 	}
@@ -115,7 +139,7 @@ export default function useTableSort(filteredRows, columnDefinitions, options = 
 				return;
 			}
 
-			sortedColumn.value = sort?.column ?? null;
+			selectedColumn.value = sort?.column ?? null;
 			sortDirection.value = sort?.direction ?? sortDirections.ASCENDING;
 		},
 		{ deep: true },

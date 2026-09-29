@@ -48,7 +48,8 @@ export const dataTableMetadata = {
 			name: "enableSort",
 			type: "boolean",
 			default: true,
-			summary: "Enable sortable columns.",
+			summary:
+				"Enable sortable columns. While sorting is off, the table ignores any sort in its state and never changes it.",
 		},
 		{
 			name: "enableSelection",

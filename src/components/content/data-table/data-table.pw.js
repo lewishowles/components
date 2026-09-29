@@ -717,6 +717,29 @@ test.describe("data-table", () => {
 	});
 
 	test.describe("sort", () => {
+		test("keeps rows in order when a heading is clicked with sorting disabled", async ({
+			mount,
+			page,
+		}) => {
+			await mountDataTable(mount, {
+				props: {
+					enableSort: false,
+					state: { sort: { column: "title", direction: "ascending" } },
+				},
+			});
+
+			const titleHeading = heading(page, 0);
+
+			await expect(page.getByTestId("data-table-sort")).toHaveCount(0);
+			await expect(titleHeading).not.toHaveAttribute("aria-sort");
+			await expect(rowCell(page, 0, 0)).toHaveText("Toy Story");
+
+			await titleHeading.click();
+
+			await expect(rowCell(page, 0, 0)).toHaveText("Toy Story");
+			await expect(titleHeading).not.toHaveAttribute("aria-sort");
+		});
+
 		test("a table can be sorted", async ({ mount, page }) => {
 			await mountDataTable(mount);
 
