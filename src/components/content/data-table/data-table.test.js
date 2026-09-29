@@ -259,6 +259,33 @@ describe("data-table", () => {
 			expect(actionHeading.find(".sr-only").exists()).toBe(false);
 		});
 
+		test.each([true, false])(
+			"passes the column key and configured label to a heading slot when sortable is %s",
+			(sortable) => {
+				// The props the heading slot received when it last rendered.
+				let headingProps;
+
+				const wrapper = deepMount({
+					props: {
+						columns: { title: { label: "Film title", sortable } },
+						enableSearch: false,
+					},
+					slots: {
+						title_heading: (slotProps) => {
+							headingProps = slotProps;
+
+							return `Custom ${slotProps.label}`;
+						},
+					},
+				});
+
+				expect(headingProps).toMatchObject({ key: "title", label: "Film title" });
+				expect(wrapper.get('[data-test="data-table-heading"]').text()).toContain(
+					"Custom Film title",
+				);
+			},
+		);
+
 		test("renders an explicit actions column with a visible heading", () => {
 			const wrapper = deepMount({
 				props: {

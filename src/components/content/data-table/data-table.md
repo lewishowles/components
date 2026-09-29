@@ -95,7 +95,7 @@ Adding an `actions` key to `columns` opts out of automatic injection. The config
 
 - default: The heading provided within `configuration`, or the column key.
 
-Provides the ability to override the label for a particular column, by its key from the original data. Provided to the slot are is the key for that column.
+Provides the ability to override the label for a particular column, by its key from the original data. The slot receives that column's key and current label.
 
 | Slot prop | Type   | Description                                                                  |
 | --------- | ------ | ---------------------------------------------------------------------------- |
