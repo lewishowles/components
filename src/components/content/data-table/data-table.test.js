@@ -5,7 +5,7 @@ import DataTableToolbar from "./fragments/data-table-toolbar/data-table-toolbar.
 import { createDeepMount, createMount } from "@lewishowles/testing/vue";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import { getPathValue } from "@lewishowles/helpers/object";
-import { nextTick } from "vue";
+import { defineComponent, h, nextTick, ref } from "vue";
 
 const sampleRow = { id: "123", title: "Toy Story", release_year: "1995" };
 const defaultProps = { data: [sampleRow] };
@@ -61,51 +61,6 @@ describe("data-table", () => {
 	});
 
 	describe("Render", () => {
-		test("Only shows the caption sort hint while a column is sorted", async () => {
-			const wrapper = deepMount({
-				props: { columns: { title: { label: "Title" } } },
-				slots: { caption: "Films" },
-			});
-
-			const caption = wrapper.get("caption");
-
-			expect(caption.text()).toBe("Films");
-
-			await wrapper.get('[data-test="data-table-sort"]').trigger("click");
-
-			expect(caption.text()).toContain("Sorted by Title ascending");
-
-			await wrapper.setProps({ enableSort: false });
-
-			expect(caption.text()).toBe("Films");
-		});
-
-		test("Hides sort controls and keeps client rows in order when sorting is disabled", () => {
-			const firstRow = { id: "a", title: "Zulu" };
-			const secondRow = { id: "b", title: "Alpha" };
-
-			const wrapper = deepMount({
-				props: {
-					columns: { title: { label: "Title" } },
-					data: [firstRow, secondRow],
-					enableSort: false,
-					state: { sort: { column: "title", direction: "ascending" } },
-				},
-				slots: {
-					caption: "Films",
-					"sort-instruction": "Sort this column",
-				},
-			});
-
-			expect(wrapper.find('[data-test="data-table-sort"]').exists()).toBe(false);
-			expect(
-				wrapper.get('[data-test="data-table-heading"]').attributes("aria-sort"),
-			).toBeUndefined();
-			expect(wrapper.text()).not.toContain("Sort this column");
-			expect(wrapper.text()).not.toContain("Sorted by");
-			expect(wrapper.vm.paginatedRows.map((row) => row.raw)).toEqual([firstRow, secondRow]);
-		});
-
 		test("Clears the sort announcement when sorting is turned off", async () => {
 			const wrapper = deepMount({
 				props: { columns: { title: { label: "Title" } } },
@@ -115,6 +70,7 @@ describe("data-table", () => {
 
 			await wrapper.get('[data-test="data-table-sort"]').trigger("click");
 			await nextTick();
+
 			expect(status.text()).toContain("Sorted by Title ascending");
 
 			await wrapper.setProps({ enableSort: false });
@@ -151,17 +107,21 @@ describe("data-table", () => {
 				expect(wrapper.get('[data-test="data-table-toolbar"]').text()).toContain("Filter rows");
 				expect(wrapper.get('[data-test="data-table-toolbar"]').text()).toContain("Export rows");
 				expect(wrapper.find('[data-test="data-table-display-options"]').exists()).toBe(true);
+
 				expect(
 					wrapper
 						.findAll('[data-test="data-table-columns-checkbox"]')
 						.map((checkbox) => checkbox.text()),
 				).toEqual(["Title", "Release year"]);
+
 				expect(
 					wrapper.findAll('[data-test="data-table-columns"] input[type="checkbox"]'),
 				).toHaveLength(2);
+
 				expect(wrapper.get('[data-test="data-table-no-data"]').text()).toContain(
 					"No data to display.",
 				);
+
 				expect(wrapper.find('[data-test="data-table-table"]').exists()).toBe(false);
 
 				await wrapper.setProps({ data: [sampleRow], totalRows: 1 });
@@ -180,6 +140,7 @@ describe("data-table", () => {
 			});
 
 			expect(wrapper.find('[data-test="data-table-toolbar"]').exists()).toBe(false);
+
 			expect(wrapper.get('[data-test="data-table-no-data"]').text()).toContain(
 				"No matching records.",
 			);
@@ -191,210 +152,88 @@ describe("data-table", () => {
 			expect(wrapper.find('[data-test="data-table-toolbar"]').exists()).toBe(false);
 		});
 
-		test("passes cell content and the original row to a cell slot", () => {
-			const rawRow = { address: { city: "Bristol" } };
-
-			let receivedCell;
-			let receivedRow;
-
+		test("forwards column content and heading slots to the table", () => {
 			const wrapper = deepMount({
-				props: {
-					columns: { city: { source: "address.city" } },
-					data: [rawRow],
-					enableSearch: false,
-				},
+				props: { columns: { title: { label: "Title" } }, enableSearch: false },
 				slots: {
-					city: ({ cell, row }) => {
-						receivedCell = cell;
-						receivedRow = row;
-
-						return cell;
-					},
+					title: ({ cell }) => `Film: ${cell}`,
+					title_heading: ({ label }) => `Film ${label}`,
 				},
 			});
 
-			expect(receivedCell).toBe("Bristol");
-			expect(receivedRow).toBe(wrapper.vm.internalData[0].raw);
-			expect(receivedRow).toEqual(rawRow);
-			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("Bristol");
+			expect(wrapper.get('[data-test="data-table-heading"]').text()).toContain("Film Title");
+			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("Film: Toy Story");
 		});
 
-		test("renders the actions slot in the injected column", () => {
-			const wrapper = deepMount({
-				props: {
-					columns: { title: { label: "Title" } },
-					data: [sampleRow],
-					enableSearch: false,
-				},
-				slots: {
-					actions: ({ row }) => row.id || "Actions",
-				},
-			});
-
-			expect(
-				wrapper.findAll('[data-test="data-table-heading"]').at(-1).get(".sr-only").text(),
-			).toBe("Actions");
-
-			const cells = wrapper.findAll('[data-test="data-table-cell"]');
-
-			expect(cells.at(cells.length - 1).text()).toBe(sampleRow.id);
-		});
-
-		test("renders an actions heading slot visibly in the injected column", () => {
-			const wrapper = deepMount({
-				props: {
-					columns: { title: { label: "Title" } },
-					data: [sampleRow],
-					enableSearch: false,
-				},
-				slots: {
-					actions: ({ row }) => row.id,
-					actions_heading: "Row actions",
-				},
-			});
-
-			const actionHeading = wrapper.findAll('[data-test="data-table-heading"]').at(-1);
-
-			expect(actionHeading.text()).toBe("Row actions");
-			expect(actionHeading.find(".sr-only").exists()).toBe(false);
-		});
-
-		test.each([true, false])(
-			"passes the column key and configured label to a heading slot when sortable is %s",
-			(sortable) => {
-				// The props the heading slot received when it last rendered.
-				let headingProps;
-
-				const wrapper = deepMount({
-					props: {
-						columns: { title: { label: "Film title", sortable } },
-						enableSearch: false,
-					},
-					slots: {
-						title_heading: (slotProps) => {
-							headingProps = slotProps;
-
-							return `Custom ${slotProps.label}`;
-						},
-					},
-				});
-
-				expect(headingProps).toMatchObject({ key: "title", label: "Film title" });
-				expect(wrapper.get('[data-test="data-table-heading"]').text()).toContain(
-					"Custom Film title",
-				);
-			},
-		);
-
-		test("renders an explicit actions column with a visible heading", () => {
-			const wrapper = deepMount({
-				props: {
-					columns: {
-						title: { label: "Title" },
-						actions: { label: "More", sortable: false },
-					},
-					data: [sampleRow],
-					enableSearch: false,
-				},
-				slots: {
-					actions: ({ row }) => row.id,
-				},
-			});
-
-			const actionHeading = wrapper.findAll('[data-test="data-table-heading"]').at(-1);
-
-			expect(actionHeading.text()).toBe("More");
-			expect(actionHeading.find(".sr-only").exists()).toBe(false);
-		});
-
-		test("does not inject an actions column when configuration hides it", () => {
+		test("hides the configured actions column and sort buttons", () => {
 			const wrapper = deepMount({
 				props: {
 					columns: { title: { label: "Title" }, actions: { hidden: true } },
-					data: [sampleRow],
 					enableSearch: false,
+					enableSort: false,
 				},
-				slots: {
-					actions: ({ row }) => row.id || "Actions",
-				},
+				slots: { actions: ({ row }) => row.id },
 			});
 
-			expect(wrapper.vm.columnDefinitions).not.toHaveProperty("actions");
 			expect(wrapper.findAll('[data-test="data-table-heading"]')).toHaveLength(1);
 			expect(wrapper.findAll('[data-test="data-table-cell"]')).toHaveLength(1);
+			expect(wrapper.find('[data-test="data-table-sort"]').exists()).toBe(false);
 		});
 
-		test("passes a dotted column key value and the original row to a cell slot", () => {
-			const rawRow = { address: { city: "Bristol" } };
+		test("forwards a caption slot added after mount and removes it again", async () => {
+			const host = defineComponent({
+				setup() {
+					const showCaption = ref(false);
 
-			let receivedCell;
-			let receivedRow;
-
-			const wrapper = deepMount({
-				props: {
-					columns: { "address.city": { label: "City" } },
-					data: [rawRow],
-					enableSearch: false,
+					return { showCaption };
 				},
-				slots: {
-					"address.city": ({ cell, row }) => {
-						receivedCell = cell;
-						receivedRow = row;
-
-						return cell;
-					},
+				render() {
+					return h(
+						DataTable,
+						{ data: [sampleRow], columns: { title: { label: "Title" } }, enableSearch: false },
+						this.showCaption ? { caption: () => "Films" } : {},
+					);
 				},
 			});
 
-			expect(receivedCell).toBe("Bristol");
-			expect(receivedRow).toBe(wrapper.vm.internalData[0].raw);
-			expect(receivedRow).toEqual(rawRow);
-			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("Bristol");
+			const wrapper = createDeepMount(host)();
+
+			expect(wrapper.find("caption").exists()).toBe(false);
+
+			wrapper.vm.showCaption = true;
+
+			await nextTick();
+
+			expect(wrapper.get("caption").text()).toBe("Films");
+
+			wrapper.vm.showCaption = false;
+
+			await nextTick();
+
+			expect(wrapper.find("caption").exists()).toBe(false);
+		});
+
+		test.each([
+			["caption", {}],
+			["sorted-hint", { state: { sort: { column: "title", direction: "ascending" } } }],
+			["sort-instruction", {}],
+			["loading-label", { mode: "server", loading: true, error: null, totalRows: 1 }],
+			["error", { mode: "server", loading: false, error: "Unavailable", totalRows: 1 }],
+			["select-all-rows-label", { enableSelection: true }],
+			["select-row-label", { enableSelection: true }],
+		])("forwards the %s slot to the table", (slotName, props) => {
+			const wrapper = deepMount({
+				props: { columns: { title: { label: "Title" } }, enableSearch: false, ...props },
+				slots: { [slotName]: "Forwarded table copy" },
+			});
+
+			expect(wrapper.text()).toContain("Forwarded table copy");
 		});
 
 		test("should expose the component styling hook", () => {
 			const wrapper = mount();
 
 			expect(wrapper.attributes("data-component")).toBe("data-table");
-		});
-
-		test("should expose separate scroll indicator and scroll region hooks", () => {
-			const wrapper = mount();
-			const scrollIndicators = wrapper.get('[data-part="scroll-indicators"]');
-			const scrollRegion = wrapper.get('[data-part="scroll-region"]');
-
-			expect(scrollIndicators.classes()).not.toContain("overflow-x-auto");
-			expect(scrollRegion.classes()).toContain("overflow-x-auto");
-		});
-
-		test("should label an overflowing wrapper with overflowLabel", async () => {
-			const wrapper = mount({ overflowLabel: "Scrollable table" });
-
-			wrapper.vm.isOverflowing = true;
-			await nextTick();
-
-			const scrollWrapper = wrapper.find(".overflow-x-auto");
-
-			expect(scrollWrapper.attributes("role")).toBe("region");
-			expect(scrollWrapper.attributes("aria-label")).toBe("Scrollable table");
-		});
-
-		test("should omit the region role and label when overflowing without a label", async () => {
-			const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
-			const wrapper = mount();
-
-			wrapper.vm.isOverflowing = true;
-			await nextTick();
-
-			const scrollWrapper = wrapper.find(".overflow-x-auto");
-
-			expect(scrollWrapper.attributes("role")).toBeUndefined();
-			expect(scrollWrapper.attributes("aria-label")).toBeUndefined();
-			expect(scrollWrapper.attributes("tabindex")).toBe("0");
-
-			expect(warning).toHaveBeenCalledWith(
-				"[data-table] An overflowing table needs a caption or `overflowLabel` to label its scroll region.",
-			);
 		});
 	});
 
@@ -417,10 +256,6 @@ describe("data-table", () => {
 				},
 			});
 
-			expect(
-				wrapper.get('[data-test="data-table-heading"]').attributes("aria-sort"),
-			).toBeUndefined();
-			expect(wrapper.find('[data-test="data-table-sort"]').exists()).toBe(false);
 			expect(wrapper.find('[data-test="data-table-status"]').text()).toBe("");
 		});
 
@@ -535,6 +370,7 @@ describe("data-table", () => {
 
 			wrapper.vm.selectAllRows = true;
 			wrapper.vm.toggleAllRows();
+
 			await nextTick();
 
 			expect(wrapper.findComponent(DataTableStatus).props()).toMatchObject({
@@ -591,6 +427,7 @@ describe("data-table", () => {
 			const vm = wrapper.vm;
 
 			vm.selectedRowIds = [vm.internalData[0].configuration.id];
+
 			await nextTick();
 			await wrapper.setProps({ data: [secondRow] });
 			await nextTick();
@@ -615,6 +452,7 @@ describe("data-table", () => {
 			});
 
 			wrapper.vm.currentPage = 2;
+
 			await nextTick();
 
 			expect(wrapper.emitted("update:state").at(-1)[0]).toMatchObject({ page: 2 });
@@ -1122,101 +960,6 @@ describe("data-table", () => {
 	});
 
 	describe("Methods", () => {
-		describe("getRowId", () => {
-			test("should retrieve a row ID from configuration", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				const row = { configuration: { id: "abcde" } };
-
-				expect(vm.getRowId(row)).toBe("abcde");
-			});
-
-			test("should handle a malformed row", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				const row = { content: {} };
-
-				expect(vm.getRowId(row)).toBe(null);
-			});
-		});
-
-		describe("getRowContent", () => {
-			test("should return the content of a row", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				const row = vm.internalData[0];
-				const content = vm.getRowContent(row, "title");
-
-				expect(content).toEqual("Toy Story");
-			});
-
-			test("should return content for a dotted column key", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				const row = {
-					content: {
-						"address.city": { content: "Bristol" },
-					},
-				};
-
-				expect(vm.getRowContent(row, "address.city")).toEqual("Bristol");
-			});
-
-			describe("should correctly retrieve supported values", () => {
-				test.for([
-					["boolean (true)", true],
-					["boolean (false)", false],
-					["number (positive)", 1],
-					["number (negative)", -1],
-					["string (non-empty)", "string"],
-				])("%s", ([, input]) => {
-					const wrapper = mount({ data: [{ id: input }] });
-					const vm = wrapper.vm;
-
-					const row = vm.internalData[0];
-					const content = vm.getRowContent(row, "id");
-
-					expect(content).toEqual(input);
-				});
-			});
-
-			describe("should ignore invalid cell content", () => {
-				test.for([
-					["number (NaN)", NaN],
-					["string (empty)", ""],
-					["object (non-empty)", { property: "value" }],
-					["object (empty)", {}],
-					["array (non-empty)", [1, 2, 3]],
-					["array (empty)", []],
-					["null", null],
-					["undefined", undefined],
-				])("%s", ([, input]) => {
-					const wrapper = mount({ data: [{ id: input }] });
-					const vm = wrapper.vm;
-
-					const row = vm.internalData[0];
-					const content = vm.getRowContent(row, "id");
-
-					expect(content).toEqual("");
-				});
-			});
-		});
-
-		describe("getRawRow", () => {
-			test("should retrieve the original raw row data", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				const row = vm.internalData[0];
-
-				expect(vm.getRawRow(row)).toEqual(sampleRow);
-			});
-		});
-
 		describe("setSearchQuery", () => {
 			test("should update the current search query", () => {
 				const wrapper = mount();
@@ -1257,38 +1000,6 @@ describe("data-table", () => {
 
 					expect(vm.searchQuery).toBe("");
 				});
-			});
-		});
-
-		describe("getSortInstruction", () => {
-			test("prompts to sort an unsorted column", () => {
-				const wrapper = mount();
-				const vm = wrapper.vm;
-
-				expect(vm.getSortInstruction("title")).toBe("(sortable: activate to sort ascending)");
-			});
-
-			test("describes the ascending state and offers descending", () => {
-				const wrapper = mount({ columns: { title: { label: "Title" } } });
-				const vm = wrapper.vm;
-
-				vm.sortColumn("title");
-
-				expect(vm.getSortInstruction("title")).toBe(
-					"(sorted ascending: activate to sort descending)",
-				);
-			});
-
-			test("describes the descending state and offers ascending", () => {
-				const wrapper = mount({ columns: { title: { label: "Title" } } });
-				const vm = wrapper.vm;
-
-				vm.sortColumn("title");
-				vm.sortColumn("title");
-
-				expect(vm.getSortInstruction("title")).toBe(
-					"(sorted descending: activate to sort ascending)",
-				);
 			});
 		});
 	});

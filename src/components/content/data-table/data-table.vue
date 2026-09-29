@@ -77,208 +77,11 @@
 					<slot name="no-data-message">No data to display.</slot>
 				</alert-message>
 
-				<div
-					v-else
-					:class="scrollIndicatorClasses"
-					data-part="scroll-indicators"
-					data-test="data-table-scroll-indicators"
-				>
-					<div
-						ref="tableScrollWrapper"
-						class="relative overflow-x-auto"
-						data-part="scroll-region"
-						data-test="data-table-scroll-region"
-						v-bind="{
-							tabindex: isOverflowing ? 0 : -1,
-							role: isOverflowing && (haveCaption || haveOverflowLabel) ? 'region' : null,
-							'aria-labelledby': isOverflowing && haveCaption ? captionId : null,
-							'aria-label':
-								isOverflowing && !haveCaption && haveOverflowLabel ? props.overflowLabel : null,
-						}"
-					>
-						<table v-show="haveTableContent" class="w-full" data-test="data-table-table">
-							<caption
-								v-if="haveCaption || (enableSort && sortedColumn)"
-								:id="captionId"
-								class="text-start italic"
-								:class="{ 'mb-2': haveCaption }"
-							>
-								<slot name="caption" />
-
-								<span v-if="enableSort && sortedColumn" class="sr-only">
-									<slot
-										name="sorted-hint"
-										v-bind="{
-											sortedColumn: getColumnLabel(sortedColumn),
-											ascending: isAscending,
-										}"
-									>
-										Sorted by {{ getColumnLabel(sortedColumn) }}
-										<template v-if="isAscending">ascending</template>
-										<template v-else>descending</template>
-									</slot>
-								</span>
-							</caption>
-
-							<thead>
-								<tr class="border-border-strong border-b">
-									<th v-if="enableSelection" scope="col" class="w-px px-4">
-										<form-checkbox
-											v-bind="{
-												displayLabel: false,
-												indeterminate: selectAllIndeterminate,
-												showOptionalIndicator: false,
-											}"
-											v-model="selectAllRows"
-											class="shrink"
-											data-test="data-table-select-all-rows"
-											@change="toggleAllRows"
-										>
-											<slot name="select-all-rows-label">Select all rows</slot>
-										</form-checkbox>
-									</th>
-									<th
-										v-for="(column, columnKey) in visibleColumnDefinitions"
-										:key="columnKey"
-										v-bind="{ 'aria-sort': getColumnSortDirection(columnKey) }"
-										scope="col"
-										class="py-4"
-										:class="[
-											{
-												'ps-3': !isColumnSortable(column) && !column.first,
-												'pe-3': !isColumnSortable(column) && !column.last,
-												'text-start': column.align !== 'right',
-												'text-end': column.align === 'right',
-											},
-											!isColumnSortable(column) ? getHeadingClasses(column) : null,
-										]"
-										data-test="data-table-heading"
-									>
-										<ui-button
-											v-if="isColumnSortable(column)"
-											v-bind="{ iconEnd: getSortIcon(columnKey) }"
-											class="hocus:border-primary hocus:bg-surface-sunken -mt-4 -mb-4.25 w-full border-b border-transparent py-4"
-											:class="[
-												{
-													'ps-3': !column.first,
-													'pe-3': !column.last,
-													'justify-start': column.align !== 'right',
-													'justify-end': column.align === 'right',
-												},
-												getHeadingClasses(column),
-											]"
-											data-test="data-table-sort"
-											@click="sortColumn(columnKey)"
-										>
-											<slot
-												:name="`${columnKey}_heading`"
-												v-bind="{ key: columnKey, label: column.label }"
-											>
-												{{ column.label }}
-											</slot>
-
-											<span class="sr-only">
-												<slot
-													name="sort-instruction"
-													v-bind="{
-														label: column.label,
-														sorted: columnKey === sortedColumn,
-														direction: getColumnSortDirection(columnKey),
-													}"
-												>
-													{{ getSortInstruction(columnKey) }}
-												</slot>
-											</span>
-										</ui-button>
-
-										<slot
-											v-else
-											:name="`${columnKey}_heading`"
-											v-bind="{ key: columnKey, label: column.label }"
-										>
-											<!-- The auto-injected actions column hides its heading text from view. An #actions_heading slot replaces that text and shows it visibly. -->
-											<span v-if="column.visuallyHiddenHeading" class="sr-only">
-												{{ column.label }}
-											</span>
-											<template v-else>{{ column.label }}</template>
-										</slot>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr v-if="isLoading" data-test="data-table-loading-row">
-									<td :colspan="stateRowColumnCount" class="py-6 text-center">
-										<loading-indicator large data-test="data-table-loading">
-											<slot name="loading-label">Loading data</slot>
-										</loading-indicator>
-									</td>
-								</tr>
-
-								<tr v-else-if="haveError" data-test="data-table-error-row">
-									<td :colspan="stateRowColumnCount" class="py-6">
-										<alert-message type="error" data-test="data-table-error">
-											<slot name="error" v-bind="{ error: props.error }">{{ errorMessage }}</slot>
-										</alert-message>
-									</td>
-								</tr>
-
-								<template v-else>
-									<tr
-										v-for="(row, rowIndex) in paginatedRows"
-										:key="row.configuration.id"
-										class="border-border hover:bg-surface-subtle border-b transition-colors last:border-b-0"
-										data-test="data-table-row"
-									>
-										<td v-if="enableSelection" class="px-4">
-											<form-checkbox
-												v-bind="{
-													displayLabel: false,
-													inputAttributes: { value: getRowId(row) },
-													showOptionalIndicator: false,
-												}"
-												v-model="selectedRowIds"
-												class="shrink"
-												data-test="data-table-select-row"
-											>
-												<slot
-													name="select-row-label"
-													v-bind="{ row: getRawRow(row), rowNumber: rowIndex + 1 }"
-												>
-													Select row {{ rowIndex + 1 }}
-												</slot>
-											</form-checkbox>
-										</td>
-										<component
-											:is="column.primary ? 'th' : 'td'"
-											v-for="(column, columnKey) in visibleColumnDefinitions"
-											:key="columnKey"
-											:scope="column.primary ? 'row' : null"
-											:class="[
-												{
-													'ps-3': !column.first,
-													'pe-3': !column.last,
-													'text-content-strong font-semibold': column.primary,
-													'text-start': column.align !== 'right',
-													'text-end': column.align === 'right',
-													'tabular-nums': column.tabularNums,
-												},
-												getCellClasses(column),
-											]"
-											data-test="data-table-cell"
-										>
-											<slot
-												:name="columnKey"
-												v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }"
-											>
-												{{ getRowContent(row, columnKey) }}
-											</slot>
-										</component>
-									</tr>
-								</template>
-							</tbody>
-						</table>
-					</div>
-				</div>
+				<data-table-table v-else>
+					<template v-for="slotName in getTableSlotNames()" #[slotName]="slotProps">
+						<slot :name="slotName" v-bind="slotProps || {}" />
+					</template>
+				</data-table-table>
 
 				<data-table-footer
 					v-if="haveData"
@@ -316,15 +119,14 @@
 
 <script setup>
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
-import { computed, provide, ref, toRef, useId, useSlots, watch, watchEffect } from "vue";
-import { getRawRow, getRowContent, getRowId } from "./utilities/row.js";
-import { callComponentMethod, isNonEmptySlot } from "@lewishowles/helpers/vue";
+import { computed, provide, ref, toRef, useSlots, watch, watchEffect } from "vue";
+import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { getPathValue } from "@lewishowles/helpers/object";
-import { useResizeObserver, useScroll } from "@vueuse/core";
 
 import DataTableFooter from "./fragments/data-table-footer/data-table-footer.vue";
 import DataTableHeader from "./fragments/data-table-header/data-table-header.vue";
+import DataTableTable from "./fragments/data-table-table/data-table-table.vue";
 import DataTableStatus, { statusTypes } from "./fragments/data-table-status/data-table-status.vue";
 import DataTableToolbar from "./fragments/data-table-toolbar/data-table-toolbar.vue";
 
@@ -333,7 +135,7 @@ import useTableData from "./composables/use-table-data/use-table-data.js";
 import useTablePagination from "./composables/use-table-pagination/use-table-pagination.js";
 import useTableSearch from "./composables/use-table-search/use-table-search.js";
 import useTableSelection from "./composables/use-table-selection/use-table-selection.js";
-import useTableSort, { sortDirections } from "./composables/use-table-sort/use-table-sort.js";
+import useTableSort from "./composables/use-table-sort/use-table-sort.js";
 
 const props = defineProps({
 	/**
@@ -542,50 +344,11 @@ const errorMessage = computed(() => {
 const dataTableToolbar = ref(null);
 // Whether a name has been provided for this table.
 const haveTableName = computed(() => isNonEmptyString(props.name));
-// Whether this table includes a caption.
-const haveCaption = computed(() => isNonEmptySlot(slots.caption));
 // Whether an #actions slot has been declared. Its column is injected regardless
 // of the slot's output for individual rows.
 const haveActionsSlot = computed(() => typeof slots.actions === "function");
-// Whether an explicit label is available for an overflowing table.
-const haveOverflowLabel = computed(() => isNonEmptyString(props.overflowLabel));
 // Which type of announcement is currently active in the status live region.
 const statusType = ref(null);
-// A reference to the scrollable wrapper around the table, used to detect overflow.
-const tableScrollWrapper = ref(null);
-// Whether the table is wider than its container and requires horizontal scrolling.
-const isOverflowing = ref(false);
-// A stable ID linking the caption to the scrollable wrapper's aria-labelledby.
-const captionId = useId();
-// Access the current horizontal scroll edges for the visible overflow indicators.
-const { arrivedState, measure } = useScroll(tableScrollWrapper, { observe: true });
-
-// Classes that expose which table edges have hidden content beyond them.
-const scrollIndicatorClasses = computed(() => ({
-	"show-left": isOverflowing.value && !arrivedState.left,
-	"show-right": isOverflowing.value && !arrivedState.right,
-}));
-
-useResizeObserver(tableScrollWrapper, () => {
-	isOverflowing.value =
-		tableScrollWrapper.value?.scrollWidth > tableScrollWrapper.value?.clientWidth;
-	measure();
-});
-
-watchEffect(() => {
-	if (
-		!import.meta.env.DEV ||
-		!isOverflowing.value ||
-		haveCaption.value ||
-		haveOverflowLabel.value
-	) {
-		return;
-	}
-
-	console.warn(
-		"[data-table] An overflowing table needs a caption or `overflowLabel` to label its scroll region.",
-	);
-});
 
 watchEffect(() => {
 	if (!import.meta.env.DEV || !isServerMode.value) {
@@ -681,39 +444,6 @@ const activeStatusType = computed(() => {
 	return statusType.value;
 });
 
-/**
- * Whether a column shows a sort button. Sorting must be turned on for the table
- * and for the column itself.
- *
- * @param  {object}  column
- *     The column definition to check.
- */
-function isColumnSortable(column) {
-	return props.enableSort && column.sortable;
-}
-
-/**
- * The default screen-reader instruction for a column's sort button, describing
- * the current state and the action a click will take. Overridable per column
- * via the `sort-instruction` slot for translation.
- *
- * @param  {string}  columnKey
- *     The key of the column to describe.
- */
-function getSortInstruction(columnKey) {
-	const direction = getColumnSortDirection(columnKey);
-
-	if (direction === null) {
-		return "(sortable: activate to sort ascending)";
-	}
-
-	if (direction === sortDirections.ASCENDING) {
-		return "(sorted ascending: activate to sort descending)";
-	}
-
-	return "(sorted descending: activate to sort ascending)";
-}
-
 // Whether we have any data to display. That is, not only do we have data for
 // the table, but if the user is performing a search, there are results for that
 // search term.
@@ -743,6 +473,35 @@ const { currentPage, itemsPerPage, paginatedRows, rowCount } = useTablePaginatio
 	toRef(props, "enablePagination"),
 	{ isServerMode, state, totalRows: toRef(props, "totalRows") },
 );
+
+/**
+ * The names of the user's slots that the table fragment renders: its fixed
+ * slots, plus the cell and heading slots of each visible column. Toolbar,
+ * status and footer slots stay with this component. The template calls this on
+ * every render, so slots added or removed after the table first appears are
+ * passed through.
+ */
+function getTableSlotNames() {
+	// The table slots that do not depend on the configured columns.
+	const fixedNames = [
+		"caption",
+		"sorted-hint",
+		"sort-instruction",
+		"loading-label",
+		"error",
+		"select-all-rows-label",
+		"select-row-label",
+	];
+
+	// The keys of the visible columns, including any injected actions column.
+	const columnKeys = Object.keys(visibleColumnDefinitions.value);
+
+	return Object.keys(slots).filter(
+		(name) =>
+			fixedNames.includes(name) ||
+			columnKeys.some((key) => name === key || name === `${key}_heading`),
+	);
+}
 
 // Whether the selection includes every row represented by the table total.
 const allAvailableRowsSelected = computed(() => {
@@ -797,12 +556,64 @@ function setSearchQuery(value) {
 }
 
 provide("data-table", {
+	// The complete column configuration used by the toolbar and header.
 	columnDefinitions,
+	// The heading level for the table introduction.
 	headingLevel: toRef(props, "headingLevel"),
+	// Whether the table can save preferences under a name.
 	haveTableName,
+	// The placeholder for the search field.
 	searchPlaceholder: toRef(props, "searchPlaceholder"),
+	// The name used to save the table's preferences.
 	tableName: toRef(props, "name"),
+	// Update the density choices when the table configuration changes.
 	updateTableDensityOptions,
+	// The columns currently rendered in the table.
+	visibleColumnDefinitions,
+	// The rows on the current page.
+	paginatedRows,
+	// Whether rows or a server response state should show the table.
+	haveTableContent,
+	// Whether sortable columns show sort controls.
+	enableSort: toRef(props, "enableSort"),
+	// Whether rows show selection controls.
+	enableSelection: toRef(props, "enableSelection"),
+	// The key of the active sort column.
+	sortedColumn,
+	// Whether the active sort is ascending.
+	isAscending,
+	// Whether a server response is loading.
+	isLoading,
+	// Whether a server response has an error.
+	haveError,
+	// The server error passed to the error slot.
+	error: toRef(props, "error"),
+	// The default text for a server error.
+	errorMessage,
+	// The accessible name for a scrollable table without a caption.
+	overflowLabel: toRef(props, "overflowLabel"),
+	// Whether the select-all control shows a mixed state.
+	selectAllIndeterminate,
+	// The number of columns spanned by loading and error rows.
+	stateRowColumnCount,
+	// Return the label for a column key.
+	getColumnLabel,
+	// Return the ARIA sort direction for a column key.
+	getColumnSortDirection,
+	// Return the classes for a column heading.
+	getHeadingClasses,
+	// Return the classes for a body cell.
+	getCellClasses,
+	// Return the sort icon for a column key.
+	getSortIcon,
+	// Sort by a column when its heading button is activated.
+	sortColumn,
+	// Select or clear all rows when the header checkbox changes.
+	toggleAllRows,
+	// The select-all value owned by the selection composable.
+	selectAllRows,
+	// The selected row IDs owned by the selection composable.
+	selectedRowIds,
 });
 
 defineExpose({
