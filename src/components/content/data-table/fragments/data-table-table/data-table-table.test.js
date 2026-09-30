@@ -108,6 +108,51 @@ describe("data-table-table", () => {
 	afterEach(() => vi.restoreAllMocks());
 
 	describe("Render", () => {
+		test("gives every table part an explicit role so the card layout keeps table semantics", () => {
+			const { wrapper } = mountTable({
+				context: {
+					enableSelection: ref(true),
+					visibleColumnDefinitions: ref({
+						title: makeColumn("Title", { primary: true, last: false }),
+						year: makeColumn("Year", { first: false, sortable: false }),
+					}),
+					paginatedRows: ref([makeRow(sampleRow, { title: "Toy Story", year: "1995" })]),
+				},
+			});
+
+			for (const [selector, role] of [
+				["table", "table"],
+				["thead, tbody", "rowgroup"],
+				["tr", "row"],
+				["thead th", "columnheader"],
+				["tbody th", "rowheader"],
+				["td", "cell"],
+			]) {
+				for (const element of wrapper.findAll(selector)) {
+					expect(element.attributes("role")).toBe(role);
+				}
+			}
+		});
+
+		test.each([
+			["loading", "isLoading"],
+			["error", "haveError"],
+		])("keeps roles on the %s row", (_name, state) => {
+			const { wrapper } = mountTable({ context: { [state]: ref(true) } });
+			const row = wrapper.get("tbody tr");
+
+			expect(row.attributes("role")).toBe("row");
+			expect(row.get("td").attributes("role")).toBe("cell");
+		});
+
+		test("keeps the configured label in sortable headings with a custom heading slot", () => {
+			const { wrapper } = mountTable({ slots: { title_heading: "Film title" } });
+			const heading = wrapper.get('[data-test="data-table-heading"]');
+
+			expect(heading.get('[data-test="data-table-card-heading"]').text()).toBe("Title");
+			expect(heading.get('[data-test="data-table-sort"]').text()).toContain("Film title");
+		});
+
 		test("shows the caption sort hint only while sorting is enabled", async () => {
 			const { context, wrapper } = mountTable({ slots: { caption: "Films" } });
 			const caption = wrapper.get("caption");

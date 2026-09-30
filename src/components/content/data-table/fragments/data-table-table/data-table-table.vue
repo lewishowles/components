@@ -1,6 +1,7 @@
 <template>
 	<div
 		:class="scrollIndicatorClasses"
+		class="@container"
 		data-part="scroll-indicators"
 		data-test="data-table-scroll-indicators"
 	>
@@ -11,7 +12,12 @@
 			data-test="data-table-scroll-region"
 			v-bind="getScrollRegionAttributes()"
 		>
-			<table v-show="haveTableContent" class="w-full" data-test="data-table-table">
+			<table
+				v-show="haveTableContent"
+				class="w-full @max-xl:block"
+				role="table"
+				data-test="data-table-table"
+			>
 				<caption
 					v-if="hasCaption() || (enableSort && sortedColumn)"
 					:id="captionId"
@@ -35,9 +41,14 @@
 					</span>
 				</caption>
 
-				<thead>
-					<tr class="border-border-strong border-b">
-						<th v-if="enableSelection" scope="col" class="w-px px-4">
+				<thead class="@max-xl:sr-only" role="rowgroup">
+					<tr class="border-border-strong border-b" role="row">
+						<th v-if="enableSelection" scope="col" role="columnheader" class="w-px px-4">
+							<!-- The card layout hides the select-all checkbox, so this keeps a header for the selection column and each card's checkbox still pairs with the right column header. -->
+							<span class="sr-only @xl:hidden">
+								<slot name="select-all-rows-label">Select all rows</slot>
+							</span>
+
 							<form-checkbox
 								v-bind="{
 									displayLabel: false,
@@ -45,7 +56,7 @@
 									showOptionalIndicator: false,
 								}"
 								v-model="selectAllRows"
-								class="shrink"
+								class="shrink @max-xl:hidden"
 								data-test="data-table-select-all-rows"
 								@change="toggleAllRows"
 							>
@@ -57,6 +68,7 @@
 							:key="columnKey"
 							v-bind="{ 'aria-sort': getColumnSortDirection(columnKey) }"
 							scope="col"
+							role="columnheader"
 							class="py-4"
 							:class="[
 								{
@@ -69,10 +81,19 @@
 							]"
 							data-test="data-table-heading"
 						>
+							<!-- The card layout hides the sort button, so this keeps the column label available to screen readers. -->
+							<span
+								v-if="isColumnSortable(column)"
+								class="sr-only @xl:hidden"
+								data-test="data-table-card-heading"
+							>
+								{{ column.label }}
+							</span>
+
 							<ui-button
 								v-if="isColumnSortable(column)"
 								v-bind="{ iconEnd: getSortIcon(columnKey) }"
-								class="hocus:border-primary hocus:bg-surface-sunken -mt-4 -mb-4.25 w-full border-b border-transparent py-4"
+								class="hocus:border-primary hocus:bg-surface-sunken -mt-4 -mb-4.25 w-full border-b border-transparent py-4 @max-xl:hidden"
 								:class="[
 									{
 										'ps-3': !column.first,
@@ -120,17 +141,17 @@
 						</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr v-if="isLoading" data-test="data-table-loading-row">
-						<td :colspan="stateRowColumnCount" class="py-6 text-center">
+				<tbody class="@max-xl:block @max-xl:space-y-3" role="rowgroup">
+					<tr v-if="isLoading" role="row" data-test="data-table-loading-row">
+						<td :colspan="stateRowColumnCount" class="py-6 text-center" role="cell">
 							<loading-indicator large data-test="data-table-loading">
 								<slot name="loading-label">Loading data</slot>
 							</loading-indicator>
 						</td>
 					</tr>
 
-					<tr v-else-if="haveError" data-test="data-table-error-row">
-						<td :colspan="stateRowColumnCount" class="py-6">
+					<tr v-else-if="haveError" role="row" data-test="data-table-error-row">
+						<td :colspan="stateRowColumnCount" class="py-6" role="cell">
 							<alert-message type="error" data-test="data-table-error">
 								<slot name="error" v-bind="{ error }">{{ errorMessage }}</slot>
 							</alert-message>
@@ -141,10 +162,11 @@
 						<tr
 							v-for="(row, rowIndex) in paginatedRows"
 							:key="row.configuration.id"
-							class="border-border hover:bg-surface-subtle border-b transition-colors last:border-b-0"
+							class="border-border hover:bg-surface-subtle border-b transition-colors last:border-b-0 @max-xl:block @max-xl:rounded-lg @max-xl:border @max-xl:p-3"
+							role="row"
 							data-test="data-table-row"
 						>
-							<td v-if="enableSelection" class="px-4">
+							<td v-if="enableSelection" class="px-4 @max-xl:block @max-xl:px-0" role="cell">
 								<form-checkbox
 									v-bind="{
 										displayLabel: false,
@@ -168,6 +190,7 @@
 								v-for="(column, columnKey) in visibleColumnDefinitions"
 								:key="columnKey"
 								:scope="column.primary ? 'row' : null"
+								:role="column.primary ? 'rowheader' : 'cell'"
 								:class="[
 									{
 										'ps-3': !column.first,
@@ -178,6 +201,7 @@
 										'tabular-nums': column.tabularNums,
 									},
 									getCellClasses(column),
+									'@max-xl:block @max-xl:min-w-0 @max-xl:px-0 @max-xl:py-1 @max-xl:text-start @max-xl:break-words',
 								]"
 								data-test="data-table-cell"
 							>

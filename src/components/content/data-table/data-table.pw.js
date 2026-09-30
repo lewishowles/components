@@ -16,6 +16,10 @@ const columns = {
 	box_office: { label: "Box office ($m)" },
 };
 
+// A device name long enough to overflow the table even at the wide 40rem width, so the overflow tests check scrolling rather than the card layout.
+const longDeviceName =
+	"LaptopWithAnUnbrokenNameThatExtendsPastTheWidthOfTheTableAndKeepsGoingForAnotherLongSection";
+
 const data = [
 	{
 		id: "2e644b4b-51e8-4519-ab31-d9a37e2d0434",
@@ -129,6 +133,66 @@ test.describe("data-table", () => {
 		await expect(page.getByTestId("data-table")).toBeVisible();
 	});
 
+	test("shows cards at narrow component widths while keeping table headers", async ({
+		mount,
+		page,
+	}) => {
+		await mountDataTableRaw(mount, {
+			props: {
+				data: [data[0]],
+				columns,
+				enableSelection: true,
+			},
+			slots: { title_heading: "Film title" },
+		});
+
+		await setTableWidth(page, "30rem");
+
+		const table = page.getByTestId("data-table-table");
+		const row = page.getByTestId("data-table-row");
+		const titleHeading = heading(page, 0);
+
+		await expect(table).toHaveCSS("display", "block");
+		await expect(row).toHaveCSS("display", "block");
+		await expect(rowCell(page, 0, 1)).toHaveCSS("display", "block");
+		await expect(titleHeading).toHaveAttribute("role", "columnheader");
+		await expect(titleHeading.getByTestId("data-table-card-heading")).toHaveText("Title");
+		await expect(titleHeading.getByTestId("data-table-sort")).toBeHidden();
+		await expect(selectAll(page)).toBeHidden();
+		await expect(page.getByRole("button", { name: /sort/i })).toHaveCount(0);
+
+		await setTableWidth(page, "40rem");
+
+		await expect(table).toHaveCSS("display", "table");
+		await expect(titleHeading.getByTestId("data-table-sort")).toBeVisible();
+		await expect(selectAll(page)).toBeVisible();
+	});
+
+	test("keeps the selection column header in cards while hiding select-all", async ({
+		mount,
+		page,
+	}) => {
+		await mountDataTableRaw(mount, {
+			props: { data: [data[0]], columns, enableSelection: true },
+			slots: { "select-all-rows-label": "Choose all films" },
+		});
+
+		await setTableWidth(page, "30rem");
+
+		const headerCells = page.locator('thead [role="columnheader"]');
+
+		const bodyCells = page
+			.getByTestId("data-table-row")
+			.locator('[role="cell"], [role="rowheader"]');
+
+		await expect(selectAll(page)).toBeHidden();
+		await expect(headerCells).toHaveCount(4);
+		await expect(bodyCells).toHaveCount(4);
+		await expect(headerCells.first()).toContainText("Choose all films");
+		await expect(headerCells.nth(1).getByTestId("data-table-card-heading")).toHaveText("Title");
+		await expect(rowCell(page, 0, 0)).toContainText("Toy Story");
+	});
+
 	test.describe("rendering", () => {
 		test("keeps table controls visible while server data is pending", async ({ mount, page }) => {
 			await mountDataTableRaw(mount, {
@@ -215,7 +279,7 @@ test.describe("data-table", () => {
 		test("shows which table edges have content hidden beyond them", async ({ mount, page }) => {
 			await mountDataTableRaw(mount, {
 				props: {
-					data: [{ device: "Laptop", last_seen: "4 minutes ago" }],
+					data: [{ device: longDeviceName, last_seen: "4 minutes ago" }],
 					columns: {
 						device: { label: "Device name" },
 						last_seen: { label: "Last seen" },
@@ -231,7 +295,7 @@ test.describe("data-table", () => {
 			await expect(scrollIndicators).not.toHaveClass(/show-left/);
 			await expect(scrollIndicators).not.toHaveClass(/show-right/);
 
-			await setTableWidth(page, "12rem");
+			await setTableWidth(page, "40rem");
 
 			await expect(scrollIndicators).not.toHaveClass(/show-left/);
 			await expect(scrollIndicators).toHaveClass(/show-right/);
@@ -259,7 +323,7 @@ test.describe("data-table", () => {
 		}) => {
 			await mountDataTableRaw(mount, {
 				props: {
-					data: [{ device: "Laptop", last_seen: "4 minutes ago" }],
+					data: [{ device: longDeviceName, last_seen: "4 minutes ago" }],
 					columns: {
 						device: { label: "Device name" },
 						last_seen: { label: "Last seen" },
@@ -269,7 +333,7 @@ test.describe("data-table", () => {
 				slots: { caption: "Device table" },
 			});
 
-			await setTableWidth(page, "12rem");
+			await setTableWidth(page, "40rem");
 
 			const scrollRegion = page.getByRole("region", { name: "Device table" });
 
@@ -299,7 +363,7 @@ test.describe("data-table", () => {
 
 			await mountDataTableRaw(mount, {
 				props: {
-					data: [{ device: "Laptop", last_seen: "4 minutes ago" }],
+					data: [{ device: longDeviceName, last_seen: "4 minutes ago" }],
 					columns: {
 						device: { label: "Device name" },
 						last_seen: { label: "Last seen" },
@@ -309,7 +373,7 @@ test.describe("data-table", () => {
 				},
 			});
 
-			await setTableWidth(page, "12rem");
+			await setTableWidth(page, "40rem");
 
 			const scrollRegion = page.getByRole("region", { name: overflowLabel });
 
@@ -324,7 +388,7 @@ test.describe("data-table", () => {
 		}) => {
 			await mountDataTableRaw(mount, {
 				props: {
-					data: [{ device: "Laptop", last_seen: "4 minutes ago" }],
+					data: [{ device: longDeviceName, last_seen: "4 minutes ago" }],
 					columns: {
 						device: { label: "Device name" },
 						last_seen: { label: "Last seen" },
@@ -333,7 +397,7 @@ test.describe("data-table", () => {
 				},
 			});
 
-			await setTableWidth(page, "12rem");
+			await setTableWidth(page, "40rem");
 
 			const scrollWrapper = page.getByTestId("data-table").locator(".overflow-x-auto");
 
