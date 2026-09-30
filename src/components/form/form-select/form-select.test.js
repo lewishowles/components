@@ -14,6 +14,29 @@ describe("form-select", () => {
 
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
+
+		test.for([
+			["a later option", "two", ["one", "two"]],
+			["zero", 0, [1, 0]],
+		])("keeps %s when an empty option is not allowed", ([, modelValue, options]) => {
+			const wrapper = mountDeep({
+				props: { allowEmpty: false, modelValue, options },
+			});
+
+			expect(wrapper.get("select").element.value).toBe(String(modelValue));
+			expect(wrapper.emitted("update:modelValue")).toBeUndefined();
+		});
+
+		test.for([
+			["an empty value", ""],
+			["an unknown value", "missing"],
+		])("chooses the first option for %s when an empty option is not allowed", ([, modelValue]) => {
+			const wrapper = mountDeep({
+				props: { allowEmpty: false, modelValue, options: ["first", "second"] },
+			});
+
+			expect(wrapper.emitted("update:modelValue")).toEqual([["first"]]);
+		});
 	});
 
 	describe("Props", () => {

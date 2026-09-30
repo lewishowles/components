@@ -175,9 +175,9 @@ const { inputId, errorId, describedBy, haveIntroduction, haveHelp, haveError } =
 	id: props.id,
 });
 
-// When initialising, if we are not allowed an empty option, select the first
-// option in the list.
-if (props.allowEmpty !== true) {
+// When there is no empty option, keep the current value if it is one of the options.
+// Otherwise, choose the first option so the select never shows a value it cannot hold.
+if (!props.allowEmpty && !internalOptions.value.some(({ value }) => value === model.value)) {
 	model.value = getPathValue(firstDefined(internalOptions.value), "value");
 }
 
