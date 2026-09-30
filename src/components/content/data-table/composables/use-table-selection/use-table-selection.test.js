@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vite-plus/test";
-import { nextTick, ref } from "vue";
+import { computed, nextTick, ref } from "vue";
 import useTableSelection from "./use-table-selection.js";
 
 describe("useTableSelection", () => {
@@ -215,6 +215,48 @@ describe("useTableSelection", () => {
 			expect(selection.value).toEqual([]);
 		});
 
+		test("Keeps a selected client row without the configured row key", async () => {
+			const row = createRow("internal-a", { name: "Alice" });
+			const { selection, selectedRowIds } = createComposable({ rows: [row] });
+
+			selectedRowIds.value = ["internal-a"];
+			await nextTick();
+
+			expect(selectedRowIds.value).toEqual(["internal-a"]);
+			expect(selection.value).toEqual([row.raw]);
+		});
+
+		test("Keeps a selected client row without the row key when a parent echoes it", async () => {
+			const row = createRow("internal-a", { name: "Alice" });
+			const internalData = ref([row]);
+			const parentSelection = ref([]);
+			const writes = [];
+
+			const selection = computed({
+				get: () => parentSelection.value,
+				set: (rows) => writes.push(rows),
+			});
+
+			const { selectedRowIds } = useTableSelection(
+				internalData,
+				internalData,
+				selection,
+				ref(true),
+				{ rowKey: ref("id") },
+			);
+
+			selectedRowIds.value = ["internal-a"];
+			await nextTick();
+
+			expect(writes).toEqual([[row.raw]]);
+
+			parentSelection.value = [...writes[0]];
+			await nextTick();
+
+			expect(writes).toHaveLength(1);
+			expect(selectedRowIds.value).toEqual(["internal-a"]);
+		});
+
 		test("Does not update the model when selection is disabled", async () => {
 			const { selection, selectedRowIds } = createComposable({
 				rows: [createRow("a")],
@@ -268,6 +310,58 @@ describe("useTableSelection", () => {
 
 			expect(selectedRowIds.value).toEqual(["internal-a"]);
 			expect(selection.value).toEqual([currentRow.raw, offPageRow]);
+		});
+
+		test("Leaves an undefined parent-owned server selection unchanged on mount", async () => {
+			const rows = ref([createRow("internal-a")]);
+			const parentSelection = ref(undefined);
+			const writes = [];
+
+			const selection = computed({
+				get: () => parentSelection.value,
+				set: (selectedRows) => writes.push(selectedRows),
+			});
+
+			useTableSelection(rows, rows, selection, ref(true), {
+				isServerMode: ref(true),
+				rowKey: ref("id"),
+			});
+
+			await nextTick();
+
+			expect(writes).toEqual([]);
+			expect(parentSelection.value).toBeUndefined();
+		});
+
+		test("Does not rewrite server selection when a parent echoes the selected rows", async () => {
+			const row = createRow("internal-a", { id: "a", name: "Alice" });
+			const internalData = ref([row]);
+			const parentSelection = ref([]);
+			const writes = [];
+
+			const selection = computed({
+				get: () => parentSelection.value,
+				set: (rows) => writes.push(rows),
+			});
+
+			const { selectedRowIds } = useTableSelection(
+				internalData,
+				internalData,
+				selection,
+				ref(true),
+				{ isServerMode: ref(true), rowKey: ref("id") },
+			);
+
+			selectedRowIds.value = ["internal-a"];
+			await nextTick();
+
+			expect(writes).toEqual([[row.raw]]);
+
+			parentSelection.value = [...writes[0]];
+			await nextTick();
+
+			expect(writes).toHaveLength(1);
+			expect(selectedRowIds.value).toEqual(["internal-a"]);
 		});
 
 		test("Replaces externally selected server rows without retaining old keys", async () => {

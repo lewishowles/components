@@ -188,7 +188,12 @@
 							<td><code>cellClasses</code></td>
 							<td><code>string</code></td>
 							<td><code>&quot;&quot;</code></td>
-							<td>Classes to apply only to this column's cells.</td>
+							<td>
+								Classes to apply only to this column's cells. Cell content sits inside the
+								<code>field-value</code>
+								wrapper, so flex or grid classes on the cell lay out that wrapper rather than the
+								content directly.
+							</td>
 						</tr>
 						<tr>
 							<td><code>columnClasses</code></td>
@@ -383,7 +388,10 @@
 					Additional classes to apply to all standard cells in the table, merged with any
 					column-level
 					<code>cellClasses</code>
-					. Cell padding will always apply.
+					. Cell padding will always apply. Cell content sits inside the
+					<code>field-value</code>
+					wrapper, so flex or grid classes on the cell lay out that wrapper rather than the content
+					directly.
 				</p>
 			</component-prop>
 		</component-props>
@@ -1012,6 +1020,33 @@
 				<template #attribute>data-component="data-table"</template>
 
 				<p>Present on the root element. Use to scope styles to this component.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-scroll-indicators">
+				<template #attribute>data-part="scroll-indicators"</template>
+
+				<p>Hosts shading when columns continue beyond either visible edge.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-scroll-region">
+				<template #attribute>data-part="scroll-region"</template>
+
+				<p>Contains the table and scrolls horizontally when needed.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-field-label">
+				<template #attribute>data-part="field-label"</template>
+
+				<p>
+					Shows the column label above each value in card layout. Screen readers skip it because the
+					column header already gives them the label.
+				</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-field-value">
+				<template #attribute>data-part="field-value"</template>
+
+				<p>Contains the cell value or custom cell content.</p>
 			</component-styling-hook>
 		</component-styling-hooks>
 

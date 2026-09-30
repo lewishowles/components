@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/experimental-ct-vue";
 import { createMount } from "@lewishowles/testing/playwright";
 
 import DataTable from "./data-table.vue";
+import CardWidthStateFixture from "./fixtures/card-width-state.fixture.vue";
 import SearchCallbackFixture from "./fixtures/search-callback.fixture.vue";
 import SearchableContentFixture from "./fixtures/searchable-content.fixture.vue";
 import ServerFixture from "./fixtures/server.fixture.vue";
@@ -155,6 +156,15 @@ test.describe("data-table", () => {
 		await expect(table).toHaveCSS("display", "block");
 		await expect(row).toHaveCSS("display", "block");
 		await expect(rowCell(page, 0, 1)).toHaveCSS("display", "block");
+		await expect(rowCell(page, 0, 0).getByTestId("data-table-field-label")).toHaveText("Title");
+		await expect(rowCell(page, 0, 1).getByTestId("data-table-field-label")).toHaveText(
+			"Release year",
+		);
+		await expect(rowCell(page, 0, 0).getByTestId("data-table-field-label")).toHaveAttribute(
+			"aria-hidden",
+			"true",
+		);
+		await expect(rowCell(page, 0, 0).getByTestId("data-table-field-label")).toBeVisible();
 		await expect(titleHeading).toHaveAttribute("role", "columnheader");
 		await expect(titleHeading.getByTestId("data-table-card-heading")).toHaveText("Title");
 		await expect(titleHeading.getByTestId("data-table-sort")).toBeHidden();
@@ -164,8 +174,52 @@ test.describe("data-table", () => {
 		await setTableWidth(page, "40rem");
 
 		await expect(table).toHaveCSS("display", "table");
+		await expect(rowCell(page, 0, 0).getByTestId("data-table-field-label")).toBeHidden();
 		await expect(titleHeading.getByTestId("data-table-sort")).toBeVisible();
 		await expect(selectAll(page)).toBeVisible();
+	});
+
+	test("keeps selection, sort, search and page state without extra emits across width changes", async ({
+		mount,
+		page,
+	}) => {
+		await mount(CardWidthStateFixture);
+
+		await rowCheckbox(page, 0).click();
+		await sortByColumn(page, "Title");
+		await searchInput(page).fill("film");
+		await selectPage(page, 2);
+
+		const state = page.getByTestId("data-table-card-width-state");
+		const selection = page.getByTestId("data-table-card-width-selection");
+		const stateUpdates = page.getByTestId("data-table-card-width-state-updates");
+		const selectionUpdates = page.getByTestId("data-table-card-width-selection-updates");
+
+		await expect(state).toContainText('"page":2');
+		await expect(state).toContainText('"search":"film"');
+		await expect(state).toContainText('"column":"title"');
+		await expect(selection).toContainText('"uuid":"server-a"');
+
+		const stateBeforeResize = await state.textContent();
+		const selectionBeforeResize = await selection.textContent();
+		const stateUpdatesBeforeResize = await stateUpdates.textContent();
+		const selectionUpdatesBeforeResize = await selectionUpdates.textContent();
+
+		await setTableWidth(page, "30rem");
+
+		await expect(rowCell(page, 0, 0).getByTestId("data-table-field-label")).toBeVisible();
+		await expect(state).toHaveText(stateBeforeResize);
+		await expect(selection).toHaveText(selectionBeforeResize);
+		await expect(stateUpdates).toHaveText(stateUpdatesBeforeResize);
+		await expect(selectionUpdates).toHaveText(selectionUpdatesBeforeResize);
+
+		await setTableWidth(page, "40rem");
+
+		await expect(rowCell(page, 0, 0).getByTestId("data-table-field-label")).toBeHidden();
+		await expect(state).toHaveText(stateBeforeResize);
+		await expect(selection).toHaveText(selectionBeforeResize);
+		await expect(stateUpdates).toHaveText(stateUpdatesBeforeResize);
+		await expect(selectionUpdates).toHaveText(selectionUpdatesBeforeResize);
 	});
 
 	test("keeps the selection column header in cards while hiding select-all", async ({
@@ -213,6 +267,14 @@ test.describe("data-table", () => {
 			await expect(page.getByTestId("data-table-sort")).toHaveCount(Object.keys(columns).length);
 			await expect(page.getByTestId("data-table-pagination")).toBeVisible();
 			await expect(page.getByTestId("data-table-row")).toHaveCount(0);
+
+			await setTableWidth(page, "30rem");
+
+			const loadingRow = page.getByTestId("data-table-loading-row");
+
+			await expect(loadingRow).toHaveCSS("display", "block");
+			await expect(loadingRow).toHaveCSS("border-top-width", "1px");
+			await expect(loadingRow.getByRole("cell")).toHaveCSS("display", "block");
 		});
 
 		test("keeps table controls visible when server loading fails", async ({ mount, page }) => {
@@ -234,6 +296,14 @@ test.describe("data-table", () => {
 			await expect(page.getByTestId("data-table-sort")).toHaveCount(Object.keys(columns).length);
 			await expect(page.getByTestId("data-table-pagination")).toBeVisible();
 			await expect(page.getByTestId("data-table-row")).toHaveCount(0);
+
+			await setTableWidth(page, "30rem");
+
+			const errorRow = page.getByTestId("data-table-error-row");
+
+			await expect(errorRow).toHaveCSS("display", "block");
+			await expect(errorRow).toHaveCSS("border-top-width", "1px");
+			await expect(errorRow.getByRole("cell")).toHaveCSS("display", "block");
 		});
 
 		test("reports search and sort changes without transforming supplied rows", async ({
@@ -248,7 +318,7 @@ test.describe("data-table", () => {
 
 			await sortByColumn(page, "Title");
 			await expect(heading(page, 0)).toHaveAttribute("aria-sort", "ascending");
-			await expect(rowCell(page, 0, 0)).toHaveText("Zulu");
+			await expect(rowCell(page, 0, 0).getByTestId("data-table-field-value")).toHaveText("Zulu");
 
 			await searchInput(page).fill("Alpha");
 			await expect(page.getByTestId("data-table-row")).toHaveCount(2);
@@ -340,7 +410,9 @@ test.describe("data-table", () => {
 			await expect(scrollRegion).toBeVisible();
 
 			expect(await getTextLineCount(heading(page, 0).getByTestId("ui-button-label"))).toBe(1);
-			expect(await getTextLineCount(rowCell(page, 0, 1))).toBe(1);
+			expect(
+				await getTextLineCount(rowCell(page, 0, 1).getByTestId("data-table-field-value")),
+			).toBe(1);
 
 			const metrics = await scrollRegion.evaluate((element) => ({
 				clientWidth: element.clientWidth,
@@ -437,7 +509,9 @@ test.describe("data-table", () => {
 			await expect(descriptionHeading).not.toHaveClass(/min-w-32/);
 			await expect(descriptionCell).toHaveClass(/min-w-0/);
 			await expect(descriptionCell).not.toHaveClass(/min-w-32/);
-			expect(await getTextLineCount(descriptionCell)).toBeGreaterThan(1);
+			expect(
+				await getTextLineCount(descriptionCell.getByTestId("data-table-field-value")),
+			).toBeGreaterThan(1);
 		});
 
 		test("a message is displayed if no data is available", async ({ mount, page }) => {
@@ -516,7 +590,7 @@ test.describe("data-table", () => {
 				},
 			});
 
-			await expect(rowCell(page, 0, 0)).toHaveText("Bristol");
+			await expect(rowCell(page, 0, 0).getByTestId("data-table-field-value")).toHaveText("Bristol");
 		});
 
 		test("a primary column can be defined", async ({ mount, page }) => {
@@ -708,6 +782,7 @@ test.describe("data-table", () => {
 			await mountDataTable(mount);
 
 			await searchInput(page).fill("Not found");
+			await setTableWidth(page, "30rem");
 
 			await expect(page.getByTestId("data-table-no-results")).toBeVisible();
 		});
@@ -728,7 +803,7 @@ test.describe("data-table", () => {
 			await searchInput(page).fill("buzz");
 
 			await expect(page.getByTestId("data-table-row")).toHaveCount(1);
-			await expect(cell(page, 0)).toHaveText("Toy Story");
+			await expect(cell(page, 0).getByTestId("data-table-field-value")).toHaveText("Toy Story");
 		});
 
 		test("a column can define a custom search callback", async ({ mount, page }) => {
@@ -737,7 +812,7 @@ test.describe("data-table", () => {
 			await searchInput(page).fill("AB23456");
 
 			await expect(page.getByTestId("data-table-row")).toHaveCount(1);
-			await expect(cell(page, 0)).toHaveText("AB23 456");
+			await expect(cell(page, 0).getByTestId("data-table-field-value")).toHaveText("AB23 456");
 		});
 
 		test("a search can be reset", async ({ mount, page }) => {
@@ -796,24 +871,32 @@ test.describe("data-table", () => {
 
 			await expect(page.getByTestId("data-table-sort")).toHaveCount(0);
 			await expect(titleHeading).not.toHaveAttribute("aria-sort");
-			await expect(rowCell(page, 0, 0)).toHaveText("Toy Story");
+			await expect(rowCell(page, 0, 0).getByTestId("data-table-field-value")).toHaveText(
+				"Toy Story",
+			);
 
 			await titleHeading.click();
 
-			await expect(rowCell(page, 0, 0)).toHaveText("Toy Story");
+			await expect(rowCell(page, 0, 0).getByTestId("data-table-field-value")).toHaveText(
+				"Toy Story",
+			);
 			await expect(titleHeading).not.toHaveAttribute("aria-sort");
 		});
 
 		test("a table can be sorted", async ({ mount, page }) => {
 			await mountDataTable(mount);
 
-			await expect(rowCell(page, 0, 0)).toHaveText("Toy Story");
-			await expect(rowCell(page, 1, 0)).toHaveText("Aladdin");
+			await expect(rowCell(page, 0, 0).getByTestId("data-table-field-value")).toHaveText(
+				"Toy Story",
+			);
+			await expect(rowCell(page, 1, 0).getByTestId("data-table-field-value")).toHaveText("Aladdin");
 
 			await sortByColumn(page, "Title");
 
-			await expect(rowCell(page, 0, 0)).toHaveText("Aladdin");
-			await expect(rowCell(page, 1, 0)).toHaveText("The Emperor's New Groove");
+			await expect(rowCell(page, 0, 0).getByTestId("data-table-field-value")).toHaveText("Aladdin");
+			await expect(rowCell(page, 1, 0).getByTestId("data-table-field-value")).toHaveText(
+				"The Emperor's New Groove",
+			);
 		});
 
 		test("the appropriate aria-sort is added to the sorted column", async ({ mount, page }) => {
@@ -847,7 +930,9 @@ test.describe("data-table", () => {
 
 			await sortByColumn(page, "Title");
 
-			await expect(rowCell(page, 0, 0)).toHaveText("Toy Story");
+			await expect(rowCell(page, 0, 0).getByTestId("data-table-field-value")).toHaveText(
+				"Toy Story",
+			);
 		});
 	});
 
@@ -872,12 +957,12 @@ test.describe("data-table", () => {
 			await mountDataTable(mount, { props: { data: extendedData } });
 
 			await expect(page.getByTestId("data-table-row")).toHaveCount(10);
-			await expect(cell(page, 0)).toHaveText("Toy Story");
+			await expect(cell(page, 0).getByTestId("data-table-field-value")).toHaveText("Toy Story");
 
 			await selectPage(page, 2);
 
 			await expect(page.getByTestId("data-table-row")).toHaveCount(5);
-			await expect(cell(page, 0)).toHaveText("Inside Out");
+			await expect(cell(page, 0).getByTestId("data-table-field-value")).toHaveText("Inside Out");
 		});
 
 		test("the current page is reset when the sorted column is changed", async ({ mount, page }) => {

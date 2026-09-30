@@ -145,7 +145,7 @@ describe("data-table", () => {
 			});
 
 			expect(wrapper.get('[data-test="data-table-heading"]').text()).toContain("Film Title");
-			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("Film: Toy Story");
+			expect(wrapper.get('[data-test="data-table-field-value"]').text()).toBe("Film: Toy Story");
 		});
 
 		test("hides the configured actions column and sort buttons", () => {

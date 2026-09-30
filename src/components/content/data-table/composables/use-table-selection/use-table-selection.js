@@ -39,9 +39,6 @@ export default function useTableSelection(
 	// The selected server rows, keyed by stable identity.
 	const selectedRowsByKey = shallowRef(new Map());
 
-	// The model array most recently written by this composable.
-	let lastSelectionWrite;
-
 	// Our checkbox that visually determines whether all rows are selected, and
 	// allows the user to toggle state globally.
 	const selectAllRows = ref(false);
@@ -244,6 +241,8 @@ export default function useTableSelection(
 			}
 		}
 
+		// An empty or missing model with nothing selected is already in step, and
+		// replacing the map would send the parent an empty selection it didn't ask for.
 		if (nextSelectedRows.size === 0 && selectedRowsByKey.value.size === 0) {
 			return;
 		}
@@ -258,7 +257,6 @@ export default function useTableSelection(
 		}
 
 		selection.value = nextSelectedRows;
-		lastSelectionWrite = selection.value;
 
 		if (!isNonEmptyArray(nextSelectedRows)) {
 			if (selectAllRows.value === true) {
@@ -267,13 +265,14 @@ export default function useTableSelection(
 		}
 	});
 
-	// Apply initial and later external model values to checkbox state.
+	// Apply initial and later external model values to checkbox state. A value
+	// that matches the rows the table already holds, such as the table's own
+	// update or a parent passing it straight back, is skipped so the two
+	// selection watchers can't loop.
 	watch(
 		selection,
 		(modelSelection) => {
-			if (modelSelection === lastSelectionWrite) {
-				lastSelectionWrite = undefined;
-
+			if (isEqual(modelSelection, selectedRows.value)) {
 				return;
 			}
 

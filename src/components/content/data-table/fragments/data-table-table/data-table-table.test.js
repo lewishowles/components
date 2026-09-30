@@ -153,6 +153,25 @@ describe("data-table-table", () => {
 			expect(heading.get('[data-test="data-table-sort"]').text()).toContain("Film title");
 		});
 
+		test("shows each configured column label in cards, ignoring custom heading content, hidden from screen readers", () => {
+			const { wrapper } = mountTable({
+				context: {
+					enableSelection: ref(true),
+					visibleColumnDefinitions: ref({
+						title: makeColumn("Title", { primary: true, last: false }),
+						year: makeColumn("Release year", { first: false, sortable: false }),
+					}),
+					paginatedRows: ref([makeRow(sampleRow, { title: "Toy Story", year: "1995" })]),
+				},
+				slots: { title_heading: "Film title", year_heading: "Film year" },
+			});
+
+			const labels = wrapper.findAll('[data-test="data-table-field-label"]');
+
+			expect(labels.map((label) => label.text())).toEqual(["Title", "Release year"]);
+			expect(labels.every((label) => label.attributes("aria-hidden") === "true")).toBe(true);
+		});
+
 		test("shows the caption sort hint only while sorting is enabled", async () => {
 			const { context, wrapper } = mountTable({ slots: { caption: "Films" } });
 			const caption = wrapper.get("caption");
@@ -221,7 +240,7 @@ describe("data-table-table", () => {
 			expect(receivedCell).toBe("Bristol");
 			expect(receivedRow).toBe(context.paginatedRows.value[0].raw);
 			expect(receivedRow).toEqual(rawRow);
-			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("Bristol");
+			expect(wrapper.get('[data-test="data-table-field-value"]').text()).toBe("Bristol");
 		});
 
 		test("renders the actions slot in the injected column", () => {
@@ -246,7 +265,12 @@ describe("data-table-table", () => {
 
 			const cells = wrapper.findAll('[data-test="data-table-cell"]');
 
-			expect(cells.at(cells.length - 1).text()).toBe(sampleRow.id);
+			expect(
+				cells
+					.at(cells.length - 1)
+					.get('[data-test="data-table-field-value"]')
+					.text(),
+			).toBe(sampleRow.id);
 		});
 
 		test("renders an actions heading slot visibly in the injected column", () => {
@@ -346,7 +370,7 @@ describe("data-table-table", () => {
 			expect(receivedCell).toBe("Bristol");
 			expect(receivedRow).toBe(context.paginatedRows.value[0].raw);
 			expect(receivedRow).toEqual(rawRow);
-			expect(wrapper.get('[data-test="data-table-cell"]').text()).toBe("Bristol");
+			expect(wrapper.get('[data-test="data-table-field-value"]').text()).toBe("Bristol");
 		});
 
 		test("should expose separate scroll indicator and scroll region hooks", () => {

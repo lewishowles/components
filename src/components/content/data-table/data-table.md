@@ -281,7 +281,7 @@ Any additional configuration for columns. **Note:** Any column without configura
 | `align`                     | `string`             | `left`  | The alignment of the column. Anything but "right" will be treated as "left".                                                                                                                 |
 | `primary`                   | `boolean`            | `false` | Whether this is the primary column. Primary cells render as `<th scope="row">` rather than `<td>`, which helps screen readers associate row headers with their data.                         |
 | `headingClasses`            | `Vue class binding`  | `""`    | Classes to apply only to this column's heading.                                                                                                                                              |
-| `cellClasses`               | `Vue class binding`  | `""`    | Classes to apply only to this column's cells.                                                                                                                                                |
+| `cellClasses`               | `Vue class binding`  | `""`    | Classes to apply only to this column's cells. Cell content sits inside the `field-value` wrapper, so flex or grid classes on the cell lay out that wrapper rather than the content directly. |
 | `columnClasses`             | `Vue class binding`  | `""`    | Classes to apply to both this column's heading and cells.                                                                                                                                    |
 | `tabularNums`               | `boolean`            | `false` | Whether to apply tabular number formatting (`tabular-nums`) to cells in this column. Useful for numeric columns to ensure digits align vertically.                                           |
 
@@ -388,7 +388,7 @@ Additional classes to apply to all headings in the table, merged with any column
 - type: `string`
 - default: `text-content-muted`
 
-Additional classes to apply to all standard cells in the table, merged with any column-level `cellClasses`. Cell padding will always apply.
+Additional classes to apply to all standard cells in the table, merged with any column-level `cellClasses`. Cell padding will always apply. Cell content sits inside the `field-value` wrapper, so flex or grid classes on the cell lay out that wrapper rather than the content directly.
 
 ## Methods
 
@@ -402,11 +402,13 @@ Set the table's current search query, overriding any current search. This could 
 
 ## Styling hooks
 
-| Attribute                       | Element          | Notes                                            |
-| ------------------------------- | ---------------- | ------------------------------------------------ |
-| `data-component="data-table"`   | Root             | Scope styles to this component                   |
-| `data-part="scroll-indicators"` | Indicator shell  | Hosts the shading for columns outside view       |
-| `data-part="scroll-region"`     | Scroll container | Contains the table and owns horizontal scrolling |
+| Attribute                       | Element          | Notes                                                                           |
+| ------------------------------- | ---------------- | ------------------------------------------------------------------------------- |
+| `data-component="data-table"`   | Root             | Scope styles to this component                                                  |
+| `data-part="scroll-indicators"` | Indicator shell  | Hosts the shading for columns outside view                                      |
+| `data-part="scroll-region"`     | Scroll container | Contains the table and owns horizontal scrolling                                |
+| `data-part="field-label"`       | Card field label | Shows the column label above a value in card layout; hidden from screen readers |
+| `data-part="field-value"`       | Field value      | Contains the cell value or custom cell content                                  |
 
 ## Examples
 

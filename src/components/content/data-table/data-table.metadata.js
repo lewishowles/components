@@ -86,7 +86,8 @@ export const dataTableMetadata = {
 			name: "cellClasses",
 			type: "string",
 			default: "text-content-muted",
-			summary: "Classes applied to body cells.",
+			summary:
+				"Classes applied to body cells. Cell content sits inside the `field-value` wrapper, so flex or grid classes on the cell lay out that wrapper rather than the content directly.",
 		},
 		{
 			name: "headingLevel",
@@ -168,6 +169,14 @@ export const dataTableMetadata = {
 		{
 			name: "scroll-region",
 			summary: "Horizontally scrollable container for the table.",
+		},
+		{
+			name: "field-label",
+			summary: "Column label above a cell value in card layout, hidden from screen readers.",
+		},
+		{
+			name: "field-value",
+			summary: "Cell value or custom cell content, shown below its label in card layout.",
 		},
 	],
 	methods: [

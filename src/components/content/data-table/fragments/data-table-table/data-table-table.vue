@@ -142,16 +142,34 @@
 					</tr>
 				</thead>
 				<tbody class="@max-xl:block @max-xl:space-y-3" role="rowgroup">
-					<tr v-if="isLoading" role="row" data-test="data-table-loading-row">
-						<td :colspan="stateRowColumnCount" class="py-6 text-center" role="cell">
+					<tr
+						v-if="isLoading"
+						class="border-border @max-xl:block @max-xl:rounded-lg @max-xl:border @max-xl:p-3"
+						role="row"
+						data-test="data-table-loading-row"
+					>
+						<td
+							:colspan="stateRowColumnCount"
+							class="py-6 text-center @max-xl:block @max-xl:w-full"
+							role="cell"
+						>
 							<loading-indicator large data-test="data-table-loading">
 								<slot name="loading-label">Loading data</slot>
 							</loading-indicator>
 						</td>
 					</tr>
 
-					<tr v-else-if="haveError" role="row" data-test="data-table-error-row">
-						<td :colspan="stateRowColumnCount" class="py-6" role="cell">
+					<tr
+						v-else-if="haveError"
+						class="border-border @max-xl:block @max-xl:rounded-lg @max-xl:border @max-xl:p-3"
+						role="row"
+						data-test="data-table-error-row"
+					>
+						<td
+							:colspan="stateRowColumnCount"
+							class="py-6 @max-xl:block @max-xl:w-full"
+							role="cell"
+						>
 							<alert-message type="error" data-test="data-table-error">
 								<slot name="error" v-bind="{ error }">{{ errorMessage }}</slot>
 							</alert-message>
@@ -205,12 +223,22 @@
 								]"
 								data-test="data-table-cell"
 							>
-								<slot
-									:name="columnKey"
-									v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }"
+								<span
+									class="text-content-strong block text-sm font-semibold @xl:hidden"
+									aria-hidden="true"
+									data-part="field-label"
+									data-test="data-table-field-label"
 								>
-									{{ getRowContent(row, columnKey) }}
-								</slot>
+									{{ column.label }}
+								</span>
+								<div data-part="field-value" data-test="data-table-field-value">
+									<slot
+										:name="columnKey"
+										v-bind="{ cell: getRowContent(row, columnKey), row: getRawRow(row) }"
+									>
+										{{ getRowContent(row, columnKey) }}
+									</slot>
+								</div>
 							</component>
 						</tr>
 					</template>
