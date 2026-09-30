@@ -170,6 +170,17 @@ const props = defineProps({
 	},
 
 	/**
+	 * How rows appear when the table itself is narrow. "cards" shows one card
+	 * per row. "scroll" keeps the columns and scrolls sideways, which suits
+	 * tables built for comparing values.
+	 */
+	narrowLayout: {
+		type: String,
+		default: "cards",
+		validator: (value) => ["cards", "scroll"].includes(value),
+	},
+
+	/**
 	 * A unique name for this table. This will be used to store the user's
 	 * preferences for how dense the table is, for example. Without a name, this
 	 * option will not be available. The name will be used directly in
@@ -539,6 +550,8 @@ provide("data-table", {
 	enableSort: toRef(props, "enableSort"),
 	// Whether rows show selection controls.
 	enableSelection: toRef(props, "enableSelection"),
+	// The layout to use when the table is narrow.
+	narrowLayout: toRef(props, "narrowLayout"),
 	// The key of the active sort column.
 	sortedColumn,
 	// Whether the active sort is ascending.

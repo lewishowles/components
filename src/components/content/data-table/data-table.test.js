@@ -58,6 +58,12 @@ describe("data-table", () => {
 
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
+
+		test("defaults the narrow layout to cards", () => {
+			const wrapper = mount();
+
+			expect(wrapper.props("narrowLayout")).toBe("cards");
+		});
 	});
 
 	describe("Render", () => {

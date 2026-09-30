@@ -1,7 +1,7 @@
 <template>
+	<!-- Every card style depends on this named container, so leaving it off in the scroll layout keeps the ordinary table at every width. -->
 	<div
-		:class="scrollIndicatorClasses"
-		class="@container"
+		:class="[scrollIndicatorClasses, { '@container/data-table': narrowLayout === 'cards' }]"
 		data-part="scroll-indicators"
 		data-test="data-table-scroll-indicators"
 	>
@@ -14,7 +14,7 @@
 		>
 			<table
 				v-show="haveTableContent"
-				class="w-full @max-xl:block"
+				class="w-full @max-xl/data-table:block"
 				role="table"
 				data-test="data-table-table"
 			>
@@ -41,11 +41,11 @@
 					</span>
 				</caption>
 
-				<thead class="@max-xl:sr-only" role="rowgroup">
+				<thead class="@max-xl/data-table:sr-only" role="rowgroup">
 					<tr class="border-border-strong border-b" role="row">
 						<th v-if="enableSelection" scope="col" role="columnheader" class="w-px px-4">
 							<!-- The card layout hides the select-all checkbox, so this keeps a header for the selection column and each card's checkbox still pairs with the right column header. -->
-							<span class="sr-only @xl:hidden">
+							<span class="hidden @max-xl/data-table:sr-only @max-xl/data-table:block">
 								<slot name="select-all-rows-label">Select all rows</slot>
 							</span>
 
@@ -56,7 +56,7 @@
 									showOptionalIndicator: false,
 								}"
 								v-model="selectAllRows"
-								class="shrink @max-xl:hidden"
+								class="shrink @max-xl/data-table:hidden"
 								data-test="data-table-select-all-rows"
 								@change="toggleAllRows"
 							>
@@ -84,7 +84,7 @@
 							<!-- The card layout hides the sort button, so this keeps the column label available to screen readers. -->
 							<span
 								v-if="isColumnSortable(column)"
-								class="sr-only @xl:hidden"
+								class="hidden @max-xl/data-table:sr-only @max-xl/data-table:block"
 								data-test="data-table-card-heading"
 							>
 								{{ column.label }}
@@ -93,7 +93,7 @@
 							<ui-button
 								v-if="isColumnSortable(column)"
 								v-bind="{ iconEnd: getSortIcon(columnKey) }"
-								class="hocus:border-primary hocus:bg-surface-sunken -mt-4 -mb-4.25 w-full border-b border-transparent py-4 @max-xl:hidden"
+								class="hocus:border-primary hocus:bg-surface-sunken -mt-4 -mb-4.25 w-full border-b border-transparent py-4 @max-xl/data-table:hidden"
 								:class="[
 									{
 										'ps-3': !column.first,
@@ -141,16 +141,16 @@
 						</th>
 					</tr>
 				</thead>
-				<tbody class="@max-xl:block @max-xl:space-y-3" role="rowgroup">
+				<tbody class="@max-xl/data-table:block @max-xl/data-table:space-y-3" role="rowgroup">
 					<tr
 						v-if="isLoading"
-						class="border-border @max-xl:block @max-xl:rounded-lg @max-xl:border @max-xl:p-3"
+						class="border-border @max-xl/data-table:block @max-xl/data-table:rounded-lg @max-xl/data-table:border @max-xl/data-table:p-3"
 						role="row"
 						data-test="data-table-loading-row"
 					>
 						<td
 							:colspan="stateRowColumnCount"
-							class="py-6 text-center @max-xl:block @max-xl:w-full"
+							class="py-6 text-center @max-xl/data-table:block @max-xl/data-table:w-full"
 							role="cell"
 						>
 							<loading-indicator large data-test="data-table-loading">
@@ -161,13 +161,13 @@
 
 					<tr
 						v-else-if="haveError"
-						class="border-border @max-xl:block @max-xl:rounded-lg @max-xl:border @max-xl:p-3"
+						class="border-border @max-xl/data-table:block @max-xl/data-table:rounded-lg @max-xl/data-table:border @max-xl/data-table:p-3"
 						role="row"
 						data-test="data-table-error-row"
 					>
 						<td
 							:colspan="stateRowColumnCount"
-							class="py-6 @max-xl:block @max-xl:w-full"
+							class="py-6 @max-xl/data-table:block @max-xl/data-table:w-full"
 							role="cell"
 						>
 							<alert-message type="error" data-test="data-table-error">
@@ -180,11 +180,15 @@
 						<tr
 							v-for="(row, rowIndex) in paginatedRows"
 							:key="row.configuration.id"
-							class="border-border hover:bg-surface-subtle border-b transition-colors last:border-b-0 @max-xl:block @max-xl:rounded-lg @max-xl:border @max-xl:p-3"
+							class="border-border hover:bg-surface-subtle border-b transition-colors last:border-b-0 @max-xl/data-table:block @max-xl/data-table:rounded-lg @max-xl/data-table:border @max-xl/data-table:p-3"
 							role="row"
 							data-test="data-table-row"
 						>
-							<td v-if="enableSelection" class="px-4 @max-xl:block @max-xl:px-0" role="cell">
+							<td
+								v-if="enableSelection"
+								class="px-4 @max-xl/data-table:block @max-xl/data-table:px-0"
+								role="cell"
+							>
 								<form-checkbox
 									v-bind="{
 										displayLabel: false,
@@ -219,12 +223,12 @@
 										'tabular-nums': column.tabularNums,
 									},
 									getCellClasses(column),
-									'@max-xl:block @max-xl:min-w-0 @max-xl:px-0 @max-xl:py-1 @max-xl:text-start @max-xl:break-words',
+									'@max-xl/data-table:block @max-xl/data-table:min-w-0 @max-xl/data-table:px-0 @max-xl/data-table:py-1 @max-xl/data-table:text-start @max-xl/data-table:break-words',
 								]"
 								data-test="data-table-cell"
 							>
 								<span
-									class="text-content-strong block text-sm font-semibold @xl:hidden"
+									class="text-content-strong hidden text-sm font-semibold @max-xl/data-table:block"
 									aria-hidden="true"
 									data-part="field-label"
 									data-test="data-table-field-label"
@@ -267,6 +271,7 @@ const {
 	haveTableContent,
 	enableSort,
 	enableSelection,
+	narrowLayout,
 	sortedColumn,
 	isAscending,
 	isLoading,

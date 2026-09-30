@@ -294,6 +294,13 @@ Each heading and cell has a default `min-w-32`, preventing cells from getting to
 
 Use `"client"` for the default local filtering, sorting, and pagination. Use `"server"` when `data` contains only the already-adapted current page and the consumer controls requests through `v-model:state`.
 
+### `narrowLayout`
+
+- type: `"cards" | "scroll"`
+- default: `"cards"`
+
+Rows appear as cards when the table itself is narrow. Set `narrowLayout="scroll"` when comparing values across columns matters more than reading each row as a card. The table then keeps its column headers and scrolls horizontally at narrow widths. Give an overflowing table a `caption` or `overflowLabel` so its scroll region has an accessible name.
+
 ### `state`
 
 - type: `object`

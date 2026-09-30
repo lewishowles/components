@@ -25,6 +25,14 @@ export const dataTableMetadata = {
 			summary: "Choose local data handling or consumer-controlled server data.",
 		},
 		{
+			name: "narrowLayout",
+			type: "string",
+			default: "cards",
+			values: ["cards", "scroll"],
+			summary:
+				"Show rows as cards when the table is narrow, or keep a horizontal table for comparing columns.",
+		},
+		{
 			name: "state",
 			type: "object",
 			default: undefined,

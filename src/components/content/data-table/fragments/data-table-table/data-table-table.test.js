@@ -48,6 +48,7 @@ function mountTable(options = {}) {
 		haveTableContent: ref(true),
 		enableSort: ref(true),
 		enableSelection: ref(false),
+		narrowLayout: ref("cards"),
 		sortedColumn: ref(null),
 		isAscending: ref(true),
 		isLoading: ref(false),
@@ -108,6 +109,18 @@ describe("data-table-table", () => {
 	afterEach(() => vi.restoreAllMocks());
 
 	describe("Render", () => {
+		test("only enables the card container for the cards layout", async () => {
+			const { context, wrapper } = mountTable();
+			const indicators = wrapper.get('[data-test="data-table-scroll-indicators"]');
+
+			expect(indicators.classes()).toContain("@container/data-table");
+
+			context.narrowLayout.value = "scroll";
+			await nextTick();
+
+			expect(indicators.classes()).not.toContain("@container/data-table");
+		});
+
 		test("gives every table part an explicit role so the card layout keeps table semantics", () => {
 			const { wrapper } = mountTable({
 				context: {

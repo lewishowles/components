@@ -232,6 +232,23 @@
 				</p>
 			</component-prop>
 
+			<component-prop id="prop-narrow-layout">
+				<template #name>narrowLayout</template>
+
+				<template #type>"cards" | "scroll"</template>
+
+				<template #default-value>"cards"</template>
+
+				<p>
+					Rows appear as cards when the table itself is narrow. Use
+					<code>"scroll"</code>
+					to keep the column headers and horizontal scrolling when comparing values across columns.
+					Give an overflowing table a caption or
+					<code>overflowLabel</code>
+					so its scroll region has an accessible name.
+				</p>
+			</component-prop>
+
 			<component-prop id="prop-state">
 				<template #name>state</template>
 
@@ -1069,6 +1086,7 @@
 
 		<component-playgrounds>
 			<playground-data-table />
+			<playground-data-table-scroll-layout />
 			<playground-data-table-empty-results />
 		</component-playgrounds>
 	</component-page>
@@ -1077,5 +1095,6 @@
 <script setup>
 import serverDataTableSource from "./examples/server-data-table.vue?raw";
 import PlaygroundDataTable from "./fragments/playground-data-table.vue";
+import PlaygroundDataTableScrollLayout from "./fragments/playground-data-table-scroll-layout.vue";
 import PlaygroundDataTableEmptyResults from "./fragments/playground-data-table-empty-results.vue";
 </script>

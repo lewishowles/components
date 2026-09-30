@@ -179,6 +179,41 @@ test.describe("data-table", () => {
 		await expect(selectAll(page)).toBeVisible();
 	});
 
+	test("keeps a narrow comparison table scrollable when cards are disabled", async ({
+		mount,
+		page,
+	}) => {
+		await mountDataTableRaw(mount, {
+			props: {
+				columns: {
+					device: { label: "Device name" },
+					last_seen: { label: "Last seen" },
+				},
+				data: [{ device: longDeviceName, last_seen: "4 minutes ago" }],
+				narrowLayout: "scroll",
+				overflowLabel: "Device comparison table",
+			},
+		});
+
+		await setTableWidth(page, "30rem");
+
+		const table = page.getByTestId("data-table-table");
+		const scrollRegion = page.getByRole("region", { name: "Device comparison table" });
+
+		await expect(table).toHaveCSS("display", "table");
+		await expect(page.getByTestId("data-table-row")).toHaveCSS("display", "table-row");
+		await expect(page.getByTestId("data-table-heading").first()).toBeVisible();
+		await expect(page.getByTestId("data-table-sort").first()).toBeVisible();
+		await expect(page.getByTestId("data-table-field-label").first()).toBeHidden();
+
+		const widths = await scrollRegion.evaluate((element) => ({
+			client: element.clientWidth,
+			scroll: element.scrollWidth,
+		}));
+
+		expect(widths.scroll).toBeGreaterThan(widths.client);
+	});
+
 	test("keeps selection, sort, search and page state without extra emits across width changes", async ({
 		mount,
 		page,
