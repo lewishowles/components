@@ -61,23 +61,6 @@ describe("data-table", () => {
 	});
 
 	describe("Render", () => {
-		test("Clears the sort announcement when sorting is turned off", async () => {
-			const wrapper = deepMount({
-				props: { columns: { title: { label: "Title" } } },
-			});
-
-			const status = wrapper.get('[data-test="data-table-status"]');
-
-			await wrapper.get('[data-test="data-table-sort"]').trigger("click");
-			await nextTick();
-
-			expect(status.text()).toContain("Sorted by Title ascending");
-
-			await wrapper.setProps({ enableSort: false });
-
-			expect(status.text()).toBe("");
-		});
-
 		test.each(["client", "server"])(
 			"Keeps toolbar controls when %s data becomes empty",
 			async (mode) => {
@@ -238,7 +221,7 @@ describe("data-table", () => {
 	});
 
 	describe("Server mode", () => {
-		test("Shows no sort indicator for a controlled sort when sorting is disabled", () => {
+		test("Passes a disabled controlled sort to the status fragment", () => {
 			const wrapper = deepMount({
 				props: {
 					columns: { title: { label: "Title" } },
@@ -256,7 +239,11 @@ describe("data-table", () => {
 				},
 			});
 
-			expect(wrapper.find('[data-test="data-table-status"]').text()).toBe("");
+			expect(wrapper.findComponent(DataTableStatus).props()).toMatchObject({
+				enableSort: false,
+				sortColumn: null,
+				ascending: true,
+			});
 		});
 
 		test("warns when required server props are missing", () => {
@@ -375,6 +362,7 @@ describe("data-table", () => {
 
 			expect(wrapper.findComponent(DataTableStatus).props()).toMatchObject({
 				allSelected: false,
+				enableSelection: true,
 				selectedCount: 2,
 				totalCount: 20,
 			});

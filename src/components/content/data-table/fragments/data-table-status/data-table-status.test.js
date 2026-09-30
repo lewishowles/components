@@ -1,6 +1,6 @@
 import { createMount } from "@lewishowles/testing/vue";
 import { describe, expect, test } from "vite-plus/test";
-import DataTableStatus, { statusTypes } from "./data-table-status.vue";
+import DataTableStatus from "./data-table-status.vue";
 
 const mount = createMount(DataTableStatus);
 
@@ -11,79 +11,142 @@ describe("data-table-status", () => {
 
 			expect(wrapper.vm).toBeTypeOf("object");
 		});
-
-		test("should export the status type tokens", () => {
-			expect(statusTypes).toEqual({ SORT: "sort", SEARCH: "search", SELECTION: "selection" });
-		});
 	});
 
-	describe("Rendering", () => {
-		test("should announce nothing when no type is active", () => {
+	describe("Announcements", () => {
+		test("announces nothing before a value changes", () => {
 			const wrapper = mount();
 
 			expect(wrapper.text().trim()).toBe("");
 		});
 
-		test("should announce an ascending sort", () => {
-			const wrapper = mount({ type: statusTypes.SORT, sortColumn: "Title", ascending: true });
+		test("does not announce an initial controlled sort", () => {
+			const wrapper = mount({ sortColumn: "Title", ascending: false });
+
+			expect(wrapper.text()).toBe("");
+		});
+
+		test("announces an ascending sort", async () => {
+			const wrapper = mount();
+
+			await wrapper.setProps({ sortColumn: "Title", ascending: true });
 
 			expect(wrapper.text()).toContain("Sorted by Title ascending");
 		});
 
-		test("should allow the sort announcement to be customised", () => {
+		test("allows the sort announcement to be customised", async () => {
 			const wrapper = mount({
-				props: { type: statusTypes.SORT, sortColumn: "Title", ascending: true },
 				slots: { "sort-status": "Custom sort message" },
 			});
+
+			await wrapper.setProps({ sortColumn: "Title", ascending: true });
 
 			expect(wrapper.text()).toContain("Custom sort message");
 		});
 
-		test("should announce a descending sort", () => {
-			const wrapper = mount({ type: statusTypes.SORT, sortColumn: "Title", ascending: false });
+		test("announces a descending sort", async () => {
+			const wrapper = mount({ sortColumn: "Title", ascending: true });
+
+			await wrapper.setProps({ ascending: false });
 
 			expect(wrapper.text()).toContain("Sorted by Title descending");
 		});
 
-		test("should announce multiple search results", () => {
-			const wrapper = mount({ type: statusTypes.SEARCH, resultCount: 3, query: "ald" });
+		test("clears a sort announcement when sorting is turned off", async () => {
+			const wrapper = mount();
+
+			await wrapper.setProps({ sortColumn: "Title", ascending: true });
+
+			expect(wrapper.text()).toContain("Sorted by Title ascending");
+
+			await wrapper.setProps({ enableSort: false });
+
+			expect(wrapper.text()).toBe("");
+		});
+
+		test("announces multiple search results", async () => {
+			const wrapper = mount();
+
+			await wrapper.setProps({ resultCount: 3, query: "ald" });
 
 			expect(wrapper.text()).toContain('Showing 3 results for "ald"');
 		});
 
-		test("should announce a single search result", () => {
-			const wrapper = mount({ type: statusTypes.SEARCH, resultCount: 1, query: "ald" });
+		test("announces a single search result", async () => {
+			const wrapper = mount();
+
+			await wrapper.setProps({ resultCount: 1, query: "ald" });
 
 			expect(wrapper.text()).toContain('Showing 1 result for "ald"');
 		});
 
-		test("should announce no search results", () => {
-			const wrapper = mount({ type: statusTypes.SEARCH, resultCount: 0, query: "zzz" });
+		test("announces no search results", async () => {
+			const wrapper = mount();
+
+			await wrapper.setProps({ query: "zzz" });
 
 			expect(wrapper.text()).toContain('No results for "zzz"');
 		});
 
-		test("should announce a partial selection", () => {
-			const wrapper = mount({ type: statusTypes.SELECTION, selectedCount: 2, totalCount: 5 });
+		test("does not announce an empty search query", async () => {
+			const wrapper = mount({ query: "ald", resultCount: 3 });
+
+			await wrapper.setProps({ query: "" });
+
+			expect(wrapper.text()).toBe("");
+		});
+
+		test("announces a partial selection", async () => {
+			const wrapper = mount({ enableSelection: true, totalCount: 5 });
+
+			await wrapper.setProps({ selectedCount: 2 });
 
 			expect(wrapper.text()).toContain("2 of 5 rows selected");
 		});
 
-		test("should announce a full selection", () => {
+		test("announces a full selection", async () => {
 			const wrapper = mount({
-				type: statusTypes.SELECTION,
-				selectedCount: 5,
+				enableSelection: true,
 				totalCount: 5,
 				allSelected: true,
 			});
 
+			await wrapper.setProps({ selectedCount: 5 });
+
 			expect(wrapper.text()).toContain("All 5 rows selected");
 		});
 
-		test("should announce an empty selection", () => {
-			const wrapper = mount({ type: statusTypes.SELECTION, selectedCount: 0, totalCount: 5 });
+		test("announces an empty selection", async () => {
+			const wrapper = mount({ enableSelection: true, selectedCount: 2, totalCount: 5 });
+
+			await wrapper.setProps({ selectedCount: 0 });
 
 			expect(wrapper.text()).toContain("All rows deselected");
+		});
+
+		test("does not announce selection changes while selection is off", async () => {
+			const wrapper = mount({ totalCount: 5 });
+
+			await wrapper.setProps({ selectedCount: 2 });
+
+			expect(wrapper.text()).toBe("");
+		});
+
+		test("switches to the latest changed announcement", async () => {
+			const wrapper = mount({ enableSelection: true, totalCount: 5 });
+
+			await wrapper.setProps({ sortColumn: "Title", ascending: true });
+			await wrapper.setProps({ query: "ald", resultCount: 3 });
+
+			expect(wrapper.text()).toContain('Showing 3 results for "ald"');
+
+			await wrapper.setProps({ selectedCount: 2 });
+
+			expect(wrapper.text()).toContain("2 of 5 rows selected");
+
+			await wrapper.setProps({ ascending: false });
+
+			expect(wrapper.text()).toContain("Sorted by Title descending");
 		});
 	});
 });

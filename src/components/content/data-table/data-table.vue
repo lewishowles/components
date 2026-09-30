@@ -2,7 +2,8 @@
 	<div data-component="data-table" data-test="data-table">
 		<data-table-status
 			v-bind="{
-				type: activeStatusType,
+				enableSort,
+				enableSelection,
 				sortColumn: getColumnLabel(sortedColumn),
 				ascending: isAscending,
 				resultCount: rowCount,
@@ -119,7 +120,7 @@
 
 <script setup>
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
-import { computed, provide, ref, toRef, useSlots, watch, watchEffect } from "vue";
+import { computed, provide, ref, toRef, useSlots, watchEffect } from "vue";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { getPathValue } from "@lewishowles/helpers/object";
@@ -127,7 +128,7 @@ import { getPathValue } from "@lewishowles/helpers/object";
 import DataTableFooter from "./fragments/data-table-footer/data-table-footer.vue";
 import DataTableHeader from "./fragments/data-table-header/data-table-header.vue";
 import DataTableTable from "./fragments/data-table-table/data-table-table.vue";
-import DataTableStatus, { statusTypes } from "./fragments/data-table-status/data-table-status.vue";
+import DataTableStatus from "./fragments/data-table-status/data-table-status.vue";
 import DataTableToolbar from "./fragments/data-table-toolbar/data-table-toolbar.vue";
 
 import useTableColumns from "./composables/use-table-columns/use-table-columns.js";
@@ -347,8 +348,6 @@ const haveTableName = computed(() => isNonEmptyString(props.name));
 // Whether an #actions slot has been declared. Its column is injected regardless
 // of the slot's output for individual rows.
 const haveActionsSlot = computed(() => typeof slots.actions === "function");
-// Which type of announcement is currently active in the status live region.
-const statusType = ref(null);
 
 watchEffect(() => {
 	if (!import.meta.env.DEV || !isServerMode.value) {
@@ -413,11 +412,10 @@ const stateRowColumnCount = computed(
 
 // Table search: the current query, whether a search is active, and the rows
 // that match it.
-const { filteredRows, haveSearchQuery, searchQuery } = useTableSearch(
-	internalData,
-	toRef(props, "columns"),
-	{ isServerMode, state },
-);
+const { filteredRows, searchQuery } = useTableSearch(internalData, toRef(props, "columns"), {
+	isServerMode,
+	state,
+});
 
 // Column sorting: the sort state, the sorted rows, and the sort-control helpers.
 const {
@@ -432,16 +430,6 @@ const {
 	enabled: toRef(props, "enableSort"),
 	isServerMode,
 	state,
-});
-
-// The announcement for the status live region. A sort announcement is dropped
-// once sorting is turned off, since there is no longer a sorted column to name.
-const activeStatusType = computed(() => {
-	if (!props.enableSort && statusType.value === statusTypes.SORT) {
-		return null;
-	}
-
-	return statusType.value;
 });
 
 // Whether we have any data to display. That is, not only do we have data for
@@ -510,33 +498,6 @@ const allAvailableRowsSelected = computed(() => {
 	}
 
 	return rowCount.value > 0 && selectedRowCount.value === rowCount.value;
-});
-
-// Trigger a sort announcement when the sorted column or direction changes.
-watch([sortedColumn, sortDirection], () => {
-	if (!isNonEmptyString(sortedColumn.value)) {
-		return;
-	}
-
-	statusType.value = statusTypes.SORT;
-});
-
-// Trigger a search announcement when the filtered rows or search term changes.
-watch([filteredRows, haveSearchQuery], () => {
-	if (!haveSearchQuery.value) {
-		return;
-	}
-
-	statusType.value = statusTypes.SEARCH;
-});
-
-// Trigger a selection announcement when the selected row count changes.
-watch(selectedRowCount, () => {
-	if (!props.enableSelection) {
-		return;
-	}
-
-	statusType.value = statusTypes.SELECTION;
 });
 
 /**
