@@ -161,6 +161,26 @@ export const dataTableMetadata = {
 		{ name: "display-option-relaxed-label", summary: "Label for relaxed density." },
 		{ name: "column-visibility-label", summary: "Label for column visibility controls." },
 		{ name: "sort-instruction", summary: "Instruction text for sortable headings." },
+		{
+			name: "sort-by-label",
+			summary:
+				"Label for the card sort select and its empty option before a column is chosen. Only sortable columns are listed.",
+		},
+		{
+			name: "sort-direction-label",
+			summary:
+				"Screen-reader-only prefix for the card sort direction button, shown after a column is chosen.",
+		},
+		{
+			name: "sort-ascending-label",
+			summary:
+				"Ascending label on the card sort direction button, which appears after a column is chosen.",
+		},
+		{
+			name: "sort-descending-label",
+			summary:
+				"Descending label on the card sort direction button, which appears after a column is chosen.",
+		},
 		{ name: "sort-status", summary: "Live sort status text." },
 		{ name: "search-status", summary: "Live search status text." },
 		{ name: "selection-status", summary: "Selection status text." },
@@ -173,6 +193,10 @@ export const dataTableMetadata = {
 		{
 			name: "scroll-indicators",
 			summary: "Shell displaying shading when columns continue beyond either visible edge.",
+		},
+		{
+			name: "card-controls",
+			summary: "Container for sort and select-all controls in card layout.",
 		},
 		{
 			name: "scroll-region",

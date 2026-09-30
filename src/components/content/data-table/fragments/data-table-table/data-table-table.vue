@@ -5,6 +5,24 @@
 		data-part="scroll-indicators"
 		data-test="data-table-scroll-indicators"
 	>
+		<data-table-card-controls>
+			<template #sort-by-label>
+				<slot name="sort-by-label">Sort by</slot>
+			</template>
+			<template #sort-direction-label>
+				<slot name="sort-direction-label">Sort direction:</slot>
+			</template>
+			<template #sort-ascending-label>
+				<slot name="sort-ascending-label">Ascending</slot>
+			</template>
+			<template #sort-descending-label>
+				<slot name="sort-descending-label">Descending</slot>
+			</template>
+			<template #select-all-rows-label>
+				<slot name="select-all-rows-label">Select all rows</slot>
+			</template>
+		</data-table-card-controls>
+
 		<div
 			ref="tableScrollWrapper"
 			class="relative overflow-x-auto"

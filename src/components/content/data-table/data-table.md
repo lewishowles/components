@@ -117,7 +117,7 @@ Provides the ability to override the display for a particular column, by its key
 
 - default: "Select all rows"
 
-The hidden label for the "select" checkbox that represents all rows.
+The label for the "select" checkbox that represents all rows. It is visible above the cards and hidden in the table header.
 
 ### `select-row-label`
 
@@ -179,6 +179,30 @@ A screen-reader-only instruction inside each sortable column's heading button, d
 | `label`     | string           | The label of the column.                                                       |
 | `sorted`    | boolean          | Whether this is the column the table is currently sorted by.                   |
 | `direction` | string \| `null` | The sort direction (`"ascending"` or `"descending"`), or `null` when unsorted. |
+
+### `sort-by-label`
+
+- default: "Sort by"
+
+The label for the sort select above narrow cards. The select lists sortable columns only. Before a column is chosen, it also shows an empty option with this label.
+
+### `sort-direction-label`
+
+- default: "Sort direction:"
+
+The screen-reader-only prefix for the card sort direction button. The button appears after a column is chosen, so its name reads, for example, "Sort direction: Ascending".
+
+### `sort-ascending-label`
+
+- default: "Ascending"
+
+The label on the card sort direction button while the active column is sorted ascending.
+
+### `sort-descending-label`
+
+- default: "Descending"
+
+The label on the card sort direction button while the active column is sorted descending.
 
 ### `sort-status`
 
@@ -413,6 +437,7 @@ Set the table's current search query, overriding any current search. This could 
 | ------------------------------- | ---------------- | ------------------------------------------------------------------------------- |
 | `data-component="data-table"`   | Root             | Scope styles to this component                                                  |
 | `data-part="scroll-indicators"` | Indicator shell  | Hosts the shading for columns outside view                                      |
+| `data-part="card-controls"`     | Card controls    | Contains the sort and select-all controls in card layout                        |
 | `data-part="scroll-region"`     | Scroll container | Contains the table and owns horizontal scrolling                                |
 | `data-part="field-label"`       | Card field label | Shows the column label above a value in card layout; hidden from screen readers |
 | `data-part="field-value"`       | Field value      | Contains the cell value or custom cell content                                  |

@@ -169,6 +169,25 @@ describe("data-table", () => {
 			expect(wrapper.find('[data-test="data-table-sort"]').exists()).toBe(false);
 		});
 
+		test("keeps an initial sort on the second column without updating server state", () => {
+			const wrapper = deepMount({
+				props: {
+					columns: { title: { label: "Title" }, release_year: { label: "Release year" } },
+					enableSearch: false,
+					error: null,
+					loading: false,
+					mode: "server",
+					state: { sort: { column: "release_year", direction: "descending" } },
+					totalRows: 1,
+				},
+			});
+
+			const select = wrapper.get('[data-test="data-table-card-sort-column"] select');
+
+			expect(select.element.value).toBe("release_year");
+			expect(wrapper.emitted("update:state")).toBeUndefined();
+		});
+
 		test("forwards a caption slot added after mount and removes it again", async () => {
 			const host = defineComponent({
 				setup() {
@@ -206,6 +225,10 @@ describe("data-table", () => {
 			["caption", {}],
 			["sorted-hint", { state: { sort: { column: "title", direction: "ascending" } } }],
 			["sort-instruction", {}],
+			["sort-by-label", {}],
+			["sort-ascending-label", { state: { sort: { column: "title", direction: "ascending" } } }],
+			["sort-descending-label", { state: { sort: { column: "title", direction: "descending" } } }],
+			["sort-direction-label", { state: { sort: { column: "title", direction: "ascending" } } }],
 			["loading-label", { mode: "server", loading: true, error: null, totalRows: 1 }],
 			["error", { mode: "server", loading: false, error: "Unavailable", totalRows: 1 }],
 			["select-all-rows-label", { enableSelection: true }],

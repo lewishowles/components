@@ -646,7 +646,10 @@
 
 				<template #default-value>"Select all rows"</template>
 
-				<p>The hidden label for the "select" checkbox that represents all rows.</p>
+				<p>
+					The label for the "select" checkbox that represents all rows. It is visible above cards
+					and hidden in the table header.
+				</p>
 			</component-slot>
 
 			<component-slot id="slot-select-row-label">
@@ -784,6 +787,40 @@
 						</tr>
 					</tbody>
 				</table>
+			</component-slot>
+
+			<component-slot id="slot-sort-by-label">
+				<template #name>sort-by-label</template>
+				<template #default-value>"Sort by"</template>
+				<p>
+					The label for the sort select above narrow cards. The select lists sortable columns only
+					and shows an empty option with this label before a column is chosen.
+				</p>
+			</component-slot>
+
+			<component-slot id="slot-sort-direction-label">
+				<template #name>sort-direction-label</template>
+				<template #default-value>"Sort direction:"</template>
+				<p>
+					The screen-reader-only prefix for the card sort direction button. The button appears after
+					a column is chosen, so its name reads, for example, "Sort direction: Ascending".
+				</p>
+			</component-slot>
+
+			<component-slot id="slot-sort-ascending-label">
+				<template #name>sort-ascending-label</template>
+				<template #default-value>"Ascending"</template>
+				<p>
+					The label on the card sort direction button while the active column is sorted ascending.
+				</p>
+			</component-slot>
+
+			<component-slot id="slot-sort-descending-label">
+				<template #name>sort-descending-label</template>
+				<template #default-value>"Descending"</template>
+				<p>
+					The label on the card sort direction button while the active column is sorted descending.
+				</p>
 			</component-slot>
 
 			<component-slot id="slot-sort-status">
@@ -1043,6 +1080,12 @@
 				<template #attribute>data-part="scroll-indicators"</template>
 
 				<p>Hosts shading when columns continue beyond either visible edge.</p>
+			</component-styling-hook>
+
+			<component-styling-hook id="hook-data-part-card-controls">
+				<template #attribute>data-part="card-controls"</template>
+
+				<p>Contains the sort and select-all controls in card layout.</p>
 			</component-styling-hook>
 
 			<component-styling-hook id="hook-data-part-scroll-region">

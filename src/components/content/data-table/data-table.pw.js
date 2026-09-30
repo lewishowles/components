@@ -169,7 +169,9 @@ test.describe("data-table", () => {
 		await expect(titleHeading.getByTestId("data-table-card-heading")).toHaveText("Title");
 		await expect(titleHeading.getByTestId("data-table-sort")).toBeHidden();
 		await expect(selectAll(page)).toBeHidden();
-		await expect(page.getByRole("button", { name: /sort/i })).toHaveCount(0);
+		await expect(page.getByTestId("data-table-card-controls")).toBeVisible();
+		await expect(page.getByRole("combobox", { name: "Sort by" })).toBeVisible();
+		await expect(page.getByTestId("data-table-card-select-all-rows")).toBeVisible();
 
 		await setTableWidth(page, "40rem");
 
@@ -177,6 +179,69 @@ test.describe("data-table", () => {
 		await expect(rowCell(page, 0, 0).getByTestId("data-table-field-label")).toBeHidden();
 		await expect(titleHeading.getByTestId("data-table-sort")).toBeVisible();
 		await expect(selectAll(page)).toBeVisible();
+		await expect(page.getByTestId("data-table-card-controls")).toBeHidden();
+	});
+
+	test("card controls sort and select the same rows as the table header", async ({
+		mount,
+		page,
+	}) => {
+		await mountDataTableRaw(mount, {
+			props: { columns, data, enableSelection: true },
+			slots: {
+				"sort-by-label": "Order films by",
+				"sort-ascending-label": "Ascending order",
+				"sort-descending-label": "Descending order",
+				"sort-direction-label": "Direction:",
+			},
+		});
+		await setTableWidth(page, "30rem");
+
+		const cardSort = page.getByRole("combobox", { name: "Order films by" });
+		const direction = page.getByTestId("data-table-card-sort-direction");
+		const cardSelectAll = page.getByTestId("data-table-card-select-all-rows").locator("input");
+
+		await expect(direction).toHaveCount(0);
+		await expect(cardSort.locator("option")).toHaveText([
+			"Order films by",
+			"Title",
+			"Release year",
+			"Box office ($m)",
+		]);
+		await cardSort.selectOption("title");
+
+		await expect(direction).toHaveCount(1);
+		await expect(direction).toHaveAccessibleName("Direction: Ascending order");
+		await expect(cardSort.locator("option")).toHaveText([
+			"Title",
+			"Release year",
+			"Box office ($m)",
+		]);
+		await expect(page.getByTestId("data-table-row").first()).toContainText("Aladdin");
+
+		await direction.focus();
+		await direction.press("Space");
+
+		await expect(direction).toHaveAccessibleName("Direction: Descending order");
+		await expect(page.getByTestId("data-table-row").first()).toContainText("Up");
+
+		await cardSelectAll.focus();
+		await cardSelectAll.press("Space");
+
+		await expect(cardSelectAll).toBeChecked();
+		await expect(rowCheckbox(page, 0)).toBeChecked();
+
+		await setTableWidth(page, "40rem");
+
+		await expect(cardSort).toBeHidden();
+		await expect(selectAll(page)).toBeChecked();
+		await sortByColumn(page, "Title");
+		await expect(page.getByTestId("data-table-row").first()).toContainText("Aladdin");
+		await selectAll(page).uncheck();
+		await setTableWidth(page, "30rem");
+
+		await expect(direction).toHaveAccessibleName("Direction: Ascending order");
+		await expect(cardSelectAll).not.toBeChecked();
 	});
 
 	test("keeps a narrow comparison table scrollable when cards are disabled", async ({
@@ -205,6 +270,7 @@ test.describe("data-table", () => {
 		await expect(page.getByTestId("data-table-heading").first()).toBeVisible();
 		await expect(page.getByTestId("data-table-sort").first()).toBeVisible();
 		await expect(page.getByTestId("data-table-field-label").first()).toBeHidden();
+		await expect(page.getByTestId("data-table-card-controls")).toBeHidden();
 
 		const widths = await scrollRegion.evaluate((element) => ({
 			client: element.clientWidth,
