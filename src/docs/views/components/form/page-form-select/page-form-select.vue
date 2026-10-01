@@ -181,7 +181,7 @@
 				<template #name>v-model</template>
 
 				<p>
-					The current value of the select will be available via
+					The current string or number value of the select will be available via
 					<code>v-model</code>
 					.
 				</p>

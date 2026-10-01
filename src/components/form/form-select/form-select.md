@@ -4,7 +4,7 @@
 
 ## Model
 
-The model value is the current value of the field.
+The model value is the current string or number value of the field.
 
 ## Slots
 

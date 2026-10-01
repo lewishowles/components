@@ -158,7 +158,7 @@ const props = defineProps({
 });
 
 const model = defineModel({
-	type: String,
+	type: [String, Number],
 	default: "",
 });
 

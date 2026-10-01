@@ -27,6 +27,24 @@ describe("form-select", () => {
 			expect(wrapper.emitted("update:modelValue")).toBeUndefined();
 		});
 
+		test("accepts a numeric model value without a prop type warning", () => {
+			vi.mocked(console.warn).mockClear();
+
+			mountDeep({ props: { modelValue: 0, options: [1, 0] } });
+
+			const warnings = vi.mocked(console.warn).mock.calls.flat().join(" ");
+
+			expect(warnings).not.toContain('Invalid prop: type check failed for prop "modelValue"');
+		});
+
+		test("emits the numeric value when selecting a number option", async () => {
+			const wrapper = mountDeep({ props: { modelValue: 0, options: [1, 0] } });
+
+			await wrapper.get("select").setValue("1");
+
+			expect(wrapper.emitted("update:modelValue")).toEqual([[1]]);
+		});
+
 		test.for([
 			["an empty value", ""],
 			["an unknown value", "missing"],
