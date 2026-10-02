@@ -382,6 +382,26 @@
 					<code>{ age: { valueType: 'nullable-number' } }</code>
 					stores the age answer as a number, or null when it is empty.
 				</p>
+
+				<p>
+					Use
+					<code>default</code>
+					to give a field a starting value when its value is
+					<code>undefined</code>
+					or missing. An empty string or
+					<code>null</code>
+					stays as supplied. A default may be a plain value, ref, or computed value, and is read
+					when the form's starting data is ready. Defaulted values count as unchanged when the form
+					checks for unsaved changes, including when
+					<code>initialData</code>
+					arrives later or a new
+					<code>recordId</code>
+					reloads the form. When the form starts from
+					<code>modelValue</code>
+					and fills a default, it sends the completed value back once. For example,
+					<code>{ age: { default: 18, valueType: 'nullable-number' } }</code>
+					starts the age field at 18 unless a value was supplied.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-field-types">

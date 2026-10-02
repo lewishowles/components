@@ -1,4 +1,4 @@
-import { defineComponent, h, ref } from "vue";
+import { defineComponent, h, nextTick, ref } from "vue";
 import { afterEach, describe, expect, test, vi } from "vite-plus/test";
 import { mount } from "@vue/test-utils";
 
@@ -39,6 +39,10 @@ function mountFormHost(options = {}) {
 			modelValue: {
 				type: Object,
 				default: () => ({}),
+			},
+			recordId: {
+				type: [String, Number],
+				default: null,
 			},
 			readonly: {
 				type: Boolean,
@@ -158,6 +162,114 @@ describe("useFormHost", () => {
 			});
 
 			expect(wrapper.emitted("update:modelValue")).toEqual([[{ name: "Alice" }]]);
+		});
+
+		test("fills absent and undefined values without replacing null or empty strings", () => {
+			const { instance, wrapper } = mountFormHost({
+				props: {
+					fields: {
+						absent: { default: "New" },
+						undefinedValue: { default: ref("Filled") },
+						nullValue: { default: "Ignored" },
+						emptyValue: { default: "Ignored" },
+					},
+					modelValue: { undefinedValue: undefined, nullValue: null, emptyValue: "" },
+				},
+			});
+
+			expect(instance.formData.value).toEqual({
+				absent: "New",
+				undefinedValue: "Filled",
+				nullValue: null,
+				emptyValue: "",
+			});
+			expect(instance.isDirty.value).toBe(false);
+			expect(wrapper.emitted("update:modelValue")).toEqual([[instance.formData.value]]);
+		});
+
+		test("does not emit for a model-only seed without an added default", () => {
+			const { wrapper } = mountFormHost({
+				props: {
+					fields: { name: { default: "Ignored" } },
+					modelValue: { name: "Alice" },
+				},
+			});
+
+			expect(wrapper.emitted("update:modelValue")).toBeUndefined();
+		});
+
+		test("waits for async initialData before applying defaults", async () => {
+			const source = ref(null);
+
+			const { instance, wrapper } = mountFormHost({
+				props: {
+					fields: { name: { default: "New" } },
+					initialData: () => source.value,
+					modelValue: { name: "Old" },
+				},
+			});
+
+			expect(instance.formData.value).toEqual({});
+			expect(wrapper.emitted("update:modelValue")).toBeUndefined();
+
+			source.value = { age: 20 };
+			await nextTick();
+
+			expect(instance.formData.value).toEqual({ age: 20, name: "New" });
+			expect(instance.isDirty.value).toBe(false);
+			expect(wrapper.emitted("update:modelValue")).toEqual([[{ age: 20, name: "New" }]]);
+		});
+
+		test("applies defaults when a new record reseeds a clean form", async () => {
+			const source = ref({ name: "Alice" });
+
+			const { instance, wrapper } = mountFormHost({
+				props: {
+					fields: { colour: { default: "Blue" } },
+					initialData: () => source.value,
+					recordId: 1,
+				},
+			});
+
+			expect(instance.formData.value).toEqual({ name: "Alice", colour: "Blue" });
+
+			await wrapper.setProps({ recordId: 2 });
+			source.value = { name: "Bob" };
+			await nextTick();
+
+			expect(instance.formData.value).toEqual({ name: "Bob", colour: "Blue" });
+			expect(instance.isDirty.value).toBe(false);
+		});
+
+		test("waits for a new source after fields and defaults change during a record reseed", async () => {
+			const colour = ref("Blue");
+			const source = ref({ name: "Alice" });
+
+			const { instance, wrapper } = mountFormHost({
+				props: {
+					fields: { colour: { default: colour } },
+					initialData: () => source.value,
+					recordId: 1,
+				},
+			});
+
+			expect(instance.formData.value).toEqual({ name: "Alice", colour: "Blue" });
+
+			await wrapper.setProps({ recordId: 2 });
+			await wrapper.setProps({ fields: { colour: { default: colour } } });
+
+			expect(instance.formData.value).toEqual({ name: "Alice", colour: "Blue" });
+
+			colour.value = "Green";
+			await nextTick();
+
+			expect(instance.formData.value).toEqual({ name: "Alice", colour: "Blue" });
+
+			source.value = { name: "Bob" };
+			await nextTick();
+
+			expect(instance.formData.value).toEqual({ name: "Bob", colour: "Green" });
+			expect(instance.isDirty.value).toBe(false);
 		});
 	});
 

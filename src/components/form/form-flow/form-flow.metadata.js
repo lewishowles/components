@@ -136,7 +136,7 @@ export const formFlowMetadata = {
 			type: "object",
 			default: "{}",
 			summary:
-				"Settings keyed by field name. Set options for radio-group, checkbox-group, button-group, combo-box, or select fields, and valueType to nullable-number or nullable-string. Options may be a plain value, ref, or computed value. A field's own options attribute takes precedence; valueType takes precedence over fieldTypes.",
+				"Settings keyed by field name. Set options for radio-group, checkbox-group, button-group, combo-box, or select fields, valueType to nullable-number or nullable-string, and default to a starting value. Options and defaults may each be a plain value, ref, or computed value. A default fills a field whose starting value is missing or undefined, including a field that has not mounted yet, and counts as unchanged when the form checks for unsaved changes. Null and empty strings stay as supplied. A field's own options attribute takes precedence; valueType takes precedence over fieldTypes.",
 		},
 		{
 			name: "initialData",

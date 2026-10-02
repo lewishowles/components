@@ -164,8 +164,12 @@ Field type transformations applied to initial and submitted form data, keyed by 
 
 Settings keyed by field name. Use `valueType` for `nullable-number` or `nullable-string` conversion on initial and submitted values. Use `options` for `radio-group`, `checkbox-group`, `button-group`, `combo-box`, and `select` fields. Options may be a plain value, ref, or computed value and update when their source changes. An `options` attribute on `form-field` takes precedence over mapped options.
 
+Use `default` to give a field a starting value when its value is missing or `undefined`. `null` and an empty string stay as supplied. A default may be a plain value, ref, or computed value, and is read when the form's starting data is ready. Defaulted values count as unchanged when the form checks for unsaved changes, including when `initialData` arrives later or a new `recordId` reloads the form. When the form starts from `modelValue` and fills a default, it sends the completed value back through `update:modelValue` once.
+
 ```html
-<form-wrapper :fields="{ age: { valueType: 'nullable-number' }, colour: { options: colours } }">
+<form-wrapper
+	:fields="{ age: { default: 18, valueType: 'nullable-number' }, colour: { options: colours } }"
+>
 	<form-field name="colour" type="radio-group">Colour</form-field>
 </form-wrapper>
 ```

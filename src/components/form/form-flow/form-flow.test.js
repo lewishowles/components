@@ -265,6 +265,22 @@ describe("form-flow", () => {
 			expect(indicator.props()).toMatchObject({ currentStep: 1, stepCount: 2 });
 			expect(indicator.get('[data-test="step-indicator-label"]').text()).toBe("first");
 		});
+
+		test("seeds a default for a field on an unmounted screen", async () => {
+			const wrapper = mountDeep({
+				props: {
+					fields: { second: { default: "Later" } },
+					modelValue: { first: "Ready" },
+				},
+				slots: { default: flowSlots },
+			});
+
+			await nextTick();
+
+			expect(wrapper.find('[data-screen-id="second"]').exists()).toBe(false);
+			expect(wrapper.vm.formData).toEqual({ first: "Ready", second: "Later" });
+			expect(wrapper.vm.isDirty).toBe(false);
+		});
 	});
 
 	describe("Navigation", () => {

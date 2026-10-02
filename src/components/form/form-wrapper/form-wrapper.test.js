@@ -212,6 +212,22 @@ describe("form-wrapper", () => {
 		});
 
 		describe("initialData", () => {
+			test("seeds mapped defaults before value conversion without dirtying the form", () => {
+				const wrapper = mount({
+					props: {
+						fields: {
+							age: { default: 30, valueType: "nullable-number" },
+							name: { default: "New" },
+						},
+						modelValue: { name: "Alice" },
+					},
+				});
+
+				expect(wrapper.vm.formData).toEqual({ age: "30", name: "Alice" });
+				expect(wrapper.vm.isDirty).toBe(false);
+				expect(wrapper.emitted("update:modelValue")).toEqual([[{ age: "30", name: "Alice" }]]);
+			});
+
 			test("uses modelValue without emitting when initialData is not bound", async () => {
 				const wrapper = mount({ props: { modelValue: { name: "Alice" } } });
 

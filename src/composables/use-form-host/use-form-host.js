@@ -28,10 +28,59 @@ export function useFormHost(props, emit, options = {}) {
 		(key) => toCamelCase(key) === "initialData",
 	);
 
-	// The source used to seed the form.
-	const formInitialData = computed(() => {
-		return haveInitialData ? toValue(props.initialData) : props.modelValue;
+	// The source the starting data was last built from, and the starting data built from it. A
+	// parent re-render or a changed default reuses this result, so it can't replace a pending
+	// reload of a new record with the old record's data.
+	let lastSeedSource;
+	let lastSeed;
+
+	// The starting data for the form: the chosen source with any empty field filled from its
+	// `fields` default once per source, plus whether a default was added, so the host sends
+	// the completed value to the parent.
+	const formSeed = computed(() => {
+		// The initial data when the caller supplied it, otherwise the bound model.
+		const source = haveInitialData ? toValue(props.initialData) : props.modelValue;
+
+		if (lastSeed && source === lastSeedSource) {
+			return lastSeed;
+		}
+
+		lastSeedSource = source;
+
+		if (!source) {
+			lastSeed = { data: source, addedDefaults: false };
+
+			return lastSeed;
+		}
+
+		// A copy of the source, so filling defaults never changes the caller's object.
+		const data = { ...source };
+
+		// Whether any field was filled from its default.
+		let addedDefaults = false;
+
+		for (const [name, settings] of Object.entries(props.fields ?? {})) {
+			if (Object.hasOwn(data, name) && data[name] !== undefined) {
+				continue;
+			}
+
+			// The field's default, read from a ref or computed value when one was given.
+			const value = toValue(settings?.default);
+
+			if (value !== undefined) {
+				data[name] = value;
+				addedDefaults = true;
+			}
+		}
+
+		lastSeed = { data: addedDefaults ? data : source, addedDefaults };
+
+		return lastSeed;
 	});
+
+	// The starting data passed to useForm, with defaults filled in, or the empty source while
+	// initial data is still loading.
+	const formInitialData = computed(() => formSeed.value.data);
 
 	// The host may handle a submit without a direct listener.
 	const { handleEmptySubmit, ...formOptions } = options;
@@ -95,10 +144,11 @@ export function useFormHost(props, emit, options = {}) {
 		return props.fields?.[name] ?? {};
 	}
 
-	// Synchronous initial data seeds before this watcher exists, so emit its current value immediately.
+	// Starting data that is ready before this watcher exists never triggers it, so send the current
+	// value straight away when it came from initial data or gained a default.
 	watch(form.formData, (value) => emit("update:modelValue", value), {
 		deep: true,
-		immediate: haveInitialData && Boolean(formInitialData.value),
+		immediate: Boolean(formInitialData.value) && (haveInitialData || formSeed.value.addedDefaults),
 	});
 
 	return {
