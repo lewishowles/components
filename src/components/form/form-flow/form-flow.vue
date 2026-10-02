@@ -325,6 +325,16 @@ const props = defineProps({
 	},
 
 	/**
+	 * Settings for each field, keyed by field name. An entry can hold `options` for
+	 * option-backed fields and a `valueType` that converts the field's value. A setting
+	 * passed directly to `form-field` takes precedence over its entry here.
+	 */
+	fields: {
+		type: Object,
+		default: () => ({}),
+	},
+
+	/**
 	 * An object or getter used to seed this form once it resolves. When omitted,
 	 * modelValue remains the seed source.
 	 */

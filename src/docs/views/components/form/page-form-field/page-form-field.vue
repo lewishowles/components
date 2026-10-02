@@ -182,7 +182,13 @@
 					<code>multiple</code>
 					applies to
 					<code>file</code>
-					fields, while option-bearing fields use their documented options configuration.
+					fields, while option-bearing fields use their documented options configuration. Radio,
+					checkbox, button group, combo-box, and select fields can read options from the parent
+					form's
+					<code>fields</code>
+					map. A directly passed
+					<code>options</code>
+					attribute takes precedence; the answer summary uses the same options as the control.
 				</p>
 			</component-prop>
 		</component-props>

@@ -16,6 +16,8 @@ Custom content for this field's answer value in a `form-flow` review row. The ro
 
 By default, non-empty strings, numbers, and booleans are shown. Option-bearing fields show the selected option labels instead of their stored values. Password and file fields, `File` or `Blob` values, and arbitrary objects or arrays have no default answer summary.
 
+For `radio-group`, `checkbox-group`, `button-group`, `combo-box`, and `select`, options can come from the parent form's `fields` map. A directly passed `options` attribute takes precedence. The answer summary uses the same options as the control.
+
 Use this slot to replace a field's default answer or render no content to omit that field's answer. It does not replace or alter validation error summaries.
 
 ### `optional-indicator`
@@ -103,7 +105,7 @@ Any additional attributes to pass to the input itself, such as `autocomplete` or
 
 ### Additional props
 
-Some field types expose additional props. Props that change a field's value shape belong on `form-field`, so the field type and its value are clear in one place. For example, `multiple` applies to `file` fields, while option-bearing fields use their documented `options` prop.
+Some field types expose additional props. Props that change a field's value shape belong on `form-field`, so the field type and its value are clear in one place. For example, `multiple` applies to `file` fields, while option-bearing fields use their documented `options` prop or the parent form's `fields` map.
 
 ## Events
 

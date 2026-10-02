@@ -50,7 +50,7 @@ import {
 	onMounted,
 	onUnmounted,
 	ref,
-	toRef,
+	toValue,
 	useAttrs,
 	useSlots,
 	watch,
@@ -164,6 +164,7 @@ const unregisterField = formContext?.unregisterField;
 const updateFieldValue = formContext?.updateFieldValue;
 const isReadonly = formContext?.isReadonly;
 const isFieldRequired = formContext?.isFieldRequired;
+const fieldSettingsFor = formContext?.fieldSettingsFor;
 
 // All error messages for this field, sourced from the wrapper's single merge
 // point. Returns an empty array when the field is used outside form-wrapper.
@@ -242,12 +243,6 @@ const fieldTypes = {
 	},
 };
 
-// Standardised options used to resolve displayed labels for option fields.
-const { options: internalOptions } = useOptions(toRef(attrs, "options"), {
-	labelKey: attrs.labelKey,
-	valueKey: attrs.valueKey,
-});
-
 // The field type to use, falling back to the default if an unknown type is
 // encountered.
 const fieldType = computed(() => {
@@ -267,6 +262,26 @@ const haveUnknownType = computed(
 const showUnknownTypeDiagnostic = computed(() => import.meta.env.DEV && haveUnknownType.value);
 // The config for the resolved field type.
 const fieldConfiguration = computed(() => fieldTypes[fieldType.value]);
+
+// The options for an option-backed field. An options attribute on the field wins;
+// otherwise the options come from the field's entry in the form's fields map.
+const resolvedOptions = computed(() => {
+	if (attrs.options !== undefined) {
+		return attrs.options;
+	}
+
+	if (!fieldConfiguration.value.usesOptions || !isFunction(fieldSettingsFor)) {
+		return undefined;
+	}
+
+	return toValue(fieldSettingsFor(props.name)?.options);
+});
+
+// Standardised options used to resolve displayed labels for option fields.
+const { options: internalOptions } = useOptions(resolvedOptions, {
+	labelKey: attrs.labelKey,
+	valueKey: attrs.valueKey,
+});
 
 // The current displayable value, or undefined when it should be omitted.
 const fieldDisplayValue = computed(() => {
@@ -342,6 +357,10 @@ const fieldProps = computed(() => {
 	// Cascade form-wrapper readonly to child fields.
 	if (isReadonly?.value) {
 		attributeGroups.push({ readonly: true });
+	}
+
+	if (resolvedOptions.value !== undefined && attrs.options === undefined) {
+		attributeGroups.push({ options: resolvedOptions.value });
 	}
 
 	return deepMerge(...attributeGroups);

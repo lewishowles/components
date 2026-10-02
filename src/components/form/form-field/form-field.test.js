@@ -229,6 +229,104 @@ describe("form-field", () => {
 			expect(field.displayValue.value).toBe("Email, SMS");
 		});
 
+		test("uses reactive mapped options for the control and answer label", async () => {
+			const options = ref([{ label: "Email", value: "email" }]);
+
+			const mountWithSettings = createMount(FormField, {
+				props: defaultProps,
+				global: {
+					provide: {
+						form: { ...provide.form, fieldSettingsFor: () => ({ options }) },
+					},
+				},
+			});
+
+			const wrapper = mountWithSettings({
+				props: { modelValue: "email", type: "radio-group" },
+				slots: { default: "Contact method" },
+			});
+
+			const field = registerFieldMock.mock.calls.at(-1)?.[0];
+
+			expect(wrapper.vm.fieldProps.options).toEqual([{ label: "Email", value: "email" }]);
+			expect(field.displayValue.value).toBe("Email");
+
+			options.value = [{ label: "Work email", value: "email" }];
+			await nextTick();
+
+			expect(field.displayValue.value).toBe("Work email");
+			expect(wrapper.vm.fieldProps.options).toEqual([{ label: "Work email", value: "email" }]);
+		});
+
+		test("uses mapped options for select fields", () => {
+			const mountWithSettings = createMount(FormField, {
+				props: defaultProps,
+				global: {
+					provide: {
+						form: {
+							...provide.form,
+							fieldSettingsFor: () => ({ options: [{ label: "Email", value: "email" }] }),
+						},
+					},
+				},
+			});
+
+			const wrapper = mountWithSettings({
+				props: { modelValue: "email", type: "select" },
+				slots: { default: "Contact method" },
+			});
+
+			const field = registerFieldMock.mock.calls.at(-1)?.[0];
+
+			expect(wrapper.vm.fieldProps.options).toEqual([{ label: "Email", value: "email" }]);
+			expect(field.displayValue.value).toBe("Email");
+		});
+
+		test("does not pass mapped options to a text field", () => {
+			const mountWithSettings = createMount(FormField, {
+				props: defaultProps,
+				global: {
+					provide: {
+						form: {
+							...provide.form,
+							fieldSettingsFor: () => ({ options: ["Unused"] }),
+						},
+					},
+				},
+			});
+
+			const wrapper = mountWithSettings({ props: { type: "text" } });
+
+			expect(wrapper.vm.fieldProps).not.toHaveProperty("options");
+		});
+
+		test("prefers directly supplied options over mapped options", () => {
+			const mountWithSettings = createMount(FormField, {
+				props: defaultProps,
+				global: {
+					provide: {
+						form: {
+							...provide.form,
+							fieldSettingsFor: () => ({ options: ["Mapped"] }),
+						},
+					},
+				},
+			});
+
+			const wrapper = mountWithSettings({
+				props: {
+					modelValue: "direct",
+					options: [{ label: "Direct", value: "direct" }],
+					type: "radio-group",
+				},
+			});
+
+			const field = registerFieldMock.mock.calls.at(-1)?.[0];
+
+			expect(wrapper.vm.fieldProps).not.toHaveProperty("options");
+			expect(field.displayValue.value).toBe("Direct");
+		});
+
 		test("should not expose an option value when its label cannot be resolved", () => {
 			mount({
 				props: {

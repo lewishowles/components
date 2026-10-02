@@ -20,6 +20,14 @@ function mountFormHost(options = {}) {
 
 	const component = defineComponent({
 		props: {
+			fieldTypes: {
+				type: Object,
+				default: () => ({}),
+			},
+			fields: {
+				type: Object,
+				default: () => ({}),
+			},
 			compact: {
 				type: Boolean,
 				default: false,
@@ -92,6 +100,58 @@ describe("useFormHost", () => {
 	});
 
 	describe("Initial data", () => {
+		test("uses a mapped valueType without fieldTypes for initial and submitted values", async () => {
+			const onSubmit = vi.fn();
+
+			const { instance } = mountFormHost({
+				formOptions: { includeUnregisteredFields: true },
+				props: {
+					fields: { age: { valueType: "nullable-number" } },
+					initialData: { age: 12 },
+					onSubmit,
+				},
+			});
+
+			expect(instance.formData.value.age).toBe("12");
+
+			await instance.handleFormSubmit();
+
+			expect(onSubmit).toHaveBeenCalledWith({ age: 12 });
+		});
+
+		test("uses mapped valueType over fieldTypes for initial and submitted values", async () => {
+			const onSubmit = vi.fn();
+
+			const { instance } = mountFormHost({
+				formOptions: { includeUnregisteredFields: true },
+				props: {
+					fieldTypes: { age: "nullable-number" },
+					fields: { age: { valueType: "nullable-string" } },
+					initialData: { age: "12" },
+					onSubmit,
+				},
+			});
+
+			expect(instance.formData.value.age).toBe("12");
+
+			await instance.handleFormSubmit();
+
+			expect(onSubmit).toHaveBeenCalledWith({ age: "12" });
+		});
+
+		test("returns current settings for a named field", async () => {
+			const { instance, wrapper } = mountFormHost({
+				props: { fields: { choice: { options: ["First"] } } },
+			});
+
+			expect(instance.formContext.fieldSettingsFor("choice")).toEqual({ options: ["First"] });
+			expect(instance.formContext.fieldSettingsFor("missing")).toEqual({});
+
+			await wrapper.setProps({ fields: { choice: { options: ["Second"] } } });
+
+			expect(instance.formContext.fieldSettingsFor("choice")).toEqual({ options: ["Second"] });
+		});
+
 		test("emits synchronously available initialData through v-model", () => {
 			const { wrapper } = mountFormHost({
 				props: { initialData: { name: "Alice" } },

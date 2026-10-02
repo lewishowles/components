@@ -128,7 +128,15 @@ export const formFlowMetadata = {
 			name: "fieldTypes",
 			type: "object",
 			default: "{}",
-			summary: "Field type transformations applied to seeded and submitted values.",
+			summary:
+				"Deprecated: use fields[name].valueType. Field type transformations applied to seeded and submitted values; a matching fields valueType takes precedence.",
+		},
+		{
+			name: "fields",
+			type: "object",
+			default: "{}",
+			summary:
+				"Settings keyed by field name. Set options for radio-group, checkbox-group, button-group, combo-box, or select fields, and valueType to nullable-number or nullable-string. Options may be a plain value, ref, or computed value. A field's own options attribute takes precedence; valueType takes precedence over fieldTypes.",
 		},
 		{
 			name: "initialData",

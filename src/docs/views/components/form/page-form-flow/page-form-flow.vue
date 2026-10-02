@@ -289,12 +289,45 @@
 				</p>
 			</component-prop>
 
+			<component-prop id="prop-fields">
+				<template #name>fields</template>
+				<template #type>Object</template>
+				<template #default-value>{}</template>
+
+				<p>
+					Settings keyed by field name. Use
+					<code>valueType</code>
+					for
+					<code>nullable-number</code>
+					or
+					<code>nullable-string</code>
+					conversion on initial and submitted values. Use
+					<code>options</code>
+					for radio, checkbox, button group, combo-box, and select fields. Options may be a plain
+					value, ref, or computed value. A directly passed
+					<code>options</code>
+					attribute on
+					<code>form-field</code>
+					takes precedence. For example,
+					<code>{ age: { valueType: 'nullable-number' } }</code>
+					stores the age answer as a number, or null when it is empty.
+				</p>
+			</component-prop>
+
 			<component-prop id="prop-field-types">
 				<template #name>fieldTypes</template>
 
 				<template #type>Object</template>
 
 				<template #default-value>{}</template>
+
+				<p>
+					Deprecated. Use
+					<code>fields[name].valueType</code>
+					for new forms. A matching
+					<code>valueType</code>
+					takes precedence.
+				</p>
 
 				<p>
 					Field type transformations applied to initial and submitted form data, keyed by field

@@ -146,6 +146,8 @@ When `true`, reduces vertical spacing in the form. The change cascades automatic
 - type: `object`
 - default: `{}`
 
+Deprecated. Use `fields[name].valueType` for new forms. A `valueType` in `fields` takes precedence when both settings name the same field.
+
 Field type transformations applied to initial and submitted form data, keyed by field name. Each value is one of `nullable-number` or `nullable-string`:
 
 - `nullable-number`: `""`/`null`/`undefined` → `null`, else `Number(value)` (`NaN` → `null`)
@@ -155,6 +157,19 @@ Field type transformations applied to initial and submitted form data, keyed by 
 <form-wrapper v-bind="{ fieldTypes: { age: 'nullable-number' } }">…</form-wrapper>
 ```
 
+### `fields`
+
+- type: `object`
+- default: `{}`
+
+Settings keyed by field name. Use `valueType` for `nullable-number` or `nullable-string` conversion on initial and submitted values. Use `options` for `radio-group`, `checkbox-group`, `button-group`, `combo-box`, and `select` fields. Options may be a plain value, ref, or computed value and update when their source changes. An `options` attribute on `form-field` takes precedence over mapped options.
+
+```html
+<form-wrapper :fields="{ age: { valueType: 'nullable-number' }, colour: { options: colours } }">
+	<form-field name="colour" type="radio-group">Colour</form-field>
+</form-wrapper>
+```
+
 ### `initialData`
 
 - type: `object | function`
@@ -162,7 +177,7 @@ Field type transformations applied to initial and submitted form data, keyed by 
 
 An object, ref, computed, or getter used to seed the form once it resolves truthy. When this prop is omitted, the form continues to seed from `modelValue` as before. No `recordId` needed unless the form must later reseed for a different record.
 
-Rename fields inline, or with `mapFormData` for larger reshaping. `fieldTypes` on `form-wrapper` coerces both the initial seed and submitted data from one declaration.
+Rename fields inline, or with `mapFormData` for larger reshaping. `fields[name].valueType` on `form-wrapper` coerces both the initial seed and submitted data from one declaration.
 
 ```js
 import { computed } from "vue";

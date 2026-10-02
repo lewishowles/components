@@ -36,10 +36,27 @@ export function useFormHost(props, emit, options = {}) {
 	// The host may handle a submit without a direct listener.
 	const { handleEmptySubmit, ...formOptions } = options;
 
+	// The value type for each field, taken from the fields settings first and
+	// the deprecated fieldTypes prop second.
+	const fieldTypes = computed(() => {
+		const types = { ...props.fieldTypes };
+
+		for (const [name, settings] of Object.entries(props.fields ?? {})) {
+			const valueType = toValue(settings?.valueType);
+
+			if (valueType !== undefined) {
+				types[name] = valueType;
+			}
+		}
+
+		return types;
+	});
+
 	// The shared form state and validation methods.
 	const form = useForm({
 		...toRefs(props),
 		...formOptions,
+		fieldTypes,
 		initialData: formInitialData,
 		onSubmit: callSubmitListeners,
 	});
@@ -56,6 +73,7 @@ export function useFormHost(props, emit, options = {}) {
 	// Context shared by form-field and form-layout consumers.
 	const formContext = {
 		fieldErrorsFor: form.fieldErrorsFor,
+		fieldSettingsFor,
 		formData: form.formData,
 		registerField: form.registerField,
 		unregisterField: form.unregisterField,
@@ -64,6 +82,18 @@ export function useFormHost(props, emit, options = {}) {
 		isFieldRequired: form.isFieldRequired,
 		isCompact: computed(() => props.compact),
 	};
+
+	/**
+	 * Look up the settings that the form's fields prop holds for one field.
+	 *
+	 * @param  {string}  name
+	 *     The field name used as the settings key.
+	 * @returns  {object}
+	 *     The field settings, or an empty object when none were supplied.
+	 */
+	function fieldSettingsFor(name) {
+		return props.fields?.[name] ?? {};
+	}
 
 	// Synchronous initial data seeds before this watcher exists, so emit its current value immediately.
 	watch(form.formData, (value) => emit("update:modelValue", value), {
