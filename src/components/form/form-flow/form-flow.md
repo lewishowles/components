@@ -203,6 +203,8 @@ Settings keyed by field name. Use `valueType` for `nullable-number` or `nullable
 
 Use `default` to give a field a starting value when its value is missing or `undefined`, including a field on a screen that has not mounted yet. `null` and an empty string stay as supplied. A default may be a plain value, ref, or computed value, and is read when the form's starting data is ready. Defaulted values count as unchanged when the form checks for unsaved changes, including when `initialData` arrives later or a new `recordId` reloads the form. When the flow starts from `modelValue` and fills a default, it sends the completed value back through `update:modelValue` once.
 
+Use `rules` for an array of validation rules that applies while the field belongs to a screen still in the flow. Rules for fields on earlier screens still run at final submit. A field hidden with `v-if`, or one on a screen removed by a condition, stops using its mapped rules. A plain value, ref, or computed array is accepted. If the `rules` prop also names the field, the rules prop's rules run first, followed by the field's mapped rules.
+
 ```html
 <form-flow
 	:fields="{ age: { default: 18, valueType: 'nullable-number' }, colour: { options: colours } }"
@@ -247,7 +249,7 @@ Additional classes passed to each active screen's inner `form-layout`.
 - type: `object`
 - default: `{}`
 
-All validation lives here, keyed by field name. Each value is an array of rules run against the full form data on submit. Keeping validation in one place keeps it contained rather than spread across fields, and it also allows rules that rely on other fields.
+Rules here apply to every named key, including fields on screens removed by a condition. Each value is an array of rules run against the full form data on submit. Use this for data that must be validated without a visible screen; use `fields[name].rules` when validation should follow screen and field presence. Both sources run when they name the same field.
 
 ### `schema`
 

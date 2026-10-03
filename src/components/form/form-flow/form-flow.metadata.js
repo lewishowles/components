@@ -61,7 +61,8 @@ export const formFlowMetadata = {
 			name: "rules",
 			type: "object",
 			default: "{}",
-			summary: "Form-level rules run against the complete form data.",
+			summary:
+				"Rules run against complete form data for every named key, including fields on removed screens. Use fields[name].rules for presence-based validation. Rules here run first when both sources name one field.",
 		},
 		{
 			name: "schema",
@@ -136,7 +137,7 @@ export const formFlowMetadata = {
 			type: "object",
 			default: "{}",
 			summary:
-				"Settings keyed by field name. Set options for radio-group, checkbox-group, button-group, combo-box, or select fields, valueType to nullable-number or nullable-string, and default to a starting value. Options and defaults may each be a plain value, ref, or computed value. A default fills a field whose starting value is missing or undefined, including a field that has not mounted yet, and counts as unchanged when the form checks for unsaved changes. Null and empty strings stay as supplied. A field's own options attribute takes precedence; valueType takes precedence over fieldTypes.",
+				"Settings keyed by field name. Set options for radio-group, checkbox-group, button-group, combo-box, or select fields, valueType to nullable-number or nullable-string, default to a starting value, and rules to an array of validation rules. Options, defaults, and rules may each be a plain value, ref, or computed value. A default fills a missing or undefined starting value, including on an unmounted screen, and counts as unchanged. Null and empty strings stay as supplied. Mapped rules apply while the field belongs to a screen still in the flow; a removed field or screen skips them. The rules prop's rules apply to every key and run before mapped rules when both sources name one field. A field's own options attribute takes precedence; valueType takes precedence over fieldTypes.",
 		},
 		{
 			name: "initialData",

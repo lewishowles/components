@@ -166,6 +166,8 @@ Settings keyed by field name. Use `valueType` for `nullable-number` or `nullable
 
 Use `default` to give a field a starting value when its value is missing or `undefined`. `null` and an empty string stay as supplied. A default may be a plain value, ref, or computed value, and is read when the form's starting data is ready. Defaulted values count as unchanged when the form checks for unsaved changes, including when `initialData` arrives later or a new `recordId` reloads the form. When the form starts from `modelValue` and fills a default, it sends the completed value back through `update:modelValue` once.
 
+Use `rules` for an array of validation rules that applies while the field is mounted. A field hidden with `v-if` keeps its value but stops using these rules. A plain value, ref, or computed array is accepted. If the `rules` prop also names the field, the rules prop's rules run first, followed by the field's mapped rules.
+
 ```html
 <form-wrapper
 	:fields="{ age: { default: 18, valueType: 'nullable-number' }, colour: { options: colours } }"
@@ -229,7 +231,7 @@ Additional classes passed to the inner `form-layout`.
 - type: `object`
 - default: `{}`
 
-All validation lives here, keyed by field name. Each value is an array of rules run against the full form data on submit. Keeping validation in one place keeps it contained rather than spread across fields, and it also allows rules that rely on other fields.
+Form-level validation rules, keyed by field name. Each value is an array of rules checked against the full form data on submit, for fields that are mounted. Keep rules that compare fields here. Use `fields[name].rules` when the rule belongs with the field's other settings. When both sources name a mounted field, the rules prop's rules run first.
 
 ```js
 const rules = {

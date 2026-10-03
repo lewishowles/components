@@ -332,6 +332,18 @@
 					<code>{ age: { default: 18, valueType: 'nullable-number' } }</code>
 					starts the age field at 18 unless a value was supplied.
 				</p>
+
+				<p>
+					Use
+					<code>rules</code>
+					for a plain, ref, or computed array of validation rules that applies while the field
+					belongs to a screen still in the flow. Rules for fields on earlier screens still run at
+					final submit. A field hidden with
+					<code>v-if</code>
+					, or one on a screen removed by a condition, stops using its mapped rules. If the
+					<code>rules</code>
+					prop also names the field, the rules prop's rules run first, followed by the mapped rules.
+				</p>
 			</component-prop>
 
 			<component-prop id="prop-field-types">
@@ -448,9 +460,12 @@
 				<template #default-value>{}</template>
 
 				<p>
-					All validation lives here, keyed by field name. Each value is an array of rules run
-					against the full form data on submit. Rules can rely on other fields, so cross-field
-					validation belongs here when it is not contained within a single field.
+					Rules here apply to every named key, including fields on screens removed by a condition.
+					Each value is an array of rules run against the full form data on submit. Use this for
+					data that must be validated without a visible screen; use
+					<code>fields[name].rules</code>
+					when validation should follow screen and field presence. Both sources run when they name
+					the same field.
 				</p>
 			</component-prop>
 

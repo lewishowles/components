@@ -75,6 +75,32 @@ describe("form-wrapper", () => {
 		});
 
 		describe("rules", () => {
+			test("applies a mounted field's mapped rule and skips it after removal", async () => {
+				const onSubmit = vi.fn();
+
+				const wrapper = mount({
+					props: {
+						fields: { answer: { rules: [{ rule: "required", message: "Answer is required" }] } },
+						modelValue: { answer: "" },
+						onSubmit,
+					},
+				});
+
+				const vm = wrapper.vm;
+
+				vm.registerField({ name: "answer", id: "answer-id" });
+
+				await vm.handleFormSubmit();
+
+				expect(onSubmit).not.toHaveBeenCalled();
+
+				vm.unregisterField("answer");
+
+				await vm.handleFormSubmit();
+
+				expect(onSubmit).toHaveBeenCalledOnce();
+			});
+
 			const rules = {
 				confirmPassword: [{ rule: "same", field: "password", message: "Passwords must match" }],
 			};

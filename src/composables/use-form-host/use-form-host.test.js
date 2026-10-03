@@ -40,6 +40,10 @@ function mountFormHost(options = {}) {
 				type: Object,
 				default: () => ({}),
 			},
+			rules: {
+				type: Object,
+				default: () => ({}),
+			},
 			recordId: {
 				type: [String, Number],
 				default: null,
@@ -82,6 +86,23 @@ afterEach(() => {
 });
 
 describe("useFormHost", () => {
+	describe("Mapped rules", () => {
+		test("runs prop rules before mapped rules for a registered field", async () => {
+			const { instance } = mountFormHost({
+				props: {
+					fields: { name: { rules: [{ rule: "required", message: "Map rule" }] } },
+					rules: { name: [{ rule: "required", message: "Prop rule" }] },
+				},
+			});
+
+			instance.registerField({ name: "name", id: "name-id" });
+
+			await instance.validate({ focus: false });
+
+			expect(instance.formLevelErrors.value.name).toEqual(["Prop rule", "Map rule"]);
+		});
+	});
+
 	describe("Initialisation", () => {
 		test("returns the generic form context and submit presentation flags", () => {
 			const { instance } = mountFormHost({

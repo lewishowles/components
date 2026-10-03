@@ -1067,6 +1067,111 @@ describe("form-flow", () => {
 	});
 
 	describe("Submit", () => {
+		test("validates a mapped rule from an earlier screen on final submit", async () => {
+			const wrapper = mountDeep({
+				props: {
+					fields: { first: { rules: [{ rule: "required", message: "First is required" }] } },
+					modelValue: { first: "ready", second: "ready" },
+				},
+				slots: { default: flowSlots },
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			await wrapper.vm.setValue("first", "");
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(wrapper.find('[data-screen-id="first"]').exists()).toBe(true);
+			expect(wrapper.text()).toContain("First is required");
+		});
+
+		test("skips a removed screen's mapped rule", async () => {
+			const state = { first: ref(true), second: ref(true) };
+			const onSubmit = vi.fn();
+
+			const wrapper = mountConditionalFlow(state, ["first", "second"], {
+				fields: { first: { rules: [{ rule: "required", message: "First is required" }] } },
+				modelValue: { first: "ready", second: "ready" },
+				onSubmit,
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			state.first.value = false;
+			await nextTick();
+			await wrapper.getComponent(FormFlow).vm.setValue("first", "");
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(onSubmit).toHaveBeenCalledOnce();
+		});
+
+		test("applies a rules prop entry for a removed screen's field", async () => {
+			const state = { first: ref(true), second: ref(true) };
+			const onSubmit = vi.fn();
+
+			const wrapper = mountConditionalFlow(state, ["first", "second"], {
+				fields: { first: { rules: [{ rule: "required", message: "Mapped rule" }] } },
+				modelValue: { first: "ready", second: "ready" },
+				onSubmit,
+				rules: { first: [{ rule: "required", message: "Prop rule" }] },
+			});
+
+			await flushPromises();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+			state.first.value = false;
+			await nextTick();
+			await wrapper.getComponent(FormFlow).vm.setValue("first", "");
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(onSubmit).not.toHaveBeenCalled();
+		});
+
+		test("skips a mapped rule when a field is hidden on the active screen", async () => {
+			const showField = ref(true);
+			const onSubmit = vi.fn();
+
+			const wrapper = mountDeep({
+				props: {
+					fields: { first: { rules: [{ rule: "required", message: "First is required" }] } },
+					modelValue: { first: "" },
+					onSubmit,
+				},
+				slots: {
+					default: () =>
+						h(
+							FormScreen,
+							{ id: "first" },
+							{
+								default: () => {
+									if (!showField.value) {
+										return null;
+									}
+
+									return h(FormField, { name: "first" }, { default: () => "First" });
+								},
+							},
+						),
+				},
+			});
+
+			await flushPromises();
+			expect(wrapper.findComponent(FormField).exists()).toBe(true);
+
+			showField.value = false;
+			await nextTick();
+			await wrapper.get('[data-test="form-flow"]').trigger("submit");
+			await flushPromises();
+
+			expect(wrapper.findComponent(FormField).exists()).toBe(false);
+			expect(onSubmit).toHaveBeenCalledOnce();
+		});
+
 		test("routes final errors to the first visible screen with an error", async () => {
 			const secondRule = vi
 				.fn()

@@ -27,7 +27,7 @@ export const formWrapperMetadata = {
 			type: "object",
 			default: "{}",
 			summary:
-				"Form-level validation rules, keyed by field name. Each value is an array of rules in the same shape as `form-field`'s own `validation`, but run against the full form data on submit. Field-local rules run first; form-level errors map to the named field so they display beside the field and in the error summary.",
+				"Form-level validation rules, keyed by field name. Each array is checked against full form data on submit for mounted fields. Keep rules that compare fields here. When both sources name a mounted field, the rules prop's rules run before its mapped rules. Errors map to the named field and the error summary.",
 		},
 		{
 			name: "schema",
@@ -110,7 +110,7 @@ export const formWrapperMetadata = {
 			type: "object",
 			default: "{}",
 			summary:
-				"Settings keyed by field name. Set options for radio-group, checkbox-group, button-group, combo-box, or select fields, valueType to nullable-number or nullable-string, and default to a starting value. Options and defaults may each be a plain value, ref, or computed value. A default fills a field whose starting value is missing or undefined, and counts as unchanged when the form checks for unsaved changes. Null and empty strings stay as supplied. A field's own options attribute takes precedence; valueType takes precedence over fieldTypes.",
+				"Settings keyed by field name. Set options for radio-group, checkbox-group, button-group, combo-box, or select fields, valueType to nullable-number or nullable-string, default to a starting value, and rules to an array of validation rules. Options, defaults, and rules may each be a plain value, ref, or computed value. A default fills a missing or undefined starting value and counts as unchanged. Null and empty strings stay as supplied. Mapped rules apply only while the field is mounted; the rules prop's rules run first when both sources name a mounted field. A field's own options attribute takes precedence; valueType takes precedence over fieldTypes.",
 		},
 		{
 			name: "initialData",

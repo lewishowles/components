@@ -326,8 +326,10 @@ const props = defineProps({
 
 	/**
 	 * Settings for each field, keyed by field name. An entry can hold `options` for
-	 * option-backed fields and a `valueType` that converts the field's value. A setting
-	 * passed directly to `form-field` takes precedence over its entry here.
+	 * option-backed fields, a `valueType` that converts the field's value, or `rules`
+	 * that apply while the field belongs to a screen still in the flow. A setting
+	 * passed directly to `form-field` takes precedence over its entry here. When the
+	 * `rules` prop also names the field, the `rules` prop's rules run first.
 	 */
 	fields: {
 		type: Object,
@@ -390,6 +392,13 @@ const isSubmitStep = computed(
 	() => isShowingReview.value || (isLastScreen.value && !props.enableReview),
 );
 
+// Screen IDs, kept in order so that screen navigation makes sense. Declared
+// before the form setup, whose field presence check reads these and screens.
+const screenIds = ref([]);
+// Per-screen state. Keep slotOrder when a screen unregisters so it can return
+// to its original position; the other values reset when it unregisters.
+const screens = ref({});
+
 const {
 	formData,
 	errorSummary,
@@ -424,6 +433,10 @@ const {
 	generalErrorsElement,
 	submitButtonRef,
 	handleEmptySubmit,
+	// A field keeps its rules from the fields setting while it belongs to any
+	// screen still in the flow.
+	isFieldPresent: (name) =>
+		screenIds.value.some((screenId) => screens.value[screenId]?.fields?.includes(name)),
 });
 
 // Errors that cannot be attributed to a field on a visible screen.
@@ -440,11 +453,6 @@ const errorSummaryToDisplay = computed(() => {
 	return haveFlowErrorSummary.value ? flowErrorSummary.value : errorSummary.value;
 });
 
-// Screen IDs, kept in order so that screen navigation makes sense.
-const screenIds = ref([]);
-// Per-screen state. Keep slotOrder when a screen unregisters so it can return
-// to its original position; the other values reset when it unregisters.
-const screens = ref({});
 // The screen whose content is currently rendered.
 const activeScreenId = ref(null);
 // Whether the review screen is showing in place of the active screen's content.

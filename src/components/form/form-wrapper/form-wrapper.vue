@@ -244,8 +244,10 @@ const props = defineProps({
 
 	/**
 	 * Settings for each field, keyed by field name. An entry can hold `options` for
-	 * option-backed fields and a `valueType` that converts the field's value. A setting
-	 * passed directly to `form-field` takes precedence over its entry here.
+	 * option-backed fields, a `valueType` that converts the field's value, or `rules`
+	 * that apply while the field is mounted. A setting passed directly to
+	 * `form-field` takes precedence over its entry here. When the `rules` prop also
+	 * names the field, the `rules` prop's rules run first.
 	 */
 	fields: {
 		type: Object,

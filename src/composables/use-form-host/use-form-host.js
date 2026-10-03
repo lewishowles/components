@@ -13,7 +13,10 @@ import { useForm } from "@/composables/use-form/use-form.js";
  * @param  {function}  emit
  *     The host component's emit function.
  * @param  {object}  [options]
- *     Extra useForm options and an optional fallback for an unhandled submit.
+ *     Extra useForm options, an optional fallback for an unhandled submit, and an
+ *     optional `isFieldPresent(name)` check for mapped rules. Without it, mapped
+ *     rules are included for every field; form-wrapper's scoped validation skips
+ *     fields that are not mounted.
  * @returns  {object}
  *     Form state, presentation flags, and generic form context for the host.
  */
@@ -82,8 +85,9 @@ export function useFormHost(props, emit, options = {}) {
 	// initial data is still loading.
 	const formInitialData = computed(() => formSeed.value.data);
 
-	// The host may handle a submit without a direct listener.
-	const { handleEmptySubmit, ...formOptions } = options;
+	// The host may handle a submit without a direct listener, and form-flow may
+	// decide which fields count as present for mapped rules.
+	const { handleEmptySubmit, isFieldPresent, ...formOptions } = options;
 
 	// The value type for each field, taken from the fields settings first and
 	// the deprecated fieldTypes prop second.
@@ -101,6 +105,24 @@ export function useFormHost(props, emit, options = {}) {
 		return types;
 	});
 
+	// The rules prop combined with mapped rules. Form-flow filters mapped rules by
+	// screen presence; form-wrapper's scoped validation skips unmounted fields.
+	const rules = computed(() => {
+		const combinedRules = { ...props.rules };
+
+		for (const [name, settings] of Object.entries(props.fields ?? {})) {
+			const fieldRules = toValue(settings?.rules);
+
+			if (fieldRules === undefined || (isFieldPresent && !isFieldPresent(name))) {
+				continue;
+			}
+
+			combinedRules[name] = [...(combinedRules[name] ?? []), ...fieldRules];
+		}
+
+		return combinedRules;
+	});
+
 	// The shared form state and validation methods.
 	const form = useForm({
 		...toRefs(props),
@@ -108,6 +130,7 @@ export function useFormHost(props, emit, options = {}) {
 		fieldTypes,
 		initialData: formInitialData,
 		onSubmit: callSubmitListeners,
+		rules,
 	});
 
 	// The form-wide status prop overrides submit lifecycle status when provided.

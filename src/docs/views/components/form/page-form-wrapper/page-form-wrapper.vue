@@ -115,9 +115,12 @@
 				<template #default-value>{}</template>
 
 				<p>
-					All validation lives here, keyed by field name. Each value is an array of rules run
-					against the full form data on submit. Keeping validation in one place keeps it contained
-					rather than spread across fields, and it also allows rules that rely on other fields.
+					Form-level validation rules, keyed by field name. Each value is an array of rules checked
+					against the full form data on submit, for fields that are mounted. Keep rules that compare
+					fields here. Use
+					<code>fields[name].rules</code>
+					when the rule belongs with the field's other settings. When both sources name a mounted
+					field, the rules prop's rules run first.
 				</p>
 
 				<code-block v-bind="{ code: rulesExample }" />
@@ -381,6 +384,17 @@
 					takes precedence. For example,
 					<code>{ age: { valueType: 'nullable-number' } }</code>
 					stores the age answer as a number, or null when it is empty.
+				</p>
+
+				<p>
+					Use
+					<code>rules</code>
+					for a plain, ref, or computed array of validation rules that applies while the field is
+					mounted. A field hidden with
+					<code>v-if</code>
+					keeps its value but stops using these rules. If the
+					<code>rules</code>
+					prop also names the field, the rules prop's rules run first, followed by the mapped rules.
 				</p>
 
 				<p>
