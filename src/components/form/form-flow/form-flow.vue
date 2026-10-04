@@ -147,8 +147,8 @@ import {
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { breakpointsTailwind, until, useBreakpoints } from "@vueuse/core";
-
 import { useFormHost } from "@/composables/use-form-host/use-form-host.js";
+import useFlowScreens from "./composables/use-flow-screens/use-flow-screens.js";
 
 // Reasons explain what caused each completed navigation reported by the
 // `screen-change` event.
@@ -392,12 +392,44 @@ const isSubmitStep = computed(
 	() => isShowingReview.value || (isLastScreen.value && !props.enableReview),
 );
 
-// Screen IDs, kept in order so that screen navigation makes sense. Declared
-// before the form setup, whose field presence check reads these and screens.
-const screenIds = ref([]);
-// Per-screen state. Keep slotOrder when a screen unregisters so it can return
-// to its original position; the other values reset when it unregisters.
-const screens = ref({});
+// The screen whose content is currently rendered.
+const activeScreenId = ref(null);
+// Whether the review screen is showing in place of the active screen's content.
+const isShowingReview = ref(false);
+
+// The screen list is set up before the form, because the form asks it which
+// fields are still on a screen. The form's field functions don't exist yet, so
+// they are passed as wrappers that look them up when called.
+const {
+	activeScreenIndex,
+	activeScreenProgressLabel,
+	canGoBack,
+	haveActiveScreen,
+	haveActiveScreenErrors,
+	haveEmptyFlow,
+	isCurrentScreen,
+	isLastScreen,
+	isScreenComplete,
+	markScreenComplete,
+	progressSlotProps,
+	registerFlowField,
+	registerScreen,
+	screenFieldNames,
+	screenFieldNamesById,
+	screenIds,
+	screens,
+	unregisterFlowField,
+	unregisterScreen,
+} = useFlowScreens({
+	activeScreenId,
+	fieldErrorsFor: (name) => fieldErrorsFor(name),
+	invalidatePendingNavigation,
+	isShowingReview,
+	navigateToScreen,
+	navigationReasons,
+	registerField: (field) => registerField(field),
+	unregisterField: (name) => unregisterField(name),
+});
 
 const {
 	formData,
@@ -453,11 +485,6 @@ const errorSummaryToDisplay = computed(() => {
 	return haveFlowErrorSummary.value ? flowErrorSummary.value : errorSummary.value;
 });
 
-// The screen whose content is currently rendered.
-const activeScreenId = ref(null);
-// Whether the review screen is showing in place of the active screen's content.
-const isShowingReview = ref(false);
-
 // Do not auto-advance while initial data is being applied.
 let isAutoAdvanceReady = false;
 // Native input/change events are the only signal that a model watcher update
@@ -476,65 +503,8 @@ let isBeforeFirstScreenActivation = true;
 // The field a review Change button asked to focus, until the next focus attempt consumes it.
 let pendingFieldFocus = null;
 
-// Use the registered screen IDs to determine the current navigation position.
-const activeScreenIndex = computed(() => screenIds.value.indexOf(activeScreenId.value));
-// Whether the flow has no screen left to display.
-const haveEmptyFlow = computed(() => screenIds.value.length === 0);
-// Whether a screen is available to render.
-const haveActiveScreen = computed(() => !haveEmptyFlow.value && activeScreenIndex.value >= 0);
-// The label for the screen currently shown in the default progress display.
-const activeScreenProgressLabel = computed(() => getScreenProgress(activeScreenId.value).label);
 // Every completed screen's answers, in screen order, for the review screen.
 const answerSummaries = computed(() => getAnswerSummaries());
-
-// Screen labels and completion state for a custom progress display.
-const progressSlotProps = computed(() => ({
-	current: getScreenProgress(activeScreenId.value),
-	completed: screenIds.value
-		.filter((screenId) => screens.value[screenId]?.completed)
-		.map((screenId) => getScreenProgress(screenId)),
-	remaining: screenIds.value
-		.slice(activeScreenIndex.value + 1)
-		.map((screenId) => getScreenProgress(screenId)),
-}));
-
-// Whether the current screen is the last registered screen.
-const isLastScreen = computed(
-	() => haveActiveScreen.value && activeScreenIndex.value === screenIds.value.length - 1,
-);
-
-// Whether the Back action can move to an earlier screen.
-const canGoBack = computed(() => isShowingReview.value || activeScreenIndex.value > 0);
-
-// Field names retained by each currently visible screen.
-const screenFieldNamesById = computed(() => {
-	const namesByScreen = {};
-
-	for (const screenId of screenIds.value) {
-		const fieldNames = screens.value[screenId]?.fields;
-
-		if (fieldNames) {
-			namesByScreen[screenId] = [...fieldNames];
-			continue;
-		}
-
-		namesByScreen[screenId] = [];
-	}
-
-	return namesByScreen;
-});
-
-// Field names retained by every currently visible screen, in screen order.
-const screenFieldNames = computed(() => [
-	...new Set(Object.values(screenFieldNamesById.value).flat()),
-]);
-
-// Whether the active screen has a field error after validation.
-const haveActiveScreenErrors = computed(() =>
-	(screenFieldNamesById.value[activeScreenId.value] ?? []).some(
-		(fieldName) => fieldErrorsFor(fieldName).length > 0,
-	),
-);
 
 // Warn when screen registration changes leave no visible screen.
 watch(haveEmptyFlow, warnIfEmptyFlow);
@@ -575,266 +545,11 @@ function handleEmptySubmit(data) {
 }
 
 /**
- * Return a screen's ID and its concise label.
- *
- * @param  {string}  screenId
- *     The screen ID.
- * @returns  {object}
- *     The screen ID and its plain-text label.
+ * Cancel pending auto-advance and focus after the active screen disappears.
  */
-function getScreenProgress(screenId) {
-	const screenLabel = unref(screens.value[screenId]?.label);
-
-	return {
-		id: screenId,
-		label: screenLabel || screenId,
-	};
-}
-
-/**
- * Register a screen wherever it appears in the default slot.
- *
- * @param  {object}  screen
- *     The screen ID and its plain-text label.
- * @param  {string}  screen.id
- *     The screen ID.
- * @param  {ComputedRef<string | undefined>}  screen.label
- *     The concise label used by progress displays and answer summaries.
- * @param  {ComputedRef<string | undefined>}  screen.autoAdvance
- *     The field name that triggers automatic progression on a direct user change.
- * @param  {ComputedRef<string | undefined>}  screen.autoFocus
- *     The field name to focus on entry.
- * @param  {object}  screen.element
- *     The screen root ref used to find its title after it renders.
- */
-function registerScreen({ autoAdvance, autoFocus, element, id: screenId, label } = {}) {
-	if (!isNonEmptyString(screenId) || screenIds.value.includes(screenId)) {
-		return;
-	}
-
-	if (!screens.value[screenId]) {
-		screens.value[screenId] = {
-			slotOrder: Object.values(screens.value).length,
-			completed: false,
-		};
-	}
-
-	// Re-insert the screen in its original position, if it had one, based on
-	// its `slotOrder`, stored in `screens`.
-	const screen = screens.value[screenId];
-
-	screen.answerFields ??= {};
-	screen.fields ??= [];
-
-	screen.label = label;
-	screen.autoAdvance = autoAdvance;
-	screen.autoFocus = autoFocus;
-	screen.element = element;
-
-	const insertionIndex = screenIds.value.findIndex(
-		(registeredScreenId) => screens.value[registeredScreenId]?.slotOrder > screen.slotOrder,
-	);
-
-	screenIds.value.splice(
-		insertionIndex === -1 ? screenIds.value.length : insertionIndex,
-		0,
-		screenId,
-	);
-
-	if (!isNonEmptyString(activeScreenId.value)) {
-		navigateToScreen(screenId, {
-			direction: "forward",
-			reason: navigationReasons.INITIAL_RENDER,
-			shouldEmitChange: false,
-		});
-	}
-}
-
-/**
- * Remove a screen, preserve its original slot order for later reappearance,
- * and choose the nearest remaining screen if the removed screen was active.
- *
- * @param  {string}  screenId
- *     The screen ID.
- */
-function unregisterScreen(screenId) {
-	const screenIndex = screenIds.value.indexOf(screenId);
-
-	if (screenIndex === -1) {
-		return;
-	}
-
-	const wasActive = isCurrentScreen(screenId);
-
-	screenIds.value.splice(screenIndex, 1);
-
-	const screen = screens.value[screenId];
-
-	if (screen) {
-		// Keep completion, answer summaries, and slotOrder when a conditional screen reappears.
-		screens.value[screenId] = {
-			answerFields: screen.answerFields,
-			completed: screen.completed,
-			fields: screen.fields,
-			slotOrder: screen.slotOrder,
-		};
-	}
-
-	if (!wasActive) {
-		return;
-	}
-
-	// A screen can disappear while its answers are showing in the review
-	// screen; fall back to a neighbouring screen, or close review if none remain.
-	if (isShowingReview.value) {
-		const destinationScreenId =
-			screenIds.value[screenIndex] ?? screenIds.value[screenIndex - 1] ?? null;
-
-		if (destinationScreenId) {
-			activeScreenId.value = destinationScreenId;
-		} else {
-			isShowingReview.value = false;
-			activeScreenId.value = null;
-		}
-
-		return;
-	}
-
-	// Fall back to the screen sharing the index this screen had (the next
-	// screen), or the previous screen.
-	const destinationScreenId =
-		screenIds.value[screenIndex] ?? screenIds.value[screenIndex - 1] ?? null;
-
-	if (destinationScreenId) {
-		navigateToScreen(destinationScreenId, {
-			direction: screenIndex < screenIds.value.length ? "forward" : "backward",
-			reason: navigationReasons.CONDITIONAL_RECOVERY,
-		});
-	} else {
-		// The removed screen must not regain focus or navigate when its async work
-		// finishes. Clear the active ID so a later screen becomes the first screen.
-		autoAdvanceGeneration += 1;
-		focusGeneration += 1;
-		activeScreenId.value = null;
-	}
-}
-
-/**
- * Check whether a screen is currently active.
- *
- * @param  {string}  screenId
- *     The screen ID registered with the flow.
- * @returns {boolean}
- *     Whether the screen should render its content.
- */
-function isCurrentScreen(screenId) {
-	return activeScreenId.value === screenId;
-}
-
-/**
- * Check whether a screen passed validation when moving forward.
- *
- * @param  {string}  screenId
- *     The screen ID registered with the flow.
- * @returns {boolean}
- *     Whether the screen is complete.
- */
-function isScreenComplete(screenId) {
-	return Boolean(screens.value[screenId]?.completed);
-}
-
-/**
- * Mark a screen complete after it passes validation when moving forward.
- *
- * @param  {string}  screenId
- *     The screen ID registered with the flow.
- */
-function markScreenComplete(screenId) {
-	if (!screenIds.value.includes(screenId) || isScreenComplete(screenId)) {
-		return;
-	}
-
-	screens.value[screenId].completed = true;
-}
-
-/**
- * Register a field with the form and record which screen owns it, so
- * final validation can route an error back to its screen even after the
- * field's own component unmounts.
- *
- * @param  {object}  field
- *     The field registration supplied by form-field.
- * @param  {string | Function}  field.label
- *     The field's label text, or a function that returns it. Read it while
- *     rendering, since form-field builds it from its default slot.
- * @param  {ComputedRef<unknown>}  field.displayValue
- *     The display value available for answer summaries, or undefined when omitted.
- * @param  {Function}  field.answerSummary
- *     The field's custom renderer for its answer in a summary, if provided.
- */
-function registerFlowField(field) {
-	const registration = registerField(field);
-
-	if (!isNonEmptyString(activeScreenId.value) || !isNonEmptyString(field.name)) {
-		return registration;
-	}
-
-	const fieldNames = screens.value[activeScreenId.value]?.fields ?? [];
-
-	if (!fieldNames.includes(field.name)) {
-		fieldNames.push(field.name);
-	}
-
-	screens.value[activeScreenId.value].fields = fieldNames;
-
-	screens.value[activeScreenId.value].answerFields[field.name] = {
-		answerSummary: field.answerSummary,
-		displayValue: field.displayValue,
-		label: field.label,
-	};
-
-	return registration;
-}
-
-/**
- * Remove a field from its screen or freeze its last answer-summary value.
- * While the screen is still active, a disappearing field was renamed or
- * conditionally removed, so its screen entry is pruned. Once the screen has
- * been left, freeze the last known value so earlier answers remain available
- * after the field unmounts.
- *
- * @param  {string}  fieldName
- *     The name of the field being unregistered.
- */
-function unregisterFlowField(fieldName) {
-	const ownerScreenId = screenIds.value.find((candidate) =>
-		screens.value[candidate]?.fields?.includes(fieldName),
-	);
-
-	if (isNonEmptyString(ownerScreenId)) {
-		const screen = screens.value[ownerScreenId];
-
-		// If this field belongs to the active screen, it's been conditionally
-		// hidden, so we remove it entirely.
-		if (ownerScreenId === activeScreenId.value) {
-			screen.fields = screen.fields.filter((name) => name !== fieldName);
-
-			delete screen.answerFields[fieldName];
-		} else {
-			// Otherwise, we keep its last answer.
-			const answerField = screen.answerFields?.[fieldName];
-
-			if (answerField) {
-				screen.answerFields[fieldName] = {
-					answerSummary: answerField.answerSummary,
-					displayValue: unref(answerField.displayValue),
-					label: answerField.label,
-				};
-			}
-		}
-	}
-
-	unregisterField(fieldName);
+function invalidatePendingNavigation() {
+	autoAdvanceGeneration += 1;
+	focusGeneration += 1;
 }
 
 /**
