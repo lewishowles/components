@@ -132,22 +132,12 @@
 </template>
 
 <script setup>
-import {
-	computed,
-	nextTick,
-	onMounted,
-	provide,
-	ref,
-	toValue,
-	unref,
-	useTemplateRef,
-	watch,
-} from "vue";
+import { computed, onMounted, provide, ref, toValue, unref, useTemplateRef, watch } from "vue";
 
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
-import { breakpointsTailwind, until, useBreakpoints } from "@vueuse/core";
 import { useFormHost } from "@/composables/use-form-host/use-form-host.js";
+import useFlowFocus from "./composables/use-flow-focus/use-flow-focus.js";
 import useFlowNavigation from "./composables/use-flow-navigation/use-flow-navigation.js";
 import useFlowScreens from "./composables/use-flow-screens/use-flow-screens.js";
 
@@ -376,9 +366,6 @@ const generalErrorsElement = useTemplateRef("general-errors");
 const submitButtonRef = useTemplateRef("submit-button");
 // Focus target for the review screen's heading when review opens.
 const reviewHeading = useTemplateRef("review-heading");
-// Whether the viewport is below the Tailwind `lg` breakpoint, narrow enough to assume a virtual
-// keyboard that covers part of the page once a field takes focus.
-const isNarrow = useBreakpoints(breakpointsTailwind).smaller("lg");
 
 // Whether the primary action button should render for the current step.
 const showPrimaryButton = computed(
@@ -487,53 +474,21 @@ const errorSummaryToDisplay = computed(() => {
 	return haveFlowErrorSummary.value ? flowErrorSummary.value : errorSummary.value;
 });
 
-// A focus lookup can outlive the screen visit that started it. Advance this
-// generation so an older lookup cannot steal focus after the user returns.
-let focusGeneration = 0;
-// Initial screen registration must not move focus before the user navigates.
-let shouldSkipInitialFocus = false;
-// Only the first screen activation can suppress its focus move.
-let isBeforeFirstScreenActivation = true;
-// The field a review Change button asked to focus, until the next focus attempt consumes it.
-let pendingFieldFocus = null;
-
-// The focus actions that navigation calls. Focus targets live in this template,
-// so the focus state stays here too.
-const focusHooks = {
-	focusPendingField,
-	focusScreen,
-	showFlowErrors,
-	/**
-	 * Remember a field to focus when its screen next becomes active.
-	 *
-	 * @param  {string}  fieldName
-	 *     The field a review Change button asked to focus.
-	 */
-	queueFieldFocus(fieldName) {
-		pendingFieldFocus = fieldName;
-	},
-	/**
-	 * Skip the focus move for the first screen shown at registration, so the
-	 * flow doesn't take focus before the user does anything. Any later screen
-	 * change moves focus as usual.
-	 *
-	 * @param  {string}  reason
-	 *     The screen-change reason for the navigation about to happen.
-	 */
-	prepareScreenChange(reason) {
-		if (reason === navigationReasons.INITIAL_RENDER && isBeforeFirstScreenActivation) {
-			shouldSkipInitialFocus = true;
-		}
-
-		isBeforeFirstScreenActivation = false;
-	},
-	/**
-	 * Stop any focus lookup already in flight from moving focus.
-	 */
-	invalidatePendingFocus() {
-		focusGeneration += 1;
-	},
-};
+// Moves focus and scrolls the page after each screen change or flow error.
+// Navigation calls these actions.
+const focusHooks = useFlowFocus({
+	activeScreenId,
+	errorSummaryElement,
+	flowErrorSummary,
+	focusField,
+	formFields,
+	formFlow,
+	haveAnyErrorSummary,
+	isShowingReview,
+	navigationReasons,
+	reviewHeading,
+	screens,
+});
 
 // Screen navigation, validation on Continue, and auto-advance for the flow.
 const navigation = useFlowNavigation({
@@ -582,25 +537,6 @@ const answerSummaries = computed(() => getAnswerSummaries());
 
 // Warn when screen registration changes leave no visible screen.
 watch(haveEmptyFlow, warnIfEmptyFlow);
-
-// Focus the destination after Vue has mounted its screen and registered fields.
-watch(
-	activeScreenId,
-	(destinationScreenId) => {
-		if (!isNonEmptyString(destinationScreenId)) {
-			return;
-		}
-
-		if (shouldSkipInitialFocus) {
-			shouldSkipInitialFocus = false;
-
-			return;
-		}
-
-		focusPendingField(destinationScreenId);
-	},
-	{ flush: "post" },
-);
 
 // Once mounted, let user changes auto-advance the flow, and warn when there are
 // no screens to register.
@@ -667,213 +603,6 @@ function getAnswerSummaries() {
 	}
 
 	return summaries;
-}
-
-/**
- * Find a screen's rendered heading element, once its content has mounted.
- *
- * @param  {string}  screenId
- *     The destination screen ID.
- * @returns {Element|null}
- *     The screen heading, when the screen is rendered.
- */
-function getScreenHeading(screenId) {
-	const screenElement = toValue(screens.value[screenId]?.element);
-
-	return screenElement?.querySelector?.('[data-part="title"]') ?? null;
-}
-
-/**
- * Move focus to the shared error-summary box once its current content
- * (the current screen's own errors, or flow-level errors) has rendered.
- *
- * @param  {number}  [requestGeneration]
- *     The focus generation this call belongs to. Omit when calling outside a
- *     tracked focus attempt (e.g. showing a flow-level error directly), which
- *     always proceeds.
- */
-async function focusErrorSummaryBox(requestGeneration) {
-	await nextTick();
-
-	// If a later focus attempt has started, this one is stale; cancel it.
-	if (requestGeneration && requestGeneration !== focusGeneration) {
-		return;
-	}
-
-	errorSummaryElement.value?.focus?.();
-}
-
-/**
- * Move focus to a field once it has registered, since a screen renders
- * before its field completes registration in a later update.
- *
- * @param  {string}  fieldName
- *     The field name to focus.
- * @param  {number}  requestGeneration
- *     The focus generation this call belongs to.
- * @returns {boolean}
- *     Whether the field was focused.
- */
-async function focusRegisteredField(fieldName, requestGeneration) {
-	if (!isNonEmptyString(fieldName)) {
-		return false;
-	}
-
-	if (!formFields[fieldName]) {
-		await until(() => formFields[fieldName]).toBeTruthy({
-			timeout: 1000,
-			throwOnTimeout: false,
-		});
-	}
-
-	// If we can't find the field, or a later focus attempt has started, cancel.
-	if (!formFields[fieldName] || requestGeneration !== focusGeneration) {
-		return false;
-	}
-
-	focusField(fieldName);
-
-	return true;
-}
-
-/**
- * Scroll the currently focused element into view. Native focus already does
- * this in real browsers, but aligns to whichever edge needs the least
- * scrolling, which can leave a field's own label off-screen above it;
- * scrolling the field's own wrapper instead of the bare input keeps the
- * label with it, and matches the flow-level scroll's "start" alignment.
- *
- * @param  {object}  options
- *     Options for this scroll.
- * @param  {boolean}  options.force
- *     Scroll even when the target is already fully visible. The field path
- *     sets this on narrow viewports, where the keyboard opens after focus and
- *     hides part of the page without changing window.innerHeight, so the
- *     measurement below would call a covered field visible.
- */
-function scrollFocusedElementIntoView({ force = false } = {}) {
-	const focused = document.activeElement;
-
-	if (!focused || focused === document.body) {
-		return;
-	}
-
-	const target = focused.closest('[data-part="field"]') ?? focused;
-	const { bottom, top } = target.getBoundingClientRect();
-
-	if (force || top < 0 || bottom > window.innerHeight) {
-		target.scrollIntoView?.({ block: "start" });
-	}
-}
-
-/**
- * Scroll the top of the flow into view when it sits outside the viewport.
- * The paths that focus something at the top of the flow use this, so whatever
- * sits above that target, such as the step indicator, stays visible with it.
- */
-function scrollFlowIntoView() {
-	const flowTop = formFlow.value?.getBoundingClientRect().top;
-
-	if (flowTop === undefined || flowTop < 0 || flowTop >= window.innerHeight) {
-		formFlow.value?.scrollIntoView?.({ block: "start" });
-	}
-}
-
-/**
- * Focus a screen once its content and errors have rendered, scrolling to whichever target takes
- * focus.
- *
- * @param  {string}  screenId
- *     The screen whose summary, requested field, auto-focus field, or title should receive focus.
- * @param  {object}  options
- *     Focus options for this attempt.
- * @param  {string}  options.fieldName
- *     A field to focus instead of the screen's own auto-focus field, set by a review Change button.
- */
-async function focusScreen(screenId = activeScreenId.value, { fieldName } = {}) {
-	const requestGeneration = ++focusGeneration;
-
-	await nextTick();
-
-	// If a later focus attempt has started, this one is stale; cancel it.
-	if (requestGeneration !== focusGeneration) {
-		return;
-	}
-
-	// If we have an error summary, focus it.
-	if (haveAnyErrorSummary.value) {
-		scrollFlowIntoView();
-
-		await focusErrorSummaryBox(requestGeneration);
-
-		return;
-	}
-
-	// The review screen has no per-field target; focus its own heading.
-	if (isShowingReview.value) {
-		scrollFlowIntoView();
-
-		reviewHeading.value?.focus?.();
-
-		return;
-	}
-
-	const screen = screens.value[screenId];
-
-	if (!screen) {
-		return;
-	}
-
-	const autoFocus = isNonEmptyString(fieldName) ? fieldName : unref(screen.autoFocus);
-
-	// Attempt to focus the listed field.
-	if (isNonEmptyString(autoFocus)) {
-		if (await focusRegisteredField(autoFocus, requestGeneration)) {
-			scrollFocusedElementIntoView({ force: isNarrow.value });
-
-			return;
-		}
-
-		// If a later focus attempt has started, this one is stale; cancel it.
-		if (requestGeneration !== focusGeneration) {
-			return;
-		}
-	}
-
-	// Fall back to focusing the header of the screen.
-	scrollFlowIntoView();
-
-	const heading = getScreenHeading(screenId);
-
-	heading?.focus?.();
-	scrollFocusedElementIntoView();
-}
-
-/**
- * Show flow-level errors and move focus to their summary.
- *
- * @param  {object[]}  errors
- *     Flow-level error summary entries.
- */
-async function showFlowErrors(errors) {
-	flowErrorSummary.value = errors;
-
-	await focusErrorSummaryBox();
-}
-
-/**
- * Focus the field a review Change button requested, once its screen is active.
- * Clears the pending request first so a later navigation can't reuse it.
- *
- * @param  {string}  screenId
- *     The screen the requested field belongs to.
- */
-function focusPendingField(screenId) {
-	const fieldName = pendingFieldFocus;
-
-	pendingFieldFocus = null;
-
-	void focusScreen(screenId, { fieldName });
 }
 
 // Warn in development when no screen is available to display.
