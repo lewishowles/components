@@ -308,6 +308,7 @@
 						[data-position="last"]
 					)
 			) {
+				margin-block-start: 0;
 				margin-inline-start: -1px;
 			}
 

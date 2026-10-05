@@ -106,6 +106,7 @@ body:has(dialog[data-part="sheet"]:modal) {
 		box-shadow: var(--shadow-2xl);
 		box-sizing: border-box;
 		color: var(--content);
+		flex-direction: column;
 		inset: auto 0 0;
 		margin: 0;
 		max-height: 90dvh;
@@ -118,12 +119,30 @@ body:has(dialog[data-part="sheet"]:modal) {
 
 		&:modal {
 			display: flex;
-			flex-direction: column;
 		}
 
 		&::backdrop {
 			backdrop-filter: blur(var(--blur-xs));
 			background-color: color-mix(in oklab, var(--color-grey-950) 80%, transparent);
+
+			@media (prefers-reduced-motion: no-preference) {
+				opacity: 1;
+				transition:
+					opacity var(--reveal-duration, 250ms) ease-out,
+					display var(--reveal-duration, 250ms) allow-discrete,
+					overlay var(--reveal-duration, 250ms) allow-discrete;
+
+				@starting-style {
+					opacity: 0;
+				}
+			}
+		}
+
+		&:not([open])::backdrop {
+			@media (prefers-reduced-motion: no-preference) {
+				opacity: 0;
+				transition-duration: var(--reveal-exit-duration, 150ms);
+			}
 		}
 
 		& > :where([data-part="actions"]) {

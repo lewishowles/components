@@ -1,6 +1,85 @@
 @utility animate-fast {
 	@media (prefers-reduced-motion: no-preference) {
 		--animation-duration: 150ms;
+		--reveal-duration: 150ms;
+		--reveal-exit-duration: 90ms;
+	}
+}
+
+/**
+ * Fades content in when it appears. To fade it out as well, set
+ * data-state="closed" on it, or close it if it is a dialog. Closed content is
+ * hidden. Content placed directly inside a details element fades in each time
+ * the details opens and disappears straight away when it closes. A details
+ * element with the utility is never hidden, so its summary stays visible.
+ */
+@utility reveal-fade {
+	&[data-state="closed"]:not(details) {
+		display: none;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		opacity: 1;
+		filter: none;
+		transition-property: opacity, filter, display, overlay;
+		transition-duration: var(--reveal-duration, 250ms);
+		transition-timing-function: ease-out;
+		transition-behavior: allow-discrete;
+
+		@starting-style {
+			opacity: 0;
+		}
+
+		&[data-state="closed"]:not(details),
+		&:is(dialog:not([open])) {
+			opacity: 0;
+			filter: blur(2px);
+			transition-duration: var(--reveal-exit-duration, 150ms);
+		}
+
+		/* A closed details keeps its content in the page, so @starting-style
+		 * only applies the first time it opens. This state gives every later
+		 * open the same starting point. It applies at once because the browser
+		 * stops running transitions inside a closed details, so a fade-out would
+		 * stall at full opacity and leave nothing to fade in. */
+		details:not([open]) > &:not(summary) {
+			opacity: 0;
+			transition-duration: 0s;
+		}
+	}
+}
+
+@utility reveal-fade-up {
+	@apply reveal-fade;
+
+	@media (prefers-reduced-motion: no-preference) {
+		translate: none;
+		transition-property: opacity, filter, translate, display, overlay;
+
+		@starting-style {
+			translate: 0 calc(var(--spacing) * 2);
+		}
+
+		details:not([open]) > &:not(summary) {
+			translate: 0 calc(var(--spacing) * 2);
+		}
+	}
+}
+
+@utility reveal-fade-down {
+	@apply reveal-fade;
+
+	@media (prefers-reduced-motion: no-preference) {
+		translate: none;
+		transition-property: opacity, filter, translate, display, overlay;
+
+		@starting-style {
+			translate: 0 calc(var(--spacing) * -2);
+		}
+
+		details:not([open]) > &:not(summary) {
+			translate: 0 calc(var(--spacing) * -2);
+		}
 	}
 }
 
@@ -54,16 +133,57 @@
 	}
 }
 
-@utility delay-micro {
+/**
+ * Delay each item by 10ms per position, for quick list reveals. Loops set
+ * --stagger-index inline; otherwise the element's place among its siblings is used.
+ */
+@utility stagger-micro {
 	@media (prefers-reduced-motion: no-preference) {
-		animation-delay: calc(sibling-index() * 10ms);
+		animation-delay: calc(
+			var(--stagger-index, var(--stagger-fallback-index, sibling-index())) * 10ms
+		);
+
+		transition-delay: calc(
+			var(--stagger-index, var(--stagger-fallback-index, sibling-index())) * 10ms
+		);
 	}
 }
 
-@utility delay {
+/**
+ * Delay each item by 50ms per position. Loops set --stagger-index inline;
+ * otherwise the element's place among its siblings is used.
+ */
+@utility stagger {
 	@media (prefers-reduced-motion: no-preference) {
-		animation-delay: calc(sibling-index() * 50ms);
+		animation-delay: calc(
+			var(--stagger-index, var(--stagger-fallback-index, sibling-index())) * 50ms
+		);
+
+		transition-delay: calc(
+			var(--stagger-index, var(--stagger-fallback-index, sibling-index())) * 50ms
+		);
 	}
+}
+
+/**
+ * Delay by a typed-out position, such as stagger-3, for hand-written markup.
+ * Tailwind cannot see class names built at runtime, so loops use stagger instead.
+ */
+@utility stagger-* {
+	@media (prefers-reduced-motion: no-preference) {
+		animation-delay: calc(--value(integer) * 50ms);
+		transition-delay: calc(--value(integer) * 50ms);
+	}
+}
+
+/* Deprecated: use stagger-micro instead. */
+@utility delay-micro {
+	@apply stagger-micro;
+}
+
+/* Deprecated: use stagger instead. */
+@utility delay {
+	@apply stagger;
 }
 
 /**
@@ -71,52 +191,52 @@
  */
 @media (prefers-reduced-motion: no-preference) {
 	@supports not (animation-delay: calc(sibling-index() * 1ms)) {
-		:where(.delay-micro) {
-			animation-delay: 10ms;
+		:where(.stagger-micro, .delay-micro) {
+			--stagger-fallback-index: 1;
 		}
 
-		:where(.delay-micro:nth-child(2)) {
-			animation-delay: 20ms;
+		:where(.stagger-micro:nth-child(2), .delay-micro:nth-child(2)) {
+			--stagger-fallback-index: 2;
 		}
 
-		:where(.delay-micro:nth-child(3)) {
-			animation-delay: 30ms;
+		:where(.stagger-micro:nth-child(3), .delay-micro:nth-child(3)) {
+			--stagger-fallback-index: 3;
 		}
 
-		:where(.delay-micro:nth-child(4)) {
-			animation-delay: 40ms;
+		:where(.stagger-micro:nth-child(4), .delay-micro:nth-child(4)) {
+			--stagger-fallback-index: 4;
 		}
 
-		:where(.delay-micro:nth-child(5)) {
-			animation-delay: 50ms;
+		:where(.stagger-micro:nth-child(5), .delay-micro:nth-child(5)) {
+			--stagger-fallback-index: 5;
 		}
 
-		:where(.delay-micro:nth-child(6)) {
-			animation-delay: 60ms;
+		:where(.stagger-micro:nth-child(6), .delay-micro:nth-child(6)) {
+			--stagger-fallback-index: 6;
 		}
 
-		:where(.delay) {
-			animation-delay: 50ms;
+		:where(.stagger, .delay) {
+			--stagger-fallback-index: 1;
 		}
 
-		:where(.delay:nth-child(2)) {
-			animation-delay: 100ms;
+		:where(.stagger:nth-child(2), .delay:nth-child(2)) {
+			--stagger-fallback-index: 2;
 		}
 
-		:where(.delay:nth-child(3)) {
-			animation-delay: 150ms;
+		:where(.stagger:nth-child(3), .delay:nth-child(3)) {
+			--stagger-fallback-index: 3;
 		}
 
-		:where(.delay:nth-child(4)) {
-			animation-delay: 200ms;
+		:where(.stagger:nth-child(4), .delay:nth-child(4)) {
+			--stagger-fallback-index: 4;
 		}
 
-		:where(.delay:nth-child(5)) {
-			animation-delay: 250ms;
+		:where(.stagger:nth-child(5), .delay:nth-child(5)) {
+			--stagger-fallback-index: 5;
 		}
 
-		:where(.delay:nth-child(6)) {
-			animation-delay: 300ms;
+		:where(.stagger:nth-child(6), .delay:nth-child(6)) {
+			--stagger-fallback-index: 6;
 		}
 	}
 }
