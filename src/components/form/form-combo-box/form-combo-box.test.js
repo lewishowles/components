@@ -84,6 +84,27 @@ describe("form-combo-box", () => {
 			expect(dropdown.attributes("data-state")).toBe("closed");
 			expect(dropdown.attributes("inert")).toBeDefined();
 		});
+
+		test("closes the results and clears an edited query when focus leaves", async () => {
+			const wrapper = mountDeep({
+				props: { options, labelKey: "name", valueKey: "id" },
+				slots: { default: "Person" },
+			});
+
+			const input = wrapper.find('[data-test="form-combo-box-input"] input');
+			const dropdown = wrapper.find('[data-test="form-combo-box-dropdown"]');
+
+			await input.trigger("focusin");
+			await input.setValue("Aver");
+
+			expect(dropdown.attributes("data-state")).toBe("open");
+			expect(input.element.value).toBe("Aver");
+
+			await input.trigger("focusout", { relatedTarget: document.body });
+
+			expect(dropdown.attributes("data-state")).toBe("closed");
+			expect(input.element.value).toBe("");
+		});
 	});
 
 	describe("Input presentation", () => {

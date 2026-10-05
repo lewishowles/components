@@ -32,7 +32,8 @@ import { useCombobox } from "./use-combobox.js";
  *
  * @returns  {object}
  *     The combobox state, attributes and handlers, the template refs, and the
- *     positioning state for the results.
+ *     positioning state for the results, including the element the results
+ *     are positioned against.
  */
 export function useComboboxInteraction({
 	listboxId,
@@ -133,5 +134,6 @@ export function useComboboxInteraction({
 		placementClasses,
 		positioningTick,
 		selectOption,
+		triggerElement,
 	};
 }

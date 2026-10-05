@@ -152,12 +152,11 @@
 import { arrayLength } from "@lewishowles/helpers/array";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { cn } from "@/utilities/cn.js";
-import { computed, ref, toRef, useAttrs, useSlots, useTemplateRef, watch } from "vue";
+import { computed, ref, toRef, useAttrs, useSlots, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { nanoid } from "nanoid";
-import { onClickOutside } from "@vueuse/core";
-import { useCombobox, useFloatingPosition } from "@/composables";
+import { useComboboxInteraction } from "@/composables/use-combobox/use-combobox-interaction.js";
 import useOptions from "@/components/form/composables/use-options/use-options";
 
 /**
@@ -387,16 +386,38 @@ const filteredItems = computed(() => {
 // The ordered, filtered option IDs handed to the combobox for keyboard navigation.
 const optionIds = computed(() => filteredItems.value.map((entry) => entry.id));
 
+// Set up the keyboard navigation, results positioning and dismissal shared with
+// combo-box, with the results placed against this field's input wrapper.
 const {
 	activeId,
-	close: closeResults,
+	closeResults,
+	computedPlacement,
+	containerElement,
+	handleFocusout,
 	handleKeydown: handleComboboxKeydown,
 	inputAttributes: comboboxInputAttributes,
+	inputComponent,
 	isOpen,
+	isPositioning,
 	listboxAttributes,
-	open: openResults,
+	openResults,
+	placementClasses,
+	positioningTick,
 	selectOption,
-} = useCombobox({ listboxId, options: optionIds, onSelect: selectItem });
+	triggerElement,
+} = useComboboxInteraction({
+	listboxId,
+	optionIds,
+	onSelect: selectItem,
+	// Position against the input's wrapper rather than the whole field, which
+	// also contains the label and supplementary text.
+	positionAgainst: (container) => container?.querySelector("[data-part='field-wrapper']"),
+	placement: toRef(props, "placement"),
+	// The dropdown always matches the field wrapper's own width, so there is
+	// no opposite side for it to align to.
+	align: ref("start"),
+	onDismiss: closeAndClear,
+});
 
 // Combine the caller's input attributes with combobox state and field requirements.
 const resolvedInputAttributes = computed(() => ({
@@ -405,37 +426,6 @@ const resolvedInputAttributes = computed(() => ({
 	"aria-required": props.required ? "true" : undefined,
 	readonly: isReadonly.value ? "true" : undefined,
 }));
-
-// A reference to the root element, so we can close the results when the user
-// interacts elsewhere.
-const containerElement = useTemplateRef("container");
-
-// Resolve the input wrapper used for positioning measurements rather than the
-// full field, which also contains the label and supplementary text.
-const fieldWrapperElement = computed(() =>
-	containerElement.value?.querySelector("[data-part='field-wrapper']"),
-);
-
-// A reference to the input, so we can move focus to it on demand.
-const inputComponent = useTemplateRef("input");
-// A reference to the results list, used to measure and position it.
-const dropdownElement = useTemplateRef("dropdown");
-
-const {
-	computedPlacement,
-	isPositioning,
-	placementClasses,
-	positioningTick,
-	handleOpen: handleFloatingOpen,
-	handleClose: handleFloatingClose,
-} = useFloatingPosition({
-	triggerElement: fieldWrapperElement,
-	panelElement: dropdownElement,
-	initialPlacement: toRef(props, "placement"),
-	// The dropdown always matches the field wrapper's own width, so there is
-	// no opposite side for it to align to.
-	initialAlign: ref("start"),
-});
 
 // The number of results currently shown.
 const itemCount = computed(() => arrayLength(filteredItems.value));
@@ -473,7 +463,7 @@ const resolvedDropdownStyle = computed(() => {
 	void positioningTick.value;
 
 	const container = containerElement.value;
-	const fieldWrapper = fieldWrapperElement.value;
+	const fieldWrapper = triggerElement.value;
 	const placement = computedPlacement.value;
 
 	if (!fieldWrapper || !container) {
@@ -504,27 +494,6 @@ const resolvedDropdownStyle = computed(() => {
 		top: `${fieldWrapperBottom}px`,
 	};
 });
-
-// Measure and position the results whenever they open, and tear the positioning
-// listeners down again when they close.
-watch(isOpen, async (currentlyOpen) => {
-	if (currentlyOpen) {
-		await handleFloatingOpen();
-
-		// The results can close while they are still being measured. Stop
-		// positioning them again, or the listeners added on open would stay
-		// attached to a closed list.
-		if (!isOpen.value) {
-			handleFloatingClose();
-		}
-
-		return;
-	}
-
-	handleFloatingClose();
-});
-
-onClickOutside(containerElement, handleClickOutside);
 
 // Sync the displayed query with the model's label whenever the selected value
 // changes, including on initial mount and when the model is set externally.
@@ -699,27 +668,6 @@ function handleFocusin() {
 	if (!isReadonly.value) {
 		openResults();
 	}
-}
-
-/**
- * Close the results and clear unfinished input when focus leaves the component.
- *
- * @param  {FocusEvent}  event
- *     The input focus event.
- */
-function handleFocusout(event) {
-	if (containerElement.value?.contains(event.relatedTarget)) {
-		return;
-	}
-
-	closeAndClear();
-}
-
-/**
- * Close the results and clear unfinished input after a click outside.
- */
-function handleClickOutside() {
-	closeAndClear();
 }
 
 /**
