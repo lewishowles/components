@@ -2,6 +2,32 @@
 
 ## Unreleased
 
+## 3.6.0 - 2026-10-05
+
+### Features
+
+- `form-wrapper`: a `fields` setting that lets fields read their options and value types from one place, fills in field defaults, and applies its rules only to fields on the form.
+- `data-table`: shows rows as cards when the table is narrow, with labelled card fields.
+- `data-table`: a `narrowLayout` option to keep horizontal scrolling at narrow widths instead of switching to cards.
+- Animation: reveal and stagger utilities have been added to CSS.
+
+### Changes
+
+- `base-modal` now waits for its fade-out to finish before reporting that the dialog has closed.
+
+### Fixes
+
+- `base-modal` reports Escape and other browser-triggered closes.
+- `data-table`: setting `enableSort` to false turns sorting off; heading slots receive the configured column label; a custom caption only gets the sorted hint once a column is sorted.
+- `form-select` keeps an existing value when there is no empty option, and accepts number values without a type warning.
+- Form label, help and error slots are only called while rendering.
+- Inline card options stay the same height.
+- `pill-badge` has its stronger dark-mode colours back.
+
+### Deprecated
+
+- The animation delay utilities. Use the new stagger utilities instead. The delay utilities will be removed in the next major version.
+
 ## 3.5.0 - 2026-09-23
 
 ### Features
