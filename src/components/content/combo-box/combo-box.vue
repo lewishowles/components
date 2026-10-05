@@ -112,12 +112,11 @@
 import { arrayLength } from "@lewishowles/helpers/array";
 import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { cn } from "@/utilities/cn.js";
-import { computed, toRef, useSlots, useTemplateRef, watch } from "vue";
+import { computed, toRef, useSlots } from "vue";
 import { isNonEmptySlot } from "@lewishowles/helpers/vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { nanoid } from "nanoid";
-import { onClickOutside } from "@vueuse/core";
-import { useCombobox, useFloatingPosition } from "@/composables";
+import { useComboboxInteraction } from "@/composables/use-combobox/use-combobox-interaction.js";
 
 const props = defineProps({
 	/**
@@ -222,41 +221,35 @@ const internalItems = computed(() =>
 // The ordered option IDs handed to the combobox for keyboard navigation.
 const optionIds = computed(() => internalItems.value.map((entry) => entry.id));
 
-const {
-	activeId,
-	close: closeResults,
-	handleKeydown,
-	inputAttributes,
-	isOpen,
-	listboxAttributes,
-	open: openResults,
-	selectOption,
-} = useCombobox({ listboxId, options: optionIds, onSelect: selectItem });
-
-// A reference to the root element, so we can close the results when the user
-// interacts elsewhere.
-const containerElement = useTemplateRef("container");
-// A reference to the input, so we can move focus to it on demand.
-const inputComponent = useTemplateRef("input");
-// A reference to the results list, used to measure and position it.
-const dropdownElement = useTemplateRef("dropdown");
 // Whether prefix adornment content has been supplied.
 const havePrefix = computed(() => isNonEmptySlot(slots.prefix));
 // Whether suffix adornment content has been supplied.
 const haveSuffix = computed(() => isNonEmptySlot(slots.suffix));
 
 const {
-	computedPlacement,
+	activeId,
+	closeResults,
 	computedAlign,
+	computedPlacement,
+	handleFocusout,
+	handleKeydown,
+	inputAttributes,
+	inputComponent,
+	isOpen,
 	isPositioning,
+	listboxAttributes,
+	openResults,
 	placementClasses,
-	handleOpen: handleFloatingOpen,
-	handleClose: handleFloatingClose,
-} = useFloatingPosition({
-	triggerElement: containerElement,
-	panelElement: dropdownElement,
-	initialPlacement: toRef(props, "placement"),
-	initialAlign: toRef(props, "align"),
+	selectOption,
+} = useComboboxInteraction({
+	listboxId,
+	optionIds,
+	onSelect: selectItem,
+	positionAgainst: (container) => container,
+	placement: toRef(props, "placement"),
+	align: toRef(props, "align"),
+	// Wrapped in a function because closeResults comes from this same call.
+	onDismiss: () => closeResults(),
 });
 
 // The number of results currently shown.
@@ -278,27 +271,6 @@ const resolvedDropdownClasses = computed(() =>
 		props.dropdownClasses,
 	),
 );
-
-// Measure and position the results whenever they open, and tear the positioning
-// listeners down again when they close.
-watch(isOpen, async (currentlyOpen) => {
-	if (currentlyOpen) {
-		await handleFloatingOpen();
-
-		// The results can close while they are still being measured. Stop
-		// positioning them again, or the listeners added on open would stay
-		// attached to a closed list.
-		if (!isOpen.value) {
-			handleFloatingClose();
-		}
-
-		return;
-	}
-
-	handleFloatingClose();
-});
-
-onClickOutside(containerElement, closeResults);
 
 /**
  * Handle a result being chosen, emitting the original item and clearing the
@@ -341,20 +313,6 @@ function handleFocusin() {
 	if (haveQuery.value) {
 		openResults();
 	}
-}
-
-/**
- * Close the results when focus leaves the component. Focus moving to another
- * element within the component (should one ever exist) keeps them open.
- *
- * @param  {FocusEvent}  event
- */
-function handleFocusout(event) {
-	if (containerElement.value?.contains(event.relatedTarget)) {
-		return;
-	}
-
-	closeResults();
 }
 
 /**
