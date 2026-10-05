@@ -56,10 +56,10 @@ describe("form-wrapper metadata", () => {
 			expect(rulesProp.default).toBe("{}");
 		});
 
-		test("summary mentions field-local rule precedence", () => {
+		test("summary says the rules prop runs before mapped field rules", () => {
 			const rulesProp = formWrapperMetadata.props.find((p) => p.name === "rules");
 
-			expect(rulesProp.summary).toContain("Field-local");
+			expect(rulesProp.summary).toContain("the rules prop's rules run before its mapped rules");
 		});
 	});
 });
