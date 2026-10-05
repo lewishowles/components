@@ -55,10 +55,10 @@
 </template>
 
 <script setup>
-import { computed, nextTick, provide, ref, toRef, useId, useTemplateRef, watch } from "vue";
+import { computed, provide, ref, toRef, useId, useTemplateRef, watch } from "vue";
 import { getNextIndex } from "@lewishowles/helpers/array";
-import { onClickOutside, onKeyStroke, useFocusWithin, useMediaQuery } from "@vueuse/core";
-import { useFloatingPosition } from "@/composables";
+import { onClickOutside, onKeyStroke, useFocusWithin } from "@vueuse/core";
+import { useResponsiveFloatingPanel } from "@/composables/use-floating-position/use-responsive-floating-panel.js";
 import { cn } from "@/utilities/cn.js";
 
 import OverlaySheet from "@/components/messaging/overlay-sheet/overlay-sheet.vue";
@@ -117,8 +117,6 @@ const menuElement = useTemplateRef("menuElement");
 // Whether focus is currently within the menu panel. Used to decide whether to
 // return focus to the trigger when the menu closes.
 const { focused: hasFocus } = useFocusWithin(menuElement);
-// Whether the action menu should use the narrow modal sheet presentation.
-const isNarrow = useMediaQuery("(width < 1024px)");
 
 // Resolves the trigger button DOM element for positioning measurements. Queried
 // by data-part rather than a direct ref so it works regardless of what renders
@@ -130,14 +128,17 @@ const triggerDomElement = computed(() =>
 // Derive an accessible label for the narrow action sheet from the trigger text.
 const sheetLabel = computed(() => triggerDomElement.value?.textContent?.trim() || "Actions");
 
+// Position the panel on wide screens and use the sheet on narrow screens.
 const {
 	computedPlacement,
 	computedAlign,
+	isNarrow,
 	isPositioning,
 	placementClasses,
 	handleOpen: handleFloatingOpen,
 	handleClose: handleFloatingClose,
-} = useFloatingPosition({
+} = useResponsiveFloatingPanel({
+	isOpen,
 	triggerElement: triggerDomElement,
 	panelElement: menuElement,
 	initialPlacement: toRef(props, "placement"),
@@ -199,12 +200,12 @@ onKeyStroke("Escape", (event) => {
 	closeAndRestoreFocus();
 });
 
-// Position the panel when the menu opens on a wide screen, and stop positioning
-// it when the menu closes or switches to the narrow-screen sheet. This runs as a
-// watcher because positioning measures the rendered panel after each change.
+// Remove the keyboard focus order from the menu items when the menu closes, or
+// when an open menu switches to the narrow sheet. This runs after rendering so
+// it reaches the items currently in the page.
 watch(
 	[isOpen, isNarrow],
-	async ([open, narrow], [wasOpen, wasNarrow]) => {
+	([open, narrow], [wasOpen, wasNarrow]) => {
 		if (!open) {
 			// The panel stays in the page while closed, so clear the keyboard focus
 			// order set on its items. Otherwise the next open would start from the
@@ -213,27 +214,12 @@ watch(
 			menuElement.value
 				?.querySelectorAll(menuItemSelector)
 				.forEach((item) => item.removeAttribute("tabindex"));
-			handleFloatingClose();
 
 			return;
 		}
 
-		if (narrow) {
-			if (!wasNarrow && wasOpen) {
-				getMenuItems().forEach((item) => item.removeAttribute("tabindex"));
-
-				handleFloatingClose();
-			}
-
-			return;
-		}
-
-		if (wasNarrow) {
-			await nextTick();
-
-			if (isOpen.value && !isNarrow.value) {
-				await handleFloatingOpen();
-			}
+		if (narrow && !wasNarrow && wasOpen) {
+			getMenuItems().forEach((item) => item.removeAttribute("tabindex"));
 		}
 	},
 	{ flush: "post" },
