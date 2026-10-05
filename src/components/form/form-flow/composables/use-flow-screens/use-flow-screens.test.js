@@ -190,17 +190,9 @@ function createComposable() {
 		registerField,
 		unregisterField,
 		...useFlowScreens({
-			activeScreenId,
-			fieldErrorsFor,
-			invalidatePendingNavigation,
-			isShowingReview,
-			navigateToScreen,
-			navigationReasons: {
-				CONDITIONAL_RECOVERY: "conditional-screen-recovery",
-				INITIAL_RENDER: "initial-render",
-			},
-			registerField,
-			unregisterField,
+			state: { activeScreenId, isShowingReview },
+			formHost: { fieldErrorsFor, registerField, unregisterField },
+			navigation: { invalidatePendingNavigation, navigateToScreen },
 		}),
 	};
 }

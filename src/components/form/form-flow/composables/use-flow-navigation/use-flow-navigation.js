@@ -1,6 +1,7 @@
-import { nextTick, toValue, unref } from "vue";
+import { nextTick, unref } from "vue";
 import { isNonEmptyArray } from "@lewishowles/helpers/array";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { navigationReasons } from "../navigation-reasons.js";
 
 /**
  * Move a form flow between screens: validate the current screen on Continue,
@@ -10,107 +11,67 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
  * `focusHooks`.
  *
  * @param  {object}  options
- *     The flow's screen state, form-wrapper operations, and focus actions, all
- *     owned by form-flow.
- * @param  {Ref<string|null>}  options.activeScreenId
- *     The screen currently shown. Navigation writes the destination here.
- * @param  {ComputedRef<number>}  options.activeScreenIndex
- *     The position of the active screen, used to pick a direction and the
- *     previous screen.
- * @param  {ComputedRef<boolean>}  options.canGoBack
- *     Whether Back has a screen to return to.
+ *     The root state, sibling composables, component props, and event emitter.
  * @param  {function}  options.emit
  *     form-flow's emit, used for `screen-change`.
- * @param  {function|Ref<boolean>}  options.enableReview
- *     A getter or ref for whether the last screen opens review instead of
- *     submitting.
- * @param  {function|Ref<object>}  options.fieldErrors
- *     A getter or ref for the field errors passed in to form-flow.
- * @param  {function}  options.fieldErrorsFor
- *     Return the errors for a registered field.
- * @param  {Ref<object[]>}  options.flowErrorSummary
- *     The flow's own error summary, cleared when navigation moves on.
  * @param  {object}  options.focusHooks
- *     The focus actions form-flow keeps, since focus targets live in its
- *     template: `focusPendingField`, `focusScreen`, `invalidatePendingFocus`,
- *     `prepareScreenChange`, `queueFieldFocus`, and `showFlowErrors`.
- *     `prepareScreenChange` runs before the active screen changes, and
- *     `invalidatePendingFocus` runs when pending navigation is cancelled.
- * @param  {Ref<object>}  options.formData
- *     The form's current values, used to tell whether a field value changed.
- * @param  {Ref<object>}  options.formLevelErrors
- *     Errors from form-wrapper's validation rules.
- * @param  {function}  options.handleFormSubmit
- *     Submit the whole form through form-wrapper.
- * @param  {ComputedRef<boolean>}  options.haveActiveScreen
- *     Whether any screen is active.
- * @param  {ComputedRef<boolean>}  options.haveActiveScreenErrors
- *     Whether the active screen has field errors, which stops Continue.
- * @param  {ComputedRef<boolean>}  options.haveEmptyFlow
- *     Whether the flow has no screens, which stops review opening.
- * @param  {ComputedRef<boolean>}  options.isLastScreen
- *     Whether the active screen is the last one.
- * @param  {Ref<boolean>}  options.isShowingReview
- *     Whether the review content is showing. Navigation opens and closes it.
- * @param  {Ref<boolean>}  options.isSubmitting
- *     Whether the form is submitting, which stops Continue.
- * @param  {function}  options.markScreenComplete
- *     Mark a screen as complete once it passes validation.
- * @param  {object}  options.navigationReasons
- *     The reasons form-flow gives when it changes screen.
- * @param  {function}  options.normaliseFieldErrors
- *     Turn one field's errors into a list of messages.
- * @param  {function}  options.resetSubmitButton
- *     Return the submit button to its normal state after Continue.
- * @param  {ComputedRef<string[]>}  options.screenFieldNames
- *     The names of every field registered on a visible screen.
- * @param  {ComputedRef<object>}  options.screenFieldNamesById
- *     The field names registered on each screen, by screen ID.
- * @param  {ComputedRef<string[]>}  options.screenIds
- *     The visible screens, in order.
- * @param  {Ref<object>}  options.screens
- *     The registered screens, by ID, including each screen's auto-advance field.
- * @param  {Ref<object>}  options.submitErrors
- *     Errors returned by the last submit.
- * @param  {function}  options.updateFieldValue
- *     Set a field's value through form-wrapper.
- * @param  {function}  options.validate
- *     Validate the form through form-wrapper.
+ *     The focus actions from useFlowFocus: `focusPendingField`, `focusScreen`,
+ *     `invalidatePendingFocus`, `prepareScreenChange`, `queueFieldFocus`, and
+ *     `showFlowErrors`. Navigation calls `prepareScreenChange` before the active
+ *     screen changes, and `invalidatePendingFocus` when it cancels pending
+ *     navigation.
+ * @param  {object}  options.formHost
+ *     The form's values, errors, validation, and submission operations.
+ * @param  {object}  options.props
+ *     form-flow's props. `enableReview` and `fieldErrors` are read each time
+ *     they're needed, so later prop changes are picked up.
+ * @param  {object}  options.screens
+ *     The registered screens and their derived navigation state.
+ * @param  {object}  options.state
+ *     form-flow's `activeScreenId`, `isShowingReview`, and `flowErrorSummary`
+ *     refs. Navigation writes the destination screen to `activeScreenId`, opens
+ *     and closes review, and clears the flow-level errors.
  * @returns  {object}
  *     The navigation actions form-flow binds to its template and screen
  *     registration, plus `enableAutoAdvance` for form-flow to call once mounted.
  */
 export default function useFlowNavigation({
-	activeScreenId,
-	activeScreenIndex,
-	canGoBack,
 	emit,
-	enableReview,
-	fieldErrors,
-	fieldErrorsFor,
-	flowErrorSummary,
 	focusHooks,
-	formData,
-	formLevelErrors,
-	handleFormSubmit,
-	haveActiveScreen,
-	haveActiveScreenErrors,
-	haveEmptyFlow,
-	isLastScreen,
-	isShowingReview,
-	isSubmitting,
-	markScreenComplete,
-	navigationReasons,
-	normaliseFieldErrors,
-	resetSubmitButton,
-	screenFieldNames,
-	screenFieldNamesById,
-	screenIds,
-	screens,
-	submitErrors,
-	updateFieldValue,
-	validate,
+	formHost,
+	props,
+	screens: screenState,
+	state,
 }) {
+	const { activeScreenId, flowErrorSummary, isShowingReview } = state;
+
+	const {
+		activeScreenIndex,
+		canGoBack,
+		haveActiveScreen,
+		haveActiveScreenErrors,
+		haveEmptyFlow,
+		isLastScreen,
+		markScreenComplete,
+		screenFieldNames,
+		screenFieldNamesById,
+		screenIds,
+		screens,
+	} = screenState;
+
+	const {
+		fieldErrorsFor,
+		formData,
+		formLevelErrors,
+		handleFormSubmit,
+		isSubmitting,
+		normaliseFieldErrors,
+		resetSubmitButton,
+		submitErrors,
+		updateFieldValue,
+		validate,
+	} = formHost;
+
 	// Do not auto-advance while initial data is being applied.
 	let isAutoAdvanceReady = false;
 	// Native input/change events are the only signal that a model update came
@@ -205,7 +166,9 @@ export default function useFlowNavigation({
 		const registeredFieldNames = new Set(screenFieldNames.value);
 		const flowErrors = [];
 		const seenErrorKeys = new Set();
-		const errorSources = [formLevelErrors.value, submitErrors.value, toValue(fieldErrors)];
+		// Form-level rules, submit errors, and errors passed in through the
+		// fieldErrors prop.
+		const errorSources = [formLevelErrors.value, submitErrors.value, props.fieldErrors];
 
 		for (const source of errorSources) {
 			for (const [fieldName, value] of Object.entries(source ?? {})) {
@@ -308,7 +271,7 @@ export default function useFlowNavigation({
 	 * review is disabled or the flow has no screens.
 	 */
 	function navigateToReview() {
-		if (!toValue(enableReview) || haveEmptyFlow.value) {
+		if (!props.enableReview || haveEmptyFlow.value) {
 			return;
 		}
 
@@ -459,7 +422,7 @@ export default function useFlowNavigation({
 	async function submitFinalScreen({ isRequestStillCurrent, reason }) {
 		// Review already validated the final screen when it opened, so a submit
 		// from review and a direct final-screen submit share the same path.
-		if (isShowingReview.value || !toValue(enableReview)) {
+		if (isShowingReview.value || !props.enableReview) {
 			await submitAndFinalise(activeScreenId.value, { isRequestStillCurrent });
 
 			return;

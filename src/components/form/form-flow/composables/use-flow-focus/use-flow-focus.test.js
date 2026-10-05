@@ -153,24 +153,26 @@ function createComposable() {
 	const formFlow = ref({ getBoundingClientRect: () => ({ top: 100 }) });
 
 	const options = {
+		state: { activeScreenId, flowErrorSummary, isShowingReview },
+		elements: { errorSummaryElement, formFlow, reviewHeading },
+		screens: { screens },
+		formHost: { focusField, formFields },
+		haveAnyErrorSummary: computed(() => haveAnyErrorSummary.value),
+	};
+
+	scopes.push(scope);
+
+	return {
 		activeScreenId,
 		errorSummaryElement,
 		flowErrorSummary,
 		focusField,
 		formFields,
 		formFlow,
-		haveAnyErrorSummary: computed(() => haveAnyErrorSummary.value),
+		haveAnyErrorSummary,
 		isShowingReview,
-		navigationReasons: { INITIAL_RENDER: "initial-render" },
 		reviewHeading,
 		screens,
-	};
-
-	scopes.push(scope);
-
-	return {
-		...options,
-		haveAnyErrorSummary,
 		headings,
 		focusHooks: scope.run(() => useFlowFocus(options)),
 	};

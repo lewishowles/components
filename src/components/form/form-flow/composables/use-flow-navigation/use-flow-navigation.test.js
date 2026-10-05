@@ -1,5 +1,6 @@
 import { describe, expect, test, vi } from "vite-plus/test";
 import { computed, nextTick, ref } from "vue";
+import { navigationReasons } from "../navigation-reasons.js";
 import useFlowNavigation from "./use-flow-navigation.js";
 
 describe("useFlowNavigation", () => {
@@ -162,10 +163,10 @@ describe("useFlowNavigation", () => {
 			flow.screenFieldNames.value = ["email"];
 			flow.screenFieldNamesById.value = { first: ["email"] };
 			flow.fieldErrorsFor.mockImplementation((name) => {
-				return flow.fieldErrors.value[name] ? [flow.fieldErrors.value[name]] : [];
+				return flow.props.fieldErrors[name] ? [flow.props.fieldErrors[name]] : [];
 			});
 			flow.handleFormSubmit.mockImplementation(async () => {
-				flow.fieldErrors.value = { email: "Required" };
+				flow.props.fieldErrors = { email: "Required" };
 			});
 
 			await flow.navigateForward();
@@ -176,7 +177,7 @@ describe("useFlowNavigation", () => {
 			expect(flow.emit).toHaveBeenCalledWith("screen-change", {
 				destinationId: "first",
 				direction: "backward",
-				reason: flow.navigationReasons.FINAL_ERROR_RECOVERY,
+				reason: navigationReasons.FINAL_ERROR_RECOVERY,
 				sourceId: "second",
 			});
 			expect(flow.markScreenComplete).not.toHaveBeenCalled();
@@ -185,7 +186,7 @@ describe("useFlowNavigation", () => {
 		test("opens review without submitting after valid final-screen validation", async () => {
 			const flow = createComposable();
 
-			flow.enableReview.value = true;
+			flow.props.enableReview = true;
 
 			await flow.navigateForward();
 
@@ -245,45 +246,46 @@ function createComposable() {
 	});
 
 	const options = {
-		activeScreenId,
-		activeScreenIndex: computed(() => screenIds.value.indexOf(activeScreenId.value)),
-		canGoBack: computed(
-			() => isShowingReview.value || screenIds.value.indexOf(activeScreenId.value) > 0,
-		),
-		emit,
-		enableReview: ref(false),
-		fieldErrors: ref({}),
-		fieldErrorsFor: vi.fn(() => []),
-		flowErrorSummary,
-		focusHooks,
-		formData,
-		formLevelErrors,
-		handleFormSubmit: vi.fn(async () => {}),
-		haveActiveScreen: computed(() => screenIds.value.includes(activeScreenId.value)),
-		haveActiveScreenErrors: ref(false),
-		haveEmptyFlow: computed(() => screenIds.value.length === 0),
-		isLastScreen: computed(() => activeScreenId.value === screenIds.value.at(-1)),
-		isShowingReview,
-		isSubmitting: ref(false),
-		markScreenComplete,
-		navigationReasons: {
-			AUTOMATIC: "automatic",
-			BACK: "back",
-			CONTINUE: "continue",
-			FINAL_ERROR_RECOVERY: "final-error-recovery",
-			INITIAL_RENDER: "initial-render",
-			REVIEW: "review",
+		state: { activeScreenId, flowErrorSummary, isShowingReview },
+		screens: {
+			activeScreenIndex: computed(() => screenIds.value.indexOf(activeScreenId.value)),
+			canGoBack: computed(
+				() => isShowingReview.value || screenIds.value.indexOf(activeScreenId.value) > 0,
+			),
+			haveActiveScreen: computed(() => screenIds.value.includes(activeScreenId.value)),
+			haveActiveScreenErrors: ref(false),
+			haveEmptyFlow: computed(() => screenIds.value.length === 0),
+			isLastScreen: computed(() => activeScreenId.value === screenIds.value.at(-1)),
+			markScreenComplete,
+			screenFieldNames: ref([]),
+			screenFieldNamesById: ref({}),
+			screenIds,
+			screens,
 		},
-		normaliseFieldErrors: (value) => (value ? [value] : []),
-		resetSubmitButton: vi.fn(),
-		screenFieldNames: ref([]),
-		screenFieldNamesById: ref({}),
-		screenIds,
-		screens,
-		submitErrors,
-		updateFieldValue,
-		validate,
+		formHost: {
+			fieldErrorsFor: vi.fn(() => []),
+			formData,
+			formLevelErrors,
+			handleFormSubmit: vi.fn(async () => {}),
+			isSubmitting: ref(false),
+			normaliseFieldErrors: (value) => (value ? [value] : []),
+			resetSubmitButton: vi.fn(),
+			submitErrors,
+			updateFieldValue,
+			validate,
+		},
+		focusHooks,
+		props: { enableReview: false, fieldErrors: {} },
+		emit,
 	};
 
-	return { ...options, ...useFlowNavigation(options) };
+	return {
+		...options.state,
+		...options.screens,
+		...options.formHost,
+		focusHooks,
+		props: options.props,
+		emit,
+		...useFlowNavigation(options),
+	};
 }

@@ -1,5 +1,6 @@
 import { computed, ref, unref } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
+import { navigationReasons } from "../navigation-reasons.js";
 
 /**
  * Track form-flow's screens: which are on show and in what order, which fields
@@ -9,38 +10,27 @@ import { isNonEmptyString } from "@lewishowles/helpers/string";
  *
  * @param  {object}  options
  *     The current flow state and operations.
- * @param  {Ref<string|null>}  options.activeScreenId
- *     The screen currently shown by the flow.
- * @param  {function}  options.fieldErrorsFor
- *     Return errors for a registered field.
- * @param  {function}  options.invalidatePendingNavigation
- *     Cancel pending auto-advance and focus when no destination remains.
- * @param  {Ref<boolean>}  options.isShowingReview
- *     Whether the review content is showing.
- * @param  {function}  options.navigateToScreen
- *     Move to a screen through the flow's navigation behaviour.
- * @param  {object}  options.navigationReasons
- *     The reasons form-flow gives when it changes screen, such as the first render.
- * @param  {function}  options.registerField
- *     Register a field with the form host.
- * @param  {function}  options.unregisterField
- *     Unregister a field from the form host.
+ * @param  {object}  options.formHost
+ *     The form's field registration and error operations.
+ * @param  {object}  options.navigation
+ *     The actions that move to a screen or cancel pending navigation. Each one
+ *     looks up navigation when called, because navigation is created after the
+ *     screen list.
+ * @param  {object}  options.state
+ *     form-flow's `activeScreenId` and `isShowingReview` refs. When the active
+ *     screen disappears, the screen list moves to a neighbouring screen or, if
+ *     none remain, clears the active screen and closes review.
  * @returns  {object}
  *     The screen list, the screen details, the derived position and progress
  *     values form-flow renders from, and the functions that register and
  *     remove screens and fields, check which screen is active or complete,
  *     and mark a screen complete.
  */
-export default function useFlowScreens({
-	activeScreenId,
-	fieldErrorsFor,
-	invalidatePendingNavigation,
-	isShowingReview,
-	navigateToScreen,
-	navigationReasons,
-	registerField,
-	unregisterField,
-}) {
+export default function useFlowScreens({ formHost, navigation, state }) {
+	const { activeScreenId, isShowingReview } = state;
+	const { fieldErrorsFor, registerField, unregisterField } = formHost;
+	const { invalidatePendingNavigation, navigateToScreen } = navigation;
+
 	// The IDs of the screens on show, in slot order. A conditional screen that
 	// returns goes back to its original place.
 	const screenIds = ref([]);

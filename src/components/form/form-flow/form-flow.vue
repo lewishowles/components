@@ -141,23 +141,6 @@ import useFlowFocus from "./composables/use-flow-focus/use-flow-focus.js";
 import useFlowNavigation from "./composables/use-flow-navigation/use-flow-navigation.js";
 import useFlowScreens from "./composables/use-flow-screens/use-flow-screens.js";
 
-// Reasons explain what caused each completed navigation reported by the
-// `screen-change` event.
-const navigationReasons = {
-	AUTOMATIC: "automatic",
-	BACK: "back",
-	// The active conditional screen disappeared, so the flow moved to the next
-	// or previous visible screen.
-	CONDITIONAL_RECOVERY: "conditional-screen-recovery",
-	CONTINUE: "continue",
-	// Final validation found an error on another visible screen, so the flow
-	// moved to that screen.
-	FINAL_ERROR_RECOVERY: "final-error-recovery",
-	// The first registered screen renders without a screen-change event or focus move.
-	INITIAL_RENDER: "initial-render",
-	REVIEW: "review",
-};
-
 const props = defineProps({
 	/**
 	 * Field-level errors managed by the parent, usually from an API response.
@@ -384,71 +367,17 @@ const isSubmitStep = computed(
 const activeScreenId = ref(null);
 // Whether the review screen is showing in place of the active screen's content.
 const isShowingReview = ref(false);
+// Errors that cannot be attributed to a field on a visible screen.
+const flowErrorSummary = ref([]);
+// State shared by the screen, focus, and navigation composables. It lives here
+// because more than one of them changes it.
+const state = { activeScreenId, flowErrorSummary, isShowingReview };
 
-// The screen list is set up before the form, because the form asks it which
-// fields are still on a screen. The form's field functions and the navigation
-// actions don't exist yet, so they are passed as wrappers that look them up
-// when called.
-const {
-	activeScreenIndex,
-	activeScreenProgressLabel,
-	canGoBack,
-	haveActiveScreen,
-	haveActiveScreenErrors,
-	haveEmptyFlow,
-	isCurrentScreen,
-	isLastScreen,
-	isScreenComplete,
-	markScreenComplete,
-	progressSlotProps,
-	registerFlowField,
-	registerScreen,
-	screenFieldNames,
-	screenFieldNamesById,
-	screenIds,
-	screens,
-	unregisterFlowField,
-	unregisterScreen,
-} = useFlowScreens({
-	activeScreenId,
-	fieldErrorsFor: (name) => fieldErrorsFor(name),
-	invalidatePendingNavigation: () => navigation.invalidatePendingNavigation(),
-	isShowingReview,
-	navigateToScreen: (...args) => navigation.navigateToScreen(...args),
-	navigationReasons,
-	registerField: (field) => registerField(field),
-	unregisterField: (name) => unregisterField(name),
-});
-
-const {
-	formData,
-	errorSummary,
-	haveErrorSummary,
-	formLevelErrors,
-	submitErrors,
-	generalSubmitErrors,
-	haveGeneralSubmitErrors,
-	isSubmitting,
-	isReadonly,
-	isDirty,
-	formFields,
-	status: submitStatus,
-	registerField,
-	unregisterField,
-	updateFieldValue,
-	fieldErrorsFor,
-	normaliseFieldErrors,
-	handleFormSubmit,
-	resetSubmitButton,
-	focusField,
-	isFieldRequired,
-	validate,
-	formContext,
-	formStatus,
-	haveSubmitButtonLabel,
-	haveSubmitErrorsSlot,
-	haveActionsLabel,
-} = useFormHost(props, emit, {
+// The form is set up before the screen list so the list can take it whole. Its
+// isFieldPresent check reads the screen list only after setup, when the form's
+// rules are first read: during validation, or when a field checks whether it is
+// required.
+const formHost = useFormHost(props, emit, {
 	includeUnregisteredFields: true,
 	errorSummaryElement,
 	generalErrorsElement,
@@ -460,8 +389,53 @@ const {
 		screenIds.value.some((screenId) => screens.value[screenId]?.fields?.includes(name)),
 });
 
-// Errors that cannot be attributed to a field on a visible screen.
-const flowErrorSummary = ref([]);
+// The screen list, with the flow's position and progress values derived from it.
+// Navigation is created after the screen list, so these actions look it up when
+// called.
+const screenState = useFlowScreens({
+	state,
+	formHost,
+	navigation: {
+		invalidatePendingNavigation: () => navigation.invalidatePendingNavigation(),
+		navigateToScreen: (...args) => navigation.navigateToScreen(...args),
+	},
+});
+
+const {
+	activeScreenIndex,
+	activeScreenProgressLabel,
+	canGoBack,
+	haveActiveScreen,
+	haveEmptyFlow,
+	isCurrentScreen,
+	isLastScreen,
+	isScreenComplete,
+	progressSlotProps,
+	registerFlowField,
+	registerScreen,
+	screenIds,
+	screens,
+	unregisterFlowField,
+	unregisterScreen,
+} = screenState;
+
+const {
+	formData,
+	errorSummary,
+	haveErrorSummary,
+	generalSubmitErrors,
+	haveGeneralSubmitErrors,
+	isSubmitting,
+	isDirty,
+	resetSubmitButton,
+	focusField,
+	formContext,
+	formStatus,
+	haveSubmitButtonLabel,
+	haveSubmitErrorsSlot,
+	haveActionsLabel,
+} = formHost;
+
 // Whether the flow-level error summary has messages to show.
 const haveFlowErrorSummary = computed(() => isNonEmptyArray(flowErrorSummary.value));
 // Whether the current screen's field errors or the flow-level summary has
@@ -477,50 +451,21 @@ const errorSummaryToDisplay = computed(() => {
 // Moves focus and scrolls the page after each screen change or flow error.
 // Navigation calls these actions.
 const focusHooks = useFlowFocus({
-	activeScreenId,
-	errorSummaryElement,
-	flowErrorSummary,
-	focusField,
-	formFields,
-	formFlow,
+	state,
+	elements: { errorSummaryElement, formFlow, reviewHeading },
+	screens: screenState,
+	formHost,
 	haveAnyErrorSummary,
-	isShowingReview,
-	navigationReasons,
-	reviewHeading,
-	screens,
 });
 
 // Screen navigation, validation on Continue, and auto-advance for the flow.
 const navigation = useFlowNavigation({
-	activeScreenId,
-	activeScreenIndex,
-	canGoBack,
-	emit,
-	enableReview: () => props.enableReview,
-	fieldErrors: () => props.fieldErrors,
-	fieldErrorsFor,
-	flowErrorSummary,
+	state,
+	screens: screenState,
+	formHost,
 	focusHooks,
-	formData,
-	formLevelErrors,
-	handleFormSubmit,
-	haveActiveScreen,
-	haveActiveScreenErrors,
-	haveEmptyFlow,
-	isLastScreen,
-	isShowingReview,
-	isSubmitting,
-	markScreenComplete,
-	navigationReasons,
-	normaliseFieldErrors,
-	resetSubmitButton,
-	screenFieldNames,
-	screenFieldNamesById,
-	screenIds,
-	screens,
-	submitErrors,
-	updateFieldValue,
-	validate,
+	props,
+	emit,
 });
 
 // The navigation actions the template and the fields' form context call.

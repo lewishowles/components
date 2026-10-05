@@ -1,50 +1,39 @@
 import { nextTick, toValue, unref, watch } from "vue";
 import { isNonEmptyString } from "@lewishowles/helpers/string";
 import { breakpointsTailwind, until, useBreakpoints } from "@vueuse/core";
+import { navigationReasons } from "../navigation-reasons.js";
 
 /**
  * Manage focus and scrolling when a form flow changes screens or shows errors.
  *
  * @param  {object}  options
  *     The flow state, focus targets, and field operations owned by form-flow.
- * @param  {Ref<string|null>}  options.activeScreenId
- *     The screen currently shown.
- * @param  {Ref<object|null>}  options.errorSummaryElement
- *     The shared error summary's focus target.
- * @param  {Ref<object[]>}  options.flowErrorSummary
- *     Flow-level errors shown in the shared summary.
- * @param  {function}  options.focusField
- *     Focus a registered field by name.
- * @param  {object}  options.formFields
- *     Registered fields, keyed by name.
- * @param  {Ref<Element|null>}  options.formFlow
- *     The flow element used as the scroll anchor.
+ * @param  {object}  options.elements
+ *     The flow, error summary, and review heading focus targets.
+ * @param  {object}  options.formHost
+ *     The form's registered fields and field-focus action.
  * @param  {ComputedRef<boolean>}  options.haveAnyErrorSummary
  *     Whether the shared error summary has messages.
- * @param  {Ref<boolean>}  options.isShowingReview
- *     Whether the review screen is showing.
- * @param  {object}  options.navigationReasons
- *     The reasons for changing screens, including the initial render.
- * @param  {Ref<Element|null>}  options.reviewHeading
- *     The review heading's focus target.
- * @param  {Ref<object>}  options.screens
- *     Registered screens, keyed by ID.
+ * @param  {object}  options.screens
+ *     The registered screens and their rendered elements.
+ * @param  {object}  options.state
+ *     form-flow's `activeScreenId`, `isShowingReview`, and `flowErrorSummary`
+ *     refs. Showing flow errors writes them to `flowErrorSummary`.
  * @returns  {object}
  *     The focus actions used by screen navigation.
  */
 export default function useFlowFocus({
-	activeScreenId,
-	errorSummaryElement,
-	flowErrorSummary,
-	focusField,
-	formFields,
-	formFlow,
+	elements,
+	formHost,
 	haveAnyErrorSummary,
-	isShowingReview,
-	navigationReasons,
-	reviewHeading,
-	screens,
+	screens: screenState,
+	state,
 }) {
+	const { activeScreenId, flowErrorSummary, isShowingReview } = state;
+	const { errorSummaryElement, formFlow, reviewHeading } = elements;
+	const { screens } = screenState;
+	const { focusField, formFields } = formHost;
+
 	// Whether the viewport is below the Tailwind `lg` breakpoint, where a virtual
 	// keyboard can cover a focused field, so the field path always scrolls it into view.
 	const isNarrow = useBreakpoints(breakpointsTailwind).smaller("lg");
