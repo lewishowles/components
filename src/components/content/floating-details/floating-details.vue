@@ -37,9 +37,9 @@
 <script setup>
 import { callComponentMethod } from "@lewishowles/helpers/vue";
 import { cn } from "@/utilities/cn.js";
-import { computed, nextTick, ref, toRef, useAttrs, useTemplateRef, watch } from "vue";
-import { onClickOutside, useMediaQuery } from "@vueuse/core";
-import { useFloatingPosition } from "@/composables";
+import { computed, ref, toRef, useAttrs, useTemplateRef } from "vue";
+import { onClickOutside } from "@vueuse/core";
+import { useResponsiveFloatingPanel } from "@/composables/use-floating-position/use-responsive-floating-panel.js";
 
 import OverlaySheet from "@/components/messaging/overlay-sheet/overlay-sheet.vue";
 
@@ -107,20 +107,21 @@ const isOpen = ref(false);
 // Computed refs that lazily resolve the DOM elements exposed by summary-details.
 const summaryElementRef = computed(() => summaryDetailsReference.value?.summaryElement);
 const contentElementRef = computed(() => summaryDetailsReference.value?.contentElement);
-// Whether the anchored panel should hand dismissal to the narrow sheet.
-const isNarrow = useMediaQuery("(width < 1024px)");
 // Derive a useful dialog label from the visible summary trigger.
 const sheetLabel = computed(() => summaryElementRef.value?.textContent?.trim() || "Details");
 
+// Positions the panel next to the summary on wide screens, and reports when
+// the screen is narrow enough to show the overlay sheet instead.
 const {
 	computedPlacement,
 	computedAlign,
+	isNarrow,
 	isPositioning,
 	placementClasses,
 	positioningTick,
 	handleOpen: handleFloatingOpen,
-	handleClose: handleFloatingClose,
-} = useFloatingPosition({
+} = useResponsiveFloatingPanel({
+	isOpen,
 	triggerElement: summaryElementRef,
 	panelElement: contentElementRef,
 	initialPlacement: toRef(props, "placement"),
@@ -255,34 +256,6 @@ function handleSheetClick(event) {
 
 	handleDismiss();
 }
-
-watch(
-	[isOpen, isNarrow],
-	async ([open, narrow], [wasOpen, wasNarrow]) => {
-		if (!open) {
-			handleFloatingClose();
-
-			return;
-		}
-
-		if (narrow) {
-			if (!wasNarrow) {
-				handleFloatingClose();
-			}
-
-			return;
-		}
-
-		if (wasNarrow) {
-			await nextTick();
-
-			if (isOpen.value && !isNarrow.value) {
-				await handleFloatingOpen();
-			}
-		}
-	},
-	{ flush: "post" },
-);
 
 /**
  * Open the details element.

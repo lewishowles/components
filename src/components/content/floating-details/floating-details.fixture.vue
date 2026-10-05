@@ -7,7 +7,7 @@ that room the panel is wider than the space beside the trigger, so floating-deta
 to start alignment and the alignment tests see the panel anchored to its other edge. -->
 <template>
 	<div class="ms-[700px]">
-		<data-table class="w-96" v-bind="{ columns, data }">
+		<data-table class="w-96" narrow-layout="scroll" v-bind="{ columns, data }">
 			<template #actions>
 				<floating-details class="flex w-full justify-end" v-bind="{ align: props.align }">
 					<template #summary>Summary label</template>

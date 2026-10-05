@@ -1,4 +1,5 @@
 import { createDeepMount, createMount } from "@lewishowles/testing/vue";
+import { flushPromises } from "@vue/test-utils";
 import { nextTick, ref } from "vue";
 import { beforeEach, describe, expect, test, vi } from "vite-plus/test";
 
@@ -237,6 +238,28 @@ describe("floating-details", () => {
 			summaryDetails.vm.$emit("open");
 
 			expect(wrapper.vm.isPositioning).toBe(true);
+		});
+
+		test("positions the panel again when returning from the narrow sheet", async () => {
+			const wrapper = mount();
+			const summaryDetails = wrapper.findComponent({ name: "SummaryDetails" });
+
+			summaryDetails.vm.$emit("open");
+			await nextTick();
+			await nextTick();
+
+			const previousPositioningTick = wrapper.vm.positioningTick;
+
+			isNarrow.value = true;
+
+			await nextTick();
+
+			isNarrow.value = false;
+
+			await nextTick();
+			await flushPromises();
+
+			expect(wrapper.vm.positioningTick).toBeGreaterThan(previousPositioningTick);
 		});
 
 		test("cancels summary-details' default margin below the trigger", async () => {
