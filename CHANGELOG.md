@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 3.6.1 - 2026-10-07
+
+### Fixes
+
+- `data-table`: narrow columns no longer shrink to 1px in card view.
+
 ## 3.6.0 - 2026-10-05
 
 ### Features
