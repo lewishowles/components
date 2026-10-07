@@ -241,7 +241,7 @@
 										'tabular-nums': column.tabularNums,
 									},
 									getCellClasses(column),
-									'@max-xl/data-table:block @max-xl/data-table:min-w-0 @max-xl/data-table:px-0 @max-xl/data-table:py-1 @max-xl/data-table:text-start @max-xl/data-table:break-words',
+									'@max-xl/data-table:block @max-xl/data-table:w-auto @max-xl/data-table:min-w-0 @max-xl/data-table:px-0 @max-xl/data-table:py-1 @max-xl/data-table:text-start @max-xl/data-table:break-words',
 								]"
 								data-test="data-table-cell"
 							>
